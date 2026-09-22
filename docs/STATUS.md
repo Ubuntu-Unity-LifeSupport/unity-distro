@@ -23,7 +23,8 @@ Current layer: **A** (keep Unity 7 on X11 alive).
   `docs/screenshots/2026-09-22-target-unity-desktop.png`: panel, launcher,
   indicators, global menu and wallpaper all render correctly.
 - Upstream group inventoried: 28 projects across `unity`, `lomiri` and
-  `website` subgroups. `manifest.repos` written against the real list.
+  `website` subgroups. `manifest.repos` written against the real list, and all
+  eight repositories imported with `vcs import`.
 - This meta-repository created, handoff committed first.
 - Build chroot built with `mmdebstrap` into
   `~/.cache/sbuild/resolute-amd64.tar.zst` (142 MB, 47 s).
@@ -32,20 +33,30 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## In flight
 
-Nothing. The build pipeline is up and verified.
+**Layer A is blocked at the first step.** `unity` 7.7.1 cannot be rebuilt in
+resolute: `nux-4.0.pc` still requires PCRE1, which has been removed from the
+archive. Nothing that build-depends on `libnux-4.0-dev` can configure. Full
+diagnosis in DECISIONS.md.
+
+Next action is to port `nux`'s `Validator` to PCRE2 and fix the `.pc` file.
+This displaces the planned "pick a known UI bug" first contribution - there is
+no point picking one while nothing builds.
 
 ## Next
 
-1. `vcs import . < manifest.repos` and build `unity` 7.7.1 for resolute.
-   Record in DECISIONS.md how healthy the code actually is - what breaks, what
-   warns, how long it takes.
+1. Port `nux` from PCRE1 to PCRE2 so that `unity` can build at all, then
+   finish the `unity` build and record how healthy the code actually is.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
 3. Stand up `aptly` and publish over the host-only interface so target can
    `apt install` from it.
-4. Resolve where `vala-appmenu-panel` actually is. The 26.04 release notes say
-   the global menu moved to it; it is not on target, not in the archive and not
-   in the upstream group. Layer B needs the answer.
+4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
+   `vala-appmenu-panel` - the handoff transposed the words. Upstream is
+   https://gitlab.com/vala-panel-project/vala-panel-appmenu. Ubuntu splits that
+   tree into `src:appmenu-gtk-module`, `src:appmenu-registrar` and
+   `src:vala-panel-appmenu`; Unity uses the first two. The binary package named
+   `vala-panel-appmenu` only carries plugins for the Xfce, MATE and vala-panel
+   shells, which is why it is not installed on target.
 
 ## Known bugs in Ubuntu Unity 26.04 (candidates for the first contribution)
 

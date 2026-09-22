@@ -121,3 +121,63 @@ back into the root window and make `xwd` work - at the cost of disabling the
 compositor Unity 7 is built on. That would cure the symptom by removing the
 subject of study. The VM settings are correct as they are: `vram=128`,
 `accelerate3d=on`, `vmsvga`.
+
+---
+
+## 2026-09-22 - unity 7.7.1 cannot be rebuilt in resolute: nux still needs PCRE1
+
+**Finding.** `sbuild -d resolute` on `unity` 7.7.1+26.04.20260306-0ubuntu3 fails
+at configure:
+
+```
+Package 'libpcre', required by 'nux-4.0', not found
+CMake Error: The following required packages were not found:
+ - nux-4.0>=4.0.5
+```
+
+**Root cause.** `libpcre3-dev`, which ships `libpcre.pc`, has been **removed
+from resolute**; only PCRE2 (`libpcre2-dev` 10.46) remains. But
+`nux-4.0.pc` 4.0.8 in the archive still declares
+
+```
+Requires: glib-2.0 nux-core-4.0 nux-graphics-4.0 gl glu glewmx xext x11 sigc++-2.0 libpcre
+```
+
+pkg-config resolves `Requires` transitively, so `nux-4.0` itself becomes
+unresolvable. **Every package that build-depends on `libnux-4.0-dev` is
+blocked, unity included.** The binaries in the archive were built while PCRE1
+was still there; the source is no longer buildable today.
+
+This is not an environment problem on our side - it reproduces in a clean
+`resolute` chroot.
+
+**Scope of the fix.** Small and well contained. PCRE appears in exactly two
+files in the nux tree:
+
+- `Nux/nux.pc.in:11` - the `Requires` line
+- `Nux/Validator.h` - `#include <pcre.h>`, member `pcre *_regexp`
+- `Nux/Validator.cpp` - `pcre_compile`, `pcre_exec`, `pcre_extra`,
+  `PCRE_MULTILINE`, `PCRE_EXTRA_MATCH_LIMIT_RECURSION`
+
+Four API calls in total. The PCRE2 equivalents are `pcre2_compile`,
+`pcre2_match` with a `pcre2_match_data`, and `pcre2_set_depth_limit` on a match
+context in place of `pcre_extra.match_limit_recursion`.
+
+**Plan.** Port `Validator` to PCRE2, change `nux.pc.in` to require
+`libpcre2-8`, and swap `libpcre3-dev` for `libpcre2-dev` in `debian/control`.
+Carry it as a quilt patch with a `+unity1` version, and send it upstream - this
+blocks the whole distribution, so it belongs upstream rather than in our tree.
+
+**Rejected.** Dropping PCRE and using `std::regex` everywhere. The Windows
+branch of `Validator` already does exactly that, so the code is there. But
+`std::regex` does not have PCRE's syntax or semantics, and swapping the engine
+under a validator silently changes which inputs are accepted. Not a change to
+make while also unblocking a build.
+
+**Noticed in passing, not our bug to fix now.** `Validator::Validate` on the
+Windows branch returns `Acceptable` from both sides of its `if` - the match
+result is discarded. Worth reporting upstream separately.
+
+**Also noted.** The nux git tree is at `4.0.8+18.10.20180623-0ubuntu15`
+targeting a `stonking` distribution, which is ahead of what the archive has.
+Check which base the patch should sit on before sending it.
