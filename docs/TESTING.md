@@ -1,8 +1,34 @@
 # Testing on target
 
 `target` is the throwaway desktop VM: Ubuntu Unity 26.04, user `mike`,
-192.168.56.20, reachable as `ssh target`. Its clean snapshot is called
-`Clean`, capital C.
+192.168.56.20, reachable as `ssh target`.
+
+## Snapshots
+
+Rebuilt 2026-09-23. The old layout is gone.
+
+```
+Clean                         base: clean system + autologin + passwordless sudo
+ └─ Clean-updated-2026-09-23  + all pending updates.  ROLL BACK TO THIS ONE
+```
+
+`Clean` is permanent and not to be touched. Note that its contents changed: the
+original as-installed snapshot was deleted and `Clean-autologin` was renamed to
+`Clean`, so the name is the same and the contents are not.
+
+**Test on the updated snapshot, not on release state.** Two reasons: SRU
+verification does not formally count on release state, and we have twice chased
+ghosts on stale systems - the PCRE2 fix had existed for six months, and the
+shutdown menu did not reproduce. All five known 26.04 bugs were described at
+release, and some may have closed since.
+
+The updated snapshot ages. When it falls behind: roll back to it, catch up on
+updates, take a new one with a new date, and **delete the previous one** - a
+long snapshot chain slows disk I/O.
+
+Autologin and passwordless sudo live in `Clean`, underneath the updates, so
+every snapshot taken further down the chain inherits them. They never need
+re-enabling after a rollback.
 
 ## Before installing anything
 
@@ -54,6 +80,24 @@ xdotool mousemove 1159 14 click 1   # sound indicator
 
 Export `DISPLAY=:0` plus `DBUS_SESSION_BUS_ADDRESS` and `XDG_RUNTIME_DIR` taken
 from `/proc/$(pgrep -x compiz)/environ`, or nothing will reach the session.
+
+Write the script to a file on target and run it, rather than passing it inline.
+`pkill -f <name>` run inline over ssh matches the ssh command's own command
+line, which contains that name, and kills the shell running it.
+
+## Getting file contents onto target intact
+
+Send them **base64-encoded** and check the result with `cat -A`, not `cat`.
+
+Quoting does not survive two shell parses, and a config written through nested
+ssh can arrive as one line with literal `\n` in it. That happened to the
+autologin config: `"[Seat:*]nautologin-user=mikenautologin-user-timeout=0n"`.
+`cat` renders a broken file and a correct one identically; `cat -A` shows line
+endings as `$` and makes the difference obvious.
+
+A broken file caught late is worse than one caught early: had that config gone
+into the base snapshot, autologin would have failed mysteriously after every
+rollback and the search would have started at LightDM.
 
 Two things a screenshot cannot answer, so ask May: whether the mouse cursor is
 visible, and whether anything feels laggy.

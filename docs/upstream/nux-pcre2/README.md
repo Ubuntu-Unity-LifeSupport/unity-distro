@@ -51,6 +51,7 @@ anywhere.
 | `05-runtime-proof-on-target.txt` | compiz maps libpcre2-8 and no PCRE1 on a live 26.04 desktop |
 | `06-minimal-reproducer.txt` | two-command reproduction, no build needed |
 | `07-reverse-dependencies.txt` | unity is the only reverse build-dependency |
+| `08-clean-end-to-end.txt` | installed with one apt command on a clean, fully updated desktop, session verified after reboot |
 
 Desktop screenshots are in `../../screenshots/`. Crash dumps collected during
 testing are in `~/evidence/` on builder; none of them belongs to this change,

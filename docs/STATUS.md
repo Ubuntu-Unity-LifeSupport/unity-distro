@@ -12,6 +12,12 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **`nux` verified end to end from a clean target.** Rolled back to
+  `Clean-updated-2026-09-23`, added the repository, installed with one `apt`
+  command, rebooted into a session that came up by itself, and ran the whole UI
+  checklist. This is the evidence the SRU test plan describes; every earlier
+  install went through `scp` and `dpkg -i`, which tests the package but not the
+  delivery path.
 - **Local apt repository is up.** aptly at `/srv/aptly`, signed, served by
   nginx on `192.168.56.10:8080` and bound to that address only. Proven end to
   end: target's apt fetched `libnux-4.0-0` and `libnux-4.0-common` from
@@ -78,18 +84,15 @@ reads the specific text and agrees.
 
 ## Next
 
-1. **Re-verify `nux` from a clean target.** The repository works, but the run
-   that proved it also dragged 438 pending system updates onto target by
-   accident (`apt-get upgrade` where `--only-upgrade` was meant). Roll back to
-   `Clean`, add the repository, install `nux` with a single `apt` command and
-   run the checklist. That is a better test than the one originally planned -
-   it exercises what a user actually does, where every earlier install went
-   through `scp` and `dpkg -i`.
+1. **Start Layer B.** Read `appmenu-gtk-module` and work out where a GTK4
+   popover or `AdwHeaderBar` menu model would be exported from. The
+   before-measurement is already recorded in TESTING.md: the registrar reports
+   a headerbar application's window with an empty object path.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
-3. Start Layer B: read `appmenu-gtk-module`, and work out where a GTK4
-   popover / `AdwHeaderBar` menu model would be exported from. The
-   before-measurement is already recorded in TESTING.md.
+3. Pick a second contribution candidate. `light-locker` crashing on login is
+   the obvious one: documented, reproducible, and still present after every
+   pending update.
 4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
    `vala-appmenu-panel` - the handoff transposed the words. Upstream is
    https://gitlab.com/vala-panel-project/vala-panel-appmenu. Ubuntu splits that
