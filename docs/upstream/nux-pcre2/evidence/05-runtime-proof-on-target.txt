@@ -1,0 +1,14 @@
+# runtime proof on Ubuntu Unity 26.04 target, after installing nux 0ubuntu13
+# host: mike-virtualbox, Ubuntu 26.04 LTS
+
+installed:
+  libnux-4.0-0           4.0.8+18.10.20180623-0ubuntu13
+  libnux-4.0-common      4.0.8+18.10.20180623-0ubuntu13
+
+shared objects mapped by the running compiz:
+  libnux-4.0.so.0.8.0
+  libnux-core-4.0.so.0.8.0
+  libnux-graphics-4.0.so.0.8.0
+  libpcre2-8.so.0.14.0
+
+no PCRE1 mapping is present.

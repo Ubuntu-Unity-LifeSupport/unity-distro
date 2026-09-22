@@ -1,0 +1,12 @@
+# nux-4.0.pc Requires line, before and after
+
+archive libnux-4.0-dev 4.0.8+18.10.20180623-0ubuntu12:
+Requires: glib-2.0 nux-core-4.0 nux-graphics-4.0 gl glu glewmx xext x11 sigc++-2.0 libpcre
+
+locally built libnux-4.0-dev 4.0.8+18.10.20180623-0ubuntu13:
+Requires: glib-2.0 nux-core-4.0 nux-graphics-4.0 gl glu glewmx xext x11 sigc++-2.0 libpcre2-8
+
+libpcre3-dev availability in resolute:
+libpcre3-dev:
+  Installed: (none)
+  Candidate: (none)

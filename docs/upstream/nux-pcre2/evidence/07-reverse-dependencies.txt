@@ -1,0 +1,15 @@
+# Reverse dependencies of nux in resolute
+
+$ reverse-depends -b libnux-4.0-dev
+Reverse-Build-Depends
+=====================
+* unity
+
+
+$ apt-cache rdepends --installed=false libnux-4.0-0
+libnux-4.0-0
+Reverse Depends:
+  libnux-4.0-dev
+  libnux-4.0-dev
+  unity
+  libunity-core-6.0-9

@@ -1,0 +1,9 @@
+# nux 0ubuntu13 built from git commit 3c56e89 — SUCCEEDS
+# sbuild -d resolute, clean unshare chroot, 2026-09-22T18:32:02Z
+
+Build-Time: 478
+Distribution: resolute
+Package: nux
+Space: 479692
+Status: successful
+Version: 4.0.8+18.10.20180623-0ubuntu13

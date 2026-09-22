@@ -65,6 +65,33 @@ Before touching code:
 If the bug does not hold up after those five steps, **that is a good outcome**.
 We saved a maintainer's time rather than spending it.
 
+## 1a. Deferred submissions are re-verified, not just re-read
+
+Finished work waits in `docs/upstream/<package>-<topic>/` until May is ready to
+send it. The longer a draft sits, the likelier the ground has moved underneath
+it, so step 1 above is run again immediately before sending - not skimmed,
+executed:
+
+- has a newer package version appeared that already fixes this
+- has anyone filed the bug in the meantime
+- has our patch drifted from the current state of the tree
+- does the bug still reproduce on a current system
+
+For a fresh submission this is a formality. For a deferred one it is the point:
+sending a report about a problem that was fixed last month is exactly the kind
+of contribution that costs a maintainer time and earns nothing.
+
+Every directory under `docs/upstream/` carries its own re-check list in its
+`README.md`, written at the time the draft was made, when we still remembered
+what could plausibly change.
+
+## 1b. One contribution at a time
+
+Submissions go out singly, not as a batch. Three patches in one approach are
+harder to review than three in sequence, and a first impression forms around
+the weakest of them. Send the best-evidenced one, wait for the response, learn
+how this team works, then send the next.
+
 ## 2. Conversation first, code second
 
 A drive-by patch - one arriving with no prior discussion - is the most
@@ -212,6 +239,8 @@ Run the whole list. Any "no" means it does not go out.
 [ ] Signed-off-by from May only; Assisted-by present
 [ ] Prose free of machine register, emoji and self-praise
 [ ] For an SRU: all four sections, [Where problems could occur] is not "None"
+[ ] For a deferred draft: step 1 re-run today, not when the draft was written
+[ ] Nothing else is being sent at the same time
 [ ] May has read the final text and agreed to send it
 ```
 

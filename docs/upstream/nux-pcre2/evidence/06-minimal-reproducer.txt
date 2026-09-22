@@ -1,0 +1,17 @@
+# Minimal reproducer: two commands, no build required
+# Ubuntu 26.04 (resolute) amd64
+
+$ sudo apt install libnux-4.0-dev      # pulls 4.0.8+18.10.20180623-0ubuntu12
+$ pkg-config --print-errors --exists nux-4.0
+Package libpcre was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libpcre.pc'
+to the PKG_CONFIG_PATH environment variable
+$ echo $?
+1
+
+# after installing 4.0.8+18.10.20180623-0ubuntu13
+
+$ pkg-config --exists nux-4.0 ; echo $?
+0
+$ pkg-config --modversion nux-4.0
+4.0.8

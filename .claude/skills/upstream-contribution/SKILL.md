@@ -33,6 +33,16 @@ Five steps, in order. Skipping step 2 or 4 has already cost us twice.
 
 A bug that fails to hold up is a good outcome, not a wasted afternoon.
 
+## Deferred drafts
+
+Finished contributions wait in `docs/upstream/<package>-<topic>/` until May is
+ready to send them. Before sending one that has been sitting, **re-run step 1
+today**: newer package version, someone else's bug, patch drift, still
+reproduces. Each directory's `README.md` carries its own re-check list.
+
+Send **one at a time**. A first impression forms around the weakest patch in a
+batch.
+
 ## Shape of the submission
 
 - Conversation first, patch second. Issue or bug, then the code.

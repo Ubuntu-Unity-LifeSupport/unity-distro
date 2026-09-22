@@ -47,8 +47,8 @@ is installed and running on target with no regression: Dash, HUD, indicators,
 shutdown menu, decorations and wallpaper all work, and compiz has
 `libpcre2-8` mapped with no PCRE1 anywhere. Full checklist in DECISIONS.md.
 
-The one thing left is getting `-0ubuntu13` into resolute, and that is a
-process problem rather than a technical one - see below.
+Getting `-0ubuntu13` into resolute is a process problem rather than a technical
+one, and it is **deliberately on hold** - see below.
 
 **What blocks the upload.** LP: #2147013 is marked *Fix Released* because the
 Launchpad Janitor closes a bug when the package publishes in the *development*
@@ -61,19 +61,26 @@ not following SRU process.
 So there is nothing sitting in proposed to verify. It needs a fresh upload,
 filed properly as an SRU.
 
+**Held by May's decision, 2026-09-23.** Not from doubt about the work: a first
+approach to an unfamiliar team is worth doing calmly rather than in passing.
+This does not block anything. The fixed packages go to our own aptly repository
+and onto target, so we have a working 26.04 regardless of the archive.
+
+The submission is written and waiting in
+[`docs/upstream/nux-pcre2/`](upstream/nux-pcre2/): bug comment, all four SRU
+sections, seven evidence files and a re-check list. Nothing is sent until May
+reads the specific text and agrees.
+
 ## Next
 
-1. **Run the SRU for `nux` `-0ubuntu13`.** Needs May's approval first - it is
-   outward-facing and goes out under his name. Steps: nominate LP: #2147013 for
-   the Resolute series (there is no Resolute task at all right now, so the bug
-   is invisible to the SRU team), post an SRU-template comment, and note that
-   the earlier upload was deleted as "SRU cleanup" so nobody re-treads it.
-   Impact / Test Plan / Regression potential are all written up in
-   DECISIONS.md already.
+1. **Stand up aptly** and publish over the host-only interface, so the fixed
+   `nux` reaches target through `apt` rather than by hand. This is what makes
+   the upstream hold cost us nothing.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
-3. Stand up `aptly` and publish over the host-only interface so target can
-   `apt install` from it.
+3. Start Layer B: read `appmenu-gtk-module`, and work out where a GTK4
+   popover / `AdwHeaderBar` menu model would be exported from. The
+   before-measurement is already recorded in TESTING.md.
 4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
    `vala-appmenu-panel` - the handoff transposed the words. Upstream is
    https://gitlab.com/vala-panel-project/vala-panel-appmenu. Ubuntu splits that

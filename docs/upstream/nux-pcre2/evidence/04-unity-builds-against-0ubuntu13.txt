@@ -1,0 +1,18 @@
+# unity 7.7.1 against nux 0ubuntu13 — SUCCEEDS
+# sbuild -d resolute --extra-package=<locally built nux>, 2026-09-22T18:48:08Z
+
+Build-Time: 372
+Distribution: resolute
+Package: unity
+Space: 4023336
+Status: successful
+Version: 7.7.1+26.04.20260306-0ubuntu3
+
+--- binary packages produced ---
+libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3_amd64.deb
+libunity-core-6.0-dev_7.7.1+26.04.20260306-0ubuntu3_amd64.deb
+unity-autopilot_7.7.1+26.04.20260306-0ubuntu3_all.deb
+unity-schemas_7.7.1+26.04.20260306-0ubuntu3_all.deb
+unity-services_7.7.1+26.04.20260306-0ubuntu3_amd64.deb
+unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3_all.deb
+unity_7.7.1+26.04.20260306-0ubuntu3_amd64.deb
