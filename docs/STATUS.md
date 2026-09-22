@@ -43,6 +43,9 @@ Nothing. The build pipeline is up and verified.
    with a screenshot, send it upstream as a merge request.
 3. Stand up `aptly` and publish over the host-only interface so target can
    `apt install` from it.
+4. Resolve where `vala-appmenu-panel` actually is. The 26.04 release notes say
+   the global menu moved to it; it is not on target, not in the archive and not
+   in the upstream group. Layer B needs the answer.
 
 ## Known bugs in Ubuntu Unity 26.04 (candidates for the first contribution)
 

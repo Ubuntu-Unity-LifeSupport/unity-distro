@@ -9,7 +9,7 @@
 | `unity` | the shell itself: launcher, panel, Dash, HUD | `ubuntu-unity/unity/unity` |
 | BAMF | matches windows to applications | Ubuntu archive |
 | indicators | panel applets (network, sound, session, ...) | Ubuntu archive + `unity-indicators` |
-| `unity-gtk-module` | strips menu bars out of GTK3 apps and exports them | Ubuntu archive |
+| `appmenu-gtk3-module` | strips menu bars out of GTK3 apps and exports them | Ubuntu archive |
 | `unity-settings-daemon`, `unity-control-center` | settings | upstream group |
 | `unity-greeter` | login screen | upstream group |
 
@@ -38,9 +38,31 @@ One such patch gives the global menu and the HUD to every libadwaita
 application at once. It is the most valuable and the longest-lived work in the
 project: both the X11 Unity and any future Wayland Unity need it.
 
-Also in this layer: `unity-gtk-module` and `appmenu-gtk-module` for GTK3,
-`appmenu-qt5` and a Qt6 equivalent, and whatever is left of menu export in
-Firefox, Chromium, LibreOffice and Thunderbird.
+Also in this layer: `appmenu-gtk-module` for GTK3, `appmenu-qt5` and a Qt6
+equivalent, and whatever is left of menu export in Firefox, Chromium,
+LibreOffice and Thunderbird.
+
+### What the menu stack on target actually is
+
+Verified by inspecting the installed packages on target, 2026-09-22:
+
+| Package | Version | Role |
+|---|---|---|
+| `appmenu-gtk3-module` | 25.04-1build1 | exports GTK3 menu bars over D-Bus |
+| `libappmenu-gtk3-parser0` | 25.04-1build1 | GtkMenuShell to GMenuModel parser |
+| `appmenu-registrar` | 25.04-1build1 | `com.canonical.AppMenu.Registrar` |
+| `indicator-appmenu` | 15.02.0+20.10.20260311-0ubuntu1 | the panel-side menu indicator |
+
+Two corrections to the handoff fall out of this:
+
+- **`unity-gtk-module` is not installed at all.** The GTK3 path runs on
+  `appmenu-gtk-module`. That is the tree to patch, not `unity-gtk-module`.
+- **`vala-appmenu-panel` is nowhere to be found** - not on target, not in the
+  Ubuntu archive, not in the upstream GitLab group. The 26.04 release notes say
+  the project moved to it for the global menu, but the running system does not
+  use it. Either it was reverted before release or it lives somewhere not yet
+  located. Worth resolving before Layer B starts, since the component would sit
+  right in the middle of it.
 
 All of it as quilt series in `debian/patches/` on top of the Ubuntu packages,
 versioned `+unity1`. Never a wholesale fork of GTK.
