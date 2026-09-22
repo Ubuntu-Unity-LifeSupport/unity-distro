@@ -29,14 +29,37 @@ and Qt keep their X11 backends. GTK5 will not have one. Estimate: 2-4 years.
 The interesting problem. GTK4 and libadwaita applications have no menu bar -
 they carry a hamburger button holding a `GMenuModel` inside a popover.
 
-The machinery to export a menu over D-Bus already exists in GTK4
-(`org.gtk.Menus`, `gtk_application_set_menubar`). What is missing is a patch
-that exports the menu models of popovers, `GtkMenuButton` and `AdwHeaderBar`,
-and registers them through `com.canonical.AppMenu.Registrar`.
+**Measured 2026-09-23, and it changes the shape of this layer.** See
+`research/layer-b/` for the experiments.
 
-One such patch gives the global menu and the HUD to every libadwaita
-application at once. It is the most valuable and the longest-lived work in the
-project: both the X11 Unity and any future Wayland Unity need it.
+The transport is not missing. Stock GTK4 still exports a menubar over
+`org.gtk.Menus` and sets `_GTK_MENUBAR_OBJECT_PATH` on the window, and the
+Unity panel already renders it - demonstrated with a twenty-line GTK4
+application whose only unusual act is calling `gtk_application_set_menubar()`.
+No patched package was involved.
+
+Two things are actually in the way.
+
+**There is no way to inject code into GTK4 applications.** GTK4 has no module
+loading mechanism: `GTK_MODULES`, `gtk_module_init` and `gtk-modules` are all
+absent from `libgtk-4.so.1` while present in `libgtk-3.so.0`. The way
+`appmenu-gtk-module` reaches GTK3 applications - loaded into every process and
+overwriting `realize` in the class vtable - has no GTK4 equivalent. Extending
+that module to GTK4, which is what this section used to assume, is not
+possible.
+
+**The menubar must be set before window realize.** Attaching one afterwards
+leaves the X11 property unset and the panel blank, with no error.
+
+So the work is: get into the process before realize, which means `LD_PRELOAD`
+symbol interposition (`libgtk-nocsd.so.0` already does this in the Unity
+session), read the header bar's menu model through the public
+`gtk_menu_button_get_menu_model()`, and set it as the menubar in time. If
+applications turn out not to have populated their menu button that early, the
+fix has to move into GTK4 itself.
+
+This remains the most valuable and longest-lived work in the project: both the
+X11 Unity and any future Wayland Unity need it.
 
 Also in this layer: `appmenu-gtk-module` for GTK3, `appmenu-qt5` and a Qt6
 equivalent, and whatever is left of menu export in Firefox, Chromium,

@@ -12,6 +12,11 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Layer B scoped by experiment, not by assumption.** Stock GTK4 exports a
+  menubar and the Unity panel displays it - proven with a minimal GTK4
+  application. GTK4 has no module mechanism, so `appmenu-gtk-module` cannot be
+  extended to it, and the menubar has to be set before window realize. See
+  `research/layer-b/`.
 - **`nux` verified end to end from a clean target.** Rolled back to
   `Clean-updated-2026-09-23`, added the repository, installed with one `apt`
   command, rebooted into a session that came up by itself, and ran the whole UI
@@ -84,10 +89,12 @@ reads the specific text and agrees.
 
 ## Next
 
-1. **Start Layer B.** Read `appmenu-gtk-module` and work out where a GTK4
-   popover or `AdwHeaderBar` menu model would be exported from. The
-   before-measurement is already recorded in TESTING.md: the registrar reports
-   a headerbar application's window with an empty object path.
+1. **Layer B, next step: try the `LD_PRELOAD` shim.** Interpose on GTK4 before
+   window realize, read the header bar's menu model through
+   `gtk_menu_button_get_menu_model()`, set it as the menubar. The transport is
+   already proven to work; the open question is whether applications have
+   populated their menu button early enough. Findings in
+   `research/layer-b/`.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
 3. Pick a second contribution candidate. `light-locker` crashing on login is
