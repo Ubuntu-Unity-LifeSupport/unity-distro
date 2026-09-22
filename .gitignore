@@ -1,0 +1,10 @@
+# Package sources are independent repositories, imported with vcstool.
+/packages/
+# Build artefacts and local aptly state.
+/build/out/
+/repo/.aptly/
+*.deb
+*.ddeb
+*.buildinfo
+*.changes
+*.build

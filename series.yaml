@@ -1,0 +1,13 @@
+# Target Ubuntu series for this distribution.
+current:
+  codename: resolute
+  version: "26.04"
+  lts: true            # supported "as LTS" by the Ubuntu Unity team until 2031
+  architectures: [amd64]
+  mirror: http://de.archive.ubuntu.com/ubuntu
+  components: [main, universe, restricted, multiverse]
+
+# Next series to port to once resolute is stable. Not yet active.
+next:
+  codename: null
+  version: "26.10"

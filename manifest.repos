@@ -1,0 +1,47 @@
+# vcstool manifest - upstream Unity sources (Layer A).
+#
+# Run:  vcs import . < manifest.repos
+# The packages/ directory is gitignored in this meta-repository; each entry is
+# an independent repository with its own history.
+#
+# Verified against the gitlab.com/ubuntu-unity group on 2026-09-22 (28 projects
+# across three subgroups: unity, lomiri, website).
+#
+# NOT in the upstream group, despite being core Unity 7 components:
+#   compiz, bamf, unity-gtk-module, indicator-*, vala-appmenu-panel
+# These live in the Ubuntu archive only and are imported with git-ubuntu -
+# see docs/ARCHITECTURE.md.
+
+repositories:
+  packages/unity:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity.git
+    version: ubuntu/devel
+  packages/nux:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/nux.git
+    version: ubuntu/devel
+  packages/unity-session:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity-session.git
+    version: ubuntu/devel
+  packages/unity-settings-daemon:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity-settings-daemon.git
+    version: ubuntu/devel
+  packages/unity-control-center:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity-control-center.git
+    version: ubuntu/devel
+  packages/unity-greeter:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity-greeter.git
+    version: ubuntu/devel
+  packages/unity-indicators:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity-indicators.git
+    version: main
+  packages/unity-scope-home:
+    type: git
+    url: https://gitlab.com/ubuntu-unity/unity/unity-scope-home.git
+    version: ubuntu/devel
