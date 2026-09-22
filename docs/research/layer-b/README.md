@@ -101,3 +101,74 @@ gcc latetest.c -o latetest $(pkg-config --cflags --libs gtk4)
 
 Run on target with `DISPLAY=:0` and the session's `DBUS_SESSION_BUS_ADDRESS`,
 then `xprop -id $(xdotool search --name '^mbtest$')`.
+
+---
+
+# The shim works
+
+`unity-gtk4-shim.c`, built and tested on target 2026-09-23. A GTK4 header bar
+application's menu now appears in the Unity global menu, with no patch to GTK4,
+to libadwaita, or to any package.
+
+## Controlled comparison, file-roller
+
+| | `_GTK_MENUBAR_OBJECT_PATH` on the window |
+|---|---|
+| without the shim | absent |
+| with the shim | `/org/gnome/FileRoller/menus/menubar` |
+
+The panel goes from showing only the window title to showing a menu entry that
+opens file-roller's real menu - Создать архив…, Открыть…, Сохранить как…,
+Боковая панель F9, Комбинации клавиш, Справка, О приложении. Insensitive items
+are greyed, the radio item is marked and the accelerator is shown, so action
+states survive the trip. Screenshots:
+`2026-09-23-shim-before-after.png` and
+`2026-09-23-gtk4-headerbar-menu-in-panel.png`.
+
+## How it ended up working
+
+Interposing `gtk_window_present`, `gtk_widget_set_visible` and
+`gtk_widget_show` was the obvious approach and it failed. It fires for our own
+test program, which calls `gtk_window_present` directly, and never fires for
+file-roller: the call that shows its main window is made from inside GTK or
+libadwaita, so it does not pass through a PLT we can interpose.
+
+What works is the technique `appmenu-gtk-module` uses for GTK3 - take
+`g_type_class_ref(GTK_TYPE_WINDOW)` and overwrite `realize` in the class
+vtable. The only reason that module cannot do this under GTK4 is that it has no
+way to get itself loaded, and `LD_PRELOAD` answers exactly that. Type
+registration does not require `gtk_init()`, so the hook can be installed from a
+library constructor.
+
+## Breadth so far
+
+| Application | Result |
+|---|---|
+| file-roller | menubar attached, renders, items work |
+| simple-scan | menubar attached |
+| yelp | shim ran, `no menu model found in this window` |
+| transmission-gtk | did not start; result void |
+
+Two of three that started. `yelp` is a real negative worth understanding rather
+than papering over: the search looks only at the window's titlebar and its
+direct child tree for a `GtkMenuButton` or `GtkPopoverMenuBar` carrying a
+model. Applications that build the model lazily, or keep it somewhere else,
+will be missed.
+
+## What is not solved
+
+- **The label is wrong.** The top-level entry is labelled with the application
+  name, so the panel reads "File Roller  File Roller" - the window title and
+  then the menu. A real design has to decide what a hamburger menu should be
+  called once it is a menubar. Flattening its sections into several top-level
+  menus is probably closer to what Unity expects, and is the obvious next
+  experiment.
+- **Breadth is barely measured.** Three applications is not a survey.
+- **Nothing is known about side effects.** The hook is installed on every
+  `GtkWindow`, dialogs and popups included. Nothing misbehaved in these runs,
+  but nothing was checked either.
+- **`GtkApplication` menubars are global to the application**, not per window.
+  An application with two windows carrying different menus would get whichever
+  realized first.
+- **Delivery is unsolved.** For this to apply to every application, `LD_PRELOAD`
+  has to be set session-wide, the way `libgtk-nocsd.so.0` already is.
