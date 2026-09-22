@@ -5,7 +5,7 @@ Every patch we carry gets a row here. Status is one of `local`,
 
 | Package | Patch file | What it does | Upstream | Status |
 |---|---|---|---|---|
-| _none yet_ | | | | |
+| nux | `migrate-to-libpcre2.patch` | Ports `Validator` from PCRE1 to PCRE2 and updates `nux.pc.in` and `configure.ac` to require `libpcre2-8`. Not ours - written upstream, complete in `-0ubuntu13`, never uploaded to resolute. | LP: #2103918, LP: #2147013 | upstream, unreleased in resolute |
 
 ## Rules
 

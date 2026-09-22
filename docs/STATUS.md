@@ -12,6 +12,10 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **`unity` 7.7.1 builds for resolute.** Seven binary packages, 372 s on four
+  cores, against a locally built `nux` `-0ubuntu13`. 746 compiler warnings,
+  mostly `-Wtemplate-id-cdtor`; dated but not broken.
+
 - `builder` surveyed and provisioned: Ubuntu 26.04.1 (resolute), 4 cores,
   8 GB RAM, root filesystem grown from 97 GB to 195 GB with `lvextend` +
   `resize2fs` (the volume group had 99 GB unallocated; VirtualBox untouched).
@@ -33,19 +37,22 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## In flight
 
-**Layer A is blocked at the first step.** `unity` 7.7.1 cannot be rebuilt in
-resolute: `nux-4.0.pc` still requires PCRE1, which has been removed from the
-archive. Nothing that build-depends on `libnux-4.0-dev` can configure. Full
-diagnosis in DECISIONS.md.
+**Layer A is unblocked. `unity` 7.7.1 builds.**
 
-Next action is to port `nux`'s `Validator` to PCRE2 and fix the `.pc` file.
-This displaces the planned "pick a known UI bug" first contribution - there is
-no point picking one while nothing builds.
+The blocker was `nux-4.0.pc` advertising PCRE1, which resolute no longer has.
+The fix was already written upstream but stopped one revision short of the
+archive: `-0ubuntu12` (in resolute) ports the code, `-0ubuntu13` adds the
+`.pc` and `configure.ac` hunks and was never uploaded. Built `-0ubuntu13`
+ourselves and `unity` now compiles against it. Full history in DECISIONS.md.
+
+Nothing is blocked right now.
 
 ## Next
 
-1. Port `nux` from PCRE1 to PCRE2 so that `unity` can build at all, then
-   finish the `unity` build and record how healthy the code actually is.
+1. Get `nux` `-0ubuntu13` into resolute. The patch is written, the bug exists
+   (LP: #2147013), and we can now demonstrate the whole chain: `-0ubuntu12`
+   breaks `unity`, `-0ubuntu13` fixes it, `unity` builds. This is the first
+   contribution.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
 3. Stand up `aptly` and publish over the host-only interface so target can

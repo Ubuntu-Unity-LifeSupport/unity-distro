@@ -181,3 +181,72 @@ result is discarded. Worth reporting upstream separately.
 **Also noted.** The nux git tree is at `4.0.8+18.10.20180623-0ubuntu15`
 targeting a `stonking` distribution, which is ahead of what the archive has.
 Check which base the patch should sit on before sending it.
+
+---
+
+## 2026-09-22 - correction: the PCRE2 port already exists and was never uploaded
+
+The previous entry said the fix had to be written. That was wrong, and the
+correction matters more than the original diagnosis.
+
+**What actually happened.** The patch exists in the nux packaging git as
+`debian/patches/migrate-to-libpcre2.patch`, by Tomasz Jeruzalski and c4pp4. Its
+history:
+
+| Revision | Date | Change |
+|---|---|---|
+| `13366a9` -> `-0ubuntu12` | 2026-01-28 | patch added, 130 lines. Ports `Validator.{h,cpp}` to PCRE2 but **touches neither `nux.pc.in` nor `configure.ac`** |
+| `3c56e89` -> `-0ubuntu13` | 2026-04-01 | patch extended, +45/-20: adds the `nux.pc.in` and `configure.ac` hunks. Changelog: "Update patch for fixing FTBFS unity (LP: #2147013)" |
+
+So `-0ubuntu12` fixed the code but left the pkg-config metadata advertising
+PCRE1. That is precisely the half-fix that breaks every reverse build
+dependency while looking done from the inside.
+
+**`-0ubuntu13` targets resolute and was never published.** The archive still
+carries `-0ubuntu12`. The two revisions after it, `-0ubuntu14` and
+`-0ubuntu15`, target `stonking`. The resolute upload was simply skipped.
+
+**Verified locally, end to end.**
+
+- Built `-0ubuntu13` from `3c56e89` in a clean resolute chroot:
+  `Status: successful`, 478 s.
+- `nux-4.0.pc` in the resulting `libnux-4.0-dev` now reads
+  `Requires: ... libpcre2-8` instead of `... libpcre`.
+- Rebuilt `unity` 7.7.1+26.04.20260306-0ubuntu3 against it with
+  `sbuild --extra-package`: **`Status: successful`, 372 s**, seven binary
+  packages.
+
+**The contribution is therefore not a patch but an upload.** LP: #2147013
+already exists, the fix is already written and reviewed by its authors, and we
+can now show the full chain: `-0ubuntu12` breaks unity, `-0ubuntu13` fixes it,
+unity builds. That is a much stronger case than a bug report describing a
+symptom.
+
+**How healthy is the unity code?** (the question §7.4 asks)
+
+746 compiler warnings, dominated by 507 `-Wtemplate-id-cdtor` - injected-class-name
+constructor spellings that C++20 deprecated - plus 68 `-Wdeprecated-declarations`
+and 5 `-Wmaybe-uninitialized`. Noisy and dated, but it compiles clean in six
+minutes on four cores. Less fragile than the handoff implied.
+
+---
+
+## 2026-09-22 - sbuild builds go to /var/tmp, not $TMPDIR, and not under $HOME
+
+**Decision.** `~/.config/sbuild/config.pl` sets
+`$unshare_tmpdir_template = '/var/tmp/sbuild-claude/sbuild-unshare-XXXXXX'`.
+
+**Why, in two steps.** Unity's build needs about 4 GB.
+
+1. sbuild in unshare mode unpacks the chroot into `$TMPDIR`. Here `/tmp` is a
+   **3.7 GB tmpfs in RAM**, so the whole build ran in memory and died with
+   `fatal error: cannot write PCH file: No space left on device` - while the
+   disk had 177 GB free. Precompiled headers on `-j4` overflow it quickly.
+2. Moving the template to `/home/claude/build-tmp` then failed with
+   `Error creating chroot session`. sbuild bind-mounts the home directory into
+   the chroot, so a chroot root nested inside `$HOME` cannot work. It has to
+   live outside.
+
+**Also.** `sbuild` runs `debian/rules clean` on the host before packing the
+source, which needs the build dependencies installed locally - exactly what the
+chroot is supposed to avoid. Use `--no-clean-source` on a git tree.
