@@ -12,6 +12,9 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **`nux` `-0ubuntu13` verified on target.** Installed over the archive's
+  `-0ubuntu12`, rebooted, full UI checklist passed, no crashes, compiz maps
+  `libpcre2-8` and no PCRE1.
 - **`unity` 7.7.1 builds for resolute.** Seven binary packages, 372 s on four
   cores, against a locally built `nux` `-0ubuntu13`. 746 compiler warnings,
   mostly `-Wtemplate-id-cdtor`; dated but not broken.
@@ -37,22 +40,36 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## In flight
 
-**Layer A is unblocked. `unity` 7.7.1 builds.**
+**Layer A is unblocked and the fix is verified on hardware.**
 
-The blocker was `nux-4.0.pc` advertising PCRE1, which resolute no longer has.
-The fix was already written upstream but stopped one revision short of the
-archive: `-0ubuntu12` (in resolute) ports the code, `-0ubuntu13` adds the
-`.pc` and `configure.ac` hunks and was never uploaded. Built `-0ubuntu13`
-ourselves and `unity` now compiles against it. Full history in DECISIONS.md.
+`unity` 7.7.1 builds against a locally built `nux` `-0ubuntu13`, and that nux
+is installed and running on target with no regression: Dash, HUD, indicators,
+shutdown menu, decorations and wallpaper all work, and compiz has
+`libpcre2-8` mapped with no PCRE1 anywhere. Full checklist in DECISIONS.md.
 
-Nothing is blocked right now.
+The one thing left is getting `-0ubuntu13` into resolute, and that is a
+process problem rather than a technical one - see below.
+
+**What blocks the upload.** LP: #2147013 is marked *Fix Released* because the
+Launchpad Janitor closes a bug when the package publishes in the *development*
+series; `-0ubuntu13` published in stonking, so the bug snapped shut. From
+26.04's point of view nothing was fixed. The upload to resolute-proposed on
+2026-04-24 was deleted four days later by Timo Aaltonen with the reason "SRU
+cleanup" - the day after 26.04 released, so it was almost certainly swept up as
+not following SRU process.
+
+So there is nothing sitting in proposed to verify. It needs a fresh upload,
+filed properly as an SRU.
 
 ## Next
 
-1. Get `nux` `-0ubuntu13` into resolute. The patch is written, the bug exists
-   (LP: #2147013), and we can now demonstrate the whole chain: `-0ubuntu12`
-   breaks `unity`, `-0ubuntu13` fixes it, `unity` builds. This is the first
-   contribution.
+1. **Run the SRU for `nux` `-0ubuntu13`.** Needs May's approval first - it is
+   outward-facing and goes out under his name. Steps: nominate LP: #2147013 for
+   the Resolute series (there is no Resolute task at all right now, so the bug
+   is invisible to the SRU team), post an SRU-template comment, and note that
+   the earlier upload was deleted as "SRU cleanup" so nobody re-treads it.
+   Impact / Test Plan / Regression potential are all written up in
+   DECISIONS.md already.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
 3. Stand up `aptly` and publish over the host-only interface so target can

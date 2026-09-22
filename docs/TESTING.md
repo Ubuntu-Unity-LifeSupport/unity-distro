@@ -40,6 +40,24 @@ its `XAUTHORITY`.
 
 Save anything that documents a real change to `docs/screenshots/YYYY-MM-DD-*.png`.
 
+## Driving the desktop from builder
+
+`xdotool` on target turns the checklist into a script - no need to sit at the
+machine:
+
+```bash
+xdotool key super          # Dash
+xdotool key alt            # HUD
+xdotool mousemove 1253 14 click 1   # session indicator
+xdotool mousemove 1159 14 click 1   # sound indicator
+```
+
+Export `DISPLAY=:0` plus `DBUS_SESSION_BUS_ADDRESS` and `XDG_RUNTIME_DIR` taken
+from `/proc/$(pgrep -x compiz)/environ`, or nothing will reach the session.
+
+Two things a screenshot cannot answer, so ask May: whether the mouse cursor is
+visible, and whether anything feels laggy.
+
 ## Manual checklist
 
 Run the whole list after any change to the shell, the session or the

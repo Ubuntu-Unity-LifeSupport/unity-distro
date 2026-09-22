@@ -250,3 +250,77 @@ minutes on four cores. Less fragile than the handoff implied.
 **Also.** `sbuild` runs `debian/rules clean` on the host before packing the
 source, which needs the build dependencies installed locally - exactly what the
 chroot is supposed to avoid. Use `--no-clean-source` on a git tree.
+
+---
+
+## 2026-09-22 - nux -0ubuntu13 verified on target: no regression
+
+Installed `libnux-4.0-0` and `libnux-4.0-common` `-0ubuntu13` on target over the
+archive's `-0ubuntu12`, rebooted, and ran the TESTING.md checklist. This is the
+verification an SRU needs.
+
+**Proof the new library is actually in use.** `/proc/$(pgrep -x compiz)/maps`
+contains `libnux-4.0.so.0.8.0` together with `libpcre2-8.so.0.14.0` and **no
+PCRE1 mapping at all**.
+
+| Check | Result |
+|---|---|
+| Fresh boot to greeter | works |
+| Login, Unity session starts | works |
+| Panel, launcher, wallpaper | render correctly |
+| Dash (Super) | opens, search and lenses present |
+| HUD (Alt) | opens |
+| Session indicator, shutdown menu | opens, all entries present |
+| Sound indicator | opens, sliders and media controls work |
+| Window decorations on a GTK3 headerbar app | correct, Unity-style |
+| Crashes during the run | none |
+
+**On the crashes we did see.** Three, none attributable to this change.
+
+- `compiz`, SIGSEGV, during `unity --replace`. The crashing process was the
+  **old** compiz (pid 3437), which had the previous libnux mapped; replacing a
+  shared object on disk does not alter an already-mapped process. An artefact
+  of restarting the shell in place, not of the package. A full reboot afterwards
+  produced no crash at all.
+- `light-locker`, SIGABRT. Seen **before** we touched anything (20:23) and again
+  later (22:33). Pre-existing and reproducible. This is the component that
+  replaced gnome-screensaver in 26.04 - worth its own investigation.
+- `unity-control-center`, SIGSEGV, with a follow-up crash inside `ld.so` when
+  the session relaunched it under the `libgtk-nocsd.so.0` preload.
+  `unity-control-center` **does not link libnux at all** (checked with `ldd`),
+  so this change cannot be the cause. Not reproducible by launching it from a
+  shell - it survived 20 s runs both with and without the preload - so it needs
+  interaction to trigger. Logged as a separate lead, not chased.
+
+Crash files kept in `~/evidence/` on builder.
+
+**Conclusion.** `-0ubuntu13` fixes the FTBFS and introduces no visible
+regression on a live 26.04 desktop. This is the evidence for the SRU.
+
+---
+
+## 2026-09-22 - the global menu is already empty for headerbar applications
+
+Not a regression, and not something we introduced - a measurement of where
+Layer B has to start.
+
+Opened `file-roller`, a GTK3 application with an `AdwHeaderBar`-style titlebar
+and a hamburger button. The panel shows only the application name; there is no
+File/Edit/View to be seen. Querying the registrar directly:
+
+```
+$ gdbus call --session --dest com.canonical.AppMenu.Registrar \
+    --object-path /com/canonical/AppMenu/Registrar \
+    --method com.canonical.AppMenu.Registrar.GetMenus
+([(uint32 48234500, '', objectpath '/')],)
+```
+
+The window **is** registered, with an empty service name and an object path of
+`/`. So the plumbing is connected and there is simply no menu model on the
+other end - exactly the gap Layer B's GTK4/libadwaita patch has to close, and a
+concrete before-picture to measure any patch against.
+
+Window decorations on the same application are correct and Unity-styled, which
+matches what the 26.04 release notes claim was fixed.
+
+Screenshot: `docs/screenshots/2026-09-22-headerbar-app-no-global-menu.png`.
