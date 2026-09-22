@@ -87,16 +87,44 @@ filed properly as an SRU.
 From the release notes, not yet reproduced by us:
 
 - cursor disappears after login
-- shutdown / logout menu does not work
+- shutdown / logout menu not working **after cancelling**
 - cursor lags under Compiz
 - wallpaper wrong after an OEM install
-- shutdown dialog appears twice
+- shutdown dialog appears twice - the release notes give a gsettings
+  workaround; two dialogs in a row are easy to mistake for a failure when
+  testing the shutdown path
 
-None of these has been reproduced by us yet.
+None has a bug number. The release notes describe them in prose only, and
+searching Launchpad for "shutdown menu" turns up indicator-session bugs from
+2014. Filing any of them as a reproducible bug with a clear scenario would
+itself be a contribution, now that the checklist can be driven by xdotool.
+
+**Shutdown menu, tested 2026-09-22 - not reproduced.** The first attempt tested
+the wrong thing: the note says the menu fails *after cancelling*, and opening it
+once only shows the state before the bug can occur. Retested properly - open the
+dialog, cancel, try again - with both cancel routes, `Escape` and the close
+cross, since the dialog has no Cancel button. The menu opened and the dialog
+reappeared every time. The logout path is still untested.
+
+Not reproduced is not disproved. It stays a live candidate until someone finds
+the missing precondition or the team confirms it is gone.
+
+**`light-locker` crashing is a documented known issue**, not a new find:
+"light-locker seems to crash on login but login works; there are seemingly no
+side effects". We saw it twice, before and after our changes, and kept a dump in
+`~/evidence/` on builder. If anyone picks it up, the first question is whether
+"no side effects" is actually true.
 
 _Retracted 2026-09-22: we briefly listed "no wallpaper on target" as a sixth
 item. It was an artefact of capturing the X11 root window under a compositor,
 not a bug. See DECISIONS.md._
+
+## Rules for going upstream
+
+Written up in `docs/CONTRIBUTING-UPSTREAM.md`, summarised in `CLAUDE.md`, and
+available as the `upstream-contribution` skill. Read it before preparing
+anything that leaves this machine. Nothing goes out without May's agreement,
+and `Signed-off-by` is his alone.
 
 ## Blocked / needs May
 
