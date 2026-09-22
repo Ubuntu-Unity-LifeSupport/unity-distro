@@ -12,6 +12,11 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Local apt repository is up.** aptly at `/srv/aptly`, signed, served by
+  nginx on `192.168.56.10:8080` and bound to that address only. Proven end to
+  end: target's apt fetched `libnux-4.0-0` and `libnux-4.0-common` from
+  `http://192.168.56.10:8080` and installed them. Only `nux` 0ubuntu13 is
+  published - see `repo/README.md` for why our `unity` build is not.
 - **`nux` `-0ubuntu13` verified on target.** Installed over the archive's
   `-0ubuntu12`, rebooted, full UI checklist passed, no crashes, compiz maps
   `libpcre2-8` and no PCRE1.
@@ -73,9 +78,13 @@ reads the specific text and agrees.
 
 ## Next
 
-1. **Stand up aptly** and publish over the host-only interface, so the fixed
-   `nux` reaches target through `apt` rather than by hand. This is what makes
-   the upstream hold cost us nothing.
+1. **Re-verify `nux` from a clean target.** The repository works, but the run
+   that proved it also dragged 438 pending system updates onto target by
+   accident (`apt-get upgrade` where `--only-upgrade` was meant). Roll back to
+   `Clean`, add the repository, install `nux` with a single `apt` command and
+   run the checklist. That is a better test than the one originally planned -
+   it exercises what a user actually does, where every earlier install went
+   through `scp` and `dpkg -i`.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
 3. Start Layer B: read `appmenu-gtk-module`, and work out where a GTK4
