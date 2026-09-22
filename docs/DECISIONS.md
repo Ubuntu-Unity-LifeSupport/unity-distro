@@ -82,3 +82,42 @@ shell redirect of stdout comes back empty and hides the cause.
 
 **Result.** `sbuild -d resolute hello` -> `Status: successful`, build time 42 s.
 The pipeline is verified end to end.
+
+---
+
+## 2026-09-22 - screenshots go through gnome-screenshot, not xwd or scrot
+
+**Decision.** Capture the target desktop with
+`ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'`.
+
+**Why.** `xwd -root` and `import -window root` read the X11 root window. Under
+a compositor the root window holds no wallpaper - Compiz draws the background
+into its own OpenGL buffer and it never lands there. Panel, launcher and
+indicators are separate windows, so they *do* appear in such a capture.
+
+The result is a screenshot that looks exactly like a real Unity bug: a working
+shell on a black desktop. We nearly filed it as one. May looked at the physical
+screen from the VirtualBox window and the wallpaper was plainly there - the
+standard purple Resolute Raccoon background.
+
+`gnome-screenshot` gets it right even though it reports
+`Unable to use GNOME Shell's builtin screenshot interface, resorting to
+fallback X11` - the fallback still composites correctly.
+
+**Consequences.**
+
+- `UNITY-DISTRO-HANDOFF.md` §4 recommended `scrot` and `import -window root`.
+  That advice is wrong for this desktop and has been corrected in place, with a
+  note pointing here, so the next session does not repeat it.
+- The handoff also asked for `scrot`/`imagemagick` to be installed on target.
+  Not needed - `gnome-screenshot` ships with the desktop.
+- `xwd` remains usable for individual windows, just not for the background.
+- **General rule:** before reporting a bug seen in a screenshot, ask May whether
+  the physical screen shows the same thing. He is sitting at the machine; it is
+  the cheapest possible check, and our eyes on target are indirect.
+
+**Rejected.** Turning off 3D acceleration on target would push the background
+back into the root window and make `xwd` work - at the cost of disabling the
+compositor Unity 7 is built on. That would cure the symptom by removing the
+subject of study. The VM settings are correct as they are: `vram=128`,
+`accelerate3d=on`, `vmsvga`.

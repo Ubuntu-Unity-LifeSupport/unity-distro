@@ -33,8 +33,9 @@ If a session is interrupted, `STATUS.md` must be enough to resume from.
 - You are on `builder` (192.168.56.10, user `claude`, passwordless sudo).
 - `ssh target` reaches the test desktop (192.168.56.20, user `mike`,
   passwordless sudo). Its snapshot is called `Clean`, capital C.
-- Your eyes on target: `ssh target 'DISPLAY=:0 xwd -root -silent > /tmp/s.xwd'`,
-  then `scp` it back and convert with ImageMagick here. No sudo needed.
+- Your eyes on target: `ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'`,
+  then `scp` it back. No sudo needed. Never `xwd -root` for the desktop - it
+  misses the wallpaper under Compiz and invents bugs. See docs/DECISIONS.md.
 - Before installing anything on target: `ssh target 'touch ~/.dirty'`. After a
   rollback the marker must be gone - that is how you verify it happened.
 - Snapshot rollback goes through the host session. See `UNITY-DISTRO-HANDOFF.md`

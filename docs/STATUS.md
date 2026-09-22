@@ -19,7 +19,9 @@ Current layer: **A** (keep Unity 7 on X11 alive).
   `git-buildpackage`, `devscripts`, `ubuntu-dev-tools`, `git-ubuntu`, `aptly`,
   `quilt`, `tmux`, `vcstool`.
 - `ssh target` verified. Screenshot pipeline verified end to end without sudo
-  (`xwd` on target, converted with ImageMagick on builder).
+  (`gnome-screenshot` on target, fetched with `scp`). First capture kept at
+  `docs/screenshots/2026-09-22-target-unity-desktop.png`: panel, launcher,
+  indicators, global menu and wallpaper all render correctly.
 - Upstream group inventoried: 28 projects across `unity`, `lomiri` and
   `website` subgroups. `manifest.repos` written against the real list.
 - This meta-repository created, handoff committed first.
@@ -52,9 +54,11 @@ From the release notes, not yet reproduced by us:
 - wallpaper wrong after an OEM install
 - shutdown dialog appears twice
 
-Observed by us on target on 2026-09-22: the desktop has **no wallpaper at all**,
-just black. Panel, launcher and indicators render correctly. Possibly the same
-bug as the OEM wallpaper one, not yet investigated.
+None of these has been reproduced by us yet.
+
+_Retracted 2026-09-22: we briefly listed "no wallpaper on target" as a sixth
+item. It was an artefact of capturing the X11 root window under a compositor,
+not a bug. See DECISIONS.md._
 
 ## Blocked / needs May
 

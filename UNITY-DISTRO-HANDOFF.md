@@ -63,7 +63,8 @@ Windows-хост (ghost) — только VirtualBox и терминал Мая
 ```
 
 - Между виртуалками **host-only сеть**; из builder в target — SSH по ключу (`ssh target`).
-- **Твои «глаза» на target**: по SSH снять скриншот X11-сессии (`DISPLAY=:0 scrot /tmp/shot.png` или `import -window root`; для экрана логина — от пользователя lightdm с его `XAUTHORITY`), забрать `scp` и посмотреть файл как изображение. Так ты видишь, что панель не отрисовалась или курсор пропал.
+- **Твои «глаза» на target**: по SSH снять скриншот X11-сессии (`DISPLAY=:0 gnome-screenshot -f /tmp/shot.png`; для экрана логина — от пользователя lightdm с его `XAUTHORITY`), забрать `scp` и посмотреть файл как изображение. Так ты видишь, что панель не отрисовалась или курсор пропал.
+  > **Исправлено 22.09.2026.** Здесь изначально были `scrot` и `import -window root` — под Compiz они дают чёрный фон вместо обоев, потому что читают корневое окно X11, а композитор рисует фон в собственном буфере. Панель и лаунчер при этом видны, и результат выглядит как баг Unity, которого нет. Подробности — docs/DECISIONS.md, запись от 22.09.2026.
 - Откат target на снапшот делает Май (или ты через SSH к Windows-хосту и `VBoxManage snapshot target restore clean`, если Май поставит OpenSSH-сервер на Windows — опционально).
 - **Ничего тяжёлого на хосте и в общих папках VirtualBox**: NTFS ломает права, симлинки и регистр — все репозитории только на Linux-диске builder.
 - **Всё, что не запушено в удалённый git, не существует.** Виртуалка — самая хрупкая часть. Пушить после каждого осмысленного шага.
@@ -127,7 +128,7 @@ packages/                      ← сюда vcstool import выкачивает 
 ## 7. Первая сессия: что сделать по порядку
 
 1. **Осмотреться.** `lsb_release -a`, ресурсы (`nproc`, `free -h`, `df -h`), есть ли sudo без пароля, интернет, git-конфиг, `ssh target` (если target уже есть). Всё, что не так, — в список для Мая.
-2. **Поставить инструментарий**: `git`, `git-buildpackage`, `sbuild`, `schroot`, `debootstrap`, `devscripts`, `ubuntu-dev-tools`, `git-ubuntu` (если доступен), `aptly`, `python3-vcstool` (или `pip install vcstool`), `tmux`, `scrot`/`imagemagick` на target. Создать sbuild-chroot для `resolute` (amd64). Проверить `sbuild` на любом маленьком пакете (например `hello`).
+2. **Поставить инструментарий**: `git`, `git-buildpackage`, `sbuild`, `schroot`, `debootstrap`, `devscripts`, `ubuntu-dev-tools`, `git-ubuntu` (если доступен), `aptly`, `python3-vcstool` (или `pip install vcstool`), `tmux`. На target ничего ставить не нужно: `gnome-screenshot` там уже есть (см. исправление в §4). Создать sbuild-chroot для `resolute` (amd64). Проверить `sbuild` на любом маленьком пакете (например `hello`).
 3. **Создать мета-репозиторий `unity-distro`** по структуре из §5: README, CLAUDE.md (по §6), пустые-но-осмысленные docs, `manifest.repos` с реальными репозиториями `gitlab.com/ubuntu-unity` (unity, nux, compiz, bamf, unity-settings-daemon, unity-control-center, unity-greeter, indicator-*, vala-appmenu-panel — проверить актуальный список в группе) и ubuntu-пакетами слоя B (gtk4, libadwaita-1, gtk+3.0, appmenu-gtk-module, appmenu-qt5). Запушить в удалённый репозиторий, который даст Май.
 4. **Собрать `unity` 7.7.1 под resolute** через sbuild из апстрим-репозитория ubuntu-unity. Зафиксировать в DECISIONS.md, насколько живой код: что ломается, какие предупреждения, сколько времени сборка. Это даёт точную картину вместо оценочной.
 5. **Взять один известный баг 26.04** (курсор после логина или неработающее меню выключения), воспроизвести на target, локализовать, починить, собрать, проверить скриншотом. Оформить как MR в апстрим. Это первый реальный вклад и проверка всего конвейера от исходника до экрана.

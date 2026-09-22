@@ -19,13 +19,21 @@ ssh target 'ls ~/.dirty'
 
 ## Screenshots - your eyes on the desktop
 
-No sudo and no extra packages needed; `xwd` is already there.
+No sudo and no extra packages needed; `gnome-screenshot` ships with the
+desktop.
 
 ```bash
-ssh target 'DISPLAY=:0 xwd -root -silent > /tmp/s.xwd'
-scp target:/tmp/s.xwd ~/shots/
-magick ~/shots/s.xwd ~/shots/$(date +%F-%H%M).png
+ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'
+scp target:/tmp/shot.png ~/shots/$(date +%F-%H%M).png
 ```
+
+**Do not use `xwd -root` or `import -window root` for the desktop.** They read
+the X11 root window, which under Compiz holds no wallpaper - you get a black
+background with a perfectly good panel on top, which looks like a bug and is
+not one. They are still fine for individual windows. See DECISIONS.md.
+
+Before reporting anything you saw only in a screenshot, ask May whether the
+physical screen shows the same thing.
 
 For the greeter rather than a logged-in session, run as the `lightdm` user with
 its `XAUTHORITY`.
