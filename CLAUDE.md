@@ -41,6 +41,22 @@ If a session is interrupted, `STATUS.md` must be enough to resume from.
 - Snapshot rollback goes through the host session. See `UNITY-DISTRO-HANDOFF.md`
   Appendix A.
 
+## Sending anything upstream
+
+Read `docs/CONTRIBUTING-UPSTREAM.md` before preparing a bug report, an SRU, a
+merge request or a reply to review. The three rules that matter most:
+
+- **Nothing leaves this machine without May reading it and agreeing.** Every
+  contribution goes out under his name.
+- **`Signed-off-by:` is his alone** - it signs the DCO, which is a legal
+  statement. Mark AI involvement with `Assisted-by: LLM <model>` instead.
+- **Prove the bug before writing code**: reproduce it in a clean environment,
+  check it is not already fixed, check nobody filed it, and test the exact
+  scenario from the description rather than one that resembles it.
+
+Run the checklist in section 9 of that document in full before sending
+anything. Any "no" stops the submission.
+
 ## Do not
 
 - Rewrite history or force-push in repositories May maintains.
