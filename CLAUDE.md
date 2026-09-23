@@ -6,7 +6,10 @@ You do not remember previous sessions. This repository is your memory.
 
 0. **You are not the only agent on this machine.** Read `docs/TWO-AGENTS.md`
    and confirm with May whether you are agent A or agent B before touching
-   anything. Then `tail -20 ~/AGENTS-LOG.md` to see what the other one is doing.
+   anything. Register yourself in `~/AGENTS.md` so the other agent can address
+   you, run `ListAgents` to see who is around, and `tail -20 ~/AGENTS-LOG.md`
+   to see what he is doing. **Before you take any task, message him and ask
+   whether he has already taken it.**
 1. Read `docs/STATUS.md` first - it says what is in flight and what is broken.
 2. Do the work.
 3. Update `docs/STATUS.md`, record any decision in `docs/DECISIONS.md`, and
