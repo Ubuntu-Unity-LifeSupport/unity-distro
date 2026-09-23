@@ -172,3 +172,86 @@ will be missed.
   realized first.
 - **Delivery is unsolved.** For this to apply to every application, `LD_PRELOAD`
   has to be set session-wide, the way `libgtk-nocsd.so.0` already is.
+
+---
+
+# Promoting sections to top level: tried, and it does not work
+
+The single top-level entry is labelled with the application name, so the panel
+reads "File Roller  File Roller" - the window title, then a menu with the same
+name. The obvious fix is to promote each section of the hamburger menu to its
+own top-level menu, which is the shape Unity gets from a GTK3 application.
+
+It fails for a reason that is not a matter of implementation.
+
+## Hamburger sections carry no labels
+
+Measured, not assumed. The shim now dumps the model it finds. simple-scan:
+
+```
+model has 2 top-level item(s)
+  [0] section  label=(none)   section holds 3 item(s)
+  [1] section  label=(none)   section holds 2 item(s)
+```
+
+file-roller is the same, four unlabelled sections, visible in the bus dump of
+its exported menubar:
+
+```
+(1, 0, [{':section': <(1,1)>}, {':section': <(1,2)>},
+        {':section': <(1,3)>}, {':section': <(1,4)>}])
+```
+
+A GTK3 menu bar is a list of *named* submenus - File, Edit, View. A hamburger
+menu is a list of *unnamed* sections whose only job is to draw separators
+between groups. The names a menu bar needs were never written down, because
+nothing in the GTK4 design ever needed them.
+
+## What the three modes actually produce
+
+All three are in `unity-gtk4-shim.c`, selected by environment variable, so the
+comparison can be repeated.
+
+| Mode | Result |
+|---|---|
+| default, one wrapper | one top-level menu named after the application. Works; the name duplicates the window title |
+| `UNITY_GTK4_SHIM_FLATTEN=1` | one top-level menu per section, each falling back to the application name because sections have none. simple-scan produced `simple-scan  simple-scan` |
+| `UNITY_GTK4_SHIM_DIRECT=1` | GMenu promotes the section *items* to the top level: simple-scan showed `Одна страница  Все страницы из автоподатчика  Несколько страниц с планшетного сканера` as bare top-level actions. A row of buttons, not a menu bar |
+
+Screenshots: `2026-09-23-shim-flatten-mode.png`,
+`2026-09-23-shim-direct-mode.png`.
+
+**The wrapper stays.** It is the only one of the three that produces something
+shaped like a menu, and the problem it leaves - one redundant label - is far
+smaller than the problems the other two create.
+
+## So the real question is the label, not the structure
+
+Options, none yet tested:
+
+- a fixed word, localised the way Unity localises its own panel items. Honest,
+  and it matches what the menu actually is.
+- the application name only when it differs from the window title, which is the
+  case that actually reads badly.
+- ask the team: Unity has conventions here and we do not.
+
+## Two corrections to earlier notes in this file
+
+**simple-scan's crash is not ours.** It aborts with SIGABRT about ten seconds
+after starting, and the control run without `LD_PRELOAD` at all does exactly the
+same. Pre-existing, unrelated to this work, and the reason measurements taken on
+that application were unstable.
+
+**Environment variables do reach the application.** The shim now prints what it
+sees, and `UNITY_GTK4_SHIM_FLATTEN` and `UNITY_GTK4_SHIM_LOG` both arrive. What
+made the mode comparison on file-roller unreliable is different: its constructor
+runs three times under one PID, so file-roller re-executes itself during
+startup, and under repeated kill-and-restart it sometimes exits before showing a
+window at all. Use it for single runs, not for A/B loops.
+
+## Logging
+
+`UNITY_GTK4_SHIM_LOG=/path` writes to a file with the pid on every line.
+stderr is useless here: the window is frequently created in a process that
+inherits the environment but not the caller's redirected stderr, so the
+interesting output disappears.

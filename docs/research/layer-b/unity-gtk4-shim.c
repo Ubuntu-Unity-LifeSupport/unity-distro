@@ -19,6 +19,8 @@
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <unistd.h>
 #include <gtk/gtk.h>
 
 static int verbose(void) {
@@ -28,14 +30,39 @@ static int verbose(void) {
 	return v;
 }
 
-#define note(...)                                                              \
-	do {                                                                   \
-		if (verbose()) {                                               \
-			fprintf(stderr, "[unity-gtk4-shim] ");                 \
-			fprintf(stderr, __VA_ARGS__);                          \
-			fputc('\n', stderr);                                   \
-		}                                                              \
-	} while (0)
+/*
+ * Log to a file rather than stderr when UNITY_GTK4_SHIM_LOG is set. The window
+ * is often created in a different process from the one launched - file-roller
+ * and simple-scan both do this - and that process inherits the environment but
+ * not the caller's redirected stderr, so stderr output simply disappears.
+ */
+static void note_out(const char *fmt, ...)
+{
+	if (!verbose())
+		return;
+
+	va_list ap;
+	const char *path = getenv("UNITY_GTK4_SHIM_LOG");
+	FILE *out = stderr;
+
+	if (path != NULL) {
+		FILE *f = fopen(path, "a");
+		if (f != NULL)
+			out = f;
+	}
+
+	fprintf(out, "[unity-gtk4-shim %d] ", (int)getpid());
+	va_start(ap, fmt);
+	vfprintf(out, fmt, ap);
+	va_end(ap);
+	fputc('\n', out);
+	fflush(out);
+
+	if (out != stderr)
+		fclose(out);
+}
+
+#define note(...) note_out(__VA_ARGS__)
 
 /* Depth-first search for the first GtkMenuButton carrying a menu model. */
 static GMenuModel *find_menu_model(GtkWidget *widget, int depth)
@@ -71,6 +98,41 @@ static GMenuModel *find_menu_model(GtkWidget *widget, int depth)
 	return NULL;
 }
 
+/* Print the top level of a model: what a hamburger menu is actually made of. */
+static void dump_model(GMenuModel *model)
+{
+	if (!verbose() || model == NULL)
+		return;
+
+	int n = g_menu_model_get_n_items(model);
+	note("model has %d top-level item(s)", n);
+
+	for (int i = 0; i < n; i++) {
+		char *label = NULL;
+		gboolean has_label = g_menu_model_get_item_attribute(
+			model, i, G_MENU_ATTRIBUTE_LABEL, "s", &label);
+		GMenuModel *section =
+			g_menu_model_get_item_link(model, i, G_MENU_LINK_SECTION);
+		GMenuModel *submenu =
+			g_menu_model_get_item_link(model, i, G_MENU_LINK_SUBMENU);
+
+		note("  [%d] %s%s%s  label=%s", i,
+		     section ? "section" : "", submenu ? "submenu" : "",
+		     (!section && !submenu) ? "item" : "",
+		     has_label ? label : "(none)");
+
+		if (section != NULL) {
+			note("       section holds %d item(s)",
+			     g_menu_model_get_n_items(section));
+			g_object_unref(section);
+		}
+		if (submenu != NULL)
+			g_object_unref(submenu);
+		if (has_label)
+			g_free(label);
+	}
+}
+
 static void attach_menubar(GtkWindow *window)
 {
 	GtkApplication *app = gtk_window_get_application(window);
@@ -94,21 +156,66 @@ static void attach_menubar(GtkWindow *window)
 		return;
 	}
 
-	/*
-	 * A menubar model is a list of submenus. What we found is usually a
-	 * flat list of sections, so wrap it in one submenu rather than hand it
-	 * over directly and hope it renders.
-	 */
-	const char *label = g_get_application_name();
-	if (label == NULL)
-		label = "Menu";
+	dump_model(model);
+
+	const char *app_label = g_get_application_name();
+	if (app_label == NULL)
+		app_label = "Menu";
+
+	if (getenv("UNITY_GTK4_SHIM_DIRECT") != NULL) {
+		/* Hand the model over as the menubar with no wrapper at all. */
+		gtk_application_set_menubar(app, model);
+		note("menubar attached directly, no wrapper");
+		return;
+	}
 
 	GMenu *menubar = g_menu_new();
-	g_menu_append_submenu(menubar, label, model);
+
+	if (getenv("UNITY_GTK4_SHIM_FLATTEN") != NULL) {
+		/*
+		 * Promote each section of the hamburger menu to its own
+		 * top-level menu, which is the shape Unity expects from a
+		 * GTK3 application. Sections mostly carry no label, so this
+		 * only works as far as the labels do.
+		 */
+		int n = g_menu_model_get_n_items(model);
+		int promoted = 0;
+
+		for (int i = 0; i < n; i++) {
+			GMenuModel *section = g_menu_model_get_item_link(
+				model, i, G_MENU_LINK_SECTION);
+			if (section == NULL)
+				continue;
+
+			char *label = NULL;
+			if (!g_menu_model_get_item_attribute(
+				    model, i, G_MENU_ATTRIBUTE_LABEL, "s",
+				    &label))
+				label = NULL;
+
+			g_menu_append_submenu(menubar,
+					      label ? label : app_label,
+					      section);
+			promoted++;
+
+			g_free(label);
+			g_object_unref(section);
+		}
+
+		note("flattened: promoted %d section(s) of %d", promoted, n);
+
+		if (promoted == 0) {
+			g_menu_append_submenu(menubar, app_label, model);
+			note("nothing to promote, fell back to a single menu");
+		}
+	} else {
+		/* One top-level entry holding the whole hamburger menu. */
+		g_menu_append_submenu(menubar, app_label, model);
+		note("menubar attached, labelled \"%s\"", app_label);
+	}
+
 	gtk_application_set_menubar(app, G_MENU_MODEL(menubar));
 	g_object_unref(menubar);
-
-	note("menubar attached, labelled \"%s\"", label);
 }
 
 /*
@@ -144,6 +251,11 @@ static void shim_app_window_realize(GtkWidget *widget)
 
 __attribute__((constructor)) static void shim_init(void)
 {
+	note("env: DIRECT=%s FLATTEN=%s LOG=%s",
+	     getenv("UNITY_GTK4_SHIM_DIRECT") ? "set" : "-",
+	     getenv("UNITY_GTK4_SHIM_FLATTEN") ? "set" : "-",
+	     getenv("UNITY_GTK4_SHIM_LOG") ? getenv("UNITY_GTK4_SHIM_LOG") : "-");
+
 	GtkWidgetClass *window_class = g_type_class_ref(GTK_TYPE_WINDOW);
 	if (window_class != NULL) {
 		real_window_realize = window_class->realize;
