@@ -653,3 +653,70 @@ conversation with the team along with the other one:
 
 Both are architecture questions. Answering them after the package is written
 would be the expensive order.
+
+---
+
+# The HUD picks it up too
+
+Grepping the installed system for `_GTK_APP_MENU_OBJECT_PATH` turned up four
+readers and no writers:
+
+| Binary | Package |
+|---|---|
+| `libgtk-3.so.0` | libgtk-3-0t64 |
+| `libgtk-4.so.1` | libgtk-4-1 |
+| `libmuffin.so.0` | libmuffin0t64 (Cinnamon) |
+| `hud-service` | **hud** |
+| `libappmenu.so` | vala-panel-appmenu |
+
+plus `indicator-appmenu`. Meanwhile GTK3 exports
+`gtk_application_set_app_menu`, `get_app_menu` and `prefers_app_menu`, and
+GTK4 exports **none** - the property name survives in the binary, the API does
+not. So the channel is empty because the producing side left the toolkit, not
+because it is broken.
+
+`hud-service` in that list was unexpected. The HUD is one of Unity's signature
+features - search a window's menus from the keyboard - and it reads the same
+property.
+
+## Measured
+
+`popovertest` with `UNITY_GTK4_SHIM_APPMENU=1`, plus a `.desktop` file so BAMF
+can match the window. Alt to open the HUD, typed `Popover`:
+
+```
+Popover Item One
+Popover Item Two
+```
+
+Those are exactly the two items of the application's hamburger popover.
+`2026-09-23-hud-finds-hamburger-items.png`.
+
+**So publishing a GTK4 hamburger menu as an application menu does not only put
+it in the panel - it makes its items keyboard-searchable in the HUD.** For an
+application that previously offered the HUD nothing at all, that is the larger
+half of the result.
+
+## And the label theory closes cleanly
+
+The same run confirms where the name comes from, from both ends:
+
+| `popovertest` | panel shows |
+|---|---|
+| no `.desktop` file | `Unknown Application Name` |
+| `.desktop` with `Name=Popover Test` | `Popover Test` |
+
+Nothing about the application changed between the two except a file in
+`/usr/share/applications`. The label is the `.desktop` `Name=` field reached
+through BAMF, exactly as `window-menu-model.c` says.
+
+It also shows the duplication in a controlled case: the panel reads
+`Popover Test  Popover Test` - the BAMF name beside the application menu entry
+Unity labelled from the same field.
+
+## Which strengthens the case for asking rather than choosing
+
+The application-menu route now has a second argument behind it that the menubar
+route does not: HUD coverage. It also still rests on a property GNOME
+deprecated and GTK4 dropped. Both belong in the same question to the team, and
+the HUD result makes it worth asking well.
