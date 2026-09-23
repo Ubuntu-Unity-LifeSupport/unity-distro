@@ -136,10 +136,13 @@ reads the specific text and agrees.
    `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
    window's exported group, so their menu items arrive insensitive. yelp's
    "О приложении" is the reproducer. See `research/layer-b/`.
-2. **Layer A, in progress: the shutdown path.** #6 reproduced with its
-   mechanism proven, #2 reproduced with its real precondition; the Unity code
-   path behind #2 and the choice of fix remain. See `research/shutdown-path/`.
-   Earlier notes: Known issues #2 (menu stops
+2. **Layer A, in progress: the shutdown path.** Both known issues #2 and #6
+   reproduced on a clean session and explained to the line. One root:
+   cinnamon-session does not take part in the end-session handshake Unity 7
+   expects. #2 is a dropped request - Unity waits on `SHUTDOWN (1)` while the
+   menu asks with `2`, and the handler has no `else`. A small Unity fix for #2
+   is designed, not yet written; #6's fix is a choice between Unity and
+   cinnamon-session. See `research/shutdown-path/`. Earlier notes: Known issues #2 (menu stops
    responding after cancelling) and #6 (double confirmation dialog). Measured
    2026-09-23: **there are two different shutdown dialogs** on target. The
    session indicator's "Выключение..." opens Unity's own ("До скорой встречи,
