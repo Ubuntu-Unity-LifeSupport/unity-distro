@@ -65,9 +65,39 @@ is cancelling the **second** dialog:
 3. cancel cinnamon-session's "Выключить систему сейчас?" (Escape)
 4. session indicator -> "Выключение..." again: **nothing opens.**
 
-Persistent: two further attempts, zero dialogs each time.
 `2026-09-23-shutdown-menu-stuck.png` shows the menu opening normally and no
 dialog after choosing "Выключение...".
+
+**Correction, same day: an earlier line here claimed the state was persistent
+("two further attempts, zero dialogs each time"). That claim is withdrawn.** It
+counted dialogs by X window name, and Unity's dialog is not an X window at all:
+it is a `nux` BaseWindow drawn inside compiz, so `xdotool` can never find it.
+The count could only ever be zero. Only screenshots are evidence here.
+
+A later run of five steps then showed no Unity dialog even on the first click,
+which the simple theory below does not explain - but by then the session had
+been through five consecutive tests and its state was unknown. Conclusions
+wait for a clean session.
+
+**What the menu actually calls**, captured on the bus: the session indicator
+does not ask Unity to show a dialog through `com.canonical.Unity.Session`; it
+calls Unity's `org.gnome.SessionManager.EndSessionDialog.Open` directly - the
+same entry point gnome-session would use. In `OnShellMethodCall("Open")`:
+
+    if (pending_action_ == NONE)        -> show Unity's dialog
+    else if (pending_action_ == action) -> ConfirmShutdown(); ClosedDialog();  (no dialog)
+
+`pending_action_` is set by `GnomeManager::Shutdown()` and nothing on the
+cinnamon-session side ever resolves it, so a later `Open` can take the second
+branch and silently "confirm" a shutdown nobody carries out. `ConfirmShutdown()`
+resets it to `NONE`, which would predict only one swallowed click - that
+prediction is what the clean re-test has to check.
+
+`InteractiveMode()` reads `com.canonical.indicator.session
+suppress-logout-restart-shutdown` - the release-note workaround key. When it is
+true, `Open` skips the dialog and confirms at once by design. Unity registers
+its handler under the bus name `org.gnome.Shell`, which is where gnome-session
+looks and cinnamon-session does not.
 
 **Hypothesis, not yet proven:** #2 and #6 are one mechanism. After step 2 Unity
 holds `pending_action_ = SHUTDOWN` and waits for the end-session handshake;
