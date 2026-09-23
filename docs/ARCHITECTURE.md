@@ -13,6 +13,47 @@
 | `unity-settings-daemon`, `unity-control-center` | settings | upstream group |
 | `unity-greeter` | login screen | upstream group |
 
+**In 26.04 there is a Cinnamon layer between Unity 7 and systemd**, and the
+table above is only half the picture. `unity-session` 49.4 depends on
+`cinnamon-session`, `cinnamon-settings-daemon` and `cinnamon-common`, and its
+user unit runs `cinnamon-session --session=unity`:
+
+```
+systemd --user
+ └─ unity-session.service    cinnamon-session --session=unity
+     ├─ launches /etc/xdg/autostart entries itself, as its own children
+     └─ ...
+ └─ unity7.service           compiz
+ └─ unity-panel-service.service
+```
+
+`cinnamon-settings-daemon` runs alongside `unity-settings-daemon`, not instead
+of it - both are dependencies and both were running on target. This layer is
+recent and maintained: `unity-session` is the most recently changed repository
+in the upstream group.
+
+It explains several things at once:
+
+- why session processes live outside the logind session scope - their parent
+  is `cinnamon-session`, a user service, not LightDM; that is the root of the
+  light-locker crash
+- why autostart entries bypass systemd's generator and its `NotShowIn`
+  handling - `cinnamon-session` launches them itself
+- the shutdown path has **two dialogs from two components**, measured
+  2026-09-23:
+
+  | Trigger | Dialog | Owner |
+  |---|---|---|
+  | session indicator, "Выключение..." | "До скорой встречи, Mike", restart/power icons | Unity |
+  | power key | "Выключить систему сейчас?", Suspend / Cancel / Restart / Shut down | `cinnamon-session-quit`, in `unity-session.service` |
+
+  The power key reaches `cinnamon-session-quit` because `unity-settings-daemon`
+  holds a blocking logind inhibitor on `handle-power-key` and its action is
+  `interactive`. Meanwhile `cinnamon-settings-daemon`, running alongside, has
+  the power button set to `suspend`. Two settings daemons disagreeing and two
+  shutdown dialogs coexisting make the Cinnamon layer the first suspect for the
+  shutdown menu and double-dialog known issues.
+
 The upstream group also carries the Dash scopes and lenses, `yaru-unity7`,
 a Plymouth theme, and a separate `lomiri` subgroup that is not our concern.
 

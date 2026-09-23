@@ -1,5 +1,8 @@
 # The crash, on a clean system
 #
+# Boot: 2026-09-23 20:21:11, the first boot after rolling back to
+# Clean-updated-2026-09-23. Nothing of ours installed.
+#
 # Ubuntu 26.04.1 LTS, light-locker 1.8.0-3ubuntu4, target just rolled back to
 # snapshot Clean-updated-2026-09-23 (all pending updates applied, nothing of
 # ours installed). Login through LightDM autologin.

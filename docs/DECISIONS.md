@@ -526,3 +526,36 @@ up the greeter on `:1` in unlock mode. Unlock itself is untested - no password.
   two-file contribution arrives as a five-file one.
 - Version bumped to `+unity2` rather than rebuilding `+unity1`, which had
   already been published and installed.
+
+---
+
+## 2026-09-23 - the power button works; it asks first
+
+The host session reported `controlvm acpipowerbutton` as "not working":
+`VMState` stayed `running` for over a day after it. The observation is right
+and the conclusion was not.
+
+Measured on target:
+
+- `systemd-inhibit --list`: `unity-settings-daemon` holds a **block** inhibitor
+  on `handle-power-key`, so logind hands the key to it.
+- its power-button action is `interactive`.
+- sending the key into the session (`xdotool key XF86PowerOff`) brings up a
+  dialog, "Выключить систему сейчас?", owned by `cinnamon-session-quit` in
+  `unity-session.service`. Escape closes it and nothing shuts down.
+
+So the button opened a dialog and waited for a person. Designed behaviour.
+TESTING.md now says to power target off with `systemctl poweroff` over ssh.
+
+The measurement turned up something more useful than the correction. There are
+**two different shutdown dialogs**: Unity's own, from the session indicator,
+and `cinnamon-session-quit`'s, from the power key. And the two settings daemons
+running side by side disagree about the power button - `unity-settings-daemon`
+says `interactive`, `cinnamon-settings-daemon` says `suspend`. Neither is yet
+shown to cause known issue #6, the double dialog, but they are where to look.
+
+Also recorded here: unlocking was verified by hand by May, corroborated by
+LightDM's log on that boot (`Authenticate result for user mike: Success`,
+`Unlocking login1 session 1`), and every light-locker evidence file now names
+the boot it came from. One of them, `02`, was re-collected: its first version
+came from a boot that also had our GTK4 shim installed and did not say so.

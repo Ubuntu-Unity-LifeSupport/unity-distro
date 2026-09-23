@@ -85,6 +85,25 @@ Write the script to a file on target and run it, rather than passing it inline.
 `pkill -f <name>` run inline over ssh matches the ssh command's own command
 line, which contains that name, and kills the shell running it.
 
+## Powering target off from outside
+
+**`VBoxManage controlvm acpipowerbutton` does not turn target off - but it is
+not ignored either.** It opens a confirmation dialog, owned by
+`cinnamon-session-quit`, and waits for someone to answer it. With nobody at the
+screen the VM stays running indefinitely while `VBoxManage` reports success.
+That once left a host-side wait loop spinning for over a day, poised to roll
+target back at a random later moment.
+
+The session is behind it, not the VM: `unity-settings-daemon` holds a blocking
+logind inhibitor on `handle-power-key`, and its power-button action is
+`interactive`. Designed desktop behaviour, not a bug.
+
+To power off for a rollback, shut down from inside:
+
+```bash
+ssh target 'sudo -n systemctl poweroff'
+```
+
 ## Getting file contents onto target intact
 
 Send them **base64-encoded** and check the result with `cat -A`, not `cat`.

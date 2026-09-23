@@ -1,4 +1,7 @@
 # Who starts light-locker, and why it ends up outside the session scope
+#
+# Boot: 2026-09-23 20:21:11, same boot as 01 - PID 3116 is the light-locker
+# process whose abort is logged there. Nothing of ours installed.
 
 journalctl -o verbose _COMM=light-locker:
     _PID=3116

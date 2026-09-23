@@ -32,7 +32,9 @@ for the case where neither logind nor LightDM can answer.
 
 Tested on 26.04 in a clean chroot build and on a desktop: light-locker stays
 up after login, owns org.freedesktop.ScreenSaver, and light-locker-command -l
-switches to the greeter in unlock mode. Unlocking itself was not tested.
+switches to the greeter in unlock mode, and unlocking with the password
+returns to the session - checked by hand on the desktop, with LightDM logging
+the successful authentication and the unlock of the logind session.
 
 Upstream PR #153 (the-cavalry/light-locker) aims at the same problem but does
 not fix this case: it does not handle XDG_SESSION_PATH, so it still aborts on

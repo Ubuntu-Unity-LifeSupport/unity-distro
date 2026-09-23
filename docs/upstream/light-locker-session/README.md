@@ -50,6 +50,9 @@ Written 2026-09-23. Run all five - a deferred draft is re-verified, not re-read:
       mechanism? If so, mention it; if it is a duplicate, say which way.
 - [ ] Do both patches still apply to the current source package?
 - [ ] Does the crash still reproduce on the current `Clean-updated` snapshot?
+- [ ] Does every evidence file still say which boot it came from, and do the
+      boot time, `journalctl -b` and any file dates agree? Re-collected
+      evidence gets a fresh header, not the old one.
 
 ## Evidence
 
@@ -60,16 +63,20 @@ Written 2026-09-23. Run all five - a deferred draft is re-verified, not re-read:
 | `03-launch-chain.txt` | `unity-session.service` -> `cinnamon-session` -> light-locker, and the NotShowIn side note |
 | `04-sd-login-from-user-service.txt` | the sd-login calls from light-locker's context, including the `-EINVAL` that undermines PR #153 |
 | `05-after-fix-alive.txt` | alive after login, no fatal messages, owns the ScreenSaver name |
-| `06-lock-works.txt` | locking switches to the greeter in unlock mode; unlock itself untested |
+| `06-lock-works.txt` | locking switches to the greeter in unlock mode; unlock verified by hand, corroborated by the LightDM log |
 | `07-build.txt` | clean build, both patches applied, no new compiler warnings |
 
 Screenshot: `../../screenshots/2026-09-23-light-locker-locked.png`.
+
+Every file opens with the boot, or build, it was taken from and what was
+installed at the time. `02` was re-collected on 2026-09-23 because the first
+version came from a boot that also had our GTK4 shim installed, and did not
+say so.
 
 ## Known limits of the fix
 
 - A user with several LightDM sessions at once gets the first one listed:
   nothing links a LightDM session to a logind session to choose better.
-- Unlocking has not been tested - it needs the user's password.
 - The screen locker's presence depends on cinnamon-session ignoring
   `NotShowIn=Unity` in `light-locker.desktop`. Not in scope here, and worth its
   own look.

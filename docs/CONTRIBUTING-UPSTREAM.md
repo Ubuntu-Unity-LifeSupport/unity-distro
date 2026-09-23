@@ -112,7 +112,14 @@ Before touching code:
    reads "shutdown/logout menu not working *after cancelling*", and testing a
    plain first open produced the wrong conclusion.
 5. **Record the evidence**: package version, series, exact steps, expected
-   behaviour, actual behaviour, log or screenshot.
+   behaviour, actual behaviour, log or screenshot - and **which boot it came
+   from**. State that looks right can be left over from before: twice a
+   rollback looked done when it was not (a marker still present,
+   `CurrentSnapshotName` unchanged), and once a crash file sat inside the
+   snapshot itself, older than the login it seemed to document. On a rolled
+   back system, `journalctl -b` is the evidence for a boot; `/var/crash` is
+   not, because apport writes nothing new while an unreported crash for the
+   same binary exists.
 
 If the bug does not hold up after those five steps, **that is a good outcome**.
 We saved a maintainer's time rather than spending it.
@@ -285,6 +292,8 @@ Run the whole list. Any "no" means it does not go out.
 [ ] Checked nobody else has filed it
 [ ] Tested the exact scenario from the bug description, not a similar one
 [ ] Evidence recorded: versions, steps, log or screenshot, before and after
+[ ] Each piece of evidence belongs to the boot and state it claims: uptime -s,
+    journalctl -b and file dates agree, and each file says which boot it is from
 [ ] Diff is minimal: one problem, no refactoring, no reformatting
 [ ] Existing tests untouched
 [ ] I can explain every line without AI assistance

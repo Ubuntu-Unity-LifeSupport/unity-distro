@@ -50,7 +50,10 @@ Five steps, in order. Skipping step 2 or 4 has already cost us twice.
 3. Check nobody already filed it.
 4. Test the **exact** scenario from the bug description. "shutdown menu not
    working *after cancelling*" is not "shutdown menu not working".
-5. Record evidence: versions, steps, expected, actual, log or screenshot.
+5. Record evidence: versions, steps, expected, actual, log or screenshot -
+   and which boot it came from. `uptime -s`, `journalctl -b` and file dates must
+   agree. On a rolled-back system a crash file can predate the login; the
+   journal is the evidence for a boot, not `/var/crash`.
 
 A bug that fails to hold up is a good outcome, not a wasted afternoon.
 

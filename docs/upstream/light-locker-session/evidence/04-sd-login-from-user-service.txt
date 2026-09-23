@@ -1,5 +1,9 @@
 # The same calls from inside a systemd user service - light-locker's situation
 #
+# Boot: 2026-09-23 20:21:11, same as 01 and 03, after installing libsystemd-dev
+# to compile the test (it does not change logind's behaviour). The display
+# session "5" below matches Display=5 recorded on that boot.
+#
 # systemd-run --user --wait --pipe ./sdtest
 
 sd_pid_get_session(self)      -> -61 No data available

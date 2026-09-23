@@ -19,7 +19,8 @@ Current layer: **A** (keep Unity 7 on X11 alive).
   inherits neither a session nor LightDM's `XDG_SESSION_PATH`. Two patches,
   built as `1.8.0-3ubuntu4+unity2`, verified on a clean desktop: alive after
   login, owns the ScreenSaver name, and actually locks - the greeter comes up
-  in unlock mode. Queued in `docs/upstream/light-locker-session/`, repository
+  in unlock mode. Unlock verified by hand by May, corroborated by the LightDM
+  log. No untested step remains. Queued in `docs/upstream/light-locker-session/`, repository
   https://github.com/Ubuntu-Unity-LifeSupport/light-locker.
 
 - **Layer B has a working, packaged global menu for GTK4.** `unity-gtk4-menu`
@@ -135,8 +136,16 @@ reads the specific text and agrees.
    `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
    window's exported group, so their menu items arrive insensitive. yelp's
    "О приложении" is the reproducer. See `research/layer-b/`.
-2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
-   with a screenshot, send it upstream as a merge request.
+2. **Next Layer A candidate: the shutdown path.** Known issues #2 (menu stops
+   responding after cancelling) and #6 (double confirmation dialog). Measured
+   2026-09-23: **there are two different shutdown dialogs** on target. The
+   session indicator's "Выключение..." opens Unity's own ("До скорой встречи,
+   Mike"); the power key opens `cinnamon-session-quit`'s ("Выключить систему
+   сейчас?"). Two components, two dialogs - a strong lead for #6, not yet a
+   proof that they ever appear together. Also: `unity-settings-daemon` and
+   `cinnamon-settings-daemon` both run and disagree on the power button
+   (`interactive` versus `suspend`). Start in the Cinnamon layer, not in Unity.
+   See `ARCHITECTURE.md`.
 3. Pick a second contribution candidate. `light-locker` crashing on login is
    the obvious one: documented, reproducible, and still present after every
    pending update.

@@ -2,24 +2,24 @@
 #
 # light-locker asks logind for the session of its own PID. That only answers
 # for a process inside a session scope.
+#
+# collected: boot 2026-09-23 20:44:50, Ubuntu 26.04.1 LTS
+# state: snapshot Clean-updated-2026-09-23 + libsystemd-dev + light-locker 1.8.0-3ubuntu4+unity2
+#        (neither changes how logind maps processes to sessions)
 
-$ busctl call org.freedesktop.login1 /org/freedesktop/login1 \
-    org.freedesktop.login1.Manager GetSessionByPID u <compiz pid, a user service>
-Call failed: PID 2720 does not belong to any known session
+compiz pid 2445, cgroup /user.slice/user-1000.slice/user@1000.service/app.slice/unity7.service
+session leader pid 1171, cgroup /user.slice/user-1000.slice/session-1.scope
 
-$ busctl call ... GetSessionByPID u <session leader, in session-3.scope>
-o "/org/freedesktop/login1/session/_33"
+$ busctl call ... GetSessionByPID u 2445        # a process in a user service
+Call failed: PID 2445 does not belong to any known session
 
-logind does know the user's graphical session:
+$ busctl call ... GetSessionByPID u 1171        # the session leader
+o "/org/freedesktop/login1/session/_31"
 
 $ loginctl show-user mike -p Display
-Display=3
-$ busctl call ... GetSession s 3
-o "/org/freedesktop/login1/session/_33"
-
-Same path the PID lookup would have returned from inside the session.
-
-XDG_SESSION_ID, which a Debian patch in this package falls back to, is absent:
+Display=1
+$ busctl call ... GetSession s 1
+o "/org/freedesktop/login1/session/_31"
 
 $ systemctl --user show-environment | grep XDG_SESSION_ID
 (nothing)

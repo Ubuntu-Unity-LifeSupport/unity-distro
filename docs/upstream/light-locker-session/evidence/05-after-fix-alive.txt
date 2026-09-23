@@ -1,4 +1,10 @@
 # After installing 1.8.0-3ubuntu4+unity2 from the local archive and rebooting
+#
+# Boot: 2026-09-23 20:41:28, light-locker 1.8.0-3ubuntu4+unity2 installed from
+# the local archive before rebooting. The crash file present before the
+# reboot was removed so that any new crash would produce a fresh one.
+# Repeated on the next boot, 20:44:50: light-locker pid 2454 alive, no fatal
+# messages, no crash file.
 
 light-locker 1.8.0-3ubuntu4+unity2
 process:            2689 /usr/bin/light-locker      (alive)
