@@ -294,6 +294,8 @@ Run the whole list. Any "no" means it does not go out.
 [ ] Evidence recorded: versions, steps, log or screenshot, before and after
 [ ] Each piece of evidence belongs to the boot and state it claims: uptime -s,
     journalctl -b and file dates agree, and each file says which boot it is from
+[ ] Every stated consequence or limitation was measured, or is marked as an
+    assumption ("probably costs one click" is not "costs one click")
 [ ] Diff is minimal: one problem, no refactoring, no reformatting
 [ ] Existing tests untouched
 [ ] I can explain every line without AI assistance

@@ -59,6 +59,12 @@ target branch **`ubuntu/devel`** (the active branch; `master` last moved
 2023-02). The project has had two MRs ever (one merged, 2025-11); its
 maintainers upload to the archive from `ubuntu/devel`.
 
+**Severity.** Symptom 2 is probably the most serious of the 26.04 bugs we
+know, and it is not on the release notes' list: a restart with no dialog,
+losing unsaved work. For an SRU, `[Impact]` is one line. The queue order
+(this after `light-locker-session`) was set before it was found - May to
+decide whether it moves up.
+
 Symptom 2 loses unsaved work. It may deserve its own Launchpad bug on
 `unity` so it can be tracked for an SRU - May's call; draft that only if he
 wants it.
@@ -73,8 +79,17 @@ Rule 0, done 2026-09-23:
   "Click on shutdown in the menu shuts down immediately" (14.10, 2015), closed
   Invalid by its reporter after a reinstall, no diagnosis. Same symptom, cause
   unknown, a different session manager - worth mentioning, not claiming.
-  LP #1213220 is the power button, fixed in 2013. Search engines not tried -
-  ask the host before sending.
+  LP #1213220 is the power button, fixed in 2013.
+- Symptom 2 on the web (host session, 2026-09-23): forums, Ask Ubuntu, Reddit,
+  general search, by symptom, by version (23.10-26.04), by data loss and by
+  the cancel-the-second-dialog sequence - **nothing**. Nearest: "Shutdown &
+  Restart Not Working Properly" on the Ubuntu Unity forum (2020), about a
+  ~30 s delay, unrelated. That forum could not be read in full:
+  `foss.ubuntuunity.org` redirects to `www.`, which fails the TLS handshake -
+  from builder too, so the site, not the host's environment.
+- Context, not a duplicate: LP #1296814 (indicator-session, 2014, Fix
+  Released) is where indicator-session learned to prefer Unity's own session
+  API. The Unity-specific branches in `actions.c` are deliberate and old.
 - GitLab issues (18) and MRs (2) of ubuntu-unity/unity: nothing on the
   session menu or end-session dialog. #13 and #18 checked, unrelated.
 - `ubuntu/devel` HEAD is `6f01ccb7`, our base; the patch applies as is.
@@ -88,7 +103,7 @@ Written 2026-09-23. A deferred draft is re-verified, not re-read:
 - [ ] Has `ubuntu/devel` moved? Does the patch still apply?
       `git fetch origin && git log 6f01ccb7..origin/ubuntu/devel`
 - [ ] New MRs or issues about the session menu or shutdown dialog since?
-- [ ] Web (forums, Ask Ubuntu) searched for symptom 2 through the host session?
+- [ ] Web searched again for symptom 2 (last: 2026-09-23, nothing)?
 - [ ] Has Ubuntu shipped a newer unity for resolute? `rmadison -u ubuntu unity`
 - [ ] Do both symptoms still reproduce on the current `Clean-updated`
       snapshot with the archive package, and does the current `+unityN`

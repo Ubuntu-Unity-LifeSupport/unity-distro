@@ -55,6 +55,11 @@ Five steps, in order. Skipping step 2 or 4 has already cost us twice.
    agree. On a rolled-back system a crash file can predate the login; the
    journal is the evidence for a boot, not `/var/crash`.
 
+6. Measure every consequence you state, including the limitations you admit
+   to. The first unity fix said the leftover case "costs one click"; measured,
+   it restarted the machine with no dialog. Unmeasured, write it as an
+   assumption.
+
 A bug that fails to hold up is a good outcome, not a wasted afternoon.
 
 ## Deferred drafts

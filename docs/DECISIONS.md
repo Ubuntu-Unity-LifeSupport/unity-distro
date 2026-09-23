@@ -658,3 +658,16 @@ click") was a claim, and it had not been measured. It was measured the same
 hour, and it was wrong.
 
 `+unity1` stays in the history and in aptly as built; `+unity2` supersedes it.
+
+### Searched, not found: the restart without a dialog (rule 0)
+
+Launchpad API (unity, indicator-session, cinnamon-session) by us; forums, Ask
+Ubuntu, Reddit and the general web by the host session. Nothing describes it.
+Closest: LP #1414950 (14.10, 2015, "shuts down immediately" from the menu),
+closed by its reporter after a reinstall with no diagnosis. The Ubuntu Unity
+forum could not be searched - `www.foss.ubuntuunity.org` fails the TLS
+handshake from builder and from the host alike.
+
+Also added to the checklist, on the host session's suggestion: every
+consequence or limitation stated in outgoing text is measured, or marked as an
+assumption.
