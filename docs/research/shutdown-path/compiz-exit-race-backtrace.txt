@@ -1,0 +1,38 @@
+# compiz 1:0.9.14.2+25.10.20250930-0ubuntu3 (archive), core written by the kernel on target
+# (core_pattern /var/tmp/core.%e.%p.%t), boot 2026-09-24 02:32:47, crash at the reboot that ended it.
+# unity +unity4 and cinnamon-session +unity1 installed; symbols from our unity dbgsym and debuginfod.ubuntu.com.
+# Thread 1: GDBus worker; thread 7: compiz main thread inside exit().
+#0  continue_writing_in_idle_cb (user_data=0x0) at ../../../gio/gdbusprivate.c:1574
+#0  continue_writing_in_idle_cb (user_data=0x0) at ../../../gio/gdbusprivate.c:1574
+#1  0x0000700158308c1b in g_main_dispatch (context=0x70014800b0b0) at ../../../glib/gmain.c:3591
+#2  0x000070015830a257 in g_main_context_dispatch_unlocked (context=0x70014800b0b0) at ../../../glib/gmain.c:4451
+#3  g_main_context_iterate_unlocked (context=0x70014800b0b0, block=block@entry=1, dispatch=dispatch@entry=1, self=<optimized out>) at ../../../glib/gmain.c:4516
+#4  0x000070015830a5f7 in g_main_loop_run (loop=0x70014800b2d0) at ../../../glib/gmain.c:4721
+#5  0x00007001587481d2 in gdbus_shared_thread_func (user_data=0x70014800b080) at ../../../gio/gdbusprivate.c:284
+#6  0x000070015833f479 in g_thread_proxy (data=0x70014800b2f0) at ../../../glib/gthread.c:893
+#7  0x00007001584a3dfa in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:454
+#8  0x00007001585375cc in __GI___clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+[Switching to thread 7 (Thread 0x700157d958c0 (LWP 2708))]
+#0  0x00007001584b21af in _int_free_create_chunk (av=0x700158612ac0 <main_arena>, p=0x62fd45f7dc80, size=333696, nextchunk=<optimized out>, nextsize=331584) at ./malloc/malloc.c:4485
+#0  0x00007001584b21af in _int_free_create_chunk (av=0x700158612ac0 <main_arena>, p=0x62fd45f7dc80, size=333696, nextchunk=<optimized out>, nextsize=331584) at ./malloc/malloc.c:4485
+#1  _int_free_merge_chunk (av=0x700158612ac0 <main_arena>, p=0x62fd45f7dc80, size=<optimized out>) at ./malloc/malloc.c:4444
+#2  0x00007001584b23b4 in _int_free_chunk (av=0x700158612ac0 <main_arena>, p=<optimized out>, size=<optimized out>, have_lock=<optimized out>) at ./malloc/malloc.c:4368
+#3  0x0000700145847010 in ??? () at /usr/lib/x86_64-linux-gnu/libgallium-26.0.8-1ubuntu0.3.so
+#4  0x00007001458475fe in ??? () at /usr/lib/x86_64-linux-gnu/libgallium-26.0.8-1ubuntu0.3.so
+#5  0x00007001456d262f in ??? () at /usr/lib/x86_64-linux-gnu/libgallium-26.0.8-1ubuntu0.3.so
+#6  0x00007001584485e1 in __run_exit_handlers (status=0, listp=0x700158612680 <__exit_funcs>, run_list_atexit=run_list_atexit@entry=true, run_dtors=run_dtors@entry=true) at ./stdlib/exit.c:118
+#7  0x00007001584486be in __GI_exit (status=<optimized out>) at ./stdlib/exit.c:148
+#8  0x0000700158c6c18b in ??? () at /usr/lib/x86_64-linux-gnu/libcompiz_core.so.ABI-20180221
+#9  0x0000700158ac90df in IceProcessMessages () at /usr/lib/x86_64-linux-gnu/libICE.so.6
+#10 0x0000700158c6bc89 in ??? () at /usr/lib/x86_64-linux-gnu/libcompiz_core.so.ABI-20180221
+#11 0x0000700158c2930a in CompWatchFd::internalCallback(Glib::IOCondition) () at /usr/lib/x86_64-linux-gnu/libcompiz_core.so.ABI-20180221
+#12 0x0000700158134c71 in Glib::IOSource::dispatch(sigc::slot_base*) () at /usr/lib/x86_64-linux-gnu/libglibmm-2.4.so.1
+#13 0x0000700158136aeb in Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*) () at /usr/lib/x86_64-linux-gnu/libglibmm-2.4.so.1
+#14 0x0000700158308c1b in g_main_dispatch (context=0x62fd44e97c30) at ../../../glib/gmain.c:3591
+#15 0x000070015830a257 in g_main_context_dispatch_unlocked (context=0x62fd44e97c30) at ../../../glib/gmain.c:4451
+#16 g_main_context_iterate_unlocked (context=0x62fd44e97c30, block=block@entry=1, dispatch=dispatch@entry=1, self=<optimized out>) at ../../../glib/gmain.c:4516
+#17 0x000070015830a5f7 in g_main_loop_run (loop=0x62fd44e979d0) at ../../../glib/gmain.c:4721
+#18 0x000062fd14116599 in ??? ()
+#19 0x000070015842a601 in __libc_start_call_main (main=main@entry=0x62fd141164f0, argc=argc@entry=1, argv=argv@entry=0x7ffe9c41e918) at ../sysdeps/nptl/libc_start_call_main.h:59
+#20 0x000070015842a718 in __libc_start_main_impl (main=0x62fd141164f0, argc=1, argv=0x7ffe9c41e918, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7ffe9c41e908) at ../csu/libc-start.c:360
+#21 0x000062fd14116605 in ??? ()

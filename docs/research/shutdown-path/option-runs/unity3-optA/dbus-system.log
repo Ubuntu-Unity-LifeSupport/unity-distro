@@ -1,0 +1,70 @@
+signal time=1790204569.358098 sender=:1.1 -> destination=(null destination) serial=369 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "28"
+   object path "/org/freedesktop/login1/session/_328"
+method call time=1790204569.361671 sender=:1.35 -> destination=:1.1 serial=98 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204569.361687 sender=:1.35 -> destination=:1.1 serial=99 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204569.724956 sender=:1.1 -> destination=(null destination) serial=376 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "28"
+   object path "/org/freedesktop/login1/session/_328"
+method call time=1790204569.725816 sender=:1.35 -> destination=:1.1 serial=100 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204569.725980 sender=:1.35 -> destination=:1.1 serial=101 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204574.518395 sender=:1.35 -> destination=:1.1 serial=102 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204583.444750 sender=:1.1 -> destination=(null destination) serial=382 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "29"
+   object path "/org/freedesktop/login1/session/_329"
+method call time=1790204583.445605 sender=:1.35 -> destination=:1.1 serial=103 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204583.445662 sender=:1.35 -> destination=:1.1 serial=104 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204583.669775 sender=:1.1 -> destination=(null destination) serial=389 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "29"
+   object path "/org/freedesktop/login1/session/_329"
+method call time=1790204583.671119 sender=:1.35 -> destination=:1.1 serial=105 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204583.671532 sender=:1.35 -> destination=:1.1 serial=106 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204588.517279 sender=:1.35 -> destination=:1.1 serial=107 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204595.291763 sender=:1.1 -> destination=(null destination) serial=395 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "30"
+   object path "/org/freedesktop/login1/session/_330"
+method call time=1790204595.292050 sender=:1.35 -> destination=:1.1 serial=108 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204595.292058 sender=:1.35 -> destination=:1.1 serial=109 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204596.212634 sender=:1.1 -> destination=(null destination) serial=402 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "30"
+   object path "/org/freedesktop/login1/session/_330"
+method call time=1790204596.213811 sender=:1.35 -> destination=:1.1 serial=110 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204596.214146 sender=:1.35 -> destination=:1.1 serial=111 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204596.329483 sender=:1.1 -> destination=(null destination) serial=407 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "31"
+   object path "/org/freedesktop/login1/session/_331"
+method call time=1790204596.330480 sender=:1.35 -> destination=:1.1 serial=112 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204596.330490 sender=:1.35 -> destination=:1.1 serial=113 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204596.530372 sender=:1.1 -> destination=(null destination) serial=414 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "31"
+   object path "/org/freedesktop/login1/session/_331"
+method call time=1790204596.530706 sender=:1.35 -> destination=:1.1 serial=114 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204596.531046 sender=:1.35 -> destination=:1.1 serial=115 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204601.517077 sender=:1.35 -> destination=:1.1 serial=116 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204728.549697 sender=:1.1 -> destination=(null destination) serial=420 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "32"
+   object path "/org/freedesktop/login1/session/_332"
+method call time=1790204728.550227 sender=:1.35 -> destination=:1.1 serial=117 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204728.550568 sender=:1.35 -> destination=:1.1 serial=118 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204729.749653 sender=:1.1 -> destination=(null destination) serial=427 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "32"
+   object path "/org/freedesktop/login1/session/_332"
+method call time=1790204729.750086 sender=:1.35 -> destination=:1.1 serial=119 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204729.750492 sender=:1.35 -> destination=:1.1 serial=120 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204734.519075 sender=:1.35 -> destination=:1.1 serial=121 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204742.755027 sender=:1.1 -> destination=(null destination) serial=433 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "33"
+   object path "/org/freedesktop/login1/session/_333"
+method call time=1790204742.757018 sender=:1.35 -> destination=:1.1 serial=122 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204742.757389 sender=:1.35 -> destination=:1.1 serial=123 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204750.597855 sender=:1.1 -> destination=(null destination) serial=440 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "33"
+   object path "/org/freedesktop/login1/session/_333"
+method call time=1790204750.598120 sender=:1.35 -> destination=:1.1 serial=124 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204750.598141 sender=:1.35 -> destination=:1.1 serial=125 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204755.518447 sender=:1.35 -> destination=:1.1 serial=126 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790204761.848903 sender=:1.1 -> destination=(null destination) serial=446 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "34"
+   object path "/org/freedesktop/login1/session/_334"
+method call time=1790204761.849876 sender=:1.35 -> destination=:1.1 serial=127 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790204761.850015 sender=:1.35 -> destination=:1.1 serial=128 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions

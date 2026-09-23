@@ -5,12 +5,12 @@ Build directory: `~/work/a`
 
 ## Now
 
-**#6, option A chosen by May (2026-09-24).** Working on the Unity half: Unity
-confirms its own pending end-session action even when the session manager's
-`Open` lists inhibitors, so under option A (and under gnome-session) a
-restart from the menu goes past an inhibitor without showing it. Fix in
-`UnityCore/GnomeSessionManager.cpp`, then measure it together with
-cinnamon-session option A on `target`. See `research/shutdown-path/`.
+**#6, option A (May's choice, 2026-09-24).** cinnamon-session `+unity1`
+(option A) and unity `+unity4` (inhibitor fixes) built and measured on
+`target`: one dialog on every path, inhibitors shown. **Blocked** by a compiz
+exit race that option A's timing makes frequent (3 crashes in 7 restarts);
+measuring an experimental compiz with `_exit(0)` in the XSMP die handler.
+Nothing published to aptly yet. See `research/shutdown-path/`.
 
 ## State of `target`
 
@@ -22,5 +22,8 @@ xdotool, aptly source, `~/t.sh` and run logs under `~/opt/`.
 - `packages/unity` - branches `unity/resolute` (released `+unity2`),
   `mr/stale-pending-action` (worktree `/var/tmp/sbuild-claude/unity-mr`),
   `exp/option-b-request-shutdown` (rejected experiment).
-- cinnamon-session option A experiment: `~/layera/cs-exp/src` (to move into
-  a proper package repository once the direction is final).
+- `packages/cinnamon-session` - gbp repository, branch `unity/resolute`
+  (`6.4.2-1+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.
+- `packages/unity` branch `wip/confirm-inhibitors` (worktree `~/work/a/unity`),
+  `+unity3` (not published) and `+unity4`.
+- compiz experiment: `~/work/a/compiz/src` (`+exp1`, `_exit` in die handler).

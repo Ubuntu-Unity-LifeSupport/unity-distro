@@ -331,3 +331,47 @@ Found on the way, not part of either option:
 - The journal line `CRITICAL: Failed to launch Cinnamon's end session dialog`
   on every shutdown under Unity is the `ServiceUnknown` case, not an error in
   the usual sense.
+
+# Option A with the Unity inhibitor fix - and a compiz exit race
+
+2026-09-24, target, cinnamon-session `6.4.2-1+unity1` (option A plus a patch
+that stops two CRITICALs per cancel) and unity `+unity4`. Run in
+[`option-runs/unity4-optA/`](option-runs/unity4-optA/).
+
+**Unity, two fixes** (branch `wip/confirm-inhibitors`):
+
+1. `GnomeSessionManager`: a pending action is confirmed straight away only if
+   the last dialog shown listed the inhibitors, or there are none; otherwise
+   the inhibitor dialog is shown, and confirming it asks the session manager
+   again. Dismissing a dialog forgets what it showed. Three new unit tests;
+   51/51 with the fix, two fail without it (twice each).
+2. `SessionController::Show()` ignored a request arriving while the view was
+   fading out after a button press - exactly when the session manager's
+   inhibitor `Open` lands (25 ms after the click). `+unity3` had fix 1 only,
+   and on target it left the session waiting in the query phase with nothing
+   on screen (`option-runs/unity3-optA/`). One new controller test, fails
+   without the fix.
+
+**Measured with `+unity4`:** power key -> Unity's dialog; power key with an
+inhibitor -> Unity's "у вас открыты файлы"; **menu -> restart with an
+inhibitor -> Unity now shows the inhibitor warning** instead of restarting;
+Escape -> session running again; confirming it -> restart. Every path: one
+dialog. No CRITICAL from cinnamon-session on cancel.
+
+**compiz crashes at logout under option A - not our code, but our timing.**
+compiz's XSMP die handler (`src/session.cpp`, `dieCallback`) calls `exit(0)`
+from inside an ICE callback while other threads run. If GDBus's worker is
+writing to the bus at that moment, it crashes in
+`continue_writing_in_idle_cb` (backtrace:
+[`compiz-exit-race-backtrace.txt`](compiz-exit-race-backtrace.txt); apport's
+own cores were truncated by the reboot, so the kernel wrote this one to
+`/var/tmp`). Under option A the session manager sends "die" milliseconds after
+Unity answers `Open`, so the bus is busy: **3 crashes in 7 restarts**, against
+none in about ten through the old two-dialog path. The user sees "Извините,
+возникла внутренняя ошибка" at the next login. Nothing on Launchpad for this
+function in compiz. Option A cannot ship until this is fixed; an experiment
+with `_exit(0)` in `dieCallback` is being measured.
+
+Also seen at every restart, old path and new: unity-settings-daemon (archive)
+crashes in its color plugin during teardown (`libcolor.so`, signal handler).
+Not investigated.
