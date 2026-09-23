@@ -115,12 +115,11 @@ reads the specific text and agrees.
 
 ## Next
 
-1. **Layer B: measure breadth with the installed package.** `unity-gtk4-menu`
-   0.2 is installed session-wide on target and the session is healthy. So far
-   it has been verified mostly on our own test programs; next is real GTK4
-   applications launched the way a user launches them, from the session
-   environment rather than from an ssh harness. Details in
-   `research/layer-b/`.
+1. **Layer B: widget-scoped actions.** Breadth on real applications is
+   measured and 0.3 is published. The known gap is actions registered with
+   `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
+   window's exported group, so their menu items arrive insensitive. yelp's
+   "О приложении" is the reproducer. See `research/layer-b/`.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
 3. Pick a second contribution candidate. `light-locker` crashing on login is

@@ -993,3 +993,58 @@ library reappears in `NEEDED`. The comment explaining why would not have caught
 a future edit; the check will. This class of mistake is invisible until the
 library is installed session-wide rather than preloaded onto one command, so
 the build is the only place to catch it cheaply.
+
+---
+
+# Breadth on real applications, with the package installed
+
+The first measurements with `unity-gtk4-menu` installed session-wide, on real
+applications launched with the **whole** session environment copied from
+compiz. An earlier harness exported only a few chosen variables, dropped
+`LD_PRELOAD` and `XDG_DATA_DIRS`, and so tested itself rather than the package.
+
+| Application | Result |
+|---|---|
+| file-roller | menu attached, labelled **File Roller** from its `.desktop` |
+| yelp, given a document | **popover behind a button found**, labelled **Справка** |
+| gcr-viewer | `no menu model` - it has no menu, correct negative |
+| zenity | a dialog with no menu, nothing to attach |
+| transmission-gtk | did not start; void |
+
+Two things this settles. The yelp fallback - reaching the model through a
+`GtkPopoverMenu` when `get_menu_model()` returns NULL - now works on the real
+application rather than only on our imitation of it. And labels come from the
+`.desktop` file, localised: the earlier fallbacks to the program name were the
+harness missing `XDG_DATA_DIRS`, as suspected.
+
+Along the way dozens of non-GTK processes - `xdotool`, `xprop`, `pgrep`,
+`sleep` - got the preload, logged `GTK4 is not loaded in this process, doing
+nothing`, and ran normally. No new crashes.
+
+## Two rough edges yelp exposed
+
+Its exported model, read off the bus:
+
+```
+(1, 3, [{'custom': <'zoom-controls'>}])
+(1, 5, [{'action': <'win.yelp-show-about-dialog'>, 'label': <'О приложении'>}])
+```
+
+**A blank row.** `custom` marks a slot in a `GtkPopoverMenu` where the
+application places a live widget - here, zoom controls. A widget cannot cross
+D-Bus, so it arrived as an empty, nameless entry. Fixed in 0.3: the model is
+copied before export with such items removed, along with any section the
+removal leaves empty. yelp drops two entries and reads cleanly -
+`2026-09-23-yelp-menu-cleaned.png`.
+
+**"О приложении" is greyed out, and stays that way.** The action
+`win.yelp-show-about-dialog` is not among the eleven actions the window
+exports. yelp registers it in an action group attached to a widget with
+`gtk_widget_insert_action_group()`, which is only reachable from inside that
+widget's scope; the window's exported group never contains it, so Unity cannot
+activate it and shows it insensitive.
+
+Not fixed, and not simple to: it would mean finding widget-scoped action
+groups and exporting them under names the menu model's `win.` prefix resolves
+to. A known limitation for now. It also means "items work if they are shown as
+active" is a claim to check per application, not assume.
