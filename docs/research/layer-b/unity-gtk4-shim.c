@@ -21,9 +21,11 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <glib/gi18n.h>
 #include <unistd.h>
 #include <gtk/gtk.h>
 #include <gdk/x11/gdkx.h>
+#include <gio/gdesktopappinfo.h>
 
 static int verbose(void) {
 	static int v = -1;
@@ -179,6 +181,81 @@ static void dump_tree(GtkWidget *widget, int depth)
 		dump_tree(c, depth + 1);
 }
 
+#define SHIM_SCHEMA "com.ubuntu-unity.gtk4-menu"
+
+/*
+ * A hamburger menu has no name of its own, so the entry we create needs one.
+ * Named after the application it repeats the name the panel already shows
+ * beside it; named neutrally it does not, at the cost of saying less.
+ *
+ * There is no right answer, and the desktops that ship a global menu treat it
+ * as a preference rather than settle it: Cinnamon's Global Application Menu
+ * applet offers showing or hiding the application name, and vala-panel-appmenu
+ * carries the same discussion. So it is a setting here too.
+ *
+ * UNITY_GTK4_SHIM_LABEL=app|generic overrides it for testing, and is also what
+ * runs if the schema is not installed.
+ */
+static char *menu_label(GtkApplication *app)
+{
+	gboolean use_app_name = TRUE;
+	const char *override = getenv("UNITY_GTK4_SHIM_LABEL");
+
+	if (override != NULL) {
+		use_app_name = (strcmp(override, "generic") != 0);
+		note("label mode from the environment: %s", override);
+	} else {
+		GSettingsSchemaSource *source = g_settings_schema_source_get_default();
+		GSettingsSchema *schema =
+			source ? g_settings_schema_source_lookup(source, SHIM_SCHEMA, TRUE)
+			       : NULL;
+		if (schema != NULL) {
+			GSettings *settings = g_settings_new(SHIM_SCHEMA);
+			use_app_name = g_settings_get_boolean(
+				settings, "show-application-name");
+			g_object_unref(settings);
+			g_settings_schema_unref(schema);
+			note("show-application-name = %s",
+			     use_app_name ? "true" : "false");
+		} else {
+			note("schema %s not installed, defaulting to the application name",
+			     SHIM_SCHEMA);
+		}
+	}
+
+	if (!use_app_name)
+		return g_strdup(_("Menu"));
+
+	/*
+	 * Prefer the .desktop Name, which is the field Unity's panel shows, so
+	 * that turning the setting on really does repeat what is beside it
+	 * rather than something approximately like it.
+	 */
+	const char *app_id = g_application_get_application_id(G_APPLICATION(app));
+	if (app_id != NULL) {
+		char *desktop_id = g_strconcat(app_id, ".desktop", NULL);
+		GDesktopAppInfo *info = g_desktop_app_info_new(desktop_id);
+		g_free(desktop_id);
+
+		if (info != NULL) {
+			const char *name =
+				g_app_info_get_name(G_APP_INFO(info));
+			if (name != NULL) {
+				char *result = g_strdup(name);
+				g_object_unref(info);
+				note("label from the .desktop file: %s", result);
+				return result;
+			}
+			g_object_unref(info);
+		}
+	}
+
+	const char *fallback = g_get_application_name();
+	note("no .desktop match, falling back to %s",
+	     fallback ? fallback : "Menu");
+	return g_strdup(fallback ? fallback : "Menu");
+}
+
 /* Titlebar first, then the content tree - yelp keeps its header bar in the
    content, not in the titlebar. */
 static GMenuModel *find_window_menu_model(GtkWindow *window)
@@ -227,9 +304,7 @@ static void attach_menubar(GtkWindow *window)
 
 	dump_model(model);
 
-	const char *app_label = g_get_application_name();
-	if (app_label == NULL)
-		app_label = "Menu";
+	char *app_label = menu_label(app);
 
 	if (getenv("UNITY_GTK4_SHIM_DIRECT") != NULL) {
 		/* Hand the model over as the menubar with no wrapper at all. */
@@ -285,6 +360,7 @@ static void attach_menubar(GtkWindow *window)
 
 	gtk_application_set_menubar(app, G_MENU_MODEL(menubar));
 	g_object_unref(menubar);
+	g_free(app_label);
 }
 
 /*

@@ -804,3 +804,58 @@ particular taste question gets handled.
 only the paths it knows about. The HUD worked without it, so it is not
 load-bearing here, but it is a difference from the reference worth
 understanding before any of this is packaged.
+
+---
+
+# The label is a setting
+
+A hamburger menu has no name of its own, so the entry we create needs one, and
+there is no right answer. Named after the application it repeats what the panel
+already shows beside it; named neutrally it says less. The desktops that ship a
+global menu do not settle this either - Cinnamon's Global Application Menu
+applet offers *show or hide the application name*, and vala-panel-appmenu
+carries the same discussion - so it is a setting here too rather than an
+opinion baked into the code.
+
+## GSettings, not an environment variable
+
+`com.ubuntu-unity.gtk4-menu.gschema.xml` in this directory, key
+`show-application-name`, boolean, default true. Installed and tested on target.
+A preference a user can change belongs in GSettings; an environment variable
+would mean editing `environment.d` and logging out.
+
+`UNITY_GTK4_SHIM_LABEL=app|generic` overrides it for testing and is what runs
+when the schema is not installed, so the shim still works uninstalled.
+
+## Measured, with the setting flipped under a live panel
+
+| `show-application-name` | panel |
+|---|---|
+| `true` | `Popover Test  Popover Test` |
+| `false` | `Popover Test  Menu` |
+
+`2026-09-23-label-setting.png`. Nothing changed between the two runs except the
+GSettings key.
+
+## Where the name comes from when the setting is on
+
+`g_desktop_app_info_new(<application-id>.desktop)`, then
+`g_app_info_get_name()`. That is the same `Name=` field Unity's panel reads
+through BAMF, so turning the setting on genuinely repeats what is beside it
+rather than something approximately like it.
+
+**This only works when the .desktop file is named after the application id**,
+which is the current convention. Our own test file was first installed as
+`unityshim-popovertest.desktop` and the lookup missed, falling back to
+`g_get_application_name()` - which produced `popovertest` rather than
+`Popover Test`. Renaming it to `org.unitydistro.popovertest.desktop` fixed it.
+
+Worth keeping: applications that do not follow the convention get the fallback,
+and the fallback is whatever the application passed to
+`g_set_application_name()`, or its program name. That is not wrong, just
+quieter and less predictable.
+
+## The neutral label needs translating
+
+`_("Menu")` is marked for translation and nothing translates it yet - the shim
+has no gettext domain. Fine for a prototype, not for a package.
