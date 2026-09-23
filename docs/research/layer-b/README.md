@@ -416,3 +416,63 @@ the top-level label, which menu button to take when a window has several, and
 whether reading the widget tree through nocsd's interposed
 `gtk_widget_get_first_child` ever shows us something different from the real
 one.
+
+---
+
+# Does nocsd show us a different widget tree?
+
+It does, and the difference does not touch us.
+
+## What nocsd does to the tree
+
+It restructures the window - inserting a vertical box and moving the header
+bar into it - and then lies about the result so applications do not notice.
+`gtk_window_get_child`, `gtk_widget_get_first_child`, `gtk_widget_get_last_child`
+and `gtk_window_get_titlebar` are all interposed and pass their answer through
+an internal `GTKNoCSDGTK4Content()` that hides nocsd's own scaffolding.
+
+Our menu search walks exactly those calls, so the question was whether it sees
+the real tree or a doctored one.
+
+## Measured
+
+`popovertest.c`, tree dumped from inside the realize hook, twice: shim alone,
+and nocsd loaded before the shim.
+
+```
+$ diff t-alone.tree t-nocsd.tree
+7,12d6
+<   tree           GtkButton
+<   tree             GtkImage
+<   tree           GtkButton
+<   tree             GtkImage
+<   tree           GtkButton
+<   tree             GtkImage
+```
+
+Six lines, and that is the whole difference: the three buttons inside
+`GtkWindowControls` - minimise, maximise, close - which nocsd removes because
+the window manager is drawing them instead. `GtkWindowControls` itself stays,
+empty.
+
+| | shim alone | nocsd + shim |
+|---|---|---|
+| plain `GtkButton` in the tree | 3 | 0 |
+| `GtkMenuButton` | 1 | 1 |
+| result | `found GtkPopoverMenu behind a menu button at depth 4` | identical, same depth |
+
+The menu button, its `GtkPopoverMenu` and the model are present and at the same
+depth either way, and the menubar is attached in both.
+
+## Two things this settles
+
+**The search is safe under nocsd.** It removes decoration widgets, not menu
+widgets.
+
+**Being lied to is in our favour here.** nocsd hides its own inserted box, so
+what we walk is the tree the application built rather than the one nocsd
+rearranged. Had it exposed its scaffolding, our depth-first search could have
+wandered into it.
+
+Worth re-checking if either side changes: this is a behavioural dependency on
+another package's internals, and nothing guarantees it.
