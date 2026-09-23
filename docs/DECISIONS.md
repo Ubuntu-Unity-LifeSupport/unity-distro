@@ -701,3 +701,36 @@ regenerated from `dd954ff0`; `dpkg-source -b` is reproducible here (two
 builds, same SHA-256). Experiments since go to their own version
 (`+unity2+optb1`, `6.4.2-1+optA2`), their own `--build-dir`, and sbuild runs
 only after a version check.
+
+## 2026-09-24 - unity-gtk4-menu: stand-ins for class actions (agent B)
+
+**Rule 0, where we looked.** Archive and installed system on a clean
+`target2`; the GTK 4.22.4 source; the web through the host session - GTK
+issues and MRs, vala-panel-appmenu, KDE's plasma-integration and discuss
+thread. No one exports GTK4 widget or class actions over D-Bus, and GTK has no
+public getter for a class action's enabled state. Details and links in
+`research/layer-b/` ("Class actions").
+
+**Correction.** `research/layer-b/` said yelp's "About Help" comes from a group
+inserted with `gtk_widget_insert_action_group()`. It is a class action
+(`gtk_widget_class_install_action` on `YelpWindow`). Corrected by a new section
+that quotes the source; the original text is kept with a pointer to it.
+
+**Decision.** Proxy only what can be identified positively: stateless class
+actions found on the menu's owner widget or its ancestors. Each gets a
+stand-in in the window's action map, activated with
+`gtk_widget_activate_action_variant()` from the owner. Rejected alternatives:
+- adding the original name to the window's map - shadows nothing today because
+  the muxer checks class actions first, but it puts our action under the
+  application's own name, where the application might add or look one up;
+- interposing `gtk_widget_insert_action_group()` to catch inserted groups -
+  another exported GTK symbol in a library preloaded into every process, for a
+  case not yet seen on a real application;
+- proxying every unresolved name blindly - an enabled item for an action that
+  may not exist, and wrong state for property actions.
+The stand-in is always enabled; see the research for why that is acceptable.
+
+**Found on the way, not ours:** the archive has `qtlomiri-appmenutheme-qt5`
+("Qt platform theme for exported application menus to Lomiri"). STATUS says Qt
+has no global menu in 26.04 because `appmenu-qt5` is gone; this may be the
+piece to start from. Not tested.

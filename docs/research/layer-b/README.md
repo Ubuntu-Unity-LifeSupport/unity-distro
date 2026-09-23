@@ -1046,5 +1046,99 @@ activate it and shows it insensitive.
 
 Not fixed, and not simple to: it would mean finding widget-scoped action
 groups and exporting them under names the menu model's `win.` prefix resolves
-to. A known limitation for now. It also means "items work if they are shown as
+to. A known limitation for now. _(Wrong about the mechanism - it is a class action - and fixed in 0.4; see "Class actions" below.)_ It also means "items work if they are shown as
 active" is a claim to check per application, not assume.
+
+---
+
+# Class actions: "About Help" works from the global menu (0.4)
+
+_Agent B, 2026-09-24, on `target2`._
+
+## Correction: yelp does not use `gtk_widget_insert_action_group()`
+
+The section above says yelp registers `win.yelp-show-about-dialog` in an action
+group inserted on a sub-widget. It does not. yelp 49 installs it on its window
+class:
+
+```
+src/yelp-window.c:339:
+    gtk_widget_class_install_action (widget_class, "win.yelp-show-about-dialog", ...
+```
+
+A **class action**, owned by `YelpWindow` (an `AdwApplicationWindow`). It is
+still invisible over D-Bus for the same underlying reason: the window exports
+its `GActionMap` as `/…/window/N`, and class actions live in the widget's
+action muxer, not in that map. But the difference decides the fix. Class
+actions can be enumerated through public API (`gtk_widget_class_query_action`,
+GTK 4.0+); groups inserted on a widget cannot.
+
+## Was it already solved? (rule 0)
+
+- Installed system and archive (`target2`, clean): no GTK4 menu exporter other
+  than ours; `appmenu-gtk3-module`, `unity-gtk3-module` cover GTK3 only.
+- GTK 4.22.4 source: `gtk_widget_action_set_enabled` has no getter;
+  `GtkActionMuxer` is private and not a `GActionGroup`; the muxer checks class
+  actions before inserted groups at every level (`gtk_action_muxer_activate_action`).
+- Web, through the host session (2026-09-23 23:05Z): no GTK issue or MR about
+  exporting widget/class actions over D-Bus; vala-panel-appmenu has no GTK4
+  discussion at all; KDE leaves GTK4 menus to the application. Nothing to reuse,
+  and nobody found a wall either.
+
+## The fix
+
+When the header bar model is copied for export, each item's action is looked
+up as a class action on the menu's owner widget (the `GtkMenuButton`, or the
+`GtkPopoverMenuBar`) and its ancestors. If found and stateless, the exported
+item is pointed at `win.unity-gtk4-menu-<name with dots as dashes>`, a
+`GSimpleAction` added to the window's action map whose `activate` calls
+`gtk_widget_activate_action_variant(owner, original_name, parameter)` - the
+same resolution the application's own popover performs. The item's target is
+kept, so parameterised actions work unchanged.
+
+The menubar belongs to the application, but `win.` resolves against the
+focused window, so every `GtkApplicationWindow` of the application gets its
+own stand-ins pointing at its own menu button.
+
+Not proxied, and logged by name with `UNITY_GTK4_MENU_DEBUG=1`:
+
+| Kind | Why |
+|---|---|
+| property action (`install_property_action`) | carries state; a plain stand-in would show a toggle without its check mark |
+| prefix other than `app.`/`win.` | usually a group inserted on a sub-widget; public API cannot enumerate those |
+
+The stand-in is always enabled - there is no public getter for a class action's
+enabled state. Activating one the application disabled does nothing, as it
+would in the application.
+
+## Verified
+
+`tests/classtest.c` in the package: one item of each kind. With 0.4 preloaded,
+the window exports `map-hello`, `unity-gtk4-menu-win-class-hello` and
+`unity-gtk4-menu-win-class-param` (signature `s`); `class-toggle` and
+`inner.hello` stay as they were. `gdbus call … org.gtk.Actions.Activate` on the
+two stand-ins prints `ACTIVATED win.class-hello` and
+`ACTIVATED win.class-param abc`.
+
+yelp 49.0-5ubuntu0.1, GTK 4.22.4, on `target2`:
+
+| | 0.3 | 0.4 |
+|---|---|---|
+| "О приложении" in the Unity panel menu (F10) | greyed out | active |
+| activated from the panel | - | the About dialog opens |
+| second window (`win.yelp-window-new`), activated over D-Bus | - | the dialog opens over the second window |
+| "Предыдущая/Следующая страница" (exported, disabled) | greyed | still greyed - exported actions untouched |
+
+Then the `sbuild` package, installed session-wide with `dpkg -i` and a reboot:
+63 processes map the library, compiz carries the preload, no new crash reports;
+yelp launched from its `.desktop` file shows "О приложении" active and opens the
+dialog from the panel. file-roller: menu unchanged, no stand-ins needed, no
+warnings.
+
+Screenshots: `2026-09-24-yelp-menu-0.3-about-greyed.png`,
+`2026-09-24-yelp-menu-0.4-about-active.png`,
+`2026-09-24-yelp-about-from-global-menu.png`.
+
+Not yet checked: the HUD route to the same item, and applications other than
+yelp that use class actions in header bar menus - the debug log will name them
+when the breadth run is repeated.
