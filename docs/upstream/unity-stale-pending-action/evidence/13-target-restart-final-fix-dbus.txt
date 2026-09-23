@@ -1,0 +1,43 @@
+# target, snapshot Clean-updated-2026-09-23, boot 2026-09-23 23:17:31 (target local time, UTC+3)
+# unity, libunity-core-6.0-9, unity-services, unity-schemas 7.7.1+26.04.20260306-0ubuntu3+unity2 (final fix, e2effde9) from our aptly; rebooted after install. Also installed: xdotool.
+# Bus names (busctl, same boot): :1.30 = indicator-sessi; :1.86 = compiz; :1.50 = cinnamon-sessio; 
+# The restart-without-a-dialog case. Steps (xdotool): R1 session menu -> Выключение... | R2 Перезагрузить in Unity's dialog |
+#   R3 Escape in cinnamon-session's dialog | R4a open the session menu | R4b click Выключение... | R4c screenshot | R4d 5 s later | Escape
+# Screenshots: 12-target-restart-final-fix.png (R1..R4a, R4c). R4c shows Unity's dialog; the machine did not restart (uptime -s unchanged after the run).
+# Steps:
+#   start 2026-09-23 23:19:48
+#   R1-menu 23:19:54.354 quit-dialog:gone
+#   R2-reboot-in-unity 23:19:58.590 quit-dialog:alive
+#   R3-escape-cinnamon 23:20:02.507 quit-dialog:gone
+#   R4a-indicator-open 23:20:06.422 quit-dialog:gone
+#   R4b-clicked 23:20:06.690 quit-dialog:gone
+#   R4c 23:20:08.509 quit-dialog:gone
+#   R4d-after5s 23:20:13.615 quit-dialog:gone
+#   end 23:20:14.783 quit-dialog:gone
+# Reading: Open from the indicator (R4b) is answered with two Canceled - stale REBOOT dropped, then the dialog - and no ConfirmedReboot. The system bus log has no login1 Reboot call.
+# Session bus:
+
+method call time=1790194790.551042 sender=:1.30 -> destination=:1.86 serial=58 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790194790.590916 sender=:1.86 -> destination=(null destination) serial=1437 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790194794.942002 sender=:1.86 -> destination=:1.50 serial=1538 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Reboot
+method call time=1790194806.584607 sender=:1.30 -> destination=:1.86 serial=59 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790194806.609037 sender=:1.86 -> destination=(null destination) serial=1713 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+signal time=1790194806.611130 sender=:1.86 -> destination=(null destination) serial=1714 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+signal time=1790194813.684271 sender=:1.86 -> destination=(null destination) serial=1815 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+
+# System bus (login1.Manager):
+
+method call time=1790194795.363160 sender=:1.51 -> destination=:1.2 serial=14 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanHibernate
+method call time=1790194795.364009 sender=:1.51 -> destination=:1.2 serial=15 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanSuspend
+method call time=1790194795.371478 sender=:1.51 -> destination=:1.2 serial=16 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanReboot
+method call time=1790194795.387773 sender=:1.51 -> destination=:1.2 serial=17 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanPowerOff

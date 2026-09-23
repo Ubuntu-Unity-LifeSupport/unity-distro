@@ -1,0 +1,51 @@
+# target, snapshot Clean-updated-2026-09-23, boot 2026-09-23 22:51:22 (target local time, UTC+3), unity 7.7.1+26.04.20260306-0ubuntu3+unity1 (first fix). Also installed: xdotool.
+# The restart-without-a-dialog case. Steps (xdotool): R1 session menu -> Выключение... | R2 Перезагрузить in Unity's dialog |
+#   R3 Escape in cinnamon-session's dialog | R4a open the session menu | R4b click Выключение... (the machine restarts here; no screenshot survives)
+# quit-dialog = whether a cinnamon-session-quit process exists at that moment. Logs were written to ~ and read after the reboot.
+# Screenshots: 09-target-restart-first-fix.png (R1..R4a).
+# Steps:
+#   start 2026-09-23 22:53:25
+#   R1-menu 22:53:32.163 quit-dialog:gone
+#   R2-reboot-in-unity 22:53:36.441 quit-dialog:alive
+#   R3-escape-cinnamon 22:53:40.339 quit-dialog:gone
+#   R4a-indicator-open 22:53:44.199 quit-dialog:gone
+# Reading: Open from the indicator is answered with ConfirmedReboot, no dialog; a few ms later a system-bus client calls login1 Reboot.
+#   indicator-session connects confirmed-reboot to reboot_now (indicator-session 17.3.20+21.10.20210613.1, src/backend-dbus/actions.c:688).
+# Session bus (EndSessionDialog, SessionManager):
+
+method call time=1790193208.109604 sender=:1.24 -> destination=:1.92 serial=55 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790193208.142771 sender=:1.92 -> destination=(null destination) serial=869 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790193212.686996 sender=:1.92 -> destination=:1.56 serial=1042 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Reboot
+method call time=1790193224.347728 sender=:1.24 -> destination=:1.92 serial=56 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790193224.374245 sender=:1.92 -> destination=(null destination) serial=1222 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=ConfirmedReboot
+signal time=1790193224.374295 sender=:1.92 -> destination=(null destination) serial=1223 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Closed
+
+# System bus (login1.Manager):
+
+method call time=1790193209.603488 sender=:1.35 -> destination=:1.1 serial=37 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790193213.403424 sender=:1.39 -> destination=:1.1 serial=10 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanHibernate
+method call time=1790193213.404647 sender=:1.39 -> destination=:1.1 serial=11 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanSuspend
+method call time=1790193213.413060 sender=:1.39 -> destination=:1.1 serial=12 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanReboot
+method call time=1790193213.465688 sender=:1.39 -> destination=:1.1 serial=13 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanPowerOff
+method call time=1790193224.375255 sender=:1.35 -> destination=:1.1 serial=38 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean false
+signal time=1790193224.401594 sender=:1.1 -> destination=(null destination) serial=173 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdownWithMetadata
+   boolean true
+   array [
+      dict entry(
+         string "type"
+         variant             string "reboot"
+      )
+   ]
+signal time=1790193224.402438 sender=:1.1 -> destination=(null destination) serial=174 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdown
+   boolean true

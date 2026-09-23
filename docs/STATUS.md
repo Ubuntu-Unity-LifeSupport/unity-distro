@@ -4,13 +4,30 @@ _Last updated: 2026-09-23_
 
 ## Where we are
 
-Bootstrapping. The builder VM is provisioned and the build pipeline is being
-brought up for the first time. No package has been built yet, nothing has been
-installed on target, no upstream contribution has been made.
+Layer A is producing fixes; Layer B has a packaged GTK4 global menu. Three
+Layer A contributions are queued in `docs/upstream/`, none sent: `nux-pcre2`,
+`light-locker-session`, `unity-stale-pending-action`. Our aptly repository
+carries nux 0ubuntu13, light-locker `+unity2`, unity `+unity2` and
+unity-gtk4-menu.
 
 Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
+
+- **Known issue #2 fixed in Unity, and a worse bug found behind it.** One
+  cause: Unity records a pending end-session action and waits for the session
+  manager to call `EndSessionDialog.Open` back; cinnamon-session never does, so
+  after its own dialog is cancelled the action stays pending. Pending
+  `SHUTDOWN` makes the session menu dead (#2). Pending `REBOOT` - found while
+  testing the first fix - makes the next "Выключение..." click restart the
+  machine at once with no dialog: Unity takes the indicator's request as the
+  confirmation and indicator-session calls logind. Reproduced on the archive
+  package. Fix: only the owner of `org.gnome.SessionManager` may confirm.
+  `unity +unity2`, two new unit tests (the suite had to be revived to run on
+  26.04 - three separate breakages, see DECISIONS), both symptoms verified
+  fixed on target with screenshots and bus logs. Queued in
+  `docs/upstream/unity-stale-pending-action/`; package repository
+  https://github.com/Ubuntu-Unity-LifeSupport/unity.
 
 - **Layer A's first fix of our own: light-locker no longer crashes on login.**
   Known 26.04 issue #5. Two stacked aborts with one cause - light-locker is
@@ -136,25 +153,18 @@ reads the specific text and agrees.
    `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
    window's exported group, so their menu items arrive insensitive. yelp's
    "О приложении" is the reproducer. See `research/layer-b/`.
-2. **Layer A, in progress: the shutdown path.** Both known issues #2 and #6
-   reproduced on a clean session and explained to the line. One root:
-   cinnamon-session does not take part in the end-session handshake Unity 7
-   expects. #2 is a dropped request - Unity waits on `SHUTDOWN (1)` while the
-   menu asks with `2`, and the handler has no `else`. A small Unity fix for #2
-   is designed, not yet written; #6's fix is a choice between Unity and
-   cinnamon-session. See `research/shutdown-path/`. Earlier notes: Known issues #2 (menu stops
-   responding after cancelling) and #6 (double confirmation dialog). Measured
-   2026-09-23: **there are two different shutdown dialogs** on target. The
-   session indicator's "Выключение..." opens Unity's own ("До скорой встречи,
-   Mike"); the power key opens `cinnamon-session-quit`'s ("Выключить систему
-   сейчас?"). Two components, two dialogs - a strong lead for #6, not yet a
-   proof that they ever appear together. Also: `unity-settings-daemon` and
-   `cinnamon-settings-daemon` both run and disagree on the power button
-   (`interactive` versus `suspend`). Start in the Cinnamon layer, not in Unity.
-   See `ARCHITECTURE.md`.
-3. Pick a second contribution candidate. `light-locker` crashing on login is
-   the obvious one: documented, reproducible, and still present after every
-   pending update.
+2. **Layer A: #6, the double dialog.** #2 is fixed (see Done). #6 needs
+   either cinnamon-session to fall back to `org.gnome.Shell`'s
+   EndSessionDialog - a feature request, since no release ever had it - or
+   Unity to call the no-dialog `RequestShutdown`/`RequestReboot`. Not started.
+   Also open: `unity-settings-daemon` and `cinnamon-settings-daemon` disagree
+   on the power button (`interactive` versus `suspend`). See
+   `research/shutdown-path/` and `ARCHITECTURE.md`.
+3. **Small upstream items found on the way, not queued:** Unity's unit tests
+   do not build on 26.04 (C++14 vs googletest 1.17, GCC 15 in
+   `tests/gmockvolume.c`); nux crashes without XF86VidMode
+   (`GraphicsDisplayX11.cpp:297`); nux `Validator::Validate`. See DECISIONS
+   and PATCHES.
 4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
    `vala-appmenu-panel` - the handoff transposed the words. Upstream is
    https://gitlab.com/vala-panel-project/vala-panel-appmenu. Ubuntu splits that
@@ -172,7 +182,7 @@ handoff originally had five and had dropped a precondition.
 | # | Bug | Release-note workaround |
 |---|---|---|
 | 1 | Cursor disappears after login | `sudo systemctl restart lightdm` |
-| 2 | Shutdown/logout menu unresponsive **after cancelling** | tty + `sudo poweroff` |
+| 2 | Shutdown/logout menu unresponsive **after cancelling** | tty + `sudo poweroff` - **fixed in our unity +unity2** |
 | 3 | Cursor stops responding | `killall -1 compiz` |
 | 4 | Wallpaper over the Calamares window during OEM install | Alt+Tab to the installer |
 | 5 | light-locker crashes on login, login still works | - |

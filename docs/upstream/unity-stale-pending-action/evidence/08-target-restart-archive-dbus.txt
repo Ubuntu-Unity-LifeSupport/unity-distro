@@ -1,0 +1,56 @@
+# target, snapshot Clean-updated-2026-09-23, boot 2026-09-23 22:57:01 (target local time, UTC+3), unity 7.7.1+26.04.20260306-0ubuntu3 from the archive (downgraded from +unity1 with apt, rebooted). Also installed: xdotool.
+# The restart-without-a-dialog case. Steps (xdotool): R1 session menu -> Выключение... | R2 Перезагрузить in Unity's dialog |
+#   R3 Escape in cinnamon-session's dialog | R4a open the session menu | R4b click Выключение... (the machine restarts here; no screenshot survives)
+# quit-dialog = whether a cinnamon-session-quit process exists at that moment. Logs were written to ~ and read after the reboot.
+# Screenshots: 08-target-restart-archive.png (R1..R4a).
+# Steps:
+#   start 2026-09-23 23:00:06
+#   R1-menu 23:00:13.679 quit-dialog:gone
+#   R2-reboot-in-unity 23:00:18.360 quit-dialog:alive
+#   R3-escape-cinnamon 23:00:22.164 quit-dialog:gone
+#   R4a-indicator-open 23:00:25.990 quit-dialog:gone
+# Reading: Open from the indicator is answered with ConfirmedReboot, no dialog; a few ms later a system-bus client calls login1 Reboot.
+#   indicator-session connects confirmed-reboot to reboot_now (indicator-session 17.3.20+21.10.20210613.1, src/backend-dbus/actions.c:688).
+# Session bus (EndSessionDialog, SessionManager):
+
+method call time=1790193608.602689 sender=:1.34 -> destination=:1.63 serial=53 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790193608.629481 sender=:1.63 -> destination=(null destination) serial=316 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790193612.670454 sender=:1.131 -> destination=:1.42 serial=29 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=RegisterClient
+   string "org.freedesktop.portal"
+   string ""
+signal time=1790193612.671864 sender=:1.42 -> destination=(null destination) serial=93 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=ClientAdded
+   object path "/org/gnome/SessionManager/Client6"
+method call time=1790193614.692505 sender=:1.63 -> destination=:1.42 serial=379 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Reboot
+method call time=1790193626.101766 sender=:1.34 -> destination=:1.63 serial=54 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790193626.136844 sender=:1.63 -> destination=(null destination) serial=533 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=ConfirmedReboot
+signal time=1790193626.136863 sender=:1.63 -> destination=(null destination) serial=534 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Closed
+
+# System bus (login1.Manager):
+
+method call time=1790193609.570697 sender=:1.35 -> destination=:1.2 serial=113 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790193615.646861 sender=:1.36 -> destination=:1.2 serial=9 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanHibernate
+method call time=1790193615.648303 sender=:1.36 -> destination=:1.2 serial=10 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanSuspend
+method call time=1790193615.657372 sender=:1.36 -> destination=:1.2 serial=11 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanReboot
+method call time=1790193615.889257 sender=:1.36 -> destination=:1.2 serial=12 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanPowerOff
+method call time=1790193626.142941 sender=:1.35 -> destination=:1.2 serial=114 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean false
+signal time=1790193626.160540 sender=:1.2 -> destination=(null destination) serial=426 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdownWithMetadata
+   boolean true
+   array [
+      dict entry(
+         string "type"
+         variant             string "reboot"
+      )
+   ]
+signal time=1790193626.161817 sender=:1.2 -> destination=(null destination) serial=427 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdown
+   boolean true

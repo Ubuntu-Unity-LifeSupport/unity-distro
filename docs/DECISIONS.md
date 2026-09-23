@@ -598,3 +598,63 @@ claims more than was found:
   the cause is a timeout of a running Cinnamon shell; ours is an absent shell.
   Related, not the same bug.
 - **cinnamon-session used under another shell**: no public discussion found.
+
+## 2026-09-23 - Unity's unit tests do not build or run on 26.04 as shipped
+
+The package builds with `-DENABLE_UNIT_TESTS=OFF`, so nobody notices. To test
+the fix for #2 we built `test-gnome-session-manager` in a disposable chroot
+(mmdebstrap, our nux 0ubuntu13 from aptly) and hit three separate breakages,
+each worked around in the harness only, none in the patch:
+
+1. **C++ standard.** `CMakeLists.txt` forces `-std=c++14`; googletest 1.17 in
+   26.04 requires C++17 and the bundled gtest source does not compile.
+   Harness: `-std=c++17`.
+2. **GCC 15.** `tests/gmockvolume.c` passes an incompatible function pointer
+   to a GObject macro; GCC 15 makes `incompatible-pointer-types` an error.
+   Harness: `-Wno-error=incompatible-pointer-types` for C.
+3. **No VidMode under Xvfb.** The test main creates a Nux window, and
+   `nux::GraphicsDisplay::CreateOpenGLWindow` dereferences
+   `m_X11VideoModes[0]` (`NuxGraphics/GraphicsDisplayX11.cpp:297`) without
+   checking that `XF86VidModeGetAllModeLines` succeeded. Xvfb has no
+   XFree86-VidModeExtension, so the binary segfaults before the first test.
+   Harness: Xorg with the dummy driver - which Unity's Build-Depends already
+   list (`xserver-xorg-video-dummy`), so upstream once ran them that way.
+
+With those, `TestGnomeSessionManager` runs 47 tests. Each of the three is a
+small upstream contribution in its own right (nux for 3, Unity for 1 and 2);
+recorded here, not queued yet. Harness scripts: see
+`docs/upstream/unity-stale-pending-action/README.md`.
+
+## 2026-09-23 - #2 fixed in Unity; the first fix was incomplete, and why
+
+**Where the change lives.** `unity` is a `3.0 (native)` package, so there is no
+quilt series to add to: `debian/patches/` would be ignored. Our changes are
+commits on `unity/resolute` in `packages/unity` (pushed to
+https://github.com/Ubuntu-Unity-LifeSupport/unity), each followed by a
+changelog commit for the `+unityN` build. The upstream copy is a separate
+branch, `mr/stale-pending-action`, cut from upstream's `ubuntu/devel` with one
+squashed commit - what a merge request needs, without our changelog.
+
+**The first fix was wrong in a way the unit test could not show.** `+unity1`
+dropped a pending action when a request for a *different* action arrived,
+which fixed #2. It kept taking a request for the *same* action as the session
+manager's confirmation. Testing that leftover case on target restarted the
+machine: pending `REBOOT` (chosen in Unity's dialog, then cinnamon-session's
+dialog cancelled) plus the indicator's "Выключение...", which asks for the
+restart dialog on purpose, makes Unity emit `ConfirmedReboot`, and
+indicator-session calls logind's `Reboot` 6 ms later. Reproduced on the
+archive package too - it is an old bug, not ours, but `+unity1` did not fix
+it. We had described it as "one lost click" from reading Unity alone; the
+consequence lives in indicator-session.
+
+`+unity2` accepts the confirmation only from the owner of
+`org.gnome.SessionManager`. A second unit test sends `Open` from a separate
+bus connection, the way the indicator does; the fixture otherwise serves the
+session manager and the shell from one connection, which is why the first
+test could not catch it.
+
+Lesson, generalised: a limitation written into a commit message ("costs one
+click") was a claim, and it had not been measured. It was measured the same
+hour, and it was wrong.
+
+`+unity1` stays in the history and in aptly as built; `+unity2` supersedes it.

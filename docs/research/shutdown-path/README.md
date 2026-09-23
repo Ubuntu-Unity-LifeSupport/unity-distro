@@ -232,3 +232,29 @@ Other things checked on the way:
 - **Nothing in the history mentions Unity or gnome-shell as a partner** after
   2013 (`git log -i --grep` for unity / gnome-shell): only the 2013 removals
   and a 2015 workaround for Ubuntu's overlay-scrollbar.
+
+## The same stale action restarts the machine - and the fix
+
+Measured 2026-09-23 while checking the limitation the first fix admitted to.
+Evidence: `docs/upstream/unity-stale-pending-action/evidence/08`, `09`, `12`,
+`13`.
+
+The session menu's "Выключение..." asks Unity for the **restart** dialog,
+`Open(2)`, deliberately (indicator-session `my_power_off`:
+`END_SESSION_TYPE_REBOOT`, "the latter adds lock & logout options in Unity").
+indicator-session also connects `ConfirmedReboot`/`ConfirmedShutdown`/
+`ConfirmedLogout` to its own `reboot_now`/`power_off_now`/`logout_now`, which
+call logind.
+
+So with pending `REBOOT` - "Перезагрузить" chosen in Unity's dialog,
+cinnamon-session's dialog cancelled - the next "Выключение..." matches the
+pending action. Unity confirms without showing anything, and indicator-session
+restarts the machine:
+
+    Open(2)         indicator -> compiz
+    ConfirmedReboot compiz, 35 ms later
+    login1.Reboot   system bus, 6 ms after that
+
+Fix, `unity +unity2`: only the owner of `org.gnome.SessionManager` confirms a
+pending action; any other `Open`, or one for a different action, cancels the
+stale action and is handled as new. Both symptoms verified fixed on target.

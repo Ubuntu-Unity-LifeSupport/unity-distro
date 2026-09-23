@@ -1,0 +1,35 @@
+# target, clean snapshot Clean-updated-2026-09-23, boot 2026-09-23 22:26:26 (target local time, UTC+3)
+# unity 7.7.1+26.04.20260306-0ubuntu3 from the archive (no fix). Added for the run: xdotool, and our aptly source (nothing installed from it).
+# Steps (xdotool): A session menu -> Выключение... | B Выключить in Unity's dialog | C Escape in cinnamon-session's dialog | D menu again | E menu once more
+# Screenshots: 04-target-before-fix.png (A..E left to right). The update-notifier window in C/D is unrelated; it appeared after boot.
+# Step times:
+#   start 2026-09-23 22:32:12
+#   A-menu-shutdown 22:32:19
+#   B-confirm-in-unity 22:32:25
+#   C-escape-cinnamon 22:32:34
+#   D-menu-again 22:32:42
+#   E-menu-once-more 22:32:50
+# Bus names (busctl, same boot): :1.28 = indicator-session-service, :1.88 = compiz (Unity, owns org.gnome.Shell), :1.45 = cinnamon-session (owns org.gnome.SessionManager)
+# dbus-monitor, session bus, EndSessionDialog + SessionManager.Shutdown:
+
+signal time=1790191931.165132 sender=org.freedesktop.DBus -> destination=:1.97 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+method call time=1790191934.270827 sender=:1.28 -> destination=:1.88 serial=55 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790191934.309663 sender=:1.88 -> destination=(null destination) serial=960 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790191939.875450 sender=:1.88 -> destination=:1.45 serial=1085 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Shutdown
+method call time=1790191957.162129 sender=:1.28 -> destination=:1.88 serial=56 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+method call time=1790191965.295700 sender=:1.28 -> destination=:1.88 serial=57 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]

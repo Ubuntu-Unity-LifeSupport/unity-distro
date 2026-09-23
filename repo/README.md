@@ -39,11 +39,11 @@ contents.** A version string is supposed to identify the bits. Two different
 builds sharing one version means whoever installs from us gets something
 different from whoever installs from Ubuntu, with nothing to tell them apart.
 
-That is why the repository currently holds only `nux` 0ubuntu13 - a revision
-the archive does not carry - and not our `unity` build. Our unity is a rebuild
-of `7.7.1+26.04.20260306-0ubuntu3`, the exact version in the archive, so it
-would be indistinguishable. When we actually patch unity it gets a `+unity1`
-suffix and can be published.
+So the repository holds only what the archive does not: `nux` 0ubuntu13 (a
+revision the archive does not carry), and packages with our own changes under a
+`+unityN` suffix - `light-locker`, `unity` - plus `unity-gtk4-menu`, which is
+ours outright. A plain rebuild of an archive version never goes in: it would be
+indistinguishable from the archive's.
 
 ## Client setup (target)
 

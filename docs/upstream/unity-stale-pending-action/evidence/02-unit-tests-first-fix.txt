@@ -1,0 +1,154 @@
+# Unity unit tests, TestGnomeSessionManager: first version of the fix (+unity1)
+# Test run 2026-09-23 20:03:49 UTC (from the process's own log line), on builder, in a disposable resolute chroot (mmdebstrap, buildd variant).
+# Source: unity 7.7.1+26.04.20260306-0ubuntu3 (git ubuntu/devel 6f01ccb7, identical to the archive source)
+#   tests/test_gnome_session_manager.cpp from e2effde9: both new tests
+#   UnityCore/GnomeSessionManager{.cpp,Impl.h}: 31bf416e (mismatch only)
+# Harness changes, not part of the patch (the suite does not build or run on 26.04 as shipped):
+#   -std=c++14 -> -std=c++17 (googletest 1.17 requires C++17)
+#   CFLAGS -Wno-error=incompatible-pointer-types (GCC 15, tests/gmockvolume.c)
+#   Xorg + dummy driver instead of Xvfb (nux dereferences XF86VidMode modes; Xvfb has no VidMode)
+# Packages:
+#   g++ 4:15.2.0-5ubuntu1
+#   libglib2.0-dev 2.88.0-1
+#   libgtest-dev 1.17.0-1build1
+#   libnux-4.0-dev 4.0.8+18.10.20180623-0ubuntu13
+#   xserver-xorg-core 2:21.1.22-1ubuntu1
+#   xserver-xorg-video-dummy 1:0.4.0-1ubuntu1
+# Command: dbus-run-session -- ./test-gnome-session-manager   (DISPLAY on Xorg dummy); scripts in ../harness/
+
+[==========] Running 48 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 42 tests from TestGnomeSessionManager
+ERROR 2026-09-23 20:03:49 unity.session.gnome GnomeSessionManager.cpp:471 logind GetSession call failed: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Type of message, “(s)”, does not match expected type “()”
+[ RUN      ] TestGnomeSessionManager.CanShutdown
+[       OK ] TestGnomeSessionManager.CanShutdown (2 ms)
+[ RUN      ] TestGnomeSessionManager.CanHibernate
+[       OK ] TestGnomeSessionManager.CanHibernate (0 ms)
+[ RUN      ] TestGnomeSessionManager.CanSuspend
+[       OK ] TestGnomeSessionManager.CanSuspend (0 ms)
+[ RUN      ] TestGnomeSessionManager.RealName
+[       OK ] TestGnomeSessionManager.RealName (0 ms)
+[ RUN      ] TestGnomeSessionManager.UserName
+[       OK ] TestGnomeSessionManager.UserName (0 ms)
+[ RUN      ] TestGnomeSessionManager.HostName
+[       OK ] TestGnomeSessionManager.HostName (0 ms)
+[ RUN      ] TestGnomeSessionManager.SwitchToGreeter
+[       OK ] TestGnomeSessionManager.SwitchToGreeter (2 ms)
+[ RUN      ] TestGnomeSessionManager.ScreenSaverActivate
+[       OK ] TestGnomeSessionManager.ScreenSaverActivate (0 ms)
+[ RUN      ] TestGnomeSessionManager.ScreenSaverDeactivate
+[       OK ] TestGnomeSessionManager.ScreenSaverDeactivate (0 ms)
+[ RUN      ] TestGnomeSessionManager.LockScreen
+[       OK ] TestGnomeSessionManager.LockScreen (1 ms)
+[ RUN      ] TestGnomeSessionManager.PromptLockScreen
+[       OK ] TestGnomeSessionManager.PromptLockScreen (1 ms)
+[ RUN      ] TestGnomeSessionManager.Logout
+[       OK ] TestGnomeSessionManager.Logout (2 ms)
+[ RUN      ] TestGnomeSessionManager.LogoutFallbackLogind
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Logout' on path '/org/gnome/SessionManager'.
+[       OK ] TestGnomeSessionManager.LogoutFallbackLogind (4 ms)
+[ RUN      ] TestGnomeSessionManager.LogoutFallbackConsolekit
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Logout' on path '/org/gnome/SessionManager'.
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:471 logind TerminateSession call failed: GDBus.Error:org.freedesktop.login1.Manager.Error.NoHandlerSet: No handler set for method 'TerminateSession' on path '/org/freedesktop/login1'.
+[       OK ] TestGnomeSessionManager.LogoutFallbackConsolekit (6 ms)
+[ RUN      ] TestGnomeSessionManager.LogoutFallbackConsolekitOnNoID
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Logout' on path '/org/gnome/SessionManager'.
+[       OK ] TestGnomeSessionManager.LogoutFallbackConsolekitOnNoID (3 ms)
+[ RUN      ] TestGnomeSessionManager.Reboot
+[       OK ] TestGnomeSessionManager.Reboot (2 ms)
+[ RUN      ] TestGnomeSessionManager.RebootFallbackLogind
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Reboot' on path '/org/gnome/SessionManager'.
+[       OK ] TestGnomeSessionManager.RebootFallbackLogind (4 ms)
+[ RUN      ] TestGnomeSessionManager.RebootFallbackConsoleKit
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Reboot' on path '/org/gnome/SessionManager'.
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:471 logind Reboot call failed: GDBus.Error:org.freedesktop.login1.Manager.Error.NoHandlerSet: No handler set for method 'Reboot' on path '/org/freedesktop/login1'.
+[       OK ] TestGnomeSessionManager.RebootFallbackConsoleKit (9 ms)
+[ RUN      ] TestGnomeSessionManager.Shutdown
+[       OK ] TestGnomeSessionManager.Shutdown (4 ms)
+[ RUN      ] TestGnomeSessionManager.ShutdownFallbackLogind
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Shutdown' on path '/org/gnome/SessionManager'.
+[       OK ] TestGnomeSessionManager.ShutdownFallbackLogind (7 ms)
+[ RUN      ] TestGnomeSessionManager.ShutdownFallbackConsoleKit
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:432 Gnome Session call failed: GDBus.Error:org.gnome.SessionManager.Error.NoHandlerSet: No handler set for method 'Shutdown' on path '/org/gnome/SessionManager'.
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:471 logind PowerOff call failed: GDBus.Error:org.freedesktop.login1.Manager.Error.NoHandlerSet: No handler set for method 'PowerOff' on path '/org/freedesktop/login1'.
+[       OK ] TestGnomeSessionManager.ShutdownFallbackConsoleKit (11 ms)
+[ RUN      ] TestGnomeSessionManager.SuspendUPower
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:471 logind Suspend call failed: GDBus.Error:org.freedesktop.login1.Manager.Error.NoHandlerSet: No handler set for method 'Suspend' on path '/org/freedesktop/login1'.
+[       OK ] TestGnomeSessionManager.SuspendUPower (7 ms)
+[ RUN      ] TestGnomeSessionManager.SuspendLogind
+[       OK ] TestGnomeSessionManager.SuspendLogind (4 ms)
+[ RUN      ] TestGnomeSessionManager.HibernateUPower
+ERROR 2026-09-23 20:03:50 unity.session.gnome GnomeSessionManager.cpp:471 logind Hibernate call failed: GDBus.Error:org.freedesktop.login1.Manager.Error.NoHandlerSet: No handler set for method 'Hibernate' on path '/org/freedesktop/login1'.
+[       OK ] TestGnomeSessionManager.HibernateUPower (7 ms)
+[ RUN      ] TestGnomeSessionManager.HibernateLogind
+[       OK ] TestGnomeSessionManager.HibernateLogind (3 ms)
+[ RUN      ] TestGnomeSessionManager.CancelAction
+[       OK ] TestGnomeSessionManager.CancelAction (2 ms)
+[ RUN      ] TestGnomeSessionManager.LogoutRequested
+[       OK ] TestGnomeSessionManager.LogoutRequested (2 ms)
+[ RUN      ] TestGnomeSessionManager.ImmediateLogout
+[       OK ] TestGnomeSessionManager.ImmediateLogout (102 ms)
+[ RUN      ] TestGnomeSessionManager.SimulateRealLogout
+[       OK ] TestGnomeSessionManager.SimulateRealLogout (3 ms)
+[ RUN      ] TestGnomeSessionManager.ShutdownRequested
+[       OK ] TestGnomeSessionManager.ShutdownRequested (2 ms)
+[ RUN      ] TestGnomeSessionManager.ImmediateShutdown
+[       OK ] TestGnomeSessionManager.ImmediateShutdown (107 ms)
+[ RUN      ] TestGnomeSessionManager.SimulateRealShutdown
+[       OK ] TestGnomeSessionManager.SimulateRealShutdown (5 ms)
+[ RUN      ] TestGnomeSessionManager.StalePendingActionDoesNotBlockRequests
+[       OK ] TestGnomeSessionManager.StalePendingActionDoesNotBlockRequests (3 ms)
+[ RUN      ] TestGnomeSessionManager.PendingActionIsNotConfirmedByOtherCallers
+/src/tests/test_utils.h:59: Failure
+Expected equality of these values:
+  expected_result
+    Which is: true
+  result
+    Which is: false
+/src/tests/test_gnome_session_manager.cpp:1072: Failure
+Value of: reboot_requested
+  Actual: false
+Expected: true
+/src/tests/test_gnome_session_manager.cpp:1075: Failure
+Value of: confirmed
+  Actual: true
+Expected: false
+[  FAILED  ] TestGnomeSessionManager.PendingActionIsNotConfirmedByOtherCallers (679 ms)
+[ RUN      ] TestGnomeSessionManager.RebootRequested
+[       OK ] TestGnomeSessionManager.RebootRequested (2 ms)
+[ RUN      ] TestGnomeSessionManager.ImmediateReboot
+[       OK ] TestGnomeSessionManager.ImmediateReboot (101 ms)
+[ RUN      ] TestGnomeSessionManager.SimulateRealReboot
+[       OK ] TestGnomeSessionManager.SimulateRealReboot (3 ms)
+[ RUN      ] TestGnomeSessionManager.CancelRequested
+[       OK ] TestGnomeSessionManager.CancelRequested (2 ms)
+[ RUN      ] TestGnomeSessionManager.LogindLock
+[       OK ] TestGnomeSessionManager.LogindLock (1 ms)
+[ RUN      ] TestGnomeSessionManager.LogindUnLock
+[       OK ] TestGnomeSessionManager.LogindUnLock (1 ms)
+[ RUN      ] TestGnomeSessionManager.NoLockWhenLockingDisabled
+[       OK ] TestGnomeSessionManager.NoLockWhenLockingDisabled (0 ms)
+[ RUN      ] TestGnomeSessionManager.PresenceStatusChanged
+[       OK ] TestGnomeSessionManager.PresenceStatusChanged (1 ms)
+[----------] 42 tests from TestGnomeSessionManager (1115 ms total)
+[----------] 6 tests from TestGnomeSessionManager/InteractiveMode
+ERROR 2026-09-23 20:03:51 unity.session.gnome GnomeSessionManager.cpp:471 logind GetSession call failed: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Type of message, “(s)”, does not match expected type “()”
+[ RUN      ] TestGnomeSessionManager/InteractiveMode.LogoutRequestedInhibitors/0
+[       OK ] TestGnomeSessionManager/InteractiveMode.LogoutRequestedInhibitors/0 (12 ms)
+[ RUN      ] TestGnomeSessionManager/InteractiveMode.LogoutRequestedInhibitors/1
+[       OK ] TestGnomeSessionManager/InteractiveMode.LogoutRequestedInhibitors/1 (12 ms)
+[ RUN      ] TestGnomeSessionManager/InteractiveMode.ShutdownRequestedInhibitors/0
+[       OK ] TestGnomeSessionManager/InteractiveMode.ShutdownRequestedInhibitors/0 (58 ms)
+[ RUN      ] TestGnomeSessionManager/InteractiveMode.ShutdownRequestedInhibitors/1
+[       OK ] TestGnomeSessionManager/InteractiveMode.ShutdownRequestedInhibitors/1 (12 ms)
+[ RUN      ] TestGnomeSessionManager/InteractiveMode.RebootRequestedInhibitors/0
+[       OK ] TestGnomeSessionManager/InteractiveMode.RebootRequestedInhibitors/0 (23 ms)
+[ RUN      ] TestGnomeSessionManager/InteractiveMode.RebootRequestedInhibitors/1
+[       OK ] TestGnomeSessionManager/InteractiveMode.RebootRequestedInhibitors/1 (58 ms)
+[----------] 6 tests from TestGnomeSessionManager/InteractiveMode (178 ms total)
+[----------] Global test environment tear-down
+[==========] 48 tests from 2 test suites ran. (1899 ms total)
+[  PASSED  ] 47 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] TestGnomeSessionManager.PendingActionIsNotConfirmedByOtherCallers
+ 1 FAILED TEST

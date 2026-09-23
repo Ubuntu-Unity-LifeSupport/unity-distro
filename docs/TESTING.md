@@ -164,6 +164,16 @@ because that cancelled the wrong dialog. **Reproduced on 2026-09-23:** confirm
 in Unity's dialog, then cancel the *second* dialog that cinnamon-session shows,
 and "Выключение..." stops opening anything. See `research/shutdown-path/`.
 
+**The restart variant restarts target.** Choose "Перезагрузить" (not
+"Выключить") in Unity's dialog, cancel cinnamon-session's, then
+"Выключение..." again: on an unfixed unity the machine restarts immediately.
+Scripts that run it must write their logs under `~`, not `/tmp` - `/tmp` is
+gone after the restart, and so is anything copied there. xdotool coordinates on
+target (1280 wide): session indicator `1253 14`, "Выключение..." `1100 234`,
+Unity dialog "Выключить" `717 448`, "Перезагрузить" `566 448`. The scripts are
+in `docs/upstream/unity-stale-pending-action/` (evidence headers describe each
+step).
+
 The full, corrected list of six known 26.04 bugs with their release-note
 workarounds is in `UNITY-DISTRO-HANDOFF.md` §2.
 

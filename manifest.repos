@@ -13,10 +13,13 @@
 # see docs/ARCHITECTURE.md.
 
 repositories:
+  # Our changes on unity/resolute; upstream (gitlab ubuntu-unity, branch
+  # ubuntu/devel) is mirrored as ubuntu/devel here - add it as a remote to
+  # prepare merge requests.
   packages/unity:
     type: git
-    url: https://gitlab.com/ubuntu-unity/unity/unity.git
-    version: ubuntu/devel
+    url: https://github.com/Ubuntu-Unity-LifeSupport/unity.git
+    version: unity/resolute
   packages/nux:
     type: git
     url: https://gitlab.com/ubuntu-unity/unity/nux.git

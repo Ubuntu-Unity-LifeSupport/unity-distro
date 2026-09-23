@@ -1,0 +1,39 @@
+# target, snapshot Clean-updated-2026-09-23, boot 2026-09-23 23:17:31 (target local time, UTC+3)
+# unity, libunity-core-6.0-9, unity-services, unity-schemas 7.7.1+26.04.20260306-0ubuntu3+unity2 (final fix, e2effde9) from our aptly; rebooted after install. Also installed: xdotool.
+# Bus names (busctl, same boot): :1.30 = indicator-sessi; :1.86 = compiz; :1.50 = cinnamon-sessio; 
+# Steps (xdotool): A session menu -> Выключение... | B Выключить in Unity's dialog | C Escape in cinnamon-session's dialog | D menu again | E menu once more
+# Screenshots: 10-target-final-fix.png (A..E). D and E show Unity's dialog.
+# Steps:
+#   start 2026-09-23 23:19:10
+#   A-menu-shutdown 23:19:17
+#   B-confirm-in-unity 23:19:22
+#   C-escape-cinnamon 23:19:27
+#   D-menu-again 23:19:34
+#   E-menu-once-more 23:19:43
+# Session bus:
+
+method call time=1790194752.389924 sender=:1.30 -> destination=:1.86 serial=55 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790194752.412029 sender=:1.86 -> destination=(null destination) serial=868 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790194757.770632 sender=:1.86 -> destination=:1.50 serial=989 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Shutdown
+method call time=1790194770.027880 sender=:1.30 -> destination=:1.86 serial=56 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790194770.057786 sender=:1.86 -> destination=(null destination) serial=1142 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+signal time=1790194770.057886 sender=:1.86 -> destination=(null destination) serial=1143 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+signal time=1790194774.907636 sender=:1.86 -> destination=(null destination) serial=1239 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790194778.397798 sender=:1.30 -> destination=:1.86 serial=57 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790194778.434463 sender=:1.86 -> destination=(null destination) serial=1268 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+signal time=1790194783.209786 sender=:1.86 -> destination=(null destination) serial=1410 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
