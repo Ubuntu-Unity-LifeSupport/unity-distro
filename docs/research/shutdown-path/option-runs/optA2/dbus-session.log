@@ -1,0 +1,83 @@
+method call time=1790200436.311284 sender=:1.98 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200436.320107 sender=:1.99 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsInhibited
+   uint32 1
+method call time=1790200436.495723 sender=:1.43 -> destination=:1.48 serial=200 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Shutdown
+method call time=1790200436.497128 sender=:1.48 -> destination=org.Cinnamon serial=90 path=/org/Cinnamon; interface=org.Cinnamon; member=ShowEndSessionDialog
+   int32 1
+method call time=1790200436.537104 sender=:1.48 -> destination=:1.87 serial=96 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 1
+   uint32 0
+   uint32 60
+   array [
+   ]
+signal time=1790200436.540551 sender=:1.87 -> destination=(null destination) serial=858 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790200436.737741 sender=:1.48 -> destination=org.Cinnamon serial=97 path=/org/Cinnamon; interface=org.Cinnamon; member=CloseEndSessionDialog
+signal time=1790200436.740281 sender=:1.48 -> destination=(null destination) serial=101 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=SessionRunning
+method call time=1790200442.597699 sender=:1.102 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+signal time=1790200442.659695 sender=:1.87 -> destination=(null destination) serial=965 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790200446.320551 sender=:1.104 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200446.390634 sender=:1.105 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200446.401961 sender=:1.106 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsInhibited
+   uint32 1
+method call time=1790200446.579701 sender=:1.107 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Inhibit
+   string "unity-distro-test"
+   uint32 0
+   string "Test inhibitor: unsaved work"
+   uint32 1
+signal time=1790200446.580753 sender=:1.48 -> destination=(null destination) serial=108 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=InhibitorAdded
+   object path "/org/gnome/SessionManager/Inhibitor1"
+method call time=1790200447.474242 sender=:1.43 -> destination=:1.48 serial=202 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Shutdown
+method call time=1790200447.475451 sender=:1.48 -> destination=org.Cinnamon serial=110 path=/org/Cinnamon; interface=org.Cinnamon; member=ShowEndSessionDialog
+   int32 1
+method call time=1790200447.503861 sender=:1.48 -> destination=:1.87 serial=116 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 1
+   uint32 0
+   uint32 60
+   array [
+      object path "/org/gnome/SessionManager/Inhibitor1"
+   ]
+method call time=1790200453.153456 sender=:1.109 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200453.214398 sender=:1.110 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200453.231987 sender=:1.111 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsInhibited
+   uint32 1
+signal time=1790200467.139455 sender=:1.87 -> destination=(null destination) serial=1155 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790200467.140138 sender=:1.48 -> destination=org.Cinnamon serial=120 path=/org/Cinnamon; interface=org.Cinnamon; member=CloseEndSessionDialog
+signal time=1790200467.142069 sender=:1.48 -> destination=(null destination) serial=124 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=SessionRunning
+method call time=1790200470.745375 sender=:1.115 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200470.806522 sender=:1.116 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200470.819766 sender=:1.117 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsInhibited
+   uint32 1
+method call time=1790200472.995603 sender=:1.23 -> destination=:1.87 serial=55 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 0
+   array [
+   ]
+signal time=1790200473.032125 sender=:1.87 -> destination=(null destination) serial=1205 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Canceled
+method call time=1790200476.779186 sender=:1.119 -> destination=org.gnome.SessionManager serial=2 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=IsSessionRunning
+method call time=1790200476.857417 sender=:1.87 -> destination=:1.48 serial=1310 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Reboot
+method call time=1790200476.858281 sender=:1.48 -> destination=org.Cinnamon serial=131 path=/org/Cinnamon; interface=org.Cinnamon; member=ShowEndSessionDialog
+   int32 0
+method call time=1790200476.878184 sender=:1.48 -> destination=:1.87 serial=136 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Open
+   uint32 2
+   uint32 0
+   uint32 60
+   array [
+      object path "/org/gnome/SessionManager/Inhibitor1"
+   ]
+signal time=1790200476.885984 sender=:1.87 -> destination=(null destination) serial=1312 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=ConfirmedReboot
+signal time=1790200476.886083 sender=:1.87 -> destination=(null destination) serial=1313 path=/org/gnome/SessionManager/EndSessionDialog; interface=org.gnome.SessionManager.EndSessionDialog; member=Closed
+method call time=1790200476.887656 sender=:1.48 -> destination=org.Cinnamon serial=138 path=/org/Cinnamon; interface=org.Cinnamon; member=CloseEndSessionDialog
+signal time=1790200476.896687 sender=:1.48 -> destination=(null destination) serial=144 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=ClientRemoved
+   object path "/org/gnome/SessionManager/Client3"
+signal time=1790200476.901084 sender=:1.48 -> destination=(null destination) serial=149 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=InhibitorRemoved
+   object path "/org/gnome/SessionManager/Inhibitor1"
+signal time=1790200476.913968 sender=:1.48 -> destination=(null destination) serial=152 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=ClientRemoved
+   object path "/org/gnome/SessionManager/Client2"
+signal time=1790200476.914032 sender=:1.48 -> destination=(null destination) serial=153 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=ClientRemoved
+   object path "/org/gnome/SessionManager/Client4"
+signal time=1790200476.927310 sender=:1.48 -> destination=(null destination) serial=155 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=ClientRemoved
+   object path "/org/gnome/SessionManager/Client5"
+signal time=1790200476.927411 sender=:1.48 -> destination=(null destination) serial=157 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=ClientRemoved
+   object path "/org/gnome/SessionManager/Client1"
+method call time=1790200477.045129 sender=:1.48 -> destination=org.Cinnamon serial=158 path=/org/Cinnamon; interface=org.Cinnamon; member=CloseEndSessionDialog

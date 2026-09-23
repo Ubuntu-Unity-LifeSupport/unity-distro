@@ -1,0 +1,16 @@
+00:53:56.283 monitors started; boot 2026-09-24 00:52:11; cinnamon-session 6.4.2-1+optA2, unity 7.7.1+26.04.20260306-0ubuntu3+unity2, 
+00:53:56.325 state running=true inhibited=false
+00:53:56.513 key XF86PowerOff
+00:54:02.639 shot P1-powerkey; running=true; quit-dialog=gone
+00:54:02.687 key Escape
+00:54:06.372 shot P2-escape; running=true; quit-dialog=gone
+00:54:06.411 state running=true inhibited=false
+00:54:07.448 inhibitor started cookie=2037490262
+00:54:07.517 key XF86PowerOff
+00:54:13.190 shot Q1-powerkey-with-inhibitor; running=false; quit-dialog=gone
+00:54:13.244 state running=false inhibited=true
+00:54:27.166 key Escape
+00:54:30.777 shot Q2-escape; running=true; quit-dialog=gone
+00:54:30.835 state running=true inhibited=true
+00:54:33.123 menu -> Выключение...
+00:54:36.826 shot I1-menu-with-inhibitor; running=true; quit-dialog=gone

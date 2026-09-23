@@ -153,13 +153,15 @@ reads the specific text and agrees.
    `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
    window's exported group, so their menu items arrive insensitive. yelp's
    "О приложении" is the reproducer. See `research/layer-b/`.
-2. **Layer A: #6, the double dialog.** #2 is fixed (see Done). #6 needs
-   either cinnamon-session to fall back to `org.gnome.Shell`'s
-   EndSessionDialog - a feature request, since no release ever had it - or
-   Unity to call the no-dialog `RequestShutdown`/`RequestReboot`. Not started.
+2. **Layer A: #6, the double dialog - options measured, A recommended.**
+   Option B (Unity calls `RequestShutdown`) is two lines but mishandles
+   inhibitors badly: stuck session, then a restart past the inhibitor. Option A
+   (cinnamon-session asks `org.gnome.Shell` after the query phase, like
+   gnome-session) gives one dialog everywhere. Next: fix Unity confirming its
+   pending action despite inhibitors, then measure A with it. Direction is
+   May's call. See `research/shutdown-path/` and DECISIONS 2026-09-24.
    Also open: `unity-settings-daemon` and `cinnamon-settings-daemon` disagree
-   on the power button (`interactive` versus `suspend`). See
-   `research/shutdown-path/` and `ARCHITECTURE.md`.
+   on the power button (`interactive` versus `suspend`).
 3. **Small upstream items found on the way, not queued:** Unity's unit tests
    do not build on 26.04 (C++14 vs googletest 1.17, GCC 15 in
    `tests/gmockvolume.c`); nux crashes without XF86VidMode

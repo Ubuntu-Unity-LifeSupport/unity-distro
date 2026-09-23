@@ -1,0 +1,5 @@
+00:56:48.574 monitors started; boot 2026-09-24 00:55:01; cinnamon-session 6.4.2-1+optA2, unity 7.7.1+26.04.20260306-0ubuntu3+unity2, 
+00:56:48.615 state running=true inhibited=false
+00:56:50.974 menu -> Выключение...
+00:56:54.782 shot R1-menu; running=true; quit-dialog=gone
+00:56:54.917 click 566 448 Перезагрузить

@@ -1,0 +1,32 @@
+method call time=1790199524.181373 sender=:1.41 -> destination=:1.0 serial=10 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanHibernate
+method call time=1790199524.182629 sender=:1.41 -> destination=:1.0 serial=11 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanSuspend
+method call time=1790199524.194847 sender=:1.41 -> destination=:1.0 serial=12 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanReboot
+method call time=1790199524.249792 sender=:1.41 -> destination=:1.0 serial=13 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=CanPowerOff
+signal time=1790199556.259797 sender=:1.0 -> destination=(null destination) serial=220 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "12"
+   object path "/org/freedesktop/login1/session/_312"
+method call time=1790199556.261113 sender=:1.35 -> destination=:1.0 serial=52 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790199556.261123 sender=:1.35 -> destination=:1.0 serial=53 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790199556.536087 sender=:1.0 -> destination=(null destination) serial=227 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionRemoved
+   string "12"
+   object path "/org/freedesktop/login1/session/_312"
+method call time=1790199556.536105 sender=:1.35 -> destination=:1.0 serial=54 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790199556.536108 sender=:1.35 -> destination=:1.0 serial=55 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790199561.700590 sender=:1.35 -> destination=:1.0 serial=56 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+signal time=1790199569.003677 sender=:1.0 -> destination=(null destination) serial=233 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "13"
+   object path "/org/freedesktop/login1/session/_313"
+method call time=1790199569.004359 sender=:1.35 -> destination=:1.0 serial=57 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790199569.004483 sender=:1.35 -> destination=:1.0 serial=58 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790199575.166807 sender=:1.54 -> destination=:1.0 serial=46 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean false
+signal time=1790199575.190545 sender=:1.0 -> destination=(null destination) serial=244 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdownWithMetadata
+   boolean true
+   array [
+      dict entry(
+         string "type"
+         variant             string "reboot"
+      )
+   ]
+signal time=1790199575.190575 sender=:1.0 -> destination=(null destination) serial=245 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdown
+   boolean true

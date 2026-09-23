@@ -31,9 +31,13 @@ The chain, each link measured:
    `RequestShutdown()` -> `request_shutdown()`.
 4. **cinnamon-session asks the Cinnamon shell for the dialog, not Unity.**
    `show_end_session_dialog()` calls `ShowEndSessionDialog` on `org.Cinnamon`,
-   `/org/Cinnamon`. Under Unity there is no Cinnamon shell, the call fails with
-   `NAME_HAS_NO_OWNER`, and it falls back to its own GTK dialog -
-   `cinnamon-session-quit`, the second dialog.
+   `/org/Cinnamon`. Under Unity there is no Cinnamon shell, the call fails,
+   and it falls back to its own GTK dialog - `cinnamon-session-quit`, the
+   second dialog. *(Corrected 2026-09-24: the error is `ServiceUnknown`, not
+   `NAME_HAS_NO_OWNER` as first written. The proxy is created without
+   `DO_NOT_AUTO_START`, so the bus tries to activate `org.Cinnamon` and finds
+   no service file. The journal says so on every shutdown: `CRITICAL: Failed
+   to launch Cinnamon's end session dialog ... ServiceUnknown`.)*
 5. **Unity is ready for a handshake that never comes.** Unity implements
    `org.gnome.SessionManager.EndSessionDialog` - gnome-session's protocol for
    asking the shell to show the end-session dialog, where Unity, seeing its own
@@ -229,6 +233,9 @@ Other things checked on the way:
   the GTK dialog. That is the "Timeout was reached" line in the Linux Mint
   forum thread the host found. Their shell exists and answered late; ours does
   not exist and the error is immediate. Same fallback, different cause.
+  *(Corrected 2026-09-24: ours is `ServiceUnknown`, which takes the same
+  `g_critical` branch as their timeout - not the `g_debug` one, as this
+  paragraph and the message to the host session implied. The rest stands.)*
 - **Nothing in the history mentions Unity or gnome-shell as a partner** after
   2013 (`git log -i --grep` for unity / gnome-shell): only the 2013 removals
   and a 2015 workaround for Ubuntu's overlay-scrollbar.
@@ -258,3 +265,69 @@ restarts the machine:
 Fix, `unity +unity2`: only the owner of `org.gnome.SessionManager` confirms a
 pending action; any other `Open`, or one for a different action, cancels the
 stale action and is handled as new. Both symptoms verified fixed on target.
+
+# #6: options A and B, measured
+
+2026-09-24, on target (`Clean-updated-2026-09-23` plus our packages, as
+listed in each run's `steps`), unity `+unity2` in every run except B.
+Runs in [`option-runs/`](option-runs/): `steps` (what was done, when, and
+whether the session manager said it was running), both bus logs, and a strip
+of screenshots. The inhibitor is a Python client holding
+`org.gnome.SessionManager.Inhibit(..., flags=1 logout)`.
+
+- **A** - [`option-a-cinnamon-session.patch`](option-a-cinnamon-session.patch),
+  cinnamon-session `6.4.2-1+optA2`: when `org.Cinnamon` is absent and
+  `org.gnome.Shell` owns the EndSessionDialog, cinnamon-session enters the
+  query phase and then calls the shell's `Open` with its inhibitors, and acts
+  on `Confirmed*`/`Canceled` - a port of gnome-session's
+  `end_session_or_show_shell_dialog`. `+optA1` did nothing: it checked for
+  `NAME_HAS_NO_OWNER`, and the real error is `ServiceUnknown` (see the
+  correction above).
+- **B** - [`option-b-unity.diff`](option-b-unity.diff), unity
+  `+unity2+optb1`: after its own dialog, Unity calls `RequestShutdown` /
+  `RequestReboot` instead of `Shutdown` / `Reboot`. In cinnamon-session that
+  is exactly what the GTK dialog's button does; in gnome-session 50.1 both are
+  plain aliases (`gsm_manager_request_shutdown` returns
+  `gsm_manager_shutdown`), so nothing changes there.
+
+| | today (`base`) | B | A |
+|---|---|---|---|
+| menu -> restart, no inhibitor | two dialogs | **one**, restart 60 ms after `RequestReboot` | **one**, restart 80 ms after `Reboot` |
+| power key | cinnamon's GTK dialog | same (path unchanged) | **Unity's dialog** - lock, suspend, restart, shut down |
+| power key, inhibitor | GTK dialog; inhibitors listed after confirming - by code, the same dialog as the menu row; not measured | same as today, by code - not measured | Unity's dialog says "у вас открыты файлы, которые можно сохранить" |
+| menu -> restart, inhibitor | cinnamon's second dialog **lists the inhibitor**, Cancel / Ignore | **nothing shown, session stuck** (`IsSessionRunning` false); the next attempt gets `NotInRunning`, Unity falls back to **logind `Reboot` - inhibitor bypassed** | restarts at once, **inhibitor ignored** |
+| cancel from the dialog | back to running | - | back to running (checked both with and without inhibitor) |
+| change | - | 2 lines in Unity; existing unit tests expect `Shutdown`/`Reboot` and would change | ~190 lines in cinnamon-session - a feature for Linux Mint upstream, or ours to carry |
+
+What the numbers say:
+
+- **B alone is not acceptable.** It removes the second dialog by removing
+  the only thing that shows inhibitors on the menu path, and cinnamon-session
+  has no dialog to report them to: it stays in the query phase until someone
+  answers, and Unity's fallback then restarts through logind directly. A
+  user with unsaved work gets nothing the first time and loses it the second.
+- **A does what gnome-session does**, and that includes gnome-session's gap:
+  Unity confirms its own pending action whether or not the `Open` carries
+  inhibitors (`OnShellMethodCall`, the `pending_action_ == action` branch), and
+  the indicator's `Open` never carries any. Under A the inhibitor is shown on
+  the power-key path but ignored on the menu path. That is a Unity behaviour,
+  not A's: fix it in Unity - confirm only when the `Open` has no inhibitors,
+  otherwise show the inhibitor dialog - and A covers both paths.
+- A also gives the power key Unity's own dialog instead of a GTK one - one
+  look for every way to shut down.
+- Today's double dialog has one real merit: it is the only configuration
+  that shows inhibitors on the menu path. Whatever replaces it must keep that.
+
+**Recommendation: A, plus the Unity inhibitor fix, measured together before
+anything is proposed.** A goes to Linux Mint as a feature request with our case
+only (rule already recorded); until they take it, we carry it as
+cinnamon-session `+unity1`.
+
+Found on the way, not part of either option:
+
+- `close_end_session_dialog()` calls `g_variant_unref (ret)` on `NULL` when
+  `org.Cinnamon` is absent - a GLib CRITICAL on every cancel. Harmless,
+  upstream, and hit by A on every cancel.
+- The journal line `CRITICAL: Failed to launch Cinnamon's end session dialog`
+  on every shutdown under Unity is the `ServiceUnknown` case, not an error in
+  the usual sense.

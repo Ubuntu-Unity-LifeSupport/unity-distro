@@ -1,0 +1,24 @@
+method call time=1790199708.436120 sender=:1.50 -> destination=:1.2 serial=10 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true
+method call time=1790199708.463557 sender=:1.50 -> destination=:1.2 serial=11 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true
+method call time=1790199708.469164 sender=:1.50 -> destination=:1.2 serial=12 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true
+method call time=1790199708.480377 sender=:1.50 -> destination=:1.2 serial=13 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true
+signal time=1790199708.547744 sender=:1.2 -> destination=(null destination) serial=205 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdownWithMetadata
+   boolean true
+   array [
+      dict entry(
+         string "type"
+         variant             string "reboot"
+      )
+   ]
+signal time=1790199708.547772 sender=:1.2 -> destination=(null destination) serial=206 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdown
+   boolean true
+method call time=1790199708.547775 sender=:1.50 -> destination=:1.2 serial=14 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true
+method call time=1790199708.547778 sender=:1.50 -> destination=:1.2 serial=15 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true
+method call time=1790199708.547781 sender=:1.50 -> destination=:1.2 serial=16 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean true

@@ -671,3 +671,33 @@ handshake from builder and from the host alike.
 Also added to the checklist, on the host session's suggestion: every
 consequence or limitation stated in outgoing text is measured, or marked as an
 assumption.
+
+## 2026-09-24 - #6: option A over option B, by measurement
+
+Both options for the double dialog were built and run on target; the table and
+the logs are in `research/shutdown-path/` ("#6: options A and B, measured").
+Option B (Unity calls `RequestShutdown`/`RequestReboot`) removes the second
+dialog in two lines, but with an inhibitor it leaves cinnamon-session stuck in
+the query phase with nothing on screen, and the next attempt restarts through
+logind past the inhibitor. Option A (cinnamon-session asks `org.gnome.Shell`
+after the query phase, as gnome-session does) gives one dialog on every path
+and Unity's dialog on the power key; its remaining gap - Unity confirming its
+own pending action despite inhibitors - is Unity's, and exists under
+gnome-session too. Next: that Unity fix, then A and it measured together.
+Nothing proposed yet; the direction is May's call.
+
+**Correction.** We wrote that cinnamon-session under Unity gets
+`NAME_HAS_NO_OWNER` from `org.Cinnamon`, logged at `g_debug`. It gets
+`ServiceUnknown` and logs a CRITICAL - found when the first build of option A,
+which tested for `NAME_HAS_NO_OWNER`, did nothing. Research corrected in place,
+host session told.
+
+**Incident, no damage.** A `dch` failure did not stop the `sbuild` after it
+(the commands were joined by a newline, not `&&`), so sbuild started on the
+experiment's code under version `+unity2` and overwrote the local
+`unity_..+unity2.dsc`/`.tar.xz` before it was killed. The `+unity2` binaries
+and aptly were untouched (aptly holds only `.deb`s). The source package was
+regenerated from `dd954ff0`; `dpkg-source -b` is reproducible here (two
+builds, same SHA-256). Experiments since go to their own version
+(`+unity2+optb1`, `6.4.2-1+optA2`), their own `--build-dir`, and sbuild runs
+only after a version check.
