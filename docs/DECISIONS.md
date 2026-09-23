@@ -559,3 +559,42 @@ LightDM's log on that boot (`Authenticate result for user mike: Success`,
 `Unlocking login1 session 1`), and every light-locker evidence file now names
 the boot it came from. One of them, `02`, was re-collected: its first version
 came from a boot that also had our GTK4 shim installed and did not say so.
+
+## 2026-09-23 - #6 in cinnamon-session would be a feature, not a regression fix
+
+Before any code for #6, May asked whether cinnamon-session once had an
+`org.gnome.Shell` path and lost it. It did not, in any release: the copy
+inherited from gnome-session was renamed to `org.cinnamon.Shell` on the day of
+the fork (`53d2cda`, 2013-06-02) and deleted two days later (`38d042a`,
+"Remove gnome-shell stuff we don't use"). The first tag, 1.9.2, already has
+neither. Details and the commit table are in
+`docs/research/shutdown-path/README.md`.
+
+Consequence for wording: a cinnamon-session change that falls back to
+`org.gnome.Shell` is a proposal for a new capability - using the end-session
+dialog of any shell that speaks gnome-session's protocol - and must be
+written up that way. The word "regression" does not appear in anything about
+#6.
+
+The dialog code is identical between 6.4.2 and upstream HEAD, so such a patch
+would not need rebasing.
+
+### Searched, not found (rule 0, done by the host session)
+
+Recorded as searched and empty, so nobody repeats the search and nobody
+claims more than was found:
+
+- **Two settings daemons fighting over the power key** (`unity-settings-daemon`
+  and `cinnamon-settings-daemon` in one session, `interactive` against
+  `suspend`): nothing in Launchpad for either package, in Cinnamon's trackers,
+  or on the Mint forums. Only unrelated autostart problems and "how to turn
+  off the power-button dialog in Cinnamon". If this turns out to matter, it is
+  unreported.
+- **#2, the dead menu after cancelling**: not filed anywhere. The nearest is
+  LP #1521116 ("session dialog doesn't close on first esc use"), a different
+  mechanism in `shutdown/SessionView.cpp`, Fix Released in Unity 7.4/7.5, 2016.
+- **#6, two dialogs**: one Linux Mint forum thread, "2 shutdown dialogs on
+  power button press" (Mint 22.1), closed unanswered. Same fallback line, but
+  the cause is a timeout of a running Cinnamon shell; ours is an absent shell.
+  Related, not the same bug.
+- **cinnamon-session used under another shell**: no public discussion found.

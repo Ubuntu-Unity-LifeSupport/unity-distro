@@ -58,6 +58,13 @@ the X11 root window, which under Compiz holds no wallpaper - you get a black
 background with a perfectly good panel on top, which looks like a bug and is
 not one. They are still fine for individual windows. See DECISIONS.md.
 
+**X11 tools do not see what Compiz and Nux draw.** Unity's shell dialogs,
+the Dash and the panel menus are painted by Compiz/Nux, not mapped as X
+windows. `xwd` shows a black desktop; `xdotool search` does not find the
+shutdown dialog even while it is on screen. Absence in `xdotool` or `xwininfo`
+proves nothing - only a `gnome-screenshot` image does. This produced one
+wrong conclusion already (#2 "persistent" on zero dialogs found, retracted).
+
 Before reporting anything you saw only in a screenshot, ask May whether the
 physical screen shows the same thing.
 

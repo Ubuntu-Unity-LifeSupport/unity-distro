@@ -186,3 +186,49 @@ cinnamon-session learns to call the shell's
 Cinnamon shell is absent. The second restores the handshake Unity expects and
 would fix #2 as well; the first keeps the change inside Unity. A question for
 the team as much as for us.
+
+## Did cinnamon-session ever call `org.gnome.Shell`? No
+
+Checked before writing any code for #6, because the answer decides how a
+cinnamon-session change would be described. Source:
+`git clone https://github.com/linuxmint/cinnamon-session`, HEAD `06c8582`
+(6.7.5-unstable, 2026-09-22), and `apt source gnome-session` (50.1) for
+comparison.
+
+`git log -S "org.gnome.Shell"` finds two commits, both on the day of the fork:
+
+| commit | date | what happened to the shell call |
+|---|---|---|
+| `ced663a` Initial commit | 2013-06-02 | a copy of gnome-session: `gsm-shell.c`, `SHELL_NAME "org.gnome.Shell"` |
+| `53d2cda` Rename cinnamon-session | 2013-06-02 | renamed wholesale to `org.cinnamon.Shell` / `org.cinnamon.SessionManager.EndSessionDialog` - no fallback kept |
+| `38d042a` Remove gnome-shell stuff we don't use | 2013-06-04 | `csm-shell.c` deleted; `csm-manager.c` always takes `end_session_or_show_fallback_dialog` |
+| `b177ab0` #177 | 2024-11-27 | new: `org.Cinnamon.ShowEndSessionDialog`, GTK dialog as fallback |
+
+No tag contains `ced663a` without `53d2cda`; the first tag with either is
+1.9.2. So **no released cinnamon-session ever called `org.gnome.Shell`**. The
+inherited call was renamed the day the fork was made and deleted two days
+later, in a commit whose title says why: Cinnamon did not use it. From 1.9.2
+to 6.3 the session manager always showed its own GTK dialog; since 6.4.0 it
+asks Cinnamon first.
+
+**This is not a regression, and must not be described as one.** A fallback to
+`org.gnome.Shell` would be a new capability: letting cinnamon-session use the
+end-session dialog of any shell that implements the gnome-session protocol,
+which gnome-session 50.1 still calls exactly as in 2013 (`gsm-shell.c`,
+`org.gnome.Shell` at `/org/gnome/SessionManager/EndSessionDialog`).
+
+Other things checked on the way:
+
+- **Upstream has not touched this code since our version.**
+  `show_end_session_dialog`, `launch_cinnamon_dialog` and `launch_gtk_dialog`
+  are byte-identical between tag 6.4.2 (what 26.04 ships) and HEAD. A patch
+  against 6.4.2 applies to master as is.
+- **Timeouts are handled, the same way as absence.** `launch_cinnamon_dialog`
+  is a synchronous call with timeout `-1` (the D-Bus default, 25 s). A timeout
+  is not `NAME_HAS_NO_OWNER`, so it takes the other branch: `g_critical`, then
+  the GTK dialog. That is the "Timeout was reached" line in the Linux Mint
+  forum thread the host found. Their shell exists and answered late; ours does
+  not exist and the error is immediate. Same fallback, different cause.
+- **Nothing in the history mentions Unity or gnome-shell as a partner** after
+  2013 (`git log -i --grep` for unity / gnome-shell): only the 2013 removals
+  and a 2015 workaround for Ubuntu's overlay-scrollbar.
