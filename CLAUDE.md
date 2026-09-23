@@ -4,6 +4,9 @@ You do not remember previous sessions. This repository is your memory.
 
 ## Every session
 
+0. **You are not the only agent on this machine.** Read `docs/TWO-AGENTS.md`
+   and confirm with May whether you are agent A or agent B before touching
+   anything. Then `tail -20 ~/AGENTS-LOG.md` to see what the other one is doing.
 1. Read `docs/STATUS.md` first - it says what is in flight and what is broken.
 2. Do the work.
 3. Update `docs/STATUS.md`, record any decision in `docs/DECISIONS.md`, and
@@ -31,9 +34,13 @@ If a session is interrupted, `STATUS.md` must be enough to resume from.
 ## Environment
 
 - You are on `builder` (192.168.56.10, user `claude`, passwordless sudo).
-- `ssh target` reaches the test desktop (192.168.56.20, user `mike`,
-  passwordless sudo). Its snapshot is called `Clean`, capital C.
-- Your eyes on target: `ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'`,
+- There are **two** test desktops, one per agent. Agent A uses `ssh target`
+  (192.168.56.20, VM `target-desktop`, clean snapshot `Clean-updated-2026-09-23`).
+  Agent B uses `ssh target2` (192.168.56.30, VM `target-desktop-2`, clean
+  snapshot `Clean-2`). Both are user `mike` with passwordless sudo. Use only the
+  one that is yours - see `docs/TWO-AGENTS.md`.
+- Your eyes on target (agent B substitutes `target2` everywhere below):
+  `ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'`,
   then `scp` it back. No sudo needed. Never `xwd -root` for the desktop - it
   misses the wallpaper under Compiz and invents bugs. See docs/DECISIONS.md.
 - Before installing anything on target: `ssh target 'touch ~/.dirty'`. After a
