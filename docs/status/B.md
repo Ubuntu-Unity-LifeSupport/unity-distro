@@ -6,19 +6,17 @@ Build directory: `~/work/b`
 ## Now
 
 **unity-gtk4-menu is agent B's package** (handed over by A, 2026-09-24).
-0.4 released: menu items naming widget class actions work from the global
-menu. Commit `ab81195` in `packages/unity-gtk4-menu`, built with sbuild,
-published to aptly. Research and evidence: `research/layer-b/` ("Class
-actions"); decision: DECISIONS 2026-09-24.
+Released: 0.4 (class action stand-ins, `ab81195`) and 0.5 (main menu choice,
+`c0557df`), both built with sbuild and published to aptly. Nothing in flight.
 
-Breadth run with 0.4 done (17 applications) and the HUD route verified; see
-`research/layer-b/` ("Breadth with 0.4"). Proposed next, not started:
-menu selection by `primary` then by `app.`/`win.` share; a trigger for
-gjs/PyGObject applications; menus built after realize.
+Proposed next, none started - May decides: a load trigger for gjs/PyGObject
+applications; menus built after realize (font-viewer, contacts); enabled state
+for stand-ins (interposing `gtk_widget_action_set_enabled`, which applications
+call through the PLT), which would also fix `hidden-when` pairs.
 
 ## State of `target2`
 
-Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.4 installed with `dpkg -i`
+Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.5 installed with `dpkg -i`
 (session-wide, rebooted), `xdotool` and 14 GTK4 test applications from the
 archive (`--no-install-recommends`), test files in `~/b/`
 (`run.sh`, `inspect.sh`, `audit.py`, `breadth.sh`, `classtest`, 0.3, 0.4

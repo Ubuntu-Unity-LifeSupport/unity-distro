@@ -734,3 +734,16 @@ The stand-in is always enabled; see the research for why that is acceptable.
 ("Qt platform theme for exported application menus to Lomiri"). STATUS says Qt
 has no global menu in 26.04 because `appmenu-qt5` is gone; this may be the
 piece to start from. Not tested.
+
+## 2026-09-24 - unity-gtk4-menu: which menu to export (agent B)
+
+Rank every menu button by shown, then `primary`, then the number of
+`app.`/`win.` items, then tree order. `primary` first was tried and measured:
+it took the hidden tab overview's menu in gnome-console, because libadwaita
+marks that one primary and the application does not mark its real main menu.
+Visibility has to include child-visible on the ancestors, since nothing is
+mapped at realize. Considered and not taken: choosing by score alone - fails
+gnome-logs, whose boot list has more `app.`/`win.` items than its main menu;
+choosing by position in the header bar - applications put the main menu at
+either end, and yelp's header bar is not even the titlebar. Evidence in
+`research/layer-b/` ("Choosing the main menu").

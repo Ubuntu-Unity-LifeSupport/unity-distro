@@ -1241,3 +1241,64 @@ the HUD's activation - not an earlier one - opened it.
 
 Harness: `harness/audit.py` (reads one window as Unity does) and
 `harness/breadth.sh` in this directory.
+
+---
+
+# Choosing the main menu (0.5)
+
+_Agent B, 2026-09-24, on `target2`._
+
+Finding 2 above, fixed. `find_menu_model` now collects every menu button and
+popover menu bar in the window and ranks them by: **shown**, **primary**,
+**number of `app.`/`win.` items**, tree order.
+
+## `primary` alone was not enough
+
+The first attempt ranked primary first. It fixed calculator, logs and
+simple-scan, and broke gnome-console: its main menu (6 items) is not marked
+primary at all, while libadwaita marks the menu of its own `AdwTabOverview`
+(`secondary-menu`, 3 items) primary - and that overview is hidden until opened.
+papers likewise has two primary buttons: the start page's and the document
+view's, the latter hidden until a document is open.
+
+`gtk_widget_is_visible()` did not tell them apart: nothing is mapped at
+realize, and the visible flags of a hidden stack page's children are all true.
+What does is `child-visible`, which `GtkStack`, `AdwToolbarView` and similar
+containers clear on what they do not show. A probe build printed the ancestry:
+
+```
+kgx     candidate 2 (tab overview, primary): child_visible=0 on AdwToolbarView
+papers  candidates 2-5 (document view):      child_visible=0 on PpsDocumentView
+```
+
+So "shown" is `gtk_widget_is_visible()` **and** child-visible on every
+ancestor.
+
+## Result, 0.5 installed session-wide and rebooted
+
+| Application | Candidates | Chosen by | Items | 0.4 took |
+|---|---|---|---|---|
+| gnome-calculator | 2 | primary | 10 | mode selector |
+| gnome-logs | 2 | primary | 4 | boot list |
+| simple-scan | 2 | primary | 7 | scan type |
+| gnome-text-editor | 2 | shown (search options hidden) | 11, 8 of them class actions proxied | search options |
+| nautilus | 5 | `app.`/`win.` items (8 vs 0) | 8 | folder menu |
+| kgx | 2 | shown (tab overview hidden) | 6 | same |
+| papers | 5 | shown | 3 | same |
+| yelp, loupe, file-roller, baobab, clocks, system-monitor | 1 | - | as before | same |
+
+No item is missing in any of the thirteen: every action is either exported or
+proxied. 89 processes map the library after the reboot; no new crash reports.
+gnome-text-editor's `page.*` actions are class actions of an ancestor of the
+menu button, proxied like the others; "Найти/Заменить" activated over D-Bus
+opens the search bar. gnome-font-viewer and gnome-contacts still have no menu
+(Finding 4); gjs applications still are not reached (Finding 3).
+
+Screenshots: `2026-09-24-calculator-main-menu-0.5.png`,
+`2026-09-24-text-editor-main-menu-0.5.png`.
+
+Visible in the second: "Полноэкранный режим" and "Выйти из полноэкранного
+режима" both listed. The application hides whichever is disabled
+(`hidden-when="action-disabled"`); a stand-in is always enabled, so both show.
+The one that does not apply does nothing when clicked. Known limit of 0.4,
+now written into the README.
