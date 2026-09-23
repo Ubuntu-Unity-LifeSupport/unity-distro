@@ -18,6 +18,27 @@ Full text: `docs/CONTRIBUTING-UPSTREAM.md`. This is the operating summary.
 3. **Never write "None" or "Low" under `[Where problems could occur]`.** That
    section is an SRU rejection trigger.
 
+## Rule 0: is it already solved?
+
+Fires before everything else, including before analysis. Search outward:
+
+1. the installed system - `apt-cache policy/showsrc/search`, `dpkg -S`,
+   `dpkg -l | grep`, `ldd`, and `Task:` in the metadata (`ubuntu-unity-desktop`
+   means it is part of our own flavour)
+2. the package's history - `rmadison`, Launchpad changelog, `git log -- <file>`,
+   all series including devel and `-proposed`
+3. bug trackers, by symptom not by your theory; closed bugs often mean "done but
+   never delivered"
+4. the web, through the host session, as specific questions
+
+Twenty minutes, then record in `docs/DECISIONS.md` where you looked - found or
+not - and carry on. Skip for our own code, typos, formatting, and anything
+already searched this session.
+
+Caught us three times in one day. Once the answer was a package already
+installed on the machine we were working on, visible in a crash dump we had
+dismissed.
+
 ## Before writing any code
 
 Five steps, in order. Skipping step 2 or 4 has already cost us twice.

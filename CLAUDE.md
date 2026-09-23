@@ -54,6 +54,15 @@ merge request or a reply to review. The three rules that matter most:
   check it is not already fixed, check nobody filed it, and test the exact
   scenario from the description rather than one that resembles it.
 
+**Rule 0, which fires before all of them: before writing a line of code for a
+problem, find out whether it is already solved.** Search outward from where you
+are - the installed system first (`apt-cache`, `dpkg -S`, `ldd`, and `Task:` in
+the metadata), then the package's history, then bug trackers, then the web
+through the host session. Twenty minutes, then record in `docs/DECISIONS.md`
+where you looked - found or not - and carry on. This has caught us three times
+in one day, and once the answer was a package already installed on the machine
+we were working on.
+
 Run the checklist in section 9 of that document in full before sending
 anything. Any "no" stops the submission.
 

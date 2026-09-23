@@ -324,3 +324,87 @@ Window decorations on the same application are correct and Unity-styled, which
 matches what the 26.04 release notes claim was fixed.
 
 Screenshot: `docs/screenshots/2026-09-22-headerbar-app-no-global-menu.png`.
+
+---
+
+## 2026-09-23 - the LD_PRELOAD precedent was installed on our own machine
+
+**Searched for:** whether anyone had already built an `LD_PRELOAD` shim for
+GTK4, and where the source of the one we knew about - `libgtk-nocsd.so.0` -
+lives.
+
+**Where:** the installed system on builder and target (`apt-cache policy`,
+`apt-cache showsrc`, `apt-cache show`, `dpkg -l`), and the web through the host
+session.
+
+**Found, and it was closer than expected.**
+
+`gtk3-nocsd` and `gtk-nocsd` are two different source packages. The current one
+is `gtk-nocsd` 0~20260321+0b77e1b-1, packaged by the Debian UBports team, from
+`salsa.debian.org/ubports-team/gtk-nocsd`. Its `libgtk-nocsd0` binary describes
+itself as
+
+> a small LD_PRELOADable library used to disable the client side decorations
+> (CSD) of GTK3, GTK4, and libadwaita
+
+and carries `Task: ubuntu-unity-desktop`. It is installed on target. We had
+already seen it - in the `unity-control-center` crash, where it appeared in the
+command line of the follow-up `ld.so` crash and was written off as an
+unrelated detail.
+
+**What this changes.**
+
+1. An `LD_PRELOAD` shim for GTK4 is not an exotic proposal in Ubuntu Unity. It
+   is a packaged, shipped, task-installed mechanism in the flavour itself. When
+   the time comes to talk to the team, we are proposing a second use of
+   something they already run rather than a new idea.
+2. `gtk-nocsd`'s `debian/` is a worked example of how to package such a
+   library: where it goes, how it is turned on in a session, how it enters the
+   task. Read it before writing our own packaging.
+3. Their code interposes not only `gtk_window_present` and
+   `gtk_widget_set_visible` but also `gtk_window_get_titlebar`,
+   `gtk_window_get_child` and `gtk_widget_get_first_child` - the very calls our
+   menu search walks. Our shim does not see the real widget tree; it sees the
+   tree nocsd presents.
+
+**Coexistence tested** with `dialogtest.c`, all four combinations:
+
+| Loaded | menubar attached | GTK warnings |
+|---|---|---|
+| shim only | yes | 0 |
+| nocsd only | no (expected) | 1 |
+| nocsd, then shim | yes | 1 |
+| shim, then nocsd | yes | 1 |
+
+Our shim works in either load order. The single warning is nocsd's own - it
+appears with nocsd alone and is identical with the shim present:
+`gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle ... with width
+420 and height -1`. We add none.
+
+**Not chased:** whether `unity-control-center`'s crash is nocsd's doing. Worth
+revisiting with the LD_PRELOAD removed first, which is the general rule for
+investigating any bug on this system.
+
+---
+
+## 2026-09-23 - rule 0: find out whether it is already solved
+
+**Decision.** Before writing a line of code for a problem, establish whether it
+is already solved. Recorded in `docs/CONTRIBUTING-UPSTREAM.md` section 0,
+summarised in `CLAUDE.md`, and in the `upstream-contribution` skill. Two lines
+added to the pre-submission checklist.
+
+**Why.** Three cases in one day, each further along than the last:
+
+1. The nux PCRE2 port existed for six months; we had localised the problem to
+   the file and line and were about to rewrite it.
+2. `vala-panel-appmenu` was recorded as an open question because we searched a
+   transposed name.
+3. The `LD_PRELOAD` approach for GTK4 was built as new. The mechanism was
+   already installed on the machine, shipped with our own flavour, and visible
+   in a crash dump we had dismissed.
+
+The rule is bounded so it does not become paralysis: about twenty minutes on
+the system, the package history and the trackers, then write down where you
+looked and carry on. **The record goes in either way.** "I do not remember
+whether I checked" means "I did not check".

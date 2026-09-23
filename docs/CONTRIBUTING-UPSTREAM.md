@@ -37,6 +37,58 @@ arrives with it:** an unverified bug, a bloated diff, no understanding of the
 code, machine-sounding prose, and review work pushed onto the maintainer. All
 of that is avoidable.
 
+## 0. Find out whether it is already solved
+
+Before writing a line of code for a problem, establish whether someone has
+already solved it - wholly or in part. This fires before everything else here:
+before analysis, before code, before a patch.
+
+Three cases in a single day earned it a number of its own.
+
+- The nux PCRE2 port had been written six months earlier, sat in
+  `debian/patches`, and the bug was marked Fix Released. We had localised the
+  problem to the file and the line and were about to write it again.
+- `vala-panel-appmenu` could not be found because we were searching a
+  transposed name. We filed it as an open question. Searching the correct name
+  takes a minute.
+- The `LD_PRELOAD` route for GTK4 was built as a new approach. `libgtk-nocsd0`,
+  which does exactly that for GTK3, GTK4 and libadwaita, was **already
+  installed on target** and is part of `Task: ubuntu-unity-desktop`. We had
+  even seen it in a crash dump and dismissed it as unrelated.
+
+That third case is the one to remember: the answer was not somewhere on the
+internet, it was in the running system we were working on.
+
+### Search outward from where you are
+
+1. **The system itself.** `apt-cache policy`, `apt-cache showsrc`,
+   `apt-cache search`, `dpkg -S`, `dpkg -l | grep`, `ldd`. Check `Task:` in the
+   metadata - `ubuntu-unity-desktop` means it is part of our own flavour.
+2. **The package's history.** `rmadison`, the Launchpad changelog,
+   `git log -- <file>`. All series, including devel and `-proposed`, not only
+   ours.
+3. **Bug trackers**, by symptom rather than by your own theory of the cause.
+   Closed bugs matter more than open ones - closed often means "done, but never
+   delivered".
+4. **The web**, through the host session. Ask specific questions, not a topic.
+   Abandoned attempts with an explanation of why they failed are sometimes
+   worth more than working code.
+
+### Limits, so the rule does not become paralysis
+
+- Around twenty minutes for steps 1-3. Then record in DECISIONS.md **where you
+  looked**, and carry on.
+- While the host session searches, work on what does not depend on the answer.
+- Skip it for: our own code, typos, formatting, and anything already searched
+  for in this session.
+
+### Record the result either way
+
+Found or not found, it goes in DECISIONS.md: what you searched for, where, what
+turned up, what you concluded. A record of an unsuccessful search is nearly as
+useful as a find - "I do not remember whether I checked" means "I did not
+check", and the next session walks the same circle.
+
 ## 1. Prove the bug before writing any code
 
 The most common and most irritating failure mode is a plausibly described
@@ -226,6 +278,8 @@ autopkgtest regressions before it reaches `-updates`.
 Run the whole list. Any "no" means it does not go out.
 
 ```
+[ ] Checked whether this is already solved: system, package history, trackers
+[ ] Search recorded in DECISIONS.md - where I looked, found or not
 [ ] Bug reproduced in a clean environment (chroot / Clean snapshot)
 [ ] Checked it is not already fixed: changelog, git, devel series, -proposed
 [ ] Checked nobody else has filed it
