@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <unistd.h>
 #include <gtk/gtk.h>
 
@@ -299,8 +300,38 @@ static void shim_app_window_realize(GtkWidget *widget)
 		real_app_window_realize(widget);
 }
 
+/*
+ * Only act under Unity. gtk-nocsd does the same thing in reverse - it disables
+ * itself on everything GNOME except Flashback - because a library preloaded
+ * session-wide ends up inside every process on the machine, including ones
+ * that have nothing to do with the desktop it was meant for.
+ *
+ * gtk-nocsd goes further and removes itself: it blanks LD_PRELOAD in environ
+ * and execve()s the program again. That is worth knowing but not worth copying
+ * yet - a re-exec is a heavy thing to do inside somebody else's process, and
+ * returning early costs nothing.
+ */
+static int wanted_here(void)
+{
+	const char *desktop = getenv("XDG_CURRENT_DESKTOP");
+
+	if (getenv("UNITY_GTK4_SHIM_FORCE") != NULL)
+		return 1;
+
+	if (desktop == NULL || strstr(desktop, "Unity") == NULL) {
+		note("XDG_CURRENT_DESKTOP=%s is not Unity, doing nothing",
+		     desktop ? desktop : "(unset)");
+		return 0;
+	}
+
+	return 1;
+}
+
 __attribute__((constructor)) static void shim_init(void)
 {
+	if (!wanted_here())
+		return;
+
 	note("env: DIRECT=%s FLATTEN=%s LOG=%s",
 	     getenv("UNITY_GTK4_SHIM_DIRECT") ? "set" : "-",
 	     getenv("UNITY_GTK4_SHIM_FLATTEN") ? "set" : "-",

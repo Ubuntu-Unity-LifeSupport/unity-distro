@@ -330,3 +330,89 @@ which matters, because a `GtkApplication` menubar is application-wide.
 
 Measuring a shim against applications that fall over on their own wastes more
 time than writing a test program that does not.
+
+---
+
+# How gtk-nocsd is packaged, and what we take from it
+
+`apt source gtk-nocsd`. Upstream is
+https://codeberg.org/MorsMortium/GTK-NoCSD, packaging by the Debian UBports
+team with Jeremy Bícha as uploader. 3006 lines of C, no patches in `debian/`.
+Everything below was verified against the running system on target.
+
+## Delivery is one file
+
+```
+# /usr/lib/environment.d/50-gtk-nocsd.conf
+LD_PRELOAD=libgtk-nocsd.so.0${LD_PRELOAD:+:$LD_PRELOAD}
+```
+
+Installed by `libgtk-nocsd0.install` into `usr/lib/environment.d`. systemd
+reads that directory when building the user session environment, so the
+variable reaches every process the user starts.
+
+The `${LD_PRELOAD:+:$LD_PRELOAD}` idiom appends rather than overwrites, so
+several such libraries compose. Ours would ship
+`60-unity-gtk4-menu.conf` beside it and load after.
+
+**Opt-out is by shadowing, not by a setting.** The package description tells
+users to create an *empty* file with the same name in a higher-priority
+directory - `/etc/environment.d/50-gtk-nocsd.conf` for the machine or
+`~/.config/environment.d/50-gtk-nocsd.conf` for one user. That is how
+`environment.d` precedence works, and it costs no code.
+
+## The setuid trick, which we would not have guessed
+
+`debian/rules`:
+
+```
+execute_after_dh_fixperms:
+	chmod 4644 debian/*/usr/lib/*/libgtk-nocsd.so.0
+```
+
+Mode 4644 - setuid, not executable. On target: `-rwSr--r-- root root`. The
+reason is in `debian/libgtk-nocsd0.lintian-overrides`: a globally preloaded
+library makes the dynamic linker print a warning on every invocation of a
+privileged program, `ping` among them. Marking the library setuid makes ld.so
+preload it without the warning. The override cites `sdate` as precedent.
+
+Any session-wide `LD_PRELOAD` of ours hits the same thing.
+
+## Disabling itself where it does not belong
+
+The constructor checks `XDG_CURRENT_DESKTOP` and bows out on anything GNOME
+except Flashback. It also skips AppImages that carry no GTK of their own, and
+Cambalache's `merengue`.
+
+When it decides it is not wanted it does not merely return - it **blanks
+`LD_PRELOAD` in `environ` and `execve`s the program again**, so the library is
+gone from that process and from everything it spawns.
+
+That is worth knowing for a second reason. A preload library that re-execs
+makes a constructor appear to run several times under one pid - the pattern we
+saw with file-roller and attributed to the application. It may well have been
+this.
+
+Our shim now gates on `XDG_CURRENT_DESKTOP` containing `Unity` - the session on
+target reports `Unity:Unity7:ubuntu`. Verified: the menubar is attached under
+Unity and the shim does nothing under `GNOME` or `KDE`.
+`UNITY_GTK4_SHIM_FORCE=1` overrides for testing. We return early rather than
+re-exec; re-execing inside somebody else's process is a heavy thing to do and
+early return costs nothing.
+
+## Build details worth copying
+
+- `Build-Depends: libadwaita-1-dev` - that is how the adwaita types are reached
+- `DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,defs` - no undefined symbols at link time
+- `DPKG_GENSYMBOLS_CHECK_LEVEL = 4` with a full `.symbols` file, although there
+  is no `-dev` package and lintian is told so
+- `Provides: gtk-nocsd`, with `gtk3-nocsd` and `libgtk3-nocsd0` kept as
+  transitional packages in `Section: oldlibs`
+
+## What this leaves open for us
+
+Delivery, opt-out, permissions and desktop gating are answered. What is not:
+the top-level label, which menu button to take when a window has several, and
+whether reading the widget tree through nocsd's interposed
+`gtk_widget_get_first_child` ever shows us something different from the real
+one.
