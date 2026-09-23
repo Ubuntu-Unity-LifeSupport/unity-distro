@@ -1142,3 +1142,102 @@ Screenshots: `2026-09-24-yelp-menu-0.3-about-greyed.png`,
 Not yet checked: the HUD route to the same item, and applications other than
 yelp that use class actions in header bar menus - the debug log will name them
 when the breadth run is repeated.
+
+---
+
+# Breadth with 0.4, and the HUD
+
+_Agent B, 2026-09-24, on `target2`, 0.4 installed session-wide._
+
+Seventeen GTK4 applications, each launched in the real session environment
+with `UNITY_GTK4_MENU_DEBUG=1`, then read the way Unity reads them: the
+`_GTK_*` window properties, the menubar over `org.gtk.Menus`, and every item's
+action checked against the exported `app` and `win` groups (`DescribeAll`).
+"Missing" below means an item whose action is not exported at all - Unity shows
+it greyed and cannot activate it. Items the application disabled itself are
+counted as correct.
+
+| Application | Menu exported | Items | Proxied by 0.4 | Missing | Notes |
+|---|---|---|---|---|---|
+| yelp | main | 7 | 1 | 0 | |
+| loupe | main | 9 | **6** | 0 | Open, Open With, Print, Set as Background, Delete, About - all class actions |
+| kgx (Console) | main | 6 | **5** | 0 | |
+| file-roller | main | 12 | 0 | 0 | |
+| baobab | main | 6 | 0 | 0 | |
+| gnome-clocks | main | 3 | 0 | 0 | |
+| gnome-system-monitor | main | 5 | 0 | 0 | |
+| papers | help/about only | 3 | 0 | 0 | not probed for `primary` - the probe run did not start |
+| gnome-calculator | **wrong menu** (mode selector) | 6 | 0 | 0 | |
+| gnome-logs | **wrong menu** (boot selector) | 5 | 0 | 0 | |
+| simple-scan | **wrong menu** (scan type) | 5 | 0 | 0 | |
+| gnome-text-editor | **wrong menu** (search options) | 3 | 0 | **3** | `search-options.*` |
+| nautilus | **wrong menu** (current folder) | 17 | 0 | **17** | `view.*`, `slot.*` |
+| gnome-font-viewer | none | - | - | - | no `GtkMenuButton` in the tree at realize |
+| gnome-contacts | none | - | - | - | same |
+| gnome-characters | none | - | - | - | gjs: **shim never hooked** |
+| gnome-weather | none | - | - | - | gjs: **shim never hooked** |
+
+transmission-gtk exited at start, with and without the shim, as in the first
+breadth run.
+
+## Finding 1: class actions were the right target
+
+Where the right menu is found, 0.4 leaves **nothing** missing: 12 class actions
+proxied across loupe, kgx and yelp, every other item already exported. Without
+0.4 loupe would show six of nine items greyed and kgx five of six.
+
+## Finding 2: the shim often takes the wrong menu
+
+`find_menu_model` returns the first menu button in tree order. Five of the thirteen
+applications where a menu was found have a secondary menu button earlier in the tree. A probe build
+logged every `GtkMenuButton` with `gtk_menu_button_get_primary()` (GTK 4.4+,
+the button F10 opens; libadwaita applications set it on the main menu per the
+HIG):
+
+| Application | Buttons with a model | `primary` set on | Taken today |
+|---|---|---|---|
+| gnome-calculator | 2 | main menu (`app.new-window`) | mode selector |
+| gnome-logs | 2 | main menu (`app.new-window`) | boot selector |
+| simple-scan | 2 | main menu (`app.email`) | scan type |
+| gnome-text-editor | 2 | none | search options |
+| nautilus | 5 | none | current folder menu |
+| yelp, loupe, kgx, file-roller, baobab, clocks, system-monitor | 1-2 | main menu | main menu |
+
+So: take the `primary` button when there is one - that fixes three
+applications outright. In the others the primary button carries the menu taken
+today; kgx has two buttons carrying the same main menu and today
+takes the non-primary one, with the same items. Where none is
+marked, the main menu is the one made of `app.`/`win.` actions (text-editor
+`app.new-window`, nautilus `app.clone-window`), while the wrong candidates are
+built from sub-widget groups (`search-options.`, `view.`). Preferring the
+candidate with the most `app.`/`win.` items would pick correctly in both.
+Not implemented yet.
+
+This also changes the weight of the inserted-group case: nautilus's 17 missing
+items are the *wrong* menu. Its main menu is `app.*`.
+
+## Finding 3: gjs and Python applications are not reached at all
+
+The shim checks for GTK4 in its constructor, with `RTLD_NOLOAD`. A gjs or
+PyGObject application loads GTK4 later, through GObject Introspection, so the
+check fails and the shim does nothing: gnome-characters and gnome-weather log
+`GTK4 is not loaded in this process`. Interposing a GTK symbol would not help
+either - GI resolves symbols with `dlsym` on libgtk's own handle, whose scope
+does not include preloaded libraries. Needs a different trigger; not
+investigated further.
+
+## Finding 4: menus built after realize
+
+gnome-font-viewer and gnome-contacts have no `GtkMenuButton` in the widget tree
+when the window is realized - their header bars are filled in later
+(navigation pages). The shim looks once, at realize, and finds nothing.
+
+## HUD
+
+yelp, 0.4 installed: Alt, typing "приложении" lists **"О приложении (Справка)"**,
+and Enter opens the About dialog. Before Enter the dialog is not on screen, so
+the HUD's activation - not an earlier one - opened it.
+`2026-09-24-hud-yelp-about.png`, `2026-09-24-hud-yelp-about-opened.png`.
+
+Harness: `harness/audit.py` (reads one window as Unity does) and
+`harness/breadth.sh` in this directory.

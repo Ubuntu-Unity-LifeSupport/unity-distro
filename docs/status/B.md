@@ -11,16 +11,18 @@ menu. Commit `ab81195` in `packages/unity-gtk4-menu`, built with sbuild,
 published to aptly. Research and evidence: `research/layer-b/` ("Class
 actions"); decision: DECISIONS 2026-09-24.
 
-Next candidates within the package, none started: repeat the breadth run with
-0.4 on more GTK4 applications and read the debug log for property actions and
-foreign prefixes; check the HUD route; decide whether stateful (property)
-actions are worth a stateful stand-in.
+Breadth run with 0.4 done (17 applications) and the HUD route verified; see
+`research/layer-b/` ("Breadth with 0.4"). Proposed next, not started:
+menu selection by `primary` then by `app.`/`win.` share; a trigger for
+gjs/PyGObject applications; menus built after realize.
 
 ## State of `target2`
 
 Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.4 installed with `dpkg -i`
-(session-wide, rebooted), `xdotool` from the archive, test files in `~/b/`
-(`run.sh`, `inspect.sh`, `classtest`, 0.3 and 0.4 `.so`). No aptly source
+(session-wide, rebooted), `xdotool` and 14 GTK4 test applications from the
+archive (`--no-install-recommends`), test files in `~/b/`
+(`run.sh`, `inspect.sh`, `audit.py`, `breadth.sh`, `classtest`, 0.3, 0.4
+and probe `.so`). No aptly source
 configured. Pre-existing `/var/crash/_usr_bin_light-locker.1000.crash` is the
 archive's known issue #5, from before any change.
 

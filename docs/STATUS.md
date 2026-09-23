@@ -148,15 +148,16 @@ reads the specific text and agrees.
    GTK3 by the existing `appmenu-gtk-module`, and Qt needs building from
    nothing - most likely a Qt platform theme exporting through dbusmenu, as KDE
    does. Not started; recorded so it is not mistaken for a small item.
-1. **Layer B: widget-scoped actions - class actions done in 0.4 (agent B).**
-   yelp's "О приложении" was a class action (`gtk_widget_class_install_action`),
-   not an inserted group as first thought. 0.4 exports a stand-in for each
-   stateless class action in a header bar menu; verified on `target2` from the
-   Unity panel, installed session-wide, and published to aptly. Still open:
-   property actions, groups inserted on sub-widgets (no case seen yet on a real
-   application), the HUD route, and a repeat of the breadth run with 0.4 to
-   find the next application that needs either. See `research/layer-b/`
-   ("Class actions") and `docs/status/B.md`.
+1. **Layer B: unity-gtk4-menu 0.4 released; breadth measured (agent B).**
+   Class actions are proxied (yelp, loupe, kgx: 12 items that were greyed now
+   work), from the panel and from the HUD. The breadth run over 17 GTK4
+   applications found the next problems, in order of reach: the shim takes the
+   wrong menu in 5 of 13 (fix: prefer `gtk_menu_button_get_primary()`, then
+   the menu with most `app.`/`win.` items); gjs/PyGObject applications are
+   never hooked (GTK4 loads after the constructor); two applications build
+   their header bar after realize. Inserted groups (`view.`, `slot.`) only
+   appeared in wrong menus. None started - direction is May's call. See
+   `research/layer-b/` ("Breadth with 0.4").
 2. **Layer A: #6, the double dialog - options measured, A recommended.**
    Option B (Unity calls `RequestShutdown`) is two lines but mishandles
    inhibitors badly: stuck session, then a restart past the inhibitor. Option A
