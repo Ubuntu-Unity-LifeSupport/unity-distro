@@ -859,3 +859,73 @@ quieter and less predictable.
 
 `_("Menu")` is marked for translation and nothing translates it yet - the shim
 has no gettext domain. Fine for a prototype, not for a package.
+
+---
+
+# Packaged, installed, and it broke the session
+
+The package builds, installs from our own repository and delivers itself
+correctly. Then it takes the desktop down, and the reason is a design mistake
+that only a session-wide install could expose.
+
+## What worked
+
+`unity-gtk4-menu` 0.1, built in a clean resolute chroot, published to the local
+archive, installed on target with `apt`:
+
+- library at `/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0`, mode
+  `-rwSr--r--` as intended
+- `environment.d` snippet installed, and after a reboot the session had
+  `LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0` - both libraries
+  composed through the `${LD_PRELOAD:+:$LD_PRELOAD}` idiom, exactly as designed
+- GSettings schema installed, trigger recompiled the schema cache, key readable
+
+## What broke
+
+After the reboot: `unity-panel-service` not running, and fresh crash files for
+`compiz`, `unity-settings-daemon`, `onboard`, `apport-gtk`,
+`a11y-profile-manager-indicator`, `livepatch-notification` and
+`ubuntu-advantage-notification`.
+
+## Why
+
+| | our library | gtk-nocsd |
+|---|---|---|
+| GTK libraries in `NEEDED` | `libgtk-4.so.1` | **none** |
+
+Confirmed directly:
+
+```
+$ LD_PRELOAD=libunity-gtk4-menu.so.0 onboard --help
+Gdk-ERROR: gdk_display_manager_get() was called before gtk_init()
+```
+
+A preloaded library is loaded into **every process on the machine**, not only
+into the GTK4 applications it was written for. Ours links `libgtk-4.so.1`, so
+it drags GTK4 into every one of them, and its constructor calls
+`g_type_class_ref(GTK_TYPE_WINDOW)` unconditionally. In a GTK3 process that is
+fatal; in a non-GTK process it is pointless.
+
+`gtk-nocsd` links no GTK at all. Its 3006 lines of `dlsym` calls against
+explicit library handles, which looked like ceremony when we first read them,
+are the whole answer to this problem.
+
+## The fix, and why the flaw survived so long
+
+Resolve every GTK symbol with `dlsym` at runtime rather than linking, and do
+nothing unless GTK4 is already loaded in the process - `dlopen("libgtk-4.so.1",
+RTLD_NOLOAD)` returning non-NULL is the test.
+
+Nothing in the prototype could have caught this. Every measurement so far set
+`LD_PRELOAD` on one command at a time, so the library only ever entered
+processes that were already GTK4 applications. The bug needs the library to be
+loaded where it does not belong, which is precisely what packaging it does.
+
+## State
+
+Package removed from target, which recovered fully after a reboot - compiz and
+`unity-panel-service` running, `LD_PRELOAD` back to `libgtk-nocsd.so.0` alone.
+The binary is pulled from the local archive so nobody installs it. Source stays
+at https://github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu with this
+recorded, because the packaging itself is right and only the symbol handling is
+wrong.
