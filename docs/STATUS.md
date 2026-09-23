@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-09-22_
+_Last updated: 2026-09-23_
 
 ## Where we are
 
@@ -11,6 +11,29 @@ installed on target, no upstream contribution has been made.
 Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
+
+- **Layer B has a working, packaged global menu for GTK4.** `unity-gtk4-menu`
+  0.2, its own repository at
+  https://github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu, built in a clean
+  chroot, published to the local archive and installed on target. A GTK4
+  header bar menu appears in the Unity panel and is searchable in the HUD, with
+  no patch to GTK4, libadwaita or any Ubuntu package. Path there, all measured
+  and recorded in `research/layer-b/`:
+  - GTK4 has no module loading mechanism, so `appmenu-gtk-module` cannot be
+    extended to it; `LD_PRELOAD` plus overwriting `realize` in the class
+    vtable is the route, and `gtk-nocsd` already ships that technique in
+    Ubuntu Unity.
+  - Stock GTK4 still exports a menubar and Unity renders it; the menubar must
+    be set before realize.
+  - The menubar route was chosen over `_GTK_APP_MENU_OBJECT_PATH`: it matches
+    what `appmenu-gtk-module` does, the HUD covers it with better context, and
+    Ubuntu once patched app menus away.
+  - The top-level label is a GSettings preference,
+    `com.ubuntu-unity.gtk4-menu show-application-name`.
+  - Version 0.1 linked GTK4 and, installed session-wide, killed GTK3
+    processes. 0.2 links nothing but libc, resolves every symbol with `dlsym`,
+    and does nothing unless GTK4 is already mapped. `make check` fails the
+    build if GTK or GLib reappears in `NEEDED`.
 
 - **Layer B scoped by experiment, not by assumption.** Stock GTK4 exports a
   menubar and the Unity panel displays it - proven with a minimal GTK4
@@ -56,6 +79,9 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## In flight
 
+**Layer B is packaged and running on target; Layer A's first contribution is
+queued.**
+
 **Layer A is unblocked and the fix is verified on hardware.**
 
 `unity` 7.7.1 builds against a locally built `nux` `-0ubuntu13`, and that nux
@@ -89,11 +115,11 @@ reads the specific text and agrees.
 
 ## Next
 
-1. **Layer B, next step: try the `LD_PRELOAD` shim.** Interpose on GTK4 before
-   window realize, read the header bar's menu model through
-   `gtk_menu_button_get_menu_model()`, set it as the menubar. The transport is
-   already proven to work; the open question is whether applications have
-   populated their menu button early enough. Findings in
+1. **Layer B: measure breadth with the installed package.** `unity-gtk4-menu`
+   0.2 is installed session-wide on target and the session is healthy. So far
+   it has been verified mostly on our own test programs; next is real GTK4
+   applications launched the way a user launches them, from the session
+   environment rather than from an ssh harness. Details in
    `research/layer-b/`.
 2. Pick one known 26.04 bug, reproduce it on target, fix it, build it, verify
    with a screenshot, send it upstream as a merge request.
