@@ -476,3 +476,99 @@ wandered into it.
 
 Worth re-checking if either side changes: this is a behavioural dependency on
 another package's internals, and nothing guarantees it.
+
+---
+
+# The label was never ours to choose
+
+Rule 0 answered this one without leaving the machine. `apt-get source
+indicator-appmenu` - the component that draws the global menu.
+
+`src/window-menu-model.c` reads **five** window properties, not the one we knew
+about:
+
+```
+_GTK_UNIQUE_BUS_NAME
+_GTK_APP_MENU_OBJECT_PATH
+_GTK_MENUBAR_OBJECT_PATH
+_GTK_APPLICATION_OBJECT_PATH
+_GTK_WINDOW_OBJECT_PATH
+_UNITY_OBJECT_PATH
+```
+
+and carries a dedicated `add_application_menu()`:
+
+```c
+if (appname != NULL) {
+    menu->priv->application_menu.label = GTK_LABEL(gtk_label_new(appname));
+} else {
+    menu->priv->application_menu.label =
+        GTK_LABEL(gtk_label_new(_("Unknown Application Name")));
+}
+```
+
+Unity has a first-class notion of an **application menu**, separate from the
+menu bar, and it labels that entry itself - from the application name, falling
+back to "Unknown Application Name". The convention exists and is built into
+indicator-appmenu. There was never a label for us to invent.
+
+`_GTK_APP_MENU_OBJECT_PATH` is the old GNOME application menu, set through
+`gtk_application_set_app_menu()`. GTK4 removed that API, so no GTK4 application
+ever sets the property - but Unity's consumer still honours it.
+
+## Taking that route, and it works
+
+`UNITY_GTK4_SHIM_APPMENU=1` exports the model with
+`g_dbus_connection_export_menu_model()` and sets the property itself with
+`XChangeProperty`, since GTK4 offers no API for it. This has to happen *after*
+realize: before it there is no surface and no X11 window, so the hook chains to
+the real realize first.
+
+| Application | Property | Panel shows |
+|---|---|---|
+| `popovertest` (no .desktop file) | `/org/unitydistro/popovertest/unityshim/appmenu` | **Unknown Application Name** - Unity's own fallback |
+| `file-roller` | `/org/gnome/FileRoller/unityshim/appmenu` | **File Roller** |
+
+The menu opens and renders file-roller's real items, greying and accelerators
+intact: `2026-09-23-app-menu-route.png`. `_GTK_MENUBAR_OBJECT_PATH` is not set
+in this mode, so this is the app-menu path on its own.
+
+Seeing "Unknown Application Name" appear unprompted is the confirmation that
+matters: the label is coming from Unity's code, not ours.
+
+## What it does not fix
+
+The panel still reads `File Roller  File Roller` - window title, then
+application menu. The application-menu entry sits beside the title rather than
+replacing it, so the redundancy is the same as with the wrapper.
+
+That is worth stating plainly: **the duplication is a property of Unity's panel
+layout, not of our labelling.** We cannot remove it from the application side,
+and we should not try. Whether it is a problem at all is a question for the
+team - a GTK3 application shows its title and then File, Edit, View, so a title
+followed by one menu named after the application may be exactly what they
+expect.
+
+## Which of the two routes to keep
+
+Both work. The app-menu route is better on the merits:
+
+- the label is Unity's, by Unity's convention, including a fallback we did not
+  have to design
+- it occupies the slot meant for precisely this, rather than presenting a
+  hamburger as if it were a menu bar
+- it leaves `gtk_application_set_menubar()` alone, so an application that has a
+  real menu bar keeps it
+
+Against it: it depends on `_GTK_APP_MENU_OBJECT_PATH`, which GNOME deprecated
+around 2019 and removed from GTK4. Unity still reads it, but building on a path
+its own upstream abandoned deserves a question to the team before it becomes
+the design.
+
+Both are kept behind environment variables until that is answered.
+
+## Known rough edge
+
+The second realize on the same window tries to export the model again and gets
+`Object already exported for interface org.gtk.Menus`. Harmless - the first
+export stands and the property is already set - but it needs a guard.

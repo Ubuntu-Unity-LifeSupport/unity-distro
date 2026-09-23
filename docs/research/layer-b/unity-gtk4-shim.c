@@ -23,6 +23,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <gtk/gtk.h>
+#include <gdk/x11/gdkx.h>
 
 static int verbose(void) {
 	static int v = -1;
@@ -178,6 +179,16 @@ static void dump_tree(GtkWidget *widget, int depth)
 		dump_tree(c, depth + 1);
 }
 
+/* Titlebar first, then the content tree - yelp keeps its header bar in the
+   content, not in the titlebar. */
+static GMenuModel *find_window_menu_model(GtkWindow *window)
+{
+	GMenuModel *model = find_menu_model(gtk_window_get_titlebar(window), 0);
+	if (model == NULL)
+		model = find_menu_model(gtk_window_get_child(window), 0);
+	return model;
+}
+
 static void attach_menubar(GtkWindow *window)
 {
 	GtkApplication *app = gtk_window_get_application(window);
@@ -189,6 +200,13 @@ static void attach_menubar(GtkWindow *window)
 	if (gtk_application_get_menubar(app) != NULL) {
 		note("application already has a menubar, leaving it alone");
 		return;
+	}
+
+	if (getenv("UNITY_GTK4_SHIM_TREE") != NULL) {
+		note("TREE titlebar:");
+		dump_tree(gtk_window_get_titlebar(window), 0);
+		note("TREE content:");
+		dump_tree(gtk_window_get_child(window), 0);
 	}
 
 	/* The title bar is not part of the ordinary child tree. */
@@ -284,9 +302,77 @@ static void attach_menubar(GtkWindow *window)
 static void (*real_window_realize)(GtkWidget *) = NULL;
 static void (*real_app_window_realize)(GtkWidget *) = NULL;
 
+/*
+ * Unity's indicator-appmenu reads five window properties, not one. Among them
+ * _GTK_APP_MENU_OBJECT_PATH, the old GNOME application menu - and
+ * add_application_menu() in window-menu-model.c labels that entry with the
+ * application name on its own, falling back to "Unknown Application Name".
+ *
+ * GTK4 removed gtk_application_set_app_menu(), so no GTK4 application ever
+ * sets that property, but the consumer still honours it. Export the model
+ * ourselves and set the property, and Unity names the entry by its own
+ * convention instead of one we invent.
+ *
+ * Must run after realize: before it there is no surface and no X11 window.
+ */
+static void publish_app_menu(GtkWindow *window, GMenuModel *model)
+{
+	GtkApplication *app = gtk_window_get_application(window);
+	if (app == NULL || model == NULL)
+		return;
+
+	GDBusConnection *bus =
+		g_application_get_dbus_connection(G_APPLICATION(app));
+	const char *base =
+		g_application_get_dbus_object_path(G_APPLICATION(app));
+	if (bus == NULL || base == NULL) {
+		note("no session bus or object path, cannot publish app menu");
+		return;
+	}
+
+	char *path = g_strconcat(base, "/unityshim/appmenu", NULL);
+
+	GError *error = NULL;
+	guint id = g_dbus_connection_export_menu_model(bus, path, model, &error);
+	if (id == 0) {
+		note("export failed: %s", error ? error->message : "unknown");
+		g_clear_error(&error);
+		g_free(path);
+		return;
+	}
+
+	GdkSurface *surface = gtk_native_get_surface(GTK_NATIVE(window));
+	if (surface == NULL || !GDK_IS_X11_SURFACE(surface)) {
+		note("not an X11 surface, cannot set the property");
+		g_free(path);
+		return;
+	}
+
+	Display *xdisplay = GDK_SURFACE_XDISPLAY(surface);
+	Window xid = gdk_x11_surface_get_xid(GDK_X11_SURFACE(surface));
+
+	XChangeProperty(xdisplay, xid,
+			XInternAtom(xdisplay, "_GTK_APP_MENU_OBJECT_PATH", False),
+			XInternAtom(xdisplay, "UTF8_STRING", False),
+			8, PropModeReplace,
+			(const unsigned char *)path, strlen(path));
+
+	note("published app menu at %s", path);
+	g_free(path);
+}
+
 static void shim_window_realize(GtkWidget *widget)
 {
 	note("realize (GtkWindow)");
+
+	if (getenv("UNITY_GTK4_SHIM_APPMENU") != NULL) {
+		if (real_window_realize != NULL)
+			real_window_realize(widget);
+		publish_app_menu(GTK_WINDOW(widget),
+				 find_window_menu_model(GTK_WINDOW(widget)));
+		return;
+	}
+
 	attach_menubar(GTK_WINDOW(widget));
 	if (real_window_realize != NULL)
 		real_window_realize(widget);
@@ -295,6 +381,15 @@ static void shim_window_realize(GtkWidget *widget)
 static void shim_app_window_realize(GtkWidget *widget)
 {
 	note("realize (GtkApplicationWindow)");
+
+	if (getenv("UNITY_GTK4_SHIM_APPMENU") != NULL) {
+		if (real_app_window_realize != NULL)
+			real_app_window_realize(widget);
+		publish_app_menu(GTK_WINDOW(widget),
+				 find_window_menu_model(GTK_WINDOW(widget)));
+		return;
+	}
+
 	attach_menubar(GTK_WINDOW(widget));
 	if (real_app_window_realize != NULL)
 		real_app_window_realize(widget);
