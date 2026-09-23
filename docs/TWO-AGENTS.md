@@ -81,9 +81,13 @@ agent doing right now?* git shows finished work; this shows work in flight.
 Append one line - never open the file in an editor, never rewrite it:
 
 ```
-echo "$(date +%F\ %H:%M) A START build cinnamon-session 6.4.2 on target" >> ~/AGENTS-LOG.md
-echo "$(date +%F\ %H:%M) A DONE  build ok, 48/48 tests" >> ~/AGENTS-LOG.md
+echo "$(date -u +'%F %H:%MZ') A START build cinnamon-session 6.4.2 on target" >> ~/AGENTS-LOG.md
+echo "$(date -u +'%F %H:%MZ') A DONE  build ok, 48/48 tests" >> ~/AGENTS-LOG.md
 ```
+
+Stamp every line in UTC with the trailing `Z`. The builder runs on UTC while
+both test desktops run on EEST (+3), so an unmarked timestamp reads as three
+hours stale and you will mistake live work for yesterday's.
 
 Log before you start a package build, before a snapshot rollback, before an
 aptly publish, and when you finish. Read the tail of it before you pick up work:
