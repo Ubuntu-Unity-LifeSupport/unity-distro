@@ -1,0 +1,168 @@
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Wed, 23 Sep 2026 17:36:11 +0000
+Subject: Find the LightDM session when XDG_SESSION_PATH is missing
+
+With the logind lookup fixed, light-locker gets one step further on Ubuntu
+Unity 26.04 and aborts in query_seat_path() instead: g_error() on
+"Environment variable XDG_SESSION_PATH not set. Is LightDM running?".
+
+It is the same cause. LightDM places XDG_SESSION_PATH in the environment of the
+session it starts, but cinnamon-session runs as the systemd user service
+unity-session.service and does not inherit it, so neither does light-locker.
+
+LightDM still publishes its sessions on the system bus. When the variable is
+missing, read the Sessions property of org.freedesktop.DisplayManager, take the
+session whose UserName is ours, and set XDG_SESSION_PATH to it, restoring what
+LightDM would have provided. Every later use of the path, locking included,
+then works unchanged. The existing error remains for the case where LightDM
+cannot be asked either.
+
+A user with several LightDM sessions at once gets the first one listed; there
+is no field linking a LightDM session to the logind session to choose better.
+
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/light-locker/+bug/2038808
+Forwarded: not-needed
+Last-Update: 2026-09-23
+Assisted-by: LLM Claude Opus 5.5
+---
+ src/gs-listener-dbus.c | 120 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
+
+diff --git a/src/gs-listener-dbus.c b/src/gs-listener-dbus.c
+index 5f77dbf..da2cf1f 100644
+--- a/src/gs-listener-dbus.c
++++ b/src/gs-listener-dbus.c
+@@ -2289,6 +2289,115 @@ init_session_id (GSListener *listener)
+ #endif
+ }
+ 
++/*
++ * Find this user's LightDM session object when XDG_SESSION_PATH is missing.
++ *
++ * LightDM puts XDG_SESSION_PATH into the environment of the session it
++ * starts. A session manager running as a systemd user service - cinnamon-
++ * session under unity-session.service on Ubuntu Unity 26.04 - does not
++ * inherit it, and neither do the processes it launches. LightDM still
++ * publishes its sessions on the system bus, so ask it directly and pick the
++ * one belonging to this user.
++ */
++static char *
++discover_dm_session_path (GSListener *listener)
++{
++        DBusMessage     *message;
++        DBusMessage     *reply;
++        DBusError        error;
++        DBusMessageIter  iter, variant, array;
++        const char      *interface = DM_SERVICE;
++        const char      *property = "Sessions";
++        const char      *user = g_get_user_name ();
++        char            *found = NULL;
++
++        message = dbus_message_new_method_call (DM_SERVICE, "/org/freedesktop/DisplayManager",
++                                                DBUS_PROPERTIES_INTERFACE, "Get");
++        if (message == NULL)
++                return NULL;
++
++        if (!dbus_message_append_args (message,
++                                       DBUS_TYPE_STRING, &interface,
++                                       DBUS_TYPE_STRING, &property,
++                                       DBUS_TYPE_INVALID)) {
++                dbus_message_unref (message);
++                return NULL;
++        }
++
++        dbus_error_init (&error);
++        reply = dbus_connection_send_with_reply_and_block (listener->priv->system_connection,
++                                                           message, -1, &error);
++        dbus_message_unref (message);
++
++        if (dbus_error_is_set (&error)) {
++                gs_debug ("%s raised:\n %s\n\n", error.name, error.message);
++                dbus_error_free (&error);
++                return NULL;
++        }
++
++        if (!dbus_message_iter_init (reply, &iter) ||
++            dbus_message_iter_get_arg_type (&iter) != DBUS_TYPE_VARIANT) {
++                dbus_message_unref (reply);
++                return NULL;
++        }
++
++        dbus_message_iter_recurse (&iter, &variant);
++        if (dbus_message_iter_get_arg_type (&variant) != DBUS_TYPE_ARRAY) {
++                dbus_message_unref (reply);
++                return NULL;
++        }
++
++        dbus_message_iter_recurse (&variant, &array);
++        while (found == NULL &&
++               dbus_message_iter_get_arg_type (&array) == DBUS_TYPE_OBJECT_PATH) {
++                const char      *session;
++                const char      *session_interface = DM_SESSION_INTERFACE;
++                const char      *name_property = "UserName";
++                DBusMessage     *m;
++                DBusMessage     *r;
++                DBusMessageIter  ri, rv;
++
++                dbus_message_iter_get_basic (&array, &session);
++
++                m = dbus_message_new_method_call (DM_SERVICE, session,
++                                                  DBUS_PROPERTIES_INTERFACE, "Get");
++                if (m != NULL &&
++                    dbus_message_append_args (m,
++                                              DBUS_TYPE_STRING, &session_interface,
++                                              DBUS_TYPE_STRING, &name_property,
++                                              DBUS_TYPE_INVALID)) {
++                        r = dbus_connection_send_with_reply_and_block (listener->priv->system_connection,
++                                                                       m, -1, &error);
++                        if (dbus_error_is_set (&error)) {
++                                dbus_error_free (&error);
++                        } else {
++                                if (dbus_message_iter_init (r, &ri) &&
++                                    dbus_message_iter_get_arg_type (&ri) == DBUS_TYPE_VARIANT) {
++                                        const char *name = NULL;
++
++                                        dbus_message_iter_recurse (&ri, &rv);
++                                        if (dbus_message_iter_get_arg_type (&rv) == DBUS_TYPE_STRING)
++                                                dbus_message_iter_get_basic (&rv, &name);
++                                        if (name != NULL && g_strcmp0 (name, user) == 0)
++                                                found = g_strdup (session);
++                                }
++                                dbus_message_unref (r);
++                        }
++                }
++                if (m != NULL)
++                        dbus_message_unref (m);
++
++                dbus_message_iter_next (&array);
++        }
++
++        dbus_message_unref (reply);
++
++        if (found != NULL)
++                gs_debug ("Found this user's LightDM session: %s", found);
++
++        return found;
++}
++
+ static char *
+ query_seat_path (GSListener *listener)
+ {
+@@ -2306,6 +2415,17 @@ query_seat_path (GSListener *listener)
+                 return NULL;
+         }
+ 
++        if (DM_SESSION_PATH == NULL) {
++                char *path = discover_dm_session_path (listener);
++
++                /* Restore what LightDM would have given us, so every later
++                   use of DM_SESSION_PATH - including locking - sees it. */
++                if (path != NULL) {
++                        setenv ("XDG_SESSION_PATH", path, 1);
++                        g_free (path);
++                }
++        }
++
+         if (DM_SESSION_PATH == NULL) {
+                 g_error ("Environment variable XDG_SESSION_PATH not set. Is LightDM running?");
+         }

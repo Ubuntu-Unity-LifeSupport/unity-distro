@@ -1,0 +1,20 @@
+# The crash, on a clean system
+#
+# Ubuntu 26.04.1 LTS, light-locker 1.8.0-3ubuntu4, target just rolled back to
+# snapshot Clean-updated-2026-09-23 (all pending updates applied, nothing of
+# ours installed). Login through LightDM autologin.
+
+$ journalctl -b -o short-precise | grep light-locker
+вер 23 20:22:59.346671 mike-virtualbox light-locker[3116]: session_id is not set, is /proc mounted with hidepid>0?
+
+The message comes from init_session_id(), src/gs-listener-dbus.c:2194:
+
+    if (listener->priv->session_id == NULL)
+            g_error ("session_id is not set, is /proc mounted with hidepid>0?");
+
+g_error() always aborts, hence SIGABRT on every login.
+
+Note: the crash file present on that system was dated 01:13, before the login
+at 20:22 - it was captured inside the snapshot. apport does not write a new one
+while an unreported one for the same binary exists, so the journal line is the
+evidence for this login, not the file.

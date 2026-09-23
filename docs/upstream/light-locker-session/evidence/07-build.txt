@@ -1,0 +1,10 @@
+# Build, clean resolute chroot
+
+sbuild, light-locker 1.8.0-3ubuntu4+unity2
+Status: successful, Build-Time: 33 s
+dpkg-source: info: applying 0003-Follow-the-user-s-display-session-outside-a-session-.patch
+dpkg-source: info: applying 0004-Find-the-LightDM-session-when-XDG_SESSION_PATH-is-mi.patch
+
+Compiler warnings: 104, identical to the unpatched baseline (104). The only one
+in gs-listener-dbus.c is the pre-existing deprecated g_type_class_add_private
+at line 1812.

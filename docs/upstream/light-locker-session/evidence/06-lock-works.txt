@@ -1,0 +1,20 @@
+# Locking, not just surviving
+#
+# PR #153 stopped the crash but broke locking in some configurations, so
+# "no crash" is not the test. This is.
+
+graphical session 3, before:   Active=yes  State=active
+$ light-locker-command -l      exit=0
+graphical session 3, after:    Active=no   State=online
+active session on seat0:       c1  Name=lightdm  Class=greeter  Display=:1  VTNr=8
+light-locker after locking:    alive
+
+The greeter on :1 shows the user with a green check and an "Разблокировать"
+(Unlock) button, not "Войти" (Log in): it is unlocking an existing session.
+Screenshot: docs/screenshots/2026-09-23-light-locker-locked.png
+
+LockedHint stays "no" before and after. light-locker never sets it; that is
+existing behaviour, not a regression.
+
+Not tested: unlocking. It needs the user's password, which this setup does
+not have. The patches do not touch the unlock path, which is LightDM's.

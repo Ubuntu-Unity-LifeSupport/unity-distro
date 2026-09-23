@@ -1,0 +1,14 @@
+# After installing 1.8.0-3ubuntu4+unity2 from the local archive and rebooting
+
+light-locker 1.8.0-3ubuntu4+unity2
+process:            2689 /usr/bin/light-locker      (alive)
+fatal log messages: none - neither "session_id is not set" nor
+                    "XDG_SESSION_PATH not set"
+crash file:         none (stale one removed before reboot)
+org.freedesktop.ScreenSaver owner: pid 2689, light-locker
+
+Intermediate state, with only the first patch (0003): the session lookup
+succeeded and light-locker died one step later on
+    Environment variable XDG_SESSION_PATH not set. Is LightDM running?
+which is what the second patch (0004) addresses. The two aborts were stacked;
+the first hid the second.

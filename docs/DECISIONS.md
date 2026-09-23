@@ -461,3 +461,68 @@ login screen as the lightdm user with its XAUTHORITY" as not yet tested. It was
 tested on 2026-09-22 while capturing the greeter: as the lightdm user it fails
 with `Authorization required`, because `/run/lightdm/root/:0` is root-owned
 0600; it works as root. The handoff now says so.
+
+---
+
+## 2026-09-23 - light-locker: diagnosis, rule 0, and why the fix is not PR #153
+
+**Searched for, before writing code** (rule 0): a newer light-locker in any
+series, an existing bug, an upstream fix, and neighbouring projects' handling.
+
+**Where:** the system and package history here (`rmadison`, changelog), and
+the web through the host session.
+
+**Found.**
+
+- light-locker is `1.8.0-3ubuntu4` in both resolute and stonking. Nothing newer
+  anywhere; the code is Debian's 1.8.0 from 2019 plus one Recommends line.
+- **LP: #2038808 already exists** - an automatic crash report for
+  `init_session_id`, no analysis. LP: #2167241 may be related.
+- **Upstream is dead** since 2020. So the route is the Ubuntu package, not an
+  upstream merge request - a change from what §3 of the handoff assumed.
+- **Upstream PR #153** (2020, unmerged) aims at the same problem. Read before
+  writing ours, and it turned out not to fix this case:
+  - it never handles `XDG_SESSION_PATH`, so on 26.04 it would still abort one
+    step later - which is exactly what our first patch alone did;
+  - it merges `session_id` (a D-Bus object path) and `sd_session_id` (a logind
+    session ID) and passes the path to `sd_session_is_active()`. Measured from
+    a user service: that returns `-EINVAL`, so the "refuse to lock an inactive
+    session" check silently stops working. A likely explanation for the
+    locking problems reported on the PR.
+- 1.9.0 is no fix either: upstream issue #141 reports it regressing the same
+  error, and its new `XDG_SESSION_ID` fallback does not apply here because the
+  variable is absent.
+
+**Mechanism, proved with the system's own tools** rather than inferred:
+`GetSessionByPID` fails for a process in a user service and works for the
+session leader; `loginctl show-user -p Display` names the graphical session and
+`GetSession` on it returns the same path. The process tree shows
+`unity-session.service` running `cinnamon-session --session=unity`, which
+launches light-locker.
+
+**Two aborts, found one at a time.** With the first patch alone light-locker
+got past the session lookup and died in `query_seat_path()` on the missing
+`XDG_SESSION_PATH`. The first abort had been hiding the second. Reporting
+"fixed" after the first patch would have been wrong.
+
+**Tested for locking, not just survival**, because that is where PR #153
+failed: `light-locker-command -l` made the user session inactive and brought
+up the greeter on `:1` in unlock mode. Unlock itself is untested - no password.
+
+**Process notes worth keeping.**
+
+- The first rollback request was reported done but had not happened: the VM
+  had been up nine hours and the marker was still there. `CurrentSnapshotName`
+  shows the snapshot the current state descends from, which was already the
+  target snapshot, so it proves nothing. The marker check caught it, which is
+  what it is for.
+- The crash file on the clean system was dated before the login - it lived in
+  the snapshot, and apport does not write a new one while an unreported one
+  exists. The journal is the evidence for a given boot, not `/var/crash`.
+- `sbuild` on a git tree needs `--no-clean-source`. Recorded on day one and
+  forgotten on day two.
+- `gbp pq export` re-exports every patch and rewrites index hashes and hunk
+  offsets in ones we did not touch. Restore them before committing, or a
+  two-file contribution arrives as a five-file one.
+- Version bumped to `+unity2` rather than rebuilding `+unity1`, which had
+  already been published and installed.

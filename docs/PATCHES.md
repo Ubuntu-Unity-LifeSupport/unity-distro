@@ -10,6 +10,7 @@ whoever sends it, which is always May.
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
 | nux | `migrate-to-libpcre2.patch` (0ubuntu13) | Not ours. Adds the `nux.pc.in` and `configure.ac` hunks the 0ubuntu12 upload left out, so `nux-4.0` resolves again and unity can build. Asking for an SRU into resolute. | LP: #2103918, LP: #2147013 | [`upstream/nux-pcre2/`](upstream/nux-pcre2/) | **ready** |
+| light-locker | `0003-Follow-the-user-s-display-session-outside-a-session-.patch`, `0004-Find-the-LightDM-session-when-XDG_SESSION_PATH-is-mi.patch` | Stops the abort on every login under Ubuntu Unity 26.04. light-locker runs under cinnamon-session, a systemd user service, so logind cannot map its PID to a session and `XDG_SESSION_PATH` is not inherited. Falls back to logind's display session and to LightDM's session list over D-Bus. Ours; 1.8.0-3ubuntu4+unity2. | LP: #2038808 | [`upstream/light-locker-session/`](upstream/light-locker-session/) | **ready** |
 | nux | `Validator::Validate` discards its match result | On the Windows branch the function returns `Acceptable` from both sides of its `if`. Real, small, and deliberately kept out of the PCRE2 submission so it does not blur a first contact. | none yet | — | draft |
 
 ## Rules

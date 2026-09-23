@@ -45,3 +45,14 @@ repositories:
     type: git
     url: https://gitlab.com/ubuntu-unity/unity/unity-scope-home.git
     version: ubuntu/devel
+
+  # Our own repositories. Patched Ubuntu packages follow the gbp layout in
+  # section 5 of the handoff: unity/resolute, upstream/latest, pristine-tar.
+  packages/light-locker:
+    type: git
+    url: https://github.com/Ubuntu-Unity-LifeSupport/light-locker.git
+    version: unity/resolute
+  packages/unity-gtk4-menu:
+    type: git
+    url: https://github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu.git
+    version: main

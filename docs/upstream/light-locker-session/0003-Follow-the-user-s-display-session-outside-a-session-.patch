@@ -1,0 +1,141 @@
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Wed, 23 Sep 2026 17:26:21 +0000
+Subject: Follow the user's display session outside a session scope
+
+light-locker finds its session by asking logind for the session of its own
+PID. That only works for a process inside a session scope. On Ubuntu Unity
+26.04 the session manager, cinnamon-session, runs as the systemd user service
+unity-session.service, and light-locker is started as its child, so it lives in
+user@UID.service. logind then answers "PID does not belong to any known
+session", query_session_id() returns NULL, and init_session_id() calls
+g_error(), which aborts. The result is a crash on every login.
+
+When the PID lookup fails, fall back to the user's display session as recorded
+by logind, sd_uid_get_display(), and resolve its object path with GetSession.
+Do the same for sd_session_id, keeping it a session ID rather than an object
+path: it is passed to sd_session_is_active(), which rejects an object path with
+EINVAL.
+
+The XDG_SESSION_ID fallback already in this package does not help here, for
+two reasons: it only covers the second lookup, while the abort happens in the
+first, and the variable is absent from the user manager's environment.
+
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/light-locker/+bug/2038808
+Forwarded: not-needed
+Last-Update: 2026-09-23
+Assisted-by: LLM Claude Opus 5.5
+---
+ src/gs-listener-dbus.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 84 insertions(+), 2 deletions(-)
+
+diff --git a/src/gs-listener-dbus.c b/src/gs-listener-dbus.c
+index 26134cd..5f77dbf 100644
+--- a/src/gs-listener-dbus.c
++++ b/src/gs-listener-dbus.c
+@@ -2058,6 +2058,81 @@ gs_listener_acquire (GSListener *listener,
+         return (res != -1);
+ }
+ 
++#ifdef WITH_SYSTEMD
++/*
++ * Look up the logind object path of the user's graphical session.
++ *
++ * GetSessionByPID() only answers for a process that lives inside a session
++ * scope. When light-locker is started by a session manager that itself runs as
++ * a systemd user service - cinnamon-session under unity-session.service on
++ * Ubuntu Unity 26.04 - the process belongs to user@UID.service and logind
++ * reports "PID does not belong to any known session". The user's display
++ * session, as recorded by logind, is the session light-locker should follow.
++ */
++static char *
++query_display_session_path (GSListener *listener)
++{
++        DBusMessage    *message;
++        DBusMessage    *reply;
++        DBusError       error;
++        char           *display_id = NULL;
++        char           *path = NULL;
++        int             r;
++
++        r = sd_uid_get_display (getuid (), &display_id);
++        if (r < 0) {
++                gs_debug ("Couldn't determine the user's display session: %s", strerror (-r));
++                return NULL;
++        }
++
++        message = dbus_message_new_method_call (SYSTEMD_LOGIND_SERVICE, SYSTEMD_LOGIND_PATH, SYSTEMD_LOGIND_INTERFACE, "GetSession");
++        if (message == NULL) {
++                gs_debug ("Couldn't allocate the dbus message");
++                free (display_id);
++                return NULL;
++        }
++
++        if (dbus_message_append_args (message, DBUS_TYPE_STRING, &display_id, DBUS_TYPE_INVALID) == FALSE) {
++                gs_debug ("Couldn't add args to the dbus message");
++                dbus_message_unref (message);
++                free (display_id);
++                return NULL;
++        }
++
++        dbus_error_init (&error);
++        reply = dbus_connection_send_with_reply_and_block (listener->priv->system_connection,
++                                                           message,
++                                                           -1, &error);
++        dbus_message_unref (message);
++
++        if (dbus_error_is_set (&error)) {
++                gs_debug ("%s raised:\n %s\n\n", error.name, error.message);
++                dbus_error_free (&error);
++                free (display_id);
++                return NULL;
++        }
++
++        if (dbus_message_get_args (reply, &error,
++                                   DBUS_TYPE_OBJECT_PATH, &path,
++                                   DBUS_TYPE_INVALID)) {
++                path = g_strdup (path);
++                gs_debug ("Using the user's display session %s (%s)", display_id, path);
++        } else {
++                path = NULL;
++        }
++
++        dbus_message_unref (reply);
++
++        if (dbus_error_is_set (&error)) {
++                gs_debug ("%s raised:\n %s\n\n", error.name, error.message);
++                dbus_error_free (&error);
++        }
++
++        free (display_id);
++        return path;
++}
++#endif
++
+ static char *
+ query_session_id (GSListener *listener)
+ {
+@@ -2100,7 +2175,7 @@ query_session_id (GSListener *listener)
+                 if (dbus_error_is_set (&error)) {
+                         gs_debug ("%s raised:\n %s\n\n", error.name, error.message);
+                         dbus_error_free (&error);
+-                        return NULL;
++                        return query_display_session_path (listener);
+                 }
+ 
+                 if (dbus_message_get_args (reply, &error,
+@@ -2175,7 +2250,14 @@ query_sd_session_id (GSListener *listener)
+       r = sd_pid_get_session (0, &t);
+       if (r < 0) {
+               gs_debug ("Couldn't determine our own sd session id: %s", strerror (-r));
+-              return NULL;
++              /* Outside a session scope, follow the user's display session.
++                 This must stay a session ID, not an object path: it is passed
++                 to sd_session_is_active(), which rejects a path with EINVAL. */
++              r = sd_uid_get_display (getuid (), &t);
++              if (r < 0) {
++                      gs_debug ("Couldn't determine the user's display session: %s", strerror (-r));
++                      return NULL;
++              }
+       }
+ 
+       ssid = g_strdup (t);

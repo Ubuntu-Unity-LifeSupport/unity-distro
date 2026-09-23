@@ -1,0 +1,14 @@
+# The same calls from inside a systemd user service - light-locker's situation
+#
+# systemd-run --user --wait --pipe ./sdtest
+
+sd_pid_get_session(self)      -> -61 No data available
+sd_uid_get_display(uid)       -> 0 5
+sd_session_is_active("5")     -> 1   (a session ID)
+sd_session_is_active(path)    -> -22 Invalid argument   (a D-Bus object path)
+
+The last line matters for upstream PR #153: it merges session_id (an object
+path) and sd_session_id (a session ID) and passes the object path to
+sd_session_is_active(). That returns -EINVAL, the "== 0" test never fires, and
+the "refuse to lock an inactive session" guard is silently disabled. That is a
+likely explanation for the locking problems reported on that PR.

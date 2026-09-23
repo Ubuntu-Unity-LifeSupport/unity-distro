@@ -1,0 +1,25 @@
+# Why the session lookup fails
+#
+# light-locker asks logind for the session of its own PID. That only answers
+# for a process inside a session scope.
+
+$ busctl call org.freedesktop.login1 /org/freedesktop/login1 \
+    org.freedesktop.login1.Manager GetSessionByPID u <compiz pid, a user service>
+Call failed: PID 2720 does not belong to any known session
+
+$ busctl call ... GetSessionByPID u <session leader, in session-3.scope>
+o "/org/freedesktop/login1/session/_33"
+
+logind does know the user's graphical session:
+
+$ loginctl show-user mike -p Display
+Display=3
+$ busctl call ... GetSession s 3
+o "/org/freedesktop/login1/session/_33"
+
+Same path the PID lookup would have returned from inside the session.
+
+XDG_SESSION_ID, which a Debian patch in this package falls back to, is absent:
+
+$ systemctl --user show-environment | grep XDG_SESSION_ID
+(nothing)

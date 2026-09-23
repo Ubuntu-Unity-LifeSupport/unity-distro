@@ -1,0 +1,23 @@
+# Who starts light-locker, and why it ends up outside the session scope
+
+journalctl -o verbose _COMM=light-locker:
+    _PID=3116
+    _SYSTEMD_USER_UNIT=unity-session.service
+    _SYSTEMD_CGROUP=/user.slice/user-1000.slice/user@1000.service/app.slice/unity-session.service
+
+$ systemctl --user cat unity-session.service
+[Service]
+ExecStart=/usr/bin/cinnamon-session --session=unity
+
+/usr/share/cinnamon-session/sessions/unity.session:
+    DesktopName=Unity:Unity7:ubuntu
+
+So Ubuntu Unity 26.04 runs cinnamon-session as a systemd user service, and it
+launches light-locker from /etc/xdg/autostart as a child process. Everything it
+starts lives in user@1000.service, none of it in the logind session scope.
+
+Side observation, not part of this fix: light-locker.desktop carries
+NotShowIn=GNOME;Unity; and systemd's own autostart generator honours that - its
+unit ends with Result: exec-condition and never runs. light-locker runs only
+because cinnamon-session launches it regardless. The screen locker Ubuntu Unity
+chose for 26.04 therefore depends on that NotShowIn being ignored.

@@ -12,6 +12,16 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Layer A's first fix of our own: light-locker no longer crashes on login.**
+  Known 26.04 issue #5. Two stacked aborts with one cause - light-locker is
+  started by cinnamon-session, which runs as the systemd user service
+  `unity-session.service`, so it sits outside the logind session scope and
+  inherits neither a session nor LightDM's `XDG_SESSION_PATH`. Two patches,
+  built as `1.8.0-3ubuntu4+unity2`, verified on a clean desktop: alive after
+  login, owns the ScreenSaver name, and actually locks - the greeter comes up
+  in unlock mode. Queued in `docs/upstream/light-locker-session/`, repository
+  https://github.com/Ubuntu-Unity-LifeSupport/light-locker.
+
 - **Layer B has a working, packaged global menu for GTK4.** `unity-gtk4-menu`
   0.2, its own repository at
   https://github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu, built in a clean
