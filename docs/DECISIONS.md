@@ -272,7 +272,7 @@ PCRE1 mapping at all**.
 | HUD (Alt) | opens |
 | Session indicator, shutdown menu | opens, all entries present |
 | Sound indicator | opens, sliders and media controls work |
-| Window decorations on a GTK3 headerbar app | correct, Unity-style |
+| Window decorations on a GTK4 + libadwaita header bar app (file-roller; originally mislabelled GTK3, corrected 2026-09-23) | correct, Unity-style |
 | Crashes during the run | none |
 
 **On the crashes we did see.** Three, none attributable to this change.
@@ -304,7 +304,7 @@ regression on a live 26.04 desktop. This is the evidence for the SRU.
 Not a regression, and not something we introduced - a measurement of where
 Layer B has to start.
 
-Opened `file-roller`, a GTK3 application with an `AdwHeaderBar`-style titlebar
+Opened `file-roller`, a GTK4 + libadwaita application (originally written here as GTK3 - wrong, corrected 2026-09-23; the measurement stands, the classification did not) with an `AdwHeaderBar`
 and a hamburger button. The panel shows only the application name; there is no
 File/Edit/View to be seen. Querying the registrar directly:
 
@@ -408,3 +408,56 @@ The rule is bounded so it does not become paralysis: about twenty minutes on
 the system, the package history and the trackers, then write down where you
 looked and carry on. **The record goes in either way.** "I do not remember
 whether I checked" means "I did not check".
+
+---
+
+## 2026-09-23 - the handoff checked against the real system, section by section
+
+**Searched for:** whether each factual claim in `UNITY-DISTRO-HANDOFF.md`
+holds on resolute today, after the plan had already misled us several times.
+
+**Where:** the host session went through all nine sections against the archive
+(`apt-cache policy`, `apt-cache showsrc`), the web, and the sources on builder,
+and wrote its findings to `~/HANDOFF-CORRECTIONS.md`. Every package claim in
+that file was then re-checked independently here with `apt-cache` before being
+written into the handoff - copying unverified package facts into a correction
+about unverified package facts would repeat the very mistake. All matched.
+
+**Found.** Fifteen corrections, now made in place in the handoff with a note
+under each, plus Appendix B summarising them. The ones that change the work:
+
+- **Qt has no global menu in 26.04 at all.** `appmenu-qt5` does not exist in
+  the archive; it was dropped around 16.10 (LP #1612767) and never worked with
+  Qt6. Layer B is therefore larger than it looked: GTK4 needs our shim, GTK3
+  has an existing module, and Qt has to be built from nothing, probably as a
+  Qt platform theme exporting through dbusmenu the way KDE does.
+- **The file manager moved to GTK4.** The manual checklist told us to test the
+  GTK3 path on it. `gedit`, `synaptic`, `gnome-terminal`, `pluma` and `caja`
+  are still GTK3; `nautilus`, `file-roller`, `gnome-text-editor` and
+  `gnome-calculator` are GTK4 + libadwaita. TESTING.md now has a GTK4 branch,
+  which it lacked entirely.
+- **Six known bugs, not five**, and the workarounds point at mechanisms better
+  than the symptoms do.
+
+**The pattern.** The handoff was written without access to the system.
+Everything checkable by reading publications was accurate; everything that
+needed `apt-cache policy` drifted. No strategic decision failed the check.
+Rule: verify "package X exists and does Y" in the archive before building a
+plan on it.
+
+**Two corrections to our own records**, found in the same review:
+
+- `file-roller` was described as a GTK3 application in two places in this file
+  and one in TESTING.md. It is GTK4 + libadwaita. The measurements were right
+  and are unchanged; the classification was wrong and is corrected in place.
+- The record on screenshots says installing `scrot` on target is not needed.
+  That is accurate, but a chat message said "scrot там нет", meaning not
+  installed on target, which reads as "not in the archive". It is in the
+  archive, `1.12.1-1build1`; it is unused because under Compiz it captures a
+  black background, not because it is missing.
+
+**One correction to the correction.** The review listed "screenshot of the
+login screen as the lightdm user with its XAUTHORITY" as not yet tested. It was
+tested on 2026-09-22 while capturing the greeter: as the lightdm user it fails
+with `Authorization required`, because `/run/lightdm/root/:0` is root-owned
+0600; it works as root. The handoff now says so.

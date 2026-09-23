@@ -112,7 +112,7 @@ gdbus call --session --dest com.canonical.AppMenu.Registrar \
   --method com.canonical.AppMenu.Registrar.GetMenus
 ```
 
-Baseline taken 2026-09-22 with `file-roller`, a GTK3 headerbar application:
+Baseline taken 2026-09-22 with `file-roller`, a GTK4 + libadwaita header bar application:
 
 ```
 ([(uint32 48234500, '', objectpath '/')],)
@@ -136,6 +136,9 @@ The precondition is the whole bug; opening the menu once proves nothing.
 Both cancel routes were tried on 2026-09-22 and the bug did not appear. The
 logout path has not been tested.
 
+The full, corrected list of six known 26.04 bugs with their release-note
+workarounds is in `UNITY-DISTRO-HANDOFF.md` §2.
+
 ## Manual checklist
 
 Run the whole list after any change to the shell, the session or the
@@ -146,7 +149,13 @@ indicators:
 - [ ] panel renders
 - [ ] launcher renders and responds
 - [ ] Dash opens
-- [ ] global menu appears for a GTK3 application
+- [ ] global menu appears for a **GTK3** application - use `gedit`, `synaptic`,
+      `gnome-terminal`, `pluma` or `caja`. Not the file manager: nautilus is
+      GTK4 + libadwaita in 26.04, so it tests a path that is not there yet
+- [ ] **GTK4 + libadwaita branch** (`nautilus`, `file-roller`,
+      `gnome-text-editor`, `gnome-calculator`): the window carries
+      `_GTK_MENUBAR_OBJECT_PATH` in `xprop`, the registrar query above lists it,
+      the menu appears on hovering the panel, and its items are found by the HUD
 - [ ] HUD opens on Alt
 - [ ] indicators work: network, sound, session
 - [ ] shutdown menu works, and the dialog appears exactly once
