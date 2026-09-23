@@ -115,6 +115,11 @@ reads the specific text and agrees.
 
 ## Next
 
+0. **Layer B is bigger than planned: Qt has no global menu in 26.04 at all.**
+   `appmenu-qt5` does not exist in the archive. GTK4 is covered by our shim,
+   GTK3 by the existing `appmenu-gtk-module`, and Qt needs building from
+   nothing - most likely a Qt platform theme exporting through dbusmenu, as KDE
+   does. Not started; recorded so it is not mistaken for a small item.
 1. **Layer B: widget-scoped actions.** Breadth on real applications is
    measured and 0.3 is published. The known gap is actions registered with
    `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
@@ -135,20 +140,21 @@ reads the specific text and agrees.
 
 ## Known bugs in Ubuntu Unity 26.04 (candidates for the first contribution)
 
-From the release notes, not yet reproduced by us:
+Six, from the release notes, with their workarounds - the workarounds point at
+the mechanism better than the symptoms do. Corrected list as of 2026-09-23; the
+handoff originally had five and had dropped a precondition.
 
-- cursor disappears after login
-- shutdown / logout menu not working **after cancelling**
-- cursor lags under Compiz
-- wallpaper wrong after an OEM install
-- shutdown dialog appears twice - the release notes give a gsettings
-  workaround; two dialogs in a row are easy to mistake for a failure when
-  testing the shutdown path
+| # | Bug | Release-note workaround |
+|---|---|---|
+| 1 | Cursor disappears after login | `sudo systemctl restart lightdm` |
+| 2 | Shutdown/logout menu unresponsive **after cancelling** | tty + `sudo poweroff` |
+| 3 | Cursor stops responding | `killall -1 compiz` |
+| 4 | Wallpaper over the Calamares window during OEM install | Alt+Tab to the installer |
+| 5 | light-locker crashes on login, login still works | - |
+| 6 | Shutdown confirmation dialog appears twice | disabled through gsettings |
 
-None has a bug number. The release notes describe them in prose only, and
-searching Launchpad for "shutdown menu" turns up indicator-session bugs from
-2014. Filing any of them as a reproducible bug with a clear scenario would
-itself be a contribution, now that the checklist can be driven by xdotool.
+Bug 3's workaround - a signal to compiz - suggests the input handling loop
+rather than performance, which the handoff's "cursor lags" had obscured.
 
 **Shutdown menu, tested 2026-09-22 - not reproduced.** The first attempt tested
 the wrong thing: the note says the menu fails *after cancelling*, and opening it
