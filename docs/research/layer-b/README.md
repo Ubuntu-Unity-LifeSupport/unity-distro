@@ -572,3 +572,84 @@ Both are kept behind environment variables until that is answered.
 The second realize on the same window tries to export the model again and gets
 `Object already exported for interface org.gtk.Menus`. Harmless - the first
 export stands and the property is already set - but it needs a guard.
+
+---
+
+# What the panel actually shows, measured
+
+The host session's reading of the code was right about where the label comes
+from and wrong about the layout, so both halves are recorded here with the
+experiments that settle them.
+
+## Right: the label comes from the .desktop file
+
+`window-menu-model.c` lines 479-500 take `bamf_application_get_desktop_file()`,
+build a `GDesktopAppInfo` from it and use `g_app_info_get_name()`. The menu
+model is not consulted for the name at all. That is why unlabelled hamburger
+sections never mattered: **set `_GTK_APP_MENU_OBJECT_PATH` and the name arrives
+from the system, localised, identical to every other application.**
+
+Confirmed from the other end: `popovertest`, which has no `.desktop` file,
+shows Unity's own `Unknown Application Name`.
+
+## Right: both entries are shown, application menu first
+
+Lines 479 and 501 are two independent `if`s, not `if/else`. An application that
+sets both properties gets both entries. For a libadwaita application with no
+real menu bar, set **only** `_GTK_APP_MENU_OBJECT_PATH`, or the same hamburger
+items appear twice by two different routes.
+
+## Wrong: the title is not replaced on hover
+
+The claim was that the window title and the menus are two states of one area
+and never visible together. Measured with `mbtest`, which exports a real menu
+bar:
+
+| cursor | panel |
+|---|---|
+| away from the panel | `mbtest` |
+| over the panel | `mbtest    TestFile  TestHelp` |
+
+The left item stays and the menus appear beside it.
+`2026-09-23-panel-hover-states.png`.
+
+Settings are the stock ones: `com.canonical.Unity always-show-menus false`,
+`integrated-menus false`.
+
+## And the left item is the application name, not the title
+
+Two experiments that look contradictory until put together.
+
+- Renaming `mbtest`'s window with `xdotool set_window --name` changed the panel
+  text. So it followed the title.
+- `file-roller` opened on `sample.zip` has the window title `sample.zip`, and
+  the panel shows `File Roller`.
+
+The difference is the `.desktop` file. `file-roller` has one and BAMF matches
+it, so the panel shows the application name; `mbtest` has none, so it falls
+back to the window title.
+
+**The panel's left item and the application menu entry are fed from the same
+source** - the `Name=` field of the `.desktop` file. Labelling the entry the way
+Unity labels it therefore guarantees it matches the item already beside it.
+
+## So the duplication is structural, and it is a question for the team
+
+`File Roller  File Roller` is not a consequence of our wrapper, and the
+application-menu route does not remove it: Unity names the entry from the same
+`.desktop` field it uses for the panel item. Neither route avoids it, because
+the name is correct in both places.
+
+What we cannot tell from here is whether this is a problem at all. Applications
+that had app menus in the GNOME 3.10-3.30 era presumably looked exactly like
+this under Unity, and the mechanism was built for them. That makes it a
+question about intent rather than about code, and it belongs in the first
+conversation with the team along with the other one:
+
+- is `_GTK_APP_MENU_OBJECT_PATH` a path you still consider alive, given GNOME
+  deprecated app menus in 3.32 and GTK4 removed the API
+- is an application-menu entry named the same as the panel item beside it the
+  intended appearance, or something that used to be avoided
+
+Both are architecture questions. Answering them after the package is written
+would be the expensive order.
