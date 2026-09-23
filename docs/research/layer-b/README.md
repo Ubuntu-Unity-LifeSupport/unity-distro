@@ -255,3 +255,78 @@ window at all. Use it for single runs, not for A/B loops.
 stderr is useless here: the window is frequently created in a process that
 inherits the environment but not the caller's redirected stderr, so the
 interesting output disappears.
+
+---
+
+# Widening the search, and checking what the hook disturbs
+
+Work done while a web search for prior art is outstanding - neither of these
+depends on its answer.
+
+## Why yelp found nothing: the model is behind the popover
+
+The shim now dumps the widget tree on a miss. yelp has **four**
+`GtkMenuButton`s and every one reports `model=no`:
+
+```
+  tree   GtkMenuButton   <-- menu-ish
+  tree        model=no popover=GtkPopover
+  tree   GtkMenuButton   <-- menu-ish
+  tree        model=no popover=GtkPopoverMenu
+```
+
+An application may call `gtk_menu_button_set_popover()` instead of
+`set_menu_model()`, and then `gtk_menu_button_get_menu_model()` returns NULL
+even though a menu exists. Where the popover is a `GtkPopoverMenu`, the model
+is still reachable through `gtk_popover_menu_get_menu_model()`. The shim now
+tries that as a fallback.
+
+Two further things the tree showed, worth remembering:
+
+- **yelp's header bar is not the window's titlebar.** It sits in the content
+  tree under `AdwToolbarView` -> `GtkRevealer` -> `GtkWindowHandle` -> `GtkBox`
+  -> `AdwHeaderBar`. Searching only `gtk_window_get_titlebar()` would miss it
+  entirely; the shim walks the content tree too.
+- **Several menu buttons per window is normal.** yelp has four. Taking the
+  first one with a model is arbitrary, and which one is the *primary* menu is
+  an open question.
+
+`popovertest.c` reproduces the yelp pattern deterministically: a menu button
+given a `GtkPopoverMenu` through `set_popover`. The fallback finds it -
+`found GtkPopoverMenu behind a menu button at depth 4` - and the window gets
+`_GTK_MENUBAR_OBJECT_PATH`. yelp itself turned out to be useless as a live test
+subject: it exits within seconds when launched with no document, with or
+without the shim.
+
+## The hook fires on dialogs and does not disturb them
+
+`realize` is hooked on every `GtkWindow`, and a dialog is one.
+`dialogtest.c` opens a main window with a menu and then puts a `GtkAlertDialog`
+and an about dialog on top.
+
+```
+realize (GtkApplicationWindow)
+found GtkMenuButton with a model at depth 4
+menubar attached, labelled "dialogtest"
+realize (GtkWindow)
+application already has a menubar, leaving it alone
+realize (GtkWindow)
+realize (GtkWindow)
+```
+
+The dialogs render, the process stays up, and stderr carries no GTK warnings,
+criticals or assertions. The guard that skips an application which already has
+a menubar is what keeps a dialog from overwriting the main window's menu -
+which matters, because a `GtkApplication` menubar is application-wide.
+
+## Test subjects, ranked by how much they can be trusted
+
+| | |
+|---|---|
+| our own test programs | deterministic, use these |
+| file-roller | shows a real menu, but re-executes itself at startup and under repeated restart often exits before showing a window. Single runs only |
+| simple-scan | aborts with SIGABRT about ten seconds in, with or without the shim |
+| yelp | exits at once without a document argument |
+
+Measuring a shim against applications that fall over on their own wastes more
+time than writing a test program that does not.

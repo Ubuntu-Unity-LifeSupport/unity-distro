@@ -71,11 +71,29 @@ static GMenuModel *find_menu_model(GtkWidget *widget, int depth)
 		return NULL;
 
 	if (GTK_IS_MENU_BUTTON(widget)) {
-		GMenuModel *model =
-			gtk_menu_button_get_menu_model(GTK_MENU_BUTTON(widget));
+		GtkMenuButton *button = GTK_MENU_BUTTON(widget);
+		GMenuModel *model = gtk_menu_button_get_menu_model(button);
+
 		if (model != NULL) {
 			note("found GtkMenuButton with a model at depth %d", depth);
 			return model;
+		}
+
+		/*
+		 * An application that calls gtk_menu_button_set_popover()
+		 * instead of set_menu_model() leaves get_menu_model() NULL.
+		 * yelp does this for all four of its menu buttons. When the
+		 * popover is a GtkPopoverMenu the model is still reachable.
+		 */
+		GtkPopover *popover = gtk_menu_button_get_popover(button);
+		if (popover != NULL && GTK_IS_POPOVER_MENU(popover)) {
+			model = gtk_popover_menu_get_menu_model(
+				GTK_POPOVER_MENU(popover));
+			if (model != NULL) {
+				note("found GtkPopoverMenu behind a menu button at depth %d",
+				     depth);
+				return model;
+			}
 		}
 	}
 
@@ -133,6 +151,32 @@ static void dump_model(GMenuModel *model)
 	}
 }
 
+/* Walk the widget tree printing types, to see what an application is made of. */
+static void dump_tree(GtkWidget *widget, int depth)
+{
+	if (widget == NULL || depth > 24)
+		return;
+
+	const char *type = G_OBJECT_TYPE_NAME(widget);
+	gboolean interesting = GTK_IS_MENU_BUTTON(widget) ||
+			       GTK_IS_POPOVER_MENU_BAR(widget) ||
+			       GTK_IS_POPOVER(widget);
+
+	note("  tree %*s%s%s", depth * 2, "", type,
+	     interesting ? "   <-- menu-ish" : "");
+
+	if (GTK_IS_MENU_BUTTON(widget)) {
+		GMenuModel *m = gtk_menu_button_get_menu_model(GTK_MENU_BUTTON(widget));
+		GtkWidget *pop = GTK_WIDGET(gtk_menu_button_get_popover(GTK_MENU_BUTTON(widget)));
+		note("  tree %*s     model=%s popover=%s", depth * 2, "",
+		     m ? "yes" : "no", pop ? G_OBJECT_TYPE_NAME(pop) : "no");
+	}
+
+	for (GtkWidget *c = gtk_widget_get_first_child(widget); c != NULL;
+	     c = gtk_widget_get_next_sibling(c))
+		dump_tree(c, depth + 1);
+}
+
 static void attach_menubar(GtkWindow *window)
 {
 	GtkApplication *app = gtk_window_get_application(window);
@@ -153,6 +197,12 @@ static void attach_menubar(GtkWindow *window)
 
 	if (model == NULL) {
 		note("no menu model found in this window");
+		if (getenv("UNITY_GTK4_SHIM_TREE") != NULL) {
+			note("titlebar tree:");
+			dump_tree(gtk_window_get_titlebar(window), 0);
+			note("content tree:");
+			dump_tree(gtk_window_get_child(window), 0);
+		}
 		return;
 	}
 
