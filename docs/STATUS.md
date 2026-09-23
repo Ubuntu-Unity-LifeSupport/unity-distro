@@ -136,7 +136,10 @@ reads the specific text and agrees.
    `gtk_widget_insert_action_group()` on a sub-widget - they are not in the
    window's exported group, so their menu items arrive insensitive. yelp's
    "О приложении" is the reproducer. See `research/layer-b/`.
-2. **Next Layer A candidate: the shutdown path.** Known issues #2 (menu stops
+2. **Layer A, in progress: the shutdown path.** #6 reproduced with its
+   mechanism proven, #2 reproduced with its real precondition; the Unity code
+   path behind #2 and the choice of fix remain. See `research/shutdown-path/`.
+   Earlier notes: Known issues #2 (menu stops
    responding after cancelling) and #6 (double confirmation dialog). Measured
    2026-09-23: **there are two different shutdown dialogs** on target. The
    session indicator's "Выключение..." opens Unity's own ("До скорой встречи,
@@ -174,6 +177,11 @@ handoff originally had five and had dropped a precondition.
 
 Bug 3's workaround - a signal to compiz - suggests the input handling loop
 rather than performance, which the handoff's "cursor lags" had obscured.
+
+**Update 2026-09-23: #2 and #6 both reproduced.** The 2026-09-22 attempt
+below cancelled Unity's dialog; the precondition is cancelling the *second*
+dialog, cinnamon-session's, after confirming Unity's. The double dialog's
+mechanism is proven end to end. Both in `research/shutdown-path/`.
 
 **Shutdown menu, tested 2026-09-22 - not reproduced.** The first attempt tested
 the wrong thing: the note says the menu fails *after cancelling*, and opening it

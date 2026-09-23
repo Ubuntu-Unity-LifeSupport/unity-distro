@@ -152,8 +152,10 @@ The precondition is the whole bug; opening the menu once proves nothing.
 3. open the session indicator again and try "Выключение..." or "Завершение
    сеанса"
 
-Both cancel routes were tried on 2026-09-22 and the bug did not appear. The
-logout path has not been tested.
+Both cancel routes were tried on 2026-09-22 and the bug did not appear -
+because that cancelled the wrong dialog. **Reproduced on 2026-09-23:** confirm
+in Unity's dialog, then cancel the *second* dialog that cinnamon-session shows,
+and "Выключение..." stops opening anything. See `research/shutdown-path/`.
 
 The full, corrected list of six known 26.04 bugs with their release-note
 workarounds is in `UNITY-DISTRO-HANDOFF.md` §2.
