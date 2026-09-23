@@ -720,3 +720,87 @@ The application-menu route now has a second argument behind it that the menubar
 route does not: HUD coverage. It also still rests on a property GNOME
 deprecated and GTK4 dropped. Both belong in the same question to the team, and
 the HUD result makes it worth asking well.
+
+---
+
+# Choosing between the two routes: menubar wins
+
+Three findings settle it, and the deciding one contradicts what we expected.
+
+## The reference implementation never uses app menu
+
+`appmenu-gtk-module` - the module Ubuntu builds into the package installed on
+target - sets exactly three properties on X11, verified in `src/platform.c`:
+
+```c
+_GTK_UNIQUE_BUS_NAME
+_UNITY_OBJECT_PATH
+_GTK_MENUBAR_OBJECT_PATH
+```
+
+and on Wayland it passes the app menu slot explicitly as nothing:
+
+```c
+const char *app_menu_path = NULL;
+gdk_wayland_window_set_dbus_properties_libgtk_only(..., app_menu_path, ...)
+```
+
+No comment explains the choice, but the choice is deliberate. Everything a GTK3
+application has becomes a menubar. Sending GTK4 applications down the app-menu
+channel instead would put two different shapes in one panel.
+
+## The HUD is not an argument for app menu after all
+
+The app-menu route makes HUD find the hamburger items, which looked like its
+decisive advantage. Tested the same application through the menubar route:
+
+```
+Popover Item One   (popovertest)
+Popover Item Two   (popovertest)
+```
+
+The HUD finds them either way - and through the menubar route it also shows
+which menu each item belongs to, which the app-menu route does not.
+`2026-09-23-hud-via-menubar-route.png`.
+
+So HUD coverage comes from exporting the model at all, not from the channel.
+The advantage we thought was unique is not.
+
+## Ubuntu used to patch app menus away
+
+Ubuntu 14.04 shipped patches restoring full menu bars to GNOME applications
+that had moved to app menus - Nautilus, Rhythmbox, File Roller, Calculator.
+The reasoning recorded at the time was that a single app-menu entry works in
+GNOME and works badly on desktops that kept traditional menus.
+
+So `File Roller  File Roller` is not an intended appearance we failed to
+understand. It is a state Ubuntu spent effort avoiding, one application at a
+time.
+
+## Decision
+
+**The menubar route.** Consistent with the reference implementation, covered by
+the HUD with better context, and not resting on a channel whose producing side
+left the toolkit. Both remain in the shim behind environment variables, because
+a measurement someone can repeat is worth more than a decision recorded in
+prose.
+
+What we give up is the automatic label. Through the menubar route the top-level
+name comes from `g_get_application_name()`, which for `popovertest` yields
+`popovertest` rather than the `.desktop` name `Popover Test`. That happens to
+avoid the duplication, but by accident rather than design.
+
+## The label is now a small question with a precedent
+
+It stops being an architecture question and becomes a UI one, and the answer
+does not have to be a single opinion. Cinnamon's Global Application Menu applet
+offers *show or hide the application name* as a setting, and vala-panel-appmenu
+carries the same discussion. Making it configurable is the established way this
+particular taste question gets handled.
+
+## Still missing from our shim
+
+`appmenu-gtk-module` also sets `_UNITY_OBJECT_PATH`, which we do not - GTK4 sets
+only the paths it knows about. The HUD worked without it, so it is not
+load-bearing here, but it is a difference from the reference worth
+understanding before any of this is packaged.
