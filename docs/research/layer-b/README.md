@@ -929,3 +929,67 @@ The binary is pulled from the local archive so nobody installs it. Source stays
 at https://github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu with this
 recorded, because the packaging itself is right and only the symbol handling is
 wrong.
+
+---
+
+# Rewritten on dlsym, and the session survives
+
+`unity-gtk4-menu` 0.2. The change is in how the library reaches GTK, not in
+what it does.
+
+Nothing is linked but libc:
+
+```
+$ readelf -d libunity-gtk4-menu.so.0 | grep NEEDED
+ 0x0000000000000001 (NEEDED)  Shared library: [libc.so.6]
+```
+
+Every GTK and GLib symbol is resolved with `dlsym`, and the constructor first
+asks `dlopen("libgtk-4.so.1", RTLD_NOLOAD)` - which returns a handle only if
+the library is already mapped here. In anything that is not a GTK4 application,
+that is NULL and the library stops without having touched GTK.
+
+Headers are still included, for types and struct layouts. `GTK_IS_*` and
+`GTK_TYPE_*` are avoided throughout: they expand into calls, and a call is what
+puts a library back into `NEEDED`. Guessing the offset of `realize` in
+`GtkWidgetClass` instead of taking it from the header would have been worse.
+
+## Verified, in the order the failures happened
+
+| | before | after |
+|---|---|---|
+| `onboard --help` with the library preloaded | `Gdk-ERROR: gdk_display_manager_get() was called before gtk_init()` | exits cleanly, no errors |
+| a non-GTK process | GTK4 dragged in | `GTK4 is not loaded in this process, doing nothing` |
+| session after install and reboot | `unity-panel-service` dead, seven fresh crashes | compiz, `unity-panel-service` and eight indicators running, one crash and it is the documented `light-locker` |
+| a GTK4 application | menu attached | menu attached |
+
+Installed from our own archive, the session composes both preloads as intended:
+
+```
+LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+```
+
+and an application launched with that environment logs:
+
+```
+GTK4 is not loaded in this process, doing nothing
+GTK4 is not loaded in this process, doing nothing
+hooked GtkWindow::realize
+hooked GtkApplicationWindow::realize
+popover menu behind a button at depth 7
+menubar attached, labelled "popovertest"
+the application already has a menubar
+```
+
+The first two lines are the early `exec` stages before GTK4 is mapped. They
+also settle an old puzzle: the constructor appearing to run several times under
+one pid was never file-roller re-executing itself, it is simply what a preload
+sees across an exec chain.
+
+## A guard, not a comment
+
+`make check` runs before `make install` and fails the build if any GTK or GLib
+library reappears in `NEEDED`. The comment explaining why would not have caught
+a future edit; the check will. This class of mistake is invisible until the
+library is installed session-wide rather than preloaded onto one command, so
+the build is the only place to catch it cheaply.
