@@ -1,0 +1,47 @@
+From 97fa92092b93cf7d616b96a6a1099c49ce86e40a Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Thu, 24 Sep 2026 22:31:00 +0000
+Subject: [PATCH] Build-depend on systemd-dev, so the systemd user unit is
+ installed again
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog | 11 +++++++++++
+ debian/control   |  2 +-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/debian/changelog b/debian/changelog
+index 77065c8..2563215 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,14 @@
++indicator-printers (0.1.7+17.10.20171101-0ubuntu8+unity1) resolute; urgency=medium
++
++  * Build-depend on systemd-dev instead of systemd. systemd.pc moved to
++    systemd-dev, so configure found no systemduserunitdir and the 26.04
++    rebuild dropped /usr/lib/systemd/user/indicator-printers.service;
++    without it the indicator service never starts in a systemd user
++    session.
++    (Same cause as LP: #2153375 in indicator-bluetooth.)
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Thu, 24 Sep 2026 22:30:00 +0000
++
+ indicator-printers (0.1.7+17.10.20171101-0ubuntu8) resolute; urgency=medium
+ 
+   * No-change mass rebuild for Ubuntu 26.04 (LP: #2132257)
+diff --git a/debian/control b/debian/control
+index a9a3624..bba5713 100644
+--- a/debian/control
++++ b/debian/control
+@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 9),
+                libdbusmenu-gtk3-dev (>= 0.5.90),
+                libindicator3-dev (>= 0.3.91),
+                libcups2-dev,
+-               systemd,
++               systemd-dev,
+ Standards-Version: 3.9.2
+ Homepage: https://launchpad.net/indicator-printers
+ # If you aren't a member of ~indicator-applet-developers but need to upload
+-- 
+2.53.0
+

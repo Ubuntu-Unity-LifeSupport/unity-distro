@@ -14,6 +14,10 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **indicator-bluetooth and indicator-printers start again.** The 26.04
+  rebuild lost their systemd user units (found by the stack-health sweep);
+  rebuilt with `systemd-dev`, `+unity1` in aptly, both services running on
+  target2. `research/indicator-units/`.
 - **Login race fixed: black desktop for two minutes after some logins.**
   unity-session's `run-systemd-session` stopped graphical-session.target at
   every login, even when it was not running, killing gvfs-daemon while

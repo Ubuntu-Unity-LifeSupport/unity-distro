@@ -1,0 +1,47 @@
+From a373dcf20f7620cf46d97950a68593448a5819f9 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Thu, 24 Sep 2026 22:30:59 +0000
+Subject: [PATCH] Build-depend on systemd-dev, so the systemd user unit is
+ installed again
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog | 11 +++++++++++
+ debian/control   |  2 +-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/debian/changelog b/debian/changelog
+index 0809b46..d7c3ef8 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,14 @@
++indicator-bluetooth (0.0.6+17.10.20170605-0ubuntu7+unity1) resolute; urgency=medium
++
++  * Build-depend on systemd-dev instead of systemd. systemd.pc moved to
++    systemd-dev, so configure found no systemduserunitdir and the 26.04
++    rebuild dropped /usr/lib/systemd/user/indicator-bluetooth.service;
++    without it the indicator service never starts in a systemd user
++    session.
++    (LP: #2153375)
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Thu, 24 Sep 2026 22:30:00 +0000
++
+ indicator-bluetooth (0.0.6+17.10.20170605-0ubuntu7) resolute; urgency=medium
+ 
+   * Depend on gnome-bluetooth-sendto instead of transitional package
+diff --git a/debian/control b/debian/control
+index 3b45aae..14cb2fc 100644
+--- a/debian/control
++++ b/debian/control
+@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9.0),
+                dh-translations,
+                gnome-common,
+                libglib2.0-dev,
+-               systemd,
++               systemd-dev,
+                valac (>=0.18),
+ Standards-Version: 3.9.4
+ Homepage: https://launchpad.net/indicator-bluetooth
+-- 
+2.53.0
+

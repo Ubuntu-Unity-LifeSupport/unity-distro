@@ -78,3 +78,13 @@ repositories:
     type: git
     url: https://git.launchpad.net/~ubuntu-qt-code/+git/calamares-settings-ubuntu
     version: ubuntu/resolute
+  # git-ubuntu imports; our changes on local unity/resolute branches, patches
+  # in docs/research/indicator-units/.
+  packages/indicator-bluetooth:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-bluetooth
+    version: ubuntu/resolute
+  packages/indicator-printers:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-printers
+    version: ubuntu/resolute

@@ -5,6 +5,11 @@ Build directory: `~/work/b`
 
 ## Now
 
+**indicator-bluetooth, indicator-printers** - agent B's since 2026-09-24.
+`+unity1` in aptly (systemd-dev, unit restored); branches `unity/resolute`
+in `packages/`, patches in `research/indicator-units/`. target2 has both
+installed with `dpkg -i`.
+
 **calamares-settings-ubuntu** - agent B's since 2026-09-24 (known issue #4,
 May approved). `1:26.04.12+unity1` in aptly (`-ubuntu-unity`, `-common`,
 `-common-data`): basicwallpaper is a desktop window on X11, so it cannot cover
