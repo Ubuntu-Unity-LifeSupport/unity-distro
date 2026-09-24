@@ -14,6 +14,17 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Restarting compiz (`killall -1 compiz`, the #3 workaround) fixed.** The
+  release notes' side bug is real: every restart moved windows on lower
+  workspaces up by a title bar until they landed on the first row (compiz
+  core, workarea clamp of the current viewport; compiz `+unity2`). Behind it:
+  compiz segfaulted on every exit (Unity `ThumbnailGenerator`), unfocused
+  windows lost their title bars after a restart (Unity decorations vs Yaru's
+  0 px inactive shadow; unity `+unity8`), and gtk-nocsd's crash handler
+  crashed at every crash of a preloaded program (two upstream backports;
+  gtk-nocsd `+unity2`). All three in aptly, verified on target over five
+  restarts on a 2x2 workspace grid. `research/compiz-restart/`.
+
 - **Known issue #4 (wallpaper over Calamares) fixed.** It is the OEM
   first-time setup session, not the vendor's install: xfwm4 raises the
   focused fullscreen `basicwallpaper` window above Calamares, after a startup
@@ -205,7 +216,7 @@ handoff originally had five and had dropped a precondition.
 |---|---|---|
 | 1 | Cursor disappears after login | `sudo systemctl restart lightdm` |
 | 2 | Shutdown/logout menu unresponsive **after cancelling** | tty + `sudo poweroff` - **fixed in our unity +unity2** |
-| 3 | Cursor stops responding | `killall -1 compiz` |
+| 3 | Cursor stops responding | `killall -1 compiz` - not reproduced; the workaround itself crashed compiz and walked windows off the lower workspaces, **fixed in unity +unity8, compiz +unity2** (`research/compiz-restart/`) |
 | 4 | Wallpaper over the Calamares window during OEM install | Alt+Tab to the installer - **fixed in our calamares-settings-ubuntu +unity1** (`research/calamares-oem/`) |
 | 5 | light-locker crashes on login, login still works | - |
 | 6 | Shutdown confirmation dialog appears twice | disabled through gsettings |

@@ -1,0 +1,7 @@
+restart 1: pid 16824 -> 16824, terminals 6, bare 5, abs=1480,296 abs=200,712 abs=1480,712 abs=1844,126 abs=700,182 abs=200,296 
+restart 2: pid 16824 -> 16824, terminals 6, bare 5, abs=1480,296 abs=200,680 abs=1480,680 abs=1844,126 abs=700,182 abs=200,296 
+restart 3: pid 16824 -> 16824, terminals 6, bare 5, abs=1480,296 abs=200,648 abs=1480,648 abs=1844,126 abs=700,182 abs=200,296 
+restart 4: pid 16824 -> 16824, terminals 6, bare 5, abs=1480,296 abs=200,648 abs=1480,648 abs=1844,126 abs=700,182 abs=200,296 
+restart 5: pid 16824 -> 16824, terminals 6, bare 5, abs=1480,296 abs=200,648 abs=1480,648 abs=1844,126 abs=700,182 abs=200,296 
+journal since 18:12:01:
+crash dir: 

@@ -876,3 +876,33 @@ wallpaper helper), the package changelog and the Launchpad branches up to
 Launchpad bugs of calamares-settings-ubuntu and calamares for "wallpaper",
 "basicwallpaper" and "OEM" (all statuses) - nothing about this. Not solved
 anywhere we could see. Details in `research/calamares-oem/`.
+
+## 2026-09-24 - compiz restart: four fixes, all local
+
+Checking the release notes' side bug of the #3 workaround (`killall -1
+compiz` sends windows to the first workspace) found four bugs; all fixed in
+our packages, nothing proposed upstream (May: upstream last).
+`research/compiz-restart/` has the measurements. Published together: unity
+`+unity8`, compiz `+unity2`, gtk-nocsd `+unity2`.
+
+Rule 0, where we looked:
+- Unity: `ThumbnailGenerator.cpp` and `DecoratedWindow.cpp` unchanged in
+  Ubuntu's tree since 2021 (`git log`); web search for missing decorations
+  after a compiz restart found only the gtk-window-decorator era (11.04).
+- compiz: `setWindowFrameExtents` unchanged since the imported
+  0.9.14.2+25.10.20250930; Compiz Reloaded compiz-core#187 / !179 is a
+  different bug (0.8 C code, output selection on multi-monitor).
+- gtk-nocsd: **found** - both crash-handler bugs are fixed upstream
+  (d851645, 664d8c6, 2026-03-28, in 4.0); Debian has 4.8. We backport the
+  two commits instead of packaging 4.8 for resolute: the rest of 4.x changes
+  how GTK windows look, which is not what we set out to change. Worth an SRU
+  request later.
+
+Kept as is: gtk-nocsd is preloaded into compiz and the other session
+services through environment.d, so its crash restart and systemd's
+`Restart=` both answer a crash; systemd wins, a second compiz lives ~1.5 s.
+Measured harmless; not changed.
+
+Target's clock was 1 h 07 min behind and not synchronised; apt refused our
+`InRelease` as not yet valid. Set from builder (`date -u -s @<epoch>`). After
+a host sleep check both VMs' clocks before `apt update`.
