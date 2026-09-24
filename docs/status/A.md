@@ -11,10 +11,14 @@ list"). Open: #3 (not reproduced, tools ready), the workspace side bug of the
 
 ## State of `target`
 
-Rolled back to `Clean-updated-2026-09-23` at 2026-09-24 06:38Z, then dirtied
-(`~/.dirty`): our apt source, the trio from aptly, xdotool, `~/t.sh`,
-`~/coreprep.sh`, run logs under `~/opt/`. Kernel `core_pattern` is set per
-boot by `coreprep.sh` only.
+2026-09-24 13:11 boot: `apt full-upgrade` from our aptly on top of the
+rolled-back snapshot - every package we publish that is installed there is
+ours: unity `+unity5`, compiz `+unity1`, cinnamon-session `+unity2`,
+unity-settings-daemon `0ubuntu7+unity1`, nux `0ubuntu15+unity1` (agent B),
+light-locker `+unity2`. Smoke test after reboot: light-locker running, no
+crash reports at all, Dash search works, power key shows Unity's dialog, no
+grab left after Escape. Also installed: xdotool, gdb, `~/t.sh`,
+`~/coreprep.sh`, `~/grab-probe`, test scripts; logs under `~/opt/`.
 
 ## Mine in `packages/`
 
