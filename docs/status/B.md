@@ -16,6 +16,9 @@ Nothing in flight.
 menu; contacts shows a setup window first) - nothing shipped, unshipped diff
 kept in `research/layer-b/`.
 
+Qt global menu: measured, already works (Qt5, Qt6, KDE) - nothing to build;
+STATUS item 0 corrected.
+
 Proposed next, none started - May decides: whether to report the two
 gtk-nocsd findings upstream (May has said to hold upstream work for now, per
 agent A - to confirm with May).
@@ -23,8 +26,8 @@ agent A - to confirm with May).
 ## State of `target2`
 
 Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
-(session-wide, rebooted), `xdotool` and 18 GTK4 test applications (C, gjs, Python) from the
-archive (`--no-install-recommends`), `org.gnome.Contacts did-initial-setup` true
+(session-wide, rebooted), `xdotool`, 18 GTK4 test applications (C, gjs, Python) and 3 Qt ones
+(featherpad, kcalc, speedcrunch) from the archive (`--no-install-recommends`), `org.gnome.Contacts did-initial-setup` true
 (set by completing contacts' setup), test files in `~/b/`
 (`run.sh`, `inspect.sh`, `audit.py`, `breadth.sh`, `classtest`, 0.3, 0.4
 and probe `.so`). No aptly source

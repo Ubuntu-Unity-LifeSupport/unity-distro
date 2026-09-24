@@ -426,7 +426,8 @@ about unverified package facts would repeat the very mistake. All matched.
 **Found.** Fifteen corrections, now made in place in the handoff with a note
 under each, plus Appendix B summarising them. The ones that change the work:
 
-- **Qt has no global menu in 26.04 at all.** `appmenu-qt5` does not exist in
+- _(Wrong - corrected 2026-09-24 below: Qt 5.7+ exports its own menubar and it works.)_
+  **Qt has no global menu in 26.04 at all.** `appmenu-qt5` does not exist in
   the archive; it was dropped around 16.10 (LP #1612767) and never worked with
   Qt6. Layer B is therefore larger than it looked: GTK4 needs our shim, GTK3
   has an existing module, and Qt has to be built from nothing, probably as a
@@ -823,3 +824,14 @@ command line. Same trap as `pkill -f apport-gtk` killing its own shell today.
 Rule: with `pgrep -f`/`pkill -f`, write the pattern so it cannot match itself
 (`[c]innamon-settings-daemon`), or match the process name with `-x`.
 ARCHITECTURE corrected in place. Item closed; nothing to fix.
+
+## 2026-09-24 - Correction: Qt has a global menu in 26.04 (agent B)
+
+The handoff-review entry above ("Qt has no global menu in 26.04 at all") was
+inferred from `appmenu-qt5` being absent and never measured. Qt 5.7+ exports
+its menubar itself through `com.canonical.AppMenu.Registrar`, which
+unity-panel-service provides. Measured on a clean `target2`: Qt5
+(speedcrunch), Qt6 (featherpad) and KDE (kcalc) menus appear in the panel,
+activate, and are searchable in the HUD. Layer B needs no Qt work. Details in
+`research/layer-b/` ("Qt: the global menu already works"). The earlier entry
+is left as written, with this correction below it.

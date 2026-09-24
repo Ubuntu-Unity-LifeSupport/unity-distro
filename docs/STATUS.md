@@ -143,11 +143,12 @@ reads the specific text and agrees.
 
 ## Next
 
-0. **Layer B is bigger than planned: Qt has no global menu in 26.04 at all.**
-   `appmenu-qt5` does not exist in the archive. GTK4 is covered by our shim,
-   GTK3 by the existing `appmenu-gtk-module`, and Qt needs building from
-   nothing - most likely a Qt platform theme exporting through dbusmenu, as KDE
-   does. Not started; recorded so it is not mistaken for a small item.
+0. _(resolved 2026-09-24, agent B)_ **Qt needs nothing: its global menu
+   already works.** The old item said Qt had none because `appmenu-qt5` is
+   gone; Qt 5.7+ exports its menubar itself through
+   `com.canonical.AppMenu.Registrar`, which unity-panel-service provides.
+   Measured with Qt5, Qt6 and KDE applications: panel, activation, HUD. See
+   `research/layer-b/` and DECISIONS 2026-09-24.
 1. **Layer B: unity-gtk4-menu 0.8 released (agent B).** 0.4 proxies class
    actions, 0.5 exports the main menu rather than the first menu button, 0.6
    reaches gjs and Python applications through `g_module_symbol()`, 0.7 makes

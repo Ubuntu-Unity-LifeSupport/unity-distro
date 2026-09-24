@@ -1544,3 +1544,40 @@ said plainly so 0.8 is not mistaken for a visible fix.
 
 (gnome-system-monitor once did not show a window within the harness's 7 s;
 two reruns gave its usual menu. A slow start, not a menu change.)
+
+---
+
+# Qt: the global menu already works
+
+_Agent B, 2026-09-24, on `target2` (clean desktop plus the test applications
+below; no Qt-related configuration added)._
+
+STATUS carried "Qt has no global menu in 26.04 at all", from the handoff
+review: `appmenu-qt5` is not in the archive. That package was dropped because
+it stopped being needed - since Qt 5.7 Qt itself exports the menubar through
+`QDBusMenuBar` and registers the window with `com.canonical.AppMenu.Registrar`
+whenever that service is on the bus. It was never measured here. Measured now:
+
+- `com.canonical.AppMenu.Registrar` is owned by **unity-panel-service**
+  (`GetNameOwner` -> `:1.84`, PID 2741 `/usr/lib/x86_64-linux-gnu/unity/unity-panel-service`).
+- The session sets no `QT_QPA_PLATFORMTHEME`; Qt picks its default theme for
+  `XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu`.
+
+| Application | Qt | `GetMenuForWindow` | Panel |
+|---|---|---|---|
+| featherpad 1.6.3 | 6 | `(':1.119', '/MenuBar/2')` | File Edit Options Search Help, icons, shortcuts, check marks |
+| speedcrunch 0.12.0 | 5 | `(':1.124', '/MenuBar/2')` | Сеанс Правка Вид Настройка Справка |
+| kcalc 25.12.3 | 6, KDE Frameworks | `(':1.127', '/MenuBar/2')` | Файл Правка Константы Настройка Справка |
+
+Activation from the panel works: in featherpad, Options -> "Line Numbers"
+(a check item) turned line numbers on in the editor. The HUD finds Qt items:
+"save as" lists Save As, Save with Encoding, Save All Files.
+
+**Nothing to build.** The qtlomiri-appmenutheme lead recorded earlier is moot.
+Not checked: Qt applications autostarted before unity-panel-service owns the
+registrar (Qt checks for it when the menubar is created); Qt with a
+user-chosen platform theme such as qt6ct; Flatpak and Snap Qt applications.
+
+Screenshots: `2026-09-24-qt6-featherpad-menu.png`,
+`2026-09-24-qt5-speedcrunch-menu.png`, `2026-09-24-kde-kcalc-menu.png`,
+`2026-09-24-qt-featherpad-hud.png`, `2026-09-24-qt-featherpad-checkitems.png`.
