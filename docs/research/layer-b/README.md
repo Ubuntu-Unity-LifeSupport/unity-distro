@@ -1228,6 +1228,8 @@ investigated further.
 
 ## Finding 4: menus built after realize
 
+_Wrong - see "Finding 4 was wrong" at the end of this file._
+
 gnome-font-viewer and gnome-contacts have no `GtkMenuButton` in the widget tree
 when the window is realized - their header bars are filled in later
 (navigation pages). The shim looks once, at realize, and finds nothing.
@@ -1453,3 +1455,38 @@ reports. The library still has no undefined GTK or GLib symbol - it now
 showtime's occasional D-Bus stalls (0-3 missed half-second polls per run)
 appear equally with and without the library, 5 runs each; a crash report it
 wrote during those runs was again its MPRIS handler.
+
+---
+
+# Finding 4 was wrong: no application here builds its menu after realize
+
+_Agent B, 2026-09-24, on `target2`._
+
+"Breadth with 0.4" said gnome-font-viewer and gnome-contacts fill their header
+bar after realize. That was inferred from "no `GtkMenuButton` at realize" and
+never checked. The sources say otherwise:
+
+- **gnome-font-viewer 49 has no menu.** `src/font-view-window.ui`: the header
+  bar holds a search toggle and a plain `GtkButton`, no `GtkMenuButton`. No
+  global menu is the correct result, as for gcr-viewer.
+- **gnome-contacts 49 opens a setup window first** (`contacts-setup-window`,
+  "Настройка контактов") while `org.gnome.Contacts did-initial-setup` is false.
+  That window has no menu. The main window, whose template marks
+  `primary_menu_button` primary, is created only when setup is done.
+
+Measured with 0.7 as released, on the real first-run path in one process:
+reset `did-initial-setup`, launch, pick "Локальная адресная книга", press
+"Готово". The shim logs `no menu model in this window` for the setup window,
+then for the main window `candidate 1 ... primary=1 ... items=8`, `menubar
+attached, labelled "Контакты"`; the exported menu has all 8 items, none dead.
+Launched with setup already done: the same.
+
+**Nothing to fix.** A mechanism for late menus was built anyway before the
+sources were read: publish an empty menubar at realize so the window gets
+`_GTK_MENUBAR_OBJECT_PATH` (GTK writes it only then - `gtkapplication-x11.c:61`),
+and fill that `GMenu` in place when a `GtkMenuButton` or `GtkPopoverMenuBar` is
+realized in a waiting window. It compiled clean and was tested only far enough
+to show neither application needed it. **Not shipped:** it has no known user,
+and it would give every menu-less application an empty exported menubar.
+Kept as `late-menu-placeholder.diff` in this directory, against 0.7, in case an
+application that really fills its header bar late turns up.

@@ -155,9 +155,10 @@ reads the specific text and agrees.
    Over 21 GTK4 applications (15 C, 3 gjs, 3 Python), every one that has a
    menu exports its main menu with no dead item and correct sensitivity -
    except gnome-sound-recorder, which gtk-nocsd crashes with or without us;
-   verified installed session-wide after reboot, published to aptly. Open,
-   not started: gnome-font-viewer and gnome-contacts build their header bar
-   after realize; property (stateful) actions are not proxied. Found on the
+   verified installed session-wide after reboot, published to aptly. The
+   "menus built after realize" item was a misdiagnosis: font-viewer has no
+   menu, contacts shows a setup window first and 0.7 already exports its main
+   menu. Open, not started: property (stateful) actions are not proxied. Found on the
    way, not ours: two gtk-nocsd bugs (DECISIONS 2026-09-24; reporting upstream
    is May's call). See `research/layer-b/`.
 2. **Layer A: #6, the double dialog - fixed in our archive (2026-09-24).**

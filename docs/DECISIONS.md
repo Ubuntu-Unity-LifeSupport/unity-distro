@@ -795,3 +795,14 @@ The host session noted that it had not heard May's approval itself - right:
 an agent's report of May's approval is not approval. It came in this agent's
 own chat ("Давай, публикуй трио в aptly"), and publishing to our own aptly is
 internal in any case.
+
+## 2026-09-24 - unity-gtk4-menu: no late-menu mechanism (agent B)
+
+The "menus built after realize" item was a misdiagnosis: gnome-font-viewer has
+no menu, and gnome-contacts shows a setup window before its main window, whose
+menu 0.7 already exports (verified on the first-run path). A placeholder-menubar
+mechanism was written and deliberately not shipped - it would export empty
+menubars for menu-less applications with no application known to need it. The
+diff is kept in `research/layer-b/late-menu-placeholder.diff`. Lesson recorded
+for this package: read the application's UI definition before concluding why
+a menu is missing.

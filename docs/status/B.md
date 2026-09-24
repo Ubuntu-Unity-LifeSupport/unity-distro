@@ -11,15 +11,19 @@ Released: 0.4 (class action stand-ins, `ab81195`), 0.5 (main menu choice,
 (enabled state of stand-ins, `4380c4d`), all built with sbuild and published
 to aptly. Nothing in flight.
 
-Proposed next, none started - May decides: menus built after realize
-(font-viewer, contacts); stateful stand-ins for property actions; whether to
-report the two gtk-nocsd findings upstream.
+"Menus built after realize" turned out not to exist (font-viewer has no
+menu; contacts shows a setup window first) - nothing shipped, unshipped diff
+kept in `research/layer-b/`.
+
+Proposed next, none started - May decides: stateful stand-ins for property
+actions; whether to report the two gtk-nocsd findings upstream.
 
 ## State of `target2`
 
 Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.7 installed with `dpkg -i`
 (session-wide, rebooted), `xdotool` and 18 GTK4 test applications (C, gjs, Python) from the
-archive (`--no-install-recommends`), test files in `~/b/`
+archive (`--no-install-recommends`), `org.gnome.Contacts did-initial-setup` true
+(set by completing contacts' setup), test files in `~/b/`
 (`run.sh`, `inspect.sh`, `audit.py`, `breadth.sh`, `classtest`, 0.3, 0.4
 and probe `.so`). No aptly source
 configured. Pre-existing `/var/crash/_usr_bin_light-locker.1000.crash` is the

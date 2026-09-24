@@ -1,0 +1,162 @@
+diff --git a/src/unity-gtk4-menu.c b/src/unity-gtk4-menu.c
+index 54756bb..4294e2a 100644
+--- a/src/unity-gtk4-menu.c
++++ b/src/unity-gtk4-menu.c
+@@ -125,6 +125,7 @@ DECL(GtkWidget *, gtk_widget_get_parent, (GtkWidget *));
+ DECL(gboolean, gtk_menu_button_get_primary, (GtkMenuButton *));
+ DECL(gboolean, gtk_widget_is_visible, (GtkWidget *));
+ DECL(gboolean, gtk_widget_get_child_visible, (GtkWidget *));
++DECL(GtkRoot *, gtk_widget_get_root, (GtkWidget *));
+ DECL(void, g_object_set_data, (GObject *, const gchar *, gpointer));
+ DECL(gpointer, g_object_get_data, (GObject *, const gchar *));
+ DECL(void, g_simple_action_set_enabled, (GSimpleAction *, gboolean));
+@@ -202,6 +203,7 @@ static int resolve_all(void *gtk, void *gobj, void *glib, void *gio)
+ 	RESOLVE(gtk, gtk_widget_get_parent);
+ 	RESOLVE(gtk, gtk_widget_is_visible);
+ 	RESOLVE(gtk, gtk_widget_get_child_visible);
++	RESOLVE(gtk, gtk_widget_get_root);
+ 	RESOLVE(gobj, g_object_set_data);
+ 	RESOLVE(gobj, g_object_get_data);
+ 	RESOLVE(gio, g_simple_action_set_enabled);
+@@ -731,6 +733,20 @@ static GMenuModel *clean_model(GMenuModel *model, int depth,
+ /* The menubar we set, to tell it from one the application set itself. */
+ static GMenuModel *our_menubar;
+ 
++/*
++ * Some applications fill their header bar after the window is realized -
++ * gnome-font-viewer and gnome-contacts push navigation pages later. But GTK
++ * writes _GTK_MENUBAR_OBJECT_PATH on the window only at realize, and only if
++ * a menubar is published by then (gtkapplication-x11.c); a menubar set later
++ * never reaches a window that already exists.
++ *
++ * So when a window has no menu at realize, publish an empty menubar anyway -
++ * the window gets the property - and mark the window as waiting. When a menu
++ * button is realized in a waiting window, look again and fill the same GMenu
++ * in place; the change travels over org.gtk.Menus like any other.
++ */
++#define WAITING_KEY "unity-gtk4-menu-waiting"
++
+ static void attach_menubar(GtkWindow *window)
+ {
+ 	GtkApplication *app = p_gtk_window_get_application(window);
+@@ -748,9 +764,21 @@ static void attach_menubar(GtkWindow *window)
+ 	GMenuModel *model = find_menu_model(window, &owner);
+ 
+ 	if (model == NULL) {
+-		note("no menu model in this window");
++		p_g_object_set_data((GObject *)window, WAITING_KEY,
++				    GINT_TO_POINTER(1));
++		if (existing == NULL) {
++			GMenu *placeholder = p_g_menu_new();
++			p_gtk_application_set_menubar(app,
++						      (GMenuModel *)placeholder);
++			our_menubar = (GMenuModel *)placeholder;
++			p_g_object_unref(placeholder);
++			note("no menu model yet, empty menubar published");
++		} else {
++			note("no menu model in this window yet");
++		}
+ 		return;
+ 	}
++	p_g_object_set_data((GObject *)window, WAITING_KEY, NULL);
+ 
+ 	struct scope scope = {
+ 		.owner = owner,
+@@ -762,7 +790,7 @@ static void attach_menubar(GtkWindow *window)
+ 	/* The menubar is per application, but "win." resolves against the
+ 	   focused window. A second window of the same application needs the
+ 	   same stand-ins in its own map; the copy made for it is thrown away. */
+-	if (existing != NULL) {
++	if (existing != NULL && p_g_menu_model_get_n_items(existing) > 0) {
+ 		note("menubar already ours, stand-ins added for this window");
+ 		p_g_object_unref(cleaned);
+ 		return;
+@@ -772,16 +800,35 @@ static void attach_menubar(GtkWindow *window)
+ 		note("dropped %d item(s) that cannot cross D-Bus", scope.dropped);
+ 
+ 	gchar *label = menu_label(app);
+-	GMenu *menubar = p_g_menu_new();
+-	p_g_menu_append_submenu(menubar, label, cleaned);
++	if (existing != NULL) {
++		/* Our empty placeholder: fill it where it is. */
++		p_g_menu_append_submenu((GMenu *)existing, label, cleaned);
++		note("menubar filled, labelled \"%s\"", label);
++	} else {
++		GMenu *menubar = p_g_menu_new();
++		p_g_menu_append_submenu(menubar, label, cleaned);
++		p_gtk_application_set_menubar(app, (GMenuModel *)menubar);
++		our_menubar = (GMenuModel *)menubar;
++		p_g_object_unref(menubar);
++		note("menubar attached, labelled \"%s\"", label);
++	}
+ 	p_g_object_unref(cleaned);
+-	p_gtk_application_set_menubar(app, (GMenuModel *)menubar);
+-	our_menubar = (GMenuModel *)menubar;
+-	p_g_object_unref(menubar);
+-	note("menubar attached, labelled \"%s\"", label);
+ 	p_g_free(label);
+ }
+ 
++/* A menu button or menu bar was realized: if its window is still waiting for
++   a menu, look again. */
++static void menu_widget_realized(GtkWidget *widget)
++{
++	GtkRoot *root = p_gtk_widget_get_root(widget);
++
++	if (is_a(root, type_window) &&
++	    p_g_object_get_data((GObject *)root, WAITING_KEY) != NULL) {
++		note("menu widget realized in a waiting window");
++		attach_menubar((GtkWindow *)root);
++	}
++}
++
+ /* ---- the hook ------------------------------------------------------------ */
+ 
+ static void (*real_window_realize)(GtkWidget *);
+@@ -797,6 +844,23 @@ static void shim_window_realize(GtkWidget *widget)
+ 		real_window_realize(widget);
+ }
+ 
++static void (*real_menu_button_realize)(GtkWidget *);
++static void (*real_menu_bar_realize)(GtkWidget *);
++
++static void shim_menu_button_realize(GtkWidget *widget)
++{
++	if (real_menu_button_realize != NULL)
++		real_menu_button_realize(widget);
++	menu_widget_realized(widget);
++}
++
++static void shim_menu_bar_realize(GtkWidget *widget)
++{
++	if (real_menu_bar_realize != NULL)
++		real_menu_bar_realize(widget);
++	menu_widget_realized(widget);
++}
++
+ static void shim_app_window_realize(GtkWidget *widget)
+ {
+ 	attach_menubar((GtkWindow *)widget);
+@@ -853,7 +917,8 @@ static void hook_class(GType type, void (**real)(GtkWidget *),
+ {
+ 	GtkWidgetClass *klass = (GtkWidgetClass *)p_g_type_class_ref(type);
+ 
+-	if (klass == NULL || klass->realize == shim_window_realize ||
++	if (klass == NULL || klass->realize == shim ||
++	    klass->realize == shim_window_realize ||
+ 	    klass->realize == shim_app_window_realize)
+ 		return;
+ 	*real = klass->realize;
+@@ -902,6 +967,12 @@ static int try_hook(const char *when)
+ 		   "GtkWindow");
+ 	hook_class(type_app_window, &real_app_window_realize,
+ 		   shim_app_window_realize, "GtkApplicationWindow");
++	/* Neither has a public class struct and GTK derives nothing from them,
++	   so no subclass holds a copy of the old vtable entry. */
++	hook_class(type_menu_button, &real_menu_button_realize,
++		   shim_menu_button_realize, "GtkMenuButton");
++	hook_class(type_popover_menu_bar, &real_menu_bar_realize,
++		   shim_menu_bar_realize, "GtkPopoverMenuBar");
+ 	return 1;
+ }
+ 
