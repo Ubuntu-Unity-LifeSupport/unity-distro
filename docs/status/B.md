@@ -16,9 +16,10 @@ install in VM `oem-test` (192.168.56.105 by DHCP, MAC 08:00:27:FC:1D:99;
 user `tester` / `endusertest-2604`, `oem` removed. Snapshot `OEM-ready`
 (host) is the state before the end user's first boot, `OEM-ready-fixed` the
 same with our basicwallpaper; oem-test currently runs `OEM-ready-fixed`'s
-first boot. Pending for agent A: a journal of a Unity login with a black
-screen (gvfs activation timeout) - on oem-test as `tester` after a full
-setup; OEM user there is
+first boot. The black screen seen at the OEM-preparation Unity login was
+not agent A's gvfs race (its journal, boot -1 on the `OEM-ready` disk: gvfs
+started in 1.8 s, never cancelled); it was a slow first start, ~51 s from
+autologin to compiz, told to A; OEM user there is
 `oem` / `oemtest-2604`, with openssh-server and B's key added. Test-VM
 passwords only.
 
