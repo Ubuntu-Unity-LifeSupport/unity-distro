@@ -1302,3 +1302,94 @@ Visible in the second: "Полноэкранный режим" and "Выйти �
 (`hidden-when="action-disabled"`); a stand-in is always enabled, so both show.
 The one that does not apply does nothing when clicked. Known limit of 0.4,
 now written into the README.
+
+---
+
+# gjs and Python applications (0.6)
+
+_Agent B, 2026-09-24, on `target2`._
+
+Finding 3 above, fixed.
+
+## Where the hook can go
+
+A gjs or PyGObject process does not link GTK4. GObject Introspection loads it
+with `g_module_open()` when the script imports Gtk, and before calling any GTK
+function resolves it with `g_module_symbol()`. The first `g_module_symbol()` for
+a `gtk_` or `adw_` name is therefore a moment when GTK4 is mapped and no GTK
+class has been initialised - the state our constructor sees in a C
+application. 0.6 intercepts `g_module_symbol()`, passes every lookup on
+unchanged through `RTLD_NEXT`, and runs the same hook there once.
+
+**Found on the machine (rule 0):** gtk-nocsd, which Ubuntu Unity already
+preloads, intercepts `g_module_symbol()` for exactly this reason - "Python and
+other dynamic loading languages use this to load functions". It goes further
+and substitutes its own functions; we only use the call as a trigger. The web
+search for 0.4 had already found no GTK4 global menu work to reuse.
+
+Rejected:
+- **interposing `dlopen`** - `dlopen` resolves relative names against the
+  *caller's* `RUNPATH`; a wrapper in a library preloaded into every process
+  would change the caller for every `dlopen` on the machine;
+- **`LD_AUDIT`** - a second environment variable in every process, and audit
+  modules live in their own namespace, so they cannot touch GTK directly;
+- **an idle callback** - `GApplication` activates, and the window is realised,
+  before the main loop dispatches it.
+
+## gtk-nocsd, and why the order matters
+
+The first build hooked *before* passing the lookup on. gnome-characters then
+aborted:
+
+```
+Gtk-CRITICAL: gtk_widget_get_ancestor: assertion '... g_type_is_a (widget_type, GTK_TYPE_WIDGET)' failed   (x many)
+Adwaita-ERROR: gtk_window_set_titlebar() is not supported for AdwApplicationWindow
+```
+
+Without gtk-nocsd in `LD_PRELOAD` the same build ran cleanly. gtk-nocsd
+(`Source/GTK-NoCSD.c`, `GTKNoCSDGetReferences`) fetches its GTK and libadwaita
+`GType`s only when called with `GetTypes=true`, which its `g_module_symbol` hook
+does; its `g_type_register_static_simple` hook calls it with `false`. Its
+"types fetched" flag is set on the first call even when GTK is not loaded yet,
+and it refetches only when it sees the GTK version change *in a `true` call*.
+Our hook initialises `GtkWindow`'s class, which registers types - so gtk-nocsd
+first saw GTK4 in its `false` path, never fetched the types, kept
+`GtkWindow`'s type as 0 (the criticals), and took an `AdwApplicationWindow` for a
+plain window (the abort).
+
+0.6 hooks **after** passing the lookup on, so gtk-nocsd sees GTK in its
+`g_module_symbol` first, as it does without us. The symbol has only been
+resolved, not called, so no GTK class is initialised by then.
+
+## Result, 0.6 installed session-wide, after reboot
+
+| Application | Runtime | Hooked | Menu |
+|---|---|---|---|
+| gnome-characters | gjs | through GI | main menu, 2 items, About opens from the panel |
+| gnome-weather | gjs | through GI | main menu, 3 items |
+| gnome-sound-recorder | gjs | through GI | crashes - **gtk-nocsd's**, see below |
+| gnome-tweaks | Python | through GI | main menu, 2 items |
+| showtime | Python | through GI | main menu, 6 items, 2 disabled by the app |
+| gnome-music | Python | through GI | main menu, 4 items |
+| 13 C applications | C/Rust/Vala | at load | identical to 0.5, byte for byte |
+
+No item missing in any of them.
+
+## Three things that looked like regressions and are not
+
+- **gnome-sound-recorder SIGSEGV.** Exit 139 with only gtk-nocsd preloaded,
+  exit 124 (alive, killed by `timeout`) with only ours, 139 with both. It is
+  gtk-nocsd's. An empty `ld-linux-x86-64.so.2` crash report appears seconds
+  after each such crash; gtk-nocsd has a crash handler that re-executes through
+  `ld-linux` (`GTKNoCSDLDLinux`), the likely source. Not reported anywhere.
+- **showtime not answering on D-Bus.** Only on its first launch after a boot.
+  `harness/respond.sh` polls `DescribeAll` every half second: on a fresh boot
+  the main thread sits in state D (`d_alloc_parallel`, `__wait_on_buffer`) for
+  over 15 s **with or without our library**, one reboot each. Warm launches
+  answer within 2 s; 9 in a row with 0.6, no hang.
+- **showtime crash reports.** Python exceptions in its MPRIS handler
+  (`showtime/mpris.py:209`, `TypeError: Argument 0 does not allow None`), most
+  likely when the sound indicator queries the player. The application's.
+
+Screenshots: `2026-09-24-characters-gjs-menu-0.6.png`,
+`2026-09-24-characters-gjs-about-0.6.png`.

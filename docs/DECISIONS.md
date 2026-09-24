@@ -747,3 +747,24 @@ gnome-logs, whose boot list has more `app.`/`win.` items than its main menu;
 choosing by position in the header bar - applications put the main menu at
 either end, and yelp's header bar is not even the titlebar. Evidence in
 `research/layer-b/` ("Choosing the main menu").
+
+## 2026-09-24 - unity-gtk4-menu: reaching gjs and Python through g_module_symbol (agent B)
+
+**Rule 0.** The installed system had the answer: gtk-nocsd, preloaded in
+Ubuntu Unity, intercepts `g_module_symbol()` to reach introspection-based
+applications. We use the same function as a trigger only. `dlopen`
+interposition (changes the caller for `RUNPATH` resolution in every process),
+`LD_AUDIT` and an idle callback (too late) were rejected; details in
+`research/layer-b/` ("gjs and Python applications").
+
+**Order is load-bearing.** Hook after the real lookup returns, never before:
+gtk-nocsd fetches its types only in its own `g_module_symbol`, and a class
+initialisation of ours in between makes it miss them and abort libadwaita
+applications. The comment at `g_module_symbol()` in the source says so.
+
+**Found, not ours, not reported:** gtk-nocsd crashes gnome-sound-recorder on
+its own (SIGSEGV, reproduced with only gtk-nocsd preloaded), and its
+`GTKNoCSDGetReferences` never fetches types if it first sees GTK in a
+`GetTypes=false` call - latent until another library initialises a GTK class
+first. Upstream is https://codeberg.org/MorsMortium/GTK-NoCSD. Whether to
+report is May's call.

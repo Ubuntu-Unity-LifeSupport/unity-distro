@@ -8,7 +8,7 @@ Layer A is producing fixes; Layer B has a packaged GTK4 global menu. Three
 Layer A contributions are queued in `docs/upstream/`, none sent: `nux-pcre2`,
 `light-locker-session`, `unity-stale-pending-action`. Our aptly repository
 carries nux 0ubuntu13, light-locker `+unity2`, unity `+unity2` and
-unity-gtk4-menu 0.5.
+unity-gtk4-menu 0.6.
 
 Current layer: **A** (keep Unity 7 on X11 alive).
 
@@ -148,16 +148,17 @@ reads the specific text and agrees.
    GTK3 by the existing `appmenu-gtk-module`, and Qt needs building from
    nothing - most likely a Qt platform theme exporting through dbusmenu, as KDE
    does. Not started; recorded so it is not mistaken for a small item.
-1. **Layer B: unity-gtk4-menu 0.5 released (agent B).** 0.4 proxies class
-   actions (yelp, loupe, kgx, text-editor); 0.5 exports the main menu rather
-   than the first menu button (fixed calculator, logs, simple-scan,
-   text-editor, nautilus). Over 15 GTK4 applications, all 13 with a menu now
-   export their main menu with no dead item; verified installed session-wide,
-   from the panel and the HUD, published to aptly. Open, not started:
-   gjs/PyGObject applications are never hooked (GTK4 loads after the
-   constructor); gnome-font-viewer and gnome-contacts build their header bar
-   after realize; stand-ins are always enabled, so `hidden-when` pairs such as
-   Fullscreen/Leave Fullscreen both show. See `research/layer-b/`.
+1. **Layer B: unity-gtk4-menu 0.6 released (agent B).** 0.4 proxies class
+   actions, 0.5 exports the main menu rather than the first menu button, 0.6
+   reaches gjs and Python applications through `g_module_symbol()`. Over 21
+   GTK4 applications (13 C, 3 gjs, 5 more Python/gjs), every one that has a
+   menu exports its main menu with no dead item; verified installed
+   session-wide after reboot, published to aptly. Open, not started:
+   gnome-font-viewer and gnome-contacts build their header bar after realize;
+   stand-ins are always enabled (`hidden-when` pairs both show). Found on the
+   way, not ours: gtk-nocsd crashes gnome-sound-recorder and has a latent
+   type-fetch bug (DECISIONS 2026-09-24; reporting upstream is May's call).
+   See `research/layer-b/`.
 2. **Layer A: #6, the double dialog - options measured, A recommended.**
    Option B (Unity calls `RequestShutdown`) is two lines but mishandles
    inhibitors badly: stuck session, then a restart past the inhibitor. Option A
