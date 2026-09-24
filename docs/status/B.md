@@ -8,19 +8,21 @@ Build directory: `~/work/b`
 **unity-gtk4-menu is agent B's package** (handed over by A, 2026-09-24).
 Released: 0.4 (class action stand-ins, `ab81195`), 0.5 (main menu choice,
 `c0557df`), 0.6 (gjs/Python through `g_module_symbol`, `0ce1eb1`), 0.7
-(enabled state of stand-ins, `4380c4d`), all built with sbuild and published
-to aptly. Nothing in flight.
+(enabled state of stand-ins, `4380c4d`), 0.8 (property actions as check and
+radio items, `b625153`), all built with sbuild and published to aptly.
+Nothing in flight.
 
 "Menus built after realize" turned out not to exist (font-viewer has no
 menu; contacts shows a setup window first) - nothing shipped, unshipped diff
 kept in `research/layer-b/`.
 
-Proposed next, none started - May decides: stateful stand-ins for property
-actions; whether to report the two gtk-nocsd findings upstream.
+Proposed next, none started - May decides: whether to report the two
+gtk-nocsd findings upstream (May has said to hold upstream work for now, per
+agent A - to confirm with May).
 
 ## State of `target2`
 
-Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.7 installed with `dpkg -i`
+Dirty (`~/.dirty`): `libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
 (session-wide, rebooted), `xdotool` and 18 GTK4 test applications (C, gjs, Python) from the
 archive (`--no-install-recommends`), `org.gnome.Contacts did-initial-setup` true
 (set by completing contacts' setup), test files in `~/b/`

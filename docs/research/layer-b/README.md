@@ -1490,3 +1490,57 @@ to show neither application needed it. **Not shipped:** it has no known user,
 and it would give every menu-less application an empty exported menubar.
 Kept as `late-menu-placeholder.diff` in this directory, against 0.7, in case an
 application that really fills its header bar late turns up.
+
+---
+
+# Property actions: check and radio items (0.8)
+
+_Agent B, 2026-09-24, on `target2`._
+
+A property action (`gtk_widget_class_install_property_action`) binds an action
+to a widget property. Up to 0.7 the library left them greyed out, because a
+plain stand-in cannot show their state.
+
+## How GTK defines them, and the stand-in
+
+`gtkwidget.c determine_type` and `gtkactionmuxer.c prop_action_*`: a boolean
+property is a stateful action with no parameter, toggled on activation; an
+int, uint, float, double, string or enum property is set by a parameter of the
+state's type, with an enum given as its nick. GTK converts through a private
+copy of GIO's settings mapping (`gtk/gsettings-mapping.c`, not exported by
+libgio), so the library does the same conversion itself for the same six
+types.
+
+The stand-in is a stateful `GSimpleAction` with that parameter type and the
+property's current value as state. Activation goes through the owner widget
+as for any stand-in, so GTK itself sets the property. `change-state` (D-Bus
+`SetState`) is routed the same way instead of being stored. The state follows
+the property's `notify::` signal, connected with `g_signal_connect_object` so
+it is dropped with the action. Enabled state is tracked as in 0.7.
+
+## Verified (`tests/classtest.c`)
+
+| Step | Result |
+|---|---|
+| start | toggle `false`, mode `'one'` |
+| toggle from the Unity panel (F10, Enter) | application prints `TOGGLE 1` |
+| choose "Mode two" from the Unity panel | `MODE two` |
+| toggle over D-Bus | state `true`, `TOGGLE 1` |
+| property changed inside the application (`win.flip-toggle`) | stand-in state follows |
+| `SetState true` over D-Bus | property set, state `true` |
+| Unity panel | check mark on "Class toggle", radio dot on "Mode two" - `2026-09-24-property-actions-0.8.png` |
+
+Installed from the sbuild package and rebooted: 90 processes map it, no new
+crash reports, the same results.
+
+## Who uses them
+
+Among the installed GTK4 programs on `target2`, gnome-text-editor, kgx, loupe
+and two GTK tools import `gtk_widget_class_install_property_action`, but none
+of the 21 applications in the breadth runs has a property action in its
+**main** menu; their menus are byte-for-byte unchanged from 0.7. The change
+matters for applications that put one there, and none has been seen yet -
+said plainly so 0.8 is not mistaken for a visible fix.
+
+(gnome-system-monitor once did not show a window within the harness's 7 s;
+two reruns gave its usual menu. A slow start, not a menu change.)
