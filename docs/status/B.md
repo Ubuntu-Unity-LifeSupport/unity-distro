@@ -14,7 +14,11 @@ patch and notes in `research/calamares-oem/`). Confirmed on a real OEM
 install in VM `oem-test` (192.168.56.105 by DHCP, MAC 08:00:27:FC:1D:99;
 `ssh oemtest` in ~/.ssh/config). Its state now: end-user setup finished,
 user `tester` / `endusertest-2604`, `oem` removed. Snapshot `OEM-ready`
-(host) is the state before the end user's first boot; OEM user there is
+(host) is the state before the end user's first boot, `OEM-ready-fixed` the
+same with our basicwallpaper; oem-test currently runs `OEM-ready-fixed`'s
+first boot. Pending for agent A: a journal of a Unity login with a black
+screen (gvfs activation timeout) - on oem-test as `tester` after a full
+setup; OEM user there is
 `oem` / `oemtest-2604`, with openssh-server and B's key added. Test-VM
 passwords only.
 

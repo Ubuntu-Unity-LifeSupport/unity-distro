@@ -31,8 +31,9 @@ Current layer: **A** (keep Unity 7 on X11 alive).
   race or on Alt+Tab. `basicwallpaper` is now a desktop window that takes no
   focus. calamares-settings-ubuntu 1:26.04.12+unity1 in aptly; matters for
   our ISO only. Confirmed on a real two-stage OEM install from the official
-  ISO (VM `oem-test`): the archive binary hid Calamares on the end user's
-  first boot; ours kept it on top in every case, and the setup ran through.
+  ISO (VM `oem-test`): the archive binary hid Calamares on 3 of 3 cold
+  first boots of the end user's session, ours on 0 of 2; the setup ran
+  through.
   `research/calamares-oem/`.
 - **Known issue #2 fixed in Unity, and a worse bug found behind it.** One
   cause: Unity records a pending end-session action and waits for the session

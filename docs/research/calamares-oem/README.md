@@ -62,9 +62,9 @@ On target2 Calamares always mapped after the wallpaper (6 of 6 starts), so
 the startup case never fired by itself there. In the builder's `b-dev` chroot
 (same xfwm4, Calamares and Xvfb, installed there with our package) it did:
 the archive's wallpaper mapped after Calamares at a plain session start and
-covered it. So it is a race, and which process wins depends on the machine;
-whichever maps last gets focus. Alt+Tab moves focus both ways, which is why
-the release notes' workaround works.
+covered it. Alt+Tab moves focus both ways, which is why the release notes'
+workaround works. What decides it on a real first boot is in "Cold first
+boot" below - not the map order but who ends up with focus.
 
 The package itself, installed in the chroot (`check.sh`, same pixel test):
 
@@ -160,10 +160,35 @@ Screens: `gnome-screenshot` in the session, pixel test as above (`probe.sh`,
    the OEM files (`basicwallpaper`, the session, `sudoers`) were removed,
    "All done", Done restarted into the LightDM greeter.
 
-Not tested: a cold first boot with our binary. It needs the binary on the
-disk before that boot - an image built with our package, or `OEM-ready`
-patched offline from the live ISO. The late-map case reproduces what that
-boot does (the wallpaper maps after Calamares), and it passes.
+## Cold first boot (snapshots `OEM-ready` and `OEM-ready-fixed`)
+
+`OEM-ready` is the disk right before the end user's first boot. For
+`OEM-ready-fixed` it was booted from the live ISO once, `/usr/bin/basicwallpaper`
+replaced with ours (nothing else touched, disk unmounted), and snapshotted
+powered off. Each run: host restores, boots from disk, sends no input;
+`coldwatch.sh` (started by `coldrun.sh` from builder as soon as ssh answers)
+logs by uptime when each window becomes viewable and where focus goes.
+
+| Run | Binary | Timeline (uptime, s) | Result |
+|---|---|---|---|
+| first pass | archive | - | **wallpaper on top**, it has focus |
+| cold-archive-1 | archive | - (watcher bug, state read later, untouched) | **wallpaper on top**, it has focus |
+| cold-archive-3 | archive | xfwm4 53.5; wallpaper 59.5, takes focus 59.9; Calamares 72.4, no focus | **wallpaper on top** |
+| cold-fixed-1 | ours | xfwm4 59.4; wallpaper 67.5; Calamares 82.6; focus stays on xfwm4's own window | Calamares on top |
+| cold-fixed-2 | ours | xfwm4 50.8; wallpaper 55.5; Calamares 66.0; focus on xfwm4's own window | Calamares on top |
+
+Archive: 3 of 3 cold first boots hide Calamares; ours: 0 of 2. The real
+sequence is not a late wallpaper: the wallpaper maps first and takes focus,
+Calamares maps ~13 s later and does not get focus, so the focused fullscreen
+wallpaper stays in xfwm4's fullscreen layer above it. The three warm reboots
+earlier gave Calamares focus instead - hence "a tendency".
+
+Left over, not investigated: on a cold boot Calamares is on top with our
+binary but has no keyboard focus until it is clicked (focus sits on xfwm4's
+own window). xfwm4 4.20 `clientFocusNew()` refuses focus to a new window
+whose `_NET_WM_USER_TIME` is 0; Calamares reads 59447 afterwards, so whether
+that is the reason is not established.
+
 
 Seen, not investigated: the finished system boots to `lightdm-gtk-greeter`,
 not `unity-greeter` (both are on the ISO). Whether a normal, non-OEM install
