@@ -165,8 +165,9 @@ reads the specific text and agrees.
    unity `+unity4`, cinnamon-session `+unity1` (option A) and compiz `+unity1`
    (exit race) published together and verified from a clean snapshot via apt:
    one dialog on every path, inhibitors shown, no compiz exit crash. Upstream
-   drafts not written yet. Still open: `unity-settings-daemon` and
-   `cinnamon-settings-daemon` disagree on the power button. Details in
+   drafts not written yet. The "two settings daemons disagree on the
+   power button" item was a measurement error: `cinnamon-settings-daemon`
+   does not run under Unity (DECISIONS 2026-09-24). Details in
    `docs/status/A.md` and `research/shutdown-path/`.
 3. **Small upstream items found on the way, not queued:** Unity's unit tests
    do not build on 26.04 (C++14 vs googletest 1.17, GCC 15 in

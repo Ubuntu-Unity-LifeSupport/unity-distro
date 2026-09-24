@@ -806,3 +806,20 @@ menubars for menu-less applications with no application known to need it. The
 diff is kept in `research/layer-b/late-menu-placeholder.diff`. Lesson recorded
 for this package: read the application's UI definition before concluding why
 a menu is missing.
+
+## 2026-09-24 - cinnamon-settings-daemon does not run under Unity; `pgrep -f` counted itself
+
+The 2026-09-23 finding "two settings daemons run side by side and disagree on
+the power button" was wrong. `cinnamon-settings-daemon` is installed
+(`unity-session` depends on it), but every `csd-*` autostart entry carries
+`OnlyShowIn=X-Cinnamon;`, the session's desktop is `Unity:Unity7:ubuntu`, and
+`unity.session` lists only `unity-settings-daemon` as required. On a clean
+snapshot no `csd-*` process exists. The `suspend` value is an unread gsettings
+key.
+
+The false positive came from `pgrep -cf cinnamon-settings-daemon` run inside
+`ssh target '...'` - the `bash -c` running it has the pattern in its own
+command line. Same trap as `pkill -f apport-gtk` killing its own shell today.
+Rule: with `pgrep -f`/`pkill -f`, write the pattern so it cannot match itself
+(`[c]innamon-settings-daemon`), or match the process name with `-x`.
+ARCHITECTURE corrected in place. Item closed; nothing to fix.

@@ -27,8 +27,13 @@ systemd --user
  └─ unity-panel-service.service
 ```
 
-`cinnamon-settings-daemon` runs alongside `unity-settings-daemon`, not instead
-of it - both are dependencies and both were running on target. This layer is
+`cinnamon-settings-daemon` is installed (`unity-session` depends on it) but
+**does not run** in a Unity session: every `csd-*` autostart entry says
+`OnlyShowIn=X-Cinnamon;`, the session is `Unity:Unity7:ubuntu`, and
+`unity.session` requires only `unity-settings-daemon`. *(Corrected
+2026-09-24. This paragraph used to say both were running; that came from
+`pgrep -cf cinnamon-settings-daemon` run through `bash -c`, which counted its
+own command line.)* This layer is
 recent and maintained: `unity-session` is the most recently changed repository
 in the upstream group.
 
@@ -49,10 +54,12 @@ It explains several things at once:
 
   The power key reaches `cinnamon-session-quit` because `unity-settings-daemon`
   holds a blocking logind inhibitor on `handle-power-key` and its action is
-  `interactive`. Meanwhile `cinnamon-settings-daemon`, running alongside, has
-  the power button set to `suspend`. Two settings daemons disagreeing and two
-  shutdown dialogs coexisting make the Cinnamon layer the first suspect for the
-  shutdown menu and double-dialog known issues.
+  `interactive`. (`org.cinnamon.settings-daemon.plugins.power button-power`
+  says `suspend`, but nothing reads it - `csd-power` does not run.) Two
+  shutdown dialogs coexisting made the Cinnamon layer the first suspect for
+  the shutdown menu and double-dialog known issues - rightly, see
+  `research/shutdown-path/`. Since cinnamon-session `+unity1` the power key
+  shows Unity's dialog too.
 
 The upstream group also carries the Dash scopes and lenses, `yaru-unity7`,
 a Plymouth theme, and a separate `lomiri` subgroup that is not our concern.
