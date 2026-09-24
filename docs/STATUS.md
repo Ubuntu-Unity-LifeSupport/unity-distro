@@ -151,8 +151,9 @@ reads the specific text and agrees.
 1. **Layer B: unity-gtk4-menu 0.6 released (agent B).** 0.4 proxies class
    actions, 0.5 exports the main menu rather than the first menu button, 0.6
    reaches gjs and Python applications through `g_module_symbol()`. Over 21
-   GTK4 applications (13 C, 3 gjs, 5 more Python/gjs), every one that has a
-   menu exports its main menu with no dead item; verified installed
+   GTK4 applications (15 C, 3 gjs, 3 Python), every one that has a menu
+   exports its main menu with no dead item - except gnome-sound-recorder,
+   which gtk-nocsd crashes with or without us; verified installed
    session-wide after reboot, published to aptly. Open, not started:
    gnome-font-viewer and gnome-contacts build their header bar after realize;
    stand-ins are always enabled (`hidden-when` pairs both show). Found on the
