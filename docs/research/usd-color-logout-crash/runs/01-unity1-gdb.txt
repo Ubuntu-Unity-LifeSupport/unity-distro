@@ -1,0 +1,4 @@
+STOP manager=0x58a6f5791a30
+CB manager=0x58a6f5791a30 client=(nil)
+CB manager=0x58a6f5791a30 client=(nil)
+# 2 PropertiesChanged from org.gnome.SessionManager (an Inhibit and its release)

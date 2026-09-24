@@ -5,9 +5,10 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: unity `+unity9` (LP #2160299, #2165662) published
-(`research/unity-lp-crashes/`). Open: unity-settings-daemon color plugin
-crash at logout (cause found, not fixed); #3 itself (not reproduced).
+Nothing in flight. Last: unity-settings-daemon `+unity2` (color plugin crash
+at logout) published (`research/usd-color-logout-crash/`). Open: the color
+plugin cannot be restarted after being switched off (noted, not fixed); #3
+itself (not reproduced).
 
 ## State of `target`
 

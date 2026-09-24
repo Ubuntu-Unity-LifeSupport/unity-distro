@@ -1,0 +1,6 @@
+#0  0x0000765376b9a3b7 in cd_client_get_connected () from /usr/lib/x86_64-linux-gnu/libcolord.so.2
+#0  0x0000765376b9a3b7 in cd_client_get_connected () at /usr/lib/x86_64-linux-gnu/libcolord.so.2
+#1  0x0000765376bf6d2d in ??? ()
+#2  0x00007fff6e4ec5f0 in ??? ()
+#3  0x000076538d5083ae in ??? ()
+#4  0x0000000000000000 in ??? ()

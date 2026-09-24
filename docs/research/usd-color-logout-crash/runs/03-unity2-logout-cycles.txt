@@ -1,0 +1,20 @@
+02:40:06.797531607 cycle u1 start; mike sessions: 313/seat0/109414 314/-/109423  user@1000=active
+02:40:23.173406255 click 728 458
+02:41:03.388177608 after logout: seat0=c19/lightdm user@1000=inactive compiz=
+02:42:34.323564380 after relogin: seat0=366/mike user@1000=active compiz=124391 nemo-desktop=123999
+02:42:35.580784075 logout bad lines: 0; relogin activation timeouts: 1; crash: 
+02:43:10.666300761 cycle u2 start; mike sessions: 366/seat0/123131 367/-/123141  user@1000=active
+02:43:15.440812486 click 728 458
+02:43:55.704139284 after logout: seat0=c20/lightdm user@1000=inactive compiz=
+02:45:26.358257741 after relogin: seat0=369/mike user@1000=active compiz=127420 nemo-desktop=127054
+02:45:27.414130308 logout bad lines: 0; relogin activation timeouts: 1; crash: 
+02:46:02.494811581 cycle u3 start; mike sessions: 369/seat0/126221 370/-/126234  user@1000=active
+02:46:07.95988666 click 728 458
+02:46:47.298145051 after logout: seat0=c21/lightdm user@1000=inactive compiz=
+02:48:17.889205254 after relogin: seat0=372/mike user@1000=active compiz=130542 nemo-desktop=130137
+02:48:18.934826782 logout bad lines: 0; relogin activation timeouts: 1; crash: 
+02:48:54.4939434 cycle u4 start; mike sessions: 372/seat0/129296 373/-/129307  user@1000=active
+02:48:58.981297868 click 728 458
+02:49:39.244379443 after logout: seat0=c22/lightdm user@1000=inactive compiz=
+02:51:09.810906159 after relogin: seat0=375/mike user@1000=active compiz=133567 nemo-desktop=133199
+02:51:10.911375507 logout bad lines: 0; relogin activation timeouts: 1; crash: 

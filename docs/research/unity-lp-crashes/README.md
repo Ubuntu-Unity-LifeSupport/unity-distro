@@ -49,7 +49,7 @@ login-race test logouts (2026-09-24 23:21). Backtrace:
 disconnecting its handler; the proxy is shared by all plugins
 (`gnome_settings_bus_get_session_proxy`, static), outlives the stop, and at
 logout - the session manager leaving the bus - calls back into a stopped
-manager. This is the "libcolor crash at restart" noted before. Not fixed yet.
+manager. This is the "libcolor crash at restart" noted before. Fixed in unity-settings-daemon `+unity2`: `../usd-color-logout-crash/`.
 Also: the logout cycles did not check `/var/crash` after logout for
 unity-settings-daemon; "no crash" in `../compiz-restart/` held for compiz,
 not for every process.
