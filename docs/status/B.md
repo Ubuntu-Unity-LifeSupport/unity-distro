@@ -5,6 +5,10 @@ Build directory: `~/work/b`
 
 ## Now
 
+**nux 0ubuntu15+unity2** (2026-09-24): `fix-fbo-attachment-arrays.patch`
+(LP #2160298), branch `b/fbo` (`9793c23`), in aptly; `research/nux-fbo/`.
+target2 runs it. The `b-nux` chroot has +unity2 installed and autotools added.
+
 **indicator-bluetooth, indicator-printers** - agent B's since 2026-09-24.
 `+unity1` in aptly (systemd-dev, unit restored); branches `unity/resolute`
 in `packages/`, patches in `research/indicator-units/`. target2 has both

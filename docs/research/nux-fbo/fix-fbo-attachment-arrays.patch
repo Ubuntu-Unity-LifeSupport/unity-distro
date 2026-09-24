@@ -1,0 +1,32 @@
+Description: Keep the FBO colour attachment vectors sized
+ IOpenGLFrameBufferObject::SetupFrameBufferObject() sizes
+ texture_attachment_array_ and surface_attachment_array_ to
+ GetMaxFboAttachment() and then calls FormatFrameBufferObject(), which
+ clear()s both. Every later SetRenderTarget(), SetTextureAttachment(),
+ TextureAttachment() and Activate() indexes the now empty vectors: undefined
+ behaviour that happens to work (the capacity is still there), aborts under
+ -D_GLIBCXX_ASSERTIONS, and never releases the attachments' references, since
+ the vector's destructor sees no elements. Reset the elements instead.
+Author: Ubuntu Unity Life Support <mihail.rozshko@gmail.com>
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/nux/+bug/2160298
+Forwarded: no
+Last-Update: 2026-09-24
+---
+--- a/NuxGraphics/IOpenGLFrameBufferObject.cpp
++++ b/NuxGraphics/IOpenGLFrameBufferObject.cpp
+@@ -69,8 +69,13 @@ namespace nux
+   {
+     Deactivate();
+ 
+-    texture_attachment_array_.clear();
+-    surface_attachment_array_.clear();
++    // Drop the attachments but keep one slot per colour attachment:
++    // SetRenderTarget(), SetTextureAttachment(), TextureAttachment() and
++    // Activate() index these vectors up to GetMaxFboAttachment().
++    for (auto& texture : texture_attachment_array_)
++      texture = ObjectPtr<IOpenGLBaseTexture> (0);
++    for (auto& surface : surface_attachment_array_)
++      surface = ObjectPtr<IOpenGLSurface> (0);
+ 
+     depth_surface_attachment_ = ObjectPtr<IOpenGLSurface> (0);
+     stencil_surface_attachment_ = ObjectPtr<IOpenGLSurface> (0);

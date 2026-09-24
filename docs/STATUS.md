@@ -7,13 +7,17 @@ _Last updated: 2026-09-23_
 Layer A is producing fixes; Layer B has a packaged GTK4 global menu. Three
 Layer A contributions are queued in `docs/upstream/`, none sent: `nux-pcre2`,
 `light-locker-session`, `unity-stale-pending-action`. Our aptly repository
-carries nux 0ubuntu15+unity1, calamares-settings-ubuntu 1:26.04.12+unity1, light-locker `+unity2`, unity `+unity2` and
+carries nux 0ubuntu15+unity2, calamares-settings-ubuntu 1:26.04.12+unity1, light-locker `+unity2`, unity `+unity2` and
 unity-gtk4-menu 0.8.
 
 Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **nux 0ubuntu15+unity2: LP #2160298 fixed.** FBO attachment vectors were
+  indexed while empty - an abort under `_GLIBCXX_ASSERTIONS` and a texture
+  reference leak in the package we shipped. Proven with a small test, fixed,
+  in aptly; Unity's tests pass against it. `research/nux-fbo/`.
 - **indicator-bluetooth and indicator-printers start again.** The 26.04
   rebuild lost their systemd user units (found by the stack-health sweep);
   rebuilt with `systemd-dev`, `+unity1` in aptly, both services running on
