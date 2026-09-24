@@ -5,13 +5,9 @@ Build directory: `~/work/a`
 
 ## Now
 
-Fixing locally, upstream last (May, 2026-09-24). Done today: #6 trio;
-inhibited logout hang (cinnamon-session `+unity2`) and the logind bypass of a
-refusing session manager (unity `+unity5`), both in aptly. Closed as not a
-bug: "two settings daemons" (csd does not run under Unity). #1: candidate fix published (unity-settings-daemon `0ubuntu7+unity1`, not
-reproducible here). Unity unit tests build from a clean tree (f0343140). Next: #3 cursor stops
-(asked the host session for field reports), u-s-d libcolor crash (not seen
-since the compiz fix).
+Layer A list done as far as it goes (DECISIONS 2026-09-24, "agent A's Layer A
+list"). Open: #3 (not reproduced, tools ready), the workspace side bug of the
+#3 workaround (not tested). Waiting for May's next direction.
 
 ## State of `target`
 

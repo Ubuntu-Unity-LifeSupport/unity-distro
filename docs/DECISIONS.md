@@ -835,3 +835,27 @@ unity-panel-service provides. Measured on a clean `target2`: Qt5
 activate, and are searchable in the HUD. Layer B needs no Qt work. Details in
 `research/layer-b/` ("Qt: the global menu already works"). The earlier entry
 is left as written, with this correction below it.
+
+## 2026-09-24 - agent A's Layer A list: where each item ended
+
+May: fix locally, upstream last. Of the six items agent A took:
+
+1. #1 cursor after login - candidate fix published (unity-settings-daemon
+   `0ubuntu7+unity1`: the cursor plugin no longer hides the pointer at start).
+   Not reproduced here; the release notes' description (hover still
+   highlights) fits the mechanism.
+2. #3 cursor stops responding - not reproduced in 400 UI actions and 60 lock
+   cycles; sensor and scripts in `tools/grab-probe/`. Open.
+3. Two settings daemons - not a bug; cinnamon-settings-daemon does not run
+   under Unity (measurement error, corrected).
+4. #2 logout path - found and fixed a hang (cinnamon-session `+unity2`) and a
+   logind bypass (unity `+unity5`).
+5. unity-settings-daemon crash in `libcolor` at restart - not seen in the
+   eight restarts since compiz `+unity1` (plus several u-s-d restarts); it
+   crashed at almost every restart before. Closed as a probable consequence of
+   the compiz exit crash, not investigated further.
+6. Unity unit tests - build and pass from a clean tree (`f0343140`); with
+   agent B's nux `+unity1`/`0ubuntu15+unity1` also under plain Xvfb.
+
+Also: the user's password is unknown to agents; tests unlock through
+`loginctl unlock-session` (one wrong guess was made and is not repeated).
