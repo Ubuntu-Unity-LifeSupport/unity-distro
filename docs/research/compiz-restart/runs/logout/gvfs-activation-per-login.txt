@@ -1,0 +1,57 @@
+вер 24 13:12:40.952953 mike-virtualbox systemd-logind[854]: New session '3' of user 'mike' with class 'user' and type 'x11'.
+вер 24 13:12:49.237481 mike-virtualbox dbus-daemon[1224]: [session uid=1000 pid=1224 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=1736 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 13:12:53.006919 mike-virtualbox systemd[1190]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 20:52:34.642994 mike-virtualbox systemd[1190]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 20:52:36.579111 mike-virtualbox systemd-logind[854]: New session 'c1' of user 'lightdm' with class 'greeter' and type 'x11'.
+вер 24 20:52:37.582116 mike-virtualbox dbus-daemon[53276]: [session uid=109 pid=53276 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=109 pid=53273 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+вер 24 20:52:37.584317 mike-virtualbox systemd[53248]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 20:53:00.126756 mike-virtualbox systemd-logind[854]: New session '183' of user 'mike' with class 'user' and type 'x11'.
+вер 24 20:53:01.898224 mike-virtualbox dbus-daemon[1224]: [session uid=1000 pid=1224 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.280' (uid=1000 pid=53868 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 20:53:01.903092 mike-virtualbox systemd[1190]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 20:53:01.909481 mike-virtualbox systemd[1190]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 20:53:09.369876 mike-virtualbox systemd[53248]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 20:55:01.899887 mike-virtualbox dbus-daemon[1224]: [session uid=1000 pid=1224 pidfd=5] Failed to activate service 'org.gtk.vfs.Daemon': timed out (service_start_timeout=120000ms)
+вер 24 20:55:01.901806 mike-virtualbox zeitgeist-fts[54281]: Error creating proxy: Error calling StartServiceByName for org.gtk.vfs.Daemon: Failed to activate service 'org.gtk.vfs.Daemon': timed out (service_start_timeout=120000ms) (g-dbus-error-quark, 20)
+вер 24 20:55:18.343669 mike-virtualbox dbus-daemon[1224]: [session uid=1000 pid=1224 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.377' (uid=1000 pid=56543 comm="gnome-screenshot -f /tmp/now.png" label="unconfined")
+вер 24 20:55:18.347791 mike-virtualbox systemd[1190]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 20:56:46.613520 mike-virtualbox systemd[1190]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 20:56:48.159435 mike-virtualbox systemd-logind[854]: New session 'c2' of user 'lightdm' with class 'greeter' and type 'x11'.
+вер 24 20:56:48.822507 mike-virtualbox dbus-daemon[57634]: [session uid=109 pid=57634 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=109 pid=57630 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+вер 24 20:56:48.825039 mike-virtualbox systemd[57601]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 20:57:27.600886 mike-virtualbox systemd-logind[854]: New session '205' of user 'mike' with class 'user' and type 'x11'.
+вер 24 20:57:29.578895 mike-virtualbox dbus-daemon[58094]: [session uid=1000 pid=58094 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=58565 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 20:57:29.583116 mike-virtualbox systemd[58023]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 20:57:36.754397 mike-virtualbox systemd[57601]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 20:59:49.269180 mike-virtualbox systemd[58023]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 20:59:51.237090 mike-virtualbox systemd-logind[854]: New session 'c3' of user 'lightdm' with class 'greeter' and type 'x11'.
+вер 24 20:59:52.128895 mike-virtualbox dbus-daemon[61560]: [session uid=109 pid=61560 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=109 pid=61556 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+вер 24 20:59:52.138065 mike-virtualbox systemd[61529]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:00:30.446990 mike-virtualbox systemd-logind[854]: New session '220' of user 'mike' with class 'user' and type 'x11'.
+вер 24 21:00:32.954305 mike-virtualbox dbus-daemon[61823]: [session uid=1000 pid=61823 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=62211 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 21:00:33.345972 mike-virtualbox systemd[61791]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:00:39.412953 mike-virtualbox systemd[61529]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 21:02:41.201084 mike-virtualbox systemd[61791]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 21:02:43.193051 mike-virtualbox systemd-logind[854]: New session 'c4' of user 'lightdm' with class 'greeter' and type 'x11'.
+вер 24 21:02:43.814104 mike-virtualbox dbus-daemon[64628]: [session uid=109 pid=64628 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=109 pid=64624 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+вер 24 21:02:43.819686 mike-virtualbox systemd[64597]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:03:22.162233 mike-virtualbox systemd-logind[854]: New session '223' of user 'mike' with class 'user' and type 'x11'.
+вер 24 21:03:25.402405 mike-virtualbox dbus-daemon[64876]: [session uid=1000 pid=64876 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=65266 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 21:03:25.407441 mike-virtualbox systemd[64844]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:03:25.418315 mike-virtualbox systemd[64844]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 21:03:31.375314 mike-virtualbox systemd[64597]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 21:05:25.407138 mike-virtualbox dbus-daemon[64876]: [session uid=1000 pid=64876 pidfd=5] Failed to activate service 'org.gtk.vfs.Daemon': timed out (service_start_timeout=120000ms)
+вер 24 21:05:35.148724 mike-virtualbox systemd-logind[854]: New session 'c5' of user 'lightdm' with class 'greeter' and type 'x11'.
+вер 24 21:05:35.847789 mike-virtualbox dbus-daemon[67990]: [session uid=109 pid=67990 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=109 pid=67986 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+вер 24 21:05:35.853376 mike-virtualbox systemd[67961]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:06:13.898108 mike-virtualbox systemd-logind[854]: New session '226' of user 'mike' with class 'user' and type 'x11'.
+вер 24 21:06:16.059883 mike-virtualbox dbus-daemon[68244]: [session uid=1000 pid=68244 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=68634 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 21:06:16.064299 mike-virtualbox systemd[68215]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:06:23.062361 mike-virtualbox systemd[67961]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 21:08:24.258483 mike-virtualbox systemd[68215]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 21:08:28.234360 mike-virtualbox systemd-logind[854]: New session 'c6' of user 'lightdm' with class 'greeter' and type 'x11'.
+вер 24 21:08:29.025340 mike-virtualbox dbus-daemon[71047]: [session uid=109 pid=71047 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=109 pid=71042 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+вер 24 21:08:29.029580 mike-virtualbox systemd[71007]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:09:05.277937 mike-virtualbox systemd-logind[854]: New session '229' of user 'mike' with class 'user' and type 'x11'.
+вер 24 21:09:07.719088 mike-virtualbox dbus-daemon[71300]: [session uid=1000 pid=71300 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=71688 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 21:09:07.724988 mike-virtualbox systemd[71267]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 21:09:14.410857 mike-virtualbox systemd[71007]: Stopped gvfs-daemon.service - Virtual filesystem service.

@@ -5,9 +5,10 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: compiz restart (`research/compiz-restart/`) - unity
-`+unity8`, compiz `+unity2`, gtk-nocsd `+unity2` published. Open: #3 itself
-(not reproduced, tools ready); logout with the new packages not re-measured.
+Nothing in flight. Last: logout with the new packages - clean in six cycles
+(`research/compiz-restart/`, "Logging out"). Open: the login race that blocks
+gvfs for 120 s (unity-session `run-systemd-session` vs ibus-daemon), 2 logins
+in 7; #3 itself (not reproduced).
 
 ## State of `target`
 

@@ -906,3 +906,18 @@ Measured harmless; not changed.
 Target's clock was 1 h 07 min behind and not synchronised; apt refused our
 `InRelease` as not yet valid. Set from builder (`date -u -s @<epoch>`). After
 a host sleep check both VMs' clocks before `apt update`.
+
+## 2026-09-24 - logout with the new packages; a login race found
+
+Six logouts with unity `+unity8`, compiz `+unity2`, gtk-nocsd `+unity2`,
+cinnamon-session `+unity2`: one dialog, no crash; compiz left through the
+XSMP `_exit` five times and through a clean SIGTERM teardown once
+(`research/compiz-restart/`, "Logging out"). Test method worth keeping: drive
+the cycle from root with `systemd-run` and stay off ssh as mike, or the user
+manager survives the logout and the next login is not a real one.
+
+Found: 2 logins in 7 had gvfs (and everything waiting on it: the desktop)
+blocked for 120 s - unity-session's `run-systemd-session` stops
+`graphical-session.target` at session start while ibus-daemon's D-Bus
+activation of gvfs is starting; dbus-daemon waits out its timeout. Open; not
+fixed.

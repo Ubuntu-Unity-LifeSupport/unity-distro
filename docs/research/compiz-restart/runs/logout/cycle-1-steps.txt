@@ -1,0 +1,5 @@
+20:52:29 cycle 1 session=3 compiz=49683 boot=2026-09-24 14:18:38
+20:52:33.776977359 click 728 458 Выйти
+20:52:58.950341028 after 25 s: seat0 session=c1 109 compiz= greeter=
+20:53:44.548916484 after lightdm restart: seat0 session=183 compiz=54475
+bad journal lines: 0; crash after logout: ; after relogin: 

@@ -1,0 +1,5 @@
+20:56:41.414189850 cycle 2 start; mike sessions: 183/seat0/53472 2/-/1190  user@1000=active
+20:56:46.202386955 click 728 458
+20:57:26.395344220 after logout: seat0=c2/lightdm user@1000=activating compiz=
+20:58:57.28492881 after relogin: seat0=205/mike user@1000=active compiz=59468 nemo-desktop=58975
+20:58:58.112121277 logout bad lines: 0; relogin activation timeouts: 2; crash: 

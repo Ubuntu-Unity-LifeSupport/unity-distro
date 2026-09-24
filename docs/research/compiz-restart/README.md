@@ -46,8 +46,7 @@ each of the four viewports (`runs/final.sh`):
   with its title bar and buttons (`runs/16-final-viewports.png`);
 - `systemctl --user restart unity7.service`: no core dump, positions kept.
 
-Not covered: logging out (compiz is stopped the same way as by `systemctl`,
-not measured here), multi-monitor, `unity --replace`. Restarting still shows
+Not covered: multi-monitor, `unity --replace`. Logging out: see below. Restarting still shows
 about 10 s of bare wallpaper while compiz loads its plugins, as it did before.
 
 ## 1. compiz segfaulted whenever it exited
@@ -195,3 +194,52 @@ Not changed: whether gtk-nocsd belongs in compiz and the other session
 services at all. Its restart and systemd's `Restart=` both act on the same
 crash and systemd wins; harmless as measured, but a second compiz lives for
 about a second and a half.
+
+## Logging out with the new packages
+
+2026-09-24, target, unity `+unity8`, compiz `+unity2`, gtk-nocsd `+unity2`,
+cinnamon-session `+unity2`. Six cycles: Ctrl+Alt+Del → Unity's "Выйти из
+системы" dialog → "Выйти из системы" (728 458), greeter, `systemctl restart
+lightdm` for autologin back (`runs/logout/`). Cycle 1 from an ssh session
+(`logoutcycle.sh`); cycles 2-6 run by root through `systemd-run`
+(`lo-root.sh`) so that mike had no session but the graphical one and his
+user manager stopped after logout, as for a real user (cycle 2 is spoilt: my
+polling over ssh restarted it).
+
+- One dialog, Unity's, every time; the session ended and the greeter came up
+  every time (`cycles-3-6-dialog-relogin.png`).
+- No crash in six logouts: no segfault or core dump in the journal,
+  `/var/crash` empty after logout and after the next login.
+- How compiz left: in five cycles the session manager's XSMP "die" came first
+  and compiz left through `_exit(0)` (compiz `+unity1`) without unloading
+  anything; in cycle 6 systemd's SIGTERM came first and compiz unloaded every
+  plugin, unityshell included, and exited cleanly - the path that crashed
+  with unity `+unity5` (fix (1)).
+
+### Found on the way back in: gvfs blocked for two minutes after a login
+
+In 2 of the 7 logins of that boot (cycles 1 and 4; the first login after boot
+was fine) the desktop stayed black - no wallpaper, no icons - and
+nemo-desktop, zeitgeist and Unity's session proxies timed out, until 120 s
+after the login (`gvfs-activation-per-login.txt`):
+
+```
+21:03:22.162 New session '223' of user 'mike' ... type 'x11'
+21:03:25.407 systemd[64844]: Starting gvfs-daemon.service   <- ibus-daemon asks for org.gtk.vfs.Daemon
+21:03:25.418 systemd[64844]: Stopped gvfs-daemon.service    <- 11 ms later
+21:05:25.407 dbus-daemon: Failed to activate service 'org.gtk.vfs.Daemon': timed out (120000 ms)
+```
+
+`/usr/libexec/run-systemd-session` (unity-session) starts every session with
+`systemctl --user stop graphical-session.target graphical-session-pre.target`
+("stop any lingering active units from a previous session").
+`ibus-daemon`, started from Xsession by im-config, asks for gvfs over D-Bus
+at about the same moment; when the activation's start job lands first, the
+stop of the targets takes gvfs-daemon down with it (it is `PartOf`
+graphical-session.target), dbus-daemon is never told the activation failed
+and every client waits for its 120 s timeout. A race, not a consequence of
+logging out: it needs only a login, and depends on timing. Not fixed yet.
+
+Correction: after cycle 1 I first called this an artifact of my ssh sessions
+keeping the user manager alive; cycle 4, with a fresh user manager, shows the
+same race.
