@@ -56,6 +56,21 @@ Verified: nux's own test suite at build (130, 9, 18, 113 passed); the table
 above; `target2` with the new libnux, rebooted - compiz maps it, Dash and HUD
 work, no new crash reports (`../../screenshots/2026-09-24-target2-dash-nux-unity1.png`).
 
+## Unity's unit tests on it (agent A, 2026-09-24)
+
+In agent A's chroot, Unity sources at `unity/resolute` `f0343140`, libnux
+replaced with this build by `dpkg -i`, Unity binaries not rebuilt:
+
+| Server | TestGnomeSessionManager | TestSessionController |
+|---|---|---|
+| plain Xvfb, no VidMode | 51/51 | 20/20 |
+| Xorg + dummy (regression check) | 51/51 | 20/20 |
+
+Before the fix the first line was a segfault in `CreateOpenGLWindow` before
+the first test. The Xorg-dummy workaround in the harness is no longer needed.
+
+Published to aptly 2026-09-24 (libnux-4.0-0, -common, -dev, nux-tools).
+
 ## Rule 0
 
 Launchpad (nux, unity: "vidmode", "Xvfb", "CreateOpenGLWindow" - zero, all

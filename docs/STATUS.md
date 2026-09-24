@@ -7,7 +7,7 @@ _Last updated: 2026-09-23_
 Layer A is producing fixes; Layer B has a packaged GTK4 global menu. Three
 Layer A contributions are queued in `docs/upstream/`, none sent: `nux-pcre2`,
 `light-locker-session`, `unity-stale-pending-action`. Our aptly repository
-carries nux 0ubuntu13, light-locker `+unity2`, unity `+unity2` and
+carries nux 0ubuntu13+unity1, light-locker `+unity2`, unity `+unity2` and
 unity-gtk4-menu 0.8.
 
 Current layer: **A** (keep Unity 7 on X11 alive).
@@ -175,7 +175,8 @@ reads the specific text and agrees.
    do not build on 26.04 (C++14 vs googletest 1.17, GCC 15 in
    `tests/gmockvolume.c`); nux crashes without XF86VidMode
    (`GraphicsDisplayX11.cpp:297`) - _fixed in nux 0ubuntu13+unity1 by agent B,
-   see `research/nux-vidmode/`; awaiting A's Unity test run before aptly_; nux `Validator::Validate`. See DECISIONS
+   in aptly; Unity's unit tests now run under plain Xvfb. See
+   `research/nux-vidmode/`_; nux `Validator::Validate`. See DECISIONS
    and PATCHES.
 4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
    `vala-appmenu-panel` - the handoff transposed the words. Upstream is

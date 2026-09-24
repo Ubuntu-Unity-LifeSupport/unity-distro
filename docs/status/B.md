@@ -8,8 +8,8 @@ Build directory: `~/work/b`
 **nux: crash without XF86VidMode** - fixed as `0ubuntu13+unity1`, commit
 `be561f9` on `packages/nux` branch `b/vidmode` (packages/nux has no remote of
 ours; the patch is kept in `research/nux-vidmode/`). Built with sbuild,
-debs in `~/work/b/nux/out/`. **Not in aptly yet:** agent A asked to run
-Unity's unit tests on it first. Then publish.
+agent A's Unity unit tests pass on it under plain Xvfb (51/51, 20/20),
+published to aptly. Done.
 
 **unity-gtk4-menu is agent B's package** (handed over by A, 2026-09-24).
 Released 0.4-0.8, all in aptly. Nothing open.
