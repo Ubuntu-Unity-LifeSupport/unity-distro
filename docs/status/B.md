@@ -43,8 +43,8 @@ gtk-nocsd +unity2 (agent A). Agent A already checked unity-gtk4-menu 0.8
 with those on target (preload order as environment.d builds it):
 gnome-characters (gjs) and gnome-text-editor run, both libraries mapped, no
 crash, global menu in the panel for both. One `Gtk-WARNING AdwHeaderBar
-reported min width -2` from gnome-characters - not yet checked whether it
-appears without the shim. Added for #4: `calamares`,
+reported min width -2` from gnome-characters comes from gtk-nocsd, not the
+shim (agent A: gtk-nocsd alone 2, both 2, no preload 0). Harmless. Added for #4: `calamares`,
 `calamares-settings-ubuntu-unity` (archive 26.04.12), `xvfb`, `x11-apps`,
 `imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
 `~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
