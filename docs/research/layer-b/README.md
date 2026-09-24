@@ -1393,3 +1393,63 @@ No item missing in any of them.
 
 Screenshots: `2026-09-24-characters-gjs-menu-0.6.png`,
 `2026-09-24-characters-gjs-about-0.6.png`.
+
+---
+
+# Stand-ins follow the enabled state (0.7)
+
+_Agent B, 2026-09-24, on `target2`._
+
+Until 0.6 a stand-in was always enabled, because GTK has no public getter for a
+class action's enabled state (checked in the 4.22 source: only
+`gtk_widget_action_set_enabled()` exists, and `GtkActionMuxer` is private).
+Visible consequences: gnome-text-editor listed both "Полноэкранный режим" and
+"Выйти из полноэкранного режима" - the application hides whichever is disabled
+with `hidden-when="action-disabled"` - and loupe offered Print, Delete and Set
+as Background with no image open.
+
+## How
+
+Applications set the state with `gtk_widget_action_set_enabled(widget, name,
+enabled)` on the widget whose class has the action (kgx `kgx-window.c:240`,
+gnome-text-editor `editor-window-actions.c:800-805`, loupe
+`image_window.rs`). 0.7 intercepts that setter:
+
+- C and Rust applications call it through the PLT; the preloaded definition
+  wins;
+- gjs and Python applications call the pointer `g_module_symbol()` returned,
+  so our `g_module_symbol()` hands out our setter for that one name - the
+  pattern gtk-nocsd uses for its own functions.
+
+The real setter always runs first, unchanged. The call is then recorded on the
+widget (`g_object_set_data`), so a stand-in created at realize starts from the
+state set in `init`, and an existing stand-in is updated at once. Setter calls
+GTK makes inside itself do not pass through (`-Bsymbolic`); they concern GTK's
+own widgets, which header bar menus do not use.
+
+## Verified
+
+| Case | Before (0.6) | 0.7 |
+|---|---|---|
+| `tests/classtest.c`: class action disabled in init | enabled | disabled from the start |
+| classtest: toggled over D-Bus | stays enabled | follows, both ways; activating while disabled does nothing |
+| `tests/gjstest.js`: same through GI | enabled | disabled, then enabled by `action_set_enabled` from JS |
+| gnome-text-editor | both fullscreen items shown | only the applicable one; switching fullscreen through the stand-in swaps them live |
+| gnome-text-editor "Отменить изменения", unmodified | enabled | greyed |
+| loupe, no image | 4 items enabled | Open With, Print, Set as Background, Delete greyed |
+| loupe, image given | - | Print and Set as Background greyed while it loads, enabled after |
+
+Unity honours `hidden-when`: in normal mode the panel shows no "Выйти из
+полноэкранного режима" at all, in fullscreen no "Полноэкранный режим" -
+`2026-09-24-text-editor-hidden-when-0.7.png`,
+`2026-09-24-text-editor-fullscreen-0.7.png`.
+
+Across 18 applications the set of exported actions is unchanged from 0.6; only
+the disabled counts moved, where expected (loupe 0 -> 4, text-editor 0 -> 2).
+Installed with sbuild's package, rebooted: 89 processes map it, no new crash
+reports. The library still has no undefined GTK or GLib symbol - it now
+*defines* two, `g_module_symbol` and `gtk_widget_action_set_enabled`.
+
+showtime's occasional D-Bus stalls (0-3 missed half-second polls per run)
+appear equally with and without the library, 5 runs each; a crash report it
+wrote during those runs was again its MPRIS handler.

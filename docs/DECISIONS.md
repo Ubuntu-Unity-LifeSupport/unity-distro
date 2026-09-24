@@ -768,3 +768,15 @@ its own (SIGSEGV, reproduced with only gtk-nocsd preloaded), and its
 `GetTypes=false` call - latent until another library initialises a GTK class
 first. Upstream is https://codeberg.org/MorsMortium/GTK-NoCSD. Whether to
 report is May's call.
+
+## 2026-09-24 - unity-gtk4-menu: enabled state by intercepting the setter (agent B)
+
+GTK has no getter for a class action's enabled state; the setter is public.
+0.7 interposes `gtk_widget_action_set_enabled()` (PLT for C/Rust, handed out
+from `g_module_symbol()` for gjs/Python), calls the real one first, and
+records the state on the widget. Considered: reading GTK's private muxer
+(`widget_actions_disabled` bitmask) - layout changes between GTK releases
+would turn a wrong offset into memory corruption in every GTK4 process;
+dropping `hidden-when` items from the export - loses items that become valid
+later (Leave Fullscreen). Evidence in `research/layer-b/` ("Stand-ins follow
+the enabled state").
