@@ -174,7 +174,8 @@ reads the specific text and agrees.
 3. **Small upstream items found on the way, not queued:** Unity's unit tests
    do not build on 26.04 (C++14 vs googletest 1.17, GCC 15 in
    `tests/gmockvolume.c`); nux crashes without XF86VidMode
-   (`GraphicsDisplayX11.cpp:297`); nux `Validator::Validate`. See DECISIONS
+   (`GraphicsDisplayX11.cpp:297`) - _fixed in nux 0ubuntu13+unity1 by agent B,
+   see `research/nux-vidmode/`; awaiting A's Unity test run before aptly_; nux `Validator::Validate`. See DECISIONS
    and PATCHES.
 4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
    `vala-appmenu-panel` - the handoff transposed the words. Upstream is

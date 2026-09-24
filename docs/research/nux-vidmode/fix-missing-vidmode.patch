@@ -1,0 +1,67 @@
+Description: Do not crash when the X server has no XF86VidMode extension
+ CreateOpenGLWindow dereferenced the first entry of the XF86VidMode mode list
+ without checking that the extension exists or that XF86VidModeGetAllModeLines
+ succeeded. On a server without XFree86-VidModeExtension, such as Xvfb, every
+ standalone Nux window - Unity's test main, its Standalone* tools - crashed
+ with SIGSEGV before anything else happened.
+ .
+ Query the extension first and use the mode list only when it was returned and
+ is not empty. Without it, fullscreen falls back to a normal window, as it
+ already does when no mode matches the requested size.
+ .
+ Also set the mode list pointer to NULL after it is freed in the fullscreen
+ path, since the destructor frees it again, and free a previous list before
+ querying a new one when a window is created again. Both found by reading;
+ the double free was not reproduced.
+Author: Ubuntu Unity Life Support <mihail.rozshko@gmail.com>
+Forwarded: no
+Last-Update: 2026-09-24
+Index: nux/NuxGraphics/GraphicsDisplayX11.cpp
+===================================================================
+--- nux.orig/NuxGraphics/GraphicsDisplayX11.cpp
++++ nux/NuxGraphics/GraphicsDisplayX11.cpp
+@@ -288,13 +288,32 @@ namespace nux
+     }
+ 
+     m_X11Screen = DefaultScreen(m_X11Display);
+-    XF86VidModeQueryVersion(m_X11Display, &_x11_major, &_x11_minor);
+     XineramaQueryVersion(m_X11Display, &xinerama_major, &xinerama_minor);
+     XineramaQueryExtension(m_X11Display, &xinerama_event, &xinerama_error);
+     atom::initialize(m_X11Display);
+ 
+-    XF86VidModeGetAllModeLines(m_X11Display, m_X11Screen, &m_NumVideoModes, &m_X11VideoModes);
+-    m_X11OriginalVideoMode = *m_X11VideoModes[0];
++    // XFree86-VidModeExtension is optional: Xvfb and other servers do not
++    // have it. Without it there is no mode list, so no fullscreen mode switch,
++    // but a window can still be created.
++    XFree(m_X11VideoModes);
++    m_X11VideoModes = NULL;
++    m_NumVideoModes = 0;
++
++    int vidmode_event, vidmode_error;
++    if (XF86VidModeQueryExtension(m_X11Display, &vidmode_event, &vidmode_error)
++        && XF86VidModeQueryVersion(m_X11Display, &_x11_major, &_x11_minor)
++        && XF86VidModeGetAllModeLines(m_X11Display, m_X11Screen, &m_NumVideoModes, &m_X11VideoModes)
++        && m_NumVideoModes > 0)
++    {
++      m_X11OriginalVideoMode = *m_X11VideoModes[0];
++    }
++    else
++    {
++      nuxDebugMsg("[GraphicsDisplay::CreateOpenGLWindow] No XF86VidMode modes available.");
++      XFree(m_X11VideoModes);
++      m_X11VideoModes = NULL;
++      m_NumVideoModes = 0;
++    }
+ 
+     int best_mode = -1;
+     if (fullscreen_)               // Attempt Fullscreen Mode?
+@@ -593,6 +612,8 @@ namespace nux
+       //Width = m_X11VideoModes[best_mode]->hdisplay;
+       //Height = m_X11VideoModes[best_mode]->vdisplay;
+       XFree(m_X11VideoModes);
++      m_X11VideoModes = NULL; // also freed in the destructor
++      m_NumVideoModes = 0;
+ 
+       /* create a fullscreen window */
+ 
