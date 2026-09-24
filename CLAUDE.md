@@ -73,7 +73,15 @@ api.launchpad.net, gitlab.gnome.org, gitlab.com and api.github.com from this
 machine (verified 2026-09-25), and `gh` is authenticated. Query the trackers'
 APIs directly rather than asking the host session; a web search tool, if you
 have one, is faster still. Ask the host only for something you genuinely
-cannot reach. Twenty minutes, then record in `docs/DECISIONS.md`
+cannot reach.
+
+**Run searches in subagents, not in your own context.** A sweep of bug
+trackers, changelogs or upstream repositories returns pages of detail of which
+three lines matter. Spawn a subagent, tell it exactly what to answer, and take
+back the conclusion with its links - not the raw pages. The same applies to any
+wide read: log trawls, package-wide greps, surveying a source tree you do not
+yet know. Your own context is for the work; delegate the digging. Run
+independent sweeps as several subagents at once rather than one after another. Twenty minutes, then record in `docs/DECISIONS.md`
 where you looked - found or not - and carry on. This has caught us three times
 in one day, and once the answer was a package already installed on the machine
 we were working on.
