@@ -49,3 +49,12 @@ dialog, no crash reports.
 mechanism is read from code and matches, but the bug did not reproduce here.
 A person seeing a missing pointer after login with this package installed
 would disprove it.
+
+## Corroboration from the release notes (host session, 2026-09-24)
+
+The Ubuntu Unity 26.04 release notes describe #1 more precisely than our list:
+after login the pointer is not drawn, **but elements under it still highlight
+on hover** - the pointer exists and moves, only its image is missing. That is
+exactly what `XFixesHideCursor` does, and not what a broken input device or a
+crashed compositor would look like. It strengthens the cursor-plugin mechanism;
+it is still not a reproduction.
