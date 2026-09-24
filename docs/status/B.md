@@ -35,7 +35,12 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-May is switching it off for now (2026-09-24). Added for #4: `calamares`,
+May is switching it off for now (2026-09-24). **Before the next `apt update` there: check
+`timedatectl`** - target's clock was 1 h 07 min slow on 2026-09-24 (NTP
+unreachable), and apt rejected our InRelease as "not valid yet" (agent A).
+Pending there: `apt upgrade` from aptly brings unity +unity8, compiz +unity2,
+gtk-nocsd +unity2 (agent A) - then re-check unity-gtk4-menu 0.8 with
+gnome-characters and a gjs app. Added for #4: `calamares`,
 `calamares-settings-ubuntu-unity` (archive 26.04.12), `xvfb`, `x11-apps`,
 `imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
 `~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
