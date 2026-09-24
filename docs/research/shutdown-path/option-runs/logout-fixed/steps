@@ -1,0 +1,14 @@
+11:27:14.078 monitors started; boot 2026-09-24 11:25:10; cinnamon-session 6.4.2-1+unity2, unity 7.7.1+26.04.20260306-0ubuntu3+unity5, 
+11:27:15.120 inhibitor started cookie=2073384516
+11:27:21.639 shot L1-logout-dialog; running=true; quit-dialog=gone
+11:27:21.804 click 728 458 Выйти
+11:27:27.765 shot L2-after-click; running=false; quit-dialog=gone
+11:27:27.822 state running=false inhibited=true
+11:27:27.883 key Escape
+11:27:31.697 shot L3-escape; running=true; quit-dialog=gone
+11:27:31.753 state running=true inhibited=true
+11:27:34.047 menu -> Выключение...
+11:27:37.207 click 566 448 Перезагрузить
+11:27:43.168 shot R1-reboot-inhibitor-dialog; running=false; quit-dialog=gone
+11:27:43.256 key Escape
+11:27:46.306 state running=true inhibited=true

@@ -408,3 +408,38 @@ compiz `+unity1` needed three builds: `CompTimerTestCallback.TimerOrder`
 failed twice - once while agent B was building, once with the builder
 idle. The test checks callback order against real 500-1100 ms windows; it
 does not touch `src/session.cpp`. A flaky test, not our change.
+
+# Logout with an inhibitor hung the session; a hung session was then bypassed
+
+2026-09-24, target, after the trio. Runs: [`option-runs/logout/`](option-runs/logout/),
+[`refuse-before/`](option-runs/refuse-before/), [`logout-fixed/`](option-runs/logout-fixed/).
+
+**The hang (cinnamon-session, old).** Unity's logout dialog calls
+`Logout(1)` - no confirmation - after its own dialog. With an inhibitor,
+cinnamon-session enters the query phase and sends the inhibitors to *the*
+end-session dialog. There is none: no Cinnamon, no Gtk dialog, and option A
+only engaged through `show_end_session_dialog`. Nothing on screen, no logout,
+`IsSessionRunning` false for good. Same mechanism as rejected option B.
+
+**The bypass (Unity, old).** In that state every Logout/Reboot/Shutdown call
+gets `org.gnome.SessionManager.NotInRunning`, and Unity's error path fell back
+to logind: `refuse-before` shows menu -> restart on a hung session restarting
+the machine through `login1.Reboot`, past the inhibitor.
+
+**Fixes, published 2026-09-24:**
+
+- cinnamon-session `6.4.2-1+unity2`: when inhibitors have no dialog to go to,
+  ask the shell for one (Gtk as the fallback).
+- unity `+unity5`: fall back to logind only when the session manager is
+  missing or broken, not when it answers `NotInRunning` or `LockedDown` -
+  which would also have gone past a lockdown policy, under any session
+  manager.
+
+**Measured:** `+unity5` alone on the hung session - menu -> restart does
+nothing (no logind call, same boot; Unity logs the refusal). With
+cinnamon-session `+unity2` - logout with an inhibitor shows Unity's "у вас
+открыты файлы ... перед завершением сеанса"; Escape leaves the session
+running; confirming logs out (greeter up). The restart path still shows its
+inhibitor warning. No unit test for the refusal: Unity's test D-Bus server
+cannot return an error with a chosen name; the fallback tests (missing
+handler) still pass, 51/51.

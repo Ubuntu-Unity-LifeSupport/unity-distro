@@ -5,11 +5,12 @@ Build directory: `~/work/a`
 
 ## Now
 
-**#6 done locally (2026-09-24).** unity `+unity4`, cinnamon-session
-`+unity1`, compiz `+unity1` published to aptly with May's approval and
-verified from a clean snapshot through apt: one dialog on every path,
-inhibitors shown, no compiz exit crash in five restarts. Upstream drafts not
-written yet (Unity MR, compiz, Linux Mint feature request). Next: May's call.
+Fixing locally, upstream last (May, 2026-09-24). Done today: #6 trio;
+inhibited logout hang (cinnamon-session `+unity2`) and the logind bypass of a
+refusing session manager (unity `+unity5`), both in aptly. Closed as not a
+bug: "two settings daemons" (csd does not run under Unity). Next from my list:
+#1 cursor after login, #3 cursor stops, u-s-d libcolor crash, Unity unit-test
+build.
 
 ## State of `target`
 

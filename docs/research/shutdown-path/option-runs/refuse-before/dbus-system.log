@@ -1,0 +1,12 @@
+method call time=1790237010.577406 sender=:1.53 -> destination=:1.1 serial=46 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=Reboot
+   boolean false
+signal time=1790237010.787357 sender=:1.1 -> destination=(null destination) serial=128 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdownWithMetadata
+   boolean true
+   array [
+      dict entry(
+         string "type"
+         variant             string "reboot"
+      )
+   ]
+signal time=1790237010.787385 sender=:1.1 -> destination=(null destination) serial=129 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForShutdown
+   boolean true

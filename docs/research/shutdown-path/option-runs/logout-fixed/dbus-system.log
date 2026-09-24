@@ -1,0 +1,5 @@
+signal time=1790238466.460106 sender=:1.1 -> destination=(null destination) serial=226 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=SessionNew
+   string "14"
+   object path "/org/freedesktop/login1/session/_314"
+method call time=1790238466.460767 sender=:1.35 -> destination=:1.1 serial=58 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions
+method call time=1790238466.460823 sender=:1.35 -> destination=:1.1 serial=59 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=ListSessions

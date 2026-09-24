@@ -1,0 +1,7 @@
+11:03:09.777 monitors started; boot 2026-09-24 10:53:14; cinnamon-session 6.4.2-1+unity1, unity 7.7.1+26.04.20260306-0ubuntu3+unity4, 
+11:03:10.828 inhibitor started cookie=1025902282
+11:03:16.771 click 728 458 Выйти
+11:03:21.823 state running=false inhibited=true
+11:03:24.857 shot S1-stuck; running=false; quit-dialog=gone
+11:03:27.331 menu -> Выключение...
+11:03:30.634 click 566 448 Перезагрузить
