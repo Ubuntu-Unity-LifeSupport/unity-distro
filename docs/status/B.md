@@ -39,8 +39,12 @@ May is switching it off for now (2026-09-24). **Before the next `apt update` the
 `timedatectl`** - target's clock was 1 h 07 min slow on 2026-09-24 (NTP
 unreachable), and apt rejected our InRelease as "not valid yet" (agent A).
 Pending there: `apt upgrade` from aptly brings unity +unity8, compiz +unity2,
-gtk-nocsd +unity2 (agent A) - then re-check unity-gtk4-menu 0.8 with
-gnome-characters and a gjs app. Added for #4: `calamares`,
+gtk-nocsd +unity2 (agent A). Agent A already checked unity-gtk4-menu 0.8
+with those on target (preload order as environment.d builds it):
+gnome-characters (gjs) and gnome-text-editor run, both libraries mapped, no
+crash, global menu in the panel for both. One `Gtk-WARNING AdwHeaderBar
+reported min width -2` from gnome-characters - not yet checked whether it
+appears without the shim. Added for #4: `calamares`,
 `calamares-settings-ubuntu-unity` (archive 26.04.12), `xvfb`, `x11-apps`,
 `imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
 `~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
