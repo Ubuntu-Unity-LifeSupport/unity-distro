@@ -51,6 +51,10 @@ repositories:
 
   # Our own repositories. Patched Ubuntu packages follow the gbp layout in
   # section 5 of the handoff: unity/resolute, upstream/latest, pristine-tar.
+  packages/compiz:
+    type: git
+    url: https://github.com/Ubuntu-Unity-LifeSupport/compiz.git
+    version: unity/resolute
   packages/cinnamon-session:
     type: git
     url: https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.git

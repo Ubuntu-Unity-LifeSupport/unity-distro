@@ -5,18 +5,18 @@ Build directory: `~/work/a`
 
 ## Now
 
-**#6, option A (May's choice, 2026-09-24).** cinnamon-session `+unity1`
-(option A) and unity `+unity4` (inhibitor fixes) built and measured on
-`target`: one dialog on every path, inhibitors shown. **Blocked** by a compiz
-exit race that option A's timing makes frequent (3 crashes in 7 restarts);
-compiz with `_exit(0)` in the XSMP die handler (`+exp1`) measured: 0 crashes
-in 8 restarts. Nothing published to aptly yet - waiting for May on the trio
-(unity `+unity4`, cinnamon-session `+unity1`, compiz with the exit fix). See `research/shutdown-path/`.
+**#6 done locally (2026-09-24).** unity `+unity4`, cinnamon-session
+`+unity1`, compiz `+unity1` published to aptly with May's approval and
+verified from a clean snapshot through apt: one dialog on every path,
+inhibitors shown, no compiz exit crash in five restarts. Upstream drafts not
+written yet (Unity MR, compiz, Linux Mint feature request). Next: May's call.
 
 ## State of `target`
 
-Dirty (`~/.dirty`): unity `+unity2` from aptly, archive cinnamon-session,
-xdotool, aptly source, `~/t.sh` and run logs under `~/opt/`.
+Rolled back to `Clean-updated-2026-09-23` at 2026-09-24 06:38Z, then dirtied
+(`~/.dirty`): our apt source, the trio from aptly, xdotool, `~/t.sh`,
+`~/coreprep.sh`, run logs under `~/opt/`. Kernel `core_pattern` is set per
+boot by `coreprep.sh` only.
 
 ## Mine in `packages/`
 
@@ -27,4 +27,4 @@ xdotool, aptly source, `~/t.sh` and run logs under `~/opt/`.
   (`6.4.2-1+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.
 - `packages/unity` branch `wip/confirm-inhibitors` (worktree `~/work/a/unity`),
   `+unity3` (not published) and `+unity4`.
-- compiz experiment: `~/work/a/compiz/src` (`+exp1`, `_exit` in die handler).
+- `packages/compiz` - branch `unity/resolute` (`+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/compiz.

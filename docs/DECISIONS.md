@@ -780,3 +780,18 @@ would turn a wrong offset into memory corruption in every GTK4 process;
 dropping `hidden-when` items from the export - loses items that become valid
 later (Leave Fullscreen). Evidence in `research/layer-b/` ("Stand-ins follow
 the enabled state").
+
+## 2026-09-24 - #6 shipped to our archive as three packages at once
+
+May approved publishing unity `+unity4`, cinnamon-session `6.4.2-1+unity1`
+and compiz `+unity1` to aptly. They are one change: option A (cinnamon-session)
+gives one dialog but exposes a compiz exit race (`exit(0)` from the XSMP die
+callback while GDBus writes), and unity's two fixes make inhibitors visible on
+the menu path. Published together, verified together from a clean snapshot
+via apt. `+unity3` of unity was built, installed on target and found
+incomplete; it was never published, and its version is not reused.
+
+The host session noted that it had not heard May's approval itself - right:
+an agent's report of May's approval is not approval. It came in this agent's
+own chat ("Давай, публикуй трио в aptly"), and publishing to our own aptly is
+internal in any case.

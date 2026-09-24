@@ -382,3 +382,29 @@ row would happen about 1% of the time.
 Also seen at every restart, old path and new: unity-settings-daemon (archive)
 crashes in its color plugin during teardown (`libcolor.so`, signal handler).
 Not investigated.
+
+# Published: the #6 trio, verified from a clean snapshot
+
+2026-09-24, with May's approval: unity `+unity4`, cinnamon-session
+`6.4.2-1+unity1` and compiz `1:0.9.14.2+25.10.20250930-0ubuntu3+unity1`
+(`_exit` in the XSMP die handler) are in our aptly. They go together:
+cinnamon-session without the compiz fix brings the exit crashes back.
+
+Verified by the delivery path: `target-desktop` rolled back to
+`Clean-updated-2026-09-23` (boot 09:36:31, marker gone), our apt source added,
+`apt-get install unity cinnamon-session compiz` - 13 packages upgraded,
+dependencies resolved to our versions - rebooted
+([`option-runs/trio-aptly/`](option-runs/trio-aptly/)):
+
+- power key: Unity's dialog; menu -> restart with an inhibitor: Unity's
+  inhibitor warning; Escape: session running; confirming: restart.
+- five restarts through the new path (one confirmed past an inhibitor, four
+  plain), cores written by the kernel: **no compiz crash**. No
+  unity-settings-daemon crash either, which had crashed at almost every
+  restart before the compiz fix - possibly a consequence of compiz's crash;
+  observed, not investigated.
+
+compiz `+unity1` needed three builds: `CompTimerTestCallback.TimerOrder`
+failed twice - once while agent B was building, once with the builder
+idle. The test checks callback order against real 500-1100 ms windows; it
+does not touch `src/session.cpp`. A flaky test, not our change.
