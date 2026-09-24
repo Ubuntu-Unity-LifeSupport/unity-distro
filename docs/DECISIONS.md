@@ -921,3 +921,22 @@ blocked for 120 s - unity-session's `run-systemd-session` stops
 `graphical-session.target` at session start while ibus-daemon's D-Bus
 activation of gvfs is starting; dbus-daemon waits out its timeout. Open; not
 fixed.
+
+## 2026-09-24 - login race: guard the stop in run-systemd-session
+
+`run-systemd-session` stops graphical-session.target at every login to clear
+leftovers. Stopping an inactive target still kills PartOf units being started,
+and ibus-daemon's D-Bus activation of gvfs is often being started then;
+dbus-daemon waits 120 s. Proved with a deterministic model (120.0 s vs 2.3 s)
+and timestamps from a real login; fixed by stopping only when a target is
+not inactive (unity-session `49.4+unity1`, in aptly). 0 in 6 logins after, 3
+in 13 before. `research/login-gvfs-race/`.
+
+Considered and not done: stopping the targets before Xsession starts ibus
+(would move code into Xsession.d for an ordering systemd cannot express), and
+making gvfs not PartOf the session (not our package, and the stop exists
+precisely for such units). The guard removes the stop in the normal case and
+keeps the original intent after a crashed session.
+
+Rule 0: the script is unchanged in unity-session since 2025 and comes from
+Ubuntu's old gnome-session; nothing found about this race.

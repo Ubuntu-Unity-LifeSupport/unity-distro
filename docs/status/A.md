@@ -5,10 +5,9 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: logout with the new packages - clean in six cycles
-(`research/compiz-restart/`, "Logging out"). Open: the login race that blocks
-gvfs for 120 s (unity-session `run-systemd-session` vs ibus-daemon), 2 logins
-in 7; #3 itself (not reproduced).
+Nothing in flight. Last: login race fixed and published (unity-session
+`49.4+unity1`, `research/login-gvfs-race/`). Open: #3 itself (not
+reproduced).
 
 ## State of `target`
 
@@ -17,7 +16,7 @@ then matched by aptly: unity `+unity8`, compiz `+unity2`, gtk-nocsd `+unity2`
 (dbgsyms for them installed too). Workspaces 2x2, six terminals spread over
 them. Also installed: libxpathselect1.4v5 (Unity introspection),
 libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor; xdotool, gdb,
-test scripts in `~`. Clock was 1 h 07 min behind, set from builder at 17:26Z
+test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, set from builder at 17:26Z
 - not synchronised, check after a host sleep. `~/.dirty` present.
 
 ## Mine in `packages/`
@@ -32,5 +31,6 @@ test scripts in `~`. Clock was 1 h 07 min behind, set from builder at 17:26Z
 - `packages/compiz` - branch `unity/resolute` (`+unity2`), https://github.com/Ubuntu-Unity-LifeSupport/compiz.
 - `packages/unity` - `unity/resolute` at `+unity8` (tag), built from worktree
   `~/work/a/unity` branch `fix/compiz-teardown` (merged).
+- `packages/unity-session` - branch `unity/resolute` (`49.4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/unity-session.
 - `packages/gtk-nocsd` - salsa packaging, branch `unity/resolute` (`+unity2`,
   two quilt backports), https://github.com/Ubuntu-Unity-LifeSupport/gtk-nocsd.

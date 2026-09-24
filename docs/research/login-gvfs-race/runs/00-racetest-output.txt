@@ -1,0 +1,10 @@
+# racetest.sh on target, 2026-09-24: D-Bus activated unit, PartOf an inactive target
+A: activation alone
+  call rc=0 after 2.319 s
+B: stop the inactive target 0.5 s into the activation (what run-systemd-session does)
+  target active? inactive
+  call rc=1 after 120.0 s
+  systemd: Starting race-slow.service ... Control process exited, code=killed, status=15/TERM ... Stopped race-slow.service
+C: same, but stop only if the target is active
+  target inactive, not stopped
+  call rc=0 after 2.258 s

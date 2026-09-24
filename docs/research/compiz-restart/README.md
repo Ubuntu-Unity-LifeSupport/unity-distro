@@ -221,7 +221,7 @@ polling over ssh restarted it).
 In 2 of the 7 logins of that boot (cycles 1 and 4; the first login after boot
 was fine) the desktop stayed black - no wallpaper, no icons - and
 nemo-desktop, zeitgeist and Unity's session proxies timed out, until 120 s
-after the login (`gvfs-activation-per-login.txt`):
+after the login (`research/login-gvfs-race/runs/01-gvfs-activation-per-login.txt`):
 
 ```
 21:03:22.162 New session '223' of user 'mike' ... type 'x11'
@@ -238,7 +238,7 @@ at about the same moment; when the activation's start job lands first, the
 stop of the targets takes gvfs-daemon down with it (it is `PartOf`
 graphical-session.target), dbus-daemon is never told the activation failed
 and every client waits for its 120 s timeout. A race, not a consequence of
-logging out: it needs only a login, and depends on timing. Not fixed yet.
+logging out: it needs only a login, and depends on timing. Fixed in unity-session `49.4+unity1`: `research/login-gvfs-race/`.
 
 Correction: after cycle 1 I first called this an artifact of my ssh sessions
 keeping the user manager alive; cycle 4, with a fresh user manager, shows the

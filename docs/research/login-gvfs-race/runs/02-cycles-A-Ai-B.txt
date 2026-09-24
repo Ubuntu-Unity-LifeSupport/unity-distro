@@ -1,0 +1,98 @@
+== A-1
+23:07:44.537316236 cycle A-1; unity-session 49.4; slow-gvfs drop-in: zz-racetest-slow.conf
+23:08:17.942473780 after logout: user@1000=inactive
+23:10:39.407039890 relogin: seat0=271/mike early-stops=0 activation-timeouts=0 nemo-desktop=76848
+вер 24 23:08:21.337293 mike-virtualbox dbus-daemon[76067]: [session uid=1000 pid=76067 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=76457 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:08:21.343022 mike-virtualbox systemd[76037]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:08:28.199073 mike-virtualbox systemd[75794]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== A-2
+23:10:39.473116314 cycle A-2; unity-session 49.4; slow-gvfs drop-in: zz-racetest-slow.conf
+23:11:12.790414703 after logout: user@1000=inactive
+23:13:34.100073748 relogin: seat0=274/mike early-stops=0 activation-timeouts=0 nemo-desktop=79749
+вер 24 23:11:16.305356 mike-virtualbox dbus-daemon[79023]: [session uid=1000 pid=79023 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=79415 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:11:16.561833 mike-virtualbox systemd[78996]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:11:23.209232 mike-virtualbox systemd[78753]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== A-3
+23:13:34.163905340 cycle A-3; unity-session 49.4; slow-gvfs drop-in: zz-racetest-slow.conf
+23:14:07.550425047 after logout: user@1000=inactive
+23:16:29.26651754 relogin: seat0=277/mike early-stops=0 activation-timeouts=0 nemo-desktop=82722
+вер 24 23:14:10.947398 mike-virtualbox dbus-daemon[81998]: [session uid=1000 pid=81998 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=82388 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:14:10.953871 mike-virtualbox systemd[81966]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:14:17.845737 mike-virtualbox systemd[81716]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== Ai-1
+23:18:23.687865455 cycle Ai-1; unity-session 49.4; slow-gvfs drop-in: zz-racetest-slow.conf
+23:18:57.40632698 after logout: user@1000=inactive
+23:21:19.905027098 relogin: seat0=285/mike early-stops=0 activation-timeouts=1 nemo-desktop=85896
+вер 24 23:19:00.860391 mike-virtualbox dbus-daemon[85155]: [session uid=1000 pid=85155 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.7' (uid=1000 pid=85545 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:19:00.876925 mike-virtualbox systemd[85123]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:19:00.971440 mike-virtualbox rss-test[85554]: stop begin
+вер 24 23:19:00.990977 mike-virtualbox systemd[85123]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 23:19:01.009158 mike-virtualbox rss-test[85557]: stop end
+вер 24 23:19:07.373204 mike-virtualbox systemd[84879]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 24 23:21:00.862095 mike-virtualbox dbus-daemon[85155]: [session uid=1000 pid=85155 pidfd=5] Failed to activate service 'org.gtk.vfs.Daemon': timed out (service_start_timeout=120000ms)
+== Ai-2
+23:21:19.971007113 cycle Ai-2; unity-session 49.4; slow-gvfs drop-in: zz-racetest-slow.conf
+23:21:53.256179412 after logout: user@1000=inactive
+23:24:14.593042446 relogin: seat0=288/mike early-stops=0 activation-timeouts=0 nemo-desktop=89175
+вер 24 23:21:56.491914 mike-virtualbox rss-test[88845]: stop begin
+вер 24 23:21:56.507864 mike-virtualbox rss-test[88847]: stop end
+вер 24 23:21:56.522924 mike-virtualbox dbus-daemon[88449]: [session uid=1000 pid=88449 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=88840 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:21:56.527111 mike-virtualbox systemd[88418]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:22:03.425978 mike-virtualbox systemd[88172]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== Ai-3
+23:24:14.663811180 cycle Ai-3; unity-session 49.4; slow-gvfs drop-in: zz-racetest-slow.conf
+23:24:47.956355065 after logout: user@1000=inactive
+23:27:09.308321773 relogin: seat0=291/mike early-stops=0 activation-timeouts=0 nemo-desktop=92158
+вер 24 23:24:51.146776 mike-virtualbox rss-test[91842]: stop begin
+вер 24 23:24:51.163953 mike-virtualbox rss-test[91844]: stop end
+вер 24 23:24:51.176214 mike-virtualbox dbus-daemon[91445]: [session uid=1000 pid=91445 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=91837 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:24:51.181228 mike-virtualbox systemd[91419]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:24:58.246238 mike-virtualbox systemd[91169]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== B-1
+23:28:13.54846945 cycle B-1; unity-session 49.4+unity1; slow-gvfs drop-in: zz-racetest-slow.conf
+23:28:46.394430664 after logout: user@1000=inactive
+23:31:07.624108527 relogin: seat0=297/mike early-stops=0 activation-timeouts=0 nemo-desktop=95294
+вер 24 23:28:49.590645 mike-virtualbox rss-test[94963]: targets: inactive  inactive
+вер 24 23:28:49.597250 mike-virtualbox dbus-daemon[94563]: [session uid=1000 pid=94563 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=94955 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:28:49.605680 mike-virtualbox systemd[94534]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:28:56.641175 mike-virtualbox systemd[94282]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== B-2
+23:31:07.685059599 cycle B-2; unity-session 49.4+unity1; slow-gvfs drop-in: zz-racetest-slow.conf
+23:31:41.221414965 after logout: user@1000=inactive
+23:34:02.525273698 relogin: seat0=301/mike early-stops=0 activation-timeouts=0 nemo-desktop=98234
+вер 24 23:31:44.505360 mike-virtualbox dbus-daemon[97504]: [session uid=1000 pid=97504 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=97896 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:31:44.514212 mike-virtualbox systemd[97476]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:31:44.517363 mike-virtualbox rss-test[97908]: targets: inactive  inactive
+вер 24 23:31:51.760840 mike-virtualbox systemd[97232]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== B-3
+23:34:02.577969238 cycle B-3; unity-session 49.4+unity1; slow-gvfs drop-in: zz-racetest-slow.conf
+23:34:35.816546419 after logout: user@1000=inactive
+23:36:57.226340503 relogin: seat0=304/mike early-stops=0 activation-timeouts=0 nemo-desktop=101216
+вер 24 23:34:39.024911 mike-virtualbox rss-test[100890]: targets: inactive  inactive
+вер 24 23:34:39.030290 mike-virtualbox dbus-daemon[100490]: [session uid=1000 pid=100490 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=100882 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:34:39.033780 mike-virtualbox systemd[100461]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:34:46.030344 mike-virtualbox systemd[100218]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== B-4
+23:36:57.287956010 cycle B-4; unity-session 49.4+unity1; slow-gvfs drop-in: zz-racetest-slow.conf
+23:37:30.604687011 after logout: user@1000=inactive
+23:39:51.990216230 relogin: seat0=307/mike early-stops=0 activation-timeouts=0 nemo-desktop=104251
+вер 24 23:37:33.738350 mike-virtualbox rss-test[103911]: targets: inactive  inactive
+вер 24 23:37:33.743367 mike-virtualbox dbus-daemon[103512]: [session uid=1000 pid=103512 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=103903 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:37:33.749351 mike-virtualbox systemd[103482]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:37:40.908947 mike-virtualbox systemd[103235]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== B-5
+23:39:52.65195566 cycle B-5; unity-session 49.4+unity1; slow-gvfs drop-in: zz-racetest-slow.conf
+23:40:25.452145995 after logout: user@1000=inactive
+23:42:46.775159868 relogin: seat0=310/mike early-stops=0 activation-timeouts=0 nemo-desktop=107215
+вер 24 23:40:28.597479 mike-virtualbox dbus-daemon[106468]: [session uid=1000 pid=106468 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=106859 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:40:28.607439 mike-virtualbox rss-test[106870]: targets: inactive  inactive
+вер 24 23:40:28.608020 mike-virtualbox systemd[106441]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:40:35.646643 mike-virtualbox systemd[106192]: Stopped gvfs-daemon.service - Virtual filesystem service.
+== B-6
+23:42:46.842303888 cycle B-6; unity-session 49.4+unity1; slow-gvfs drop-in: zz-racetest-slow.conf
+23:43:20.118899281 after logout: user@1000=inactive
+23:45:41.478050470 relogin: seat0=313/mike early-stops=0 activation-timeouts=0 nemo-desktop=110180
+вер 24 23:43:23.327432 mike-virtualbox rss-test[109852]: targets: inactive  inactive
+вер 24 23:43:23.335674 mike-virtualbox dbus-daemon[109453]: [session uid=1000 pid=109453 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.8' (uid=1000 pid=109844 comm="/usr/bin/ibus-daemon --daemonize --xim" label="unconfined")
+вер 24 23:43:23.347113 mike-virtualbox systemd[109423]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 24 23:43:30.405992 mike-virtualbox systemd[109179]: Stopped gvfs-daemon.service - Virtual filesystem service.

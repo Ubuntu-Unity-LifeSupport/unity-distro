@@ -14,6 +14,14 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Login race fixed: black desktop for two minutes after some logins.**
+  unity-session's `run-systemd-session` stopped graphical-session.target at
+  every login, even when it was not running, killing gvfs-daemon while
+  ibus-daemon was activating it; dbus-daemon then waited 120 s. 3 logins in 13
+  on target; 0 in 6 with unity-session `49.4+unity1` (in aptly).
+  `research/login-gvfs-race/`. Logout with unity `+unity8`/compiz `+unity2`
+  measured clean in six cycles (`research/compiz-restart/`).
+
 - **Restarting compiz (`killall -1 compiz`, the #3 workaround) fixed.** The
   release notes' side bug is real: every restart moved windows on lower
   workspaces up by a title bar until they landed on the first row (compiz
