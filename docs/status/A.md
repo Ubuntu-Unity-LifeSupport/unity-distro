@@ -9,8 +9,9 @@ Build directory: `~/work/a`
 (option A) and unity `+unity4` (inhibitor fixes) built and measured on
 `target`: one dialog on every path, inhibitors shown. **Blocked** by a compiz
 exit race that option A's timing makes frequent (3 crashes in 7 restarts);
-measuring an experimental compiz with `_exit(0)` in the XSMP die handler.
-Nothing published to aptly yet. See `research/shutdown-path/`.
+compiz with `_exit(0)` in the XSMP die handler (`+exp1`) measured: 0 crashes
+in 8 restarts. Nothing published to aptly yet - waiting for May on the trio
+(unity `+unity4`, cinnamon-session `+unity1`, compiz with the exit fix). See `research/shutdown-path/`.
 
 ## State of `target`
 

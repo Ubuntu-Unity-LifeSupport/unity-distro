@@ -1,0 +1,16 @@
+--- a/src/session.cpp	2025-09-30 12:59:55.000000000 +0000
++++ b/src/session.cpp	2026-09-23 23:44:37.801840963 +0000
+@@ -225,7 +225,12 @@
+     screen->sessionEvent (CompSession::EventDie, noOptions ());
+ 
+     CompSession::close ();
+-    exit (0);
++
++    /* Leave without running exit handlers: other threads are still alive -
++     * GDBus's worker in particular may be writing to the bus - and tearing
++     * down shared state under them crashes compiz on every other logout.
++     * The session is over; there is nothing left to clean up. */
++    _exit (0);
+ }
+ 
+ static void

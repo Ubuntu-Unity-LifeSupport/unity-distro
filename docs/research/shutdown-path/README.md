@@ -369,8 +369,15 @@ own cores were truncated by the reboot, so the kernel wrote this one to
 Unity answers `Open`, so the bus is busy: **3 crashes in 7 restarts**, against
 none in about ten through the old two-dialog path. The user sees "Извините,
 возникла внутренняя ошибка" at the next login. Nothing on Launchpad for this
-function in compiz. Option A cannot ship until this is fixed; an experiment
-with `_exit(0)` in `dieCallback` is being measured.
+function in compiz. Option A cannot ship until this is fixed.
+
+**Experiment: `_exit(0)` in `dieCallback`**
+([`compiz-die-exit.diff`](compiz-die-exit.diff), compiz `+exp1`): after
+`CompSession::close()` leave without running exit handlers - the session is
+over. Same target, same packages otherwise, the kernel writing any core to
+`/var/tmp` before each restart: **0 crashes in 8 restarts** (boots 03:06 to
+03:26), against 3 in 7 without it. At the old rate, eight clean restarts in a
+row would happen about 1% of the time.
 
 Also seen at every restart, old path and new: unity-settings-daemon (archive)
 crashes in its color plugin during teardown (`libcolor.so`, signal handler).
