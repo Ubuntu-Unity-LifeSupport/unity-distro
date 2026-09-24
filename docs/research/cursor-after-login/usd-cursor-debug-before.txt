@@ -1,0 +1,11 @@
+# target, unity-settings-daemon restarted with --replace, G_MESSAGES_DEBUG=all, 20 s, mouse not touched. 2026-09-24.
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu6
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:50:30.595: GsdCursor initializing
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:50:30.595: Activating gsd_cursor plugin
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:50:30.595: Starting cursor manager
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:50:30.597: Attempting to hide the cursor
+** (unity-settings-daemon:4445): DEBUG: 11:50:30.598: Plugin cursor: active
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:58:22.356: Deactivating gsd_cursor plugin
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:58:22.356: Stopping cursor manager
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:58:22.356: Attempting to show the cursor
+(unity-settings-daemon:4445): cursor-plugin-DEBUG: 11:58:22.370: PluginName## finalizing

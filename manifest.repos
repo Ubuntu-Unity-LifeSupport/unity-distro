@@ -30,8 +30,8 @@ repositories:
     version: ubuntu/devel
   packages/unity-settings-daemon:
     type: git
-    url: https://gitlab.com/ubuntu-unity/unity/unity-settings-daemon.git
-    version: ubuntu/devel
+    url: https://github.com/Ubuntu-Unity-LifeSupport/unity-settings-daemon.git
+    version: unity/resolute
   packages/unity-control-center:
     type: git
     url: https://gitlab.com/ubuntu-unity/unity/unity-control-center.git

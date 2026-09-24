@@ -8,9 +8,9 @@ Build directory: `~/work/a`
 Fixing locally, upstream last (May, 2026-09-24). Done today: #6 trio;
 inhibited logout hang (cinnamon-session `+unity2`) and the logind bypass of a
 refusing session manager (unity `+unity5`), both in aptly. Closed as not a
-bug: "two settings daemons" (csd does not run under Unity). Next from my list:
-#1 cursor after login, #3 cursor stops, u-s-d libcolor crash, Unity unit-test
-build.
+bug: "two settings daemons" (csd does not run under Unity). #1: candidate fix published (unity-settings-daemon `0ubuntu7+unity1`, not
+reproducible here). Next: #3 cursor stops, u-s-d libcolor crash (not seen
+since the compiz fix), Unity unit-test build.
 
 ## State of `target`
 
