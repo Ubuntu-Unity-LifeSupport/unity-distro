@@ -5,14 +5,14 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: login race fixed and published (unity-session
-`49.4+unity1`, `research/login-gvfs-race/`). Open: #3 itself (not
-reproduced).
+Nothing in flight. Last: unity `+unity9` (LP #2160299, #2165662) published
+(`research/unity-lp-crashes/`). Open: unity-settings-daemon color plugin
+crash at logout (cause found, not fixed); #3 itself (not reproduced).
 
 ## State of `target`
 
 Since 2026-09-24 13:11 boot (full upgrade from our aptly), plus by `dpkg -i`
-then matched by aptly: unity `+unity8`, compiz `+unity2`, gtk-nocsd `+unity2`
+then matched by aptly: unity `+unity9`, compiz `+unity2`, gtk-nocsd `+unity2`
 (dbgsyms for them installed too). Workspaces 2x2, six terminals spread over
 them. Also installed: libxpathselect1.4v5 (Unity introspection),
 libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor; xdotool, gdb,

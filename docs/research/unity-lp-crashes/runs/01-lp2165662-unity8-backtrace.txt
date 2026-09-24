@@ -1,0 +1,13 @@
+#0  __gnu_cxx::__normal_iterator<GLTexture* const*, std::vector<GLTexture*, std::allocator<GLTexture*> > >::__normal_iterator (this=<optimized out>, __i=<error reading variable: Cannot access memory at address 0x8>) at /usr/include/c++/15/bits/stl_iterator.h:1058
+#0  __gnu_cxx::__normal_iterator<GLTexture* const*, std::vector<GLTexture*, std::allocator<GLTexture*> > >::__normal_iterator (this=<optimized out>, __i=<error reading variable: Cannot access memory at address 0x8>) at /usr/include/c++/15/bits/stl_iterator.h:1058
+#1  std::vector<GLTexture*, std::allocator<GLTexture*> >::begin (this=0x8) at /usr/include/c++/15/bits/stl_vector.h:1009
+#2  std::vector<GLTexture*, std::allocator<GLTexture*> >::empty (this=0x8) at /usr/include/c++/15/bits/stl_vector.h:1224
+#3  unity::compiz_utils::SimpleTexture::texture (this=0x0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity8/decorations/../unity-shared/CompizUtils.h:54
+#4  unity::decoration::Window::Impl::ComputeShapedShadowQuad (this=0x5aa12c60a2a0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity8/decorations/DecoratedWindow.cpp:792
+#5  0x000071c8ff2fdcb8 in unity::decoration::Window::UpdateDecorationPosition (this=0x5aa12c60a180) at /usr/include/c++/15/bits/unique_ptr.h:192
+#6  0x000071c8ff2fdd79 in unity::decoration::Window::Impl::Paint (this=0x5aa12c60a2a0, transformation=<optimized out>, attrib=<optimized out>, region=<optimized out>, mask=<optimized out>) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity8/decorations/DecoratedWindow.cpp:827
+#7  0x000071c8ff2fddd0 in unity::decoration::Window::Paint (this=<optimized out>, matrix=<optimized out>, attrib=<optimized out>, region=<optimized out>, mask=<optimized out>) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity8/decorations/DecoratedWindow.cpp:1088
+#8  0x000071c8ff2662b8 in unity::UnityWindow::glPaint (this=0x5aa12c609f90, attrib=<optimized out>, matrix=..., region=..., mask=0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity8/plugins/unityshell/src/unityshell.cpp:3097
+#9  0x000071c9185212f8 in GLWindow::glPaint (this=0x5aa12c5e4270, attrib=..., transform=..., region=..., mask=0) at /usr/include/c++/15/bits/stl_vector.h:1263
+#10 0x000071c91851e8fe in PrivateGLScreen::paintOutputRegion (this=0x5aa12ac75d60, transform=..., region=..., output=<optimized out>, mask=mask@entry=9) at /usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity2/plugins/opengl/src/paint.cpp:457
+#11 0x000071c91851fa4a in GLScreen::glPaintOutput (this=0x5aa12ab0ba20, sAttrib=..., transform=<optimized out>, region=..., output=<optimized out>, mask=9) at /usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity2/plugins/opengl/src/paint.cpp:668

@@ -1,0 +1,8 @@
+run 1: compiz 118259 -> 118259; crash files: ; segv in journal: 0
+run 2: compiz 118259 -> 118259; crash files: ; segv in journal: 0
+run 3: compiz 118259 -> 118259; crash files: ; segv in journal: 0
+---
+before: nemo.desktop
+now: test-fm.desktop
+compiz 118259 -> 118259; unity7 active; crash files: 
+restored: nemo.desktop

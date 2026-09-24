@@ -58,7 +58,7 @@ Checked on: A - 2026-09-24 (Launchpad API, gitlab/GitHub/codeberg APIs, Ubuntu C
 
 **A - what could turn into work** (options for May, nothing started):
 
-- unity [#2160299](https://bugs.launchpad.net/bugs/2160299) and [#2165662](https://bugs.launchpad.net/bugs/2165662): crash reports with patches attached, in code we carry; #2165662 is in the decoration shadow code we changed in `+unity8`.
+- ~~unity #2160299 and #2165662~~: reproduced and fixed in unity `+unity9` (`research/unity-lp-crashes/`).
 - xorg-server: 11 medium CVEs fixed upstream (21.1.23/21.1.24) and open in resolute.
 - lightdm [#2168421](https://bugs.launchpad.net/bugs/2168421): 90 s login hang from `exit()` in the SIGTERM handler.
 - cinnamon-session [#214](https://github.com/linuxmint/cinnamon-session/issues/214)/[#202](https://github.com/linuxmint/cinnamon-session/issues/202): end-of-session bugs next to our patches; 6.6.4 is in 26.10.

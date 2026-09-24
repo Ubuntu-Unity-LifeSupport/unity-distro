@@ -1,0 +1,9 @@
+#0  0x00007c313ae763cf in sigc::signal_base::impl() const () from /usr/lib/x86_64-linux-gnu/libsigc-2.0.so.0
+#0  0x00007c313ae763cf in sigc::signal_base::impl() const () at /usr/lib/x86_64-linux-gnu/libsigc-2.0.so.0
+#1  0x00007c313ae77205 in sigc::signal_base::connect(sigc::slot_base&&) () at /usr/lib/x86_64-linux-gnu/libsigc-2.0.so.0
+#2  0x00007c311e5c28f9 in ??? ()
+#3  0x000057b82eb3efa0 in ??? ()
+#4  0x00706f746b736500 in ??? ()
+#5  0x0000000000000040 in ??? ()
+#6  0x8536fa752be91600 in ??? ()
+#7  0x000057b82eb35c60 in ??? ()
