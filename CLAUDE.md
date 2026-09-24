@@ -67,8 +67,13 @@ merge request or a reply to review. The three rules that matter most:
 **Rule 0, which fires before all of them: before writing a line of code for a
 problem, find out whether it is already solved.** Search outward from where you
 are - the installed system first (`apt-cache`, `dpkg -S`, `ldd`, and `Task:` in
-the metadata), then the package's history, then bug trackers, then the web
-through the host session. Twenty minutes, then record in `docs/DECISIONS.md`
+the metadata), then the package's history, then bug trackers, then the web.
+**You have direct internet access - use it yourself.** `curl` reaches
+api.launchpad.net, gitlab.gnome.org, gitlab.com and api.github.com from this
+machine (verified 2026-09-25), and `gh` is authenticated. Query the trackers'
+APIs directly rather than asking the host session; a web search tool, if you
+have one, is faster still. Ask the host only for something you genuinely
+cannot reach. Twenty minutes, then record in `docs/DECISIONS.md`
 where you looked - found or not - and carry on. This has caught us three times
 in one day, and once the answer was a package already installed on the machine
 we were working on.
