@@ -160,15 +160,13 @@ reads the specific text and agrees.
    after realize; property (stateful) actions are not proxied. Found on the
    way, not ours: two gtk-nocsd bugs (DECISIONS 2026-09-24; reporting upstream
    is May's call). See `research/layer-b/`.
-2. **Layer A: #6, the double dialog - options measured, A recommended.**
-   Option B (Unity calls `RequestShutdown`) is two lines but mishandles
-   inhibitors badly: stuck session, then a restart past the inhibitor. Option A
-   (cinnamon-session asks `org.gnome.Shell` after the query phase, like
-   gnome-session) gives one dialog everywhere. Next: fix Unity confirming its
-   pending action despite inhibitors, then measure A with it. Direction is
-   May's call. See `research/shutdown-path/` and DECISIONS 2026-09-24.
-   Also open: `unity-settings-daemon` and `cinnamon-settings-daemon` disagree
-   on the power button (`interactive` versus `suspend`).
+2. **Layer A: #6, the double dialog - fixed in our archive (2026-09-24).**
+   unity `+unity4`, cinnamon-session `+unity1` (option A) and compiz `+unity1`
+   (exit race) published together and verified from a clean snapshot via apt:
+   one dialog on every path, inhibitors shown, no compiz exit crash. Upstream
+   drafts not written yet. Still open: `unity-settings-daemon` and
+   `cinnamon-settings-daemon` disagree on the power button. Details in
+   `docs/status/A.md` and `research/shutdown-path/`.
 3. **Small upstream items found on the way, not queued:** Unity's unit tests
    do not build on 26.04 (C++14 vs googletest 1.17, GCC 15 in
    `tests/gmockvolume.c`); nux crashes without XF86VidMode
