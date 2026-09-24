@@ -1,0 +1,490 @@
+2026-09-24T16:48:42+03:00 mike-virtualbox dbus-daemon[1224]: [session uid=1000 pid=1224 pidfd=5] Activating via systemd: service name='org.gnome.Terminal' unit='gnome-terminal-server.service' requested by ':1.105' (uid=1000 pid=5206 comm="gnome-terminal --title=gt-1280-0" label="unconfined")
+2026-09-24T16:48:42+03:00 mike-virtualbox systemd[1190]: Created slice app-org.gnome.Terminal.slice - Slice /app/org.gnome.Terminal.
+2026-09-24T16:48:42+03:00 mike-virtualbox systemd[1190]: Starting gnome-terminal-server.service - GNOME Terminal Server...
+2026-09-24T16:48:43+03:00 mike-virtualbox dbus-daemon[1224]: [session uid=1000 pid=1224 pidfd=5] Successfully activated service 'org.gnome.Terminal'
+2026-09-24T16:48:43+03:00 mike-virtualbox systemd[1190]: Started gnome-terminal-server.service - GNOME Terminal Server.
+2026-09-24T16:48:44+03:00 mike-virtualbox systemd[1190]: Started vte-spawn-c970d355-f026-4131-b480-2ed4c045f584.scope - VTE child process 5242 launched by org.gnome.Terminal process 5212.
+2026-09-24T16:48:47+03:00 mike-virtualbox sshd-session[5133]: Received disconnect from 192.168.56.10 port 59110:11: disconnected by user
+2026-09-24T16:48:47+03:00 mike-virtualbox sshd-session[5133]: Disconnected from user mike 192.168.56.10 port 59110
+2026-09-24T16:48:47+03:00 mike-virtualbox sshd-session[5098]: pam_unix(sshd:session): session closed for user mike
+2026-09-24T16:48:47+03:00 mike-virtualbox systemd-logind[854]: Session 31 logged out. Waiting for processes to exit.
+2026-09-24T16:48:51+03:00 mike-virtualbox sshd-session[5398]: Accepted publickey for mike from 192.168.56.10 port 47106 ssh2: ED25519 SHA256:t/1KUIIlQRfSPlqpCqGg/OCEcULSXjiMwUxaO4zp7eU
+2026-09-24T16:48:51+03:00 mike-virtualbox sshd-session[5398]: pam_unix(sshd:session): session opened for user mike(uid=1000) by mike(uid=0)
+2026-09-24T16:48:51+03:00 mike-virtualbox systemd-logind[854]: New session '32' of user 'mike' with class 'user' and type 'tty'.
+2026-09-24T16:48:51+03:00 mike-virtualbox systemd[1]: Started session-32.scope - Session 32 of User mike.
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: /usr/bin/compiz (core) - Info: Stopping plugin: unityshell
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: ERROR 2026-09-24 16:48:52 unity.shell.compiz unityshell.cpp:3981 Impossible to delete the unity locked stamp file
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:52+03:00 mike-virtualbox compiz[2709]: g_hash_table_remove_internal: assertion 'hash_table != NULL' failed
+2026-09-24T16:48:54+03:00 mike-virtualbox systemd[1190]: Starting update-notifier-crash.service - Notification regarding a crash report...
+2026-09-24T16:48:54+03:00 mike-virtualbox systemd[1]: Started whoopsie.service - Service uploading crash reports to the Ubuntu Error Tracker.
+2026-09-24T16:48:54+03:00 mike-virtualbox update-notifier-crash[5449]: /usr/bin/whoopsie
+2026-09-24T16:48:54+03:00 mike-virtualbox whoopsie[5446]: [16:48:54] Using lock path: /var/lock/whoopsie/lock
+2026-09-24T16:48:54+03:00 mike-virtualbox whoopsie[5446]: [16:48:54] Looking for .upload files in /var/crash
+2026-09-24T16:48:54+03:00 mike-virtualbox systemd[1]: whoopsie.service: Deactivated successfully.
+2026-09-24T16:48:55+03:00 mike-virtualbox systemd[1190]: Finished update-notifier-crash.service - Notification regarding a crash report.
+2026-09-24T16:49:00+03:00 mike-virtualbox systemd[1]: Started whoopsie.service - Service uploading crash reports to the Ubuntu Error Tracker.
+2026-09-24T16:49:00+03:00 mike-virtualbox systemd[1190]: Starting update-notifier-crash.service - Notification regarding a crash report...
+2026-09-24T16:49:00+03:00 mike-virtualbox whoopsie[5491]: [16:49:00] Using lock path: /var/lock/whoopsie/lock
+2026-09-24T16:49:00+03:00 mike-virtualbox whoopsie[5491]: [16:49:00] Looking for .upload files in /var/crash
+2026-09-24T16:49:00+03:00 mike-virtualbox systemd[1]: whoopsie.service: Deactivated successfully.
+2026-09-24T16:49:00+03:00 mike-virtualbox update-notifier-crash[5507]: /usr/bin/whoopsie
+2026-09-24T16:49:00+03:00 mike-virtualbox kernel: ld-linux-x86-64[3574]: segfault at 10 ip 00007dc668e47b47 sp 00007fff9c61b808 error 4 in libgtk-nocsd.so.0[8b47,7dc668e46000+9000] likely on CPU 1 (core 1, socket 0)
+2026-09-24T16:49:00+03:00 mike-virtualbox kernel: Code: bf 03 00 00 00 e8 b9 eb ff ff 48 85 c0 7f dc 45 84 e4 74 2d 48 8d 3d b8 82 00 00 e8 53 eb ff ff 48 8b 05 84 b2 00 00 48 8b 00 <48> 8b 78 10 48 8d 70 10 48 8b 05 72 af 00 00 48 8b 10 e8 32 ed ff
+2026-09-24T16:49:00+03:00 mike-virtualbox systemd[1190]: unity7.service: Main process exited, code=dumped, status=11/SEGV
+2026-09-24T16:49:01+03:00 mike-virtualbox update-notifier-crash[5513]: compiz
+2026-09-24T16:49:01+03:00 mike-virtualbox sshd-session[5433]: Received disconnect from 192.168.56.10 port 47106:11: disconnected by user
+2026-09-24T16:49:01+03:00 mike-virtualbox sshd-session[5433]: Disconnected from user mike 192.168.56.10 port 47106
+2026-09-24T16:49:01+03:00 mike-virtualbox sshd-session[5398]: pam_unix(sshd:session): session closed for user mike
+2026-09-24T16:49:01+03:00 mike-virtualbox systemd[1]: session-32.scope: Deactivated successfully.
+2026-09-24T16:49:01+03:00 mike-virtualbox systemd-logind[854]: Session 32 logged out. Waiting for processes to exit.
+2026-09-24T16:49:01+03:00 mike-virtualbox systemd-logind[854]: Removed session 32.
+2026-09-24T16:49:01+03:00 mike-virtualbox systemd[1]: Started whoopsie.service - Service uploading crash reports to the Ubuntu Error Tracker.
+2026-09-24T16:49:01+03:00 mike-virtualbox whoopsie[5635]: [16:49:01] Using lock path: /var/lock/whoopsie/lock
+2026-09-24T16:49:01+03:00 mike-virtualbox whoopsie[5635]: [16:49:01] Looking for .upload files in /var/crash
+2026-09-24T16:49:01+03:00 mike-virtualbox systemd[1]: whoopsie.service: Deactivated successfully.
+2026-09-24T16:49:08+03:00 mike-virtualbox systemd[1]: Started whoopsie.service - Service uploading crash reports to the Ubuntu Error Tracker.
+2026-09-24T16:49:08+03:00 mike-virtualbox systemd[1190]: Finished update-notifier-crash.service - Notification regarding a crash report.
+2026-09-24T16:49:08+03:00 mike-virtualbox systemd[1190]: update-notifier-crash.service: Consumed 1.194s CPU time over 8.188s wall clock time, 39.1M memory peak.
+2026-09-24T16:49:08+03:00 mike-virtualbox whoopsie[5660]: [16:49:08] Using lock path: /var/lock/whoopsie/lock
+2026-09-24T16:49:08+03:00 mike-virtualbox whoopsie[5660]: [16:49:08] Looking for .upload files in /var/crash
+2026-09-24T16:49:08+03:00 mike-virtualbox systemd[1]: whoopsie.service: Deactivated successfully.
+2026-09-24T16:49:11+03:00 mike-virtualbox sshd-session[5683]: Accepted publickey for mike from 192.168.56.10 port 46832 ssh2: ED25519 SHA256:t/1KUIIlQRfSPlqpCqGg/OCEcULSXjiMwUxaO4zp7eU
+2026-09-24T16:49:11+03:00 mike-virtualbox sshd-session[5683]: pam_unix(sshd:session): session opened for user mike(uid=1000) by mike(uid=0)
+2026-09-24T16:49:11+03:00 mike-virtualbox systemd-logind[854]: New session '33' of user 'mike' with class 'user' and type 'tty'.
+2026-09-24T16:49:11+03:00 mike-virtualbox systemd[1]: Started session-33.scope - Session 33 of User mike.
+2026-09-24T16:49:11+03:00 mike-virtualbox sshd-session[5718]: Received disconnect from 192.168.56.10 port 46832:11: disconnected by user
+2026-09-24T16:49:11+03:00 mike-virtualbox sshd-session[5718]: Disconnected from user mike 192.168.56.10 port 46832
+2026-09-24T16:49:11+03:00 mike-virtualbox sshd-session[5683]: pam_unix(sshd:session): session closed for user mike
+2026-09-24T16:49:11+03:00 mike-virtualbox systemd[1]: session-33.scope: Deactivated successfully.
+2026-09-24T16:49:11+03:00 mike-virtualbox systemd-logind[854]: Session 33 logged out. Waiting for processes to exit.
+2026-09-24T16:49:11+03:00 mike-virtualbox systemd-logind[854]: Removed session 33.
+2026-09-24T16:49:22+03:00 mike-virtualbox sshd-session[5734]: Accepted publickey for mike from 192.168.56.10 port 54072 ssh2: ED25519 SHA256:t/1KUIIlQRfSPlqpCqGg/OCEcULSXjiMwUxaO4zp7eU
+2026-09-24T16:49:22+03:00 mike-virtualbox sshd-session[5734]: pam_unix(sshd:session): session opened for user mike(uid=1000) by mike(uid=0)
+2026-09-24T16:49:22+03:00 mike-virtualbox systemd-logind[854]: New session '34' of user 'mike' with class 'user' and type 'tty'.
+2026-09-24T16:49:22+03:00 mike-virtualbox systemd[1]: Started session-34.scope - Session 34 of User mike.
+2026-09-24T16:49:23+03:00 mike-virtualbox sshd-session[5769]: Received disconnect from 192.168.56.10 port 54072:11: disconnected by user
+2026-09-24T16:49:23+03:00 mike-virtualbox sshd-session[5769]: Disconnected from user mike 192.168.56.10 port 54072
+2026-09-24T16:49:23+03:00 mike-virtualbox sshd-session[5734]: pam_unix(sshd:session): session closed for user mike
+2026-09-24T16:49:23+03:00 mike-virtualbox systemd[1]: session-34.scope: Deactivated successfully.
+2026-09-24T16:49:23+03:00 mike-virtualbox systemd-logind[854]: Session 34 logged out. Waiting for processes to exit.
+2026-09-24T16:49:23+03:00 mike-virtualbox systemd-logind[854]: Removed session 34.

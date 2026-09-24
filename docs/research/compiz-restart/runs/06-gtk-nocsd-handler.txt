@@ -1,0 +1,35 @@
+# gtk-nocsd crash handler on target (Ubuntu Unity 26.04, glibc 2.43-2ubuntu2.4), 2026-09-24
+
+## helper of compiz after compiz segfaulted on SIGHUP (stock 3+0~20260321+0b77e1b-1)
+2026-09-24T16:49:00+03:00 mike-virtualbox kernel: ld-linux-x86-64[3574]: segfault at 10 ip 00007dc668e47b47 sp 00007fff9c61b808 error 4 in libgtk-nocsd.so.0[8b47,7dc668e46000+9000] likely on CPU 1 (core 1, socket 0)
+2026-09-24T16:49:00+03:00 mike-virtualbox kernel: Code: bf 03 00 00 00 e8 b9 eb ff ff 48 85 c0 7f dc 45 84 e4 74 2d 48 8d 3d b8 82 00 00 e8 53 eb ff ff 48 8b 05 84 b2 00 00 48 8b 00 <48> 8b 78 10 48 8d 70 10 48 8b 05 72 af 00 00 48 8b 10 e8 32 ed ff
+
+## constructors ld.so runs when the library is the program (LD_DEBUG=libs)
+	calling init: /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+	calling init: /usr/lib/x86_64-linux-gnu/libatomic.so.1
+	calling init: /usr/lib/x86_64-linux-gnu/libblkid.so.1
+	calling init: /usr/lib/x86_64-linux-gnu/libc.so.6
+	calling init: /usr/lib/x86_64-linux-gnu/libffi.so.8
+	calling init: /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+	calling init: /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+	calling init: /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0
+	calling init: /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+	calling init: /usr/lib/x86_64-linux-gnu/libmount.so.1
+	calling init: /usr/lib/x86_64-linux-gnu/libm.so.6
+	calling init: /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0
+	calling init: /usr/lib/x86_64-linux-gnu/libselinux.so.1
+	calling init: /usr/lib/x86_64-linux-gnu/libz.so.1
+(libgtk-nocsd.so.0 itself is not in the list)
+
+## GTK3 window + SIGSEGV (nocsdcrash.sh)
+stock:    ld-linux-x86-64[8965]: segfault at 10 ip 00007644e860ab47 ... in libgtk-nocsd.so.0[8b47,...]  (application not restarted)
++unity1:  traps: ld-linux-x86-64[9408] general protection fault ip:7b8d6ee8c8ac ... in libgtk-nocsd.so.0[88ac,...]
+          addr2line 0x88ac -> GTKNoCSDSaveArguments, GTK-NoCSD.c:51 (pcmpeqb -0x10(%rdx),%xmm0)
++unity2:  pid 9820 argv ['/tmp/segv.py', 'first-run']
+          pid 9825 argv ['/tmp/segv.py', 'first-run']   <- restarted by the handler, no handler crash in the kernel log
+
+## compiz killed with SIGSEGV, fixed handler loaded (wmgap.sh)
+t=+.0830s compiz=[10088 ] active
+t=+2.224s compiz=[10760 ] deactivating   <- handler exec'd compiz without the library
+t=+3.892s compiz=[] activating         <- systemd stopped the unit's cgroup
+t=+6.568s compiz=[13413 ] active       <- systemd's restart

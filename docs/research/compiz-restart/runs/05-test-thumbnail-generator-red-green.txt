@@ -1,0 +1,16 @@
+unfixed exit=139
+[ RUN      ] TestThumbnailGenerator.TestNoURIThumbnail
+make=0
+fixed exit=0
+[ RUN      ] TestThumbnailGenerator.TestNoURIThumbnail
+[       OK ] TestThumbnailGenerator.TestNoURIThumbnail (0 ms)
+[ RUN      ] TestThumbnailGenerator.TestGetOneFileThumbnail
+[       OK ] TestThumbnailGenerator.TestGetOneFileThumbnail (429 ms)
+[ RUN      ] TestThumbnailGenerator.TestGetManyFileThumbnail
+[       OK ] TestThumbnailGenerator.TestGetManyFileThumbnail (2861 ms)
+[ RUN      ] TestThumbnailGenerator.TestGetOneGIcon
+[       OK ] TestThumbnailGenerator.TestGetOneGIcon (1 ms)
+[ RUN      ] TestThumbnailGenerator.TestGetManyGIcon
+[       OK ] TestThumbnailGenerator.TestGetManyGIcon (27 ms)
+[  PASSED  ] 5 tests.
+reverted=0

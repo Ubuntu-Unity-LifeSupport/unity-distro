@@ -7,13 +7,20 @@ _Last updated: 2026-09-23_
 Layer A is producing fixes; Layer B has a packaged GTK4 global menu. Three
 Layer A contributions are queued in `docs/upstream/`, none sent: `nux-pcre2`,
 `light-locker-session`, `unity-stale-pending-action`. Our aptly repository
-carries nux 0ubuntu15+unity1, light-locker `+unity2`, unity `+unity2` and
+carries nux 0ubuntu15+unity1, calamares-settings-ubuntu 1:26.04.12+unity1, light-locker `+unity2`, unity `+unity2` and
 unity-gtk4-menu 0.8.
 
 Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Known issue #4 (wallpaper over Calamares) fixed.** It is the OEM
+  first-time setup session, not the vendor's install: xfwm4 raises the
+  focused fullscreen `basicwallpaper` window above Calamares, after a startup
+  race or on Alt+Tab. `basicwallpaper` is now a desktop window that takes no
+  focus. calamares-settings-ubuntu 1:26.04.12+unity1 in aptly; matters for
+  our ISO only. A real two-stage OEM install in a VM (`oem-test`, host
+  session) is still to come. `research/calamares-oem/`.
 - **Known issue #2 fixed in Unity, and a worse bug found behind it.** One
   cause: Unity records a pending end-session action and waits for the session
   manager to call `EndSessionDialog.Open` back; cinnamon-session never does, so
@@ -197,7 +204,7 @@ handoff originally had five and had dropped a precondition.
 | 1 | Cursor disappears after login | `sudo systemctl restart lightdm` |
 | 2 | Shutdown/logout menu unresponsive **after cancelling** | tty + `sudo poweroff` - **fixed in our unity +unity2** |
 | 3 | Cursor stops responding | `killall -1 compiz` |
-| 4 | Wallpaper over the Calamares window during OEM install | Alt+Tab to the installer |
+| 4 | Wallpaper over the Calamares window during OEM install | Alt+Tab to the installer - **fixed in our calamares-settings-ubuntu +unity1** (`research/calamares-oem/`) |
 | 5 | light-locker crashes on login, login still works | - |
 | 6 | Shutdown confirmation dialog appears twice | disabled through gsettings |
 

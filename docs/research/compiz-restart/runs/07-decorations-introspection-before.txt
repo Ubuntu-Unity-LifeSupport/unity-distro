@@ -1,0 +1,7 @@
+# decostate.py ~25 s after `killall -1 compiz`, unity +unity6 (terminal windows only)
+xid=58720288 title=mike@mike-virtualbox: ~ active=0 framed=1 fully_decorated=1 shadow_decorated=1 shadow_rect=(0, 0, 0, 0) frame_geo=(0, 0, 384, 186) should_be_decorated=1
+xid=60817440 title=mike@mike-virtualbox: ~ active=0 framed=1 fully_decorated=1 shadow_decorated=1 shadow_rect=(0, 0, 0, 0) frame_geo=(0, 0, 384, 186) should_be_decorated=1
+xid=62914592 title=mike@mike-virtualbox: ~ active=0 framed=1 fully_decorated=1 shadow_decorated=1 shadow_rect=(0, 0, 0, 0) frame_geo=(0, 0, 384, 186) should_be_decorated=1
+xid=67108870 title=mike@mike-virtualbox: ~ active=0 framed=1 fully_decorated=1 shadow_decorated=1 shadow_rect=(0, 0, 0, 0) frame_geo=(0, 0, 674, 486) should_be_decorated=1
+xid=41943072 title=mike@mike-virtualbox: ~ active=0 framed=1 fully_decorated=1 shadow_decorated=1 shadow_rect=(0, 0, 0, 0) frame_geo=(0, 0, 324, 134) should_be_decorated=1
+xid=56623136 title=mike@mike-virtualbox: ~ active=1 framed=1 fully_decorated=1 shadow_decorated=1 shadow_rect=(181, 245, 405, 207) frame_geo=(0, 0, 384, 186) should_be_decorated=1

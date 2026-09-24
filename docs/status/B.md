@@ -5,6 +5,16 @@ Build directory: `~/work/b`
 
 ## Now
 
+**calamares-settings-ubuntu** - agent B's since 2026-09-24 (known issue #4,
+May approved). `1:26.04.12+unity1` in aptly (`-ubuntu-unity`, `-common`,
+`-common-data`): basicwallpaper is a desktop window on X11, so it cannot cover
+Calamares in the OEM first-time setup. Commit `b6b546b`, branch
+`unity/resolute` of `packages/calamares-settings-ubuntu` (no remote of ours -
+patch and notes in `research/calamares-oem/`). Waiting: VM `oem-test` for a
+real two-stage OEM install (host session asked May to create it - the host
+may not create VMs itself); `vm-bootstrap.sh` served from
+`~/work/b/iso/www` on 192.168.56.10:8088 (tmux `b-www`).
+
 **nux** - agent B's since 2026-09-24. `0ubuntu15+unity1` in aptly: upstream
 0ubuntu15 (ICU in place of Unicode-licensed code, no boost-system) plus our
 `fix-missing-vidmode.patch`; commit `9d26778`, branch `b/ubuntu15` of
@@ -22,6 +32,10 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
+May is switching it off for now (2026-09-24). Added for #4: `calamares`,
+`calamares-settings-ubuntu-unity` (archive 26.04.12), `xvfb`, `x11-apps`,
+`imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
+`~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
 Dirty (`~/.dirty`): libnux `0ubuntu15+unity1` (was archive 0ubuntu12) and
 `libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
 (session-wide, rebooted), `xdotool`, 18 GTK4 test applications (C, gjs, Python) and 3 Qt ones
@@ -36,6 +50,11 @@ our experiments are moved, not deleted, to `~/b/crash-before-0.6/` and
 
 ## Mine outside git
 
+- `/var/tmp/sbuild-claude/b-dev` - now also has Qt6 dev, Xvfb, xfwm4,
+  Calamares and our calamares-settings-ubuntu-unity `+unity1`, for
+  `research/calamares-oem/check.sh`.
+- `~/work/b/iso` - ISO manifest, calamares-settings-ubuntu 26.04.12 source,
+  `www/` (bootstrap for `oem-test`, served by tmux `b-www`).
 - `/var/tmp/sbuild-claude/b-nux` - chroot with our nux, Xvfb, Xorg dummy and
   TigerVNC, for `research/nux-vidmode/`.
 - `~/work/b/nux/` - nux build output and test programs.

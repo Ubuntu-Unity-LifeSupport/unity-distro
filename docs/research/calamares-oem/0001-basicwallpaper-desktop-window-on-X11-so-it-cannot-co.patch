@@ -1,0 +1,1562 @@
+From b6b546b1726812d354bdd4ccb35e0c500add2624 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Thu, 24 Sep 2026 13:20:51 +0000
+Subject: [PATCH] basicwallpaper: desktop window on X11, so it cannot cover
+ Calamares
+
+xfwm4 puts a focused fullscreen window into the fullscreen layer. The
+wallpaper is one, so in the Ubuntu Unity OEM first-time setup session it
+covered Calamares whenever it got focus: when it mapped after Calamares,
+or on Alt+Tab. Map it as a _NET_WM_WINDOW_TYPE_DESKTOP window that does
+not accept focus instead; Wayland (Kubuntu) keeps the old behaviour.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ common/basicwallpaper/main.cpp |   18 +-
+ debian/changelog               | 1496 +-------------------------------
+ 2 files changed, 24 insertions(+), 1490 deletions(-)
+
+diff --git a/common/basicwallpaper/main.cpp b/common/basicwallpaper/main.cpp
+index 6cb543b..ed5767c 100644
+--- a/common/basicwallpaper/main.cpp
++++ b/common/basicwallpaper/main.cpp
+@@ -1,6 +1,7 @@
+ #include "mainwindow.h"
+ 
+ #include <QApplication>
++#include <QGuiApplication>
+ #include <QScreen>
+ 
+ int main(int argc, char *argv[])
+@@ -17,9 +18,22 @@ int main(int argc, char *argv[])
+ 
+     for (QScreen *screen : QApplication::screens()) {
+         MainWindow *w = new MainWindow(wallpaperFile);
+-        w->setWindowFlags(Qt::WindowStaysOnBottomHint);
++        // On X11, a desktop window that never takes focus: the window manager
++        // keeps it below every other window. A fullscreen window goes into the
++        // fullscreen layer whenever it has focus - when it maps after
++        // Calamares, or on Alt+Tab - and covers the installer.
++        bool x11 = QGuiApplication::platformName() == QLatin1String("xcb");
++        if (x11) {
++            w->setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
++            w->setWindowFlags(Qt::Window | Qt::FramelessWindowHint
++                              | Qt::WindowStaysOnBottomHint
++                              | Qt::WindowDoesNotAcceptFocus);
++        } else {
++            w->setWindowFlags(Qt::WindowStaysOnBottomHint);
++        }
+         w->setGeometry(screen->geometry());
+-        w->showFullScreen();
++        if (!x11)
++            w->showFullScreen();
+         w->show();
+         w->applyWallpaper();
+     }
+diff --git a/debian/changelog b/debian/changelog
+index a8320f0..85e1d02 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,1491 +1,11 @@
+-calamares-settings-ubuntu (1:26.04.12) resolute; urgency=medium
++calamares-settings-ubuntu (1:26.04.12+unity1) resolute; urgency=medium
+ 
+-  * Fix OEM installation mode for Kubuntu and Ubuntu Unity. (LP: #2149813)
++  * basicwallpaper: on X11, map the wallpaper as a desktop window that never
++    takes focus, instead of a fullscreen one. xfwm4 raises a focused
++    fullscreen window above all others, so the wallpaper covered Calamares
++    in the Ubuntu Unity OEM first-time setup session whenever it got focus:
++    when it mapped after Calamares, or on Alt+Tab. Wayland (Kubuntu) is
++    unchanged.
+ 
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Tue, 21 Apr 2026 11:05:22 -0400
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Thu, 24 Sep 2026 13:20:00 +0000
+ 
+-calamares-settings-ubuntu (1:26.04.11) resolute; urgency=medium
+-
+-  * Fix first slide of Kubuntu's slideshow.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Tue, 14 Apr 2026 15:51:32 -0400
+-
+-calamares-settings-ubuntu (1:26.04.10) resolute; urgency=medium
+-
+-  * Remove leftover Calamares libraries on flavors that don't use stacked
+-    squashfses (LP: #2144369)
+-  * Add slideshow and welcome images for Kubuntu 26.04 (LP: #2147510)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 13 Apr 2026 16:55:15 -0400
+-
+-calamares-settings-ubuntu (1:26.04.9) resolute; urgency=medium
+-
+-  * Fix release mascot in slide 07 for Resolute Raccoon.
+-
+- -- Rik Mills <rikmills@kde.org>  Sun, 22 Mar 2026 14:02:49 +0000
+-
+-calamares-settings-ubuntu (1:26.04.8) resolute; urgency=medium
+-
+-  * Remove dependency on dracut-core to unbreak encrypted installations on
+-    flavors that still use initramfs-tools.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 19 Mar 2026 11:45:08 -0400
+-
+-calamares-settings-ubuntu (1:26.04.7) resolute; urgency=medium
+-
+-  * Add Calamares to the installed system when installing Lubuntu in OEM mode
+-    (LP: #2127123)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 16 Mar 2026 12:32:10 -0400
+-
+-calamares-settings-ubuntu (1:26.04.6) resolute; urgency=medium
+-
+-  * Don't crash the installer if the software database update fails (LP:
+-    #2143847)
+-  * Don't warn the user when using an encrypted /boot partition with an
+-    encrypted root partition (LP: #2107507)
+-  * Update Lubuntu and Ubuntu Unity branding to state the OS version as 26.04
+-    (LP: #2130481)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 11 Mar 2026 17:01:45 -0400
+-
+-calamares-settings-ubuntu (1:26.04.5) resolute; urgency=medium
+-
+-  * Fix an install crash caused by a missing `umount` command in
+-    shellprocess_rmcdrom.conf.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 05 Mar 2026 16:21:22 -0500
+-
+-calamares-settings-ubuntu (1:26.04.4) resolute; urgency=medium
+-
+-  * Fix minimal installation by no longer trying to remove nonexistent
+-    packages on Kubuntu and Ubuntu Unity. (LP: #2127711)
+-  * Update version numbers for OEM batch IDs and partition names for Lubuntu
+-    and Ubuntu Unity.
+-  * Switch to supporting the livecd-rootfs-only ISO build system. (Reference:
+-    https://discourse.ubuntu.com/t/spec-make-iso-in-livefs-build/73349)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 23 Feb 2026 18:15:28 -0500
+-
+-calamares-settings-ubuntu (1:26.04.3) resolute; urgency=medium
+-
+-  * Update calamares-settings-ubuntu-unity kvantum theme dependencies to
+-    match new package names.
+-
+- -- Rik Mills <rikmills@kde.org>  Tue, 17 Feb 2026 08:16:08 +0000
+-
+-calamares-settings-ubuntu (1:26.04.2) resolute; urgency=medium
+-
+-  * Disable dh_dwz for now to avoid FTBFS.
+-
+- -- Rik Mills <rikmills@kde.org>  Sat, 01 Nov 2025 12:46:53 +0000
+-
+-calamares-settings-ubuntu (1:26.04.1) resolute; urgency=medium
+-
+-  * Update Kubuntu branding for 26.04 (LP: #2130481)
+-
+- -- Rik Mills <rikmills@kde.org>  Sat, 01 Nov 2025 11:08:30 +0000
+-
+-calamares-settings-ubuntu (1:25.10.6) questing; urgency=medium
+-
+-  * Remove 'development version' title from Kubuntu welcome page image.
+-
+- -- Rik Mills <rikmills@kde.org>  Mon, 06 Oct 2025 09:10:22 +0100
+-
+-calamares-settings-ubuntu (1:25.10.5) questing; urgency=medium
+-
+-  * Stop using "sudo -E" to launch things, sudo-rs now ignores it.
+-  * Fix how Calamares is launched in the first-time user setup session on
+-    Kubuntu. (LP: #2125435)
+-  * Explicitly remove calamares-settings-ubuntu-common(-data) after
+-    installation. (LP: #2125700)
+-  * Prevent the user from skipping a system restart after first-time user
+-    setup on Kubuntu.
+-  * Fix a strange-looking horizontal black line being shown by BasicWallpaper
+-    in the first-time user setup session.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 22 Sep 2025 13:43:26 -0500
+-
+-calamares-settings-ubuntu (1:25.10.4) questing; urgency=medium
+-
+-  * Don't try to uninstall packages to make a minimal system when stacked
+-    squashfses are in use. (LP: #2121435)
+-  * Unpack the second squashfs when doing non-minimal installs when stacked
+-    squashfses are in use. (LP: #2121155)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Tue, 26 Aug 2025 17:21:35 -0500
+-
+-calamares-settings-ubuntu (1:25.10.3) questing; urgency=medium
+-
+-  * Fix an FTBFS on riscv64 by disabling CGO on that platform.
+-  * Add a "Static-Built-Using" field to the calamares-settings-ubuntu-common
+-    binary package..
+-  * Add an "XS-Go-Import-Path" field to the source package.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Sun, 17 Aug 2025 10:07:53 -0500
+-
+-calamares-settings-ubuntu (1:25.10.2) questing; urgency=medium
+-
+-  * Revert the packageselect refactoring from Plucky, go back to the
+-    known-good package customization implementation.
+-  * Update everyone's installer branding text to say 25.10/questing.
+-  * Update Lubuntu and Ubuntu Unity welcome images.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 13 Aug 2025 12:45:11 -0500
+-
+-calamares-settings-ubuntu (1:25.10.1) questing; urgency=medium
+-
+-  * Update Kubuntu branding for 25.10.
+-
+- -- Rik Mills <rikmills@kde.org>  Sun, 15 Jun 2025 12:56:18 +0100
+-
+-calamares-settings-ubuntu (1:25.04.27) plucky; urgency=medium
+-
+-  * Disable virt-manager installation in third-party software options, as the
+-    package is broken when installed by pkgselect.
+-  * Remove full installation and third-party software options from all
+-    flavors.
+-  * Fix segfaults during installation. (LP: #2107486)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 16 Apr 2025 18:23:56 -0500
+-
+-calamares-settings-ubuntu (1:25.04.26) plucky; urgency=medium
+-
+-  * [bootloader] Instead of utilizing a contextualprocess to only bind-mount
+-    /cdrom to /media/cdrom when it's a specific type of system, simply add it
+-    to the mounts for all flavors, and move the specific copy of the vmlinuz
+-    file to a dedicated shellprocess module. This will be re-factored next
+-    cycle, ideally being worked directly into a dedicated C++ module instead
+-    of several, miscellaneous shell scripts wrapped in YAML.
+-  * [pkgselectprocess] Explicitly log all apt commands in the debug logs.
+-  * [pkgselectprocess] Ensure apt-cdrom command outputs have their own prefix.
+-  * [checkpackage-backend] Simply pass through packages starting with "^" or
+-    containing "*". For this cycle we can trust our distributors won't do
+-    anything unusual, but next cycle, we need to perform explicit validation
+-    on these items. If you are a downstream, please be careful.
+-  * [pkgselectprocess] Ensure hasInternet is available as a local variable, so
+-    we can use it.
+-  * [pkgselectprocess] When running apt remove, use CPBE just in case.
+-  * [pkgselectprocess] When doing installations without network, we need to
+-    ensure that we don't try to perform apt operations that require internet.
+-    To do this in Plucky, we need to temporarily copy the ubuntu.sources file
+-    to an ubuntu.sources.bak file. To bring all of the previous commits in
+-    this upload together, we use the bind-mounted /media/cdrom not only to
+-    install the correct GRUB packages, but to ensure that we can still install
+-    them and any other packages on ship-live. There has to be a better, more
+-    native way to do this. It works for now, but in the Questing cycle, we're
+-    probably going to move some of these command-line apt calls to be a
+-    consumer of the libapt C library (LP: #2107287).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 15 Apr 2025 22:36:52 -0500
+-
+-calamares-settings-ubuntu (1:25.04.25) plucky; urgency=medium
+-
+-  * [pkgselectprocess] When we are creating the final list of packages to feed
+-    to "apt install," virtual packages which do not have a valid candidate are
+-    included in this list, causing the installation to fail. When creating
+-    this list, use FindGrp instead of FindPkg, and only add it to the list if
+-    there is a valid candidate. Additionally, add these items to an unordered
+-    set, to eliminate deduplication (LP: #2106773).
+-  * [pkgselect] As a temporary measure until OEM is refactored in the 25.10
+-    cycle, we need to ensure that Calamares and its necessary dependencies are
+-    installed on the target, iff this is a stacked squashfs. We're doing this
+-    in pkgselect instead of pkgselectprocess because pkgselect already knows
+-    about stacked squashfses, it's what provides the final "additional install
+-    list" to be considered by checkpackage-backend, and this is a temporary
+-    fix anyway (LP: #2104343).
+-  * [pkgselectprocess] To complement the last fix, ensure that Calamares ends
+-    up on the removal list for non-stacked squashfses if and only if OEM is
+-    disabled, and Calamares shows up on the install list only for stacked
+-    squashfses which have OEM enabled. This nuanced approach ensures all
+-    potential combinations have the intended functionality.
+-  * [OEM] Ensure the final desktop file completing OEM is marked as executable.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 13 Apr 2025 03:17:13 -0500
+-
+-calamares-settings-ubuntu (1:25.04.24) plucky; urgency=medium
+-
+-  * Bump Standards-Version to 4.7.2, no changes needed.
+-  * [pkgselectprocess] If checkpackage-backend does not exist in the target
+-    system, likely due to the use of stacked squashfses, ensure it temporarily
+-    exists so it can be used in the install process. This fixes installation
+-    of the Virtual Machine Manager when selected on the Customize menu
+-    (LP: #2104243).
+-  * [OEM] As a temporary stop-gap until this can be completely re-written next
+-    cycle, ensure the sed call in the Calamares OEM setup refers to
+-    pkgselectprocess, not packages. This was preventing the OEM processing
+-    step (as opposed to just the GUI configuration) to be missing
+-    (LP: #2104343).
+-  * [OEM] [Kubuntu] In stage two, ensure we use Wayland, consistent with the
+-    rest of the session scripts.
+-  * [pkgselectprocess] Disable the dpkg trigger inhibition logic this cycle.
+-    The original goal here was to de-duplicate some of the trigger processing
+-    work, but it's obvious this needs more work. It's too premature to ship
+-    right now, unfortunately.
+-  * [Lubuntu] Remove the Dracut configuration so we fall back to the defaults
+-    provided by the package. This is a no-op.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 09 Apr 2025 07:02:36 -0500
+-
+-calamares-settings-ubuntu (1:25.04.23) plucky; urgency=medium
+-
+-  * [Kubuntu] Update welcome images for 25.04 (LP: #2104062)
+-  * [Kubuntu] Update 07_Free_and_Open_Source installer slide for plucky
+-    puffin mascot image.
+-  * [Kubuntu] Update 10_Kubuntu_Focus installer slide.
+-
+- -- Rik Mills <rikmills@kde.org>  Mon, 07 Apr 2025 11:38:23 +0100
+-
+-calamares-settings-ubuntu (1:25.04.22) plucky; urgency=medium
+-
+-  * [Unity] Update welcome slide for Plucky.
+-  * [Unity] Set Kvantum theme to KvGnomeDark for Calamares.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Wed, 26 Mar 2025 00:05:56 +0000
+-
+-calamares-settings-ubuntu (1:25.04.21) plucky; urgency=medium
+-
+-  * Update partition names to match current version.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Mon, 24 Mar 2025 22:46:46 +0000
+-
+-calamares-settings-ubuntu (1:25.04.20) plucky; urgency=medium
+-
+-  * Update OEM batch identifier to match current version.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Mon, 24 Mar 2025 07:01:24 +0000
+-
+-calamares-settings-ubuntu (1:25.04.19) plucky; urgency=medium
+-
+-  * [Lubuntu] Update slides for current applications:
+-    * Support: IRC -> Matrix, Lubuntu -> Ubuntu Discourse
+-    * Lightweight: KCalc -> Qalc
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Fri, 07 Mar 2025 03:21:03 +0000
+-
+-calamares-settings-ubuntu (1:25.04.18) plucky; urgency=medium
+-
+-  * Add python3 as build-dep.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Fri, 07 Mar 2025 01:11:36 +0000
+-
+-calamares-settings-ubuntu (1:25.04.17) plucky; urgency=medium
+-
+-  * [Lubuntu] Update welcome slides for Plucky.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Thu, 06 Mar 2025 10:23:08 +0000
+-
+-calamares-settings-ubuntu (1:25.04.16) plucky; urgency=medium
+-
+-  * Fix installation of apt packages more consistently (LP: #2089494).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 24 Feb 2025 03:53:14 -0600
+-
+-calamares-settings-ubuntu (1:25.04.15) plucky; urgency=medium
+-
+-  * Move calamares -> libcalamares-dev for build dependencies.
+-  * [basicwallpaper] Bump minimum CMake version, remove .user file.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 21 Feb 2025 13:10:40 -0600
+-
+-calamares-settings-ubuntu (1:25.04.14) plucky; urgency=medium
+-
+-  * Add dh-sequence-qmldeps and ${qml6:Depends} to ensure all QML 6 runtime
+-    dependencies are properly picked up.
+-  * Run wrap-and-sort.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 18 Feb 2025 01:29:25 -0600
+-
+-calamares-settings-ubuntu (1:25.04.13) plucky; urgency=medium
+-
+-  * [users] Set allowWeakPasswords and allowWeakPasswordsDefault to false for
+-    all three flavors, but add some basic password recommendations based on
+-    NIST standards, warning if the password falls outside of that.
+-  * [packaging] Bump Calamares dependency to 3.3.13-0ubuntu4 for users fixes.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 16 Feb 2025 18:05:36 -0600
+-
+-calamares-settings-ubuntu (1:25.04.12) plucky; urgency=medium
+-
+-  * [Lubuntu] Update password requirements to match NIST recommendations.
+-  * [Lubuntu] Allow user to override password requirements, but not by
+-    default.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Tue, 28 Jan 2025 17:14:06 +0000
+-
+-calamares-settings-ubuntu (1:25.04.11) plucky; urgency=medium
+-
+-  * Rearrange the Lubuntu module order to account for packages with new stuff
+-    to put in the initramfs.
+-  * Make forbidden_names much stronger (LP: #2088576).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 27 Nov 2024 23:28:28 -0600
+-
+-calamares-settings-ubuntu (1:25.04.10) plucky; urgency=medium
+-
+-  * [pkgselectprocess] Add dpkg diversions for dracut, update-initramfs, and
+-    locale-gen. These will be called later in the process.
+-  * [pkgselectprocess] Add a more robust check for apt packages when
+-    installing them (LP: #2089494).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 24 Nov 2024 20:51:38 -0600
+-
+-calamares-settings-ubuntu (1:25.04.9) plucky; urgency=medium
+-
+-  * Add a Dracut config file for Lubuntu.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 22 Nov 2024 19:56:22 -0600
+-
+-calamares-settings-ubuntu (1:25.04.8) plucky; urgency=medium
+-
+-  * Add new global storage value for stacked squashfses and adjust config.
+-  * Switch Lubuntu to dracut.
+-  * Fix apt install functionality in pkgselectprocess.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 21 Nov 2024 22:27:59 -0600
+-
+-calamares-settings-ubuntu (1:25.04.7) plucky; urgency=medium
+-
+-  * Change oem user in Lubuntu raspi prep to user number 60999
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Wed, 20 Nov 2024 17:05:19 -0800
+-
+-calamares-settings-ubuntu (1:25.04.6) plucky; urgency=medium
+-
+-  * Lubuntu raspi prep: Create oem user so it can actually login to sddm
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Wed, 20 Nov 2024 16:58:28 -0800
+-
+-calamares-settings-ubuntu (1:25.04.5) plucky; urgency=medium
+-
+-  * Fix Vcs to point to ubuntu-qt-code team LP git.
+-
+- -- Rik Mills <rikmills@kde.org>  Tue, 12 Nov 2024 18:29:43 +0000
+-
+-calamares-settings-ubuntu (1:25.04.4) plucky; urgency=medium
+-
+-  * kubuntu/modules/pkgselect.conf: Remove fcitx* from installed system.
+-
+- -- Rik Mills <rikmills@kde.org>  Tue, 12 Nov 2024 17:47:40 +0000
+-
+-calamares-settings-ubuntu (1:25.04.3) plucky; urgency=medium
+-
+-  * Lubuntu: Set executable bit on raspberry pi prep script
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Sun, 10 Nov 2024 06:30:46 -0800
+-
+-calamares-settings-ubuntu (1:25.04.2) plucky; urgency=medium
+-
+-  * Lubuntu: Add raspberry pi prep script
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Sat, 09 Nov 2024 09:25:43 -0800
+-
+-calamares-settings-ubuntu (1:25.04.1) plucky; urgency=medium
+-
+-  * Welcome to Plucky Puffin!
+-  * Port to Qt 6.
+-  * Rewrite the pkgselect module and its processing.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 22 Oct 2024 19:23:22 -0500
+-
+-calamares-settings-ubuntu (1:24.10.5) oracular; urgency=medium
+-
+-  * Update Kubuntu slideshow for 24.10 (LP: #2080925)
+-
+- -- Rik Mills <rikmills@kde.org>  Sat, 28 Sep 2024 21:46:11 +0100
+-
+-calamares-settings-ubuntu (1:24.10.4) oracular; urgency=medium
+-
+-  * Fix welcome image for Kubuntu, Lubuntu, and Ubuntu Unity. (LP: #2080925)
+-  * Set root partition name properly for Kubuntu, Lubuntu, and Ubuntu Unity.
+-    (LP: #2065602)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Tue, 24 Sep 2024 22:23:11 -0500
+-
+-calamares-settings-ubuntu (1:24.10.3) oracular; urgency=medium
+-
+-  * Fix pkgselect UI becoming centered when minimal install mode is selected.
+-    (LP: #2076303)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 08 Aug 2024 14:25:24 -0500
+-
+-calamares-settings-ubuntu (1:24.10.2) oracular; urgency=medium
+-
+-  * kubuntu: Change donate URL to point to Kubuntu's donation page
+-  * kubuntu: Use networkcheck.kde.org for checking for an Internet connection
+-  * kubuntu: Do not recommend that the user have an Internet connection during
+-    first-time user setup after an OEM installation
+-  * ubuntuunity: Do not recommend that the user have an Internet connection
+-    during first-time user setup after an OEM installation
+-  * all: Change the UID of the OEM configuration user to 60999.
+-    - This is done because otherwise the OEM configuration user is given UID
+-      1000. This results in the first real user on the machine having UID
+-      1001, which could cause issues in a single-user deployment where the
+-      user must have or is assumed to have UID 1000. Setting the OEM
+-      configuration user's UID to 60999 results in the first real user having
+-      UID 1000. This is similar (though not identical) to Ubiquity's behavior
+-      with the OEM configuration user.
+-  * kubuntu: Use QT_QPA_PLATFORMTHEME="kde" rather than
+-    QT_STYLE_OVERRIDE="Breeze" for the OEM first-time setup session.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 12 Jun 2024 23:26:13 -0500
+-
+-calamares-settings-ubuntu (1:24.10.1) oracular; urgency=medium
+-
+-  * Welcome to Oracular Oriole!
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 30 Apr 2024 15:24:38 -0500
+-
+-calamares-settings-ubuntu (1:24.04.39) noble; urgency=medium
+-
+-  * Fix permissions on /home/oem when doing OEM installations. (LP: #2063403)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 25 Apr 2024 00:01:37 -0500
+-
+-calamares-settings-ubuntu (1:24.04.38) noble; urgency=high
+-
+-  * Do not remove zram-config on Ubuntu Unity, it does not exist in the first
+-    place (LP: #2063108).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 22 Apr 2024 07:10:28 -0500
+-
+-calamares-settings-ubuntu (1:24.04.37) noble; urgency=medium
+-
+-  * Correctly lengthen timeouts for network and initramfs package commands.
+-    (LP: #2060429)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Fri, 19 Apr 2024 18:52:09 -0500
+-
+-calamares-settings-ubuntu (1:24.04.36) noble; urgency=medium
+-
+-  * Don't show Thunderbird as an installable third-party app on Kubuntu.
+-    (LP: #2062438)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Fri, 19 Apr 2024 17:38:06 -0500
+-
+-calamares-settings-ubuntu (1:24.04.35) noble; urgency=medium
+-
+-  * Remove timeouts for network-related package commands. (LP: #2062106)
+-  * Remove timeouts for update-initramfs. (LP: #2060429)
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Fri, 19 Apr 2024 21:23:54 +0000
+-
+-calamares-settings-ubuntu (1:24.04.34) noble; urgency=medium
+-
+-  * Add icon on Desktop to finish OEM install. (LP: #2060928)
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Fri, 19 Apr 2024 19:18:59 +0000
+-
+-calamares-settings-ubuntu (1:24.04.33) noble; urgency=medium
+-
+-  * Fix slideshow image sizes for Kubuntu.
+-  * Fix the size of the logo in the upper-left corner for Kubuntu.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 18 Apr 2024 19:28:02 -0500
+-
+-calamares-settings-ubuntu (1:24.04.32) noble; urgency=medium
+-
+-  * Remove the third-party driver installation checkbox from pkgselect, its
+-    functionality was not implemented.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 17 Apr 2024 23:18:12 -0500
+-
+-calamares-settings-ubuntu (1:24.04.31) noble; urgency=medium
+-
+-  * Add Kubuntu branding. (LP: #2060845)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Tue, 16 Apr 2024 12:57:56 -0500
+-
+-calamares-settings-ubuntu (1:24.04.30) noble; urgency=medium
+-
+-  * Don't keep lubuntu-snap-installation-monitor installed on the minimal
+-    option (LP: #2061318).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 16 Apr 2024 10:24:00 -0500
+-
+-calamares-settings-ubuntu (1:24.04.29) noble; urgency=medium
+-
+-  [ Aaron Rainbolt ]
+-  * Change Kubuntu's Calamares sidebar color.
+-
+-  [ Walter Lapchynski ]
+-  * Remove after_bootloader contextual process. (LP: #2061681)
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Tue, 16 Apr 2024 01:10:47 +0000
+-
+-calamares-settings-ubuntu (1:24.04.28) noble; urgency=medium
+-
+-  * Run apt updates before installing packages. (LP: #2061150)
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Sat, 13 Apr 2024 00:44:32 +0000
+-
+-calamares-settings-ubuntu (1:24.04.27) noble; urgency=medium
+-
+-  * Run the pkgselect contextualprocesses after packages in Kubuntu and Ubuntu
+-    Unity (LP: #2060879)
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 11 Apr 2024 02:49:44 -0500
+-
+-calamares-settings-ubuntu (1:24.04.26) noble; urgency=medium
+-
+-  * Make the pkgselect module actually work on Kubuntu and Ubuntu Unity.
+-    (LP: #2060879)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 10 Apr 2024 16:16:21 -0500
+-
+-calamares-settings-ubuntu (1:24.04.25) noble; urgency=medium
+-
+-  * Be completely sure apt will not try to prompt the user.
+-  * Bump the timeout limits to 15 minutes for both pkgselect
+-    contextualprocess modules.
+-  * Allow fixconkeys-part2 a 5 minute window to run, which should be
+-    enough to run update-initramfs (LP: #2060429).
+-  * Adjust spacers accordingly on no network.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 09 Apr 2024 03:15:53 -0500
+-
+-calamares-settings-ubuntu (1:24.04.24) noble; urgency=medium
+-
+-  * Don't try to remove the nonexistant zram-config package from a Kubuntu
+-    installation.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 08 Apr 2024 21:07:08 -0500
+-
+-calamares-settings-ubuntu (1:24.04.23) noble; urgency=medium
+-
+-  * Set GOCACHE to stay within the build directory
+-
+- -- Simon Chopin <schopin@ubuntu.com>  Wed, 03 Apr 2024 19:40:50 +0200
+-
+-calamares-settings-ubuntu (1:24.04.22) noble; urgency=medium
+-
+-  * Add missing build dependency on golang-go.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 01 Apr 2024 15:28:24 -0500
+-
+-calamares-settings-ubuntu (1:24.04.21) noble; urgency=medium
+-
+-  [ Simon Quigley ]
+-  * Revamp pkgselect and enable it for everyone (LP: #2056061).
+-  * Wraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaap.
+-  * No-network UX improvements for pkgselect (LP: #2048727).
+-
+-  [ Aaron Rainbolt ]
+-  * Don't try to start Unity after the OEM environment exits on Ubuntu Unity,
+-    this has to be done by logging in via LightDM.
+-  * Fix a couple of goofs with post-install package purging.
+-
+-  [ Walter Lapchynski ]
+-  * Make links work. (LP: #1981473)
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 28 Mar 2024 23:30:34 -0500
+-
+-calamares-settings-ubuntu (1:24.04.20) noble; urgency=medium
+-
+-  * Fix LUKS passphrase unlocker for non-US keyboard layouts.
+-  * Disable pkgselect module on Kubuntu, it's not ready for use and wasn't
+-    intentionally enabled.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 21 Mar 2024 13:32:53 -0500
+-
+-calamares-settings-ubuntu (1:24.04.19) noble; urgency=medium
+-
+-  * Add Ubuntu Unity configuration. (LP: #2055799)
+-  * Disable GeoIP in a couple missed places.
+-  * Don't tell the user that they've disabled OEM configuration mode when they
+-    chose to not disable it.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Sun, 17 Mar 2024 20:14:00 +0000
+-
+-calamares-settings-ubuntu (1:24.04.18) noble; urgency=medium
+-
+-  * GeoIP in welcome module disabled.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Wed, 13 Mar 2024 18:16:06 +0000
+-
+-calamares-settings-ubuntu (1:24.04.17) noble; urgency=medium
+-
+-  [ Neal Gompa ]
+-  * debian/control: Define the flavor packages as swappable packages
+-
+-  [ Aaron Rainbolt ]
+-  * Wipe Ubuntu Studio's configuration while preserving branding, Studio now
+-    uses ubuntu-desktop-provision.
+-  * Migrate from users.conf password setting "nonEmpty: true" to
+-    "minLength: 1" to enforce non-empty passwords.
+-    - This is not a new feature, we had non-empty passwords being enforced in
+-      the past and didn't intentionally undo this, but Calamares dropped the
+-      "nonEmpty: true" setting we were using.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Sun, 10 Mar 2024 18:10:03 -0500
+-
+-calamares-settings-ubuntu (1:24.04.16) noble; urgency=medium
+-
+-  * Actually fix the autologin bug.
+-  * Don't kick the user out of first-run configuration mode if they don't
+-    complete it the first time around.
+-  * Fix a bug that caused the first-run setup wizard to not run even after
+-    instructing it to.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 15 Feb 2024 10:36:34 -0600
+-
+-calamares-settings-ubuntu (1:24.04.15) noble; urgency=medium
+-
+-  * Add Lubuntu OEM config.
+-  * Fix a bug that could interfere with autologin setup during first-run
+-    configuration after an OEM install.
+-  * Add a simple wallpaper display engine for the first-run configuration
+-    wizard.
+-  * Don't run kdialog as root.
+-  * Make OEM file cleanup more thorough.
+-  * Update copyright file.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 14 Feb 2024 12:11:34 -0600
+-
+-calamares-settings-ubuntu (1:24.04.14) noble; urgency=medium
+-
+-  * Add Kubuntu OEM config.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 07 Feb 2024 17:02:27 -0600
+-
+-calamares-settings-ubuntu (1:24.04.13) noble; urgency=medium
+-
+-  * Add Kubuntu config.
+-  * Update Lubuntu config to create an unencrypted /boot partition when
+-    encryption is enabled.
+-  * Enforce the use of Calamares 3.3.1-0ubuntu3 or later to ensure that needed
+-    encryption-related features are present.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Fri, 02 Feb 2024 15:32:10 -0600
+-
+-calamares-settings-ubuntu (1:24.04.12) noble; urgency=medium
+-
+-  * Be compliant with the current state of the deb822 Ubuntu implementation
+-    specification.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 18 Jan 2024 16:27:43 -0600
+-
+-calamares-settings-ubuntu (1:24.04.11) noble; urgency=medium
+-
+-  * Update welcome slide for Noble.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Sat, 30 Dec 2023 16:26:04 -0500
+-
+-calamares-settings-ubuntu (1:24.04.10) noble; urgency=medium
+-
+-  * Use new icon for Lubuntu's installer, and improve theming.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 23 Dec 2023 18:20:50 -0600
+-
+-calamares-settings-ubuntu (1:24.04.9) noble; urgency=medium
+-
+-  * Remove muon from the list of packages to purge when doing a minimal
+-    installation, it no longer exists in Noble.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Fri, 08 Dec 2023 01:16:24 +0000
+-
+-calamares-settings-ubuntu (1:24.04.8) noble; urgency=medium
+-
+-  * Use lxqt-sudo instead of sudo, to pick up theming.
+-  * Even if modules fail, try to perform the unmount.
+-  * Explicitly depend on lubuntu-installer-prompt, which provides a default
+-    workflow on the live system. Remove this package at the end of the install
+-    as well.
+-  * Go back to fullscreen.
+-  * Add a full installation radio button, and disable the bottom checkboxes if
+-    minimal install is selected.
+-  * Update snaps used for Krita.
+-  * Install the QML file to the proper directory.
+-  * Add some testing code to the QML file to make it do what we'd like.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 22 Nov 2023 18:30:39 -0600
+-
+-calamares-settings-ubuntu (1:24.04.7) noble; urgency=medium
+-
+-  * Copy the Calamares installation log file from $HOME rather than /root.
+-    (LP: #2044006)
+-  * Update a Lintian override now that we're using sudo rather than pkexec to
+-    launch Calamares in Lubuntu.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 20 Nov 2023 12:21:41 -0600
+-
+-calamares-settings-ubuntu (1:24.04.6) noble; urgency=medium
+-
+-  * Use sudo -E to launch Calamares so that Lubuntu theming is preserved.
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Sun, 19 Nov 2023 16:26:18 -0600
+-
+-calamares-settings-ubuntu (1:24.04.5) noble; urgency=medium
+-
+-  * Fixed an FTBFS on !(amd64).
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Wed, 15 Nov 2023 21:12:05 -0600
+-
+-calamares-settings-ubuntu (1:24.04.4) noble; urgency=medium
+-
+-  * Fixed the pkgselect module's CMakeLists.txt file.
+-  * Removed some unnecessary path segments from debian/rules.
+-  * Unset the executable bit on files that shouldn't be executable.
+-  * Exported the LC_ALL=C.UTF-8 and DEB_BUILD_MAINT_OPTIONS = hardening =+all
+-    environment variables in debian/rules since we're building a shared
+-    library in here now.
+-  * Removed trailing whitespace from changelog.
+-  * Added some lintian-overrides for the lack of a manual page and an
+-    executable Python script in /usr/lib
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Wed, 15 Nov 2023 18:33:39 -0600
+-
+-calamares-settings-ubuntu (1:24.04.3) noble; urgency=medium
+-
+-  * Revert a failed FTBFS fix.
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Wed, 15 Nov 2023 17:01:22 -0600
+-
+-calamares-settings-ubuntu (1:24.04.2) noble; urgency=medium
+-
+-  * Fix FTBFS on !(amd64).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 14 Nov 2023 14:34:09 -0600
+-
+-calamares-settings-ubuntu (1:24.04.1) noble; urgency=medium
+-
+-  * Fix Vcs-*.
+-  * Add a Package Select module, allowing for fine-tuned customization of the
+-    installed system.
+-  * Migrate to deb822 sources, removing the sources.list file pre-populated by
+-    livecd-rootfs. Main and Universe deb sources are enabled by default,
+-    Restricted and Multiverse are opt-in via the installer checkbox.
+-  * Welcome to Noble!
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 20 Oct 2023 13:39:32 -0500
+-
+-calamares-settings-ubuntu (1:23.10.4) mantic; urgency=medium
+-
+-  * Remove the Partners repository as an option.
+-  * Use geoip.ubuntu.com by default.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 08 Oct 2023 11:53:28 -0500
+-
+-calamares-settings-ubuntu (1:23.10.3) mantic; urgency=medium
+-
+-  * No-change rebuild.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Sun, 10 Sep 2023 10:05:21 -0700
+-
+-calamares-settings-ubuntu (1:23.10.2) mantic; urgency=medium
+-
+-  * Update welcome image for Mantic in Lubuntu.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Sun, 10 Sep 2023 09:03:28 -0700
+-
+-calamares-settings-ubuntu (1:23.10.1) mantic; urgency=medium
+-
+-  * Welcome to the Mantic Minotaur!
+-  * Add ext4, btrfs, xfs file system options on erase disk for Lubuntu.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Mon, 14 Aug 2023 20:10:37 -0400
+-
+-calamares-settings-ubuntu (1:23.04.12) lunar; urgency=medium
+-
+-  * Don't allow the first user to be created with a blank password in either
+-    Lubuntu or Ubuntu Studio. (LP: #2016436)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Sun, 16 Apr 2023 17:34:56 -0500
+-
+-calamares-settings-ubuntu (1:23.04.11) lunar; urgency=medium
+-
+-  * Fixed an invalid "SidebarTextSelect" field in Lubuntu's branding.desc -
+-    this is now called "SidebarTextCurrent".
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 20 Mar 2023 17:47:40 -0500
+-
+-calamares-settings-ubuntu (1:23.04.10) lunar; urgency=medium
+-
+-  * Fix Ubuntu Studio sidebar colors
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Mon, 20 Mar 2023 11:49:08 -0700
+-
+-calamares-settings-ubuntu (1:23.04.9) lunar; urgency=medium
+-
+-  * Update ubuntustudio slideshow
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Sat, 18 Mar 2023 08:46:57 -0700
+-
+-calamares-settings-ubuntu (1:23.04.8) lunar; urgency=medium
+-
+-  * Made the slideshow loop again. (Slow systems were ending up on the "The
+-    installation should finish soon" screen when the installation was only 8%
+-    done, and then were staying on that screen.)
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Thu, 16 Mar 2023 22:31:01 -0500
+-
+-calamares-settings-ubuntu (1:23.04.7) lunar; urgency=medium
+-
+-  * Updated copyright file.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 15 Mar 2023 03:53:07 -0500
+-
+-calamares-settings-ubuntu (1:23.04.6) lunar; urgency=medium
+-
+-  * Updated the lubuntu installer slideshow.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Mon, 13 Mar 2023 19:40:55 -0500
+-
+-calamares-settings-ubuntu (1:23.04.5) lunar; urgency=medium
+-
+-  * Ensure the langpacks for GNOME and KDE applications are installed too.
+-    This increases the end user install by approximately 25 MB, and saves them
+-    the trouble of having to hunt for it later.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 07 Mar 2023 13:16:32 -0700
+-
+-calamares-settings-ubuntu (1:23.04.4) lunar; urgency=medium
+-
+-  * Switch from using the lsb_release python module to the distro module, as
+-    the python module for lsb_release no longer exists in Lunar.
+-    (LP: #2008685)
+-  * Bumped Standards-Version to 4.6.2, no changes necessary.
+-  * Added an explicit Depends on python3-distro.
+-  * Ran wrap-and-sort.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Tue, 28 Feb 2023 19:27:13 -0600
+-
+-calamares-settings-ubuntu (1:23.04.3) lunar; urgency=medium
+-
+-  * Fixed a syntax error that led to incorrect sidebar coloring (LP: #1991251).
+-  * Set Calamares to launch in windowed mode, avoiding a welcome image scaling
+-    issue.
+-  * Updated Lintian overrides to work with Lintian again.
+-  * Removed unnecessary Breaks lines from both calamares-settings-lubuntu and
+-    calamares-settings-ubuntustudio. Conflicts is sufficient here.
+-  * Fixed broken Lintian override in Lubuntu.
+-  * Removed trailing whitespace from changelog.
+-  * Bumped Standards-Version to 4.6.1, no changes necessary.
+-  * Added 'Rules-Requires-Root: no'.
+-  * Added Lintian overrides for missing manpages.
+-  * Added Lintian overrides for direct usage of the dpkg database - this is
+-    just log file extraction.
+-  * Fixed changelog section for version 1:22.10.12.
+-
+- -- Aaron Rainbolt <arraybolt3@ubuntu.com>  Wed, 23 Nov 2022 16:08:10 -0600
+-
+-calamares-settings-ubuntu (1:23.04.2) lunar; urgency=medium
+-
+-  * Allow swap for Ubuntu Studio (LP: #1996646)
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Tue, 15 Nov 2022 17:37:14 -0800
+-
+-calamares-settings-ubuntu (1:23.04.1) lunar; urgency=medium
+-
+-  * Welcome to the Lunar Lobster!
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 28 Oct 2022 14:26:09 -0500
+-
+-calamares-settings-ubuntu (1:22.10.12) kinetic; urgency=medium
+-
+-  [ Erich Eickmeyer ]
+-  * Fix for black Ubuntu Studio sidebar (LP: #1991251)
+-
+-  [ Aaron Rainbolt ]
+-  * Fixed a syntax error that led to incorrect sidebar coloring (LP: #1991251).
+-  * Set Calamares to launch in windowed mode, avoiding a welcome image scaling
+-    issue.
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Tue, 04 Oct 2022 20:39:43 -0500
+-
+-calamares-settings-ubuntu (1:22.10.11) kinetic; urgency=medium
+-
+-  * Tackled edge case for if libreoffice-help-$LOCALE doesn't exist but
+-    libreoffice-l10n-$LOCALE does exist (required for LibreOffice
+-    localization to work with languages like Icelandic)
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Fri, 05 Aug 2022 13:19:50 -0500
+-
+-calamares-settings-ubuntu (1:22.10.10) kinetic; urgency=medium
+-
+-  * Fixed LibreOffice localization bug (LP: #1970270).
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Mon, 25 Jul 2022 23:47:11 -0500
+-
+-calamares-settings-ubuntu (1:22.10.9) kinetic; urgency=medium
+-
+-  * Remove remaining conflicting ubuntustudio files existing in common
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Tue, 28 Jun 2022 11:48:34 -0700
+-
+-calamares-settings-ubuntu (1:22.10.8) kinetic; urgency=medium
+-
+-  * Remove file in ubuntustudio settings duplicated in common
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Mon, 27 Jun 2022 17:15:06 -0700
+-
+-calamares-settings-ubuntu (1:22.10.7) kinetic; urgency=medium
+-
+-  * Major oops in last changelog entry.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 26 Jun 2022 22:17:37 -0500
+-
+-calamares-settings-ubuntu (1:22.10.6) kinetic; urgency=medium
+-
+-  * Move much of the common modules to the common package.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 26 Jun 2022 22:10:37 -0500
+-
+-calamares-settings-ubuntu (1:22.10.5) kinetic; urgency=medium
+-
+-  * Fix desktop file typo in exec line.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Sun, 12 Jun 2022 14:45:37 -0400
+-
+-calamares-settings-ubuntu (1:22.10.4) kinetic; urgency=medium
+-
+-  * Adjust desktop file to use pkexec so it starts.
+-  * Point to the right log file now that we start as root.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Sat, 11 Jun 2022 16:06:53 -0400
+-
+-calamares-settings-ubuntu (1:22.10.3) kinetic; urgency=medium
+-
+-  * Fixed contextual and shell processes for Lubuntu.
+-  * Fixed contextual and shell processed for Ubuntu Studio.
+-  * Updated Ubuntu Studio settings for Calamres 3.3.
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Thu, 09 Jun 2022 19:27:24 -0500
+-
+-calamares-settings-ubuntu (1:22.10.2) kinetic; urgency=medium
+-
+-  * Update settings for Calamares 3.3.
+-
+- -- Aaron Rainbolt <arraybolt3@gmail.com>  Wed, 08 Jun 2022 18:48:23 -0500
+-
+-calamares-settings-ubuntu (1:22.10.1) kinetic; urgency=medium
+-
+-  * Welcome to the Kinetic Kudu!
+-  * Fix manual btrfs notifications (LP: #1966774).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 28 Apr 2022 10:12:01 -0500
+-
+-calamares-settings-ubuntu (1:22.04.4) jammy; urgency=medium
+-
+-  * Change calamares to use Ubuntu Studio Light colors
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Thu, 24 Mar 2022 09:50:18 -0700
+-
+-calamares-settings-ubuntu (1:22.04.3) jammy; urgency=medium
+-
+-  * Fix for kded automount issue (LP: #1965658)
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Tue, 22 Mar 2022 15:18:58 -0700
+-
+-calamares-settings-ubuntu (1:22.04.2) jammy; urgency=medium
+-
+-  * Update Ubuntu Studio logo, slideshow (LP: #1965645)
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Mon, 21 Mar 2022 08:39:17 -0700
+-
+-calamares-settings-ubuntu (1:22.04.1) jammy; urgency=medium
+-
+-  * Welcome to Jammy Jellyfish!
+-    - Update Branding to 22.04.
+-    - Update desktop file.
+-  * Bump Standards-Version to 4.6.0, no changes needed.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Sun, 14 Nov 2021 11:24:15 -0500
+-
+-calamares-settings-ubuntu (1:21.10.2) impish; urgency=medium
+-
+-  * Update desktop files for proper version. (LP: #1944778)
+-  * Update branding for proper version.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Sat, 25 Sep 2021 07:47:25 -0400
+-
+-calamares-settings-ubuntu (1:21.10.1) impish; urgency=medium
+-
+-  * ubuntustudio/modules/packages.conf
+-    - Remove zram-config from packages to remove to prevent crash
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Tue, 14 Sep 2021 17:22:11 -0700
+-
+-calamares-settings-ubuntu (1:21.04.2) hirsute; urgency=medium
+-
+-  * Append -D6 to desktop exec to bring log level to preferred level.
+-    (LP: #1917360)
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Mon, 01 Mar 2021 15:37:29 -0500
+-
+-calamares-settings-ubuntu (1:21.04.1) hirsute; urgency=medium
+-
+-  [ apt-ghetto ]
+-  * Fix GeoIP parsing for Lubuntu in welcome module.
+-  * Use https for the GeoIP lookup
+-
+-  [ Dan Simmons ]
+-  * Welcome to the Hirsute Hippo!
+-  * Set sambashare user as a system user. (LP: #1857364)
+-  * Add swapfile as an option and set it as the initial choice
+-    (LP: 1881191)
+-  * Update d/copyright.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Sun, 03 Jan 2021 12:38:33 -0500
+-
+-calamares-settings-ubuntu (1:20.10.11) groovy; urgency=medium
+-
+-  * Switch to Canonical's GeoIP service.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 14 Oct 2020 18:23:51 -0500
+-
+-calamares-settings-ubuntu (1:20.10.10) groovy; urgency=medium
+-
+-  * Lowered Ubuntu Studio RAM requirements due to popular demand/confusion
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Sat, 26 Sep 2020 09:45:12 -0700
+-
+-calamares-settings-ubuntu (1:20.10.9) groovy; urgency=medium
+-
+-  * Ubuntu Studio
+-    - Update color for sidebar
+-    - Update Video and Photography slides
+-
+- -- Erich Eickmeyer <eeickmeyer@ubuntu.com>  Sat, 19 Sep 2020 13:47:18 -0700
+-
+-calamares-settings-ubuntu (1:20.10.8) groovy; urgency=medium
+-
+-  * Ubuntu Studio
+-    - Check for /etc/apt/sources.list.d/dvd.list and remove if exists
+-
+- -- Erich Eickmeyer <erich@ericheickmeyer.com>  Thu, 04 Jun 2020 16:44:43 -0700
+-
+-calamares-settings-ubuntu (1:20.10.7) groovy; urgency=medium
+-
+-  [ Erich Eickmeyer ]
+-  * Ubuntu Studio
+-    - Darken sidebar to match new version of materia theme
+-
+-  [ Dan Simmons ]
+-  * Lubuntu
+-    - Adjust Lubuntu desktop file for Groovy.
+-  * Ubuntu Common
+-    - Add dependencies for cryptsetup, keyutils, needed for LUKS
+-      installation and qml-modules for slideshow.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Wed, 03 Jun 2020 18:47:13 -0400
+-
+-calamares-settings-ubuntu (1:20.10.6) groovy; urgency=medium
+-
+-  * Ubuntu Studio - Actual Fixes for legacy BIOS installs
+-    - Blacklist dvd.list from squashfs rsync
+-    - Use new shellprocess script to do audio.conf.disabled rename
+-
+- -- Erich Eickmeyer <erich@ericheickmeyer.com>  Sat, 30 May 2020 22:35:45 -0700
+-
+-calamares-settings-ubuntu (1:20.10.5) groovy; urgency=medium
+-
+-  * Ubuntu Studio
+-    - Revert previous fix - caused regression
+-
+- -- Erich Eickmeyer <erich@ericheickmeyer.com>  Fri, 29 May 2020 08:34:15 -0700
+-
+-calamares-settings-ubuntu (1:20.10.4) groovy; urgency=medium
+-
+-  * Ubuntu Studio
+-    - Apply fixes in previous upload to legacy BIOS systems
+-
+- -- Erich Eickmeyer <erich@ericheickmeyer.com>  Thu, 28 May 2020 16:20:56 -0700
+-
+-calamares-settings-ubuntu (1:20.10.3) groovy; urgency=medium
+-
+-  * Ubuntu Studio
+-    - Fix for leftover dvd.list file in /etc/apt/sources.list.d
+-    - Fix for disabled /etc/security/limits.d/audio.conf
+-    - Replace two slideshow images
+-
+- -- Erich Eickmeyer <erich@ericheickmeyer.com>  Fri, 22 May 2020 13:12:21 -0700
+-
+-calamares-settings-ubuntu (1:20.10.2) groovy; urgency=medium
+-
+-  * Fix for calamares-logs-helper looking in wrong home folder
+-
+- -- Erich Eickmeyer <erich@ericheickmeyer.com>  Thu, 21 May 2020 12:54:52 -0700
+-
+-calamares-settings-ubuntu (1:20.10.1) groovy; urgency=medium
+-
+-  [ Erich Eickmeyer ]
+-  * Added Ubuntu Studio
+-  * Welcome to the Groovy Gorilla!
+-
+-  [ apt-ghetto ]
+-  * Fix AttributeError in automirror module (LP: #1875476)
+-
+-  [ Dan Simmons ]
+-  * Adjust Ubuntu Studio translations.
+-  * Add groovy to Lubuntu branding.
+-  * Drop debian/compat use debhelper-compat=13, no changes needed.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Wed, 20 May 2020 20:40:13 -0400
+-
+-calamares-settings-ubuntu (1:20.04.2) focal; urgency=medium
+-
+-  * Add shellprocess to implement i386 multiarch.
+-  * Bump Standards-Version to 4.5.0, no changes needed.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Mon, 27 Jan 2020 20:46:44 -0500
+-
+-calamares-settings-ubuntu (1:20.04.1) focal; urgency=medium
+-
+-  * Welcome to the Focal Fossa!
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 17 Oct 2019 12:32:11 -0500
+-
+-calamares-settings-ubuntu (1:19.10.7) eoan; urgency=medium
+-
+-  * Set directory location of logs to lowercase Calamares.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Tue, 08 Oct 2019 19:13:24 -0400
+-
+-calamares-settings-ubuntu (1:19.10.6) eoan; urgency=medium
+-
+-  * Clean up automirror module:
+-    - Improve naming of variables
+-    - Add comments
+-
+- -- apt-ghetto <apt-ghetto@lubuntu.me>  Fri, 13 Sep 2019 16:51:05 +0200
+-
+-calamares-settings-ubuntu (1:19.10.5) eoan; urgency=medium
+-
+-  * Fix UnboundLocalError in automirror module.
+-
+- -- apt-ghetto <apt-ghetto@lubuntu.me>  Sun, 08 Sep 2019 11:17:17 +0200
+-
+-calamares-settings-ubuntu (1:19.10.4) eoan; urgency=medium
+-
+-  [ Dan Simmons ]
+-  * Bump Standards-Version to 4.4.0, no changes needed.
+-  * Bump debhelper to 12, no changes needed.
+-  * Adjust automirror config to new style. Change automirror module
+-    to allow for new config style.
+-  * Add setting for donate button in welcome.
+-  * Add geoip for welcome.
+-  * Adjust locale.conf to new geoip style.
+-  * Set userSwapChoices to none in partition.conf.
+-  * Set defaultFileSystemType to "ext4" in partition.conf.
+-  * Set default dont-chroot, oem-setup, disable-cancel, to
+-    eliminate warnings from settings.conf.
+-  * Add efiMountOptions: umask=0077 to fstab.conf.
+-  * Set restart mode to new style in finished.conf.
+-  * Set bootloader entry name to Ubuntu.
+-  * Set slide show API to 1 to eliminate warnings.
+-  * Fix lintian errors and warnings.
+-    - Add depends for python3 in calamares-settings-ubuntu-common.
+-    - Adjust depends for calamares-settings-lubuntu.
+-    - Add further description to extended description for
+-      calamares-settings-lubuntu and calamares-settings-ubuntu.
+-    - Add lintian override for bash in .desktop file.
+-    - Remove unusual-interpreter in .desktop file.
+-    - Adjust Makefile so .desktop file so it is not executable.
+-    - Add keywords to .desktop file.
+-    - Remove executable flag from automirror.conf and module.desc.
+-    - Adjust debian/rules dpkg-architecture-variable.
+-
+-  [ apt-ghetto ]
+-  * Fix small issues in automirror module
+-    - Remove whitespace before index bracket.
+-    - Remove undefined variable.
+-    - Fix over-indented block.
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Tue, 20 Aug 2019 19:59:12 -0400
+-
+-calamares-settings-ubuntu (1:19.10.3) eoan; urgency=medium
+-
+-  * Short version name is eoan.
+-  * Set window size to fullscreen. (LP: #1824758)
+-
+- -- Dan Simmons <kc2bez@lubuntu.me>  Wed, 03 Jul 2019 18:11:25 -0400
+-
+-calamares-settings-ubuntu (1:19.10.2) eoan; urgency=medium
+-
+-  * Fix initramfs job failing. Thanks to TJ for the fix! (LP: #1829805)
+-    * Move before_bootloader_mkdirs process before initramfs.
+-    * Workaround bug in update-initramfs::get_sorted_versions() with
+-      shellprocess.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Wed, 19 Jun 2019 19:32:14 -0700
+-
+-calamares-settings-ubuntu (1:19.10.1) eoan; urgency=medium
+-
+-  * Welcome to the Eoan EANIMAL!
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 19 Apr 2019 19:12:02 -0500
+-
+-calamares-settings-ubuntu (1:19.04.4) disco; urgency=medium
+-
+-  * Lower the minimum RAM requirements.
+-
+- -- apt-ghetto <apt-ghetto@protonmail.com>  Wed, 10 Apr 2019 19:01:48 +0200
+-
+-calamares-settings-ubuntu (1:19.04.3) disco; urgency=medium
+-
+-  * Add a missing module in the automirror script.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 13 Jan 2019 00:25:05 -0600
+-
+-calamares-settings-ubuntu (1:19.04.2) disco; urgency=medium
+-
+-  * Adjust config for automirror changes in the previous upload.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 12 Jan 2019 21:37:37 -0600
+-
+-calamares-settings-ubuntu (1:19.04.1) disco; urgency=medium
+-
+-  [ apt-ghetto ]
+-  * Refactor automirror.
+-
+-  [ Simon Quigley ]
+-  * Change the version number to be release-based.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 12 Jan 2019 15:31:39 -0600
+-
+-calamares-settings-ubuntu (31) disco; urgency=medium
+-
+-  * We aren't Lubuntu Next anymore; take it away from the package description.
+-  * Try to install languages during the installation.
+-  * Don't remove partitionmanager anymore; its a system utility we expect
+-    to have installed.
+-  * Write a workaround to fix the support and release notes links on the
+-    welcome screen.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 20 Nov 2018 18:29:15 -0600
+-
+-calamares-settings-ubuntu (30) disco; urgency=medium
+-
+-  * Change the desktop file from 18.10 to 19.04.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sat, 03 Nov 2018 18:03:15 -0500
+-
+-calamares-settings-ubuntu (29) disco; urgency=medium
+-
+-  * Fix accidentally reverted parts of 27 in 28 due to the VCS not being
+-    up-to-date. Thanks to Jeremy Bicha for spotting the issue (LP: #1801393).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 02 Nov 2018 17:33:51 -0500
+-
+-calamares-settings-ubuntu (28) disco; urgency=medium
+-
+-  * Welcome to the Disco Dingo!
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 01 Nov 2018 20:41:31 -0500
+-
+-calamares-settings-ubuntu (27) cosmic; urgency=medium
+-
+-  [ Walter Lapchynski ]
+-  * Add missing identifiers for urllib exception handling in automirror.
+-  * Lubuntu: ensure upgrades don't happen for EFI packages.
+-
+-  [ Simon Quigley ]
+-  * Run `sudo apt[-get] update` if Internet connectivity is found during the
+-    installation. This solves some common post-installation issues.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 17 Oct 2018 14:45:36 -0500
+-
+-calamares-settings-ubuntu (26) cosmic; urgency=medium
+-
+-  * Lubuntu: fix check for EFI architecture.
+-  * Lubuntu: fix location of installer .desktop.
+-  * Lubuntu: remove Lintian overrides related to the old installer .desktop.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Fri, 12 Oct 2018 21:04:44 -0700
+-
+-calamares-settings-ubuntu (25) cosmic; urgency=medium
+-
+-  * Ignore BIOS entirely when installing GRUB for EFI.
+-  * Restore Calamares productIcon.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Thu, 11 Oct 2018 19:29:20 -0700
+-
+-calamares-settings-ubuntu (24) cosmic; urgency=medium
+-
+-  [ Wendy Hill ]
+-  * Rework the Lubuntu slideshow.
+-
+-  [ Simon Quigley ]
+-  * Add -E to the desktop icon so that our nice theming carries over.
+-
+-  [ Walter Lapchynski ]
+-  * Generalize installation of GRUB for EFI.
+-  * Add urlopen() error handling to automirror, thanks to Samuel Banya.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Wed, 10 Oct 2018 08:36:52 -0700
+-
+-calamares-settings-ubuntu (23) cosmic; urgency=medium
+-
+-  * Lubuntu: ensure install .desktop file is always removed.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Sat, 06 Oct 2018 19:15:02 -0700
+-
+-calamares-settings-ubuntu (22) cosmic; urgency=medium
+-
+-  * Lubuntu: enable LUKS/encryption.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Thu, 04 Oct 2018 22:02:57 -0700
+-
+-calamares-settings-ubuntu (21) cosmic; urgency=medium
+-
+-  * Lubuntu: remove all password checking.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Sat, 25 Aug 2018 17:43:33 -0700
+-
+-calamares-settings-ubuntu (20) cosmic; urgency=medium
+-
+-  * Lubuntu: add executable to defaultDesktopEnvironment in displaymanager.
+-
+- -- Walter Lapchynski <wxl@ubuntu.com>  Mon, 20 Aug 2018 21:16:47 -0700
+-
+-calamares-settings-ubuntu (19) cosmic; urgency=medium
+-
+-  * Remove the build dep completely.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 14 Aug 2018 17:12:15 -0500
+-
+-calamares-settings-ubuntu (18) cosmic; urgency=medium
+-
+-  * Translate into Danish.
+-  * Make the password detection runtime dep into a build dep.
+-  * Bump Standards-version to 4.2.0, no changes needed.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 14 Aug 2018 16:19:36 -0500
+-
+-calamares-settings-ubuntu (17) cosmic; urgency=medium
+-
+-  * Add a minimum password strength requirement.
+-  * Sync default user groups with Neon.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 10 Aug 2018 20:13:38 -0500
+-
+-calamares-settings-ubuntu (16) cosmic; urgency=medium
+-
+-  * Enable automirror by default.
+-  * Fix a typo in automirror.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 09 Aug 2018 22:41:53 -0500
+-
+-calamares-settings-ubuntu (15) cosmic; urgency=medium
+-
+-  * Add a calamares-settings-ubuntu-common package with an automirror module.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 09 Aug 2018 21:25:17 -0500
+-
+-calamares-settings-ubuntu (14) cosmic; urgency=medium
+-
+-  * Don't copy initrd from the live install, because that contains casper.
+-  * Make "ubuntu" the bootloader_id and don't do a cp hack.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 27 Jul 2018 14:57:47 -0500
+-
+-calamares-settings-ubuntu (13) cosmic; urgency=critical
+-
+-  * Calamares is capitalized (LP: #1783109).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 25 Jul 2018 00:30:09 -0500
+-
+-calamares-settings-ubuntu (12) cosmic; urgency=critical
+-
+-  * We're not Neon (LP: #1783024).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 22 Jul 2018 21:13:57 -0500
+-
+-calamares-settings-ubuntu (11) cosmic; urgency=medium
+-
+-  * Add a machineid file.
+-  * Ensure that /bin/bash is always the default shell.
+-  * Clean up awful hacks.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 20 Jul 2018 13:36:18 -0500
+-
+-calamares-settings-ubuntu (10) cosmic; urgency=medium
+-
+-  * Fix non-secureboot UEFI installs on real hardware (LP: #1781015).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 18 Jul 2018 23:20:42 -0500
+-
+-calamares-settings-ubuntu (9) cosmic; urgency=medium
+-
+-  * Import additional translations from Weblate.
+-  * Replace a blind cp with a more tactful apt-cdrom command.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Sun, 15 Jul 2018 03:57:10 -0500
+-
+-calamares-settings-ubuntu (8) cosmic; urgency=medium
+-
+-  * Finish Danish translations.
+-  * Don't use apt-cdrom; just copy the host sources.list.
+-  * Add a displaymanager.conf.
+-  * Bump Standards-version to 4.1.5, no changes needed.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Fri, 13 Jul 2018 22:26:23 -0500
+-
+-calamares-settings-ubuntu (7) cosmic; urgency=medium
+-
+-  * Fix geoip timezone detection (LP: #1781310).
+-  * Update translations and add support for Portuguese and Brazilian
+-    Portuguese.
+-  * Ensure that calamares.desktop is removed from all new users on a
+-    freshly-installed system (LP: #1781309).
+-  * Also remove calamares after install.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 12 Jul 2018 00:15:08 -0500
+-
+-calamares-settings-ubuntu (6) cosmic; urgency=medium
+-
+-  * Fix translations for Calamares.
+-  * Don't remove GRUB for now.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Wed, 11 Jul 2018 00:27:29 -0500
+-
+-calamares-settings-ubuntu (5) cosmic; urgency=medium
+-
+-  * Add translations support for the desktop file and the installer slideshow.
+-  * Increase the timeout for the shellprocess commands (LP: #1781015).
+-  * Remove the rm line of the shellprocess command (LP: #1780977).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 10 Jul 2018 19:17:43 -0500
+-
+-calamares-settings-ubuntu (4) cosmic; urgency=medium
+-
+-  * Don't fail to install the system on BIOS systems (LP: #1780875).
+-  * Remove the right live task (LP: #1780585).
+-  * Enable GeoIP support by default, to get accurate timezone readings.
+-  * Make image and text IDs unique in the slideshow.
+-  * Ensure that slideshow images correctly respond to their text.
+-  * Actually install the .desktop file.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Mon, 09 Jul 2018 20:48:33 -0500
+-
+-calamares-settings-ubuntu (3) cosmic; urgency=medium
+-
+-  * Bump Standards-version to 4.1.4, no changes needed.
+-  * Fix Vcs-* and Homepage to reflect the move off of GitHub.
+-  * Allow Lubuntu to be installed on systems with no network and UEFI
+-    systems.
+-  * Add a desktop file to install the system with (LP: #1771460).
+-  * Update the support link to be current.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Tue, 03 Jul 2018 17:03:00 -0500
+-
+-calamares-settings-ubuntu (2) cosmic; urgency=medium
+-
+-  * Add a .gitignore file for debian/files.
+-  * Remove lubuntu-qt-desktop from Suggests.
+-  * Update the Lubuntu.me website for HTTPS.
+-  * Bump Lubuntu's system requirements to safe values.
+-  * Remove calamares from the explicit removal list; we don't need it to
+-    be there anymore.
+-  * Lubuntu Next -> Lubuntu.
+-  * Make squashfs-tools a hard dependency; without it, Lubuntu's installation
+-    fails (LP: #1769781).
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 10 May 2018 19:18:01 -0500
+-
+-calamares-settings-ubuntu (1) bionic; urgency=medium
+-
+-  * Initial release.
+-
+- -- Simon Quigley <tsimonq2@ubuntu.com>  Thu, 15 Feb 2018 19:54:24 -0600
+-- 
+2.53.0
+

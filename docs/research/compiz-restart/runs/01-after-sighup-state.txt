@@ -1,0 +1,23 @@
+    PID    PPID STAT                  STARTED COMMAND
+   3574    1190 S    чт вер 24 13:13:16 2026 -- /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/compiz
+--|/usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0|/usr/bin/compiz|
+LD_PRELOAD=libgtk-nocsd.so.0
+GTK_CSD=0
+LD_PRELOAD=libgtk-nocsd.so.0
+[Unit]
+Description=Unity Shell v7
+Wants=unity-settings-daemon.service unity-gtk-module.service unity-panel-service.service bamfdaemon.service
+After=unity-settings-daemon.service
+PartOf=graphical-session.target
+
+[Service]
+ExecStartPre=/usr/lib/x86_64-linux-gnu/unity/systemd-prestart-check
+ExecStartPre=/usr/lib/x86_64-linux-gnu/unity/compiz-profile-selector
+ExecStart=/usr/bin/compiz
+Restart=on-failure
+
+[Install]
+RequiredBy=unity-session.target
+
+[Unit]
+After=graphical-session-pre.target

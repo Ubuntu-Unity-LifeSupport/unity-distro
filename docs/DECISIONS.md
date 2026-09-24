@@ -859,3 +859,20 @@ May: fix locally, upstream last. Of the six items agent A took:
 
 Also: the user's password is unknown to agents; tests unlock through
 `loginctl unlock-session` (one wrong guess was made and is not repeated).
+
+## 2026-09-24 - known issue #4: fix basicwallpaper, not the session script
+
+The wallpaper over Calamares is the OEM first-time setup session (xfwm4 +
+`basicwallpaper` + Calamares), and the cause is `basicwallpaper` mapping a
+focusable fullscreen window, which xfwm4 raises whenever it has focus.
+Reordering or delaying the session script would only hide the startup race;
+Alt+Tab would still bring the wallpaper up. So the window itself becomes a
+desktop window that takes no focus, on X11 only, since Kubuntu runs the same
+binary under Wayland. calamares-settings-ubuntu `1:26.04.12+unity1`.
+
+Rule 0, where we looked: the installed system and the ISO manifest (no other
+wallpaper helper), the package changelog and the Launchpad branches up to
+`ubuntu/stonking` (26.10) - basicwallpaper unchanged since the CMake bump;
+Launchpad bugs of calamares-settings-ubuntu and calamares for "wallpaper",
+"basicwallpaper" and "OEM" (all statuses) - nothing about this. Not solved
+anywhere we could see. Details in `research/calamares-oem/`.

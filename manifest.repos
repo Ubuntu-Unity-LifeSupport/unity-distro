@@ -67,3 +67,10 @@ repositories:
     type: git
     url: https://github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu.git
     version: main
+  # Not in the upstream group: Ubuntu's Calamares settings (Lubuntu, Kubuntu,
+  # Ubuntu Unity). Our change is on a local unity/resolute branch; patch in
+  # docs/research/calamares-oem/.
+  packages/calamares-settings-ubuntu:
+    type: git
+    url: https://git.launchpad.net/~ubuntu-qt-code/+git/calamares-settings-ubuntu
+    version: ubuntu/resolute

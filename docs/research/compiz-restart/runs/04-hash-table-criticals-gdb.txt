@@ -1,0 +1,58 @@
+[New LWP 6158]
+[New LWP 6157]
+[New LWP 6142]
+[New LWP 6131]
+[New LWP 6130]
+[New LWP 6129]
+[New LWP 6113]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/x86_64-linux-gnu/libthread_db.so.1".
+__syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+
+warning: 56	../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S: Нет такого файла или каталога
+Breakpoint 1 at 0x760078710560
+
+Thread 1 "compiz" hit Breakpoint 1, 0x0000760078710560 in g_return_if_fail_warning () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#0  0x0000760078710560 in g_return_if_fail_warning () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#1  0x00007600786f3dfa in g_hash_table_remove () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x000076005cb09e2e in sigc::internal::signal_emit1<void, nux::Object*, sigc::nil>::emit(sigc::internal::signal_impl*, nux::Object* const&) () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#3  0x000076005cb0967e in nux::Object::Destroy() () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#4  0x000076005cb0999e in nux::Object::UnReference() () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#5  0x000076005c7eb285 in unity::panel::Controller::Impl::~Impl (this=0x5f9e8fd27780) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/panel/PanelController.cpp:85
+#6  0x000076005c7eb4c0 in std::default_delete<unity::panel::Controller::Impl>::operator() (this=<optimized out>, __ptr=0x5f9e8fd27780) at /usr/include/c++/15/bits/unique_ptr.h:86
+#7  std::default_delete<unity::panel::Controller::Impl>::operator() (this=<optimized out>, __ptr=0x5f9e8fd27780) at /usr/include/c++/15/bits/unique_ptr.h:86
+#8  std::unique_ptr<unity::panel::Controller::Impl, std::default_delete<unity::panel::Controller::Impl> >::~unique_ptr (this=0x5f9e8fd28de8) at /usr/include/c++/15/bits/unique_ptr.h:398
+#9  unity::panel::Controller::~Controller (this=0x5f9e8fd28da0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/panel/PanelController.cpp:226
+#10 0x000076005c67c62b in std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x5f9e8fd28d90) at /usr/include/c++/15/bits/shared_ptr_base.h:345
+#11 std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x5f9e8fd28d90) at /usr/include/c++/15/bits/shared_ptr_base.h:316
+#12 std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count (this=0x5f9e8f13a6b0) at /usr/include/c++/15/bits/shared_ptr_base.h:1069
+#13 std::__shared_ptr<unity::panel::Controller, (__gnu_cxx::_Lock_policy)2>::~__shared_ptr (this=0x5f9e8f13a6a8) at /usr/include/c++/15/bits/shared_ptr_base.h:1531
+#14 std::shared_ptr<unity::panel::Controller>::~shared_ptr (this=0x5f9e8f13a6a8) at /usr/include/c++/15/bits/shared_ptr.h:175
+#15 unity::UnityScreen::~UnityScreen (this=0x5f9e8f139be0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/plugins/unityshell/src/unityshell.cpp:526
+#16 0x000076005c685a28 in unity::UnityScreen::~UnityScreen (this=0x5f9e8f139be0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/plugins/unityshell/src/unityshell.cpp:511
+#17 CompPlugin::VTableForScreenAndWindow<unity::UnityScreen, unity::UnityWindow, 0>::finiScreen (this=<optimized out>, s=<optimized out>) at /usr/include/compiz/core/plugin.h:330
+#18 0x000076007902bbdc in CompManager::finiPlugin (p=p@entry=0x5f9e8ee8e5f0) at /usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity1/src/plugin.cpp:278
+#19 0x000076007902cb27 in CompPlugin::pop () at /usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity1/src/plugin.cpp:525
+
+Thread 1 "compiz" hit Breakpoint 1, 0x0000760078710560 in g_return_if_fail_warning () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#0  0x0000760078710560 in g_return_if_fail_warning () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#1  0x00007600786f3dfa in g_hash_table_remove () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x000076005cb09e2e in sigc::internal::signal_emit1<void, nux::Object*, sigc::nil>::emit(sigc::internal::signal_impl*, nux::Object* const&) () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#3  0x000076005cb0967e in nux::Object::Destroy() () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#4  0x000076005cb0999e in nux::Object::UnReference() () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#5  0x000076005bb0b2f8 in nux::View::RemoveLayout() () at /usr/lib/x86_64-linux-gnu/libnux-4.0.so.0
+#6  0x000076005bb0b3fa in nux::View::~View() () at /usr/lib/x86_64-linux-gnu/libnux-4.0.so.0
+#7  0x000076005c7618d3 in unity::MockableBaseWindow::~MockableBaseWindow (this=0x5f9e8fd28f30) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/panel/../unity-shared/MockableBaseWindow.h:31
+#8  unity::MockableBaseWindow::~MockableBaseWindow (this=0x5f9e8fd28f30) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/panel/../unity-shared/MockableBaseWindow.h:31
+#9  0x000076005cb0999e in nux::Object::UnReference() () at /usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0
+#10 0x000076005c7eb285 in unity::panel::Controller::Impl::~Impl (this=0x5f9e8fd27780) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/panel/PanelController.cpp:85
+#11 0x000076005c7eb4c0 in std::default_delete<unity::panel::Controller::Impl>::operator() (this=<optimized out>, __ptr=0x5f9e8fd27780) at /usr/include/c++/15/bits/unique_ptr.h:86
+#12 std::default_delete<unity::panel::Controller::Impl>::operator() (this=<optimized out>, __ptr=0x5f9e8fd27780) at /usr/include/c++/15/bits/unique_ptr.h:86
+#13 std::unique_ptr<unity::panel::Controller::Impl, std::default_delete<unity::panel::Controller::Impl> >::~unique_ptr (this=0x5f9e8fd28de8) at /usr/include/c++/15/bits/unique_ptr.h:398
+#14 unity::panel::Controller::~Controller (this=0x5f9e8fd28da0) at /usr/src/unity-7.7.1+26.04.20260306-0ubuntu3+unity5/panel/PanelController.cpp:226
+#15 0x000076005c67c62b in std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x5f9e8fd28d90) at /usr/include/c++/15/bits/shared_ptr_base.h:345
+#16 std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release (this=0x5f9e8fd28d90) at /usr/include/c++/15/bits/shared_ptr_base.h:316
+#17 std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count (this=0x5f9e8f13a6b0) at /usr/include/c++/15/bits/shared_ptr_base.h:1069
+#18 std::__shared_ptr<unity::panel::Controller, (__gnu_cxx::_Lock_policy)2>::~__shared_ptr (this=0x5f9e8f13a6a8) at /usr/include/c++/15/bits/shared_ptr_base.h:1531
+#19 std::shared_ptr<unity::panel::Controller>::~shared_ptr (this=0x5f9e8f13a6a8) at /usr/include/c++/15/bits/shared_ptr.h:175
+[Inferior 1 (process 6112) detached]
