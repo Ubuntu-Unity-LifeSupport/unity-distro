@@ -10,10 +10,13 @@ May approved). `1:26.04.12+unity1` in aptly (`-ubuntu-unity`, `-common`,
 `-common-data`): basicwallpaper is a desktop window on X11, so it cannot cover
 Calamares in the OEM first-time setup. Commit `b6b546b`, branch
 `unity/resolute` of `packages/calamares-settings-ubuntu` (no remote of ours -
-patch and notes in `research/calamares-oem/`). Waiting: VM `oem-test` for a
-real two-stage OEM install (host session asked May to create it - the host
-may not create VMs itself); `vm-bootstrap.sh` served from
-`~/work/b/iso/www` on 192.168.56.10:8088 (tmux `b-www`).
+patch and notes in `research/calamares-oem/`). Confirmed on a real OEM
+install in VM `oem-test` (192.168.56.105 by DHCP, MAC 08:00:27:FC:1D:99;
+`ssh oemtest` in ~/.ssh/config). Its state now: end-user setup finished,
+user `tester` / `endusertest-2604`, `oem` removed. Snapshot `OEM-ready`
+(host) is the state before the end user's first boot; OEM user there is
+`oem` / `oemtest-2604`, with openssh-server and B's key added. Test-VM
+passwords only.
 
 **nux** - agent B's since 2026-09-24. `0ubuntu15+unity1` in aptly: upstream
 0ubuntu15 (ICU in place of Unicode-licensed code, no boost-system) plus our

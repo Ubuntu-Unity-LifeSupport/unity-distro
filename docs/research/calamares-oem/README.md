@@ -117,8 +117,54 @@ not for an installed system.
   `oemconfig.tar.gz`) and becomes `/etc/sudoers` for the setup stage.
   Whether sudo complains about 0644 there is to be seen on `oem-test`.
 
-## Still to check on a real installation
+## On a real OEM installation (VM `oem-test`)
 
-The VM `oem-test` (host session, waiting for May) runs both stages from the
-official ISO, then the same with our package: `vm-bootstrap.sh` gives ssh
-access to the live session and to the `oem` user.
+The official `ubuntu-unity-26.04-desktop-amd64.iso` (SHA256 checked against
+`SHA256SUMS`) in a VM with target2's profile (BIOS, VMSVGA, 4 GB, 2 CPUs),
+driven over ssh with xdotool (`vm-bootstrap.sh` in the live session; for the
+installed system `openssh-server` and the key were added from the live
+session through a chroot before the first boot - instrumentation only).
+Screens: `gnome-screenshot` in the session, pixel test as above (`probe.sh`,
+`live.sh`).
+
+1. **Vendor's stage**, live session under Unity: `calamares-launch-oem`,
+   OEM batch `ubuntuunity-2604-2026-09-24`, erase disk, normal installation.
+   Calamares stayed on top throughout; "completion: succeeded". The only
+   crash report was light-locker's SIGABRT, known issue #5.
+2. **OEM preparation**, first boot into Unity as `oem`: "Finish OEM
+   preparation" switched LightDM's autologin session to
+   `ubuntu-unity-oem-environment`. Snapshot `OEM-ready` taken here (host).
+3. **End user's first-time setup**, archive `basicwallpaper`
+   (sha256 `cdd40699dae0...`):
+
+   | Boot | What the user sees |
+   |---|---|
+   | first boot after OEM preparation | **wallpaper only** - `basicwallpaper` FULLSCREEN, FOCUSED, above a maximised Calamares |
+   | reboot 1, reboot 2 | Calamares |
+   | Alt+Tab, Alt+Tab (running session) | **wallpaper**, then Calamares |
+   | wallpaper restarted after Calamares | **wallpaper**, it has focus |
+
+   So the release notes' bug is exactly this, and it hits the one boot that
+   matters: the first one, still busy with first-boot work, lost the race.
+4. **Same stage with our binary** (`1:26.04.12+unity1`, sha256
+   `2cd8d1f51497...`, put where `oemconfig.tar.gz` puts it):
+
+   | Case | What the user sees |
+   |---|---|
+   | Alt+Tab, Alt+Tab | Calamares, Calamares |
+   | wallpaper restarted after Calamares | Calamares, which keeps focus |
+   | reboots 1-3 | Calamares |
+   | "Continue with Setup?" closed with Set Up Now | Calamares |
+
+   Then the whole setup ran through: user `tester` got uid 1000, `oem` and
+   the OEM files (`basicwallpaper`, the session, `sudoers`) were removed,
+   "All done", Done restarted into the LightDM greeter.
+
+Not tested: a cold first boot with our binary. It needs the binary on the
+disk before that boot - an image built with our package, or `OEM-ready`
+patched offline from the live ISO. The late-map case reproduces what that
+boot does (the wallpaper maps after Calamares), and it passes.
+
+Seen, not investigated: the finished system boots to `lightdm-gtk-greeter`,
+not `unity-greeter` (both are on the ISO). Whether a normal, non-OEM install
+does the same is not checked.
