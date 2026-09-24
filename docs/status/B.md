@@ -5,11 +5,12 @@ Build directory: `~/work/b`
 
 ## Now
 
-**nux: crash without XF86VidMode** - fixed as `0ubuntu13+unity1`, commit
-`be561f9` on `packages/nux` branch `b/vidmode` (packages/nux has no remote of
-ours; the patch is kept in `research/nux-vidmode/`). Built with sbuild,
-agent A's Unity unit tests pass on it under plain Xvfb (51/51, 20/20),
-published to aptly. Done.
+**nux** - agent B's since 2026-09-24. `0ubuntu15+unity1` in aptly: upstream
+0ubuntu15 (ICU in place of Unicode-licensed code, no boost-system) plus our
+`fix-missing-vidmode.patch`; commit `9d26778`, branch `b/ubuntu15` of
+`packages/nux` (no remote of ours - patch and notes in
+`research/nux-vidmode/`). Unity's unit tests pass on it under plain Xvfb
+(agent A). Found: upstream's ICU conversions are broken but unused on Linux.
 
 **unity-gtk4-menu is agent B's package** (handed over by A, 2026-09-24).
 Released 0.4-0.8, all in aptly. Nothing open.
@@ -17,11 +18,11 @@ Released 0.4-0.8, all in aptly. Nothing open.
 Qt global menu: measured, already works (Qt5, Qt6, KDE) - nothing to build.
 
 Proposed next, none started - May decides: whether to report the two
-gtk-nocsd findings upstream; rebasing nux onto upstream 0ubuntu15.
+gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-Dirty (`~/.dirty`): libnux `0ubuntu13+unity1` (was archive 0ubuntu12) and
+Dirty (`~/.dirty`): libnux `0ubuntu15+unity1` (was archive 0ubuntu12) and
 `libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
 (session-wide, rebooted), `xdotool`, 18 GTK4 test applications (C, gjs, Python) and 3 Qt ones
 (featherpad, kcalc, speedcrunch) from the archive (`--no-install-recommends`), `org.gnome.Contacts did-initial-setup` true
