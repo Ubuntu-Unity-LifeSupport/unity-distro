@@ -1,0 +1,858 @@
+From d694107dac2e73d323f6d8e29ddbae778cd00cac Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 23:09:19 +0000
+Subject: [PATCH 2/5] Clean exported menus and proxy class and inserted-group
+ actions
+
+Drops items with a custom widget, adds stand-ins for widget class actions.
+Hooks gtk_widget_insert_action_group to keep inserted groups, so their
+actions get stand-ins that follow the group and activate from its widget
+
+Assisted-by: LLM Claude Opus 5.5
+---
+ Source/GTK-NoCSD.c | 778 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 777 insertions(+), 1 deletion(-)
+
+diff --git a/Source/GTK-NoCSD.c b/Source/GTK-NoCSD.c
+index 9627ca0..1107ce7 100644
+--- a/Source/GTK-NoCSD.c
++++ b/Source/GTK-NoCSD.c
+@@ -850,6 +850,55 @@ const char * (*o_g_app_info_get_name) (GAppInfo *) = NULL;
+ void (*o_g_menu_remove) (GMenu *, gint) = NULL;
+ GMenuItem * (*o_g_menu_item_new_from_model) (GMenuModel *, gint) = NULL;
+ void (*o_g_menu_append_item) (GMenu *, GMenuItem *) = NULL;
++gboolean (*o_gtk_widget_class_query_action) (GtkWidgetClass *, guint, GType *,
++	const char **, const GVariantType **, const char **) = NULL;
++gboolean (*o_gtk_widget_activate_action_variant) (GtkWidget *, const char *,
++	GVariant *) = NULL;
++void (*o_gtk_widget_action_set_enabled) (GtkWidget *, const char *,
++	gboolean) = NULL;
++GType (*o_g_type_fundamental) (GType) = NULL;
++GParamSpec * (*o_g_object_class_find_property) (GObjectClass *,
++	const gchar *) = NULL;
++void (*o_g_object_get_property) (GObject *, const gchar *, GValue *) = NULL;
++GValue * (*o_g_value_init) (GValue *, GType) = NULL;
++void (*o_g_value_unset) (GValue *) = NULL;
++gboolean (*o_g_value_get_boolean) (const GValue *) = NULL;
++gint (*o_g_value_get_int) (const GValue *) = NULL;
++guint (*o_g_value_get_uint) (const GValue *) = NULL;
++gdouble (*o_g_value_get_double) (const GValue *) = NULL;
++gfloat (*o_g_value_get_float) (const GValue *) = NULL;
++const gchar * (*o_g_value_get_string) (const GValue *) = NULL;
++gint (*o_g_value_get_enum) (const GValue *) = NULL;
++GEnumValue * (*o_g_enum_get_value) (GEnumClass *, gint) = NULL;
++GVariant * (*o_g_variant_new_boolean) (gboolean) = NULL;
++GVariant * (*o_g_variant_new_int32) (gint32) = NULL;
++GVariant * (*o_g_variant_new_uint32) (guint32) = NULL;
++GVariant * (*o_g_variant_new_double) (gdouble) = NULL;
++GVariant * (*o_g_variant_new_string) (const gchar *) = NULL;
++gboolean (*o_g_variant_get_boolean) (GVariant *) = NULL;
++gboolean (*o_g_variant_is_of_type) (GVariant *, const GVariantType *) = NULL;
++void (*o_g_menu_item_set_link) (GMenuItem *, const gchar *,
++	GMenuModel *) = NULL;
++void (*o_g_menu_item_set_attribute_value) (GMenuItem *, const gchar *,
++	GVariant *) = NULL;
++GSimpleAction * (*o_g_simple_action_new) (const gchar *,
++	const GVariantType *) = NULL;
++GSimpleAction * (*o_g_simple_action_new_stateful) (const gchar *,
++	const GVariantType *, GVariant *) = NULL;
++void (*o_g_simple_action_set_state) (GSimpleAction *, GVariant *) = NULL;
++void (*o_g_simple_action_set_enabled) (GSimpleAction *, gboolean) = NULL;
++GVariant * (*o_g_action_get_state) (GAction *) = NULL;
++void (*o_g_action_map_add_action) (GActionMap *, GAction *) = NULL;
++GAction * (*o_g_action_map_lookup_action) (GActionMap *, const gchar *) = NULL;
++void (*o_g_signal_handler_disconnect) (gpointer, gulong) = NULL;
++gboolean (*o_g_action_group_has_action) (GActionGroup *, const gchar *) = NULL;
++gboolean (*o_g_action_group_get_action_enabled) (GActionGroup *,
++	const gchar *) = NULL;
++const GVariantType * (*o_g_action_group_get_action_parameter_type) (
++	GActionGroup *, const gchar *) = NULL;
++GVariant * (*o_g_action_group_get_action_state) (GActionGroup *,
++	const gchar *) = NULL;
++void (*o_g_action_map_remove_action) (GActionMap *, const gchar *) = NULL;
+ 
+ // This is needed by an unavoidable GTK macros for type registration
+ #define gtk_widget_get_type(...) o_gtk_widget_get_type(__VA_ARGS__)
+@@ -1309,6 +1358,7 @@ void GTKNoCSDGetReferences(bool GetTypes) {
+ 			LOAD_SYMBOL(Library, gtk_window_set_resizable);
+ 			LOAD_SYMBOL(Library, gtk_widget_get_display);
+ 			LOAD_SYMBOL(Library, gtk_spinner_get_type);
++			LOAD_SYMBOL(Library, gtk_widget_action_set_enabled);
+ 			dlclose(Library);
+ 
+ 			Library = GTKNoCSDGetLibrary("libadwaita-1.so.0", false);
+@@ -4230,8 +4280,16 @@ struct GTKNoCSDMenuCandidates {
+ 	size_t Count;
+ };
+ 
++// A class action made reachable over D-Bus, activated from its menu's owner
++struct GTKNoCSDMenuProxy {
++	GtkWidget *Owner;
++	GtkWidget *Holder;
++	gchar *Name;
++};
++
+ // Whether the functions of the global menu were fetched, and all were found
+ bool GTKNoCSDMenuPrepared = false, GTKNoCSDMenuReady = false;
++bool GTKNoCSDMenuProxyReady = false;
+ 
+ // The menubar set by the library, to tell it apart from the application's
+ GMenuModel *GTKNoCSDMenubar = NULL;
+@@ -4456,6 +4514,104 @@ void GTKNoCSDGetMenuSymbols(void) {
+ 	GET_TYPE(GTKNoCSDGTKPopoverMenuBar, gtk_popover_menu_bar_get_type);
+ }
+ 
++void GTKNoCSDGetMenuProxySymbols(void) {
++	// Fetch the functions for cleaning the menu and proxying class actions
++
++	void *Library = GTKNoCSDGetLibrary("libgobject-2.0.so.0", true);
++	LOAD_SYMBOL(Library, g_type_fundamental);
++	LOAD_SYMBOL(Library, g_object_class_find_property);
++	LOAD_SYMBOL(Library, g_object_get_property);
++	LOAD_SYMBOL(Library, g_value_init);
++	LOAD_SYMBOL(Library, g_value_unset);
++	LOAD_SYMBOL(Library, g_value_get_boolean);
++	LOAD_SYMBOL(Library, g_value_get_int);
++	LOAD_SYMBOL(Library, g_value_get_uint);
++	LOAD_SYMBOL(Library, g_value_get_double);
++	LOAD_SYMBOL(Library, g_value_get_float);
++	LOAD_SYMBOL(Library, g_value_get_string);
++	LOAD_SYMBOL(Library, g_value_get_enum);
++	LOAD_SYMBOL(Library, g_enum_get_value);
++	LOAD_SYMBOL(Library, g_variant_new_boolean);
++	LOAD_SYMBOL(Library, g_variant_new_int32);
++	LOAD_SYMBOL(Library, g_variant_new_uint32);
++	LOAD_SYMBOL(Library, g_variant_new_double);
++	LOAD_SYMBOL(Library, g_variant_new_string);
++	LOAD_SYMBOL(Library, g_variant_get_boolean);
++	LOAD_SYMBOL(Library, g_variant_is_of_type);
++	LOAD_SYMBOL(Library, g_signal_handler_disconnect);
++	dlclose(Library);
++
++	Library = GTKNoCSDGetLibrary("libgio-2.0.so.0", true);
++	LOAD_SYMBOL(Library, g_menu_item_set_link);
++	LOAD_SYMBOL(Library, g_menu_item_set_attribute_value);
++	LOAD_SYMBOL(Library, g_simple_action_new);
++	LOAD_SYMBOL(Library, g_simple_action_new_stateful);
++	LOAD_SYMBOL(Library, g_simple_action_set_state);
++	LOAD_SYMBOL(Library, g_simple_action_set_enabled);
++	LOAD_SYMBOL(Library, g_action_get_state);
++	LOAD_SYMBOL(Library, g_action_map_add_action);
++	LOAD_SYMBOL(Library, g_action_map_lookup_action);
++	LOAD_SYMBOL(Library, g_action_group_has_action);
++	LOAD_SYMBOL(Library, g_action_group_get_action_enabled);
++	LOAD_SYMBOL(Library, g_action_group_get_action_parameter_type);
++	LOAD_SYMBOL(Library, g_action_group_get_action_state);
++	LOAD_SYMBOL(Library, g_action_map_remove_action);
++	dlclose(Library);
++
++	Library = GTKNoCSDGetLibrary(GTKNoCSDNewGTKName, true);
++	LOAD_SYMBOL(Library, gtk_widget_class_query_action);
++	LOAD_SYMBOL(Library, gtk_widget_activate_action_variant);
++	dlclose(Library);
++
++	void *Needed[] = {
++		(void *) o_gtk_widget_class_query_action,
++		(void *) o_gtk_widget_activate_action_variant,
++		(void *) o_g_type_fundamental,
++		(void *) o_g_object_class_find_property,
++		(void *) o_g_object_get_property,
++		(void *) o_g_value_init,
++		(void *) o_g_value_unset,
++		(void *) o_g_value_get_boolean,
++		(void *) o_g_value_get_int,
++		(void *) o_g_value_get_uint,
++		(void *) o_g_value_get_double,
++		(void *) o_g_value_get_float,
++		(void *) o_g_value_get_string,
++		(void *) o_g_value_get_enum,
++		(void *) o_g_enum_get_value,
++		(void *) o_g_variant_new_boolean,
++		(void *) o_g_variant_new_int32,
++		(void *) o_g_variant_new_uint32,
++		(void *) o_g_variant_new_double,
++		(void *) o_g_variant_new_string,
++		(void *) o_g_variant_get_boolean,
++		(void *) o_g_variant_is_of_type,
++		(void *) o_g_menu_item_set_link,
++		(void *) o_g_menu_item_set_attribute_value,
++		(void *) o_g_simple_action_new,
++		(void *) o_g_simple_action_new_stateful,
++		(void *) o_g_simple_action_set_state,
++		(void *) o_g_simple_action_set_enabled,
++		(void *) o_g_action_get_state,
++		(void *) o_g_action_map_add_action,
++		(void *) o_g_action_map_lookup_action,
++		(void *) o_g_signal_handler_disconnect,
++		(void *) o_g_action_group_has_action,
++		(void *) o_g_action_group_get_action_enabled,
++		(void *) o_g_action_group_get_action_parameter_type,
++		(void *) o_g_action_group_get_action_state,
++		(void *) o_g_action_map_remove_action
++	};
++	for (size_t Index = 0; Index < sizeof(Needed) / sizeof(Needed[0]);
++		++Index) {
++		if (Needed[Index] == NULL) {
++			return;
++		}
++	}
++
++	GTKNoCSDMenuProxyReady = true;
++}
++
+ void GTKNoCSDMenuPrepare(void) {
+ 	// Fetch the functions of the global menu once, when it is first needed
+ 
+@@ -4507,6 +4663,536 @@ void GTKNoCSDMenuPrepare(void) {
+ 	}
+ 
+ 	GTKNoCSDMenuReady = true;
++	GTKNoCSDGetMenuProxySymbols();
++}
++
++gchar *GTKNoCSDMenuKey(const char *Kind, const char *Name) {
++	// Name of the data saved on a widget for one of its class actions
++
++	return o_g_strconcat("GTKNoCSDMenu", Kind, ":", Name, NULL);
++}
++
++void GTKNoCSDMenuProxyActivate(G_GNUC_UNUSED GSimpleAction *Action,
++	GVariant *Parameter, gpointer Data) {
++	// Activate the class action from the menu's owner
++
++	struct GTKNoCSDMenuProxy *Proxy = Data;
++	if (Proxy->Owner != NULL) {
++		o_gtk_widget_activate_action_variant(Proxy->Owner, Proxy->Name,
++			Parameter);
++	}
++}
++
++void GTKNoCSDMenuProxyFree(gpointer Data, G_GNUC_UNUSED GClosure *Closure) {
++	// Free a stand-in when its action is finalized
++
++	struct GTKNoCSDMenuProxy *Proxy = Data;
++	if (Proxy->Owner != NULL) {
++		o_g_object_remove_weak_pointer((GObject *) Proxy->Owner,
++			(gpointer *) &Proxy->Owner);
++	}
++	if (Proxy->Holder != NULL) {
++		gchar *Key = GTKNoCSDMenuKey("Proxy", Proxy->Name);
++		o_g_object_set_data((GObject *) Proxy->Holder, Key, NULL);
++		o_g_free(Key);
++		o_g_object_remove_weak_pointer((GObject *) Proxy->Holder,
++			(gpointer *) &Proxy->Holder);
++	}
++	o_g_free(Proxy->Name);
++	free(Proxy);
++}
++
++GtkWidget *GTKNoCSDMenuFindClassAction(GtkWidget *Widget, const char *Name,
++	const GVariantType **ParameterType, const char **Property) {
++	// Find the widget, the given one or an ancestor, whose class has the
++	// action, with the property of a property action
++
++	// WARNING: Own call
++	for (; Widget != NULL; Widget = gtk_widget_get_parent(Widget)) {
++		GtkWidgetClass *Class =
++			(GtkWidgetClass *) ((GTypeInstance *) Widget)->g_class;
++		GType Owner;
++		const char *ActionName, *PropertyName;
++		const GVariantType *Type;
++		for (guint Index = 0; o_gtk_widget_class_query_action(Class, Index,
++			&Owner, &ActionName, &Type, &PropertyName); ++Index) {
++			if (strcmp(ActionName, Name) == 0) {
++				*ParameterType = Type;
++				*Property = PropertyName;
++				return Widget;
++			}
++		}
++	}
++
++	return NULL;
++}
++
++GVariant *GTKNoCSDMenuPropertyState(GObject *Object, GParamSpec *Property) {
++	// The state of a property action, as GTK derives it from the property type
++
++	GValue Value = G_VALUE_INIT;
++	GVariant *State = NULL;
++	GType Type = Property->value_type;
++	o_g_value_init(&Value, Type);
++	o_g_object_get_property(Object, Property->name, &Value);
++
++	if (Type == G_TYPE_BOOLEAN) {
++		State = o_g_variant_new_boolean(o_g_value_get_boolean(&Value));
++	} else if (Type == G_TYPE_INT) {
++		State = o_g_variant_new_int32(o_g_value_get_int(&Value));
++	} else if (Type == G_TYPE_UINT) {
++		State = o_g_variant_new_uint32(o_g_value_get_uint(&Value));
++	} else if (Type == G_TYPE_DOUBLE) {
++		State = o_g_variant_new_double(o_g_value_get_double(&Value));
++	} else if (Type == G_TYPE_FLOAT) {
++		State = o_g_variant_new_double(o_g_value_get_float(&Value));
++	} else if (Type == G_TYPE_STRING) {
++		const char *String = o_g_value_get_string(&Value);
++		State = o_g_variant_new_string(String != NULL ? String : "");
++	} else if (o_g_type_fundamental(Type) == G_TYPE_ENUM) {
++		GEnumClass *Class = o_g_type_class_ref(Type);
++		GEnumValue *Enumeration = o_g_enum_get_value(Class,
++				o_g_value_get_enum(&Value));
++		State = o_g_variant_new_string(Enumeration != NULL ?
++				Enumeration->value_nick : "");
++		o_g_type_class_unref(Class);
++	}
++
++	o_g_value_unset(&Value);
++	return State;
++}
++
++void GTKNoCSDMenuPropertyNotified(GObject *Holder, GParamSpec *Property,
++	gpointer Action) {
++	// Follow the property of a property action
++
++	GVariant *State = GTKNoCSDMenuPropertyState(Holder, Property);
++	if (State != NULL) {
++		o_g_simple_action_set_state(Action, State);
++	}
++}
++
++void GTKNoCSDMenuProxyChangeState(GSimpleAction *Action, GVariant *Value,
++	gpointer Data) {
++	// A state change asked over D-Bus goes to the property like activation.
++	// The new state comes back through notify
++
++	struct GTKNoCSDMenuProxy *Proxy = Data;
++	if (Proxy->Owner == NULL) {
++		return;
++	}
++
++	if (!o_g_variant_is_of_type(Value, G_VARIANT_TYPE_BOOLEAN)) {
++		o_gtk_widget_activate_action_variant(Proxy->Owner, Proxy->Name,
++			Value);
++		return;
++	}
++
++	GVariant *Current = o_g_action_get_state((GAction *) Action);
++	bool Differs = Current == NULL ||
++		o_g_variant_get_boolean(Current) != o_g_variant_get_boolean(Value);
++	if (Current != NULL) {
++		o_g_variant_unref(Current);
++	}
++	if (Differs) {
++		o_gtk_widget_activate_action_variant(Proxy->Owner, Proxy->Name, NULL);
++	}
++}
++
++// Actions of groups inserted on a widget (gtk_widget_insert_action_group)
++// are not exported either. The hook of gtk_widget_insert_action_group keeps
++// every group with its widget and prefix; a stand-in in the window's actions
++// takes enabled state, state and parameter type from the group, and activates
++// the original from the widget it was inserted on, the way GTK's action muxer
++// resolves it. A stand-in is only in the window's actions while a group in
++// that window has the action, so items hidden when the action is missing
++// stay hidden, as in the application
++
++// A group inserted on a widget, under a prefix
++struct GTKNoCSDMenuGroup {
++	GtkWidget *Widget;
++	gchar *Prefix;
++	GActionGroup *Group;
++	struct GTKNoCSDMenuGroup *Next;
++};
++struct GTKNoCSDMenuGroup *GTKNoCSDMenuGroups = NULL;
++
++// A stand-in for an action of an inserted group, in one window
++struct GTKNoCSDMenuGroupProxy {
++	GActionMap *Map;
++	GtkWidget *Holder;
++	gchar *Name;
++	gchar *Prefix;
++	gchar *Action;
++	gchar *Local;
++	GSimpleAction *StandIn;
++	GActionGroup *Group;
++	gulong EnabledHandler;
++	gulong StateHandler;
++	struct GTKNoCSDMenuGroupProxy *Next;
++};
++struct GTKNoCSDMenuGroupProxy *GTKNoCSDMenuGroupProxies = NULL;
++
++bool GTKNoCSDMenuIsAncestor(GtkWidget *Ancestor, GtkWidget *Widget) {
++	// Whether the first widget is the second one or one of its ancestors
++
++	// WARNING: Own call
++	for (; Widget != NULL; Widget = gtk_widget_get_parent(Widget)) {
++		if (Widget == Ancestor) {
++			return true;
++		}
++	}
++
++	return false;
++}
++
++struct GTKNoCSDMenuGroup *GTKNoCSDMenuFindGroup(GActionMap *Map,
++	const char *Prefix, const char *Action) {
++	// A group inserted in the window under the prefix that has the action
++
++	for (struct GTKNoCSDMenuGroup *Group = GTKNoCSDMenuGroups; Group != NULL;
++		Group = Group->Next) {
++		if (Group->Widget != NULL && Group->Group != NULL &&
++			strcmp(Group->Prefix, Prefix) == 0 &&
++			GTKNoCSDMenuIsAncestor((GtkWidget *) Map, Group->Widget) &&
++			o_g_action_group_has_action(Group->Group, Action)) {
++			return Group;
++		}
++	}
++
++	return NULL;
++}
++
++void GTKNoCSDMenuGroupEnabled(G_GNUC_UNUSED GActionGroup *Group,
++	G_GNUC_UNUSED const gchar *Action, gboolean Enabled, gpointer Data) {
++	// Follow the enabled state of the original action
++
++	struct GTKNoCSDMenuGroupProxy *Proxy = Data;
++	o_g_simple_action_set_enabled(Proxy->StandIn, Enabled);
++}
++
++void GTKNoCSDMenuGroupState(G_GNUC_UNUSED GActionGroup *Group,
++	G_GNUC_UNUSED const gchar *Action, GVariant *Value, gpointer Data) {
++	// Follow the state of the original action
++
++	struct GTKNoCSDMenuGroupProxy *Proxy = Data;
++	o_g_simple_action_set_state(Proxy->StandIn, Value);
++}
++
++void GTKNoCSDMenuGroupActivate(G_GNUC_UNUSED GSimpleAction *Action,
++	GVariant *Parameter, gpointer Data) {
++	// Activate the original action from the widget its group is on
++
++	struct GTKNoCSDMenuGroupProxy *Proxy = Data;
++	if (Proxy->Holder != NULL) {
++		o_gtk_widget_activate_action_variant(Proxy->Holder, Proxy->Name,
++			Parameter);
++	}
++}
++
++void GTKNoCSDMenuGroupChangeState(GSimpleAction *Action, GVariant *Value,
++	gpointer Data) {
++	// A state change asked over D-Bus goes to the original action like
++	// activation. The new state comes back through its signal
++
++	struct GTKNoCSDMenuGroupProxy *Proxy = Data;
++	if (Proxy->Holder == NULL) {
++		return;
++	}
++
++	if (!o_g_variant_is_of_type(Value, G_VARIANT_TYPE_BOOLEAN)) {
++		o_gtk_widget_activate_action_variant(Proxy->Holder, Proxy->Name,
++			Value);
++		return;
++	}
++
++	GVariant *Current = o_g_action_get_state((GAction *) Action);
++	bool Differs = Current == NULL ||
++		o_g_variant_get_boolean(Current) != o_g_variant_get_boolean(Value);
++	if (Current != NULL) {
++		o_g_variant_unref(Current);
++	}
++	if (Differs) {
++		o_gtk_widget_activate_action_variant(Proxy->Holder, Proxy->Name,
++			NULL);
++	}
++}
++
++void GTKNoCSDMenuGroupBind(struct GTKNoCSDMenuGroupProxy *Proxy) {
++	// Bind a stand-in to the group of its window that has its action, or
++	// take it out of the window's actions when there is none
++
++	if (Proxy->Group != NULL) {
++		o_g_signal_handler_disconnect(Proxy->Group, Proxy->EnabledHandler);
++		o_g_signal_handler_disconnect(Proxy->Group, Proxy->StateHandler);
++		o_g_object_unref((GObject *) Proxy->Group);
++		Proxy->Group = NULL;
++	}
++	if (Proxy->Holder != NULL) {
++		o_g_object_remove_weak_pointer((GObject *) Proxy->Holder,
++			(gpointer *) &Proxy->Holder);
++		Proxy->Holder = NULL;
++	}
++	if (Proxy->Map == NULL) {
++		return;
++	}
++
++	struct GTKNoCSDMenuGroup *Found = GTKNoCSDMenuFindGroup(Proxy->Map,
++			Proxy->Prefix, Proxy->Action);
++	if (Found == NULL) {
++		if (Proxy->StandIn != NULL &&
++			o_g_action_map_lookup_action(Proxy->Map, Proxy->Local) ==
++			(GAction *) Proxy->StandIn) {
++			o_g_action_map_remove_action(Proxy->Map, Proxy->Local);
++		}
++		return;
++	}
++
++	GActionGroup *Group = Found->Group;
++	Proxy->Group = (GActionGroup *) o_g_object_ref((GObject *) Group);
++	Proxy->Holder = Found->Widget;
++	o_g_object_add_weak_pointer((GObject *) Proxy->Holder,
++		(gpointer *) &Proxy->Holder);
++
++	GVariant *State = o_g_action_group_get_action_state(Group, Proxy->Action);
++	if (Proxy->StandIn == NULL) {
++		const GVariantType *Type =
++			o_g_action_group_get_action_parameter_type(Group, Proxy->Action);
++		Proxy->StandIn = State != NULL ?
++			o_g_simple_action_new_stateful(Proxy->Local, Type, State) :
++			o_g_simple_action_new(Proxy->Local, Type);
++		o_g_signal_connect_data(Proxy->StandIn, "activate",
++			(GCallback) GTKNoCSDMenuGroupActivate, Proxy, NULL, 0);
++		if (State != NULL) {
++			o_g_signal_connect_data(Proxy->StandIn, "change-state",
++				(GCallback) GTKNoCSDMenuGroupChangeState, Proxy, NULL, 0);
++		}
++	} else if (State != NULL) {
++		o_g_simple_action_set_state(Proxy->StandIn, State);
++	}
++	if (State != NULL) {
++		o_g_variant_unref(State);
++	}
++	o_g_simple_action_set_enabled(Proxy->StandIn,
++		o_g_action_group_get_action_enabled(Group, Proxy->Action));
++
++	gchar *Signal = o_g_strconcat("action-enabled-changed::", Proxy->Action,
++			NULL);
++	Proxy->EnabledHandler = o_g_signal_connect_data(Group, Signal,
++			(GCallback) GTKNoCSDMenuGroupEnabled, Proxy, NULL, 0);
++	o_g_free(Signal);
++	Signal = o_g_strconcat("action-state-changed::", Proxy->Action, NULL);
++	Proxy->StateHandler = o_g_signal_connect_data(Group, Signal,
++			(GCallback) GTKNoCSDMenuGroupState, Proxy, NULL, 0);
++	o_g_free(Signal);
++
++	if (o_g_action_map_lookup_action(Proxy->Map, Proxy->Local) == NULL) {
++		o_g_action_map_add_action(Proxy->Map, (GAction *) Proxy->StandIn);
++	}
++}
++
++gchar *GTKNoCSDMenuGroupProxyFor(const char *Name, GActionMap *Map) {
++	// The action name the exported item uses for an action that is neither
++	// exported nor a class action: a stand-in in the window's actions,
++	// otherwise NULL, keep the name
++
++	const char *Dot = strchr(Name, '.');
++	if (Map == NULL || Dot == NULL || strncmp(Name, "app.", 4) == 0) {
++		return NULL;
++	}
++
++	// A window action is exported by GTK, now or once the application adds
++	// it. Only a group the application inserted as "win" itself hides the
++	// window's own actions (Epiphany)
++	if (strncmp(Name, "win.", 4) == 0 &&
++		(o_g_action_map_lookup_action(Map, Dot + 1) != NULL ||
++		GTKNoCSDMenuFindGroup(Map, "win", Dot + 1) == NULL)) {
++		return NULL;
++	}
++
++	struct GTKNoCSDMenuGroupProxy *Proxy = GTKNoCSDMenuGroupProxies;
++	while (Proxy != NULL &&
++		(Proxy->Map != Map || strcmp(Proxy->Name, Name) != 0)) {
++		Proxy = Proxy->Next;
++	}
++
++	if (Proxy == NULL) {
++		Proxy = calloc(1, sizeof(struct GTKNoCSDMenuGroupProxy));
++		if (Proxy == NULL) {
++			return NULL;
++		}
++		Proxy->Map = Map;
++		o_g_object_add_weak_pointer((GObject *) Map,
++			(gpointer *) &Proxy->Map);
++		Proxy->Name = o_g_strdup(Name);
++		Proxy->Prefix = o_g_strdup(Name);
++		Proxy->Prefix[Dot - Name] = '\0';
++		Proxy->Action = o_g_strdup(Dot + 1);
++
++		// No dots, the whole name after win. is one action name
++		Proxy->Local = o_g_strconcat("gtk-nocsd-", Name, NULL);
++		for (gchar *Character = Proxy->Local; *Character != '\0';
++			++Character) {
++			if (*Character == '.') {
++				*Character = '-';
++			}
++		}
++
++		Proxy->Next = GTKNoCSDMenuGroupProxies;
++		GTKNoCSDMenuGroupProxies = Proxy;
++		GTKNoCSDMenuGroupBind(Proxy);
++	}
++
++	return o_g_strconcat("win.", Proxy->Local, NULL);
++}
++
++gchar *GTKNoCSDMenuProxyFor(const char *Name, GtkWidget *Owner,
++	GActionMap *Map) {
++	// The action name the exported item uses: a stand-in in the window's
++	// actions for a class action, otherwise NULL to keep the name
++
++	const GVariantType *ParameterType = NULL;
++	const char *Property = NULL;
++	GtkWidget *Holder = GTKNoCSDMenuFindClassAction(Owner, Name,
++			&ParameterType, &Property);
++	if (Holder == NULL) {
++		return GTKNoCSDMenuGroupProxyFor(Name, Map);
++	}
++
++	// No dots: the whole name after win. is one action name
++	gchar *Local = o_g_strconcat("gtk-nocsd-", Name, NULL);
++	for (gchar *Character = Local; *Character != '\0'; ++Character) {
++		if (*Character == '.') {
++			*Character = '-';
++		}
++	}
++
++	if (o_g_action_map_lookup_action(Map, Local) == NULL) {
++		GParamSpec *Specification = NULL;
++		GVariant *State = NULL;
++		if (Property != NULL) {
++			Specification = o_g_object_class_find_property(
++				(GObjectClass *) ((GTypeInstance *) Holder)->g_class,
++				Property);
++			if (Specification != NULL) {
++				State = GTKNoCSDMenuPropertyState((GObject *) Holder,
++						Specification);
++			}
++
++			// A property type GTK itself does not turn into an action
++			if (State == NULL) {
++				o_g_free(Local);
++				return NULL;
++			}
++		}
++
++		struct GTKNoCSDMenuProxy *Proxy = calloc(1,
++				sizeof(struct GTKNoCSDMenuProxy));
++		if (Proxy == NULL) {
++			o_g_free(Local);
++			return NULL;
++		}
++		Proxy->Owner = Owner;
++		Proxy->Holder = Holder;
++		Proxy->Name = o_g_strdup(Name);
++		o_g_object_add_weak_pointer((GObject *) Owner,
++			(gpointer *) &Proxy->Owner);
++		o_g_object_add_weak_pointer((GObject *) Holder,
++			(gpointer *) &Proxy->Holder);
++
++		GSimpleAction *Action = State != NULL ?
++			o_g_simple_action_new_stateful(Local, ParameterType, State) :
++			o_g_simple_action_new(Local, ParameterType);
++		o_g_signal_connect_data(Action, "activate",
++			(GCallback) GTKNoCSDMenuProxyActivate, Proxy,
++			GTKNoCSDMenuProxyFree, 0);
++		if (State != NULL) {
++			o_g_signal_connect_data(Action, "change-state",
++				(GCallback) GTKNoCSDMenuProxyChangeState, Proxy, NULL, 0);
++			gchar *Signal = o_g_strconcat("notify::", Specification->name,
++					NULL);
++			o_g_signal_connect_object(Holder, Signal,
++				(GCallback) GTKNoCSDMenuPropertyNotified, Action, 0);
++			o_g_free(Signal);
++		}
++
++		// Start from what the application has set so far
++		gchar *Key = GTKNoCSDMenuKey("Enabled", Name);
++		o_g_simple_action_set_enabled(Action,
++			o_g_object_get_data((GObject *) Holder, Key) !=
++			GINT_TO_POINTER(2));
++		o_g_free(Key);
++		Key = GTKNoCSDMenuKey("Proxy", Name);
++		o_g_object_set_data((GObject *) Holder, Key, Action);
++		o_g_free(Key);
++
++		o_g_action_map_add_action(Map, (GAction *) Action);
++		o_g_object_unref((GObject *) Action);
++	}
++
++	gchar *Exported = o_g_strconcat("win.", Local, NULL);
++	o_g_free(Local);
++	return Exported;
++}
++
++GMenuModel *GTKNoCSDMenuClean(GMenuModel *Model, int Depth, GtkWidget *Owner,
++	GActionMap *Map) {
++	// Copy the menu without items that embed a widget, which cannot cross
++	// D-Bus (Yelp's zoom), and without sections left empty by that. Class
++	// actions are replaced with their stand-ins
++
++	const char *Links[] = {"section", "submenu"};
++	GMenu *Menu = o_g_menu_new();
++	gint Items = o_g_menu_model_get_n_items(Model);
++	for (gint Index = 0; Index < Items; ++Index) {
++		GVariant *Custom = o_g_menu_model_get_item_attribute_value(Model,
++				Index, "custom", NULL);
++		if (Custom != NULL) {
++			o_g_variant_unref(Custom);
++			continue;
++		}
++
++		GMenuItem *Item = o_g_menu_item_new_from_model(Model, Index);
++		GVariant *Action = Map == NULL ? NULL :
++			o_g_menu_model_get_item_attribute_value(Model, Index, "action",
++				G_VARIANT_TYPE_STRING);
++		if (Action != NULL) {
++			gchar *Exported = GTKNoCSDMenuProxyFor(
++				o_g_variant_get_string(Action, NULL), Owner, Map);
++			if (Exported != NULL) {
++				o_g_menu_item_set_attribute_value(Item, "action",
++					o_g_variant_new_string(Exported));
++				o_g_free(Exported);
++			}
++			o_g_variant_unref(Action);
++		}
++
++		bool Keep = true;
++		for (size_t Link = 0; Link < 2 && Depth < 16; ++Link) {
++			GMenuModel *Child = o_g_menu_model_get_item_link(Model, Index,
++					Links[Link]);
++			if (Child == NULL) {
++				continue;
++			}
++
++			GMenuModel *Cleaned = GTKNoCSDMenuClean(Child, Depth + 1, Owner,
++					Map);
++			o_g_object_unref((GObject *) Child);
++			if (o_g_menu_model_get_n_items(Cleaned) == 0) {
++				Keep = false;
++			} else {
++				o_g_menu_item_set_link(Item, Links[Link], Cleaned);
++			}
++			o_g_object_unref((GObject *) Cleaned);
++		}
++
++		if (Keep) {
++			o_g_menu_append_item(Menu, Item);
++		}
++		o_g_object_unref((GObject *) Item);
++	}
++
++	return (GMenuModel *) Menu;
+ }
+ 
+ void GTKNoCSDMenuKeep(GMenuModel *Menubar) {
+@@ -4549,7 +5235,14 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 	if (Model == NULL) {
+ 		return;
+ 	}
+-	GMenuModel *Cleaned = (GMenuModel *) o_g_object_ref((GObject *) Model);
++
++	// The menubar belongs to the application, but window actions to the
++	// focused window, so another window only needs the stand-ins
++	GActionMap *Map = GTKNoCSDGtkApplicatonWindow((GObject *) Window) ?
++		(GActionMap *) Window : NULL;
++	GMenuModel *Cleaned = GTKNoCSDMenuProxyReady ?
++		GTKNoCSDMenuClean(Model, 0, Owner, Map) :
++		(GMenuModel *) o_g_object_ref((GObject *) Model);
+ 	if (Existing != NULL) {
+ 		o_g_object_unref((GObject *) Cleaned);
+ 		return;
+@@ -4566,6 +5259,87 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 	o_g_object_unref((GObject *) Menubar);
+ }
+ 
++void gtk_widget_action_set_enabled(GtkWidget *Widget, const char *ActionName,
++	gboolean Enabled) {
++	// Entry point used by applications to enable or disable a class action.
++	// Hook it, to save the state for the stand-ins of the global menu
++
++	GTKNoCSDGetReferences(true);
++	if (o_gtk_widget_action_set_enabled != NULL) {
++		o_gtk_widget_action_set_enabled(Widget, ActionName, Enabled);
++	}
++
++	if (!GTKNoCSDMenuProxyReady || Widget == NULL || ActionName == NULL) {
++		return;
++	}
++
++	gchar *Key = GTKNoCSDMenuKey("Enabled", ActionName);
++	o_g_object_set_data((GObject *) Widget, Key,
++		GINT_TO_POINTER(Enabled ? 1 : 2));
++	o_g_free(Key);
++	Key = GTKNoCSDMenuKey("Proxy", ActionName);
++	GSimpleAction *Proxy = o_g_object_get_data((GObject *) Widget, Key);
++	o_g_free(Key);
++	if (Proxy != NULL) {
++		o_g_simple_action_set_enabled(Proxy, Enabled);
++	}
++}
++
++void gtk_widget_insert_action_group(GtkWidget *Widget, const char *Name,
++	GActionGroup *Group) {
++	// Entry point used by applications to add actions to a widget under a
++	// prefix. Hook it, to keep the group for the stand-ins of the global menu
++
++	GTKNoCSDGetReferences(true);
++	if (o_gtk_widget_insert_action_group != NULL) {
++		o_gtk_widget_insert_action_group(Widget, Name, Group);
++	}
++
++	if (!GTKNoCSDGlobalMenu || GTKNoCSDGTKVersion != 4 || Widget == NULL ||
++		Name == NULL) {
++		return;
++	}
++	GTKNoCSDMenuPrepare();
++	if (!GTKNoCSDMenuProxyReady) {
++		return;
++	}
++
++	// Replace or drop the group kept for this widget and prefix
++	struct GTKNoCSDMenuGroup *Kept = GTKNoCSDMenuGroups;
++	while (Kept != NULL &&
++		(Kept->Widget != Widget || strcmp(Kept->Prefix, Name) != 0)) {
++		Kept = Kept->Next;
++	}
++	if (Kept == NULL && Group != NULL) {
++		Kept = calloc(1, sizeof(struct GTKNoCSDMenuGroup));
++		if (Kept == NULL) {
++			return;
++		}
++		Kept->Widget = Widget;
++		o_g_object_add_weak_pointer((GObject *) Widget,
++			(gpointer *) &Kept->Widget);
++		Kept->Prefix = o_g_strdup(Name);
++		Kept->Next = GTKNoCSDMenuGroups;
++		GTKNoCSDMenuGroups = Kept;
++	}
++	if (Kept != NULL) {
++		if (Kept->Group != NULL) {
++			o_g_object_unref((GObject *) Kept->Group);
++		}
++		Kept->Group = Group != NULL ?
++			(GActionGroup *) o_g_object_ref((GObject *) Group) : NULL;
++	}
++
++	// Stand-ins of the window this widget is in follow the change
++	for (struct GTKNoCSDMenuGroupProxy *Proxy = GTKNoCSDMenuGroupProxies;
++		Proxy != NULL; Proxy = Proxy->Next) {
++		if (Proxy->Map != NULL && strcmp(Proxy->Prefix, Name) == 0 &&
++			GTKNoCSDMenuIsAncestor((GtkWidget *) Proxy->Map, Widget)) {
++			GTKNoCSDMenuGroupBind(Proxy);
++		}
++	}
++}
++
+ // Macros for simplifying getting the correct function
+ #define GET_SYMBOL1(Function)						  \
+ 		if (strcmp(Name, #Function) == 0) {			  \
+@@ -4609,6 +5383,8 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 			GET_SYMBOL(gtk_builder_add_from_file);				   \
+ 			GET_SYMBOL(gtk_builder_new_from_file);				   \
+ 			GET_SYMBOL(gtk_im_context_set_cursor_location);		   \
++			GET_SYMBOL(gtk_widget_action_set_enabled);			   \
++			GET_SYMBOL(gtk_widget_insert_action_group);			   \
+ 		}														   \
+ 		if (strncmp(Name, "adw_", 4) == 0) {					   \
+ 			GET_SYMBOL(adw_header_bar_set_title_widget);		   \
+-- 
+2.53.0
+

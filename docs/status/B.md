@@ -5,6 +5,21 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Global menu gaps** (2026-09-26, May via the coordinator): `research/nocsd-gaps/`.
+- (a) now covers inserted action groups: 10 dead items to 0.
+- New part (d): late menus, live changes, shown menu buttons (Pinta,
+  Papers, Console, Nautilus).
+- GTK3, button hiding and per-window menus estimated only.
+- Gir.Core apps do not trigger the types bug.
+- gtk-nocsd main crashes Epiphany (not ours, not reported).
+- Five-commit series on branch `split-parts-2` in `~/work/b/nocsd-up/split`
+  (local); nothing sent.
+
+**gtk-nocsd package is B's since 2026-09-26** (handed over by A).
+`4.8-1+unity2` adds `/etc/X11/Xsession.d/51gtk-nocsd`, so Xfce and other
+Xsession sessions load it. It is in aptly, and branch `unity/resolute` is
+pushed. Build in `~/work/b/nocsd-u2`.
+
 **Issue #1, second reply - measurements done** (2026-09-25, May via the
 coordinator): `research/nocsd-reply2/` (holder vs flat on Unity and Plasma,
 44-application audit, GTK3, the patch split into four commits with all

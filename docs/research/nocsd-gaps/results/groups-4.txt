@@ -1,0 +1,31 @@
+=================== epiphany (pid 4224)
+  shim: NOT HOOKED in pid 4224
+  NO-GTK-PROPS (no window exports _GTK_UNIQUE_BUS_NAME)
+=================== gnome-2048 (pid 4277)
+  shim: NOT HOOKED in pid 4277
+            -                                        2048
+    ok        win.gtk-nocsd-ui-scores                  Результаты
+    ok        win.show-help-overlay                    Комбинации клавиш
+    ok        win.gtk-nocsd-ui-about                   О приложении 2048
+=================== gnome-sudoku (pid 4379)
+  shim: NOT HOOKED in pid 4379
+            -                                        Судоку
+    disabled  app.new-game                             _Новая игра…
+    MISSING   win.gtk-nocsd-game-view-reset-board      С_бросить головоломку
+              -                                        _Печать
+      disabled  app.print-current-board                  Печать _текущей головоломки…
+      ok        app.print-multiple                       Печать _нескольких головоломок…
+    ok        app.highlighter                          _Подсвечивание
+    ok        app.show-warnings                        _Предупреждения
+    ok        app.preferences-dialog                   Па_раметры
+    ok        app.shortcuts-window                     _Комбинации клавиши
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== deja-dup (pid 4422)
+  shim: NOT HOOKED in pid 4422
+            -                                        Резервные копии
+    MISSING   win.gtk-nocsd-restore-select-all         _Выделить все
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                О приложении
+/tmp/br.sh: строка 30:  4224 Убито                 setsid env -i "${e[@]}" UNITY_GTK4_MENU_DEBUG=1 UNITY_GTK4_MENU_LOG="$log" $cmd > /tmp/b-breadth-${cmd%% *}.out 2>&1 < /dev/null

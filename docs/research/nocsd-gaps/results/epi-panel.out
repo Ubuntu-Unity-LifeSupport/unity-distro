@@ -1,0 +1,4 @@
+
+(epiphany:19251): Adwaita-WARNING **: 01:52:38.761: The resource style-dark.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.
+
+(epiphany:19251): Adwaita-WARNING **: 01:52:38.761: The resource style-hc.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.

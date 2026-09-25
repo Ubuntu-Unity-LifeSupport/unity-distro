@@ -1259,3 +1259,33 @@ Asked through the coordinator, from May. `research/nocsd-reply2/`:
   fixed by 4.8; the types-never-fetched order reproduces on main.
 
 Nothing was sent; the reply is the coordinator's and May's.
+
+## 2026-09-26 - gtk-nocsd global menu gaps: fixes in parts (a) and (d), Xsession.d script in our package (agent B)
+
+**Context.** May asked (via the coordinator) to dig into the gaps left by
+`research/nocsd-reply2/`. Full record: `research/nocsd-gaps/`.
+
+**Decisions.**
+- Actions of groups inserted with `gtk_widget_insert_action_group` get
+  stand-ins in part (a), by hooking that entry point. Weighed against:
+  - appmenu-gtk-module's synthetic `unity.*` actions, which are GTK3 and
+    activate widgets;
+  - a GTK change to export the muxer, for which no issue exists;
+  - leaving the items dead.
+
+  The hook activates the originals with `gtk_widget_activate_action_variant`
+  from the widget the group is on, so GTK's own resolution decides. 10 dead
+  items become 0 dead items in 44 applications.
+- A new part (d) finds menus that appear late and follows menu changes and
+  shown menu buttons. It is separate from (a), because the maintainer said he
+  would finish the base's search himself, so it is offered as a measurement
+  (Pinta 0 to full, Papers and Console now export their real main menu,
+  Nautilus Undo follows).
+- unity-gtk4-menu 0.9 is not changed: the code belongs in the gtk-nocsd
+  parts, not duplicated.
+- GTK3, hiding the button and per-window menus are estimated, not built.
+- The Xfce `LD_PRELOAD` gap is Debian packaging. Rule 0: no report in the
+  Debian BTS, on Launchpad or on Codeberg; systemd#7641 is open; no newer
+  gtk-nocsd changes it (4.8-1 is also 26.10's). It is fixed in our package
+  as `4.8-1+unity2` with `/etc/X11/Xsession.d/51gtk-nocsd`. A handed the
+  package to B for this.

@@ -1,0 +1,120 @@
+From 5597fb90244da689fe6060dbec2ba0c7f54c255f Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 23:09:19 +0000
+Subject: [PATCH 3/5] Set the global menu in realize for windows not presented
+
+Replaces realize in the GtkWindow and GtkApplicationWindow classes
+
+Assisted-by: LLM Claude Opus 5.5
+---
+ Source/GTK-NoCSD.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+
+diff --git a/Source/GTK-NoCSD.c b/Source/GTK-NoCSD.c
+index 1107ce7..dca926a 100644
+--- a/Source/GTK-NoCSD.c
++++ b/Source/GTK-NoCSD.c
+@@ -1097,6 +1097,7 @@ void GTKNoCSDGetHdySymbols(void *Library, bool GModule) {
+ 	LOAD_SYMBOL2(Library, hdy_style_manager_set_color_scheme, GModule);
+ }
+ 
++void GTKNoCSDMenuHook(void);
+ void GTKNoCSDGetReferences(bool GetTypes) {
+ 	// Fetch each needed function
+ 
+@@ -1440,6 +1441,9 @@ void GTKNoCSDGetReferences(bool GetTypes) {
+ 	GTKNoCSDGetAdwTypes();
+ 	GTKNoCSDGetHdyTypes();
+ 	GTKNoCSDGotTypes = true;
++
++	// Hook GTK4 windows for the global menu, now that the types are known
++	GTKNoCSDMenuHook();
+ }
+ 
+ int GTKNoCSDMagic(GtkWindow *Window, size_t Options);
+@@ -4290,10 +4294,15 @@ struct GTKNoCSDMenuProxy {
+ // Whether the functions of the global menu were fetched, and all were found
+ bool GTKNoCSDMenuPrepared = false, GTKNoCSDMenuReady = false;
+ bool GTKNoCSDMenuProxyReady = false;
++bool GTKNoCSDMenuHooked = false;
+ 
+ // The menubar set by the library, to tell it apart from the application's
+ GMenuModel *GTKNoCSDMenubar = NULL;
+ 
++// The original realize of GtkWindow and GtkApplicationWindow
++void (*GTKNoCSDWindowRealize)(GtkWidget *) = NULL;
++void (*GTKNoCSDApplicationWindowRealize)(GtkWidget *) = NULL;
++
+ bool GTKNoCSDMenuShown(GtkWidget *Widget) {
+ 	// Whether the widget is visible and no container keeps it hidden. At
+ 	// realize nothing is mapped yet, so a hidden stack page is also visible,
+@@ -5259,6 +5268,66 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 	o_g_object_unref((GObject *) Menubar);
+ }
+ 
++void GTKNoCSDMenuWindowRealize(GtkWidget *Widget) {
++	// Realize of GtkWindow. The menu must be set before it
++
++	// GtkApplicationWindow chains up here, it was handled in its own realize
++	if (GTKNoCSDApplicationWindowRealize == NULL ||
++		!GTKNoCSDGtkApplicatonWindow((GObject *) Widget)) {
++		GTKNoCSDMenuAttach((GtkWindow *) Widget);
++	}
++	if (GTKNoCSDWindowRealize != NULL) {
++		GTKNoCSDWindowRealize(Widget);
++	}
++}
++
++void GTKNoCSDMenuApplicationWindowRealize(GtkWidget *Widget) {
++	// Realize of GtkApplicationWindow. The menu must be set before it
++
++	GTKNoCSDMenuAttach((GtkWindow *) Widget);
++	if (GTKNoCSDApplicationWindowRealize != NULL) {
++		GTKNoCSDApplicationWindowRealize(Widget);
++	}
++}
++
++void GTKNoCSDMenuHookClass(GType Type, void(**Original)(GtkWidget *),
++	void (*Replacement)(GtkWidget *)) {
++	// Replace realize in the class of a window type. The class reference is
++	// kept, the class has to live as long as the process anyway
++
++	GtkWidgetClass *Class = o_g_type_class_ref(Type);
++	if (Class->realize == GTKNoCSDMenuWindowRealize ||
++		Class->realize == GTKNoCSDMenuApplicationWindowRealize) {
++		return;
++	}
++	*Original = Class->realize;
++	Class->realize = Replacement;
++}
++
++void GTKNoCSDMenuHook(void) {
++	// Hook GTK4 windows once GTK4 and its types are known. A window shown
++	// with gtk_window_present gets its menu there; one that is only made
++	// visible, or shown by its parent, passes through nothing of ours before
++	// it is realized, so realize is replaced in the window classes
++
++	if (GTKNoCSDMenuHooked || !GTKNoCSDGlobalMenu ||
++		GTKNoCSDGTKVersion != 4 || GTKNoCSDGTKWindow == 0 ||
++		GTKNoCSDGTKApplicationWindow == 0) {
++		return;
++	}
++	GTKNoCSDMenuHooked = true;
++
++	GTKNoCSDMenuPrepare();
++	if (!GTKNoCSDMenuReady) {
++		return;
++	}
++	GTKNoCSDMenuHookClass(GTKNoCSDGTKWindow, &GTKNoCSDWindowRealize,
++		GTKNoCSDMenuWindowRealize);
++	GTKNoCSDMenuHookClass(GTKNoCSDGTKApplicationWindow,
++		&GTKNoCSDApplicationWindowRealize,
++		GTKNoCSDMenuApplicationWindowRealize);
++}
++
+ void gtk_widget_action_set_enabled(GtkWidget *Widget, const char *ActionName,
+ 	gboolean Enabled) {
+ 	// Entry point used by applications to enable or disable a class action.
+-- 
+2.53.0
+

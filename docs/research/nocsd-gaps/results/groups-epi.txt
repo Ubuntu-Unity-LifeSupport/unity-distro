@@ -1,0 +1,18 @@
+=================== epiphany (pid 4586)
+  shim: NOT HOOKED in pid 4586
+            -                                        Веб-браузер
+    ok        app.new-window                           _Новое окно
+    ok        app.new-incognito                        Новое _приватное окно
+    disabled  app.reopen-closed-tab                    Открыть _закрытую вкладку
+    ok        win.gtk-nocsd-win-fullscreen             По_лноэкранный режим
+    ok        app.history                              Истор_ия
+              -                                        _Веб-приложения
+      disabled  win.gtk-nocsd-win-save-as-application    Установить как _веб-приложение…
+      ok        win.gtk-nocsd-win-open-application-manager Управле_ние веб-приложениями
+    ok        win.gtk-nocsd-win-privacy-report         Отчет о кон_фиденциальности
+    ok        win.gtk-nocsd-win-passwords              Па_роли
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            Комбинации _клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+    MISSING   app.uninstall-web-app                    _Удалить веб-приложение

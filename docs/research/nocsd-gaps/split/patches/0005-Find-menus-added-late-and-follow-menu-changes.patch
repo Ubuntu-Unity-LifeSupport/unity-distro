@@ -1,0 +1,341 @@
+From a45085383e2e8724ab96c697d49a4b0d2dcf313d Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 23:09:20 +0000
+Subject: [PATCH 5/5] Find menus added late and follow menu changes
+
+Sets an empty menubar at once and fills it when the menu appears, looking
+again for up to three seconds. Rebuilds it when the application changes the
+menu or shows another menu button, and puts a menu that is already a
+menubar on the panel as it is
+
+Assisted-by: LLM Claude Opus 5.5
+---
+ Source/GTK-NoCSD.c | 302 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 277 insertions(+), 25 deletions(-)
+
+diff --git a/Source/GTK-NoCSD.c b/Source/GTK-NoCSD.c
+index fb71158..d779bf2 100644
+--- a/Source/GTK-NoCSD.c
++++ b/Source/GTK-NoCSD.c
+@@ -5233,6 +5233,272 @@ void GTKNoCSDMenuKeep(GMenuModel *Menubar) {
+ 		(gpointer *) &GTKNoCSDMenubar);
+ }
+ 
++// The window and menu the library's menubar was filled from, to rebuild it
++// when the application changes the menu (Nautilus relabels Undo, Epiphany
++// removes items after its window was realized)
++GMenuModel *GTKNoCSDMenuSource = NULL;
++GtkApplication *GTKNoCSDMenuSourceApplication = NULL;
++GtkWidget *GTKNoCSDMenuSourceOwner = NULL;
++GActionMap *GTKNoCSDMenuSourceMap = NULL;
++GtkWindow *GTKNoCSDMenuSourceWindow = NULL;
++bool GTKNoCSDMenuRebuilding = false, GTKNoCSDMenuFilled = false;
++bool GTKNoCSDMenuFollowing = false, GTKNoCSDMenuRefinding = false;
++
++// A window waiting for its menu to appear, and how often it was looked for
++struct GTKNoCSDMenuWait {
++	GtkWindow *Window;
++	int Tries;
++};
++
++void GTKNoCSDMenuWeak(gpointer *Pointer, gpointer Object) {
++	// Point a weak pointer at an object, or at nothing
++
++	if (*Pointer != NULL) {
++		o_g_object_remove_weak_pointer((GObject *) *Pointer, Pointer);
++	}
++	*Pointer = Object;
++	if (Object != NULL) {
++		o_g_object_add_weak_pointer((GObject *) Object, Pointer);
++	}
++}
++
++gboolean GTKNoCSDMenuRebuild(G_GNUC_UNUSED gpointer Data);
++void GTKNoCSDMenuChanged(G_GNUC_UNUSED GMenuModel *Model,
++	G_GNUC_UNUSED gint Position, G_GNUC_UNUSED gint Removed,
++	G_GNUC_UNUSED gint Added, G_GNUC_UNUSED gpointer Data) {
++	// A part of the menu changed, rebuild the copy once the change is over
++
++	if (!GTKNoCSDMenuRebuilding) {
++		GTKNoCSDMenuRebuilding = true;
++		o_g_idle_add(GTKNoCSDMenuRebuild, NULL);
++	}
++}
++
++void GTKNoCSDMenuWatch(GMenuModel *Model, int Depth) {
++	// Follow changes of the menu and of every section and submenu in it
++
++	if (o_g_object_get_data((GObject *) Model, "GTKNoCSDMenuWatched") !=
++		NULL) {
++		return;
++	}
++	o_g_object_set_data((GObject *) Model, "GTKNoCSDMenuWatched",
++		GINT_TO_POINTER(1));
++	o_g_signal_connect_data(Model, "items-changed",
++		(GCallback) GTKNoCSDMenuChanged, NULL, NULL, 0);
++
++	const char *Links[] = {"section", "submenu"};
++	gint Items = o_g_menu_model_get_n_items(Model);
++	for (gint Index = 0; Index < Items && Depth < 16; ++Index) {
++		for (size_t Link = 0; Link < 2; ++Link) {
++			GMenuModel *Child = o_g_menu_model_get_item_link(Model, Index,
++					Links[Link]);
++			if (Child != NULL) {
++				GTKNoCSDMenuWatch(Child, Depth + 1);
++				o_g_object_unref((GObject *) Child);
++			}
++		}
++	}
++}
++
++GMenuModel *GTKNoCSDMenuCopy(GMenuModel *Model, GtkWidget *Owner,
++	GActionMap *Map) {
++	// The menu as it is exported, cleaned when that part is present
++
++	return GTKNoCSDMenuProxyReady ? GTKNoCSDMenuClean(Model, 0, Owner, Map) :
++		   (GMenuModel *) o_g_object_ref((GObject *) Model);
++}
++
++bool GTKNoCSDMenuShaped(GMenuModel *Model) {
++	// Whether the menu is already a menubar: every item a submenu (Pinta)
++
++	gint Items = o_g_menu_model_get_n_items(Model);
++	for (gint Index = 0; Index < Items; ++Index) {
++		GMenuModel *Submenu = o_g_menu_model_get_item_link(Model, Index,
++				"submenu");
++		if (Submenu == NULL) {
++			return false;
++		}
++		o_g_object_unref((GObject *) Submenu);
++	}
++
++	return 0 < Items;
++}
++
++void GTKNoCSDMenuPut(GtkApplication *Application, GMenuModel *Copy) {
++	// Put the copy into the library's menubar: a menu that is already a
++	// menubar as it is, any other one under the application's name, since it
++	// has no File or Edit of its own to show at the top
++
++	while (o_g_menu_model_get_n_items(GTKNoCSDMenubar) != 0) {
++		o_g_menu_remove((GMenu *) GTKNoCSDMenubar, 0);
++	}
++
++	if (GTKNoCSDMenuShaped(Copy)) {
++		gint Items = o_g_menu_model_get_n_items(Copy);
++		for (gint Index = 0; Index < Items; ++Index) {
++			GMenuItem *Item = o_g_menu_item_new_from_model(Copy, Index);
++			o_g_menu_append_item((GMenu *) GTKNoCSDMenubar, Item);
++			o_g_object_unref((GObject *) Item);
++		}
++		return;
++	}
++
++	gchar *Label = GTKNoCSDMenuLabel(Application);
++	o_g_menu_append_submenu((GMenu *) GTKNoCSDMenubar, Label, Copy);
++	o_g_free(Label);
++}
++
++gboolean GTKNoCSDMenuRebuild(G_GNUC_UNUSED gpointer Data) {
++	// Rebuild the copy of a menu the application changed
++
++	GTKNoCSDMenuRebuilding = false;
++	if (GTKNoCSDMenubar == NULL || GTKNoCSDMenuSource == NULL ||
++		GTKNoCSDMenuSourceOwner == NULL) {
++		return FALSE;
++	}
++
++	GtkApplication *Application = GTKNoCSDMenuSourceApplication;
++	if (Application == NULL) {
++		return FALSE;
++	}
++
++	GMenuModel *Copy = GTKNoCSDMenuCopy(GTKNoCSDMenuSource,
++			GTKNoCSDMenuSourceOwner, GTKNoCSDMenuSourceMap);
++	GTKNoCSDMenuPut(Application, Copy);
++	o_g_object_unref((GObject *) Copy);
++	GTKNoCSDMenuWatch(GTKNoCSDMenuSource, 0);
++	return FALSE;
++}
++
++gboolean GTKNoCSDMenuRefind(G_GNUC_UNUSED gpointer Data) {
++	// Take the menu that is shown now, if it is another one
++
++	GTKNoCSDMenuRefinding = false;
++	if (GTKNoCSDMenuSourceWindow == NULL || GTKNoCSDMenuSource == NULL) {
++		return FALSE;
++	}
++
++	GtkWidget *Owner = NULL;
++	GMenuModel *Model = GTKNoCSDMenuFind(GTKNoCSDMenuSourceWindow, &Owner);
++	if (Model == NULL || Model == GTKNoCSDMenuSource) {
++		return FALSE;
++	}
++
++	GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSource, Model);
++	GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSourceOwner, Owner);
++	GTKNoCSDMenuRebuild(NULL);
++	return FALSE;
++}
++
++static gboolean GTKNoCSDMenuButtonMap(G_GNUC_UNUSED GSignalInvocationHint *Hint,
++	G_GNUC_UNUSED guint Number, const GValue *Values,
++	G_GNUC_UNUSED gpointer Data) {
++	// A menu button shown in the window the menu was taken from may bring
++	// another main menu with it (Papers shows the menu of its document view
++	// in place of the one of its start view), look again once it is shown
++
++	GObject *Button = o_g_value_get_object(&Values[0]);
++	if (GTKNoCSDMenuRefinding || GTKNoCSDMenuSourceWindow == NULL ||
++		!GTKNoCSDGtkMenuButton(Button) ||
++		(GtkWidget *) Button == GTKNoCSDMenuSourceOwner) {
++		return TRUE;
++	}
++
++	// WARNING: Own call
++	GtkWidget *Top = (GtkWidget *) Button;
++	while (gtk_widget_get_parent(Top) != NULL) {
++		Top = gtk_widget_get_parent(Top);
++	}
++	if (Top == (GtkWidget *) GTKNoCSDMenuSourceWindow) {
++		GTKNoCSDMenuRefinding = true;
++		o_g_idle_add(GTKNoCSDMenuRefind, NULL);
++	}
++
++	return TRUE;
++}
++
++void GTKNoCSDMenuFollowShown(GtkWindow *Window) {
++	// Follow the menu buttons shown in the window from now on
++
++	GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSourceWindow, Window);
++	if (GTKNoCSDMenuFollowing) {
++		return;
++	}
++
++	unsigned int Hook = o_g_signal_lookup("map", GTKNoCSDGTKMenuButton);
++	if (0 < Hook) {
++		o_g_signal_add_emission_hook(Hook, 0, GTKNoCSDMenuButtonMap, NULL,
++			NULL);
++		GTKNoCSDMenuFollowing = true;
++	}
++}
++
++bool GTKNoCSDMenuFill(GtkWindow *Window) {
++	// Put the main menu of the window into the library's empty menubar, or
++	// add the stand-ins another window needs. False while it has no menu
++
++	// WARNING: Own call
++	GtkApplication *Application = gtk_window_get_application(Window);
++	if (Application == NULL || GTKNoCSDMenubar == NULL ||
++		o_gtk_application_get_menubar(Application) != GTKNoCSDMenubar) {
++		return true;
++	}
++
++	GtkWidget *Owner = NULL;
++	GMenuModel *Model = GTKNoCSDMenuFind(Window, &Owner);
++	if (Model == NULL) {
++		return false;
++	}
++
++	// The menubar belongs to the application, but window actions to the
++	// focused window, so another window only needs the stand-ins
++	GActionMap *Map = GTKNoCSDGtkApplicatonWindow((GObject *) Window) ?
++		(GActionMap *) Window : NULL;
++	GMenuModel *Copy = GTKNoCSDMenuCopy(Model, Owner, Map);
++	if (!GTKNoCSDMenuFilled) {
++		GTKNoCSDMenuFilled = true;
++		GTKNoCSDMenuPut(Application, Copy);
++		GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSource, Model);
++		GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSourceApplication,
++			Application);
++		GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSourceOwner, Owner);
++		GTKNoCSDMenuWeak((gpointer *) &GTKNoCSDMenuSourceMap, Map);
++		GTKNoCSDMenuWatch(Model, 0);
++		GTKNoCSDMenuFollowShown(Window);
++	}
++	o_g_object_unref((GObject *) Copy);
++	return true;
++}
++
++gboolean GTKNoCSDMenuWaited(gpointer Data) {
++	// Look for the menu of a window again, for up to three seconds
++
++	struct GTKNoCSDMenuWait *Wait = Data;
++	if (Wait->Window != NULL && !GTKNoCSDMenuFill(Wait->Window) &&
++		++Wait->Tries < 12) {
++		return TRUE;
++	}
++
++	if (Wait->Window != NULL) {
++		o_g_object_remove_weak_pointer((GObject *) Wait->Window,
++			(gpointer *) &Wait->Window);
++	}
++	free(Wait);
++	return FALSE;
++}
++
++void GTKNoCSDMenuRetry(GtkWindow *Window) {
++	// The window has no menu yet, look again later
++
++	struct GTKNoCSDMenuWait *Wait = calloc(1, sizeof(struct GTKNoCSDMenuWait));
++	if (Wait == NULL) {
++		return;
++	}
++	Wait->Window = Window;
++	o_g_object_add_weak_pointer((GObject *) Window, (gpointer *) &Wait->Window);
++	o_g_timeout_add(250, GTKNoCSDMenuWaited, Wait);
++}
++
+ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 	// Set the main menu of the window as the application's menubar
+ 
+@@ -5263,34 +5529,20 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 		return;
+ 	}
+ 
+-	GtkWidget *Owner = NULL;
+-	GMenuModel *Model = GTKNoCSDMenuFind(Window, &Owner);
+-	if (Model == NULL) {
+-		return;
++	// A menu may appear after its window (Pinta adds its menu buttons after
++	// presenting it). Set an empty menubar now, so GTK announces it when the
++	// window is realized, and fill it once the menu is found
++	if (Existing == NULL) {
++		GMenu *Menubar = o_g_menu_new();
++		o_gtk_application_set_menubar(Application, (GMenuModel *) Menubar);
++		GTKNoCSDMenuKeep((GMenuModel *) Menubar);
++		o_g_object_unref((GObject *) Menubar);
++		GTKNoCSDMenuFilled = false;
+ 	}
+-
+-	// The menubar belongs to the application, but window actions to the
+-	// focused window, so another window only needs the stand-ins
+-	GActionMap *Map = GTKNoCSDGtkApplicatonWindow((GObject *) Window) ?
+-		(GActionMap *) Window : NULL;
+-	GMenuModel *Cleaned = GTKNoCSDMenuProxyReady ?
+-		GTKNoCSDMenuClean(Model, 0, Owner, Map) :
+-		(GMenuModel *) o_g_object_ref((GObject *) Model);
+-	if (Existing != NULL) {
+-		o_g_object_unref((GObject *) Cleaned);
+-		return;
++	if (!GTKNoCSDMenuFill(Window)) {
++		GTKNoCSDMenuRetry(Window);
+ 	}
+ 
+-	gchar *Label = GTKNoCSDMenuLabel(Application);
+-	GMenu *Menubar = o_g_menu_new();
+-	o_g_menu_append_submenu(Menubar, Label, Cleaned);
+-	o_g_free(Label);
+-	o_g_object_unref((GObject *) Cleaned);
+-	o_gtk_application_set_menubar(Application, (GMenuModel *) Menubar);
+-
+-	GTKNoCSDMenuKeep((GMenuModel *) Menubar);
+-	o_g_object_unref((GObject *) Menubar);
+-
+ 	// Take it back if the shell stops showing it
+ 	if (!GTKNoCSDMenuWatching) {
+ 		GTKNoCSDMenuWatching = true;
+-- 
+2.53.0
+

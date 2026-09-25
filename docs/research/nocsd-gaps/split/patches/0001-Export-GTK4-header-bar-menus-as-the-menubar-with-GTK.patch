@@ -1,0 +1,493 @@
+From 23e91cb9a7e34e432ead039a8fa8812bb818189f Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 23:09:19 +0000
+Subject: [PATCH 1/5] Export GTK4 header bar menus as the menubar with
+ GTK_NOCSD_GLOBAL_MENU
+
+Stand-in for the base: finds the main menu and sets it when a window is presented
+
+Assisted-by: LLM Claude Opus 5.5
+---
+ README.md          |   1 +
+ Source/GTK-NoCSD.c | 405 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 405 insertions(+), 1 deletion(-)
+
+diff --git a/README.md b/README.md
+index b96a4c1..0b38e6b 100644
+--- a/README.md
++++ b/README.md
+@@ -145,6 +145,7 @@ The library supports some environment variables to influence its behavior:
+ - `GTK_NOCSD_NO_CSS`: Setting to 1 disables loading any CSS from the library.
+ - `GTK_NOCSD_NO_GTK3`: Setting to 1 disables the library for GTK3.
+ - `GTK_NOCSD_NO_GTK4`: Setting to 1 disables the library for GTK4.
++- `GTK_NOCSD_GLOBAL_MENU`: Setting to 1 exports the header bar menu of GTK4 applications as their menubar, for a global menu.
+ 
+ Make sure to set gtk-decoration-layout to be able to use the internal CSD.  
+ On GNOME with `gsettings set org.gnome.desktop.wm.preferences button-layout 'icon:minimize,maximize,close'`.  
+diff --git a/Source/GTK-NoCSD.c b/Source/GTK-NoCSD.c
+index 1d7079a..9627ca0 100644
+--- a/Source/GTK-NoCSD.c
++++ b/Source/GTK-NoCSD.c
+@@ -298,7 +298,8 @@ void GTKNoCSDUnsetLDPreload(void) {
+ }
+ 
+ bool GTKNoCSDOnLomiri = false, GTKNoCSDCSD = false, GTKNoCSDCSDPadding = false,
+-	GTKNoCSDNoCSS = false, GTKNoCSDNoGTK3 = false, GTKNoCSDNoGTK4 = false;
++	GTKNoCSDNoCSS = false, GTKNoCSDNoGTK3 = false, GTKNoCSDNoGTK4 = false,
++	GTKNoCSDGlobalMenu = false;
+ void *(*o_dlsym)(void *, const char *) = NULL;
+ char *GTKNoCSDLD = NULL, *GTKNoCSDLibC = NULL, *GTKNoCSDTheme = NULL;
+ 
+@@ -505,6 +506,7 @@ static void GTKNoCSDInit(void) {
+ 	GET_VARIABLE(GTKNoCSDNoCSS, GTK_NOCSD_NO_CSS);
+ 	GET_VARIABLE(GTKNoCSDNoGTK3, GTK_NOCSD_NO_GTK3);
+ 	GET_VARIABLE(GTKNoCSDNoGTK4, GTK_NOCSD_NO_GTK4);
++	GET_VARIABLE(GTKNoCSDGlobalMenu, GTK_NOCSD_GLOBAL_MENU);
+ 
+ 	// Set the GTK_CSD environment variable for applications that recognize it
+ 	setenv("GTK_CSD", "0", 1);
+@@ -536,6 +538,9 @@ GType GTKNoCSDADWWindowTitle = 0;
+ GType GTKNoCSDGTKFileChooserDialog = 0;
+ GType GTKNoCSDGTKFileChooserWidget = 0;
+ GType GTKNoCSDGTKButton = 0;
++GType GTKNoCSDGTKMenuButton = 0;
++GType GTKNoCSDGTKPopoverMenu = 0;
++GType GTKNoCSDGTKPopoverMenuBar = 0;
+ GType GTKNoCSDGTKMessageDialog = 0;
+ GType GTKNoCSDGTKSpinner = 0;
+ GType GTKNoCSDADWToolbarView = 0;
+@@ -810,6 +815,42 @@ gboolean (*o_adw_preferences_window_get_search_enabled) (
+ gboolean (*o_adw_preferences_dialog_get_search_enabled) (
+ 	AdwPreferencesDialog *) = NULL;
+ 
++GType (*o_gtk_menu_button_get_type) (void) = NULL;
++GType (*o_gtk_popover_menu_get_type) (void) = NULL;
++GType (*o_gtk_popover_menu_bar_get_type) (void) = NULL;
++GMenuModel * (*o_gtk_menu_button_get_menu_model) (GtkMenuButton *) = NULL;
++GtkPopover * (*o_gtk_menu_button_get_popover) (GtkMenuButton *) = NULL;
++gboolean (*o_gtk_menu_button_get_primary) (GtkMenuButton *) = NULL;
++GMenuModel * (*o_gtk_popover_menu_get_menu_model) (GtkPopoverMenu *) = NULL;
++GMenuModel * (*o_gtk_popover_menu_bar_get_menu_model) (GtkPopoverMenuBar *) =
++	NULL;
++GMenuModel * (*o_gtk_application_get_menubar) (GtkApplication *) = NULL;
++void (*o_gtk_application_set_menubar) (GtkApplication *, GMenuModel *) = NULL;
++gboolean (*o_gtk_widget_is_visible) (GtkWidget *) = NULL;
++gboolean (*o_gtk_widget_get_child_visible) (GtkWidget *) = NULL;
++gpointer (*o_g_type_class_ref) (GType) = NULL;
++void (*o_g_type_class_unref) (gpointer) = NULL;
++gulong (*o_g_signal_connect_object) (gpointer, const gchar *, GCallback,
++	gpointer, GConnectFlags) = NULL;
++void (*o_g_object_remove_weak_pointer) (GObject *, gpointer *) = NULL;
++const gchar * (*o_g_variant_get_string) (GVariant *, gsize *) = NULL;
++void (*o_g_variant_unref) (GVariant *) = NULL;
++gchar * (*o_g_strdup) (const gchar *) = NULL;
++gchar * (*o_g_strconcat) (const gchar *, ...) = NULL;
++GMenu * (*o_g_menu_new) (void) = NULL;
++gint (*o_g_menu_model_get_n_items) (GMenuModel *) = NULL;
++GMenuModel * (*o_g_menu_model_get_item_link) (GMenuModel *, gint,
++	const gchar *) = NULL;
++GVariant * (*o_g_menu_model_get_item_attribute_value) (GMenuModel *, gint,
++	const gchar *, const GVariantType *) = NULL;
++void (*o_g_menu_append_submenu) (GMenu *, const gchar *, GMenuModel *) = NULL;
++const gchar * (*o_g_application_get_application_id) (GApplication *) = NULL;
++GAppInfo * (*o_g_desktop_app_info_new) (const char *) = NULL;
++const char * (*o_g_app_info_get_name) (GAppInfo *) = NULL;
++void (*o_g_menu_remove) (GMenu *, gint) = NULL;
++GMenuItem * (*o_g_menu_item_new_from_model) (GMenuModel *, gint) = NULL;
++void (*o_g_menu_append_item) (GMenu *, GMenuItem *) = NULL;
++
+ // This is needed by an unavoidable GTK macros for type registration
+ #define gtk_widget_get_type(...) o_gtk_widget_get_type(__VA_ARGS__)
+ #define g_type_check_instance_cast(...) o_g_type_check_instance_cast( \
+@@ -870,6 +911,9 @@ CHECK_TYPE(GTKNoCSDAdwToolbarView, GTKNoCSDADWToolbarView)
+ CHECK_TYPE(GTKNoCSDAdwPreferencesWindow, GTKNoCSDADWPreferencesWindow)
+ CHECK_TYPE(GTKNoCSDAdwPreferencesDialog, GTKNoCSDADWPreferencesDialog)
+ CHECK_TYPE(GTKNoCSDAdwMessageDialog, GTKNoCSDADWMessageDialog)
++CHECK_TYPE(GTKNoCSDGtkMenuButton, GTKNoCSDGTKMenuButton)
++CHECK_TYPE(GTKNoCSDGtkPopoverMenu, GTKNoCSDGTKPopoverMenu)
++CHECK_TYPE(GTKNoCSDGtkPopoverMenuBar, GTKNoCSDGTKPopoverMenuBar)
+ 
+ void *GTKNoCSDGetLibrary(const char *Name, bool Fatal) {
+ 	// Load in a library with fatal error reporting
+@@ -2973,12 +3017,16 @@ void GTKNoCSDCheckFirstLabel(GtkWidget *Window) {
+ 	}
+ }
+ 
++void GTKNoCSDMenuAttach(GtkWindow *Window);
+ void gtk_window_present(GtkWindow *Window) {
+ 	// Entry point used by certain apps to display the window.
+ 	// Hook it, execute our own function then the original
+ 
+ 	GTKNoCSDGetReferences(true);
+ 
++	// The global menu has to be set before the window is realized
++	GTKNoCSDMenuAttach(Window);
++
+ 	// Only present window on successful run, unless in GTK2
+ 	if (2 < GTKNoCSDGTKVersion) {
+ 		int MagicStatus = GTKNoCSDMagic(Window, 0);
+@@ -4163,6 +4211,361 @@ GType g_type_register_static_simple(GType Parent, const gchar *Name,
+ 			   InstanceSize, InstanceInit, Flags);
+ }
+ 
++// Global menu: with GTK_NOCSD_GLOBAL_MENU=1 the main menu of a GTK4 header
++// bar is set as the application's menubar, which GTK exports for a global
++// menu
++
++// A menu found in a window, and how likely it is to be the main menu
++struct GTKNoCSDMenuCandidate {
++	GtkWidget *Owner;
++	GMenuModel *Model;
++	bool Shown;
++	bool Primary;
++	int Score;
++};
++
++// Every menu found in a window
++struct GTKNoCSDMenuCandidates {
++	struct GTKNoCSDMenuCandidate List[32];
++	size_t Count;
++};
++
++// Whether the functions of the global menu were fetched, and all were found
++bool GTKNoCSDMenuPrepared = false, GTKNoCSDMenuReady = false;
++
++// The menubar set by the library, to tell it apart from the application's
++GMenuModel *GTKNoCSDMenubar = NULL;
++
++bool GTKNoCSDMenuShown(GtkWidget *Widget) {
++	// Whether the widget is visible and no container keeps it hidden. At
++	// realize nothing is mapped yet, so a hidden stack page is also visible,
++	// but its container clears child-visible on it or on an ancestor
++
++	if (!o_gtk_widget_is_visible(Widget)) {
++		return false;
++	}
++
++	// WARNING: Own call
++	for (GtkWidget *Current = Widget; Current != NULL;
++		Current = gtk_widget_get_parent(Current)) {
++		if (!o_gtk_widget_get_child_visible(Current)) {
++			return false;
++		}
++	}
++
++	return true;
++}
++
++int GTKNoCSDMenuReachableItems(GMenuModel *Model, int Depth) {
++	// Count items anywhere in the menu that use application or window actions
++
++	const char *Links[] = {"section", "submenu"};
++	int Count = 0;
++	gint Items = o_g_menu_model_get_n_items(Model);
++	for (gint Index = 0; Index < Items; ++Index) {
++		GVariant *Action = o_g_menu_model_get_item_attribute_value(Model,
++				Index, "action", G_VARIANT_TYPE_STRING);
++		if (Action != NULL) {
++			const char *Name = o_g_variant_get_string(Action, NULL);
++			if (strncmp(Name, "app.", 4) == 0 ||
++				strncmp(Name, "win.", 4) == 0) {
++				++Count;
++			}
++			o_g_variant_unref(Action);
++		}
++
++		for (size_t Link = 0; Link < 2 && Depth < 16; ++Link) {
++			GMenuModel *Child = o_g_menu_model_get_item_link(Model, Index,
++					Links[Link]);
++			if (Child != NULL) {
++				Count += GTKNoCSDMenuReachableItems(Child, Depth + 1);
++				o_g_object_unref((GObject *) Child);
++			}
++		}
++	}
++
++	return Count;
++}
++
++void GTKNoCSDMenuAddCandidate(struct GTKNoCSDMenuCandidates *Candidates,
++	GtkWidget *Owner, GMenuModel *Model, bool Primary) {
++	// Save a menu with what decides whether it is the main menu
++
++	if (Candidates->Count == sizeof(Candidates->List) /
++		sizeof(Candidates->List[0])) {
++		return;
++	}
++
++	struct GTKNoCSDMenuCandidate *Candidate =
++		&Candidates->List[Candidates->Count++];
++	Candidate->Owner = Owner;
++	Candidate->Model = Model;
++	Candidate->Shown = GTKNoCSDMenuShown(Owner);
++	Candidate->Primary = Primary;
++	Candidate->Score = GTKNoCSDMenuReachableItems(Model, 0);
++}
++
++void GTKNoCSDMenuCollect(GtkWidget *Widget, int Depth,
++	struct GTKNoCSDMenuCandidates *Candidates) {
++	// Collect every menu button and popover menu bar of a widget tree
++
++	if (Widget == NULL || 32 < Depth) {
++		return;
++	}
++
++	if (GTKNoCSDGtkMenuButton((GObject *) Widget)) {
++		GtkMenuButton *Button = (GtkMenuButton *) Widget;
++		GMenuModel *Model = o_gtk_menu_button_get_menu_model(Button);
++
++		// A menu set with gtk_menu_button_set_popover is still reachable
++		// through the popover, when that is a GtkPopoverMenu (Yelp)
++		if (Model == NULL) {
++			GtkPopover *Popover = o_gtk_menu_button_get_popover(Button);
++			if (GTKNoCSDGtkPopoverMenu((GObject *) Popover)) {
++				Model = o_gtk_popover_menu_get_menu_model(
++					(GtkPopoverMenu *) Popover);
++			}
++		}
++
++		if (Model != NULL) {
++			GTKNoCSDMenuAddCandidate(Candidates, Widget, Model,
++				o_gtk_menu_button_get_primary != NULL &&
++				o_gtk_menu_button_get_primary(Button));
++		}
++	}
++
++	if (GTKNoCSDGtkPopoverMenuBar((GObject *) Widget)) {
++		GMenuModel *Model = o_gtk_popover_menu_bar_get_menu_model(
++			(GtkPopoverMenuBar *) Widget);
++		if (Model != NULL) {
++			GTKNoCSDMenuAddCandidate(Candidates, Widget, Model, false);
++		}
++	}
++
++	// WARNING: Own call
++	for (GtkWidget *Child = gtk_widget_get_first_child(Widget);
++		Child != NULL; Child = o_gtk_widget_get_next_sibling(Child)) {
++		GTKNoCSDMenuCollect(Child, Depth + 1, Candidates);
++	}
++}
++
++GMenuModel *GTKNoCSDMenuFind(GtkWindow *Window, GtkWidget **Owner) {
++	// Find the main menu of a window. A window often has several menu buttons,
++	// so the one that is shown wins, then the primary one (the one F10 opens),
++	// then the one with most application and window actions, then the first
++
++	struct GTKNoCSDMenuCandidates Candidates = {0};
++
++	// The title bar is not in the child tree. Some keep the header bar in the
++	// content (Yelp), so both are searched
++	// WARNING: Own call
++	GTKNoCSDMenuCollect(gtk_window_get_titlebar(Window), 0, &Candidates);
++
++	// WARNING: Own call
++	GTKNoCSDMenuCollect(gtk_window_get_child(Window), 0, &Candidates);
++	if (Candidates.Count == 0) {
++		return NULL;
++	}
++
++	size_t Best = 0;
++	for (size_t Index = 1; Index < Candidates.Count; ++Index) {
++		struct GTKNoCSDMenuCandidate *Candidate = &Candidates.List[Index];
++		struct GTKNoCSDMenuCandidate *Current = &Candidates.List[Best];
++		if (Candidate->Shown != Current->Shown) {
++			Best = Candidate->Shown ? Index : Best;
++		} else if (Candidate->Primary != Current->Primary) {
++			Best = Candidate->Primary ? Index : Best;
++		} else if (Current->Score < Candidate->Score) {
++			Best = Index;
++		}
++	}
++
++	*Owner = Candidates.List[Best].Owner;
++	return Candidates.List[Best].Model;
++}
++
++gchar *GTKNoCSDMenuLabel(GtkApplication *Application) {
++	// Name of the menu: the name of the desktop entry, which is what panels
++	// show next to it, otherwise the application name
++
++	const char *Identifier = o_g_application_get_application_id(
++		(GApplication *) Application);
++	if (Identifier != NULL) {
++		gchar *DesktopEntry = o_g_strconcat(Identifier, ".desktop", NULL);
++		GAppInfo *Information = o_g_desktop_app_info_new(DesktopEntry);
++		o_g_free(DesktopEntry);
++		if (Information != NULL) {
++			const char *Name = o_g_app_info_get_name(Information);
++			gchar *Label = Name != NULL ? o_g_strdup(Name) : NULL;
++			o_g_object_unref((GObject *) Information);
++			if (Label != NULL) {
++				return Label;
++			}
++		}
++	}
++
++	const char *Name = o_g_get_application_name();
++	return o_g_strdup(Name != NULL ? Name : "Menu");
++}
++
++void GTKNoCSDGetMenuSymbols(void) {
++	// Fetch the functions the global menu needs
++
++	void *Library = GTKNoCSDGetLibrary("libgobject-2.0.so.0", true);
++	LOAD_SYMBOL(Library, g_type_class_ref);
++	LOAD_SYMBOL(Library, g_type_class_unref);
++	LOAD_SYMBOL(Library, g_signal_connect_object);
++	LOAD_SYMBOL(Library, g_object_remove_weak_pointer);
++	LOAD_SYMBOL(Library, g_variant_get_string);
++	LOAD_SYMBOL(Library, g_variant_unref);
++	LOAD_SYMBOL(Library, g_strdup);
++	LOAD_SYMBOL(Library, g_strconcat);
++	dlclose(Library);
++
++	Library = GTKNoCSDGetLibrary("libgio-2.0.so.0", true);
++	LOAD_SYMBOL(Library, g_menu_new);
++	LOAD_SYMBOL(Library, g_menu_model_get_n_items);
++	LOAD_SYMBOL(Library, g_menu_model_get_item_link);
++	LOAD_SYMBOL(Library, g_menu_model_get_item_attribute_value);
++	LOAD_SYMBOL(Library, g_menu_append_submenu);
++	LOAD_SYMBOL(Library, g_application_get_application_id);
++	LOAD_SYMBOL(Library, g_desktop_app_info_new);
++	LOAD_SYMBOL(Library, g_app_info_get_name);
++	LOAD_SYMBOL(Library, g_menu_remove);
++	LOAD_SYMBOL(Library, g_menu_item_new_from_model);
++	LOAD_SYMBOL(Library, g_menu_append_item);
++	dlclose(Library);
++
++	Library = GTKNoCSDGetLibrary(GTKNoCSDNewGTKName, true);
++	LOAD_SYMBOL(Library, gtk_menu_button_get_type);
++	LOAD_SYMBOL(Library, gtk_popover_menu_get_type);
++	LOAD_SYMBOL(Library, gtk_popover_menu_bar_get_type);
++	LOAD_SYMBOL(Library, gtk_menu_button_get_menu_model);
++	LOAD_SYMBOL(Library, gtk_menu_button_get_popover);
++	LOAD_SYMBOL(Library, gtk_menu_button_get_primary);
++	LOAD_SYMBOL(Library, gtk_popover_menu_get_menu_model);
++	LOAD_SYMBOL(Library, gtk_popover_menu_bar_get_menu_model);
++	LOAD_SYMBOL(Library, gtk_application_get_menubar);
++	LOAD_SYMBOL(Library, gtk_application_set_menubar);
++	LOAD_SYMBOL(Library, gtk_widget_is_visible);
++	LOAD_SYMBOL(Library, gtk_widget_get_child_visible);
++	dlclose(Library);
++
++	GET_TYPE(GTKNoCSDGTKMenuButton, gtk_menu_button_get_type);
++	GET_TYPE(GTKNoCSDGTKPopoverMenu, gtk_popover_menu_get_type);
++	GET_TYPE(GTKNoCSDGTKPopoverMenuBar, gtk_popover_menu_bar_get_type);
++}
++
++void GTKNoCSDMenuPrepare(void) {
++	// Fetch the functions of the global menu once, when it is first needed
++
++	if (GTKNoCSDMenuPrepared) {
++		return;
++	}
++	GTKNoCSDMenuPrepared = true;
++
++	GTKNoCSDGetMenuSymbols();
++	void *Needed[] = {
++		(void *) o_gtk_menu_button_get_menu_model,
++		(void *) o_gtk_menu_button_get_popover,
++		(void *) o_gtk_menu_button_get_primary,
++		(void *) o_gtk_popover_menu_get_menu_model,
++		(void *) o_gtk_popover_menu_bar_get_menu_model,
++		(void *) o_gtk_application_get_menubar,
++		(void *) o_gtk_application_set_menubar,
++		(void *) o_gtk_widget_is_visible,
++		(void *) o_gtk_widget_get_child_visible,
++		(void *) o_g_type_class_ref,
++		(void *) o_g_type_class_unref,
++		(void *) o_g_signal_connect_object,
++		(void *) o_g_object_remove_weak_pointer,
++		(void *) o_g_variant_get_string,
++		(void *) o_g_variant_unref,
++		(void *) o_g_strdup,
++		(void *) o_g_strconcat,
++		(void *) o_g_menu_new,
++		(void *) o_g_menu_model_get_n_items,
++		(void *) o_g_menu_model_get_item_link,
++		(void *) o_g_menu_model_get_item_attribute_value,
++		(void *) o_g_menu_append_submenu,
++		(void *) o_g_application_get_application_id,
++		(void *) o_g_desktop_app_info_new,
++		(void *) o_g_app_info_get_name,
++		(void *) o_g_menu_remove,
++		(void *) o_g_menu_item_new_from_model,
++		(void *) o_g_menu_append_item
++	};
++	for (size_t Index = 0; Index < sizeof(Needed) / sizeof(Needed[0]);
++		++Index) {
++		if (Needed[Index] == NULL) {
++			return;
++		}
++	}
++	if (GTKNoCSDGTKMenuButton == 0 || GTKNoCSDGTKPopoverMenu == 0 ||
++		GTKNoCSDGTKPopoverMenuBar == 0) {
++		return;
++	}
++
++	GTKNoCSDMenuReady = true;
++}
++
++void GTKNoCSDMenuKeep(GMenuModel *Menubar) {
++	// Remember the menubar set by the library. A withdrawn one may still
++	// live, it must not clear the new one
++
++	if (GTKNoCSDMenubar != NULL) {
++		o_g_object_remove_weak_pointer((GObject *) GTKNoCSDMenubar,
++			(gpointer *) &GTKNoCSDMenubar);
++	}
++	GTKNoCSDMenubar = Menubar;
++	o_g_object_add_weak_pointer((GObject *) Menubar,
++		(gpointer *) &GTKNoCSDMenubar);
++}
++
++void GTKNoCSDMenuAttach(GtkWindow *Window) {
++	// Set the main menu of the window as the application's menubar
++
++	if (!GTKNoCSDGlobalMenu || GTKNoCSDGTKVersion != 4) {
++		return;
++	}
++	GTKNoCSDMenuPrepare();
++	if (!GTKNoCSDMenuReady) {
++		return;
++	}
++
++	// WARNING: Own call
++	GtkApplication *Application = gtk_window_get_application(Window);
++	if (Application == NULL) {
++		return;
++	}
++
++	GMenuModel *Existing = o_gtk_application_get_menubar(Application);
++	if (Existing != NULL && Existing != GTKNoCSDMenubar) {
++		return;
++	}
++
++	GtkWidget *Owner = NULL;
++	GMenuModel *Model = GTKNoCSDMenuFind(Window, &Owner);
++	if (Model == NULL) {
++		return;
++	}
++	GMenuModel *Cleaned = (GMenuModel *) o_g_object_ref((GObject *) Model);
++	if (Existing != NULL) {
++		o_g_object_unref((GObject *) Cleaned);
++		return;
++	}
++
++	gchar *Label = GTKNoCSDMenuLabel(Application);
++	GMenu *Menubar = o_g_menu_new();
++	o_g_menu_append_submenu(Menubar, Label, Cleaned);
++	o_g_free(Label);
++	o_g_object_unref((GObject *) Cleaned);
++	o_gtk_application_set_menubar(Application, (GMenuModel *) Menubar);
++
++	GTKNoCSDMenuKeep((GMenuModel *) Menubar);
++	o_g_object_unref((GObject *) Menubar);
++}
++
+ // Macros for simplifying getting the correct function
+ #define GET_SYMBOL1(Function)						  \
+ 		if (strcmp(Name, #Function) == 0) {			  \
+-- 
+2.53.0
+

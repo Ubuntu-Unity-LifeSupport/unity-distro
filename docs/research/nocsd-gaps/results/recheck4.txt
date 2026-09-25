@@ -1,0 +1,46 @@
+=================== gnome-system-monitor (pid 12846)
+  shim: NOT HOOKED in pid 12846
+            -                                        Системный монитор
+    ok        app.lsof                                 _Поиск по открытым файлам
+    ok        app.preferences                          П_араметры
+    ok        app.help                                 _Справка
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== secrets (pid 12948)
+  shim: NOT HOOKED in pid 12948
+            -                                        Secrets
+    ok        win.new_database                         _Новый сейф
+    ok        win.settings                             _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== celluloid (pid 12993)
+  shim: NOT HOOKED in pid 12993
+            -                                        Celluloid
+    MISSING   win.gtk-nocsd-win-toggle-controls        _Переключить элементы управления
+    MISSING   win.gtk-nocsd-win-save-playlist          _Сохранить список воспроизведения
+              -                                        _Видеодорожка
+      MISSING   win.gtk-nocsd-win-set-video-track        Ничего
+      MISSING   win.gtk-nocsd-win-load-track             _Загрузить внешние…
+              -                                        _Аудиодорожка
+      MISSING   win.gtk-nocsd-win-set-audio-track        Ничего
+      MISSING   win.gtk-nocsd-win-load-track             _Загрузить внешние…
+              -                                        Дорожка с_убтитров
+      MISSING   win.gtk-nocsd-win-set-subtitle-track     Ничего
+      MISSING   win.gtk-nocsd-win-load-track             _Загрузить внешние…
+    MISSING   win.gtk-nocsd-win-show-preferences-dialog _Параметры
+    MISSING   win.gtk-nocsd-win-show-shortcuts-dialog  _Комбинации клавиш
+    MISSING   win.gtk-nocsd-win-show-about-dialog      _О приложении
+=================== showtime (pid 13086)
+  shim: NOT HOOKED in pid 13086
+Traceback (most recent call last):
+  File "/home/mike/b/audit.py", line 44, in <module>
+    groups["app"] = call(props["_GTK_APPLICATION_OBJECT_PATH"], "org.gtk.Actions",
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         "DescribeAll", None, "(a{s(bgav)})")[0]
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mike/b/audit.py", line 39, in call
+    return bus.call_sync(name, path, iface, method, args,
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         GLib.VariantType(rtype), 0, 3000, None).unpack()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+gi.repository.GLib.GError: g-io-error-quark: Timeout was reached (24)

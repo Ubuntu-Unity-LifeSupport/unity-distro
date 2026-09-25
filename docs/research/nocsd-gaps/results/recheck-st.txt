@@ -1,0 +1,14 @@
+=================== showtime (pid 13219)
+  shim: NOT HOOKED in pid 13219
+Traceback (most recent call last):
+  File "/home/mike/b/audit.py", line 44, in <module>
+    groups["app"] = call(props["_GTK_APPLICATION_OBJECT_PATH"], "org.gtk.Actions",
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         "DescribeAll", None, "(a{s(bgav)})")[0]
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mike/b/audit.py", line 39, in call
+    return bus.call_sync(name, path, iface, method, args,
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         GLib.VariantType(rtype), 0, 3000, None).unpack()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+gi.repository.GLib.GError: g-io-error-quark: Timeout was reached (24)
