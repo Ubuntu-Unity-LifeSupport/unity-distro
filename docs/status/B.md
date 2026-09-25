@@ -10,8 +10,9 @@ one commit on upstream main 6b1f70a, desktop-neutral (gtk-shell-shows-menubar),
 upstream style; measured on target2, not sent, not in aptly; point 1 (talk
 to the maintainer) waits for May. `research/nocsd-upstream/`; branches
 `global-menu` in `~/work/b/nocsd-up/src`, `b/global-menu-up` in
-`~/work/b/nocsd-merge/pkg` (local only). **target2 runs it**: libgtk-nocsd0
-`4.8+git20260924.6b1f70a-1+unity2~menu5`, libunity-gtk4-menu0 removed.
+`~/work/b/nocsd-merge/pkg` (local only). Tested in real Xfce 4.20 and Plasma 6.6.4
+X11 sessions too (`research/nocsd-desktops/`): works on both once
+`gtk-shell-shows-menubar` is set, which neither desktop does by itself.
 Earlier round (4.8-based): `research/nocsd-merge/`.
 
 **Re-check per host 02:58Z** (2026-09-25): none of B's fixes is in a newer
@@ -82,33 +83,14 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-May is switching it off for now (2026-09-24). **Before the next `apt update` there: check
-`timedatectl`** - target's clock was 1 h 07 min slow on 2026-09-24 (NTP
-unreachable), and apt rejected our InRelease as "not valid yet" (agent A).
-Pending there: `apt upgrade` from aptly brings unity +unity8, compiz +unity2,
-gtk-nocsd +unity2 (agent A). Agent A already checked unity-gtk4-menu 0.8
-with those on target (preload order as environment.d builds it):
-gnome-characters (gjs) and gnome-text-editor run, both libraries mapped, no
-crash, global menu in the panel for both. One `Gtk-WARNING AdwHeaderBar
-reported min width -2` from gnome-characters comes from gtk-nocsd, not the
-shim (agent A: gtk-nocsd alone 2, both 2, no preload 0). Harmless. Added for #4: `calamares`,
-`calamares-settings-ubuntu-unity` (archive 26.04.12), `xvfb`, `x11-apps`,
-`imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
-`~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
-Since 2026-09-25 also: gtk-nocsd 4.8-1+unity1 and libunity-gtk4-menu0 0.9
-(`dpkg -i`; the running session maps them in newly started programs), `~/b/nocsd-head/` (upstream -O0 build),
-`~/b/ugm-fix/`, `~/b/order*.sh`.
-Dirty (`~/.dirty`): libnux `0ubuntu15+unity1` (was archive 0ubuntu12) and
-`libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
-(session-wide, rebooted), `xdotool`, 18 GTK4 test applications (C, gjs, Python) and 3 Qt ones
-(featherpad, kcalc, speedcrunch) from the archive (`--no-install-recommends`), `org.gnome.Contacts did-initial-setup` true
-(set by completing contacts' setup), test files in `~/b/`
-(`run.sh`, `inspect.sh`, `audit.py`, `breadth.sh`, `classtest`, 0.3, 0.4
-and probe `.so`). No aptly source
-configured. Pre-existing `/var/crash/_usr_bin_light-locker.1000.crash` is the
-archive's known issue #5, from before any change. Crash reports from
-our experiments are moved, not deleted, to `~/b/crash-before-0.6/` and
-`~/b/crash-0.6/`, `~/b/crash-0.7/` - all accounted for in `research/layer-b/`.
+**Rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
+test; checked inside: fresh boot, no `~/.dirty`, archive gtk-nocsd
+`3+0~20260321+0b77e1b-1`, no Xfce/Plasma). Everything B had installed there
+before is gone: our aptly packages, test applications, `~/b/` scripts. The
+scripts that matter are in git (`research/nocsd-order/`,
+`research/nocsd-desktops/`, `research/layer-b/`); `~/b/classtest` has to be
+rebuilt from `packages/unity-gtk4-menu/tests/classtest.c` before reuse.
+No aptly source configured on it.
 
 ## Mine outside git
 

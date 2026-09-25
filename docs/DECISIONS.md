@@ -1154,3 +1154,17 @@ switch correct on bare X, Xfce/KDE (fake flag), GNOME and at runtime.
 Not sent: whether and how to offer it is May's call (options in the
 research README). aptly still ships gtk-nocsd 4.8-1+unity1 +
 unity-gtk4-menu 0.9.
+
+## 2026-09-25 - global menu patch tested under Xfce and Plasma: works, but not out of the box (agent B)
+
+Real Xfce 4.20 (vala-panel-appmenu plugin) and Plasma 6.6.4 X11 (Global Menu
+widget, gmenudbusmenuproxy) sessions on target2: with `gtk-shell-shows-menubar`
+on, 18/18 applications export the same menus as under Unity and both panels
+show and activate them. Neither desktop turns the flag on by itself - Xfce
+needs an xfconf key, Plasma a line in `~/.config/gtk-4.0/settings.ini`,
+since nothing in Plasma sets it. So the switch is safe everywhere but
+effectively Unity-only by default. Enabling also on the presence of
+`com.canonical.AppMenu.Registrar` (appmenu-gtk-module's signal) plus hiding
+the window's own menubar is the alternative; not built, a design point for
+the patch. Also found: under Xfce, Debian's gtk-nocsd `environment.d` does not
+reach applications at all. `research/nocsd-desktops/`; target2 back to Clean-2.

@@ -1,0 +1,167 @@
+=================== yelp (pid 3285)
+  shim: NOT HOOKED in pid 3285
+            -                                        Справка
+    ok        win.yelp-window-new                      Создать окно
+    ok        win.yelp-window-find                     Найти на странице…
+    ok        win.yelp-view-print                      Печать…
+    disabled  win.yelp-view-go-previous                Предыдущая страница
+    disabled  win.yelp-view-go-next                    Следующая страница
+    ok        win.yelp-window-go-all                   Вся справка
+    ok        win.gtk-nocsd-win-yelp-show-about-dialog О приложении
+=================== loupe (pid 3392)
+  shim: NOT HOOKED in pid 3392
+            -                                        Просмотрщик изображений
+    ok        app.new-window                           _Новое окно
+    ok        win.gtk-nocsd-win-open                   _Открыть…
+    disabled  win.gtk-nocsd-win-open-with              Открыть с _помощью…
+    disabled  win.gtk-nocsd-win-print                  П_ечать…
+    disabled  win.gtk-nocsd-win-set-background         _Установить как фон…
+    disabled  win.gtk-nocsd-win-trash                  У_далить
+    ok        app.help                                 _Справка
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.gtk-nocsd-win-about                  _О приложении
+=================== kgx (pid 3427)
+  shim: NOT HOOKED in pid 3427
+            -                                        Консоль
+    ok        win.gtk-nocsd-win-new-window             _Новое окно
+    ok        win.gtk-nocsd-win-show-tabs-desktop      _Показать все вкладки
+    ok        win.gtk-nocsd-win-fullscreen             По_лноэкранный режим
+    ok        win.gtk-nocsd-win-show-preferences-window Па_раметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.gtk-nocsd-win-about                  _О приложении
+=================== file-roller (pid 3470)
+  shim: NOT HOOKED in pid 3470
+            -                                        File Roller
+    ok        app.new                                  _Создать архив…
+    ok        app.open                                 _Открыть…
+    disabled  win.save-as                              Сохранить _как…
+    disabled  win.edit-password                        Па_роль…
+    disabled  win.test-archive                         _Проверить целостность
+    disabled  win.view-properties                      С_войства
+    ok        app.list-mode                            Показывать _всё содержимое
+    ok        app.list-mode                            Показывать тек_ущую папку
+    ok        app.view-sidebar                         _Боковая панель
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== baobab (pid 3500)
+  shim: NOT HOOKED in pid 3500
+            -                                        Анализатор использования дисков
+    ok        win.scan-folder                          Сканировать папку…
+    ok        win.clear-recent                         Очистить список недавних
+    ok        win.show-preferences                     Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        win.help                                 _Справка
+    ok        win.about                                _О приложении
+=================== gnome-clocks (pid 3557)
+  shim: NOT HOOKED in pid 3557
+            -                                        Часы
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.help                                 _Справка
+    ok        win.about                                _О приложении
+=================== gnome-system-monitor (pid 3603)
+  shim: NOT HOOKED in pid 3603
+            -                                        Системный монитор
+    ok        app.lsof                                 _Поиск по открытым файлам
+    ok        app.preferences                          П_араметры
+    ok        app.help                                 _Справка
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== papers (pid 3709)
+  shim: NOT HOOKED in pid 3709
+            -                                        Просмотрщик документов
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-calculator (pid 3746)
+  shim: NOT HOOKED in pid 3746
+            -                                        Калькулятор
+    ok        app.new-window                           _Создать окно
+    ok        win.clear                                _Очистить историю
+              -                                        Формат результата
+    ok        win.number-format                        _Автоматически
+    ok        win.number-format                        _Фиксированный
+    ok        win.number-format                        _Научный
+    ok        win.number-format                        _Инженерный
+    ok        win.preferences                          _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 Спра_вка
+    ok        app.about                                _О приложении
+=================== gnome-logs (pid 3778)
+  shim: NOT HOOKED in pid 3778
+            -                                        Журналы
+    ok        app.new-window                           _Создать окно
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== simple-scan (pid 3811)
+  shim: NOT HOOKED in pid 3811
+            -                                        simple-scan
+    ok        app.email                                П_очта...
+    ok        app.print                                Пе_чать...
+    ok        app.reorder                              И_зменить порядок страниц…
+    ok        app.preferences                          _Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О Сканере документов
+=================== gnome-text-editor (pid 3846)
+  shim: NOT HOOKED in pid 3846
+            -                                        Текстовый редактор
+    ok        app.new-window                           _Создать окно
+    ok        win.gtk-nocsd-page-save                  Со_хранить
+    ok        win.gtk-nocsd-page-save-as               Сохранить _как…
+    disabled  win.gtk-nocsd-page-discard-changes       _Отменить изменения…
+    ok        win.gtk-nocsd-page-begin-search          _Найти/Заменить…
+    ok        win.gtk-nocsd-page-print                 _Печать…
+    ok        win.gtk-nocsd-win-fullscreen             Полноэкранный режим
+    disabled  win.gtk-nocsd-win-unfullscreen           Выйти из полноэкранного режима
+    ok        win.gtk-nocsd-win-show-preferences       _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.about                                _О приложении
+=================== nautilus (pid 3881)
+  shim: NOT HOOKED in pid 3881
+            -                                        Файлы
+    ok        app.clone-window                         Создать _окно
+    ok        win.new-tab                              Создать _вкладку
+    disabled  win.undo                                 _Отменить
+    disabled  win.redo                                 _Повторить
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-contacts (pid 3974)
+  shim: NOT HOOKED in pid 3974
+            -                                        Контакты
+              -                                        Список контактов по:
+    ok        win.sort-on                              _Имени
+    ok        win.sort-on                              _Фамилии
+    ok        app.import                               И_мпортировать из файла…
+    ok        app.export-all                           _Экспортировать все контакты…
+    ok        app.show-preferences                     _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-characters (pid 4014)
+  shim: NOT HOOKED in pid 4014
+            -                                        Символы
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== gnome-weather (pid 4059)
+  shim: NOT HOOKED in pid 4059
+            -                                        Погода
+              -                                        Единица измерения
+    ok        app.temperature-unit                     _Цельсий
+    ok        app.temperature-unit                     _Фаренгейт
+    ok        win.about                                _О приложении
+=================== gnome-tweaks (pid 4108)
+  shim: NOT HOOKED in pid 4108
+            -                                        Дополнительные настройки
+    ok        app.reset                                _Сбросить на настройки по умолчанию
+    ok        app.about                                _О приложении
+=================== gnome-music (pid 4140)
+  shim: NOT HOOKED in pid 4140
+            -                                        Музыка
+    ok        app.preferences                          Настройки
+    ok        win.show-help-overlay                    Комбинации клавиш
+    ok        app.help                                 Справка
+    ok        app.about                                О приложении
