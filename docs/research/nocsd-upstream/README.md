@@ -11,7 +11,8 @@ upstream's own style. Nothing was sent anywhere; issue #1 is not answered.
 One commit on upstream `main` 6b1f70a (4.8 + 20 commits, 2026-09-24):
 `0001-Export-GTK4-header-bar-menus-to-the-global-menu.patch`, 890 lines added
 to `Source/GTK-NoCSD.c` and `README.md`, 1 changed, Makefile untouched.
-Local branch `global-menu` in `~/work/b/nocsd-up/src` (6f120dc).
+Local branch `global-menu` in `~/work/b/nocsd-up/src` (d335007), authored
+`NeiroNext <mihail.rozshko@gmail.com>` (May's nick, his choice 2026-09-25).
 
 Packaged for testing as `4.8+git20260924.6b1f70a-1+unity2~menu5`
 (`packaging.diff`: orig tarball from `git archive main`, the patch,
@@ -161,8 +162,8 @@ What the patch is and is not:
   ("Not sure what to comment on rehashing my code with LLM"). The commit
   carries `Assisted-by: LLM Claude Opus 5.5` as our CONTRIBUTING-UPSTREAM
   rule asks; no upstream commit has such a trailer.
-- Author identity: the commit is authored "Ubuntu Unity Life Support";
-  what goes out has to be May's name and Signed-off-by, per our rules.
+- Author: May's nick `NeiroNext` with his address, as he chose. No
+  `Signed-off-by`: gtk-nocsd does not require one, and only May may add it.
 - Testing he asks of contributors is concrete and per application; we have
   Unity only. Xfce/KDE were exercised with a fake XSETTINGS flag under Xvfb,
   not a real panel.

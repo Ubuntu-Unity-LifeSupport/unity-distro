@@ -1,6 +1,6 @@
-From 6f120dc10aaab05beefc99959fd6bd22764854ac Mon Sep 17 00:00:00 2001
-From: Ubuntu Unity Life Support <mihail.rozshko@gmail.com>
-Date: Fri, 25 Sep 2026 07:48:34 +0000
+From d335007dea33dbdb54267d9ae601fe85755b8cd0 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 11:32:29 +0000
 Subject: [PATCH] Export GTK4 header bar menus to the global menu
 
 Enabled by gtk-shell-shows-menubar, disabled with GTK_NOCSD_NO_GLOBAL_MENU=1
