@@ -25,6 +25,12 @@ Announce yourself in `~/AGENTS-LOG.md` as soon as you know (see below).
 | Build directory | `~/work/a` | `~/work/b` |
 | Status file | `docs/status/A.md` | `docs/status/B.md` |
 
+A third machine, **`oem-test`**, belongs to neither of you. It exists to check
+OEM installation from the official ISO and carries two snapshots, `OEM-ready`
+(stock `basicwallpaper`) and `OEM-ready-fixed` (ours) - the pair that proved
+known issue #4. Whoever needs it says so in `~/AGENTS-LOG.md` before touching
+it, so the other one does not restore it mid-run.
+
 **Never touch the other agent's test desktop.** A rollback there destroys an
 experiment that is running right now, and the other agent will report the
 resulting nonsense as a measurement.
@@ -47,9 +53,12 @@ you, check `hostname` before believing it.
 - `~/.cache/sbuild/resolute-amd64.tar.zst` - the chroot tarball. sbuild runs in
   unshare mode and unpacks its own copy per build, so parallel builds are safe.
   Read-only for you: never rebuild the tarball while the other agent is building.
-- `~/HOST-INBOX.md` - the channel from the host session. Messages are addressed
-  `To: A`, `To: B` or `To: both`. Read the ones addressed to you; the rest are
-  context, not instructions.
+- The **`vbox` MCP server** - one server, both of you calling it. It will let
+  either of you restore or power off either machine, so the only thing keeping
+  you off each other's desktop is the table above. Name the machine you mean in
+  full (`target-desktop` vs `target-desktop-2`); they differ by one character
+  and a wrong restore destroys an experiment that is running right now.
+  `builder-server` is not controllable through it at all - you are inside it.
 
 ## The rule that prevents lost work
 
@@ -104,7 +113,8 @@ produce two versions of the truth and a merge conflict in `debian/patches`.
 ## Talk to each other directly
 
 You are two Claude Code sessions on the same machine, so you can message each
-other without going through May or through the host session.
+other directly, without going through May. Nobody relays for you: what you do
+not tell each other, the other one does not know.
 
 - `ListAgents` shows the other local sessions. Copy the name exactly as the row
   prints it.
@@ -138,11 +148,11 @@ line that you asked and got no answer, and start. Do not block forever - a
 deadlock where both agents wait for permission is worse than a collision you
 can notice and unwind.
 
-If the direct channel does not work in practice - it failed between the host
-session and the builder, which is why `~/HOST-INBOX.md` exists - fall back to
-files: write to `~/PEER-INBOX-A.md` or `~/PEER-INBOX-B.md` (you write to the
-other agent's file, you read your own), and tell May the direct channel is dead
-so it gets fixed rather than quietly worked around.
+If the direct channel does not work in practice - it has failed before between
+sessions on different machines - fall back to files: write to
+`~/PEER-INBOX-A.md` or `~/PEER-INBOX-B.md` (you write to the other agent's
+file, you read your own), and tell May the direct channel is dead so it gets
+fixed rather than quietly worked around.
 
 Use the channel for anything else that helps: a measurement that contradicts
 what the other agent recorded, a chroot you are about to rebuild, a warning

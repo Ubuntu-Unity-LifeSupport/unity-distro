@@ -43,13 +43,29 @@ If a session is interrupted, `STATUS.md` must be enough to resume from.
   snapshot `Clean-2`). Both are user `mike` with passwordless sudo. Use only the
   one that is yours - see `docs/TWO-AGENTS.md`.
 - Your eyes on target (agent B substitutes `target2` everywhere below):
-  `ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'`,
-  then `scp` it back. No sudo needed. Never `xwd -root` for the desktop - it
+  `ssh target 'DISPLAY=:0 gnome-screenshot -f /tmp/shot.png'`, then `scp` it
+  back. When the guest does not answer ssh - during boot, at the greeter, or
+  when the session is wedged - use the MCP `screenshot` tool instead: it
+  captures the machine's screen from outside and does not need the guest at
+  all. No sudo needed. Never `xwd -root` for the desktop - it
   misses the wallpaper under Compiz and invents bugs. See docs/DECISIONS.md.
 - Before installing anything on target: `ssh target 'touch ~/.dirty'`. After a
   rollback the marker must be gone - that is how you verify it happened.
-- Snapshot rollback goes through the host session. See `UNITY-DISTRO-HANDOFF.md`
-  Appendix A.
+- **You drive the virtual machines yourself, through the `vbox` MCP server.**
+  It runs on May's Windows host and reaches VirtualBox there: list and inspect
+  machines, start them, power them off, take and restore snapshots, attach and
+  eject ISOs, send keys, take screenshots, manage host-only networking and port
+  forwards, make linked clones. Only `target-desktop`, `target-desktop-2` and
+  `oem-test` are controllable; `builder-server` deliberately is not, because you
+  are running inside it, and nothing there can delete a machine or a disk.
+  Read the server's own instructions - they carry the three traps that cost us
+  a day each: a restore is never confirmed by `current_snapshot`, a snapshot is
+  only meaningful on a powered-off machine, and the ISO comes out *before* you
+  press Enter at "remove the installation medium".
+- `guest_shutdown_ssh`, or `sudo systemctl poweroff` over your own ssh, is how
+  these machines shut down cleanly. The ACPI power button does nothing here: a
+  session inhibitor opens a dialog and waits for a human forever. `power_off_vm`
+  is pulling the plug - fine for a machine whose contents you do not need.
 
 ## Sending anything upstream
 
@@ -71,9 +87,7 @@ the metadata), then the package's history, then bug trackers, then the web.
 **You have direct internet access - use it yourself.** `curl` reaches
 api.launchpad.net, gitlab.gnome.org, gitlab.com and api.github.com from this
 machine (verified 2026-09-25), and `gh` is authenticated. Query the trackers'
-APIs directly rather than asking the host session; a web search tool, if you
-have one, is faster still. Ask the host only for something you genuinely
-cannot reach.
+APIs directly; a web search tool, if you have one, is faster still.
 
 **Run searches in subagents, not in your own context.** A sweep of bug
 trackers, changelogs or upstream repositories returns pages of detail of which
