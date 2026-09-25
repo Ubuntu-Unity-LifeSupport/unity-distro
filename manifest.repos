@@ -88,3 +88,7 @@ repositories:
     type: git
     url: https://git.launchpad.net/ubuntu/+source/indicator-printers
     version: ubuntu/resolute
+  packages/appmenu-gtk-module:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/appmenu-gtk-module
+    version: ubuntu/resolute

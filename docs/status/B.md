@@ -5,6 +5,10 @@ Build directory: `~/work/b`
 
 ## Now
 
+**appmenu-gtk-module 25.04-1build1+unity1** (2026-09-25): upstream a783b01c,
+in aptly; `research/appmenu-resident/`. target2 has it (dpkg -i) and
+`xsettingsd` installed for the reproduction.
+
 **nux 0ubuntu15+unity2** (2026-09-24): `fix-fbo-attachment-arrays.patch`
 (LP #2160298), branch `b/fbo` (`9793c23`), in aptly; `research/nux-fbo/`.
 target2 runs it. The `b-nux` chroot has +unity2 installed and autotools added.

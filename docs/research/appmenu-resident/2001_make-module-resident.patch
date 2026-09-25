@@ -1,0 +1,41 @@
+Description: Make the module resident
+ GTK3 unloads gtk-modules with g_module_close() whenever the "gtk-modules"
+ setting changes. This module hijacks the GtkMenuBar class vtable and
+ registers a process-lifetime g_bus_watch_name() watcher, so it cannot survive
+ being unmapped: the next GDBus dispatch or GtkMenuBar vfunc call jumps into
+ freed memory and the host application segfaults.
+ .
+ Only a module loaded through the gtk-modules setting (XSETTINGS Gtk/Modules,
+ as KDE's configuration does) can be unloaded; one named in GTK_MODULES, as
+ the Unity session does, is never unloaded.
+Origin: upstream, https://gitlab.com/vala-panel-project/vala-panel-appmenu/-/commit/a783b01c8b653349843fac9bbd075dac52cdc9de
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/appmenu-gtk-module/+bug/2166410
+Author: Oleksandr Aleksieiev <ziod.alx@gmail.com>
+Applied-Upstream: a783b01c, not in a release yet (last release 25.04)
+Last-Update: 2026-09-25
+---
+diff --git a/src/appmenu-gtk-module.c b/src/appmenu-gtk-module.c
+index 7bcdd7a..be0807b 100644
+--- a/src/appmenu-gtk-module.c
++++ b/src/appmenu-gtk-module.c
+@@ -22,6 +22,7 @@
+  *          Lester Carballo Perez <lestcape@gmail.com>
+  */
+ 
++#include <gmodule.h>
+ #include <gtk/gtk.h>
+ 
+ #include "hijack.h"
+@@ -48,6 +49,12 @@ static void sync_gtk2_settings()
+ #endif
+ }
+ 
++const gchar *g_module_check_init(GModule *module)
++{
++	g_module_make_resident(module);
++	return NULL;
++}
++
+ void gtk_module_init(void)
+ {
+ 	if (gtk_module_should_run())

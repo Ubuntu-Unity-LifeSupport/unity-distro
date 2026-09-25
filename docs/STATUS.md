@@ -14,6 +14,11 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **appmenu-gtk3-module made resident (LP #2166410).** Upstream's fix
+  carried as 25.04-1build1+unity1, in aptly. The crash needs the module to
+  come from the `gtk-modules` setting (KDE); our session loads it through
+  `GTK_MODULES`, which GTK3 never unloads - so this is protection, not a fix
+  for something users of our session hit. `research/appmenu-resident/`.
 - **nux 0ubuntu15+unity2: LP #2160298 fixed.** FBO attachment vectors were
   indexed while empty - an abort under `_GLIBCXX_ASSERTIONS` and a texture
   reference leak in the package we shipped. Proven with a small test, fixed,
