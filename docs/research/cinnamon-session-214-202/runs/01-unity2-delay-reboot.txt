@@ -1,0 +1,9 @@
+# cinnamon-session 6.4.2-1+unity2, InhibitDelayMaxSec=60, root delay inhibitor, Unity menu -> Выключение... -> Перезагрузить
+04:41:29.677 delaytest: cinnamon-session 6.4.2-1+unity2; inhibitors: 1
+04:41:34.465 delaytest: clicking Перезагрузить
+04:41:34.549 cinnamon-session: Requesting system restart...   (then 11 more within 120 ms)
+04:41:34.671 cinnamon-session: Unable to restart system via systemd: GDBus.Error:org.freedesktop.login1.OperationInProgress: Action reboot already in progress, refusing requested reboot operation.
+04:41:34.671 cinnamon-session: Using an MDM logout action to shutdown/reboot the system.   (x4)
+04:41:34.758 delaytest: t=1 seat0=445/mike compiz=167110
+04:41:39.072 delaytest: t=5 seat0=c1/lightdm compiz=
+04:42:34.820 systemd-logind: System is rebooting.

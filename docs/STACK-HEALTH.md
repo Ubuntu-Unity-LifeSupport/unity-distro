@@ -61,7 +61,7 @@ Checked on: A - 2026-09-24 (Launchpad API, gitlab/GitHub/codeberg APIs, Ubuntu C
 - ~~unity #2160299 and #2165662~~: reproduced and fixed in unity `+unity9` (`research/unity-lp-crashes/`).
 - xorg-server: 11 medium CVEs fixed upstream (21.1.23/21.1.24) and open in resolute.
 - ~~lightdm #2168421~~: fixed in lightdm `+unity1` (`research/lightdm-sigterm-exit/`); not triggered by target's default PAM stack.
-- cinnamon-session [#214](https://github.com/linuxmint/cinnamon-session/issues/214)/[#202](https://github.com/linuxmint/cinnamon-session/issues/202): end-of-session bugs next to our patches; 6.6.4 is in 26.10.
+- ~~cinnamon-session #214~~: backported in `+unity3`; #202: nothing to fix on our side (`research/cinnamon-session-214-202/`).
 - gtk-nocsd 4.8 (26.10) fixes Chromium decorations on Unity ([#2158965](https://bugs.launchpad.net/bugs/2158965)).
 - light-locker [#2167241](https://bugs.launchpad.net/bugs/2167241): probably our abort, reported under Kubuntu - evidence for our fix.
 - None of our own fixes (unity 5, compiz 2, cinnamon-session 2, unity-session 1, light-locker 1) is reported anywhere.

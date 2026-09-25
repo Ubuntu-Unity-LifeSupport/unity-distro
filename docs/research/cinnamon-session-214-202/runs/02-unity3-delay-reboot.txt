@@ -1,0 +1,15 @@
+вер 25 04:51:43.131405 mike-virtualbox delaytest[7200]: cinnamon-session 6.4.2-1+unity3; inhibitors: 1
+вер 25 04:51:47.954751 mike-virtualbox delaytest[7264]: clicking Перезагрузить
+вер 25 04:51:48.047461 mike-virtualbox cinnamon-session[5678]: cinnamon-session-binary[5678]: WARNING: t+27.21414s: Requesting system restart...
+вер 25 04:51:48.049906 mike-virtualbox cinnamon-session[5678]: cinnamon-session-binary[5678]: WARNING: t+27.21501s: Attempting to restart using systemd...
+вер 25 04:51:48.048301 mike-virtualbox cinnamon-session-binary[5678]: WARNING: t+27.21414s: Requesting system restart...
+вер 25 04:51:48.048319 mike-virtualbox cinnamon-session-binary[5678]: WARNING: t+27.21501s: Attempting to restart using systemd...
+вер 25 04:51:48.388345 mike-virtualbox delaytest[7296]: t=1 seat0=7/mike compiz=6020 csm=
+вер 25 04:51:49.452820 mike-virtualbox delaytest[7339]: t=2 seat0=7/mike compiz= csm=
+вер 25 04:51:50.582146 mike-virtualbox delaytest[7377]: t=3 seat0= compiz= csm=
+вер 25 04:51:51.663201 mike-virtualbox delaytest[7501]: t=4 seat0=c1/lightdm compiz= csm=
+вер 25 04:51:52.730083 mike-virtualbox delaytest[7550]: t=5 seat0=c1/lightdm compiz= csm=
+вер 25 04:51:53.815978 mike-virtualbox delaytest[7610]: t=6 seat0=c1/lightdm compiz= csm=
+вер 25 04:51:54.873893 mike-virtualbox delaytest[7619]: t=7 seat0=c1/lightdm compiz= csm=
+вер 25 04:51:55.921041 mike-virtualbox delaytest[7631]: t=8 seat0=c1/lightdm compiz= csm=
+вер 25 04:52:48.304747 mike-virtualbox systemd-logind[7161]: System is rebooting.

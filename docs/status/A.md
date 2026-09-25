@@ -5,8 +5,9 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: lightdm `+unity1` (LP #2168421) published
-(`research/lightdm-sigterm-exit/`). Open: #3 itself (not reproduced).
+Nothing in flight. Last: cinnamon-session `+unity3` (#214 backport, quit
+once) published (`research/cinnamon-session-214-202/`). Open: #3 itself (not
+reproduced).
 
 ## State of `target`
 
