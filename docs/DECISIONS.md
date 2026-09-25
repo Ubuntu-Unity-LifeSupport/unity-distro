@@ -1168,3 +1168,29 @@ effectively Unity-only by default. Enabling also on the presence of
 the window's own menubar is the alternative; not built, a design point for
 the patch. Also found: under Xfce, Debian's gtk-nocsd `environment.d` does not
 reach applications at all. `research/nocsd-desktops/`; target2 back to Clean-2.
+
+## 2026-09-25 - xorg-server 21.1.24 carried in our archive (agent A, May approved)
+
+May chose to carry the X server after the release re-check measured it.
+`2:21.1.24-1ubuntu1~26.04.1` is a no-change rebuild of 26.10-proposed's
+`21.1.24-1ubuntu1` for resolute: it closes CVE-2026-50256..50264 (21.1.23) and
+CVE-2026-55999/56000 (21.1.24), all needs-triage in resolute with no security
+upload in sight. The `~26.04.1` suffix keeps it below 26.10's version, so an
+upgrade to 26.10 replaces it; there is no `+unity` because nothing in it is ours.
+
+**Verified on target** (VM `target-desktop`): installed with `dpkg -i`
+(`xserver-xorg-core`, `xserver-common`, `xserver-xorg-legacy`), rebooted: X
+1.21.1.24 up, the same two `(EE)` lines as 21.1.22 (no `vmware` module in
+VirtualBox), GLX direct rendering, Unity session, Dash with search, HUD,
+workspace switch, spread, an xkb layout switch, window move/resize; three
+logout/login cycles through Unity's dialog and a lightdm restart - no crash
+files. The `bamfdaemon.service: Failed` lines at logout are old: the same
+lines appear in cycles run on 21.1.22 (`~/lo/6`, `n48`, `u1`, `u2` on target).
+Then published to aptly; `apt-cache policy` on target shows ours as the candidate.
+
+**The cost we took on:** any resolute security upload built on 21.1.22
+(`-1ubuntu1.3` and so on) sorts below ours and will not install while we
+carry this. Watch `rmadison xorg-server` for a resolute-security version at
+or above 21.1.24, and drop ours then. Not included: the FindGlyphRef crash fix
+(LP #2163497, `8d604fa14` on server-21.1-branch, after the 21.1.24 tag) -
+not seen in our session, so not patched.

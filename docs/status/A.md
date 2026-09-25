@@ -10,15 +10,15 @@ re-check of all A's fixes - no newer release contains any of them, patch stays
 everywhere (DECISIONS 2026-09-25, `research/release-recheck-a/`). Measurement
 builds in `~/work/a/relcheck/` (cinnamon-session 6.6.4 relaxed, u-s-d
 26.10.1ubuntu, xorg-server 21.1.24, lightdm 1.33.1 - all build in resolute;
-nothing published). For May: whether to carry xorg-server 21.1.24 (11 CVEs),
-and the CLAUDE.md cinnamon-session example (the 6.6 bound is packaging only).
+nothing published). xorg-server `2:21.1.24-1ubuntu1~26.04.1` (11 CVEs) built in
+`~/work/a/xorg`, verified on target, in aptly (May approved). For May: the CLAUDE.md cinnamon-session example (the 6.6 bound is packaging only).
 Open: #3 itself (not reproduced).
 
 ## State of `target`
 
 Since 2026-09-24 13:11 boot (full upgrade from our aptly), plus by `dpkg -i`
 then matched by aptly: unity `+unity9`, compiz `+unity2`, gtk-nocsd `4.8-1+unity1`
-(dbgsyms for them installed too). Workspaces 2x2, six terminals spread over
+(dbgsyms for them installed too); xorg-server 21.1.24~26.04.1 (dpkg -i, then matched by aptly), rebooted 2026-09-25 16:45Z. Workspaces 2x2, six terminals spread over
 them. Also installed: libxpathselect1.4v5 (Unity introspection),
 libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor,
 gnome-sound-recorder, google-chrome-stable 154 (adds `google-chrome.sources`); xdotool, gdb,
