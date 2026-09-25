@@ -1043,3 +1043,78 @@ Related work found on the way, nothing to take: the Gentoo unity7 overlay
 carries an equivalent of our ThumbnailGenerator join fix and different
 approaches to the double shutdown dialog and to Nemo; MP 508187 (#2160299)
 has two Needs Fixing votes.
+
+## 2026-09-25 - Re-check of agent B's fixes: no newer release has them (agent B)
+
+The host's 02:58Z question for every fix we carry: has a newer version
+already fixed it? For agent B's packages, no - every patch stays. Checked
+Ubuntu 26.10/stonking (`rmadison`, git-ubuntu trees diffed against ours),
+Debian (unstable, experimental) and upstream tags:
+
+- **nux** - our base 0ubuntu15 is itself the newest nux anywhere (26.04 has
+  0ubuntu12, 26.10 0ubuntu13, 0ubuntu15 only in stonking-proposed). Neither
+  `fix-missing-vidmode.patch` nor `fix-fbo-attachment-arrays.patch`
+  (LP #2160298) is in it; gitlab ubuntu-unity/nux head is the same as
+  0ubuntu15; MP 508190 is unmerged. Debian has no nux. The only other fix in
+  the wild is an untagged fork (Namelus11811/Nux-UnityX 6920ce8f) taking
+  riku's approach, which `research/nux-fbo/` rejects.
+- **appmenu-gtk-module** - a783b01c (LP #2166410) is on vala-panel-appmenu
+  `master` only; the last tag is 25.04. 26.10 ships the same 25.04-1build1,
+  Debian 25.04-1.
+- **calamares-settings-ubuntu** - 26.10 (1:26.10.4, .5 proposed) leaves
+  `basicwallpaper` and `ubuntuunity/oem` untouched; its one OEM change
+  (279a0e4) follows 26.10's `pkgselectprocess` and does not apply to 26.04.
+- **indicator-bluetooth, -printers, -datetime, -power, -session** - 26.10
+  has the same versions as 26.04; no Debian packages; upstream silent since
+  2018-2021.
+- **indicator-sound** - 26.10's 0ubuntu10 (LP #2166355) is *our* +unity1:
+  `git diff origin/ubuntu/devel` against ours is empty outside
+  debian/changelog. Nothing to take; renaming ours after it would only
+  change the version string.
+- **indicator-keyboard** - 26.10's 0ubuntu3 has one of our three changes
+  (`lightdm-vala` build-dep). The `systemd-dev` build-dep and the test fix
+  (LP #1968333) are ours only. Taking 0ubuntu4 would lose both.
+
+Found on the way: indicator-keyboard 0ubuntu4 in 26.10 ships **no systemd
+user unit** - the same break as bluetooth and printers, from the same cause
+(build-depends on `systemd`, not `systemd-dev`). Not reported, per May.
+
+No newer version to build, so nothing was measured by sbuild: there is no
+candidate. `research/indicator-ftbfs/`, `research/indicator-units/`,
+`research/nux-*/`, `research/appmenu-resident/`, `research/calamares-oem/`.
+
+## 2026-09-25 - unity-gtk4-menu 0.9: issue #1's crash is real, and ours (agent B)
+
+Correction to the 2026-09-23 coexistence entry above ("Our shim works in
+either load order"): true for the 0.1 shim and Ubuntu's build of gtk-nocsd,
+not for 0.8 with gtk-nocsd built by its own `make`. There, most GTK4
+applications crashed - in **both** orders, ours included - because
+gtk-nocsd's `dlsym` answered `g_module_symbol` with our function (GOT
+interposition without `-Bsymbolic-functions`) and we recursed. 0.9 finds the
+next definition with glibc's own `dlsym@GLIBC_2.34`; 50 runs, 10 programs, 5
+orders, no crash. In aptly, on target2. `research/nocsd-order/`.
+
+## 2026-09-25 - unity-gtk4-menu stays a separate library for now (agent B)
+
+Rule 0, one level up: which existing component was this weighed against?
+gtk-nocsd - it hooks the same `g_module_symbol` and `dlsym` paths, its
+maintainer says the feature was requested from him (for XFCE) and offers to
+build it. Where each wins:
+
+- **gtk-nocsd wins on coverage.** It already handles Gir.Core's raw `dlsym`
+  and a statically linked GTK4, which we do not; one library means one set
+  of hooks, and issue #1's crash is exactly the cost of two.
+- **Ours wins today on existence.** It is written, packaged, and measured
+  against the GTK4 applications in `research/layer-b/`; gtk-nocsd has no
+  global menu. Its goal is
+  removing client-side decorations, which many of its users want without a
+  global menu, and in our session order gtk-nocsd would need no change.
+- The order dependency is one-sided: with gtk-nocsd first, gjs and Python
+  applications silently lose the menu, because gtk-nocsd does not chain
+  `g_module_symbol`. Our environment.d order avoids it; nothing enforces it.
+
+Answer: keep the separate library for 26.04, because it works and the
+alternative does not exist yet. The better long-term home is gtk-nocsd, if its
+maintainer builds the feature: then ours should be retired, not kept in
+parallel. That needs the conversation May has put on hold, so it is May's
+call; nothing here depends on it being soon.

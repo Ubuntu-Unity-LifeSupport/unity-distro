@@ -5,6 +5,16 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Re-check per host 02:58Z** (2026-09-25): none of B's fixes is in a newer
+release (26.10, Debian, upstream) - all patches stay; DECISIONS 2026-09-25.
+Found: indicator-keyboard 0ubuntu4 in 26.10 lost its user unit too (not
+reported).
+
+**unity-gtk4-menu 0.9** (2026-09-25): issue #1 - 0.8 recursed to SIGSEGV next
+to gtk-nocsd built by upstream `make`; 0.9 uses glibc's `dlsym@GLIBC_2.34`.
+In aptly, on target2; `research/nocsd-order/`. Issue #1 not answered (May).
+Build in `~/work/b/out09`; gtk-nocsd head in `~/work/b/nocsd-head/`.
+
 **indicator-keyboard +unity2** (2026-09-25): test mock fixed (LP #1968333,
 Vala notify emission), tests fatal again, 9/9; in aptly, target2 runs it.
 Build in `~/work/b/kbt`.
@@ -52,7 +62,8 @@ passwords only.
 (agent A). Found: upstream's ICU conversions are broken but unused on Linux.
 
 **unity-gtk4-menu is agent B's package** (handed over by A, 2026-09-24).
-Released 0.4-0.8, all in aptly. Nothing open.
+Released 0.4-0.9, all in aptly. Open: the architecture question vs gtk-nocsd
+(DECISIONS 2026-09-25) waits for May.
 
 Qt global menu: measured, already works (Qt5, Qt6, KDE) - nothing to build.
 
@@ -74,6 +85,9 @@ shim (agent A: gtk-nocsd alone 2, both 2, no preload 0). Harmless. Added for #4:
 `calamares-settings-ubuntu-unity` (archive 26.04.12), `xvfb`, `x11-apps`,
 `imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
 `~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
+Since 2026-09-25 also: gtk-nocsd 4.8-1+unity1 and libunity-gtk4-menu0 0.9
+(`dpkg -i`, not yet re-logged in), `~/b/nocsd-head/` (upstream -O0 build),
+`~/b/ugm-fix/`, `~/b/order*.sh`.
 Dirty (`~/.dirty`): libnux `0ubuntu15+unity1` (was archive 0ubuntu12) and
 `libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
 (session-wide, rebooted), `xdotool`, 18 GTK4 test applications (C, gjs, Python) and 3 Qt ones
@@ -88,7 +102,7 @@ our experiments are moved, not deleted, to `~/b/crash-before-0.6/` and
 
 ## Mine outside git
 
-- `/var/tmp/sbuild-claude/b-dev` - now also has Qt6 dev, Xvfb, xfwm4,
+- `/var/tmp/sbuild-claude/b-dev` - now also has libadwaita-1-dev (2026-09-25), Qt6 dev, Xvfb, xfwm4,
   Calamares and our calamares-settings-ubuntu-unity `+unity1`, for
   `research/calamares-oem/check.sh`.
 - `~/work/b/iso` - ISO manifest, calamares-settings-ubuntu 26.04.12 source,

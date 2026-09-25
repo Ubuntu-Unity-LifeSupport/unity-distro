@@ -8,7 +8,7 @@ Layer A is producing fixes; Layer B has a packaged GTK4 global menu. Three
 Layer A contributions are queued in `docs/upstream/`, none sent: `nux-pcre2`,
 `light-locker-session`, `unity-stale-pending-action`. Our aptly repository
 carries nux 0ubuntu15+unity2, calamares-settings-ubuntu 1:26.04.12+unity1, light-locker `+unity2`, unity `+unity2` and
-unity-gtk4-menu 0.8.
+unity-gtk4-menu 0.9.
 
 Current layer: **A** (keep Unity 7 on X11 alive).
 
@@ -209,11 +209,13 @@ reads the specific text and agrees.
    `com.canonical.AppMenu.Registrar`, which unity-panel-service provides.
    Measured with Qt5, Qt6 and KDE applications: panel, activation, HUD. See
    `research/layer-b/` and DECISIONS 2026-09-24.
-1. **Layer B: unity-gtk4-menu 0.8 released (agent B).** 0.4 proxies class
+1. **Layer B: unity-gtk4-menu 0.9 released (agent B).** 0.4 proxies class
    actions, 0.5 exports the main menu rather than the first menu button, 0.6
    reaches gjs and Python applications through `g_module_symbol()`, 0.7 makes
    stand-ins follow the application's enabled state (and so `hidden-when`),
-   0.8 proxies property actions as check and radio items.
+   0.8 proxies property actions as check and radio items, 0.9 stops a
+   recursion crash next to a gtk-nocsd built by its own `make` (issue #1,
+   `research/nocsd-order/`).
    Over 21 GTK4 applications (15 C, 3 gjs, 3 Python), every one that has a
    menu exports its main menu with no dead item and correct sensitivity -
    except gnome-sound-recorder, which gtk-nocsd crashes with or without us;
