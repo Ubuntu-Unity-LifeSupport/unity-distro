@@ -115,11 +115,34 @@ questions a maintainer might ask:
   for stand-ins.
 - Flag switched on at runtime: exported from the next window, not the open
   ones.
-- Replacing `realize` in the window classes is a mechanism upstream does not
-  use (it hooks exported functions). No exported function is passed by every
-  window before it is realized; the reason is in a comment.
+- Replacing `realize` in the window classes is a mechanism gtk-nocsd itself
+  does not use. See "Why realize is replaced" below.
 - Gir.Core and statically linked GTK4 are untested (no such application in
   26.04).
+
+## Why realize is replaced in the window classes
+
+May asked whether this is a crutch. What gtk-nocsd does to reach every window
+is an emission hook on GtkWindow's `map` signal (`GTKNoCSDHooker`) - its job
+happens when a window is shown. The menu has to be set earlier: GTK
+publishes the `_GTK_MENUBAR_OBJECT_PATH` window property while the window is
+realized, and only if the application has a menubar by then.
+
+Measured 2026-09-25: the same patch with an emission hook on `realize`
+instead of the class replacement (`o_g_signal_add_emission_hook`, as
+`GTKNoCSDHooker` does) gave the menu to none of 17 applications of the
+breadth set (classtest alone got it). An emission hook runs after a
+`G_SIGNAL_RUN_FIRST` signal's class handler, i.e. after the window has
+already published its properties.
+
+Replacing `realize` in the classes of `GtkWindow` and `GtkApplicationWindow`
+is what appmenu-gtk-module, the GTK3 global menu Ubuntu ships, has always
+done (`packages/appmenu-gtk-module/src/hijack.c`, `hijacked_window_realize`,
+lines 287-292), and what unity-gtk4-menu copied. Its known limit: a window
+subclass whose class was initialised before the replacement keeps GTK's
+original realize. Here the replacement happens when gtk-nocsd first fetches
+GTK4's types, before an application creates its first window; none of the
+18 applications hit the limit.
 
 ## For point 1 (May's decision)
 
