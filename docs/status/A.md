@@ -5,10 +5,9 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: unity-settings-daemon `+unity2` (color plugin crash
-at logout) published (`research/usd-color-logout-crash/`). Open: the color
-plugin cannot be restarted after being switched off (noted, not fixed); #3
-itself (not reproduced).
+Nothing in flight. Last: unity-settings-daemon `+unity3` (color plugin crash
+at logout, color plugin restart) published
+(`research/usd-color-logout-crash/`). Open: #3 itself (not reproduced).
 
 ## State of `target`
 

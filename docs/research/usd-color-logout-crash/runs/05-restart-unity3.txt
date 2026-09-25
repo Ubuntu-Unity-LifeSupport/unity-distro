@@ -1,0 +1,11 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity3 pid 135942
+STOP
+START
+COLORD-CONNECTED
+criticals: 0
+u-s-d pid now 135942; crash files: 
+START
+COLORD-CONNECTED
+criticals: 0
+u-s-d pid now 135942; crash files: 
+1

@@ -59,10 +59,18 @@ Verified: the gdb test above, and 4 logout cycles run by root
 Before: 1 crash in about 13 logouts - too rare to prove a fix by counting;
 the gdb test is the proof.
 
-## Not fixed
+## Restart after switching off - fixed in `+unity3`
 
-The plugin cannot be restarted: `init()` creates the colord client and the
-session proxy, `stop()` destroys them, so switching the plugin off and on
-leaves it dead (`cd_client_connect: assertion 'CD_IS_CLIENT (client)'
-failed`). Only reachable by toggling the `active` key; a restart of
-unity-settings-daemon brings it back.
+`init()` created the colord client, the session proxy, the profile store,
+the settings and the caches; `stop()` destroys them. Switched off and on
+(the `active` key), the plugin started with all of them NULL and did nothing
+until unity-settings-daemon was restarted. Now they are created at the start
+of each `start()`; `init()` keeps the root window.
+
+Measured under gdb (`runs/usd-color-restart.sh`: switch off, switch on, watch
+`stop`, `start` and `gcm_session_client_connect_cb`):
+`+unity2` - STOP, START, no colord connection, `cd_client_connect: assertion
+'CD_IS_CLIENT (client)' failed` (`runs/04-restart-unity2.txt`);
+`+unity3` - STOP, START, COLORD-CONNECTED, twice in a row, no critical, the
+display still registered in colord (`runs/05-restart-unity3.txt`). The
+logout fix re-checked on `+unity3`: no callback after STOP.

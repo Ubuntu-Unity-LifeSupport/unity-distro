@@ -1,0 +1,6 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity2 pid 135490
+STOP
+START
+criticals: 1
+      1 y-settings-daemon[135490]: cd_client_connect: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 135490; crash files: 
