@@ -59,12 +59,13 @@ Checked on: A - 2026-09-24 (Launchpad API, gitlab/GitHub/codeberg APIs, Ubuntu C
 **A - what could turn into work** (options for May, nothing started):
 
 - ~~unity #2160299 and #2165662~~: reproduced and fixed in unity `+unity9` (`research/unity-lp-crashes/`).
-- xorg-server: 11 medium CVEs fixed upstream (21.1.23/21.1.24) and open in resolute.
+- xorg-server: 11 medium CVEs fixed upstream (21.1.23/21.1.24) and open in resolute. 26.10-proposed `21.1.24-1ubuntu1` builds unchanged in a clean resolute chroot (363 s, same debian/control); it does not contain the #2163497 FindGlyphRef fix (`8d604fa14`, after the tag). Carrying it is May's call (DECISIONS 2026-09-25, `research/release-recheck-a/`).
 - ~~lightdm #2168421~~: fixed in lightdm `+unity1` (`research/lightdm-sigterm-exit/`); not triggered by target's default PAM stack.
-- ~~cinnamon-session #214~~: backported in `+unity3`; #202: nothing to fix on our side (`research/cinnamon-session-214-202/`).
+- ~~cinnamon-session #214~~: backported in `+unity3`; #202: nothing to fix on our side (`research/cinnamon-session-214-202/`). Release re-check 2026-09-25: 6.6.4 has none of our five patches (master has two), no conflict between upstream's #214 fix and our inhibitor patch; 6.6.4 builds in resolute once Debian's `>= 6.6` bound is relaxed (`research/release-recheck-a/`).
 - ~~gtk-nocsd 4.8~~: in `4.8-1+unity1`, Chromium buttons back ([#2158965](https://bugs.launchpad.net/bugs/2158965)), gnome-sound-recorder crash gone (`research/gtk-nocsd-4.8/`).
 - light-locker [#2167241](https://bugs.launchpad.net/bugs/2167241): probably our abort, reported under Kubuntu - evidence for our fix.
 - None of our own fixes (unity 5, compiz 2, cinnamon-session 2, unity-session 1, light-locker 1) is reported anywhere.
+- Release re-check 2026-09-25 (rule 0, last step): no newer release of unity, compiz, unity-session, u-s-d (26.10.1ubuntu = our base), lightdm (1.33.1, #484 still open) or light-locker contains any of our fixes; patches stay (DECISIONS 2026-09-25).
 
 ## B - toolkit, indicators, menus, lenses
 
