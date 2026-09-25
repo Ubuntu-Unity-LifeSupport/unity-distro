@@ -82,9 +82,37 @@ What the orders do now:
   it never sees GObject Introspection's lookups. That is its design, not a
   bug; the shim cannot fix it from behind.
 
-Not verified here: the panel itself in a live Unity session (the runs count
-the shim's own debug lines for hooking and export). The export path did not
-change in 0.9, only how two function pointers are found.
+### In the live Unity session
+
+2026-09-25 ~06:42Z, on `target2`'s autologin session, started before 0.9 was
+installed. It runs `LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`, and
+programs started now map 0.9 and gtk-nocsd 4.8-1+unity1 from disk. Programs
+were started with the session's own environment, unchanged (`live.sh`,
+`classlive.sh`).
+
+| Program | Kind | Menu in the panel | Checked |
+|---|---|---|---|
+| gnome-text-editor | C | yes, full main menu | `text-editor-menu.png` |
+| gnome-characters | gjs | yes | `characters-menu.png`; "About" chosen from the panel opens the About window (`characters-about.png`) |
+| gnome-music | Python | yes, maximised window | `music-menu.png` |
+| gnome-tweaks | Python | yes (window property and D-Bus menu read; no screenshot) | - |
+| classtest | C, class actions | yes: Class off and Inner hello greyed, Mode one selected | `classtest-menu.png` |
+
+classtest over D-Bus: the stand-in for `win.class-hello` goes from enabled
+to disabled and back as the application calls
+`gtk_widget_action_set_enabled()`; activating it while disabled does
+nothing, and activating it while enabled prints `ACTIVATED win.class-hello`
+exactly once. This is the second hooked function, the one whose "next"
+lookup changed in 0.9.
+
+A `Gtk-WARNING Trying to snapshot GtkLabel ... without a current allocation`
+in classtest comes from gtk-nocsd 4.8: it appears once with gtk-nocsd alone
+or both preloaded, and not with no preload or the shim alone.
+
+The six crash reports the 0.8 and first-attempt runs left in `/var/crash`
+(5 from 0.8 next to nocsd head, 1 nautilus from the `dlvsym` attempt, all
+showing `nocsd-head` in their maps) were moved to `~/b/crash-nocsd-order/` on
+target2. None came from the 0.9 package.
 
 ## His second claim, case by case
 

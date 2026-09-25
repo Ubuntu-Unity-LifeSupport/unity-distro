@@ -12,7 +12,8 @@ reported).
 
 **unity-gtk4-menu 0.9** (2026-09-25): issue #1 - 0.8 recursed to SIGSEGV next
 to gtk-nocsd built by upstream `make`; 0.9 uses glibc's `dlsym@GLIBC_2.34`.
-In aptly, on target2; `research/nocsd-order/`. Issue #1 not answered (May).
+In aptly, on target2, checked in the live Unity session (C, gjs, Python,
+class actions); `research/nocsd-order/`. Issue #1 not answered (May).
 Build in `~/work/b/out09`; gtk-nocsd head in `~/work/b/nocsd-head/`.
 
 **indicator-keyboard +unity2** (2026-09-25): test mock fixed (LP #1968333,
@@ -86,7 +87,7 @@ shim (agent A: gtk-nocsd alone 2, both 2, no preload 0). Harmless. Added for #4:
 `imagemagick`; `/tmp/oemcfg` (unpacked `oemconfig.tar.gz`), `~/b/proto/`,
 `~/b/oemenv.sh`, `stack.sh`, `check.sh`, `race.sh`.
 Since 2026-09-25 also: gtk-nocsd 4.8-1+unity1 and libunity-gtk4-menu0 0.9
-(`dpkg -i`, not yet re-logged in), `~/b/nocsd-head/` (upstream -O0 build),
+(`dpkg -i`; the running session maps them in newly started programs), `~/b/nocsd-head/` (upstream -O0 build),
 `~/b/ugm-fix/`, `~/b/order*.sh`.
 Dirty (`~/.dirty`): libnux `0ubuntu15+unity1` (was archive 0ubuntu12) and
 `libunity-gtk4-menu0` 0.8 installed with `dpkg -i`
