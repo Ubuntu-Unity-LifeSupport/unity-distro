@@ -18,7 +18,7 @@ Open: #3 itself (not reproduced).
 
 Since 2026-09-24 13:11 boot (full upgrade from our aptly), plus by `dpkg -i`
 then matched by aptly: unity `+unity9`, compiz `+unity2`, gtk-nocsd `4.8-1+unity1`
-(dbgsyms for them installed too); xorg-server 21.1.24~26.04.1 (dpkg -i, then matched by aptly), rebooted 2026-09-25 16:45Z. Workspaces 2x2, six terminals spread over
+(dbgsyms for them installed too); xorg-server **`2:21.1.22-1ubuntu1.3+unity1` (dpkg -i, candidate - NOT what aptly has; aptly still ships 21.1.24~26.04.1)**, rebooted 2026-09-25 ~20:30Z; see `research/xorg-versioning/`. Workspaces 2x2, six terminals spread over
 them. Also installed: libxpathselect1.4v5 (Unity introspection),
 libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor,
 gnome-sound-recorder, google-chrome-stable 154 (adds `google-chrome.sources`); xdotool, gdb,
