@@ -258,7 +258,7 @@ handoff originally had five and had dropped a precondition.
 
 | # | Bug | Release-note workaround |
 |---|---|---|
-| 1 | Cursor disappears after login | `sudo systemctl restart lightdm` |
+| 1 | Cursor disappears after login | `sudo systemctl restart lightdm` - **reproduced (2 of 12 logins on the archive package) and fixed in unity-settings-daemon +unity4** (idle monitor lost its X event filter when two daemon instances raced for a D-Bus name; 0 of 12 after), `research/cursor-after-login/` |
 | 2 | Shutdown/logout menu unresponsive **after cancelling** | tty + `sudo poweroff` - **fixed in our unity +unity2** |
 | 3 | Cursor stops responding | `killall -1 compiz` - not reproduced; the workaround itself crashed compiz and walked windows off the lower workspaces, **fixed in unity +unity8, compiz +unity2** (`research/compiz-restart/`) |
 | 4 | Wallpaper over the Calamares window during OEM install | Alt+Tab to the installer - **fixed in our calamares-settings-ubuntu +unity1** (`research/calamares-oem/`) |

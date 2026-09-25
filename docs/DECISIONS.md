@@ -1289,3 +1289,24 @@ Nothing was sent; the reply is the coordinator's and May's.
   gtk-nocsd changes it (4.8-1 is also 26.10's). It is fixed in our package
   as `4.8-1+unity2` with `/etc/X11/Xsession.d/51gtk-nocsd`. A handed the
   package to B for this.
+
+## 2026-09-26 - known issue #1 (pointer invisible after login): cause in u-s-d's idle monitor, patch not version (agent A)
+
+Reproduced on target with real input written into the existing evdev devices:
+archive `0ubuntu6` left the pointer hidden in 2 of 12 cold autologins, exactly
+the logins where the surviving daemon had lost and regained
+`org.gnome.Mutter.IdleMonitor`; `0ubuntu7+unity4` 0 of 12. Cause: the daemon is
+started twice (systemd unit + xdg autostart), the two race for that name, and
+`on_name_lost` removed the X event filter that drives every idle watch - so the
+cursor plugin, which hides the pointer at start, never saw the mouse again.
+Proved by re-adding the filter with gdb in a failing session.
+
+Rule 0: gitlab ubuntu-unity issue #161 (open, no cause); LP #1390628 (2014);
+26.10's `26.10.1ubuntu` carries the same code; mutter and upstream
+gnome-settings-daemon never had this bug (the copy is Ubuntu's, 2014). No
+version to take - **patch**: filter installed once at init (mutter's
+behaviour), one launcher (unit via `localeexec`, autostart `X-systemd-skip`),
+libexecdir restored (our `0ubuntu7` base had broken autostart, `localeexec`
+and two polkit actions), and `+unity1`'s cursor change reverted - it was a
+guess from the code, and the plugin's hide-until-mouse is fine once its
+watches fire. `research/cursor-after-login/`.

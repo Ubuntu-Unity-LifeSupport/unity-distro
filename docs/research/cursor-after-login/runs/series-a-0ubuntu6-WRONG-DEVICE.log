@@ -1,0 +1,10 @@
+a1 boot=2026-09-26 01:03:03 | 2122:- hide=0 show=0 exit=2 | 2149:A hide=1 show=0 exit=0 || after input: 2149=show
+a2 boot=2026-09-26 01:05:49 | 2104:- hide=0 show=0 exit=2 | 2160:A hide=1 show=0 exit=0 || after input: 2160=show
+a3 boot=2026-09-26 01:09:21 | 2245:A hide=1 show=0 exit=0 | 2273:- hide=0 show=0 exit=2 || after input: 2245=hide
+a4 boot=2026-09-26 01:12:28 | 2158:- hide=0 show=0 exit=2 | 2195:A hide=1 show=0 exit=0 || after input: 2195=show
+a5 boot=2026-09-26 01:14:56 | 2168:A hide=1 show=0 exit=0 | 2194:- hide=0 show=0 exit=2 || after input: 2168=show
+a6 boot=2026-09-26 01:17:14 | 2166:A hide=1 show=0 exit=0 | 2204:- hide=0 show=0 exit=2 || after input: 2166=show
+a7 boot=2026-09-26 01:19:33 | 2111:- hide=0 show=0 exit=2 | 2145:A hide=1 show=0 exit=0 || after input: 2145=hide
+a8 boot=2026-09-26 01:21:52 | 2145:A hide=1 show=0 exit=0 | 2181:- hide=0 show=0 exit=2 || after input: 2145=show
+a9 boot=2026-09-26 01:24:03 | 2177:A hide=1 show=0 exit=0 | 2220:- hide=0 show=0 exit=2 || after input: 2177=hide
+a10 boot=2026-09-26 01:26:42 | 2188:- hide=0 show=0 exit=2 | 2210:A hide=1 show=0 exit=0 || after input: 2210=hide

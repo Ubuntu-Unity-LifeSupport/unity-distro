@@ -1,0 +1,12 @@
+f1 boot=2026-09-26 02:03:13 | 2133:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2133=show
+f2 boot=2026-09-26 02:05:19 | 2091:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2091=show
+f3 boot=2026-09-26 02:07:28 | 2085:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2085=show
+f4 boot=2026-09-26 02:09:45 | 2100:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2100=show
+f5 boot=2026-09-26 02:11:58 | 2081:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2081=show
+f6 boot=2026-09-26 02:14:13 | 2184:AU hide=1 show=0 exit=0 lost=0 || event3 [x:640 y:400]->[x:668 y:414]: 2184=show
+f7 boot=2026-09-26 02:16:45 | 2160:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2160=show
+f8 boot=2026-09-26 02:19:12 | 2163:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:666 y:413]: 2163=show
+f9 boot=2026-09-26 02:21:47 | 2166:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:667 y:413]: 2166=show
+f10 boot=2026-09-26 02:24:07 | 2097:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2097=show
+f11 boot=2026-09-26 02:26:26 | 2159:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:667 y:413]: 2159=show
+f12 boot=2026-09-26 02:28:35 | 2161:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2161=show
