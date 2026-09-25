@@ -42,11 +42,54 @@ different decision.
   no `org.gnome.Calendar.desktop`) are not build-related, and were not
   investigated further.
 
-## Found, not fixed
+## indicator-keyboard's test crash (LP #1968333), fixed in +unity2
 
-indicator-keyboard's test `/indicator-keyboard-service/activate-character-map`
-aborts with `g_object_notify: object class 'Service' has no property named
-'<garbage>'`, which is memory corruption. It fails in exactly the same way in
-Launchpad's 26.10 build, and `debian/rules` ignores test failures, so it
-does not stop the build. It is a test of the keyboard service itself, not
-just of the harness; nobody has looked at the cause yet.
+Before 0ubuntu1+unity1 was published, this README said the crash in
+`/indicator-keyboard-service/activate-character-map` was memory corruption in
+the service. That was wrong. The crash is in the test's own mock `Service`
+(`tests/main.vala`), and the indicator is not affected.
+
+- **The pattern.** The mock announces a new command with
+  `notify["command"] ((!) pspec);`, a detailed emission of `GObject.notify`.
+- **What Vala generates.** Since Vala 0.55.1 (commit `b9df26bcf`,
+  "codegen: Split out GSignalModule.emit_signal()", 2021-11-01), a signal
+  with an emitter (`[HasEmitter]` on `notify` in `gobject-2.0.vapi`) is
+  emitted by calling the emitter with the signal's arguments, and the detail
+  is dropped. The C is `g_object_notify (self, pspec)`: a `GParamSpec*`
+  where a property name is expected. GLib prints the garbage "property
+  name", and the signal is not emitted. The `emitter` branch of
+  `emit_signal()` in `codegen/valagsignalmodule.vala` ignores `detail_expr`.
+  That branch is unchanged in 0.56.19 and in main. No Vala issue or commit
+  mentions it (issues searched for g_object_notify, HasEmitter, emitter
+  detail, detailed signal).
+- **Why the build hid it.** `-w` in `tests/Makefile.am` hides GCC's
+  incompatible-pointer diagnostic. The test then aborts on its first
+  critical, so tests 3-9 never ran after jammy (Vala 0.56). In 2022
+  `debian/rules` got `dh_auto_test || true` "temporarily"
+  ([LP #1968333](https://bugs.launchpad.net/bugs/1968333), open, High,
+  same message in its log).
+
+Reproducer: a 20-line Vala class with the same `execute()` compiled with
+valac 0.56.18 (resolute) printed the critical, and no notify arrived.
+With `notify_property ("command")` Vala generates
+`g_object_notify (self, "command")` and the notify arrives.
+
+Fix (branch `unity/resolute`, commits `cb8cf96` and `1a14712`, version
+`0.0.0+19.10.20240924-0ubuntu1+unity2`):
+
+- `Service.execute()` calls `notify_property ("command")`;
+- `debian/rules` drops `|| true`, so test failures fail the build again.
+
+sbuild: all 9 tests pass with the tests fatal, the first full run since the
+eoan build in 2019 (valac 0.44.3). The file list is the same as +unity1.
+The service code did not change. On target2 the service restarts active and
+exports its actions. The package is in aptly.
+
+Rule 0: in 26.10 (0ubuntu4, valac 0.56.19) the test still fails, and the
+build passes only because of `|| true`. `tests/main.vala` has been unchanged
+since 2015. Ayatana's keyboard indicator is a C rewrite with no such tests,
+indicator-keyboard is not in Debian, and the forks on gitlab carry the same
+line.
+
+Not reported anywhere: the Vala codegen bug (upstream gitlab
+GNOME/vala) and our fix for LP #1968333. Both wait for May.

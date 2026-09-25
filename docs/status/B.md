@@ -5,6 +5,10 @@ Build directory: `~/work/b`
 
 ## Now
 
+**indicator-keyboard +unity2** (2026-09-25): test mock fixed (LP #1968333,
+Vala notify emission), tests fatal again, 9/9; in aptly, target2 runs it.
+Build in `~/work/b/kbt`.
+
 **indicator-datetime/power/session/sound/keyboard +unity1** (2026-09-25):
 FTBFS fixes, branches `unity/resolute`, in aptly; `research/indicator-ftbfs/`.
 target2 runs them. Builds in `~/work/b/indf`.

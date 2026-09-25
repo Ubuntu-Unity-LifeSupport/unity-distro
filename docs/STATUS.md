@@ -14,11 +14,15 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **indicator-keyboard tests run again (LP #1968333, open since 2022).**
+  The crash was in the test's mock, not the service: Vala >= 0.55.1
+  compiles a detailed `notify` emission to `g_object_notify (self, pspec)`.
+  Fixed the mock, made test failures fatal again; 9/9 pass (+unity2, in
+  aptly). Vala bug and LP fix wait for May. `research/indicator-ftbfs/`.
 - **Five indicators build again in resolute.** datetime, power, session,
   sound and keyboard failed to build (CMake 4, GCC 15, libnotify 0.8 in a
   test, moved build-deps); rebuilt as +unity1, same files as the archive, in
-  aptly and running on target2. Found: indicator-keyboard's
-  activate-character-map test corrupts memory (as in 26.10), not fixed.
+  aptly and running on target2.
   `research/indicator-ftbfs/`.
 - **appmenu-gtk3-module made resident (LP #2166410).** Upstream's fix
   carried as 25.04-1build1+unity1, in aptly. The crash needs the module to
@@ -232,8 +236,10 @@ reads the specific text and agrees.
    `tests/gmockvolume.c`); nux crashes without XF86VidMode
    (`GraphicsDisplayX11.cpp:297`) - _fixed in nux 0ubuntu13+unity1 by agent B,
    carried to 0ubuntu15+unity1 (upstream rebase) and in aptly; Unity's unit tests now run under plain Xvfb. See
-   `research/nux-vidmode/`_; nux `Validator::Validate`. See DECISIONS
-   and PATCHES.
+   `research/nux-vidmode/`_; nux `Validator::Validate`; Vala >= 0.55.1
+   drops the detail of an emitter signal emission (`notify["x"] (pspec)` ->
+   `g_object_notify (self, pspec)`), and our indicator-keyboard fix for
+   LP #1968333 (`research/indicator-ftbfs/`). See DECISIONS and PATCHES.
 4. _(resolved 2026-09-22)_ The component is `vala-panel-appmenu`, not
    `vala-appmenu-panel` - the handoff transposed the words. Upstream is
    https://gitlab.com/vala-panel-project/vala-panel-appmenu. Ubuntu splits that

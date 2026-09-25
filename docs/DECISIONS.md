@@ -971,3 +971,16 @@ Rule 0: the fix and its confirmation by the reporter are on codeberg #67;
 Launchpad has no SRU in progress (the bug is Confirmed, with a request to
 test in 26.10). `research/gtk-nocsd-4.8/`.
 
+## 2026-09-25 - indicator-keyboard: fix the test, make tests fatal again
+
+The activate-character-map abort (LP #1968333) is a Vala >= 0.55.1 codegen
+bug hit by the test's mock, not a service bug. We change the mock to
+`notify_property()` rather than wait for Vala, and drop `|| true` from
+`debian/rules`, since the suite now passes 9/9 in sbuild. The cost: a future
+test regression (or an environment change in the chroot) fails our build
+instead of passing silently. That is the point of the tests.
+
+Rule 0: Vala main and 0.56.19 unchanged, no Vala issue; 26.10 0ubuntu4 still
+fails; Ayatana (C rewrite, no tests), Debian (no package), gitlab forks (same
+line) have nothing. Checked `lib/`: the service only connects to notify, never
+emits it that way.
