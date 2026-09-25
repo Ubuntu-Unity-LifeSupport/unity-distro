@@ -1,0 +1,262 @@
+=================== yelp (pid 4084)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 12: shown=1 primary=1 app./win. items=7
+  shim: chose candidate 1 of 1
+  shim: win.yelp-show-about-dialog proxied as win.unity-gtk4-menu-win-yelp-show-about-dialog
+  shim: dropped 2 item(s) that cannot cross D-Bus
+  shim: menubar attached, labelled "Справка"
+            -                                        Справка
+    ok        win.yelp-window-new                      Создать окно
+    ok        win.yelp-window-find                     Найти на странице…
+    ok        win.yelp-view-print                      Печать…
+    disabled  win.yelp-view-go-previous                Предыдущая страница
+    disabled  win.yelp-view-go-next                    Следующая страница
+    ok        win.yelp-window-go-all                   Вся справка
+    ok        win.unity-gtk4-menu-win-yelp-show-about-dialog О приложении
+=================== loupe (pid 4202)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 16: shown=1 primary=1 app./win. items=9
+  shim: chose candidate 1 of 1
+  shim: win.open proxied as win.unity-gtk4-menu-win-open
+  shim: win.open-with proxied as win.unity-gtk4-menu-win-open-with, disabled
+  shim: win.print proxied as win.unity-gtk4-menu-win-print, disabled
+  shim: win.set-background proxied as win.unity-gtk4-menu-win-set-background, disabled
+  shim: win.trash proxied as win.unity-gtk4-menu-win-trash, disabled
+  shim: win.about proxied as win.unity-gtk4-menu-win-about
+  shim: dropped 3 item(s) that cannot cross D-Bus
+  shim: menubar attached, labelled "Просмотрщик изображений"
+            -                                        Просмотрщик изображений
+    ok        app.new-window                           _Новое окно
+    ok        win.unity-gtk4-menu-win-open             _Открыть…
+    disabled  win.unity-gtk4-menu-win-open-with        Открыть с _помощью…
+    disabled  win.unity-gtk4-menu-win-print            П_ечать…
+    disabled  win.unity-gtk4-menu-win-set-background   _Установить как фон…
+    disabled  win.unity-gtk4-menu-win-trash            У_далить
+    ok        app.help                                 _Справка
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.unity-gtk4-menu-win-about            _О приложении
+=================== kgx (pid 4320)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 15: shown=1 primary=0 app./win. items=6
+  shim: candidate 2 at depth 13: shown=0 primary=1 app./win. items=3
+  shim: chose candidate 1 of 2
+  shim: win.new-window proxied as win.unity-gtk4-menu-win-new-window
+  shim: win.show-tabs-desktop proxied as win.unity-gtk4-menu-win-show-tabs-desktop
+  shim: win.fullscreen proxied as win.unity-gtk4-menu-win-fullscreen
+  shim: win.show-preferences-window proxied as win.unity-gtk4-menu-win-show-preferences-window
+  shim: win.about proxied as win.unity-gtk4-menu-win-about
+  shim: dropped 4 item(s) that cannot cross D-Bus
+  shim: menubar attached, labelled "Консоль"
+            -                                        Консоль
+    ok        win.unity-gtk4-menu-win-new-window       _Новое окно
+    ok        win.unity-gtk4-menu-win-show-tabs-desktop _Показать все вкладки
+    ok        win.unity-gtk4-menu-win-fullscreen       По_лноэкранный режим
+    ok        win.unity-gtk4-menu-win-show-preferences-window Па_раметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.unity-gtk4-menu-win-about            _О приложении
+=================== file-roller (pid 4386)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 4: shown=1 primary=1 app./win. items=12
+  shim: chose candidate 1 of 1
+  shim: menubar attached, labelled "File Roller"
+            -                                        File Roller
+    ok        app.new                                  _Создать архив…
+    ok        app.open                                 _Открыть…
+    disabled  win.save-as                              Сохранить _как…
+    disabled  win.edit-password                        Па_роль…
+    disabled  win.test-archive                         _Проверить целостность
+    disabled  win.view-properties                      С_войства
+    ok        app.list-mode                            Показывать _всё содержимое
+    ok        app.list-mode                            Показывать тек_ущую папку
+    ok        app.view-sidebar                         _Боковая панель
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== baobab (pid 4416)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 15: shown=1 primary=1 app./win. items=6
+  shim: chose candidate 1 of 1
+  shim: menubar attached, labelled "Анализатор использования дисков"
+            -                                        Анализатор использования дисков
+    ok        win.scan-folder                          Сканировать папку…
+    ok        win.clear-recent                         Очистить список недавних
+    ok        win.show-preferences                     Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        win.help                                 _Справка
+    ok        win.about                                _О приложении
+=================== gnome-clocks (pid 4453)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 16: shown=1 primary=1 app./win. items=3
+  shim: chose candidate 1 of 1
+  shim: menubar attached, labelled "Часы"
+            -                                        Часы
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.help                                 _Справка
+    ok        win.about                                _О приложении
+=================== gnome-system-monitor (pid 4521)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 12: shown=1 primary=1 app./win. items=5
+  shim: chose candidate 1 of 1
+  shim: menubar attached, labelled "Системный монитор"
+            -                                        Системный монитор
+    ok        app.lsof                                 _Поиск по открытым файлам
+    ok        app.preferences                          П_араметры
+    ok        app.help                                 _Справка
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== papers (pid 4623)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+  shim: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+  shim: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+  shim: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+  shim: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+  shim: chose candidate 1 of 5
+  shim: menubar attached, labelled "Просмотрщик документов"
+            -                                        Просмотрщик документов
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-calculator (pid 4664)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 11: shown=1 primary=0 app./win. items=6
+  shim: candidate 2 at depth 12: shown=1 primary=1 app./win. items=10
+  shim: chose candidate 2 of 2
+  shim: menubar attached, labelled "Калькулятор"
+            -                                        Калькулятор
+    ok        app.new-window                           _Создать окно
+    ok        win.clear                                _Очистить историю
+              -                                        Формат результата
+    ok        win.number-format                        _Автоматически
+    ok        win.number-format                        _Фиксированный
+    ok        win.number-format                        _Научный
+    ok        win.number-format                        _Инженерный
+    ok        win.preferences                          _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 Спра_вка
+    ok        app.about                                _О приложении
+=================== gnome-logs (pid 4699)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 9: shown=1 primary=0 app./win. items=5
+  shim: candidate 2 at depth 10: shown=1 primary=1 app./win. items=4
+  shim: chose candidate 2 of 2
+  shim: menubar attached, labelled "Журналы"
+            -                                        Журналы
+    ok        app.new-window                           _Создать окно
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== simple-scan (pid 4738)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 10: shown=1 primary=0 app./win. items=5
+  shim: candidate 2 at depth 9: shown=1 primary=1 app./win. items=7
+  shim: chose candidate 2 of 2
+  shim: menubar attached, labelled "simple-scan"
+            -                                        simple-scan
+    ok        app.email                                П_очта...
+    ok        app.print                                Пе_чать...
+    ok        app.reorder                              И_зменить порядок страниц…
+    ok        app.preferences                          _Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О Сканере документов
+=================== gnome-text-editor (pid 4774)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 25: shown=0 primary=0 app./win. items=0
+  shim: candidate 2 at depth 15: shown=1 primary=0 app./win. items=6
+  shim: chose candidate 2 of 2
+  shim: page.save proxied as win.unity-gtk4-menu-page-save
+  shim: page.save-as proxied as win.unity-gtk4-menu-page-save-as
+  shim: page.discard-changes proxied as win.unity-gtk4-menu-page-discard-changes, disabled
+  shim: page.begin-search proxied as win.unity-gtk4-menu-page-begin-search
+  shim: page.print proxied as win.unity-gtk4-menu-page-print
+  shim: win.fullscreen proxied as win.unity-gtk4-menu-win-fullscreen
+  shim: win.unfullscreen proxied as win.unity-gtk4-menu-win-unfullscreen
+  shim: win.show-preferences proxied as win.unity-gtk4-menu-win-show-preferences
+  shim: dropped 4 item(s) that cannot cross D-Bus
+  shim: menubar attached, labelled "Текстовый редактор"
+            -                                        Текстовый редактор
+    ok        app.new-window                           _Создать окно
+    ok        win.unity-gtk4-menu-page-save            Со_хранить
+    ok        win.unity-gtk4-menu-page-save-as         Сохранить _как…
+    disabled  win.unity-gtk4-menu-page-discard-changes _Отменить изменения…
+    ok        win.unity-gtk4-menu-page-begin-search    _Найти/Заменить…
+    ok        win.unity-gtk4-menu-page-print           _Печать…
+    ok        win.unity-gtk4-menu-win-fullscreen       Полноэкранный режим
+    disabled  win.unity-gtk4-menu-win-unfullscreen     Выйти из полноэкранного режима
+    ok        win.unity-gtk4-menu-win-show-preferences _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.about                                _О приложении
+=================== nautilus (pid 4819)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 19: shown=1 primary=0 app./win. items=0
+  shim: candidate 2 at depth 28: shown=0 primary=0 app./win. items=0
+  shim: candidate 3 at depth 19: shown=1 primary=0 app./win. items=0
+  shim: candidate 4 at depth 17: shown=0 primary=0 app./win. items=0
+  shim: candidate 5 at depth 16: shown=1 primary=0 app./win. items=8
+  shim: chose candidate 5 of 5
+  shim: menubar attached, labelled "Файлы"
+            -                                        Файлы
+    ok        app.clone-window                         Создать _окно
+    ok        win.new-tab                              Создать _вкладку
+    disabled  win.undo                                 _Отменить
+    disabled  win.redo                                 _Повторить
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-contacts (pid 4898)
+  shim: GTK4 found at load
+  shim: candidate 1 at depth 16: shown=1 primary=1 app./win. items=8
+  shim: candidate 2 at depth 17: shown=0 primary=0 app./win. items=4
+  shim: chose candidate 1 of 2
+  shim: menubar attached, labelled "Контакты"
+            -                                        Контакты
+              -                                        Список контактов по:
+    ok        win.sort-on                              _Имени
+    ok        win.sort-on                              _Фамилии
+    ok        app.import                               И_мпортировать из файла…
+    ok        app.export-all                           _Экспортировать все контакты…
+    ok        app.show-preferences                     _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-characters (pid 4941)
+  shim: GTK4 found through a symbol lookup
+  shim: candidate 1 at depth 15: shown=1 primary=1 app./win. items=2
+  shim: chose candidate 1 of 1
+  shim: menubar attached, labelled "Символы"
+            -                                        Символы
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== gnome-weather (pid 4982)
+  shim: GTK4 found through a symbol lookup
+  shim: candidate 1 at depth 13: shown=1 primary=0 app./win. items=3
+  shim: candidate 2 at depth 13: shown=0 primary=1 app./win. items=3
+  shim: chose candidate 1 of 2
+  shim: menubar attached, labelled "Погода"
+            -                                        Погода
+              -                                        Единица измерения
+    ok        app.temperature-unit                     _Цельсий
+    ok        app.temperature-unit                     _Фаренгейт
+    ok        win.about                                _О приложении
+=================== gnome-tweaks (pid 5039)
+  shim: GTK4 found through a symbol lookup
+  shim: candidate 1 at depth 10: shown=1 primary=0 app./win. items=2
+  shim: chose candidate 1 of 1
+  shim: menubar attached, labelled "Дополнительные настройки"
+            -                                        Дополнительные настройки
+    ok        app.reset                                _Сбросить на настройки по умолчанию
+    ok        app.about                                _О приложении
+=================== gnome-music (pid 5075)
+  shim: GTK4 found through a symbol lookup
+  shim: candidate 1 at depth 17: shown=1 primary=1 app./win. items=4
+  shim: candidate 2 at depth 17: shown=0 primary=1 app./win. items=4
+  shim: candidate 3 at depth 12: shown=0 primary=0 app./win. items=0
+  shim: chose candidate 1 of 3
+  shim: menubar attached, labelled "Музыка"
+            -                                        Музыка
+    ok        app.preferences                          Настройки
+    ok        win.show-help-overlay                    Комбинации клавиш
+    ok        app.help                                 Справка
+    ok        app.about                                О приложении

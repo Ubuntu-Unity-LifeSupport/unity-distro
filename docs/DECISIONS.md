@@ -1118,3 +1118,22 @@ alternative does not exist yet. The better long-term home is gtk-nocsd, if its
 maintainer builds the feature: then ours should be retired, not kept in
 parallel. That needs the conversation May has put on hold, so it is May's
 call; nothing here depends on it being soon.
+
+## 2026-09-25 - unity-gtk4-menu inside gtk-nocsd: works, measured, not taken yet (agent B)
+
+May asked what it takes to stop preloading two libraries and to try it.
+Built unity-gtk4-menu 0.9 into our gtk-nocsd 4.8 as a second source file
+driven by gtk-nocsd's own constructor, `g_module_symbol()` and `dlsym()`
+(`4.8-1+unity2~menu1`, 14 lines added to GTK-NoCSD.c). On target2, installed
+session-wide in place of both libraries: session healthy, 18/18 GTK4
+applications export the same menus as with two libraries, class-action
+stand-ins unchanged, gtk-nocsd's decorations intact, menu stays off outside
+Unity. The recursion of issue #1 has nothing left to act on: no
+`RTLD_NEXT` remains.
+
+Not taken into aptly: carrying it in our package only moves the duplication
+into a 1250-line patch on every gtk-nocsd update. The duplicate ends when
+upstream takes the feature (rebase on 4.8+20, a desktop-neutral switch,
+upstream's style) - which needs May's go-ahead to talk to the maintainer.
+Until then the released pair (gtk-nocsd 4.8-1+unity1 + unity-gtk4-menu 0.9)
+stays. `research/nocsd-merge/`.

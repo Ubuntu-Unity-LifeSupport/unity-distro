@@ -1,0 +1,56 @@
+diff --git a/debian/changelog b/debian/changelog
+index 15aac0c..1942ebb 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,12 @@
++gtk-nocsd (4.8-1+unity2~menu1) resolute; urgency=medium
++
++  * Experiment: build unity-gtk4-menu 0.9 into the library
++    (d/p/global-menu.patch), so GTK-NoCSD's own hooks drive the GTK4 global
++    menu and one preloaded library replaces two. Breaks/Replaces
++    libunity-gtk4-menu0, whose GSettings schema it now ships.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Fri, 25 Sep 2026 07:07:50 +0000
++
+ gtk-nocsd (4.8-1+unity1) resolute; urgency=medium
+ 
+   * Rebase on Debian 4.8-1 (the version in 26.10). Fixes Chromium-based
+diff --git a/debian/control b/debian/control
+index 600d201..7e010de 100644
+--- a/debian/control
++++ b/debian/control
+@@ -13,6 +13,8 @@ Homepage: https://codeberg.org/MorsMortium/GTK-NoCSD
+ 
+ Package: libgtk-nocsd0
+ Architecture: any
++Breaks: libunity-gtk4-menu0
++Replaces: libunity-gtk4-menu0
+ Multi-Arch: same
+ Section: libs
+ Depends:
+diff --git a/debian/libgtk-nocsd0.install b/debian/libgtk-nocsd0.install
+index 1debce3..32c5d7b 100644
+--- a/debian/libgtk-nocsd0.install
++++ b/debian/libgtk-nocsd0.install
+@@ -1,2 +1,3 @@
+ debian/50-gtk-nocsd.conf usr/lib/environment.d
+ usr
++Source/com.ubuntu-unity.gtk4-menu.gschema.xml usr/share/glib-2.0/schemas
+diff --git a/debian/libgtk-nocsd0.symbols b/debian/libgtk-nocsd0.symbols
+index 4cb472c..c7d6ab0 100644
+--- a/debian/libgtk-nocsd0.symbols
++++ b/debian/libgtk-nocsd0.symbols
+@@ -161,6 +161,7 @@ libgtk-nocsd.so.0 libgtk-nocsd0 #MINVER#
+  gtk_header_bar_set_title_widget@Base 0~20260302
+  gtk_im_context_set_cursor_location@Base 4.4
+  gtk_show_about_dialog@Base 0~20260302
++ gtk_widget_action_set_enabled@Base 4.8-1+unity2~menu1
+  gtk_widget_get_first_child@Base 0~20260302
+  gtk_widget_get_last_child@Base 0~20260302
+  gtk_widget_get_parent@Base 0~20260302
+diff --git a/debian/patches/series b/debian/patches/series
+index e69de29..7a23d67 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -0,0 +1 @@
++global-menu.patch

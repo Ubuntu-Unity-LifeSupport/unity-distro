@@ -5,6 +5,13 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Experiment: unity-gtk4-menu built into gtk-nocsd** (2026-09-25, May asked):
+works on target2 session-wide, measured, not in aptly; decision waits for
+May (DECISIONS 2026-09-25, `research/nocsd-merge/`). Branch `b/global-menu`
+in `~/work/b/nocsd-merge/pkg` (local only). **target2 runs it**:
+libgtk-nocsd0 4.8-1+unity2~menu1, libunity-gtk4-menu0 removed; how to go
+back is in the research README.
+
 **Re-check per host 02:58Z** (2026-09-25): none of B's fixes is in a newer
 release (26.10, Debian, upstream) - all patches stay; DECISIONS 2026-09-25.
 Found: indicator-keyboard 0ubuntu4 in 26.10 lost its user unit too (not
