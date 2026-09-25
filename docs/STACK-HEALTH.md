@@ -10,7 +10,7 @@ Rules for this file:
 - One row per component. A negative result is written like a positive one.
 - Every claim has a source (link, or the command that shows it). What was not
   checked is written as "not checked", never guessed.
-- Versions are what target runs (host session, 2026-09-24), unless a row says
+- Versions are what target ran on 2026-09-24, unless a row says
   otherwise.
 - Agent A owns section A, agent B owns section B; each writes only its own.
 

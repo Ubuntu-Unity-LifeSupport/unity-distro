@@ -70,15 +70,18 @@ internet, it was in the running system we were working on.
 3. **Bug trackers**, by symptom rather than by your own theory of the cause.
    Closed bugs matter more than open ones - closed often means "done, but never
    delivered".
-4. **The web**, through the host session. Ask specific questions, not a topic.
-   Abandoned attempts with an explanation of why they failed are sometimes
-   worth more than working code.
+4. **The web.** You reach it yourself: `curl` gets to api.launchpad.net,
+   gitlab.gnome.org, gitlab.com and api.github.com from this machine, and `gh`
+   is authenticated. Ask specific questions, not a topic. Abandoned attempts
+   with an explanation of why they failed are sometimes worth more than working
+   code. **Run the sweep in a subagent** - it returns pages of detail of which
+   three lines matter.
 
 ### Limits, so the rule does not become paralysis
 
 - Around twenty minutes for steps 1-3. Then record in DECISIONS.md **where you
   looked**, and carry on.
-- While the host session searches, work on what does not depend on the answer.
+- While a subagent searches, work on what does not depend on the answer.
 - Skip it for: our own code, typos, formatting, and anything already searched
   for in this session.
 
