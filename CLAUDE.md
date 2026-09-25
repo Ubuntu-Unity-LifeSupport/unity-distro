@@ -82,7 +82,40 @@ back the conclusion with its links - not the raw pages. The same applies to any
 wide read: log trawls, package-wide greps, surveying a source tree you do not
 yet know. Your own context is for the work; delegate the digging. Run
 independent sweeps as several subagents at once rather than one after another. Twenty minutes, then record in `docs/DECISIONS.md`
-where you looked - found or not - and carry on. This has caught us three times
+where you looked - found or not - and carry on.
+
+**The last step of rule 0, the one we keep missing: has a newer version already
+fixed it?** A bug tracker says whether someone knows about it; a release says
+whether someone fixed it. Check the next Ubuntu series (`rmadison <pkg>`),
+Debian, and the upstream releases, not just the archive we build against.
+
+If a fix exists in a newer version, the question is no longer "how do I patch
+this" but **"what does it cost to carry that version instead"** - and that is
+measured, not guessed:
+
+1. Build the newer source in a clean 26.04 chroot (`sbuild -d resolute`).
+2. It builds and its dependencies resolve from the 26.04 archive: carrying the
+   version is normally cheaper than carrying a patch, and more honest - the fix
+   is upstream's, not ours.
+3. It fails: the failure names the price, usually a newer library 26.04 does
+   not have. Then patching the archive version is the right answer, and you can
+   say why.
+
+Write which of the two you chose, and the measurement behind it, in
+`docs/DECISIONS.md`. **Both answers are legitimate; skipping the question is
+not.** We got this wrong on `gtk-nocsd`: two upstream commits were backported
+onto a March snapshot while release 4.0 already contained them and 26.10
+shipped 4.8. The reverse also happens - `cinnamon-session` 6.6 needs a
+`libcinnamon-desktop` that 26.04 does not have, so there the patch is right.
+
+**The same question one level up: does this belong in an existing component
+rather than a new one of ours?** Before starting a library, a daemon or a
+module, ask whether the function belongs inside something that already does
+this job. Two preloaded libraries hooking the same symbols, two daemons
+watching the same bus, two modules patching the same toolkit - each is a
+maintenance burden we chose, and each duplicates edge cases the other has
+already solved. Sometimes a new component really is right; then say against
+which existing one you weighed it, and why it lost. This has caught us three times
 in one day, and once the answer was a package already installed on the machine
 we were working on.
 
