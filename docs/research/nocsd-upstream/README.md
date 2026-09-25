@@ -130,10 +130,12 @@ realized, and only if the application has a menubar by then.
 
 Measured 2026-09-25: the same patch with an emission hook on `realize`
 instead of the class replacement (`o_g_signal_add_emission_hook`, as
-`GTKNoCSDHooker` does) gave the menu to none of 17 applications of the
-breadth set (classtest alone got it). An emission hook runs after a
-`G_SIGNAL_RUN_FIRST` signal's class handler, i.e. after the window has
-already published its properties.
+`GTKNoCSDHooker` does) gave the menu to none of the 16 applications of the
+breadth set that could be judged (classtest alone got it; papers cannot map
+a library from `/home` under its AppArmor profile, and gnome-characters
+handed its window to an instance still running). The likely reason, not
+checked in GLib's source: the hook runs after `realize`'s class handler,
+which is where the window publishes its properties.
 
 Replacing `realize` in the classes of `GtkWindow` and `GtkApplicationWindow`
 is what appmenu-gtk-module, the GTK3 global menu Ubuntu ships, has always
