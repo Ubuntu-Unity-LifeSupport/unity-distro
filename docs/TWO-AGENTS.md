@@ -1,5 +1,11 @@
 # Two agents on one builder
 
+There is also a **coordinator** session - see `docs/COORDINATOR.md`. It handles
+what arrives from outside and what goes out: issues, replies, upstream
+conversations, questions to May. It does not drive the machines and does not
+search for you; you keep the code, the builds and the measurements. When you
+find yourself writing prose for a stranger, hand it over.
+
 Since 2026-09-24 the builder hosts **two Claude Code sessions at once**, each
 driving its own test desktop. This file says what is yours, what is shared, and
 how not to destroy the other agent's work. Read it before your first command.

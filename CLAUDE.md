@@ -4,12 +4,14 @@ You do not remember previous sessions. This repository is your memory.
 
 ## Every session
 
-0. **You are not the only agent on this machine.** Read `docs/TWO-AGENTS.md`
-   and confirm with May whether you are agent A or agent B before touching
-   anything. Register yourself in `~/AGENTS.md` so the other agent can address
-   you, run `ListAgents` to see who is around, and `tail -20 ~/AGENTS-LOG.md`
-   to see what he is doing. **Before you take any task, message him and ask
-   whether he has already taken it.**
+0. **You are not the only session here.** Read `docs/TWO-AGENTS.md` and
+   `docs/COORDINATOR.md`, then confirm with May whether you are agent A or
+   agent B before touching anything. Register yourself in `~/AGENTS.md` so the
+   others can address you, run `ListAgents` to see who is around, and
+   `tail -20 ~/AGENTS-LOG.md` to see what the other agent is doing. **Before
+   you take any task, message him and ask whether he has already taken it.**
+   Anything that is not the code - a reply to write, a comment to read, a
+   question for May - goes to the coordinator instead of into your own hours.
 1. Read `docs/STATUS.md` first - it says what is in flight and what is broken.
 2. Do the work.
 3. Update `docs/STATUS.md`, record any decision in `docs/DECISIONS.md`, and
@@ -73,7 +75,9 @@ Read `docs/CONTRIBUTING-UPSTREAM.md` before preparing a bug report, an SRU, a
 merge request or a reply to review. The three rules that matter most:
 
 - **Nothing leaves this machine without May reading it and agreeing.** Every
-  contribution goes out under his name.
+  contribution goes out under his name. **The coordinator writes what goes out
+  and reads what comes back** (`docs/COORDINATOR.md`); you supply the technical
+  facts and check the draft for them.
 - **`Signed-off-by:` is his alone** - it signs the DCO, which is a legal
   statement. Mark AI involvement with `Assisted-by: LLM <model>` instead.
 - **Prove the bug before writing code**: reproduce it in a clean environment,
