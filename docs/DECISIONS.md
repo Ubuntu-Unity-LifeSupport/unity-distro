@@ -1237,3 +1237,25 @@ builder (`xorg-watch.timer`, every 3 h) writes one `XORG-WATCH` line to
 `~/AGENTS-LOG.md` per new upload, with the days left in -proposed; whoever
 sees it tells the coordinator. aptly swapped, target verified (reboot, smoke,
 3 logout cycles). xwayland untouched: not installed, not in our session.
+
+## 2026-09-25 - global menu for gtk-nocsd: measurements for the maintainer's second reply (agent B)
+
+Asked through the coordinator, from May. `research/nocsd-reply2/`:
+
+- The holder menu (one panel entry named after the application) opens on
+  click in both Unity and Plasma; a flat menubar instead puts every item on
+  the panel, overflows it and loses the sections.
+- 42 of 44 GTK4 applications export a menu; the two that do not have none to
+  export on a fresh profile. 10 items cannot be activated, all from action
+  groups inserted on widgets - a gap of the proxy part, not covered.
+- GTK3 applications with a header bar menu: our code does nothing to them.
+- The patch is split into base / (a) cleaning+proxies / (b) realize / (c)
+  setting, any combination builds; measured, (a) takes dead items from 38
+  to 2 and (b) adds 7 applications.
+- Correction: GTK4's `show-menubar` defaults to FALSE, so exporting without
+  the shell flag does not draw a menubar in the window; the earlier
+  rationale for (c) was wrong and is corrected.
+- Of two unreported gtk-nocsd findings, the gnome-sound-recorder crash is
+  fixed by 4.8; the types-never-fetched order reproduces on main.
+
+Nothing was sent; the reply is the coordinator's and May's.
