@@ -105,8 +105,20 @@ Write which of the two you chose, and the measurement behind it, in
 `docs/DECISIONS.md`. **Both answers are legitimate; skipping the question is
 not.** We got this wrong on `gtk-nocsd`: two upstream commits were backported
 onto a March snapshot while release 4.0 already contained them and 26.10
-shipped 4.8. The reverse also happens - `cinnamon-session` 6.6 needs a
-`libcinnamon-desktop` that 26.04 does not have, so there the patch is right.
+shipped 4.8.
+
+There is a third outcome, and `cinnamon-session` is it: **a newer release
+exists and builds, but does not contain our fix.** 6.6.4 builds in resolute in
+46 s, yet none of our five fixes is in it - so taking it would add a whole
+series of unrelated changes and still leave us carrying the patches. The patch
+stays, for that reason and not for a dependency one.
+
+That case also carries a trap worth naming. 6.6.4 first *looked* impossible:
+it build-depends on `libcinnamon-desktop-dev (>= 6.6)`, which 26.04 does not
+have. But that bound is the Debian packager's decision, not the code's -
+upstream's `meson.build` asks for `>= 6.0.0`. **A versioned bound in
+`debian/control` is a claim, not a measurement**; check what the build system
+actually requires before believing the price.
 
 **The same question one level up: does this belong in an existing component
 rather than a new one of ours?** Before starting a library, a daemon or a
