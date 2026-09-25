@@ -27,11 +27,11 @@ test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, s
 
 ## Mine in `packages/`
 
-- `packages/unity` - branches `unity/resolute` (released `+unity2`),
+- `packages/unity` - branches `unity/resolute` (released `+unity9`),
   `mr/stale-pending-action` (worktree `/var/tmp/sbuild-claude/unity-mr`),
   `exp/option-b-request-shutdown` (rejected experiment).
 - `packages/cinnamon-session` - gbp repository, branch `unity/resolute`
-  (`6.4.2-1+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.
+  (`6.4.2-1+unity3`), https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.
 - `packages/unity` branch `wip/confirm-inhibitors` (worktree `~/work/a/unity`),
   `+unity3` (not published) and `+unity4`.
 - `packages/compiz` - branch `unity/resolute` (`+unity2`), https://github.com/Ubuntu-Unity-LifeSupport/compiz.
@@ -41,3 +41,4 @@ test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, s
 - `packages/unity-session` - branch `unity/resolute` (`49.4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/unity-session.
 - `packages/gtk-nocsd` - salsa packaging, branch `unity/resolute` (`4.8-1+unity1`,
   merge of Debian 4.8-1, no patches), https://github.com/Ubuntu-Unity-LifeSupport/gtk-nocsd.
+- `packages/unity-settings-daemon` - branch `unity/resolute` (`0ubuntu7+unity3`, based on the unreleased git head 216f054).
