@@ -1137,3 +1137,20 @@ upstream takes the feature (rebase on 4.8+20, a desktop-neutral switch,
 upstream's style) - which needs May's go-ahead to talk to the maintainer.
 Until then the released pair (gtk-nocsd 4.8-1+unity1 + unity-gtk4-menu 0.9)
 stays. `research/nocsd-merge/`.
+
+## 2026-09-25 - global menu as a gtk-nocsd upstream patch: ready, not sent (agent B)
+
+May asked to port the merged menu to gtk-nocsd's current main, make it
+desktop-neutral and write it in upstream's style, then decide about talking
+to the maintainer. Done as one commit on main 6b1f70a
+(`research/nocsd-upstream/`): enabled by GTK's `gtk-shell-shows-menubar`
+rather than a desktop list, `GTK_NOCSD_NO_GLOBAL_MENU=1` to disable, written
+into `GTK-NoCSD.c` under the README's contribution rules (checked twice by a
+separate reviewer, formatted with upstream's Uncrustify config, 0 warnings
+under upstream's flags). On target2 session-wide: 18/18 applications with
+the same menus as the two-library setup, class-action stand-ins unchanged,
+switch correct on bare X, Xfce/KDE (fake flag), GNOME and at runtime.
+
+Not sent: whether and how to offer it is May's call (options in the
+research README). aptly still ships gtk-nocsd 4.8-1+unity1 +
+unity-gtk4-menu 0.9.

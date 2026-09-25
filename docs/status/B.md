@@ -5,12 +5,14 @@ Build directory: `~/work/b`
 
 ## Now
 
-**Experiment: unity-gtk4-menu built into gtk-nocsd** (2026-09-25, May asked):
-works on target2 session-wide, measured, not in aptly; decision waits for
-May (DECISIONS 2026-09-25, `research/nocsd-merge/`). Branch `b/global-menu`
-in `~/work/b/nocsd-merge/pkg` (local only). **target2 runs it**:
-libgtk-nocsd0 4.8-1+unity2~menu1, libunity-gtk4-menu0 removed; how to go
-back is in the research README.
+**gtk-nocsd global menu, upstream-ready patch** (2026-09-25, May asked):
+one commit on upstream main 6b1f70a, desktop-neutral (gtk-shell-shows-menubar),
+upstream style; measured on target2, not sent, not in aptly; point 1 (talk
+to the maintainer) waits for May. `research/nocsd-upstream/`; branches
+`global-menu` in `~/work/b/nocsd-up/src`, `b/global-menu-up` in
+`~/work/b/nocsd-merge/pkg` (local only). **target2 runs it**: libgtk-nocsd0
+`4.8+git20260924.6b1f70a-1+unity2~menu5`, libunity-gtk4-menu0 removed.
+Earlier round (4.8-based): `research/nocsd-merge/`.
 
 **Re-check per host 02:58Z** (2026-09-25): none of B's fixes is in a newer
 release (26.10, Debian, upstream) - all patches stay; DECISIONS 2026-09-25.
