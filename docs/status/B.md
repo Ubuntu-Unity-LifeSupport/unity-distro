@@ -5,6 +5,13 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Issue #1, second reply - measurements done** (2026-09-25, May via the
+coordinator): `research/nocsd-reply2/` (holder vs flat on Unity and Plasma,
+44-application audit, GTK3, the patch split into four commits with all
+combinations building, two gtk-nocsd findings re-checked). Split branch
+`split-parts` in `~/work/b/nocsd-up/split` (local). Report sent to the
+coordinator. target2 rolled back to Clean-2 (checked inside).
+
 **Trial rebuild of never-built section-B sources** (2026-09-25): 7 of 9 build;
 libindicator FTBFS fixed as `+unity1` (built, not in aptly - equivalent to the
 archive's binary), vala-panel FTBFS left alone (not used by Unity).

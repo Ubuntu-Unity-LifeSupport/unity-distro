@@ -1,0 +1,101 @@
+From cbb5ca84e19d7cd7a0604d3acd70972441bf0d48 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 21:35:17 +0000
+Subject: [PATCH 4/4] Only export the global menu while the shell shows
+ menubars
+
+Follows gtk-shell-shows-menubar and withdraws the menubar when it turns off
+
+Assisted-by: LLM Claude Opus 5.5
+---
+ README.md          |  2 +-
+ Source/GTK-NoCSD.c | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/README.md b/README.md
+index 0b38e6b..a4f02d7 100644
+--- a/README.md
++++ b/README.md
+@@ -145,7 +145,7 @@ The library supports some environment variables to influence its behavior:
+ - `GTK_NOCSD_NO_CSS`: Setting to 1 disables loading any CSS from the library.
+ - `GTK_NOCSD_NO_GTK3`: Setting to 1 disables the library for GTK3.
+ - `GTK_NOCSD_NO_GTK4`: Setting to 1 disables the library for GTK4.
+-- `GTK_NOCSD_GLOBAL_MENU`: Setting to 1 exports the header bar menu of GTK4 applications as their menubar, for a global menu.
++- `GTK_NOCSD_GLOBAL_MENU`: Setting to 1 exports the header bar menu of GTK4 applications as their menubar, for a global menu, while the desktop shows menubars itself (`gtk-shell-shows-menubar`).
+ 
+ Make sure to set gtk-decoration-layout to be able to use the internal CSD.  
+ On GNOME with `gsettings set org.gnome.desktop.wm.preferences button-layout 'icon:minimize,maximize,close'`.  
+diff --git a/Source/GTK-NoCSD.c b/Source/GTK-NoCSD.c
+index 4a62b6f..4557e8b 100644
+--- a/Source/GTK-NoCSD.c
++++ b/Source/GTK-NoCSD.c
+@@ -4258,6 +4258,8 @@ GType g_type_register_static_simple(GType Parent, const gchar *Name,
+ // Global menu: with GTK_NOCSD_GLOBAL_MENU=1 the main menu of a GTK4 header
+ // bar is set as the application's menubar, which GTK exports for a global
+ // menu
++// It is only done while the shell shows the menubar (gtk-shell-shows-menubar),
++// elsewhere nothing reads it
+ 
+ // A menu found in a window, and how likely it is to be the main menu
+ struct GTKNoCSDMenuCandidate {
+@@ -4285,6 +4287,7 @@ struct GTKNoCSDMenuProxy {
+ bool GTKNoCSDMenuPrepared = false, GTKNoCSDMenuReady = false;
+ bool GTKNoCSDMenuProxyReady = false;
+ bool GTKNoCSDMenuHooked = false;
++bool GTKNoCSDMenuWatching = false;
+ 
+ // The menubar set by the library, to tell it apart from the application's
+ GMenuModel *GTKNoCSDMenubar = NULL;
+@@ -4933,6 +4936,19 @@ GMenuModel *GTKNoCSDMenuClean(GMenuModel *Model, int Depth, GtkWidget *Owner,
+ 	return (GMenuModel *) Menu;
+ }
+ 
++void GTKNoCSDMenuShellChanged(GObject *Settings,
++	G_GNUC_UNUSED GParamSpec *Property, gpointer Application) {
++	// Remove the menubar when the shell no longer shows it
++
++	gboolean ShellShowsMenubar = TRUE;
++	o_g_object_get(Settings, "gtk-shell-shows-menubar", &ShellShowsMenubar,
++		NULL);
++	if (!ShellShowsMenubar && GTKNoCSDMenubar != NULL &&
++		o_gtk_application_get_menubar(Application) == GTKNoCSDMenubar) {
++		o_gtk_application_set_menubar(Application, NULL);
++	}
++}
++
+ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 	// Set the main menu of the window as the application's menubar
+ 
+@@ -4950,6 +4966,14 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 		return;
+ 	}
+ 
++	// Only where the shell shows the menubar, elsewhere nothing reads it
++	gboolean ShellShowsMenubar = FALSE;
++	o_g_object_get((GObject *) o_gtk_settings_get_default(),
++		"gtk-shell-shows-menubar", &ShellShowsMenubar, NULL);
++	if (!ShellShowsMenubar) {
++		return;
++	}
++
+ 	GMenuModel *Existing = o_gtk_application_get_menubar(Application);
+ 	if (Existing != NULL && Existing != GTKNoCSDMenubar) {
+ 		return;
+@@ -4989,6 +5013,14 @@ void GTKNoCSDMenuAttach(GtkWindow *Window) {
+ 	o_g_object_add_weak_pointer((GObject *) Menubar,
+ 		(gpointer *) &GTKNoCSDMenubar);
+ 	o_g_object_unref((GObject *) Menubar);
++
++	// Take it back if the shell stops showing it
++	if (!GTKNoCSDMenuWatching) {
++		GTKNoCSDMenuWatching = true;
++		o_g_signal_connect_object(o_gtk_settings_get_default(),
++			"notify::gtk-shell-shows-menubar",
++			(GCallback) GTKNoCSDMenuShellChanged, Application, 0);
++	}
+ }
+ 
+ void GTKNoCSDMenuWindowRealize(GtkWidget *Widget) {
+-- 
+2.53.0
+

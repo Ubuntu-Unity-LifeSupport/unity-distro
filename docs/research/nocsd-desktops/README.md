@@ -43,8 +43,10 @@ activate it.
   appmenu registrar, which gmenudbusmenuproxy waits for, but GTK is never
   told. A Plasma user would have to add the line to `settings.ini` by hand.
 
-So the switch chosen for point 3 is right about what it does (it never puts a
-duplicate menubar in a window) but on Plasma it is off unless configured. An
+So the switch chosen for point 3 is off on Plasma unless configured.
+**Correction 2026-09-25 (`research/nocsd-reply2/`):** the reason once given
+for it - that GTK would otherwise draw a duplicate menubar in the window -
+does not hold for GTK4, whose `show-menubar` defaults to FALSE. An
 alternative would be to also enable export when `com.canonical.AppMenu.
 Registrar` is on the session bus - what appmenu-gtk-module uses for GTK3 - and
 then hide the application window's own menubar (`show-menubar` FALSE) so

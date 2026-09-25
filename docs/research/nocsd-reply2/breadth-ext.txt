@@ -1,0 +1,277 @@
+=================== gnome-maps (pid 7218)
+  shim: NOT HOOKED in pid 7218
+            -                                        Карты
+    ok        app.osm-account-setup                    Настроить учётную запись OpenStreetMap…
+    ok        win.export-as-image                      Экспортировать как изображение…
+              -                                        Единицы измерения
+      ok        win.measurement-system                   По умолчанию в _системе
+      ok        win.measurement-system                   _Метрические
+      ok        win.measurement-system                   _Имперские
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.about                                О приложении
+=================== gnome-calendar (pid 7334)
+  shim: NOT HOOKED in pid 7334
+            -                                        Календарь
+    ok        app.sync                                 _Синхронизировать календари
+    ok        win.open-date-time-settings              Настройки _даты и времени…
+    ok        win.open-online-accounts                 _Сетевые учётные записи…
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.about                                _О приложении
+=================== secrets (pid 7392)
+  shim: NOT HOOKED in pid 7392
+            -                                        Secrets
+    ok        win.new_database                         _Новый сейф
+    ok        win.settings                             _Параметры
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        win.about                                _О приложении
+=================== fragments (pid 7438)
+  shim: NOT HOOKED in pid 7438
+            -                                        Fragments
+    disabled  app.resume-torrents                      _Возобновить все
+    disabled  app.pause-torrents                       _Приостановить все
+    disabled  app.remove-torrents                      _Удалить завершенные торренты
+    disabled  app.show-stats                           _Статистика…
+    ok        app.add-remote-connection                _Добавить удаленное подключение…
+    ok        app.show-preferences                     _Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.about                                _О приложении
+=================== amberol (pid 7487)
+  shim: NOT HOOKED in pid 7487
+            -                                        Amberol
+    ok        win.gtk-nocsd-win-copy                   Копировать
+    ok        win.gtk-nocsd-queue-add-song             Добавить _песню
+    ok        win.gtk-nocsd-queue-add-folder           Добавить _папку
+    ok        win.gtk-nocsd-queue-clear                Очистить
+    ok        win.enable-recoloring                    _Соответствовать обложке
+    ok        app.background-play                      _Фоновое воспроизведение
+              -                                        _Выравнивание громкости
+      ok        win.gtk-nocsd-win-replaygain             _Альбом
+      ok        win.gtk-nocsd-win-replaygain             _Песня
+      ok        win.gtk-nocsd-win-replaygain             _Отключено
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.about                                _О приложении
+    ok        app.quit                                 _Закрыть
+=================== showtime (pid 7609)
+  shim: NOT HOOKED in pid 7609
+Traceback (most recent call last):
+  File "/home/mike/b/audit.py", line 44, in <module>
+    groups["app"] = call(props["_GTK_APPLICATION_OBJECT_PATH"], "org.gtk.Actions",
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         "DescribeAll", None, "(a{s(bgav)})")[0]
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mike/b/audit.py", line 39, in call
+    return bus.call_sync(name, path, iface, method, args,
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         GLib.VariantType(rtype), 0, 3000, None).unpack()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+gi.repository.GLib.GError: g-io-error-quark: Timeout was reached (24)
+=================== epiphany (pid 7695)
+  shim: NOT HOOKED in pid 7695
+            -                                        Веб-браузер
+    ok        app.new-window                           _Новое окно
+    ok        app.new-incognito                        Новое _приватное окно
+    disabled  app.reopen-closed-tab                    Открыть _закрытую вкладку
+    MISSING   win.fullscreen                           По_лноэкранный режим
+    ok        app.history                              Истор_ия
+              -                                        _Веб-приложения
+      MISSING   win.save-as-application                  Установить как _веб-приложение…
+      MISSING   win.open-application-manager             Управле_ние веб-приложениями
+    MISSING   win.privacy-report                       Отчет о кон_фиденциальности
+    MISSING   win.passwords                            Па_роли
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            Комбинации _клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+    MISSING   app.uninstall-web-app                    _Удалить веб-приложение
+=================== gnome-tour (pid 7797)
+  shim: NOT HOOKED in pid 7797
+  NO-MENUBAR bus=:1.125
+=================== d-spy (pid 7856)
+  shim: NOT HOOKED in pid 7856
+            -                                        D-Spy
+    ok        app.new-window                           _Новое окно
+    ok        win.gtk-nocsd-new-connection             Соединиться с другой _шиной
+    ok        app.about                                _О приложении
+=================== celluloid (pid 7904)
+  shim: NOT HOOKED in pid 7904
+            -                                        Celluloid
+    ok        win.toggle-controls                      _Переключить элементы управления
+    ok        win.save-playlist                        _Сохранить список воспроизведения
+              -                                        _Видеодорожка
+      ok        win.set-video-track                      Ничего
+      ok        win.load-track                           _Загрузить внешние…
+              -                                        _Аудиодорожка
+      ok        win.set-audio-track                      Ничего
+      ok        win.load-track                           _Загрузить внешние…
+              -                                        Дорожка с_убтитров
+      ok        win.set-subtitle-track                   Ничего
+      ok        win.load-track                           _Загрузить внешние…
+    ok        win.show-preferences-dialog              _Параметры
+    ok        win.show-shortcuts-dialog                _Комбинации клавиш
+    ok        win.show-about-dialog                    _О приложении
+=================== shortwave (pid 8003)
+  shim: NOT HOOKED in pid 8003
+            -                                        Shortwave
+              -                                        _Сортировка
+      ok        win.gtk-nocsd-library-set-sorting        _Название
+      ok        win.gtk-nocsd-library-set-sorting        _Язык
+      ok        win.gtk-nocsd-library-set-sorting        _Страна
+      ok        win.gtk-nocsd-library-set-sorting        Ш_тат
+      ok        win.gtk-nocsd-library-set-sorting        _Битрейт
+      ok        win.gtk-nocsd-library-set-sorting-type   _По возрастанию
+      ok        win.gtk-nocsd-library-set-sorting-type   _По убыванию
+    ok        win.gtk-nocsd-win-open-radio-browser-info _Открыть radio-browser.info <sup>↗</sup>
+    ok        win.gtk-nocsd-win-show-preferences       _Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        win.gtk-nocsd-win-about                  _О приложении
+    ok        app.quit                                 _Quit
+=================== foliate (pid 8078)
+  shim: NOT HOOKED in pid 8078
+            -                                        Foliate
+    ok        win.open                                 Открыть…
+    ok        win.fullscreened                         Во весь экран
+    ok        app.about                                О Foliate
+=================== apostrophe (pid 8124)
+  shim: NOT HOOKED in pid 8124
+  NO-GTK-PROPS (no window exports _GTK_UNIQUE_BUS_NAME)
+=================== gnome-chess (pid 8155)
+  shim: NOT HOOKED in pid 8155
+            -                                        Шахматы
+    ok        app.new                                  _Новая игра…
+    ok        app.open                                 _Открыть игру…
+    disabled  app.save                                 _Сохранить игру
+    disabled  app.save-as                              _Сохранить игру как…
+    disabled  app.resign                               Сд_аться
+    ok        app.preferences                          _Параметры
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении Шахматы
+=================== gnome-mines (pid 8197)
+  shim: NOT HOOKED in pid 8197
+            -                                        Мины
+    ok        app.scores                               _Результаты
+    ok        app.preferences                          _Внешний вид
+    ok        app.use-question-marks                   _Использовать флаги-вопросы
+    ok        app.shortcuts                            Комбинации _клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== quadrapassel (pid 8238)
+  shim: NOT HOOKED in pid 8238
+            -                                        Quadrapassel
+    ok        app.scores                               _Результаты
+    ok        app.theme                                _Внешний вид
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            _Комбинации клавиши
+    ok        app.rules                                Правила _игры
+    ok        app.about                                _О приложении
+=================== gnome-2048 (pid 8272)
+  shim: NOT HOOKED in pid 8272
+            -                                        2048
+    MISSING   ui.scores                                Результаты
+    ok        win.show-help-overlay                    Комбинации клавиш
+    MISSING   ui.about                                 О приложении 2048
+=================== gnome-sudoku (pid 8303)
+  shim: NOT HOOKED in pid 8303
+            -                                        Судоку
+    disabled  app.new-game                             _Новая игра…
+    MISSING   game-view.reset-board                    С_бросить головоломку
+              -                                        _Печать
+      disabled  app.print-current-board                  Печать _текущей головоломки…
+      ok        app.print-multiple                       Печать _нескольких головоломок…
+    ok        app.highlighter                          _Подсвечивание
+    ok        app.show-warnings                        _Предупреждения
+    ok        app.preferences-dialog                   Па_раметры
+    ok        app.shortcuts-window                     _Комбинации клавиши
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== gnome-robots (pid 8334)
+  shim: NOT HOOKED in pid 8334
+            -                                        Роботы
+    ok        app.new-game                             _Новая игра
+    ok        app.scores                               _Результаты
+    ok        app.preferences                          _Параметры
+    ok        app.help                                 _Справка
+    ok        app.about                                _О Роботах
+=================== gnome-nibbles (pid 8432)
+  shim: NOT HOOKED in pid 8432
+            -                                        Червячки
+    ok        win.sound                                З_вук
+    ok        win.three-dimensional-view               _3D-вид
+    ok        win.fullscreen                           _Во весь экран
+    ok        win.scores                               Резу_льтаты
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== swell-foop (pid 8470)
+  shim: NOT HOOKED in pid 8470
+            -                                        Swell Foop
+    ok        win.new-game                             Новая игра
+              -                                        Настройка
+      ok        win.size                                 Маленький (6 × 5)
+      ok        win.size                                 Обычный (15 × 10)
+      ok        win.size                                 Большой (20 × 15)
+      ok        win.change-colors                        Два цвета
+      ok        win.change-colors                        Три цвета
+      ok        win.change-colors                        Четыре цвета
+      ok        win.new-game                             Новая игра
+    ok        win.scores                               Лучшие результаты
+              -                                        Внешний вид
+      ok        win.change-theme                         Цвета
+      ok        win.change-theme                         Фигуры и цвета
+      ok        win.change-theme                         Скучные фигуры
+    ok        app.shortcuts                            Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении Swell Foop
+=================== lightsoff (pid 8503)
+  shim: NOT HOOKED in pid 8503
+            -                                        Туши свет
+    ok        win.new-game                             Перв_ая головоломка
+    disabled  win.previous-level                       _Предыдущая головоломка
+    ok        win.next-level                           _Следующая головоломка
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+=================== evince (pid 8538)
+  shim: NOT HOOKED in pid 8538
+            -                                        Evince
+    disabled  win.print                                Print…
+    disabled  win.fullscreen                           Fullscreen
+    disabled  win.send-to                              Send To…
+    ok        win.new                                  New _Window
+    disabled  win.open-copy                            Open a C_opy
+    disabled  win.open-containing-folder               Open Containing _Folder
+    disabled  win.save-as                              _Save As…
+    disabled  win.presentation                         Present as _Slideshow
+    disabled  win.continuous                           _Continuous
+    disabled  win.dual-page                            _Dual
+    disabled  win.dual-odd-left                        _Odd Pages Left
+    disabled  win.rtl                                  Right to Left Document
+    disabled  win.rotate-right                         Ro_tate ⤵
+    disabled  win.inverted-colors                      Ni_ght Mode
+    disabled  win.show-properties                      Prop_erties
+    ok        win.show-help-overlay                    _Keyboard Shortcuts
+    ok        win.help                                 _Help
+    ok        win.about                                _About Evince
+=================== dialect (pid 8572)
+  shim: NOT HOOKED in pid 8572
+            -                                        Dialect
+    ok        app.pronunciation                        Показать произношение
+    ok        app.preferences                          Параметры
+    ok        win.show-help-overlay                    Комбинации клавиш
+    ok        app.about                                О приложении
+=================== deja-dup (pid 8614)
+  shim: NOT HOOKED in pid 8614
+            -                                        Резервные копии
+    MISSING   restore.select-all                       _Выделить все
+    ok        app.shortcuts                            _Комбинации клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                О приложении
+=================== gnome-firmware (pid 8649)
+  shim: NOT HOOKED in pid 8649
+            -                                        Прошивка
+    ok        app.refresh                              _Обновить метаданные
+    ok        app.upload-report-devices                _Выгрузить список устройств
+    ok        app.install-file                         _Установить архив прошивки
+    ok        app.emulation-load                       _Загрузить эмуляцию устройства
+    ok        app.emulation-save                       _Сохранить эмуляцию устройства
+    ok        win.show-help-overlay                    _Комбинации клавиш
+    ok        app.about                                _О приложении
