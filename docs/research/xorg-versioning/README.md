@@ -72,3 +72,45 @@ metadata-only repo per scenario, phased updates included, isolated apt state.
   downgrade once (done on target with `dpkg -i`; apt:
   `apt install xserver-xorg-core=2:21.1.22-1ubuntu1.3+unity1 xserver-common=… xserver-xorg-legacy=…`),
   then a reboot. Our aptly users are target and possibly target2.
+
+## Applied 2026-09-25 (May approved)
+
+aptly: `2:21.1.24-1ubuntu1~26.04.1` removed (all 8 binaries),
+`2:21.1.22-1ubuntu1.3+unity1` published. target runs it (explicit downgrade
+done earlier); `apt-cache policy` on target shows it as installed and candidate.
+target2 had 21.1.24~ from a dist-upgrade and goes back to `Clean-2` at the end
+of B's current task, so no downgrade there.
+
+## xorg-watch: the timer that tells us to rebase
+
+- `watch.sh` (this directory) reads our published version from
+  `http://192.168.56.10:8080/.../Packages` (not `aptly repo search`, so no
+  database lock), strips `+unity*` to get the Ubuntu base, and asks Launchpad
+  for every resolute xorg-server publication (release, -proposed, -updates,
+  -security). Each Pending/Published upload above the base gets **one** line in
+  `~/AGENTS-LOG.md`, e.g.
+
+      2026-10-03 09:00Z XORG-WATCH new upload 2:21.1.22-1ubuntu1.4 in resolute-proposed (ours 2:21.1.22-1ubuntu1.3+unity1): in -proposed since 2026-10-03 07:12Z; SRU minimum 7 days -> earliest -updates 2026-10-10 (6d 21h left); rebase needed
+
+  For -updates/-security the line says apt already prefers it. `version@pocket`
+  keys in `~/.local/state/xorg-watch/seen` stop repeats; once we rebase, the
+  base moves up and the upload is no longer "above" it. The 7 days is the SRU
+  minimum aging, not a promise; a security upload skips -proposed entirely.
+- **Timer**: systemd user units `xorg-watch.service` + `xorg-watch.timer`
+  (copies in this directory, installed in `~/.config/systemd/user/`), every
+  3 h plus up to 10 min jitter, `OnBootSec=10min`, `Persistent=true`. Linger is
+  enabled for `claude` (`loginctl enable-linger claude`), so it runs without a
+  login session. The service runs the script straight from this directory -
+  an edit here takes effect on the next run.
+- **Check it**: `systemctl --user list-timers xorg-watch.timer`,
+  `journalctl --user -u xorg-watch.service`. A failure to read aptly or
+  Launchpad goes to the journal, not to the log.
+- **Verified**: with a fake base `1ubuntu1.2` (env overrides, temp log) it
+  reported the real `1ubuntu1.3` in -proposed with "6d 22h left", and a second
+  run wrote nothing; the same run under `systemd-run --user` wrote the same
+  line; with the real base it writes nothing (nothing above 1.3 today).
+- **When a line appears**: tell the coordinator; the rebase is: new Ubuntu
+  source + `debian/patches/upstream-21.1.24/` (drop what Ubuntu now carries) +
+  `…+unity1`, sbuild, target, aptly.
+
+Disable: `systemctl --user disable --now xorg-watch.timer`.

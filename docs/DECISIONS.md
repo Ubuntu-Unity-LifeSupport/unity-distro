@@ -1214,3 +1214,26 @@ in with the first real change to libindicator.
 **vala-panel** FTBFS (Debian #1118323, GioUnix-2.0 GIR move); fixed on
 upstream master, unreleased. Unity does not use libvalapanel0 - not patched.
 `research/rebuild-trial/`.
+
+## 2026-09-25 - xorg-server: our patches on Ubuntu's version, not a newer upstream (agent A, May approved)
+
+Replaces the scheme of the entry above ("xorg-server 21.1.24 carried"). Measured
+on target with apt (`research/xorg-versioning/`): `2:21.1.24-1ubuntu1~26.04.1`
+outranks every resolute upload Ubuntu can make on 21.1.22, and even a
+21.1.24-based `-0ubuntu0.26.04.1`, so it blocked Ubuntu's own security fixes -
+a failure worse than stock. No pin fixes that: apt never downgrades an
+installed higher version.
+
+Now: `2:21.1.22-1ubuntu1.3+unity1` - Ubuntu's newest resolute upload
+(1ubuntu1.3, in -proposed since 2026-09-25, DisplayLink fix only, **no** CVE
+patches) plus the 29 upstream commits 21.1.22..21.1.24 as
+`debian/patches/upstream-21.1.24/` (all 11 CVEs). Any later Ubuntu upload wins
+automatically; ours wins over 1.3 itself, which would otherwise have taken the
+fixes away from users when it leaves -proposed (1.2-based was measured to fail
+exactly that way). Failure mode now: stock Ubuntu, never worse.
+
+Price: rebase on every new resolute xorg-server. A systemd user timer on
+builder (`xorg-watch.timer`, every 3 h) writes one `XORG-WATCH` line to
+`~/AGENTS-LOG.md` per new upload, with the days left in -proposed; whoever
+sees it tells the coordinator. aptly swapped, target verified (reboot, smoke,
+3 logout cycles). xwayland untouched: not installed, not in our session.

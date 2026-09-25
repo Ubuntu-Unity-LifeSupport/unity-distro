@@ -1,0 +1,8 @@
+[Unit]
+Description=xorg-watch: new resolute xorg-server uploads above our aptly base
+Documentation=file:///home/claude/unity-distro/docs/research/xorg-versioning/README.md
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/claude/unity-distro/docs/research/xorg-versioning/watch.sh

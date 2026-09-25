@@ -10,15 +10,15 @@ re-check of all A's fixes - no newer release contains any of them, patch stays
 everywhere (DECISIONS 2026-09-25, `research/release-recheck-a/`). Measurement
 builds in `~/work/a/relcheck/` (cinnamon-session 6.6.4 relaxed, u-s-d
 26.10.1ubuntu, xorg-server 21.1.24, lightdm 1.33.1 - all build in resolute;
-nothing published). xorg-server `2:21.1.24-1ubuntu1~26.04.1` (11 CVEs) built in
-`~/work/a/xorg`, verified on target, in aptly (May approved). For May: the CLAUDE.md cinnamon-session example (the 6.6 bound is packaging only).
+nothing published). xorg-server `2:21.1.22-1ubuntu1.3+unity1` (11 CVEs, Ubuntu base so its updates win) in aptly;
+`xorg-watch.timer` (systemd user, builder) flags new resolute uploads - `research/xorg-versioning/`. For May: the CLAUDE.md cinnamon-session example (the 6.6 bound is packaging only).
 Open: #3 itself (not reproduced).
 
 ## State of `target`
 
 Since 2026-09-24 13:11 boot (full upgrade from our aptly), plus by `dpkg -i`
 then matched by aptly: unity `+unity9`, compiz `+unity2`, gtk-nocsd `4.8-1+unity1`
-(dbgsyms for them installed too); xorg-server **`2:21.1.22-1ubuntu1.3+unity1` (dpkg -i, candidate - NOT what aptly has; aptly still ships 21.1.24~26.04.1)**, rebooted 2026-09-25 ~20:30Z; see `research/xorg-versioning/`. Workspaces 2x2, six terminals spread over
+(dbgsyms for them installed too); xorg-server `2:21.1.22-1ubuntu1.3+unity1` (dpkg -i, matched by aptly since 2026-09-25 21:00Z), rebooted 2026-09-25 ~20:30Z; see `research/xorg-versioning/`. Workspaces 2x2, six terminals spread over
 them. Also installed: libxpathselect1.4v5 (Unity introspection),
 libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor,
 gnome-sound-recorder, google-chrome-stable 154 (adds `google-chrome.sources`); xdotool, gdb,
