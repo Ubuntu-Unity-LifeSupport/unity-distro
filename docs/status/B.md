@@ -13,7 +13,7 @@ Build directory: `~/work/b`
 - Gir.Core apps do not trigger the types bug.
 - gtk-nocsd main crashes Epiphany (not ours, not reported).
 - Five-commit series on branch `split-parts-2` in `~/work/b/nocsd-up/split`
-  (local); nothing sent.
+  (local); nothing sent. target2 rolled back to Clean-2 (checked inside).
 
 **gtk-nocsd package is B's since 2026-09-26** (handed over by A).
 `4.8-1+unity2` adds `/etc/X11/Xsession.d/51gtk-nocsd`, so Xfce and other
