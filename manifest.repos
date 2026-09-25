@@ -96,3 +96,23 @@ repositories:
     type: git
     url: https://git.launchpad.net/ubuntu/+source/appmenu-gtk-module
     version: ubuntu/resolute
+  packages/indicator-datetime:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-datetime
+    version: ubuntu/resolute
+  packages/indicator-power:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-power
+    version: ubuntu/resolute
+  packages/indicator-session:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-session
+    version: ubuntu/resolute
+  packages/indicator-sound:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-sound
+    version: ubuntu/resolute
+  packages/indicator-keyboard:
+    type: git
+    url: https://git.launchpad.net/ubuntu/+source/indicator-keyboard
+    version: ubuntu/resolute

@@ -14,6 +14,12 @@ Current layer: **A** (keep Unity 7 on X11 alive).
 
 ## Done
 
+- **Five indicators build again in resolute.** datetime, power, session,
+  sound and keyboard failed to build (CMake 4, GCC 15, libnotify 0.8 in a
+  test, moved build-deps); rebuilt as +unity1, same files as the archive, in
+  aptly and running on target2. Found: indicator-keyboard's
+  activate-character-map test corrupts memory (as in 26.10), not fixed.
+  `research/indicator-ftbfs/`.
 - **appmenu-gtk3-module made resident (LP #2166410).** Upstream's fix
   carried as 25.04-1build1+unity1, in aptly. The crash needs the module to
   come from the `gtk-modules` setting (KDE); our session loads it through

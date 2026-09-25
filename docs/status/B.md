@@ -5,6 +5,10 @@ Build directory: `~/work/b`
 
 ## Now
 
+**indicator-datetime/power/session/sound/keyboard +unity1** (2026-09-25):
+FTBFS fixes, branches `unity/resolute`, in aptly; `research/indicator-ftbfs/`.
+target2 runs them. Builds in `~/work/b/indf`.
+
 **appmenu-gtk-module 25.04-1build1+unity1** (2026-09-25): upstream a783b01c,
 in aptly; `research/appmenu-resident/`. target2 has it (dpkg -i) and
 `xsettingsd` installed for the reproduction.

@@ -940,3 +940,16 @@ keeps the original intent after a crashed session.
 
 Rule 0: the script is unchanged in unity-session since 2025 and comes from
 Ubuntu's old gnome-session; nothing found about this race.
+
+## 2026-09-25 - rebuild five dead indicators ourselves instead of switching to Ayatana
+
+indicator-datetime, -power, -session, -sound and -keyboard could not be built
+in resolute, so no fix could ever reach them. They were made buildable with the
+smallest possible changes (CMake minimum, GCC 15 casts, test adaptation to
+libnotify 0.8, build-deps), with no behaviour change, as +unity1.
+
+Rule 0: 26.10 (stonking) fixes only sound (0ubuntu10, cherry-picked) and
+keyboard (0ubuntu3 adds `lightdm-vala`; we did the same, plus `systemd-dev`);
+datetime, power and session are unchanged there; upstreams are bzr-only and
+dead. Replacing them with the Ayatana indicators was not considered here: that
+changes the panel's components and is May's call. `research/indicator-ftbfs/`.
