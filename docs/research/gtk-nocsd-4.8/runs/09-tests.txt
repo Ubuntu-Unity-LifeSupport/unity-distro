@@ -1,0 +1,50 @@
+# gtk-nocsd 4.8-1+unity1 on target (Ubuntu Unity 26.04), 2026-09-25 (EEST times)
+# "old" = libgtk-nocsd.so.0 from 3+0~20260321+0b77e1b-1+unity2 copied to /tmp/nocsd-u2
+# and preloaded instead of the installed library; "new" = installed 4.8-1+unity1.
+
+## Chrome 154.0.8037.57 (chrome-deco.sh): window, new tab, click, Super/Escape, refocus
+old (+unity2, before install): no window buttons (reproduced)
+nopreload (+unity2, LD_PRELOAD empty): close/minimise/maximise on the left
+old2: chrome pid 21793, nocsd: /tmp/nocsd-u2/libgtk-nocsd.so.0              -> no buttons
+new2: chrome pid 22535, nocsd: /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0  -> buttons
+(01-chrome-old-vs-new.png: top old, bottom new)
+
+## A/B, 13 applications (nocsd-ab.sh), every process checked in /proc/PID/maps
+nemo, yelp, seahorse, unity-control-center, gnome-text-editor, gnome-characters,
+gnome-disks, file-roller, simple-scan, zenity --file-selection, zenity --question,
+software-properties-gtk: server-side decorations in both; differences only:
+  gnome-text-editor: header title "Новый документ" hidden (it repeats the window title)
+  gnome-characters:  section title shown in the content header
+  seahorse, yelp:    page title shown in the header (was empty)
+transmission-gtk: did not start in either run (not investigated)
+
+## gnome-sound-recorder, 10 s each (systemd-run RuntimeMaxSec=10)
+old: Failed with result 'core-dump'   (twice; _usr_bin_gjs-console.1000.crash)
+new: Failed with result 'timeout'     (twice; still running when stopped)
+
+## crash handler (nocsdcrash.sh: GTK3 python window, SIGSEGV after 1.5 s)
+pid 16557 argv ['/tmp/segv.py', 'first-run']
+pid 16562 argv ['/tmp/segv.py', 'first-run']    <- restarted by the handler
+no segfault/general protection of ld-linux in the kernel log
+
+## logout + relogin (lo-root.sh n48)
+05:32:00 cycle n48 start; mike sessions: 8/seat0/4355 9/-/4363  user@1000=active
+05:32:46 after logout: seat0=c2/lightdm user@1000=active compiz=   (my ssh session held user@1000)
+05:34:17 after relogin: seat0=60/mike user@1000=active compiz=19178 nemo-desktop=18817
+05:34:18 logout bad lines: 0; relogin activation timeouts: 0; crash:
+
+## compiz SIGSEGV in the new session
+compiz 19178 lib: /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0
+t+1..5 compiz=[19178] helper=[20009]
+t+6    compiz=[]      unity7=activating
+t+7    compiz=[20803] unity7=active
+05:34:35 unity7.service: Main process exited, code=dumped, status=11/SEGV
+05:34:35 unity7.service: Scheduled restart job, restart counter is at 1.
+05:34:36 Started unity7.service - Unity Shell v7.
+(08-compiz-after-sigsegv.png: decorated desktop back, apport dialog for the intentional crash)
+
+## side finding, not gtk-nocsd
+/usr/lib/cargo/bin/coreutils/timeout (uutils) re-raises a child's SIGSEGV with core
+dumps enabled, so apport files a timeout crash for every child that segfaults:
+  env -u LD_PRELOAD timeout 5 sh -c 'kill -SEGV $$'  -> _usr_lib_cargo_bin_coreutils_timeout.1000.crash
+GNU timeout disables core dumps before re-raising. Not investigated further.

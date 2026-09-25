@@ -52,6 +52,14 @@ Current layer: **A** (keep Unity 7 on X11 alive).
   gtk-nocsd `+unity2`). All three in aptly, verified on target over five
   restarts on a 2x2 workspace grid. `research/compiz-restart/`.
 
+- **gtk-nocsd 4.8 (LP #2158965).** Chromium browsers lost their window
+  buttons under Unity; resolute's March snapshot empties the decoration
+  layout Chromium reads. Rebased on Debian 4.8-1 as `4.8-1+unity1` (our two
+  crash-handler backports are part of it). Chrome has its buttons, 13 GTK
+  applications A/B-tested without regressions, gnome-sound-recorder no longer
+  crashes, crash handler and compiz restart work. In aptly.
+  `research/gtk-nocsd-4.8/`.
+
 - **Known issue #4 (wallpaper over Calamares) fixed.** It is the OEM
   first-time setup session, not the vendor's install: xfwm4 raises the
   focused fullscreen `basicwallpaper` window above Calamares, after a startup

@@ -953,3 +953,21 @@ keyboard (0ubuntu3 adds `lightdm-vala`; we did the same, plus `systemd-dev`);
 datetime, power and session are unchanged there; upstreams are bzr-only and
 dead. Replacing them with the Ayatana indicators was not considered here: that
 changes the panel's components and is May's call. `research/indicator-ftbfs/`.
+
+## 2026-09-25 - gtk-nocsd: take 4.8 whole, not a cherry-pick (agent A)
+
+LP #2158965 (Chromium without window buttons under Unity) is fixed upstream in
+ecd66fe (4.0). We ship Debian's 4.8-1 merged into our branch as
+`4.8-1+unity1` rather than ecd66fe alone: ecd66fe conflicts with our
+2026-03-21 snapshot (33 earlier commits change the same file), 4.8 is what
+Debian and 26.10 carry, and it also fixes the gnome-sound-recorder crash
+recorded on 2026-09-24. The risk - six months of behaviour changes in a
+library preloaded into every session process - was checked with 13
+applications side by side with the old library, the crash handler, a compiz
+SIGSEGV and a logout cycle; the only visible changes are upstream's header
+titles.
+
+Rule 0: the fix and its confirmation by the reporter are on codeberg #67;
+Launchpad has no SRU in progress (the bug is Confirmed, with a request to
+test in 26.10). `research/gtk-nocsd-4.8/`.
+

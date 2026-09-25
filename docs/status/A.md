@@ -5,17 +5,18 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: cinnamon-session `+unity3` (#214 backport, quit
-once) published (`research/cinnamon-session-214-202/`). Open: #3 itself (not
+Nothing in flight. Last: gtk-nocsd `4.8-1+unity1` (LP #2158965, Chromium
+window buttons) published (`research/gtk-nocsd-4.8/`). Open: #3 itself (not
 reproduced).
 
 ## State of `target`
 
 Since 2026-09-24 13:11 boot (full upgrade from our aptly), plus by `dpkg -i`
-then matched by aptly: unity `+unity9`, compiz `+unity2`, gtk-nocsd `+unity2`
+then matched by aptly: unity `+unity9`, compiz `+unity2`, gtk-nocsd `4.8-1+unity1`
 (dbgsyms for them installed too). Workspaces 2x2, six terminals spread over
 them. Also installed: libxpathselect1.4v5 (Unity introspection),
-libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor; xdotool, gdb,
+libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor,
+gnome-sound-recorder, google-chrome-stable 154 (adds `google-chrome.sources`); xdotool, gdb,
 test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, set from builder at 17:26Z
 - not synchronised, check after a host sleep. `~/.dirty` present.
 
@@ -33,5 +34,5 @@ test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, s
   `~/work/a/unity` branch `fix/compiz-teardown` (merged).
 - `packages/lightdm` - gbp, branch `unity/resolute` (`1.32.0-6ubuntu4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/lightdm.
 - `packages/unity-session` - branch `unity/resolute` (`49.4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/unity-session.
-- `packages/gtk-nocsd` - salsa packaging, branch `unity/resolute` (`+unity2`,
-  two quilt backports), https://github.com/Ubuntu-Unity-LifeSupport/gtk-nocsd.
+- `packages/gtk-nocsd` - salsa packaging, branch `unity/resolute` (`4.8-1+unity1`,
+  merge of Debian 4.8-1, no patches), https://github.com/Ubuntu-Unity-LifeSupport/gtk-nocsd.
