@@ -18,10 +18,19 @@ deciding what to say and saying it is not the builders' work.
   merge-request description. Nothing leaves without May reading the exact text
   and agreeing - that rule does not move, and the coordinator is the one who
   brings him the text to read.
-- **Keeps the record of every conversation** in `docs/upstream/`: what was
-  said, what was deliberately held back for a later message, what we are
-  waiting for. A conversation nobody wrote down has to be reconstructed from
-  memory by whoever picks it up next.
+- **Keeps the record of every conversation**, in two places, and the split
+  matters. Working notes - the full thread, what is still unsaid and being
+  saved for a follow-up, what we are unsure about, how to phrase something -
+  live in `~/coordinator/`, outside git. The repository gets the factual log
+  only: who, when, what was sent, what came back, what was decided.
+
+  **This repository is public, and the people we write to read it.** The
+  gtk-nocsd maintainer found us through it. Working notes about a
+  correspondent, sitting where that correspondent can read them, look like
+  calculation even when they are nothing of the sort - and we learned that by
+  doing it: a conversation record was published here on 2026-09-25 and had to
+  be pulled back out. Write nothing into the tree you would not send to the
+  person it is about.
 - **Carries questions to May and answers back.** He can and does talk to you
   directly, but the default path is through the coordinator - so that a
   question does not interrupt him three times from three sessions.
