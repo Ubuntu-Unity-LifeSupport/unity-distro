@@ -984,3 +984,62 @@ Rule 0: Vala main and 0.56.19 unchanged, no Vala issue; 26.10 0ubuntu4 still
 fails; Ayatana (C rewrite, no tests), Debian (no package), gitlab forks (same
 line) have nothing. Checked `lib/`: the service only connects to notify, never
 emits it that way.
+
+## 2026-09-25 - release re-check of agent A's fixes: patch stays everywhere (agent A)
+
+Rule 0's new last step, applied backwards to everything A carries: does a
+newer release already contain the fix, and what would that version cost?
+Measured by builds in a clean resolute chroot; details and links in
+`research/release-recheck-a/`.
+
+| Package | Newer version checked | Contains our fix? | Answer |
+|---|---|---|---|
+| cinnamon-session | 6.6.4 (Debian, 26.10); master 6.7-unstable | 6.6.4: none of five. master: 9409c18 (our backport, identical) and cbcc364 (equivalent of "Don't ask a Cinnamon that is not running") | **patch**, 6.4.2-1+unity3 unchanged |
+| lightdm | 1.33.1 (Debian), main | no - #484 still open | **patch** |
+| unity-settings-daemon | 26.10.1ubuntu.build1 | no - same tree as our base | **patch**, keep our base |
+| unity, compiz, unity-session | none exists | - | **patch** |
+| gtk-nocsd | 4.8 is the latest | already taken (2026-09-25) | **version** |
+| light-locker | 1.9.0 / master | no (decision of 2026-09-23 stands) | **patch** |
+
+**cinnamon-session, and a correction to the reason in CLAUDE.md.** Rule 0 now
+cites cinnamon-session as the case where 6.6 "needs a libcinnamon-desktop
+26.04 does not have". Measured: 6.6.4-1 as packaged does fail on
+`libcinnamon-desktop-dev (>= 6.6)`, but that bound is Debian's ("Bump breaks
+and deps to 6.6", 6.6.3-1); upstream's `meson.build` needs `>= 6.0.0`, and with
+the bound relaxed to 6.4 it builds in 46 s. So the price of 6.6.4 is one line
+in debian/control, not a library. The patch stays for a different reason:
+**6.6.4 contains none of our five fixes**, so taking it would add a series'
+worth of behaviour change (`cinnamon-session.target` wired to
+`graphical-session.target`, next to our login-race fix) and remove nothing.
+The version that does contain two of them is master, which is not a release.
+The CLAUDE.md sentence is the host's; I have not edited it - May decides.
+
+**Host's sharpest question - does upstream's #214 fix collide with our
+inhibitor patch?** No. 9409c18 changes `csm_manager_quit()`/csm-systemd; our
+inhibitor patch changes `end_session_or_report_inhibitors()` in the query
+phase, which upstream has not touched. Our quit-once guard is still needed
+on master (`end_phase()` still re-enters `csm_manager_quit()`, logind answers
+OperationInProgress). When we move to a release that contains master:
+drop the 9409c18 backport and "Don't ask a Cinnamon...", keep the other three;
+do not fuzz "Don't ask..." onto master - it lands in the wrong function.
+
+**lightdm 1.33.1** builds in resolute as Debian packages it (111 s) and has no
+liblightdm ABI change, but does not fix #484, so it is not an answer to our
+bug. Whether to move to 1.33 for its own sake (user switching fixed, greeter
+cancel path changed) is a separate question, not taken here.
+
+**unity-settings-daemon 26.10.1ubuntu** builds too (270 s), but it is our base
+plus packaging churn, and its packaging looks broken (plugins installed
+outside the path compiled into the daemon - read from the .deb, not run). Not
+taken.
+
+**xorg-server** is not patched by us, but the host listed it: 21.1.24-1ubuntu1
+from 26.10-proposed builds in resolute unchanged (363 s, same debian/control)
+and closes the 11 CVEs open in resolute; it does not contain the #2163497
+FindGlyphRef fix. Taking it means carrying the X server in our archive until
+Ubuntu ships a security update - for May to decide, the cost is now measured.
+
+Related work found on the way, nothing to take: the Gentoo unity7 overlay
+carries an equivalent of our ThumbnailGenerator join fix and different
+approaches to the double shutdown dialog and to Nemo; MP 508187 (#2160299)
+has two Needs Fixing votes.

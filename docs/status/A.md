@@ -5,9 +5,14 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: gtk-nocsd `4.8-1+unity1` (LP #2158965, Chromium
-window buttons) published (`research/gtk-nocsd-4.8/`). Open: #3 itself (not
-reproduced).
+Nothing in flight. Last (2026-09-25, new A session `Агент A`): rule 0 release
+re-check of all A's fixes - no newer release contains any of them, patch stays
+everywhere (DECISIONS 2026-09-25, `research/release-recheck-a/`). Measurement
+builds in `~/work/a/relcheck/` (cinnamon-session 6.6.4 relaxed, u-s-d
+26.10.1ubuntu, xorg-server 21.1.24, lightdm 1.33.1 - all build in resolute;
+nothing published). For May: whether to carry xorg-server 21.1.24 (11 CVEs),
+and the CLAUDE.md cinnamon-session example (the 6.6 bound is packaging only).
+Open: #3 itself (not reproduced).
 
 ## State of `target`
 
