@@ -5,9 +5,8 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last: unity-settings-daemon `+unity3` (color plugin crash
-at logout, color plugin restart) published
-(`research/usd-color-logout-crash/`). Open: #3 itself (not reproduced).
+Nothing in flight. Last: lightdm `+unity1` (LP #2168421) published
+(`research/lightdm-sigterm-exit/`). Open: #3 itself (not reproduced).
 
 ## State of `target`
 
@@ -31,6 +30,7 @@ test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, s
 - `packages/compiz` - branch `unity/resolute` (`+unity2`), https://github.com/Ubuntu-Unity-LifeSupport/compiz.
 - `packages/unity` - `unity/resolute` at `+unity8` (tag), built from worktree
   `~/work/a/unity` branch `fix/compiz-teardown` (merged).
+- `packages/lightdm` - gbp, branch `unity/resolute` (`1.32.0-6ubuntu4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/lightdm.
 - `packages/unity-session` - branch `unity/resolute` (`49.4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/unity-session.
 - `packages/gtk-nocsd` - salsa packaging, branch `unity/resolute` (`+unity2`,
   two quilt backports), https://github.com/Ubuntu-Unity-LifeSupport/gtk-nocsd.

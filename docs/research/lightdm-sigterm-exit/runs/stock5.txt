@@ -1,0 +1,23 @@
+03:54:08.296234428 lightdm 1.32.0-6ubuntu4
+03:54:41.759298365 greeter pid 155925, its session-child 155890: root     lightdm --session-child 17 20
+03:54:42.128368020 signal_cb 0x1a7b0, child_pid offset 0x4029c, base 0x5a1d4e566000, address 0x5a1d4e5a629c
+$1 = 155925
+$2 = 0
+$3 = 0
+$4 = 1
+03:54:52.828432595 session-child 155890 STILL ALIVE 10 s after SIGTERM: state S wchan futex_do_wait
+#0  futex_wait (futex_word=0x72060e212ac0 <main_arena>, expected=2, private=0) at ../sysdeps/nptl/futex-internal.h:126
+#1  __GI___lll_lock_wait_private (futex=futex@entry=0x72060e212ac0 <main_arena>) at ./nptl/lowlevellock.c:34
+#2  0x000072060e0b23e1 in _int_free_chunk (av=0x72060e212ac0 <main_arena>, p=0x5a1d5e6ca000, size=96, have_lock=<optimiz
+#3  0x000072060e8b57f9 in ??? () at /usr/lib/x86_64-linux-gnu/libgnutls.so.30
+#4  0x000072060e877a84 in ??? () at /usr/lib/x86_64-linux-gnu/libgnutls.so.30
+#5  0x000072060eb000d2 in _dl_call_fini (closure_map=closure_map@entry=0x72060eaf4170) at ./elf/dl-call_fini.c:43
+#6  0x000072060eb046f0 in _dl_fini () at ./elf/dl-fini.c:120
+#7  0x000072060e0485e1 in __run_exit_handlers (status=status@entry=0, listp=0x72060e212680 <__exit_funcs>, run_list_atex
+#8  0x000072060e0486be in __GI_exit (status=status@entry=0) at ./stdlib/exit.c:148
+#9  0x00005a1d4e5807d3 in signal_cb (signum=<optimized out>) at /usr/src/lightdm-1.32.0-6ubuntu4/src/session-child.c:168
+#10 signal_cb (signum=<optimized out>) at /usr/src/lightdm-1.32.0-6ubuntu4/src/session-child.c:162
+#11 0x000072060e045cb0 in <signal handler called> () at /usr/lib/x86_64-linux-gnu/libc.so.6
+#12 __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:52
+#13 0x000072060e0a039c in __internal_syscall_cancel (a1=<optimized out>, a2=140729242470264, a3=0, a4=0, a5=0, a6=0, nr=
+03:55:53.849858127 after lightdm restart: seat0=432/mike

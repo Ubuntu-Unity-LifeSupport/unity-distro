@@ -1,0 +1,9 @@
+03:49:46.893099451 lightdm 1.32.0-6ubuntu4
+03:50:20.324210794 greeter pid 149512, its session-child 149477: root     lightdm --session-child 17 20
+03:50:20.703305517 signal_cb 0x1a7b0, child_pid offset 0x4029c, base 0x5c0ef47fb000, address 0x5c0ef483b29c
+$1 = 149512
+$2 = 0
+$3 = 0
+$4 = 1
+03:50:21.275555899 session-child 149477 exited .0273 s after SIGTERM
+03:51:21.809105515 after lightdm restart: seat0=425/mike
