@@ -5,6 +5,12 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Trial rebuild of never-built section-B sources** (2026-09-25): 7 of 9 build;
+libindicator FTBFS fixed as `+unity1` (built, not in aptly - equivalent to the
+archive's binary), vala-panel FTBFS left alone (not used by Unity).
+`research/rebuild-trial/`; `packages/libindicator` branch `unity/resolute`
+(git-ubuntu clone, no remote of ours); builds in `~/work/b/rebuild`.
+
 **gtk-nocsd global menu, upstream-ready patch** (2026-09-25, May asked):
 one commit on upstream main 6b1f70a, desktop-neutral (gtk-shell-shows-menubar),
 upstream style; measured on target2, not sent, not in aptly; point 1 (talk

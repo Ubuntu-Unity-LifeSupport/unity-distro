@@ -1194,3 +1194,23 @@ carry this. Watch `rmadison xorg-server` for a resolute-security version at
 or above 21.1.24, and drop ours then. Not included: the FindGlyphRef crash fix
 (LP #2163497, `8d604fa14` on server-21.1-branch, after the 21.1.24 tag) -
 not seen in our session, so not patched.
+
+## 2026-09-25 - trial rebuild of section B's never-built sources: libindicator needs a fix, vala-panel is not ours (agent B)
+
+Nine sources nobody had built in resolute, built in a clean `sbuild -d
+resolute`: libunity, both lenses, unity-scope-home, indicator-application,
+indicator-appmenu and indicator-notifications build. Two do not.
+
+**libindicator** FTBFS: `indicators-pre.target` is no longer installed
+(`systemd.pc` moved to `systemd-dev`; systemd was never a declared build-dep),
+and `dh_install --fail-missing` stops. The target is load-bearing -
+`unity-panel-service` has `BindsTo=indicators-pre.target` - so a rebuild that
+only silenced the error would stop the panel service. 26.10 has the same
+version, Debian has no libindicator, upstream is dead: patch, not version.
+`+unity1` adds `systemd-dev`; built, file lists and exported symbols equal the
+archive's. Kept out of aptly: today's archive binary is equivalent, so it goes
+in with the first real change to libindicator.
+
+**vala-panel** FTBFS (Debian #1118323, GioUnix-2.0 GIR move); fixed on
+upstream master, unreleased. Unity does not use libvalapanel0 - not patched.
+`research/rebuild-trial/`.

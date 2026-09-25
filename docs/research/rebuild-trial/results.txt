@@ -1,0 +1,10 @@
+16:21Z libindicator attempted build 471s
+16:29Z libunity successful  489s
+16:32Z unity-lens-applications successful  186s
+16:35Z unity-lens-files successful  128s
+16:39Z unity-scope-home successful  256s
+16:43Z indicator-application successful  265s
+16:48Z indicator-appmenu successful  309s
+16:51Z indicator-notifications successful  184s
+16:55Z vala-panel attempted build 191s
+DONE
