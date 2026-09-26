@@ -1310,3 +1310,24 @@ libexecdir restored (our `0ubuntu7` base had broken autostart, `localeexec`
 and two polkit actions), and `+unity1`'s cursor change reverted - it was a
 guess from the code, and the plugin's hide-until-mouse is fine once its
 watches fire. `research/cursor-after-login/`.
+
+## 2026-09-26 - known issue #3 (clicks stop): fixed in Unity's decorations, compiz left as is (agent A)
+
+Reproduced with real device input: a right button (or the wheel) pressed during
+a left-button border drag, then any click on a window frame - pointer frozen by
+compiz's own synchronous frame grab (unity +unity9: 16 of 50 drag variants;
+the release notes' `killall -1 compiz` cleared all). Cause measured with gdb in
+compiz: `Edge::ButtonDownEvent` ran again for the second button, its
+`XUngrabPointer` stole the running resize's X grab, and the resize's `"resize"`
+grab stayed in compiz's list; compiz then skips `XAllowEvents` for frame
+grabs. Rule 0: #165 (no cause), LP #1885435 and #1644412 (trigger, no cause),
+no fix in any newer compiz or unity.
+
+**Where to fix:** Unity, which broke compiz's assumption that a plugin's X grab
+lasts until the plugin releases it. `+unity10` returns early from
+`Edge::ButtonDownEvent` while a `"resize"` or `"move"` grab exists: 0 of 50,
+resizing unchanged. A compiz hardening (thaw frame grabs even with a leaked
+grab) was weighed and not done - it would hide the next leak, not remove it,
+and would leave `"resize"` blocking Unity's Super key (LP #1644412). The
+#1-related hypothesis (idle monitor, second daemon, lock, suspend, user
+switch) was tested and not confirmed. `research/cursor-stops/`.

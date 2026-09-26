@@ -1,0 +1,50 @@
+plain#1 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#2 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#3 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#4 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#5 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#6 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#7 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#8 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#9 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+plain#10 ok | plain border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+rmb#1 STUCK | rmb border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00d5b  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#2 STUCK | rmb border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#3 STUCK | rmb border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#4 ok | rmb border@901,377 -> xterm 526x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+rmb#5 ok | rmb border@901,377 -> xterm 526x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+rmb#6 STUCK | rmb border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00b2f  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#7 STUCK | rmb border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#8 STUCK | rmb border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#9 STUCK | rmb border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb#10 STUCK | rmb border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#1 STUCK | rmb2 border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#2 ok | rmb2 border@901,377 -> xterm 514x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+rmb2#3 STUCK | rmb2 border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00ad7  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#4 STUCK | rmb2 border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#5 STUCK | rmb2 border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#6 STUCK | rmb2 border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#7 STUCK | rmb2 border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#8 ok | rmb2 border@901,377 -> xterm 514x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+rmb2#9 STUCK | rmb2 border@901,377 -> xterm 436x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00ad7  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+rmb2#10 ok | rmb2 border@901,377 -> xterm 514x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#1 ok | wheel border@901,377 -> xterm 442x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#2 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#3 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#4 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#5 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#6 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#7 STUCK | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00c9b  parent= client pid 2761 /usr/bin/compiz device frozen, state 6 passive grab type 4, detail 0x0  | after recover: click@200,207 reached=2 pointer=free keyboard=free
+wheel#8 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#9 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+wheel#10 ok | wheel border@901,377 -> xterm 448x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#1 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#2 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#3 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#4 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#5 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#6 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#7 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#8 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#9 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+mid#10 ok | mid border@901,377 -> xterm 424x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free

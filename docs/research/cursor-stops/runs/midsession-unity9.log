@@ -1,0 +1,21 @@
+== round 1
+baseline: click@200,207 reached=2 pointer=free keyboard=free
+u-s-d restart: click@200,207 reached=2 pointer=free keyboard=free
+IdleMonitor name stolen and returned: click@200,207 reached=2 pointer=free keyboard=free
+DPMS off, woken by real motion: click@200,207 reached=2 pointer=free keyboard=free
+locked: pointer=GRABBED keyboard=GRABBED
+lock + unlock (logind): click@200,207 reached=2 pointer=free keyboard=free
+== round 2
+baseline: click@200,207 reached=2 pointer=free keyboard=free
+u-s-d restart: click@200,207 reached=2 pointer=free keyboard=free
+IdleMonitor name stolen and returned: click@200,207 reached=2 pointer=free keyboard=free
+DPMS off, woken by real motion: click@200,207 reached=2 pointer=free keyboard=free
+locked: pointer=GRABBED keyboard=GRABBED
+lock + unlock (logind): click@200,207 reached=2 pointer=free keyboard=free
+== round 3
+baseline: click@200,207 reached=2 pointer=free keyboard=free
+u-s-d restart: click@200,207 reached=2 pointer=free keyboard=free
+IdleMonitor name stolen and returned: click@200,207 reached=2 pointer=free keyboard=free
+DPMS off, woken by real motion: click@200,207 reached=2 pointer=free keyboard=free
+locked: pointer=GRABBED keyboard=GRABBED
+lock + unlock (logind): click@200,207 reached=2 pointer=free keyboard=free

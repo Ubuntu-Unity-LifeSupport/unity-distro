@@ -1,0 +1,15 @@
+titleplain#1 STUCK | titleplain border@803,216 -> xterm 316x433 | pointer=free keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free | grabwin=0x42a00a89  parent= client pid 2761 /usr/bin/compiz device frozen, stat
+titleplain#2 ok | titleplain border@740,216 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#3 ok | titleplain border@740,216 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#4 ok | titleplain border@740,216 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#5 ok | titleplain border@740,216 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#1 ok | titlermb border@740,216 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#2 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#3 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#4 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#5 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#6 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#7 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#8 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#9 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb#10 ok | titlermb border@740,200 -> xterm 400x290 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
