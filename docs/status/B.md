@@ -14,10 +14,9 @@ Build directory: `~/work/b`
   - LibreOffice works only intermittently, as with the archive build;
   - hud-service did not crash.
 - See `research/hud/`.
-- **Open, waiting for May** (through C): gtk-nocsd +unity2's `51gtk-nocsd`
-  drops `libunity-gtk4-menu.so.0` from the session's `LD_PRELOAD`, so GTK4
-  global menus are off in Unity sessions. The fix is proposed in
-  `research/hud/`, not made.
+- gtk-nocsd +unity3 is in aptly (May approved it through C).
+  `51gtk-nocsd` no longer drops `libunity-gtk4-menu.so.0` from the session.
+  Checked under Unity (GTK4 panel menu and HUD) and Xfce.
 - Automatic mode is stopped after B-12. No new tasks.
 
 **overlay-scrollbar and ubuntu-unity-meta** (2026-09-26, B-11): both are

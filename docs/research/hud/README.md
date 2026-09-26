@@ -103,21 +103,50 @@ Also seen, harmless: window-stack-bridge takes the application id from
 `QFileInfo::baseName()`, so every reverse-DNS desktop file
 (`org.gnome.TextEditor.desktop`) becomes the id `org`.
 
-## Found on the way: gtk-nocsd +unity2 removes unity-gtk4-menu from the session
+## Found on the way: gtk-nocsd +unity2 removed unity-gtk4-menu from the session (fixed in +unity3)
 
-- **Cause.** Our `/etc/X11/Xsession.d/51gtk-nocsd` (gtk-nocsd 4.8-1+unity2,
-  `research/nocsd-gaps/`) sets `LD_PRELOAD=libgtk-nocsd.so.0` in the X
-  session. `95dbus_update-activation-env --all` then writes it over the
-  value the user manager built from environment.d.
-- **Result.** Compiz, the user manager and every application started from
-  the session have only gtk-nocsd, so no GTK4 application has a global menu
-  or HUD.
-- **Proof.** With the script moved aside and a reboot, the same session has
-  `libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`.
-- **Status.** The GTK4 row above was measured in that session.
-- **Proposed fix** (gtk-nocsd +unity3, not made; waiting for May through the
-  coordinator): when `LD_PRELOAD` is empty, `51gtk-nocsd` takes it from
-  `systemctl --user show-environment` first.
+**The bug in +unity2.**
+- Our `/etc/X11/Xsession.d/51gtk-nocsd` (gtk-nocsd 4.8-1+unity2,
+  `research/nocsd-gaps/`) set `LD_PRELOAD=libgtk-nocsd.so.0` in the X
+  session.
+- `95dbus_update-activation-env --all` then wrote that over the value the
+  user manager had built from environment.d.
+- Compiz, the user manager and every application started from the session
+  were left with gtk-nocsd only, so no GTK4 application had a global menu or
+  HUD.
+- Proof: with the script moved aside and a reboot, the same session had
+  `libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`. The GTK4 row above was
+  measured in that session.
+
+**Fix: gtk-nocsd `4.8-1+unity3`** (May's approval through the coordinator;
+commit `a2a0747` on `unity/resolute`,
+https://github.com/Ubuntu-Unity-LifeSupport/gtk-nocsd).
+- When the session has no `LD_PRELOAD`, `51gtk-nocsd` starts from
+  `systemctl --user show-environment`, that is from environment.d's full
+  list, and then adds gtk-nocsd if it is missing.
+- It always exports the result.
+- The debdiff against +unity2 is `51gtk-nocsd` and the changelog only.
+
+**Checked.**
+- Simulation with a stand-in `systemctl`, four cases: the user manager has
+  both libraries; it has gtk-nocsd only; there is no user manager; the
+  session already has a preload. Each gives the expected value in
+  `LD_PRELOAD` and `STARTUP`.
+- **Unity on target2**, Clean-2 + aptly + unity-gtk4-menu + +unity3, after
+  a reboot:
+  - the user manager, compiz, unity-panel-service and hud-service all
+    have `libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`;
+  - gnome-text-editor's menu is on the panel
+    (`shots/gtk4-menu-after-nocsd-unity3.png`);
+  - the HUD finds Сохранить / Сохранить как….
+- **Xfce on target2** (minimal xfce4-session, xfwm4, panel; autologin):
+  - xfce4-session, xfwm4 and xfce4-panel have the same `LD_PRELOAD`, so
+    gtk-nocsd is still loaded, which was the point of +unity2;
+  - the GTK4 editor keeps its in-window menu button, so unity-gtk4-menu
+    takes nothing away without a Unity panel;
+  - the window looks the same as with gtk-nocsd alone
+    (`shots/xfce-nocsd-unity3.png`). Its missing xfwm4 title bar is there
+    in both runs, from the minimal Xfce install.
 
 ## Known limitation: no global menu for GTK2 applications
 

@@ -1583,6 +1583,11 @@ starts) is recorded in `research/hud/`, not fixed:
 - One of its two mechanisms is not traced to the line.
 - The coordinator stopped the automatic mode during B-12.
 
-**Found:** `51gtk-nocsd` (gtk-nocsd +unity2) removes unity-gtk4-menu from
-`LD_PRELOAD` in Unity sessions. A fix is proposed, and the decision is May's
-(through the coordinator).
+**Found and fixed:**
+- `51gtk-nocsd` (gtk-nocsd +unity2) removed unity-gtk4-menu from
+  `LD_PRELOAD` in Unity sessions.
+- May approved the fix through the coordinator. gtk-nocsd +unity3 starts from
+  the user manager's `LD_PRELOAD`, so environment.d stays the single list of
+  preloads.
+- The script is kept rather than removed: Xfce and other sessions without
+  systemd import still need it to load gtk-nocsd.

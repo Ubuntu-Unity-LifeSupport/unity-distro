@@ -299,11 +299,10 @@ not a bug. See DECISIONS.md._
   shipped in noble and left along with GTK2 support. GTK2 applications keep
   their menus in the window and log a harmless "Failed to load module
   appmenu-gtk-module". Not planned (coordinator, 2026-09-26).
-- **Regression: gtk-nocsd 4.8-1+unity2 turns GTK4 global menus off in Unity
-  sessions** (2026-09-26, agent B). Its `/etc/X11/Xsession.d/51gtk-nocsd`
-  `LD_PRELOAD` overwrites the environment.d value that carries
-  `libunity-gtk4-menu.so.0`. The fix is proposed in `research/hud/`; the
-  decision is May's.
+- _Fixed 2026-09-26 (agent B):_ gtk-nocsd 4.8-1+unity2 had turned GTK4
+  global menus off in Unity sessions (`51gtk-nocsd` overwrote
+  environment.d's `LD_PRELOAD`). The fix is gtk-nocsd +unity3, in aptly; see
+  `research/hud/`.
 - **HUD is empty for LibreOffice on about half of its starts**, in the
   archive hud as in ours. See `research/hud/`.
 

@@ -346,3 +346,13 @@ twice. Whether 0.9 stays in aptly once the parts are in gtk-nocsd is for May.
   - `groups-*.txt`, `recheck*.txt`: the group runs.
   - `epi-panel.out`.
 - `shots/`: Epiphany's menu on the panel, Papers with a document.
+
+## +unity3: the Xsession script kept only gtk-nocsd (2026-09-26, agent B)
+
++unity2's `51gtk-nocsd` set `LD_PRELOAD` in Unity sessions too. Exported to
+the user manager afterwards, it dropped every other library listed in
+environment.d, among them unity-gtk4-menu.
+
++unity3 starts from `systemctl --user show-environment` when the session has
+no `LD_PRELOAD`. `tests/51gtk-nocsd` is the new script; the measurement is
+in `research/hud/`.
