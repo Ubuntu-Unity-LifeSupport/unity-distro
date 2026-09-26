@@ -5,6 +5,13 @@ Build directory: `~/work/b`
 
 ## Now
 
+**indicator-datetime +unity2** (2026-09-26, coordinator's task B-2): LP
+#1848969 and #2099742. A task with only a due date aborted the service.
+- Reproduced; fixed.
+- 29 of 29 tests, including a new one.
+- In aptly.
+- `research/indicator-datetime-tasks/`; build in `~/work/b/idt-fix`.
+
 **indicator-keyboard +unity3** (2026-09-26, coordinator's task B-1): LP #2166139.
 It crashed in g_variant_iter_new when AccountsService had no InputSources
 cached, for instance after an accounts-daemon restart.

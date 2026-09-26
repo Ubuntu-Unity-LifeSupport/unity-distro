@@ -1,0 +1,6 @@
+BEGIN:VTODO
+UID:b2-todo-nostart@example.org
+DTSTAMP:20260926T100000Z
+SUMMARY:Task without start or due
+STATUS:NEEDS-ACTION
+END:VTODO

@@ -1349,3 +1349,21 @@ documents that NULL, so it is not a bug there.
 Reproduced by restarting accounts-daemon under the greeter's service:
 `+unity2` crashed 3 of 3, `+unity3` survived 3 of 3. Tests pass 10 of 10,
 including a new one for NULL. Details: `research/indicator-keyboard-2166139/`.
+
+## 2026-09-26 - indicator-datetime +unity2 for LP #1848969, #2099742 (agent B)
+
+**Context.** The coordinator's task B-2.
+
+**Cause.** A VTODO with only DUE got an unset begin. Its debug message
+formatted it anyway and aborted the service. Reproduced on target2 with
+`+unity1`.
+
+**Decision.** Fix the cause in our package: place such a task at its DUE,
+skip components without a time, and add a test. Weighed against Ayatana's
+47e005d (make `DateTime::get()` return NULL). That hides the abort but
+passes NULL on and still leaves the task without a time.
+
+Measured: 29 of 29 tests pass; the control build without the fix fails the
+new test. Details: `research/indicator-datetime-tasks/`.
+
+#1515821 is intended behaviour (one occurrence per UID) and is left alone.
