@@ -5,6 +5,21 @@ Build directory: `~/work/b`
 
 ## Now
 
+**hud** (2026-09-26, B-12): hud is B's now.
+- `+unity1` builds in resolute: CMake 4, systemd-dev and C++17 fixed, 6/6
+  test suites pass.
+- File lists and symbols equal the archive's, and the package is in aptly.
+- On target2:
+  - the HUD finds GTK4 (unity-gtk4-menu) and GTK3 (appmenu) menus;
+  - LibreOffice works only intermittently, as with the archive build;
+  - hud-service did not crash.
+- See `research/hud/`.
+- **Open, waiting for May** (through C): gtk-nocsd +unity2's `51gtk-nocsd`
+  drops `libunity-gtk4-menu.so.0` from the session's `LD_PRELOAD`, so GTK4
+  global menus are off in Unity sessions. The fix is proposed in
+  `research/hud/`, not made.
+- Automatic mode is stopped after B-12. No new tasks.
+
 **overlay-scrollbar and ubuntu-unity-meta** (2026-09-26, B-11): both are
 B's now.
 - overlay-scrollbar `+unity1` is a stub: no GTK2 module, and

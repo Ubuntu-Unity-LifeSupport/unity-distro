@@ -293,6 +293,20 @@ _Retracted 2026-09-22: we briefly listed "no wallpaper on target" as a sixth
 item. It was an artefact of capturing the X11 root window under a compositor,
 not a bug. See DECISIONS.md._
 
+## Known limitations and regressions in our archive
+
+- **No global menu for GTK2 applications.** `appmenu-gtk2-module` was last
+  shipped in noble and left along with GTK2 support. GTK2 applications keep
+  their menus in the window and log a harmless "Failed to load module
+  appmenu-gtk-module". Not planned (coordinator, 2026-09-26).
+- **Regression: gtk-nocsd 4.8-1+unity2 turns GTK4 global menus off in Unity
+  sessions** (2026-09-26, agent B). Its `/etc/X11/Xsession.d/51gtk-nocsd`
+  `LD_PRELOAD` overwrites the environment.d value that carries
+  `libunity-gtk4-menu.so.0`. The fix is proposed in `research/hud/`; the
+  decision is May's.
+- **HUD is empty for LibreOffice on about half of its starts**, in the
+  archive hud as in ours. See `research/hud/`.
+
 ## Rules for going upstream
 
 Written up in `docs/CONTRIBUTING-UPSTREAM.md`, summarised in `CLAUDE.md`, and

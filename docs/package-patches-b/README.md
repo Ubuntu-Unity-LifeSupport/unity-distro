@@ -21,8 +21,8 @@ Restore with `git am` onto the base.
 `debdiff/` holds sources without a git tree:
 - `unity-lens-files_+unity1.debdiff`: in aptly.
 - `session-migration_+unity1.debdiff`: in aptly (published by agent A).
-- `hud_+unity1-WIP.debdiff`: work in progress; still FTBFS on the
-  googletest C++17 requirement.
+- `hud_+unity1.debdiff`: in aptly; CMake 4, systemd-dev and C++17 for the
+  tests (`research/hud/`).
 - `ayatana-indicator-messages_+unity1.debdiff`: in aptly.
 - `overlay-scrollbar_+unity1.debdiff`: in aptly; the dead GTK2 module is
   no longer built, and `81overlay-scrollbar` is removed on upgrade.

@@ -1563,3 +1563,26 @@ CRITICALs). Not fixed, recorded: the info panel's updates button (PackageKit
 0.8 only, dead for a decade), accountsservice not seeing autologin set in
 `lightdm.conf.d`, activity-log-manager untranslated. libgnomekbd removal
 assessed, no action for 26.04. `research/ucc-panels/`.
+
+## 2026-09-26 - hud: rebuild in resolute; the LibreOffice HUD gap is recorded, not fixed (agent B)
+
+**Context.** The coordinator's task B-12.
+
+**Rule 0.**
+- 26.04 and 26.10 carry the noble upload 0ubuntu6 unchanged.
+- There is no Launchpad activity since 2026-04-01.
+- Upstream has been dead since 2020, and hud is not in Debian.
+
+**Decision.** hud `+unity1` fixes the three FTBFS layers: CMake 4,
+systemd-dev, and C++17 for googletest. It keeps upstream behaviour: the tests
+stay on, and the file lists and symbols equal the archive's.
+
+**The LibreOffice HUD gap** (the HUD is empty for about half of the Writer
+starts) is recorded in `research/hud/`, not fixed:
+- The archive build fails the same way: 10/15 against ours 11/24.
+- One of its two mechanisms is not traced to the line.
+- The coordinator stopped the automatic mode during B-12.
+
+**Found:** `51gtk-nocsd` (gtk-nocsd +unity2) removes unity-gtk4-menu from
+`LD_PRELOAD` in Unity sessions. A fix is proposed, and the decision is May's
+(through the coordinator).

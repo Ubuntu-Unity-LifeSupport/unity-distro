@@ -8,10 +8,19 @@ diff -u hud-14.10+17.10.20170619/CMakeLists.txt hud-14.10+17.10.20170619/CMakeLi
  
  set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
  
+@@ -138,7 +138,7 @@
+ )
+ 
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -fPIC")
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fno-permissive")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fno-permissive")
+ 
+ include(GenerateExportHeader)
+ 
 diff -u hud-14.10+17.10.20170619/debian/changelog hud-14.10+17.10.20170619/debian/changelog
 --- hud-14.10+17.10.20170619/debian/changelog
 +++ hud-14.10+17.10.20170619/debian/changelog
-@@ -1,3 +1,14 @@
+@@ -1,3 +1,16 @@
 +hud (14.10+17.10.20170619-0ubuntu6+unity1) resolute; urgency=medium
 +
 +  * CMakeLists.txt, cmake/*.cmake: require CMake 3.10. CMake 4 removed
@@ -20,8 +29,10 @@ diff -u hud-14.10+17.10.20170619/debian/changelog hud-14.10+17.10.20170619/debia
 +  * debian/control: build-depend on systemd-dev instead of systemd. systemd.pc
 +    moved there, so systemduserunitdir came out empty and CMake refused to
 +    install hud.service and window-stack-bridge.service.
++  * CMakeLists.txt: build with -std=c++17. The googletest of resolute needs
++    at least C++17, so the tests no longer compiled.
 +
-+ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 15:17:02 +0000
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 18:16:27 +0000
 +
  hud (14.10+17.10.20170619-0ubuntu6) noble; urgency=medium
  
