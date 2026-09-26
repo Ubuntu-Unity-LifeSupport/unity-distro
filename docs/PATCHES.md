@@ -2,6 +2,13 @@
 
 Every patch we carry or intend to send gets a row here.
 
+For each new row include its task ID, target-series source version, source
+commit, evidence path, verification result, current status, and published
+package version where applicable. `docs/research/` is the detailed fix record;
+this table is its searchable index. Record `ALREADY_FIXED` and
+`NOT_REPRODUCED` outcomes in the task evidence and decisions even when there
+is no patch to list.
+
 Status moves `draft` -> `ready` -> `sent` -> `merged` / `rejected`. A row is
 `ready` only when its directory under `docs/upstream/` is complete and the
 checklist in `CONTRIBUTING-UPSTREAM.md` section 9 passes. `sent` is set by

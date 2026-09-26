@@ -177,8 +177,9 @@ Never include in an outgoing patch:
 - incidental refactoring
 - reformatting, reindentation or rewrapping of lines the fix does not touch
 - renaming things "for clarity"
-- **changes to existing tests** - that edits the project's specification rather
-  than fixing a bug
+- changes to unrelated existing tests. A focused test change is allowed when
+  the test itself is defective or the fix requires it; explain why and keep it
+  in the same one-problem patch
 - a second or third fix, because you were passing through
 
 Anything found along the way goes into `docs/PATCHES.md` as a separate
@@ -300,7 +301,7 @@ Run the whole list. Any "no" means it does not go out.
 [ ] Every stated consequence or limitation was measured, or is marked as an
     assumption ("probably costs one click" is not "costs one click")
 [ ] Diff is minimal: one problem, no refactoring, no reformatting
-[ ] Existing tests untouched
+[ ] No unrelated test changes; any focused test change is justified
 [ ] I can explain every line without AI assistance
 [ ] Effect on existing users and backward compatibility thought through
 [ ] Commit: under 79 columns, blank line, explains why, carries (LP: #NNN)

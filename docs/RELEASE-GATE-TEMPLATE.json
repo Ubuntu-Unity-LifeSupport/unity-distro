@@ -1,0 +1,23 @@
+{
+  "task_id": "UNITY-YYYYMMDD-NNN",
+  "package": "source-package",
+  "candidate_version": "exact-version",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "packages/<package>",
+  "source_remote_ref": "origin/unity/resolute",
+  "source_commit": "full-commit-id",
+  "built_from_source_commit": "full-commit-id",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-YYYYMMDD-NNN-topic/README.md",
+    "build_log": "docs/research/UNITY-YYYYMMDD-NNN-topic/build.log",
+    "version_check": "docs/research/UNITY-YYYYMMDD-NNN-topic/version-check.md",
+    "verification_record": "docs/research/UNITY-YYYYMMDD-NNN-topic/verification.md"
+  }
+}

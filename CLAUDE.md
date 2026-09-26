@@ -4,21 +4,23 @@ You do not remember previous sessions. This repository is your memory.
 
 ## Every session
 
-0. **You are not the only session here.** Read `docs/TWO-AGENTS.md` and
-   `docs/COORDINATOR.md`, then confirm with May whether you are agent A or
-   agent B before touching anything. Register yourself in `~/AGENTS.md` so the
-   others can address you, run `ListAgents` to see who is around, and
-   `tail -20 ~/AGENTS-LOG.md` to see what the other agent is doing. **Before
-   you take any task, message him and ask whether he has already taken it.**
-   Anything that is not the code - a reply to write, a comment to read, a
-   question for May - goes to the coordinator instead of into your own hours.
-1. Read `docs/STATUS.md` first - it says what is in flight and what is broken.
-2. Do the work.
-3. Update `docs/STATUS.md`, record any decision in `docs/DECISIONS.md`, and
-   `git push`. **Nothing that is not pushed exists** - the builder VM is the
-   most fragile part of this setup.
+0. Read `docs/TWO-AGENTS.md`, `docs/COORDINATOR.md`, and
+   `docs/ENGINEERING-PROCESS.md`. Confirm whether you are A, B, or C; never
+   infer a role from a stale session name. If you are A or B, use only your
+   assigned desktop and build directory.
+1. Read the private `~/coordinator/TASKS.md` board, your own
+   `docs/status/A.md` or `docs/status/B.md`, and the last 20 lines of
+   `~/AGENTS-LOG.md`. `docs/STATUS.md` is a dated summary, not a live task
+   board.
+2. Do not start package work without an assigned task ID and owner entry on
+   the board. Follow the evidence gates in `docs/ENGINEERING-PROCESS.md`.
+   Replies, external comments, and questions for May go through the coordinator.
+3. Update your own status file, append activity to `AGENTS-LOG.md`, record
+   decisions and patches in their project records, then commit and push. A task
+   is not complete until its terminal state and evidence are recorded.
 
-If a session is interrupted, `STATUS.md` must be enough to resume from.
+If a session is interrupted, the private task board gives the current owner
+and state; the agent status file gives its assigned machine/workspace state.
 
 ## Conventions
 
@@ -28,8 +30,10 @@ If a session is interrupted, `STATUS.md` must be enough to resume from.
   does, link to the upstream MR or bug, status.
 - Patches are quilt series in `debian/patches/`, managed with `gbp pq`. Never
   fork an upstream tree wholesale.
-- Patched Ubuntu packages take a `+unity1` version suffix, e.g.
-  `1.7.0-1ubuntu1+unity1`. Rebase them when Ubuntu ships a security update.
+- Patched Ubuntu packages use a `+unityN` suffix on the exact target-series
+  base version, e.g. `1.7.0-1ubuntu1+unity1`. Check Debian ordering and the
+  actual apt candidate with `package-version-safety` before building and
+  publishing. Rebase when Ubuntu ships a security update.
 - Builds happen in a clean chroot via `sbuild`. Never build in the builder's
   own system.
 - Long builds go in `tmux` with a log file, never an interactive command.
@@ -99,8 +103,10 @@ three lines matter. Spawn a subagent, tell it exactly what to answer, and take
 back the conclusion with its links - not the raw pages. The same applies to any
 wide read: log trawls, package-wide greps, surveying a source tree you do not
 yet know. Your own context is for the work; delegate the digging. Run
-independent sweeps as several subagents at once rather than one after another. Twenty minutes, then record in `docs/DECISIONS.md`
-where you looked - found or not - and carry on.
+independent sweeps as several subagents at once rather than one after another.
+Twenty minutes is the initial search budget. Record sources and result in the
+task evidence; if the search is incomplete, mark `UNKNOWN` and stop before
+package code until May authorizes more investigation or defers it.
 
 **The last step of rule 0, the one we keep missing: has a newer version already
 fixed it?** A bug tracker says whether someone knows about it; a release says
@@ -151,6 +157,13 @@ we were working on.
 
 Run the checklist in section 9 of that document in full before sending
 anything. Any "no" stops the submission.
+
+Use the fixed outcomes and evidence card in `docs/ENGINEERING-PROCESS.md` for
+Rule 0. The 20-minute search budget limits research time; an incomplete search
+is `UNKNOWN`, not `NOT_FIXED`. If a newer release may contain the fix, measure
+its target-series build/dependencies and unrelated changes before choosing it
+over a backport. A versioned build dependency is a claim to check against the
+build system, not a measurement by itself.
 
 ## Do not
 

@@ -10,6 +10,14 @@ weighing how to answer and drafting one - an hour not spent on code, done less
 well than someone whose whole job that is. May's conclusion: reading replies,
 deciding what to say and saying it is not the builders' work.
 
+The coordinator owns the private `~/coordinator/TASKS.md` board. It is the
+single live source for task IDs, owners, and states. The coordinator may
+prioritize and assign work, check evidence gates, and stop a task that has not
+met them. It does not choose a package architecture or declare a fix technically
+correct; those require measured options from the implementer and independent
+verification. May resolves material disagreements and approves anything
+external.
+
 ## What the coordinator does
 
 - **Reads everything that arrives from outside**: issues, comments, review
@@ -37,6 +45,10 @@ deciding what to say and saying it is not the builders' work.
 - **Coordinates between A and B**: who takes what, what is blocked, what one of
   you found that the other needs. Not a manager of the work, a switchboard for
   it.
+- **Maintains task state**: assign a unique `UNITY-YYYYMMDD-NNN` ID before work
+  starts; never reuse it; keep one owner and one allowed state from
+  `docs/ENGINEERING-PROCESS.md`; confirm the previous owner is idle before
+  reassignment.
 
 ## What the coordinator does not do
 
@@ -48,6 +60,8 @@ deciding what to say and saying it is not the builders' work.
   it has an opinion on your work it says so as an opinion, with its reasoning,
   and you are free to measure and disagree. Several times it has been wrong and
   was corrected by measurement - that is the expected order.
+- Does not mark a package fix `READY_TO_PUBLISH` from a summary alone. The
+  evidence card and independent verifier result must be present.
 
 ## What to hand it, and what to keep
 

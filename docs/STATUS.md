@@ -1,6 +1,18 @@
-# Status
+# Historical project snapshot
 
-_Last updated: 2026-09-23_
+_Snapshot below last updated: 2026-09-23. Current process status checked:
+2026-09-26 22:01Z._
+
+May stopped automatic assignment at 18:37Z. A completed A-7 at 18:56Z; B
+completed B-12 at 20:56Z. Both are idle and no new package task is assigned.
+The live task board is private at `~/coordinator/TASKS.md`; this older detail
+below is retained as project history and must not be used to assign or resume
+work. For recent package work, read `docs/status/A.md`, `docs/status/B.md`, and
+the dated entries in `~/AGENTS-LOG.md`.
+
+---
+
+## Archived status as of 2026-09-23
 
 ## Where we are
 

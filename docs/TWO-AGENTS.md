@@ -12,12 +12,14 @@ how not to destroy the other agent's work. Read it before your first command.
 
 ## Which agent am I?
 
-May tells you at the start of the session: **"ты агент A"** or **"ты агент B"**.
+May explicitly assigns a session as **agent A**, **agent B**, or
+**coordinator C**. Never infer the role from a name or session ref. A/B use
+only their assigned desktop and build directory; C does not control either
+desktop or build packages.
 
-If he did not say, **ask him**. Do not guess and do not assume you are alone -
-both sessions run as user `claude` in the same home directory, so nothing in
-your environment distinguishes you. Guessing wrong means two agents writing to
-one test machine and to one build directory.
+If your role is not explicit, ask May and do not start package or VM work.
+Multiple sessions run as user `claude` in the same home directory, so nothing
+in your environment distinguishes the role.
 
 Announce yourself in `~/AGENTS-LOG.md` as soon as you know (see below).
 
@@ -65,6 +67,29 @@ you, check `hostname` before believing it.
   full (`target-desktop` vs `target-desktop-2`); they differ by one character
   and a wrong restore destroys an experiment that is running right now.
   `builder-server` is not controllable through it at all - you are inside it.
+
+## Snapshot restore gate
+
+Before restoring a VM:
+
+1. Confirm the task board assigns that exact machine to you; use the full VM
+   name (`target-desktop` or `target-desktop-2`). Never restore `oem-test`
+   without a task-board entry.
+2. Append a `START` entry to `~/AGENTS-LOG.md`. Shut the guest down cleanly
+   through your own SSH session or the guest-shutdown operation, then confirm
+   VirtualBox reports it powered off before touching snapshots.
+3. Issue one restore. If the result is ambiguous or the MCP call fails, do not
+   repeat the restore. Inspect/diagnose the VM state and ask May before any
+   recovery that could restart VBoxSVC; the builder itself runs inside that
+   VirtualBox host.
+4. Boot the guest and verify it from inside: fresh boot, expected package
+   versions, and (for a clean rollback) no `~/.dirty` marker. A reported
+   `current_snapshot` alone does not prove a restore completed.
+5. Append `DONE` with the observed state. A restore that cannot be verified is
+   `BLOCKED`, not successful.
+
+These checks are the safe interface for the VBox MCP; no local shell wrapper
+can guard a direct call to that MCP server.
 
 ## The rule that prevents lost work
 
@@ -137,28 +162,40 @@ Run `ListAgents` first and read `~/AGENTS.md` to see who else is around. If you
 cannot determine your own session id, register with the name alone and say so -
 a name the other agent can address is the part that matters.
 
-### Ask before you take a task
+### Inbox acknowledgement
 
-**Before starting work on anything - a package, a bug, an experiment - ask the
-other agent whether he has already taken it.** Not the log, not a guess: ask him
-and wait for the answer. The busy log tells you what was running when it was
-last written; only he knows what he is about to start.
+At the start of each assigned task and after a failed direct message, read your
+own `PEER-INBOX-A.md` or `PEER-INBOX-B.md`. The coordinator reads
+`~/coordinator/INBOX-from-A.md` and the matching B inbox when present. Inbox
+writers append messages; readers append an acknowledgement with the last
+timestamp or line handled. A file write alone is not a delivery. Before a
+shared aptly publication, record a direct ACK or have the coordinator confirm
+from the task board and activity log that the other package owner has no
+conflicting work.
 
+### Task assignment
+
+Do not start work by asking a peer whether a task is free. The coordinator or
+May assigns it on the private `~/coordinator/TASKS.md` board using a unique
+task ID and owner. The owner changes its state as work proceeds. This board is
+the claim; a stale session name, unread message, or `START` entry is not.
+
+Example record (illustrative ID only):
+
+```text
+UNITY-YYYYMMDD-NNN | A | INVESTIGATING | unity LP #12345 | evidence: docs/research/...
 ```
-SendMessage({to: "<other agent>", message: "Беру cinnamon-session 6.4.2 (баг с ингибиторами). Ты за него не брался?"})
-```
 
-Wait for a reply. If none comes within a few minutes, he is probably mid-task
-and not reading messages: append your claim to `~/AGENTS-LOG.md`, say in the
-line that you asked and got no answer, and start. Do not block forever - a
-deadlock where both agents wait for permission is worse than a collision you
-can notice and unwind.
+Only the coordinator or May may assign/reassign an owner. Before reassigning,
+check the owner's current status and activity log and get a direct answer when
+the session is reachable. An expired or silent session is not proof that a
+shared VM or build has been abandoned.
 
 If the direct channel does not work in practice - it has failed before between
 sessions on different machines - fall back to files: write to
 `~/PEER-INBOX-A.md` or `~/PEER-INBOX-B.md` (you write to the other agent's
-file, you read your own), and tell May the direct channel is dead so it gets
-fixed rather than quietly worked around.
+file, the receiver reads their own), append an ACK when read, and tell May so
+the channel can be fixed rather than quietly worked around.
 
 Use the channel for anything else that helps: a measurement that contradicts
 what the other agent recorded, a chroot you are about to rebuild, a warning

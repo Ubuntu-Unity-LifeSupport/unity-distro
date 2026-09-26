@@ -44,7 +44,8 @@ ayatana-indicator-messages.
 - appmenu `+unity1` checked with GIMP 3, LibreOffice and Chromium (snap).
   With the archive module GIMP segfaults 2 of 2 when the module is
   dropped; with `+unity1` it survives 2 of 2.
-- target2 is back on Clean-2, checked inside.
+- target2 was restored to Clean-2 after B-12 on 2026-09-26 20:56Z, checked
+  inside: fresh boot and no `~/.dirty` marker.
 
 **Rebuild file-loss survey** (2026-09-26, coordinator's task B-7):
 `research/rebuild-loss/`.
@@ -176,15 +177,16 @@ Calamares in the OEM first-time setup. Commit `b6b546b`, branch
 patch and notes in `research/calamares-oem/`). Confirmed on a real OEM
 install in VM `oem-test` (192.168.56.105 by DHCP, MAC 08:00:27:FC:1D:99;
 `ssh oemtest` in ~/.ssh/config). Its state now: end-user setup finished,
-user `tester` / `endusertest-2604`, `oem` removed. Snapshot `OEM-ready`
+user `tester` (password omitted from this public status), `oem` removed.
+Snapshot `OEM-ready`
 (host) is the state before the end user's first boot, `OEM-ready-fixed` the
 same with our basicwallpaper; oem-test currently runs `OEM-ready-fixed`'s
 first boot. The black screen seen at the OEM-preparation Unity login was
 not agent A's gvfs race (its journal, boot -1 on the `OEM-ready` disk: gvfs
 started in 1.8 s, never cancelled); it was a slow first start, ~51 s from
-autologin to compiz, told to A; OEM user there is
-`oem` / `oemtest-2604`, with openssh-server and B's key added. Test-VM
-passwords only.
+autologin to compiz, told to A; the OEM test account and its password are
+omitted from this public status. Rotate any test-VM password that appeared in
+Git history; deleting it from the current file does not remove old revisions.
 
 **nux** - agent B's since 2026-09-24. `0ubuntu15+unity1` in aptly: upstream
 0ubuntu15 (ICU in place of Unicode-licensed code, no boost-system) plus our

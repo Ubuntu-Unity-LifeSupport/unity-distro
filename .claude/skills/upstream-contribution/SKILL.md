@@ -29,11 +29,13 @@ Fires before everything else, including before analysis. Search outward:
    all series including devel and `-proposed`
 3. bug trackers, by symptom not by your theory; closed bugs often mean "done but
    never delivered"
-4. the web, through the host session, as specific questions
+4. the web and official tracker APIs directly, using specific queries
 
-Twenty minutes, then record in `docs/DECISIONS.md` where you looked - found or
-not - and carry on. Skip for our own code, typos, formatting, and anything
-already searched this session.
+Use `package-forensics` and the fixed result values in
+`docs/ENGINEERING-PROCESS.md`. Twenty minutes is a search budget: if the
+search is incomplete, record `UNKNOWN`, not `NOT_FIXED`. Skip for our own code,
+typos, formatting, and anything already searched for this exact version and
+scenario in the current task.
 
 Caught us three times in one day. Once the answer was a package already
 installed on the machine we were working on, visible in a crash dump we had
@@ -65,9 +67,10 @@ A bug that fails to hold up is a good outcome, not a wasted afternoon.
 ## Deferred drafts
 
 Finished contributions wait in `docs/upstream/<package>-<topic>/` until May is
-ready to send them. Before sending one that has been sitting, **re-run step 1
-today**: newer package version, someone else's bug, patch drift, still
-reproduces. Each directory's `README.md` carries its own re-check list.
+ready to send them. Before sending one that has been sitting, re-run the
+reproduction and existing-fix search today: newer package version, someone
+else's bug, patch drift, and whether the exact scenario still reproduces. Each
+directory's `README.md` carries its own re-check list.
 
 Send **one at a time**. A first impression forms around the weakest patch in a
 batch.
@@ -75,9 +78,11 @@ batch.
 ## Shape of the submission
 
 - Conversation first, patch second. Issue or bug, then the code.
-- One patch, one problem. No incidental refactoring, no reformatting, no
-  renames, and never touch existing tests. Side findings go to
-  `docs/PATCHES.md` as separate candidates.
+- One patch, one problem. No incidental refactoring, no reformatting, and no
+  renames. Do not modify unrelated existing tests; a focused test change is
+  allowed when the test itself is defective or the fix requires it, and the
+  evidence card must explain why. Side findings go to `docs/PATCHES.md` as
+  separate candidates.
 - You must be able to explain every line without AI help.
 - Commit: summary under 79 columns, blank line, body explains *why*,
   `(LP: #NNN)`.
