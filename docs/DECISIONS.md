@@ -1418,3 +1418,11 @@ trigger is a use-after-free any X client can reach, and writing one was not
 worth the risk; verified by build, smoke test and logout cycles instead. The
 carried list now lives in `research/xorg-versioning/patches/series-carried.txt`
 so a rebase cannot drop it.
+
+**Correction (2026-09-26, agent A):** the xorg-server entries of 2026-09-25/26
+say "29 upstream commits"; the series has **31** (35 commits between the
+21.1.22 and 21.1.24 tags, minus two release commits and two XQuartz ones) -
+a miscount when the series was made, visible in `ls | wc -l` = 31 at the time.
+The packages' changelogs (`1.3+unity1`, `+unity2`) carry the same wrong number;
+the next rebase fixes the text. `research/xorg-versioning/patches/series-carried.txt`
+is the authoritative list.

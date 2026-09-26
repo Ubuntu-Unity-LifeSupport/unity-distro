@@ -28,7 +28,7 @@ vulnerable build. Agent A.
 | Version | What it is | Build (clean resolute) | On target |
 |---|---|---|---|
 | `2:21.1.24-1ubuntu1~26.04.1` | published now; 26.10-proposed rebuilt | ok, 314 s | ok (DECISIONS 2026-09-25) |
-| `2:21.1.22-1ubuntu1.2+unity1` | -updates + 29 upstream commits 21.1.22..21.1.24 (release and XQuartz commits left out) | ok, 292 s | reboot, smoke test clean |
+| `2:21.1.22-1ubuntu1.2+unity1` | -updates + 31 upstream commits 21.1.22..21.1.24 (release and XQuartz commits left out) | ok, 292 s | reboot, smoke test clean |
 | `2:21.1.22-1ubuntu1.3+unity1` | -proposed 1.3 + the same 29 commits | ok, 265 s | reboot, smoke test, 3 logout/login cycles, no crash files |
 
 The 29 commits apply in order with no fuzz on both bases
@@ -65,7 +65,7 @@ metadata-only repo per scenario, phased updates included, isolated apt state.
   `1.2+unity1` would do this week (1.3 is in -proposed now), so the base must
   be the **newest resolute upload, proposed included: `1ubuntu1.3+unity1`**.
 - The price is a watch: every new resolute xorg-server (`watch.sh` prints it)
-  means rebasing the 29 commits and publishing `…N+unity1` before it leaves
+  means rebasing the 31 commits and publishing `…N+unity1` before it leaves
   -proposed (about a week for SRUs; security uploads skip -proposed, but
   those would be the ones carrying the fixes).
 - Migration: machines that already have `21.1.24~26.04.1` need an explicit
@@ -125,8 +125,8 @@ xserver #1881): `FreeGlyph` removed a global glyph entry that belonged to
 another glyph when one glyphset held two identical glyphs, leaving the global
 table's count short; freeing glyphsets later crashed in `FindGlyphRef`.
 
-Carried as `debian/patches/upstream-21.1-branch/` on top of the 29 commits.
-**The full list of what we carry is `patches/series-carried.txt`** (30 entries;
+Carried as `debian/patches/upstream-21.1-branch/` on top of the 31 commits.
+**The full list of what we carry is `patches/series-carried.txt`** (32 entries;
 the 8d604fa14 patch itself is in `patches/`) - a rebase onto a new Ubuntu base
 takes the whole list and drops what Ubuntu already has.
 
