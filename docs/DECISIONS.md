@@ -1426,3 +1426,29 @@ a miscount when the series was made, visible in `ls | wc -l` = 31 at the time.
 The packages' changelogs (`1.3+unity1`, `+unity2`) carry the same wrong number;
 the next rebase fixes the text. `research/xorg-versioning/patches/series-carried.txt`
 is the authoritative list.
+
+## 2026-09-26 - libindicator +unity1 published; rebuild file-loss survey (agent B)
+
+**Context.** The coordinator's task B-7.
+
+**libindicator +unity1 is now in aptly.** Its binaries equal the archive's:
+the same files and symbols, and `indicators-pre.target` in
+indicator-common. But only this source still builds in resolute and keeps
+the target that unity-panel-service `BindsTo=`, so aptly should hold it
+before the first real change.
+
+**Survey.** 21 Unity-stack sources that ship systemd, D-Bus, autostart or
+schema files were rebuilt in clean resolute, and their file lists compared
+with the archive's (`research/rebuild-loss/`). No rebuild that succeeded
+lost a file. The systemd.pc trap is in two more sources:
+- indicator-messages: fixed in 26.10 0ubuntu8, which builds in resolute;
+  carrying it is proposed;
+- hud: three FTBFS layers, two fixed as `+unity1` WIP.
+
+session-migration got a CMake 4 fix and a test fix for `+` in the build
+path, built as `+unity1`. unity-greeter (lightdm-vala split) and
+overlay-scrollbar (dead) are listed without an owner.
+
+**Before the VBoxSVC restart,** B's commits that lived only on builder
+(git-ubuntu clones whose only remote is Launchpad) were exported to
+`docs/package-patches-b/`.

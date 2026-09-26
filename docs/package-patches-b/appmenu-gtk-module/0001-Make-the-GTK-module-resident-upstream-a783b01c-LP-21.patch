@@ -1,0 +1,88 @@
+From 548f9b4d8e16e71f00b212e6ab384223786c32fa Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 00:05:07 +0000
+Subject: [PATCH] Make the GTK module resident (upstream a783b01c, LP:
+ #2166410)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog                              |  9 ++++
+ .../patches/2001_make-module-resident.patch   | 41 +++++++++++++++++++
+ debian/patches/series                         |  1 +
+ 3 files changed, 51 insertions(+)
+ create mode 100644 debian/patches/2001_make-module-resident.patch
+
+diff --git a/debian/changelog b/debian/changelog
+index b583bdf..41d8c59 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,12 @@
++appmenu-gtk-module (25.04-1build1+unity1) resolute; urgency=medium
++
++  * debian/patches/2001_make-module-resident.patch: make the GTK module
++    resident (upstream a783b01c). GTK3 unloads a module loaded through the
++    gtk-modules setting when the setting changes, and the next GtkMenuBar
++    call or D-Bus callback jumped into unmapped code. (LP: #2166410)
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Fri, 25 Sep 2026 00:05:00 +0000
++
+ appmenu-gtk-module (25.04-1build1) resolute; urgency=medium
+ 
+   * No-change mass rebuild for Ubuntu 26.04 (LP: #2132257)
+diff --git a/debian/patches/2001_make-module-resident.patch b/debian/patches/2001_make-module-resident.patch
+new file mode 100644
+index 0000000..3041a78
+--- /dev/null
++++ b/debian/patches/2001_make-module-resident.patch
+@@ -0,0 +1,41 @@
++Description: Make the module resident
++ GTK3 unloads gtk-modules with g_module_close() whenever the "gtk-modules"
++ setting changes. This module hijacks the GtkMenuBar class vtable and
++ registers a process-lifetime g_bus_watch_name() watcher, so it cannot survive
++ being unmapped: the next GDBus dispatch or GtkMenuBar vfunc call jumps into
++ freed memory and the host application segfaults.
++ .
++ Only a module loaded through the gtk-modules setting (XSETTINGS Gtk/Modules,
++ as KDE's configuration does) can be unloaded; one named in GTK_MODULES, as
++ the Unity session does, is never unloaded.
++Origin: upstream, https://gitlab.com/vala-panel-project/vala-panel-appmenu/-/commit/a783b01c8b653349843fac9bbd075dac52cdc9de
++Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/appmenu-gtk-module/+bug/2166410
++Author: Oleksandr Aleksieiev <ziod.alx@gmail.com>
++Applied-Upstream: a783b01c, not in a release yet (last release 25.04)
++Last-Update: 2026-09-25
++---
++diff --git a/src/appmenu-gtk-module.c b/src/appmenu-gtk-module.c
++index 7bcdd7a..be0807b 100644
++--- a/src/appmenu-gtk-module.c
+++++ b/src/appmenu-gtk-module.c
++@@ -22,6 +22,7 @@
++  *          Lester Carballo Perez <lestcape@gmail.com>
++  */
++ 
+++#include <gmodule.h>
++ #include <gtk/gtk.h>
++ 
++ #include "hijack.h"
++@@ -48,6 +49,12 @@ static void sync_gtk2_settings()
++ #endif
++ }
++ 
+++const gchar *g_module_check_init(GModule *module)
+++{
+++	g_module_make_resident(module);
+++	return NULL;
+++}
+++
++ void gtk_module_init(void)
++ {
++ 	if (gtk_module_should_run())
+diff --git a/debian/patches/series b/debian/patches/series
+index 65e29b7..471db33 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -1 +1,2 @@
+ 1001_fix-soversion.patch
++2001_make-module-resident.patch
+-- 
+2.53.0
+

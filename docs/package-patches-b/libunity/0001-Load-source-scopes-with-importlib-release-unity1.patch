@@ -1,0 +1,111 @@
+From 78c98ec79f189ac748e69bb4872723c0f194866c Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Sat, 26 Sep 2026 12:58:31 +0000
+Subject: [PATCH] Load source scopes with importlib; release +unity1
+
+scope-runner-dbus.py imported imp, removed in Python 3.12, and failed at
+once on 26.04's 3.14, so no Python scope could run.
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog                        |  9 ++++
+ debian/patches/python-3.12-no-imp.patch | 60 +++++++++++++++++++++++++
+ debian/patches/series                   |  1 +
+ 3 files changed, 70 insertions(+)
+ create mode 100644 debian/patches/python-3.12-no-imp.patch
+
+diff --git a/debian/changelog b/debian/changelog
+index 533d546..a3e0eb3 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,12 @@
++libunity (7.1.4+19.04.20190319-6.1ubuntu1+unity1) resolute; urgency=medium
++
++  * debian/patches/python-3.12-no-imp.patch: load source scopes with
++    importlib instead of imp, which Python 3.12 removed; the scope runner
++    (unity-scopes-runner) failed at its first import on 26.04 and no
++    Python scope could run.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 12:47:32 +0000
++
+ libunity (7.1.4+19.04.20190319-6.1ubuntu1) resolute; urgency=medium
+ 
+   * Make "filtering" setter of class "Filter" public (LP: #2141346)
+diff --git a/debian/patches/python-3.12-no-imp.patch b/debian/patches/python-3.12-no-imp.patch
+new file mode 100644
+index 0000000..39d3593
+--- /dev/null
++++ b/debian/patches/python-3.12-no-imp.patch
+@@ -0,0 +1,60 @@
++Description: Load source scopes with importlib instead of imp
++ imp was removed in Python 3.12, so the scope runner failed at its first
++ import on 26.04 (Python 3.14) and no Python scope could run.
++Author: NeiroNext <mihail.rozshko@gmail.com>
++Forwarded: no
++Last-Update: 2026-09-26
++---
++Index: libunity/bindings/python/scope-runner-dbus.py
++===================================================================
++--- libunity.orig/bindings/python/scope-runner-dbus.py
+++++ libunity/bindings/python/scope-runner-dbus.py
++@@ -16,8 +16,9 @@
++ # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
++ 
++ import argparse
++-import imp
++ import importlib
+++import importlib.machinery
+++import importlib.util
++ import os
++ import sys
++ 
++@@ -29,6 +30,19 @@ MODULE_TYPE = "python{0}".format(sys.ver
++ SOURCE_TYPE = MODULE_TYPE + "-source"
++ 
++ 
+++def load_source(modulename, path):
+++  # imp.load_source() replacement: imp is gone since Python 3.12. The
+++  # loader is given explicitly so that a file with any extension loads,
+++  # as it did with imp
+++  loader = importlib.machinery.SourceFileLoader(modulename, path)
+++  spec = importlib.util.spec_from_file_location(modulename, path,
+++                                                loader=loader)
+++  module = importlib.util.module_from_spec(spec)
+++  sys.modules[modulename] = module
+++  loader.exec_module(module)
+++  return module
+++
+++
++ class PythonScopeLoader(Unity.ScopeLoader):
++   def do_get_scopes(self, name, module_type):
++     if module_type == MODULE_TYPE:
++@@ -36,7 +50,7 @@ class PythonScopeLoader(Unity.ScopeLoade
++       module = importlib.import_module(name)
++     elif module_type == SOURCE_TYPE:
++       modulename, _ = os.path.splitext(os.path.basename(name))
++-      module = imp.load_source(modulename, name)
+++      module = load_source(modulename, name)
++     else:
++       raise RuntimeError("Unknown module type: {0}".format(module_type))
++     return [module.load_scope()]
++@@ -49,7 +63,7 @@ def load_scope(name, as_module):
++     # Treat as source file name: use the file's base name as a module
++     # name in the hope it is unique.
++     modulename, _ = os.path.splitext(os.path.basename(name))
++-    module = imp.load_source(modulename, name)
+++    module = load_source(modulename, name)
++   return module.load_scope()
++ 
++ def main(argv):
+diff --git a/debian/patches/series b/debian/patches/series
+index da9a5b5..a69e0ee 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -1,2 +1,3 @@
+ make_filtering_setter_public.patch
+ debian.patch
++python-3.12-no-imp.patch
+-- 
+2.53.0
+

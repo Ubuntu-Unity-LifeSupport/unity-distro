@@ -1,0 +1,244 @@
+From 10eb95c564c9a4bdf402a7ff0b4fbb0de62ac3fa Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Sat, 26 Sep 2026 12:16:13 +0000
+Subject: [PATCH 4/4] Do not iterate a NULL InputSources; release +unity3 (LP:
+ #2166139)
+
+AccountsService returns NULL for a user's input sources while it has
+nothing cached, for instance while accounts-daemon restarts. The greeter's
+service then iterated NULL in migrate_input_sources() and crashed in
+g_variant_iter_new(). Reading the xkb layouts moves to one function that
+treats NULL as no layouts, with a test; a NULL user name is not passed to
+LightDM either.
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog       | 14 +++++++++++++
+ lib/Makefile.am        |  3 ++-
+ lib/input-sources.vala | 44 ++++++++++++++++++++++++++++++++++++++++
+ lib/main.vala          | 46 +++++++++++++++---------------------------
+ tests/Makefile.am      |  3 ++-
+ tests/main.vala        | 24 ++++++++++++++++++++++
+ 6 files changed, 102 insertions(+), 32 deletions(-)
+ create mode 100644 lib/input-sources.vala
+
+diff --git a/debian/changelog b/debian/changelog
+index 3df5223..989c839 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,17 @@
++indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity3) resolute; urgency=medium
++
++  * lib/input-sources.vala: read the xkb layouts of a user's InputSources
++    in one place, and treat a NULL value as no layouts. AccountsService
++    returns NULL while it has nothing cached for the user, for instance
++    while accounts-daemon restarts; the greeter's service then iterated
++    NULL in migrate_input_sources() and crashed in g_variant_iter_new()
++    (LP: #2166139). Skip the LightDM lookup of such a user too, whose name
++    is NULL then.
++  * tests: add xkb-input-sources, covering a NULL, an empty and a mixed
++    InputSources value.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 09:17:15 +0000
++
+ indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity2) resolute; urgency=medium
+ 
+   * tests/main.vala: emit the mock service's notify with notify_property().
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index dd8d1bf..76eab41 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -15,7 +15,8 @@ indicator_keyboard_service_SOURCES = main.vala            \
+                                      keyboard-plugin.vala \
+                                      window-stack.vala    \
+                                      unity-session.vala   \
+-                                     unity-greeter.vala
++                                     unity-greeter.vala   \
++                                     input-sources.vala
+ indicator_keyboard_service_VALAFLAGS = $(AM_VALAFLAGS)            \
+                                        --pkg gee-0.8              \
+                                        --pkg posix                \
+diff --git a/lib/input-sources.vala b/lib/input-sources.vala
+new file mode 100644
+index 0000000..db75e43
+--- /dev/null
++++ b/lib/input-sources.vala
+@@ -0,0 +1,44 @@
++/*
++ * Copyright 2026 Ubuntu Unity Life Support
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, version 3 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++/*
++ * The xkb layouts of an AccountsService InputSources value (aa{ss}), in
++ * order. AccountsService returns NULL while it has no value cached for the
++ * user, for instance while accounts-daemon restarts, and iterating that
++ * crashed the service (LP: #2166139).
++ */
++string[] get_xkb_input_sources (Variant? input_sources) {
++	string[] sources = {};
++
++	if (input_sources == null) {
++		return sources;
++	}
++
++	foreach (var outer in (!) input_sources) {
++		foreach (var inner in (!) outer) {
++			unowned string key;
++			unowned string source;
++
++			((!) inner).get ("{&s&s}", out key, out source);
++
++			if (key == "xkb") {
++				sources += source;
++			}
++		}
++	}
++
++	return sources;
++}
+diff --git a/lib/main.vala b/lib/main.vala
+index 2fcbf1c..eb0c508 100644
+--- a/lib/main.vala
++++ b/lib/main.vala
+@@ -321,22 +321,10 @@ public class Indicator.Keyboard.Service : Object {
+ 				Act.User? user = manager.get_user ((!) greeter_user);
+ 
+ 				if (user != null && ((!) user).is_loaded) {
+-					foreach (var outer in ((!) user).input_sources) {
+-						foreach (var inner in (!) outer) {
+-							unowned string key;
+-							unowned string value;
++					var sources = get_xkb_input_sources (((!) user).input_sources);
+ 
+-							((!) inner).get ("{&s&s}", out key, out value);
+-
+-							if (key == "xkb") {
+-								source = value;
+-								break;
+-							}
+-						}
+-
+-						if (source != null) {
+-							break;
+-						}
++					if (sources.length > 0) {
++						source = sources[0];
+ 					}
+ 
+ 					if (source == null) {
+@@ -534,21 +522,12 @@ public class Indicator.Keyboard.Service : Object {
+ 			if (user.is_loaded) {
+ 				var done = false;
+ 
+-				foreach (var outer in user.input_sources) {
+-					foreach (var inner in (!) outer) {
+-						unowned string key;
+-						unowned string source;
++				foreach (var source in get_xkb_input_sources (user.input_sources)) {
++					done = true;
+ 
+-						((!) inner).get ("{&s&s}", out key, out source);
+-
+-						if (key == "xkb") {
+-							done = true;
+-
+-							if (!added.contains (source)) {
+-								list.add (source);
+-								added.add (source);
+-							}
+-						}
++					if (!added.contains (source)) {
++						list.add (source);
++						added.add (source);
+ 					}
+ 				}
+ 
+@@ -569,8 +548,15 @@ public class Indicator.Keyboard.Service : Object {
+ 				}
+ 
+ 				if (!done) {
++					/* NULL while AccountsService reloads the user, like the
++					 * input sources (LP: #2166139) */
++					unowned string? user_name = user.user_name;
+ 					var user_list = LightDM.UserList.get_instance ();
+-					LightDM.User? light_user = user_list.get_user_by_name (user.user_name);
++					LightDM.User? light_user = null;
++
++					if (user_name != null) {
++						light_user = user_list.get_user_by_name ((!) user_name);
++					}
+ 
+ 					if (light_user != null) {
+ 						var layouts = ((!) light_user).get_layouts ();
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index f3be153..a535bf7 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -10,7 +10,8 @@ AM_VALAFLAGS = --metadatadir $(top_srcdir)/deps \
+ 
+ indicator_keyboard_tests_SOURCES = main.vala    \
+                                    fixture.vala \
+-                                   config.vala
++                                   config.vala  \
++                                   $(top_srcdir)/lib/input-sources.vala
+ indicator_keyboard_tests_VALAFLAGS = $(AM_VALAFLAGS) \
+                                      --pkg gio-2.0
+ indicator_keyboard_tests_CFLAGS = $(AM_CFLAGS)  \
+diff --git a/tests/main.vala b/tests/main.vala
+index 1b6a7e8..32276d5 100644
+--- a/tests/main.vala
++++ b/tests/main.vala
+@@ -626,6 +626,29 @@ public class Tests : Object, Fixture {
+ 	}
+ }
+ 
++void test_xkb_input_sources () {
++	/* AccountsService has no value cached (LP: #2166139) */
++	assert (get_xkb_input_sources (null).length == 0);
++
++	var empty = new Variant.array (new VariantType ("a{ss}"), {});
++	assert (get_xkb_input_sources (empty).length == 0);
++
++	var builder = new VariantBuilder (new VariantType ("aa{ss}"));
++	builder.open (new VariantType ("a{ss}"));
++	builder.add ("{ss}", "xkb", "us");
++	builder.close ();
++	builder.open (new VariantType ("a{ss}"));
++	builder.add ("{ss}", "ibus", "pinyin");
++	builder.close ();
++	builder.open (new VariantType ("a{ss}"));
++	builder.add ("{ss}", "xkb", "de+neo");
++	builder.close ();
++	var sources = get_xkb_input_sources (builder.end ());
++	assert (sources.length == 2);
++	assert (sources[0] == "us");
++	assert (sources[1] == "de+neo");
++}
++
+ public int main (string[] args) {
+ 	display = Environment.get_variable ("DISPLAY");
+ 
+@@ -640,6 +663,7 @@ public int main (string[] args) {
+ 	Test.add_data_func ("/indicator-keyboard-service/update-visible", Fixture.create<Tests> (Tests.test_update_visible));
+ 	Test.add_data_func ("/indicator-keyboard-service/update-input-source", Fixture.create<Tests> (Tests.test_update_input_source));
+ 	Test.add_data_func ("/indicator-keyboard-service/update-input-sources", Fixture.create<Tests> (Tests.test_update_input_sources));
++	Test.add_func ("/indicator-keyboard-service/xkb-input-sources", test_xkb_input_sources);
+ 
+ 	return Test.run ();
+ }
+-- 
+2.53.0
+

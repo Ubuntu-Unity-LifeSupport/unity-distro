@@ -5,6 +5,30 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Waits for target2** (it is wedged in `restoringsnapshot` and needs a
+VBoxSVC restart on the host, May's decision):
+1. unity-lens-files `+unity1` (Recommends plocate; a silent skip without
+   locate). Built in `~/work/b/lensfiles`, debdiff in
+   `package-patches-b/debdiff/`. Check live in the Dash, then publish.
+2. appmenu-gtk-module `+unity1` live under Unity with the module only in
+   `gtk-modules`: Chromium (snap), GIMP 3, LibreOffice
+   (`research/appmenu-resident/`).
+3. After the rollback, check it from inside: no `~/.dirty`, fresh uptime.
+
+**Rebuild file-loss survey** (2026-09-26, coordinator's task B-7):
+`research/rebuild-loss/`.
+- 21 sources rebuilt: nothing is lost except by the systemd.pc trap, in
+  indicator-messages (fixed in 26.10 as 0ubuntu8) and hud.
+- libindicator `+unity1` is published: files and symbols equal to the
+  archive's.
+- session-migration `+unity1` is built, not published.
+- hud `+unity1` is WIP: the googletest C++17 layer is left.
+- unity-greeter and overlay-scrollbar have no owner.
+
+**Only-on-builder commits** of B's git-ubuntu clones are exported to
+`docs/package-patches-b/`, since `origin` is Launchpad and we do not push
+there.
+
 **Unity scopes** (2026-09-26, coordinator's task B-4): seven Python scopes are
 `+unity1` in aptly.
 - They install together now.

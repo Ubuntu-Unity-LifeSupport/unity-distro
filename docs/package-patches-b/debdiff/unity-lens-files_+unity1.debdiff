@@ -1,0 +1,44 @@
+diff -u unity-lens-files-7.1.0+17.10.20170605/debian/changelog unity-lens-files-7.1.0+17.10.20170605/debian/changelog
+--- unity-lens-files-7.1.0+17.10.20170605/debian/changelog
++++ unity-lens-files-7.1.0+17.10.20170605/debian/changelog
+@@ -1,3 +1,13 @@
++unity-lens-files (7.1.0+17.10.20170605-0ubuntu6+unity1) resolute; urgency=medium
++
++  * debian/control: recommend plocate. The lens runs locate for its global
++    search (use-locate, on by default), but on 26.04 neither ubuntu-standard
++    nor ubuntu-unity-desktop installs a locate.
++  * src/locate.vala: without a locate in PATH, return no locate results
++    instead of logging a spawn error on every search.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 14:03:15 +0000
++
+ unity-lens-files (7.1.0+17.10.20170605-0ubuntu6) resolute; urgency=medium
+ 
+   * No-change mass rebuild for Ubuntu 26.04 (LP: #2132257)
+diff -u unity-lens-files-7.1.0+17.10.20170605/debian/control unity-lens-files-7.1.0+17.10.20170605/debian/control
+--- unity-lens-files-7.1.0+17.10.20170605/debian/control
++++ unity-lens-files-7.1.0+17.10.20170605/debian/control
+@@ -25,6 +25,7 @@
+ Architecture: any
+ Depends: ${shlibs:Depends},
+          ${misc:Depends},
++Recommends: plocate,
+ Breaks: unity (<< 6.0.0),
+ Description: File lens for unity
+  This package contains the "file" lens which can be used
+only in patch2:
+unchanged:
+--- unity-lens-files-7.1.0+17.10.20170605.orig/src/locate.vala
++++ unity-lens-files-7.1.0+17.10.20170605/src/locate.vala
+@@ -43,6 +43,11 @@
+   {
+     if (blacklist_tracker == null) blacklist_tracker = new BlacklistTracker ();
+     var result = new GLib.SList<FileInfo> ();
++
++    // locate is optional (plocate is only recommended): without it, only the
++    // Zeitgeist results are shown, instead of a warning on every search
++    if (Environment.find_program_in_path ("locate") == null)
++      return result;
+     var query = Regex.escape_string (input_query.strip ());
+ 
+     // FIXME: we could limit the search to specific directories, but using regex

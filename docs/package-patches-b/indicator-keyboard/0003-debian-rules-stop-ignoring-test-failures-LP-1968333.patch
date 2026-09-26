@@ -1,0 +1,41 @@
+From 1a14712981770911755c977e5d6b9f28fc679c5b Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 02:33:10 +0000
+Subject: [PATCH 3/4] debian/rules: stop ignoring test failures (LP: #1968333)
+
+---
+ debian/changelog | 4 +++-
+ debian/rules     | 4 +---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/debian/changelog b/debian/changelog
+index 85aae2c..3df5223 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -4,7 +4,9 @@ indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity2) resolute; urgency=medi
+     Vala 0.56 compiles `notify["command"] (pspec)` to
+     g_object_notify (self, pspec), passing a GParamSpec as the property
+     name, so activate-character-map aborted the test run and none of the
+-    later tests ran. Test-only change.
++    later tests ran (LP: #1968333). Test-only change.
++  * debian/rules: stop ignoring test failures; all 9 tests pass again
++    (LP: #1968333).
+ 
+  -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Fri, 25 Sep 2026 02:21:56 +0000
+ 
+diff --git a/debian/rules b/debian/rules
+index b971bb1..0653d9f 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -16,7 +16,5 @@ execute_after_dh_install:
+ 	find debian/indicator-keyboard/usr/lib -name *.la -delete
+ 	find debian/indicator-keyboard/usr/lib -name *.a -delete
+ 
+-# Temporarily ignore build test failures
+-# https://launchpad.net/bugs/1968333
+ override_dh_auto_test:
+-	XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu dh_auto_test || true
++	XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu dh_auto_test
+-- 
+2.53.0
+

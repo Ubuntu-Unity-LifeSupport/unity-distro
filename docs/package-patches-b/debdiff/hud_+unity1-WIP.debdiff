@@ -1,0 +1,90 @@
+diff -u hud-14.10+17.10.20170619/CMakeLists.txt hud-14.10+17.10.20170619/CMakeLists.txt
+--- hud-14.10+17.10.20170619/CMakeLists.txt
++++ hud-14.10+17.10.20170619/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ project(hud C CXX)
+-cmake_minimum_required(VERSION 2.8.9)
++cmake_minimum_required(VERSION 3.10)
+ 
+ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
+ 
+diff -u hud-14.10+17.10.20170619/debian/changelog hud-14.10+17.10.20170619/debian/changelog
+--- hud-14.10+17.10.20170619/debian/changelog
++++ hud-14.10+17.10.20170619/debian/changelog
+@@ -1,3 +1,14 @@
++hud (14.10+17.10.20170619-0ubuntu6+unity1) resolute; urgency=medium
++
++  * CMakeLists.txt, cmake/*.cmake: require CMake 3.10. CMake 4 removed
++    compatibility with versions before 3.5, so the package no longer
++    configured in resolute.
++  * debian/control: build-depend on systemd-dev instead of systemd. systemd.pc
++    moved there, so systemduserunitdir came out empty and CMake refused to
++    install hud.service and window-stack-bridge.service.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 15:17:02 +0000
++
+ hud (14.10+17.10.20170619-0ubuntu6) noble; urgency=medium
+ 
+   * Bump C++ version to C++14 to make googletest happy.
+diff -u hud-14.10+17.10.20170619/debian/control hud-14.10+17.10.20170619/debian/control
+--- hud-14.10+17.10.20170619/debian/control
++++ hud-14.10+17.10.20170619/debian/control
+@@ -30,7 +30,7 @@
+                python3-setuptools,
+                qtbase5-dev,
+                qtdbustest-runner,
+-               systemd,
++               systemd-dev,
+                valac,
+                xvfb,
+ Standards-Version: 3.9.4
+only in patch2:
+unchanged:
+--- hud-14.10+17.10.20170619.orig/cmake/GtkDocScanGObjWrapper.cmake
++++ hud-14.10+17.10.20170619/cmake/GtkDocScanGObjWrapper.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ 
+ if(NOT APPLE)
+     # We use pkg-config to fing glib et al
+only in patch2:
+unchanged:
+--- hud-14.10+17.10.20170619.orig/cmake/UseConstantBuilder.cmake
++++ hud-14.10+17.10.20170619/cmake/UseConstantBuilder.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ if(POLICY CMP0011)
+   cmake_policy(SET CMP0011 NEW)
+ endif(POLICY CMP0011)
+only in patch2:
+unchanged:
+--- hud-14.10+17.10.20170619.orig/cmake/UseGdbusCodegen.cmake
++++ hud-14.10+17.10.20170619/cmake/UseGdbusCodegen.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ if(POLICY CMP0011)
+   cmake_policy(SET CMP0011 NEW)
+ endif(POLICY CMP0011)
+only in patch2:
+unchanged:
+--- hud-14.10+17.10.20170619.orig/cmake/UseGlibGeneration.cmake
++++ hud-14.10+17.10.20170619/cmake/UseGlibGeneration.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ if(POLICY CMP0011)
+   cmake_policy(SET CMP0011 NEW)
+ endif(POLICY CMP0011)
+only in patch2:
+unchanged:
+--- hud-14.10+17.10.20170619.orig/cmake/UseMscgen.cmake
++++ hud-14.10+17.10.20170619/cmake/UseMscgen.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ 
+ find_program(MSCGEN_EXECUTABLE NAMES mscgen DOC "mscgen executable")
+ if(NOT MSCGEN_EXECUTABLE)

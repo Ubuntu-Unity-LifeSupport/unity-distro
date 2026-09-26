@@ -1,0 +1,50 @@
+From cb8cf9653e55d5096a62a7540f26a99fee330e8d Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Fri, 25 Sep 2026 02:21:56 +0000
+Subject: [PATCH 2/4] tests: emit the mock service's notify with
+ notify_property()
+
+---
+ debian/changelog | 10 ++++++++++
+ tests/main.vala  |  7 +------
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/debian/changelog b/debian/changelog
+index 87e41d9..85aae2c 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,13 @@
++indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity2) resolute; urgency=medium
++
++  * tests/main.vala: emit the mock service's notify with notify_property().
++    Vala 0.56 compiles `notify["command"] (pspec)` to
++    g_object_notify (self, pspec), passing a GParamSpec as the property
++    name, so activate-character-map aborted the test run and none of the
++    later tests ran. Test-only change.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Fri, 25 Sep 2026 02:21:56 +0000
++
+ indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity1) resolute; urgency=medium
+ 
+   * Build-depend on lightdm-vala, split off from liblightdm-gobject-1-dev
+diff --git a/tests/main.vala b/tests/main.vala
+index e2782d1..1b6a7e8 100644
+--- a/tests/main.vala
++++ b/tests/main.vala
+@@ -35,12 +35,7 @@ public class Service : Object {
+ 
+ 	public void execute (string command) {
+ 		_command = command;
+-
+-		var pspec = get_class ().find_property ("command");
+-
+-		if (pspec != null) {
+-			notify["command"] ((!) pspec);
+-		}
++		notify_property ("command");
+ 	}
+ }
+ 
+-- 
+2.53.0
+

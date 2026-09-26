@@ -1,0 +1,82 @@
+From 9793c2329dd99f0fe779c51409a79f2c4ab077cc Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Thu, 24 Sep 2026 23:36:40 +0000
+Subject: [PATCH 2/2] Keep the FBO colour attachment vectors sized (LP:
+ #2160298)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog                              | 10 ++++++
+ .../patches/fix-fbo-attachment-arrays.patch   | 32 +++++++++++++++++++
+ debian/patches/series                         |  1 +
+ 3 files changed, 43 insertions(+)
+ create mode 100644 debian/patches/fix-fbo-attachment-arrays.patch
+
+diff --git a/debian/changelog b/debian/changelog
+index feb45ab..11da82e 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,13 @@
++nux (4.0.8+18.10.20180623-0ubuntu15+unity2) resolute; urgency=medium
++
++  * debian/patches/fix-fbo-attachment-arrays.patch: keep the FBO colour
++    attachment vectors sized. FormatFrameBufferObject() cleared them right
++    after SetupFrameBufferObject() sized them, so every attachment call
++    indexed an empty vector: an abort under -D_GLIBCXX_ASSERTIONS, and the
++    attached textures were never released. (LP: #2160298)
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Thu, 24 Sep 2026 23:36:00 +0000
++
+ nux (4.0.8+18.10.20180623-0ubuntu15+unity1) resolute; urgency=medium
+ 
+   * Rebuild upstream 0ubuntu15 (stonking) for resolute.
+diff --git a/debian/patches/fix-fbo-attachment-arrays.patch b/debian/patches/fix-fbo-attachment-arrays.patch
+new file mode 100644
+index 0000000..3953001
+--- /dev/null
++++ b/debian/patches/fix-fbo-attachment-arrays.patch
+@@ -0,0 +1,32 @@
++Description: Keep the FBO colour attachment vectors sized
++ IOpenGLFrameBufferObject::SetupFrameBufferObject() sizes
++ texture_attachment_array_ and surface_attachment_array_ to
++ GetMaxFboAttachment() and then calls FormatFrameBufferObject(), which
++ clear()s both. Every later SetRenderTarget(), SetTextureAttachment(),
++ TextureAttachment() and Activate() indexes the now empty vectors: undefined
++ behaviour that happens to work (the capacity is still there), aborts under
++ -D_GLIBCXX_ASSERTIONS, and never releases the attachments' references, since
++ the vector's destructor sees no elements. Reset the elements instead.
++Author: Ubuntu Unity Life Support <mihail.rozshko@gmail.com>
++Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/nux/+bug/2160298
++Forwarded: no
++Last-Update: 2026-09-24
++---
++--- a/NuxGraphics/IOpenGLFrameBufferObject.cpp
+++++ b/NuxGraphics/IOpenGLFrameBufferObject.cpp
++@@ -69,8 +69,13 @@ namespace nux
++   {
++     Deactivate();
++ 
++-    texture_attachment_array_.clear();
++-    surface_attachment_array_.clear();
+++    // Drop the attachments but keep one slot per colour attachment:
+++    // SetRenderTarget(), SetTextureAttachment(), TextureAttachment() and
+++    // Activate() index these vectors up to GetMaxFboAttachment().
+++    for (auto& texture : texture_attachment_array_)
+++      texture = ObjectPtr<IOpenGLBaseTexture> (0);
+++    for (auto& surface : surface_attachment_array_)
+++      surface = ObjectPtr<IOpenGLSurface> (0);
++ 
++     depth_surface_attachment_ = ObjectPtr<IOpenGLSurface> (0);
++     stencil_surface_attachment_ = ObjectPtr<IOpenGLSurface> (0);
+diff --git a/debian/patches/series b/debian/patches/series
+index a4851c1..47d3a6b 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -6,3 +6,4 @@ disable-TestLoggingWriter-test.diff
+ boost1.90.patch
+ remove_unicode_licensed.patch
+ fix-missing-vidmode.patch
++fix-fbo-attachment-arrays.patch
+-- 
+2.53.0
+
