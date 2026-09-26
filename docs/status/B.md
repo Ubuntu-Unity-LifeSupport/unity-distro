@@ -15,7 +15,15 @@ Build directory: `~/work/b`
 - Five-commit series on branch `split-parts-2` in `~/work/b/nocsd-up/split`
   (local); nothing sent. target2 rolled back to Clean-2 (checked inside).
 
-**gtk-nocsd package is B's since 2026-09-26** (handed over by A).
+**gtk-nocsd is B's as a whole since 2026-09-26** (May, via the coordinator):
+- the package (`packages/gtk-nocsd`, branch `unity/resolute`, handed over by A);
+- the global menu patch (`research/nocsd-upstream/`, `nocsd-reply2/`,
+  `nocsd-gaps/`);
+- the upstream findings. Epiphany aborts on main when opening Passwords:
+  first bad commit 8f076dd, reproducer and fix in
+  `research/nocsd-epiphany-crash/`, not sent.
+
+Our aptly carries 4.8, which is not affected.
 `4.8-1+unity2` adds `/etc/X11/Xsession.d/51gtk-nocsd`, so Xfce and other
 Xsession sessions load it. It is in aptly, and branch `unity/resolute` is
 pushed. Build in `~/work/b/nocsd-u2`.

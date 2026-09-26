@@ -1,0 +1,56 @@
+From 2cfc8f1d1f65a738dc7092edc1d9201fc318819b Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Sat, 26 Sep 2026 00:04:37 +0000
+Subject: [PATCH] Keep the header title of LibAdwaita dialogs
+
+Since 8f076dd a title set by the library no longer counts as the window's
+title. The first label of a LibAdwaita dialog is checked without a header
+(the title of an AdwStatusPage, Epiphany's empty password list), so it
+replaced the title just taken from the dialog's header, and the header
+size request ran on a NULL header: gtk_widget_get_preferred_size failed a
+critical, which aborts Epiphany (it makes criticals fatal).
+
+Only disregard the library's title for labels in a header, and only size
+a header that exists
+
+Assisted-by: LLM Claude Opus 5.5
+---
+ Source/GTK-NoCSD.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/Source/GTK-NoCSD.c b/Source/GTK-NoCSD.c
+index 1d7079a..1bcac63 100644
+--- a/Source/GTK-NoCSD.c
++++ b/Source/GTK-NoCSD.c
+@@ -1467,8 +1467,11 @@ gboolean GTKNoCSDLabelChange(gpointer Data) {
+ 	// Check if the window has a manually set title. If set here, disregard it
+ 	char *SetTitle = o_g_object_get_data((GObject *) Window,
+ 			"GTKNoCSDSetTitle");
+-	bool HasTitle = Title != NULL && (SetTitle == NULL || strcmp(Title,
+-		SetTitle) != 0);
++
++	// Only for labels in a header, a label outside of one (the first label of
++	// a LibAdwaita dialog) must not replace the title taken from the header
++	bool HasTitle = Title != NULL && (Parent == NULL || SetTitle == NULL ||
++		strcmp(Title, SetTitle) != 0);
+ 
+ 	// Window without title take the application name, compare with that
+ 	Title = Title == NULL ? o_g_get_application_name() : Title;
+@@ -1511,9 +1514,11 @@ gboolean GTKNoCSDLabelChange(gpointer Data) {
+ 				Label);
+ 
+ 			// Make header at least as wide as it would be with the text
+-			GtkRequisition Natural;
+-			o_gtk_widget_get_preferred_size(Parent, NULL, &Natural);
+-			o_gtk_widget_set_size_request(Parent, Natural.width, -1);
++			if (Parent != NULL) {
++				GtkRequisition Natural;
++				o_gtk_widget_get_preferred_size(Parent, NULL, &Natural);
++				o_gtk_widget_set_size_request(Parent, Natural.width, -1);
++			}
+ 		}
+ 
+ 		// Only show if different and not empty, or if a default decoration
+-- 
+2.53.0
+
