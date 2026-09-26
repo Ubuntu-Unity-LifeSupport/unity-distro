@@ -29,9 +29,9 @@ vulnerable build. Agent A.
 |---|---|---|---|
 | `2:21.1.24-1ubuntu1~26.04.1` | published now; 26.10-proposed rebuilt | ok, 314 s | ok (DECISIONS 2026-09-25) |
 | `2:21.1.22-1ubuntu1.2+unity1` | -updates + 31 upstream commits 21.1.22..21.1.24 (release and XQuartz commits left out) | ok, 292 s | reboot, smoke test clean |
-| `2:21.1.22-1ubuntu1.3+unity1` | -proposed 1.3 + the same 29 commits | ok, 265 s | reboot, smoke test, 3 logout/login cycles, no crash files |
+| `2:21.1.22-1ubuntu1.3+unity1` | -proposed 1.3 + the same 31 commits | ok, 265 s | reboot, smoke test, 3 logout/login cycles, no crash files |
 
-The 29 commits apply in order with no fuzz on both bases
+The 31 commits apply in order with no fuzz on both bases
 (`debian/patches/upstream-21.1.24/`). The CVE fixes among them are the ones
 listed in `research/release-recheck-a/`. Smoke test: `~/xorg-smoke.sh` on
 target (Dash, HUD, spread, workspaces, xkb switch, GLX, window move).
