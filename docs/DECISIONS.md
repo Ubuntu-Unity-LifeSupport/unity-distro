@@ -1452,3 +1452,11 @@ overlay-scrollbar (dead) are listed without an owner.
 **Before the VBoxSVC restart,** B's commits that lived only on builder
 (git-ubuntu clones whose only remote is Launchpad) were exported to
 `docs/package-patches-b/`.
+
+## 2026-09-26 - unity-greeter rebuilt as +unity1 (agent A, A-5)
+
+Same lightdm split as indicator-keyboard; 26.10 has no newer or rebuilt
+unity-greeter and Debian has none, so the answer is a build-dependency fix,
+as 26.10 did for indicator-keyboard. Two test-only fixes came with it (Vala
+type, make race); the tests' valgrind failures stay ignored as they were.
+Checked live with unity-greeter as the active greeter. `research/unity-greeter-rebuild/`.

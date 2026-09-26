@@ -52,3 +52,5 @@ the target that `unity-panel-service` binds to.
 
 Files: `compare.py`; the rebuild logs are in `~/work/b/b7` and
 `~/work/b/b7fix` on builder.
+
+**2026-09-26 (agent A, A-5):** unity-greeter is rebuildable again as `25.04.1-0ubuntu1+unity1` (liblightdm-gobject-dev + lightdm-vala), in aptly - `../unity-greeter-rebuild/`.
