@@ -17,7 +17,7 @@ The patch is gtk-nocsd `main` (6b1f70a) plus the split parts of
   said he would finish the base himself. So (d) is a measurement of what a
   later search catches, not a replacement for his work.
 
-All 13 combinations (base, A, B, C, AB, AC, BC, ABC, D, AD, BD, CD, ABCD)
+All 16 combinations (base, A, B, C, AB, AC, BC, ABC, D, AD, BD, CD, ABD, ACD, BCD, ABCD)
 build with 0 warnings under upstream's flags. ABCD also builds with
 Ubuntu's `dpkg-buildflags`. `split/patches/` has the series as five
 commits on `main`, authored `NeiroNext`, with an `Assisted-by` trailer and
