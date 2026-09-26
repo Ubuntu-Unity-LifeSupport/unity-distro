@@ -35,14 +35,19 @@ one restart run (r3) and one menu cycle clicked before Unity had drawn its panel
 
 ## Findings
 
-1. **Behaviour change, low: a second button during a title-bar move cancels the
-   move** on unity `+unity10` (0 of 10 moves completed with the right button
-   pressed mid-move; the window returns to where it started). On `+unity9`, 3 of
-   5 completed. Nothing gets stuck in either. Cause: the `+unity10` early return
-   in `Edge::ButtonDownEvent` - the title bar is an `Edge` of type GRAB. Not
-   changed yet: cancelling on a second button is defensible; letting the move
-   finish would need the right button ignored by the title bar during a move
-   rather than by all edges. For May's call.
+1. ~~Behaviour change, low: a second button during a title-bar move cancels the
+   move on +unity10.~~ **Withdrawn (A-2, same day): a harness artifact.** The
+   right button on a title bar opens the window menu
+   (`action-right-click-titlebar='menu'`, `GrabEdge` handles buttons 2 and 3 with
+   `PerformWMAction` and never reaches `Edge::ButtonDownEvent`, so `+unity10`
+   cannot touch this path); the test then released the button over the menu,
+   which picks an item - the window was minimized after the first run, and every
+   later run "moved" an iconic window. With a fresh xterm per run
+   (`tools/title-ab.sh`, `runs/A2-title-unity*.log`) both versions behave
+   identically: right button released before or after the left, 10 of 10 moves
+   complete and the window ends minimized through the menu; wheel, 5 of 5 moves
+   complete, window normal; no grab left, real clicks reach - on `+unity9` and
+   on `+unity10` alike. No change needed; `+unity11` was not made.
 2. **Slow session start on this VM, not attributed to our packages.** After
    `full-upgrade`, boot-to-compiz took 89-164 s and the panel appeared 9-19 s
    after compiz; across the 12 boots since the rollback `Startup finished`

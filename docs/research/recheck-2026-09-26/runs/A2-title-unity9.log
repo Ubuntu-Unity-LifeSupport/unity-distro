@@ -1,0 +1,18 @@
+0
+7.7.1+26.04.20260306-0ubuntu3+unity9
+titlemovermb#1 unity=unity9 titlemovermb   Position: 595,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb#2 unity=unity9 titlemovermb   Position: 596,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb#3 unity=unity9 titlemovermb   Position: 596,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb#4 unity=unity9 titlemovermb   Position: 596,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb#5 unity=unity9 titlemovermb   Position: 595,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb2#1 unity=unity9 titlemovermb2   Position: 595,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb2#2 unity=unity9 titlemovermb2   Position: 606,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb2#3 unity=unity9 titlemovermb2   Position: 596,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb2#4 unity=unity9 titlemovermb2   Position: 596,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovermb2#5 unity=unity9 titlemovermb2   Position: 596,276 (screen: 0) pointer=free keyboard=free state=Iconic | reached=2
+titlemovewheel#1 unity=unity9 titlemovewheel   Position: 556,251 (screen: 0) pointer=free keyboard=free state=Normal | reached=2
+titlemovewheel#2 unity=unity9 titlemovewheel   Position: 555,250 (screen: 0) pointer=free keyboard=free state=Normal | reached=2
+titlemovewheel#3 unity=unity9 titlemovewheel   Position: 556,251 (screen: 0) pointer=free keyboard=free state=Normal | reached=2
+titlemovewheel#4 unity=unity9 titlemovewheel   Position: 557,251 (screen: 0) pointer=free keyboard=free state=Normal | reached=2
+titlemovewheel#5 unity=unity9 titlemovewheel   Position: 556,251 (screen: 0) pointer=free keyboard=free state=Normal | reached=2
+restored 7.7.1+26.04.20260306-0ubuntu3+unity10
