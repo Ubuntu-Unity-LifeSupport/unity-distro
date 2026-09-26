@@ -195,7 +195,14 @@ patch. It tries to disprove the result by checking:
 The verifier returns exactly `PASS`, `FAIL`, or `INCOMPLETE`, with evidence.
 Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. `INCOMPLETE` names
 the missing proof; it is not a pass. Use an ephemeral reviewer when an
-independent session is available. Do not add another permanent team role.
+independent session is available. Prefer the other physical builder agent;
+otherwise use an isolated read-only subagent. The assigned VM owner alone
+performs VM operations, and the reviewer assesses the resulting evidence.
+Do not add another permanent team role. Skills define repeatable procedures;
+they do not execute automatically or own tasks. Physical agents A and B retain
+their assigned VMs, coordinator C assigns and tracks tasks, and temporary
+subagents may do bounded research or read-only review without persistent task
+or VM ownership.
 
 ## 6. Version and publish gates
 

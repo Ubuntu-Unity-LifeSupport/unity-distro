@@ -89,24 +89,28 @@ merge request or a reply to review. The three rules that matter most:
   scenario from the description rather than one that resembles it.
 
 **Rule 0, which fires before all of them: before writing a line of code for a
-problem, find out whether it is already solved.** Search outward from where you
-are - the installed system first (`apt-cache`, `dpkg -S`, `ldd`, and `Task:` in
-the metadata), then the package's history, then bug trackers, then the web.
-**You have direct internet access - use it yourself.** `curl` reaches
-api.launchpad.net, gitlab.gnome.org, gitlab.com and api.github.com from this
-machine (verified 2026-09-25), and `gh` is authenticated. Query the trackers'
-APIs directly; a web search tool, if you have one, is faster still.
+problem, find out whether it is already solved.** The assigned physical agent
+owns the investigation and its decision. Search the installed system first
+(`apt-cache`, `dpkg -S`, `ldd`, and `Task:` in the metadata), then the package's
+history, bug trackers, and the web.
 
-**Run searches in subagents, not in your own context.** A sweep of bug
-trackers, changelogs or upstream repositories returns pages of detail of which
-three lines matter. Spawn a subagent, tell it exactly what to answer, and take
-back the conclusion with its links - not the raw pages. The same applies to any
-wide read: log trawls, package-wide greps, surveying a source tree you do not
-yet know. Your own context is for the work; delegate the digging. Run
-independent sweeps as several subagents at once rather than one after another.
-Twenty minutes is the initial search budget. Record sources and result in the
-task evidence; if the search is incomplete, mark `UNKNOWN` and stop before
-package code until May authorizes more investigation or defers it.
+**Delegate broad searches to isolated subagents, not into the task owner's
+context.** A sweep of bug trackers, changelogs or upstream repositories returns
+pages of detail of which three lines matter. Give a subagent a bounded question
+and source list; take back a concise finding with links, exact versions/commits,
+and unresolved gaps - not raw pages or search dumps. Do the same for wide log
+trawls, package-wide greps, and unfamiliar source trees. Run independent
+sweeps in parallel when useful. The owner remains responsible for checking the
+findings, recording them, and deciding the task. A skill is a procedure for
+the current session; it does not launch a subagent by itself. Physical agents
+A and B keep their assigned VMs, and coordinator C remains a separate
+physical session; subagents do not receive persistent roles or VM ownership.
+When direct network access is available, the delegated subagent can query
+tracker APIs or the web. If subagents are unavailable, record that constraint
+and keep searches bounded and summarized in the owner's context. The initial
+search budget is twenty minutes. Record sources and results in the task
+evidence; if the search is incomplete, mark `UNKNOWN` and stop before package
+code until May authorizes more investigation or defers it.
 
 **The last step of rule 0, the one we keep missing: has a newer version already
 fixed it?** A bug tracker says whether someone knows about it; a release says
