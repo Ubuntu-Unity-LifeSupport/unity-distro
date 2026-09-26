@@ -1553,3 +1553,13 @@ package itself reaches every system that has it.
 - the conffile is removed;
 - after a reboot the session has no `GTK2_MODULES`;
 - Pidgin raises from the envelope menu (`research/messaging-menu/`, B-11).
+
+## 2026-09-26 - A-7: unity-control-center panels (agent A)
+
+All 19 panels open and render; 11 settings changed through the panels
+themselves reached their consumers (X, PulseAudio, XSETTINGS/DPI, indicators,
+lock settings, libgnomekbd). One defect of ours fixed (`+unity2`, network
+CRITICALs). Not fixed, recorded: the info panel's updates button (PackageKit
+0.8 only, dead for a decade), accountsservice not seeing autologin set in
+`lightdm.conf.d`, activity-log-manager untranslated. libgnomekbd removal
+assessed, no action for 26.04. `research/ucc-panels/`.

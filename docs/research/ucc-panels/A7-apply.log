@@ -1,0 +1,13 @@
+keyboard | 'Повторять удерживаемую нажатой клавишу' | before=[true/ X:on] after=[false/ X:off] reverted=[true/ X:on] | APPLIED+REVERTED
+mouse | 'Правая' | before=[ X:1 2 3] after=[ X:3 2 1] reverted=[ X:1 2 3] | APPLIED+REVERTED
+sound | 'Выключить звук' | before=[pulse-mute:нет] after=[pulse-mute:да] reverted=[pulse-mute:нет] | APPLIED+REVERTED
+region | 'Разрешить разные источники для каждого окна' | before=[gkbd:false input-sources:false] after=[gkbd:true input-sources:false] reverted=[gkbd:false input-sources:false] | APPLIED+REVERTED
+datetime | 'Секунды' | before=[false] after=[true] reverted=[false] | APPLIED+REVERTED
+bluetooth | 'Показывать состояние Bluetooth на панели меню' | before=[true] after=[false] reverted=[true] | APPLIED+REVERTED
+screen | 'Требовать пароль при выходе из спящего режима' | before=[true] after=[false] reverted=[true] | APPLIED+REVERTED
+activity-log-manager | 'Returning from blank screen' | before=[true] after=[false] reverted=[true] | APPLIED+REVERTED
+universal-access | 'Подавать сигнал при нажатии модификатора' | before=[false] after=[false] reverted=[false] | CHECK
+appearance | 'Yaru' | before=['Adwaita' xsettings:Yaru-dark] after=['Yaru' xsettings:Yaru] reverted=['Yaru-dark' xsettings:Yaru-dark] | CHECK
+sound | 'Отображать уровень громкости на панели меню' | before=[true] after=[false] reverted=[true] | APPLIED+REVERTED
+universal-access large text: before=[1.0 dpi=96] after=[1.0 dpi=96] reverted=[1.0 dpi=96]
+large text: before=[unity=1.0 gnome=1.0 dpi=96] after=[unity=1.25 gnome=1.0 dpi=120] reverted=[unity=1.0 gnome=1.0 dpi=96]

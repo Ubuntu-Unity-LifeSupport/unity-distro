@@ -1,0 +1,20 @@
+activity-log-manager | alive=1 | title=Security & Privacy | out: critical=0 warning=0 | journal-crit=0
+appearance | alive=1 | title=Оформление | out: critical=0 warning=11 | journal-crit=0
+bluetooth | alive=1 | title=Bluetooth | out: critical=0 warning=0 | journal-crit=0
+color | alive=1 | title=Цвет | out: critical=0 warning=0 | journal-crit=0
+datetime | alive=1 | title=Время и дата | out: critical=0 warning=0 | journal-crit=0
+display | alive=1 | title=Настройка экранов | out: critical=0 warning=0 | journal-crit=0
+info | alive=1 | title=Сведения о системе | out: critical=0 warning=1 | journal-crit=0
+keyboard | alive=1 | title=Клавиатура | out: critical=0 warning=0 | journal-crit=0
+mouse | alive=1 | title=Мышь и сенсорная панель | out: critical=0 warning=0 | journal-crit=0
+network | alive=1 | title=Сеть | out: critical=2 warning=0 | journal-crit=0
+power | alive=1 | title=Питание | out: critical=0 warning=0 | journal-crit=0
+printers | alive=1 | title=Параметры системы | out: critical=0 warning=1 | journal-crit=0
+region | alive=1 | title=Ввод текста | out: critical=0 warning=0 | journal-crit=0
+screen | alive=1 | title=Яркость и блокировка | out: critical=0 warning=1 | journal-crit=0
+sharing | alive=1 | title=Sha­ring | out: critical=0 warning=1 | journal-crit=0
+sound | alive=1 | title=Звук | out: critical=0 warning=3 | journal-crit=0
+universal-access | alive=1 | title=Специальные возможности | out: critical=0 warning=0 | journal-crit=0
+user-accounts | alive=1 | title=Учётные записи | out: critical=0 warning=0 | journal-crit=0
+wacom | alive=1 | title=Планшет Wacom | out: critical=0 warning=0 | journal-crit=0
+_usr_bin_compiz.1000.crash _usr_bin_gjs-console.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_systemd_systemd-journald.0.crash 
