@@ -1494,3 +1494,33 @@ real clients; that is noted in `research/rebuild-loss/`.
 - u-c-c needed `libcrypt-dev` to rebuild at all; 26.10's 0ubuntu16 already
   has it (no-change rebuilds otherwise), taken into `0ubuntu13+unity1` rather
   than versioning above 26.10.
+
+## 2026-09-26 - Messaging menu under Unity: show Ayatana's, not revive Canonical's (agent B)
+
+**Context.** The coordinator's task B-10. 26.04's only `libmessaging-menu`
+is Ayatana's, so the Canonical indicator-messages has no clients.
+
+**Options weighed** (`research/messaging-menu/`):
+- **(1) Teach Unity's panel to show Ayatana indicators.** Chosen: a
+  libindicator reader plus a symlink in ayatana-indicator-messages.
+- **(2) Build Canonical's libmessaging-menu again.** It has the same
+  package name and soname as Ayatana's, so the two conflict, and it would
+  be a dead library to carry.
+- **(3) A D-Bus bridge.** A new daemon duplicating a maintained one; the
+  CLAUDE.md rule on new components weighs against it.
+
+**Result.** libindicator `+unity2` and ayatana-indicator-messages `+unity1`
+are in aptly. Checked on target2:
+- the envelope turns "new";
+- sources show counts and are clickable (`activate-source` reaches the
+  client);
+- Pidgin registers with its status items;
+- clicking an application that is not running starts it;
+- Unity's own indicators are unchanged.
+
+**Left for owners.**
+- `ubuntu-unity-desktop` should recommend ayatana-indicator-messages and
+  drop overlay-scrollbar-gtk2. Its session-wide `GTK2_MODULES` kills GTK2
+  clients (Pidgin's hand-over instance) with an undefined
+  `ubuntu_gtk_set_use_overlay_scrollbar`.
+- Canonical indicator-messages keeps its double start; it is superseded.

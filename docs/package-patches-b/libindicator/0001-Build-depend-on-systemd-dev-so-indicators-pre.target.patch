@@ -1,7 +1,7 @@
 From f75a61760288cde9878f86c68f963f09a9808fc7 Mon Sep 17 00:00:00 2001
 From: NeiroNext <mihail.rozshko@gmail.com>
 Date: Fri, 25 Sep 2026 16:55:40 +0000
-Subject: [PATCH] Build-depend on systemd-dev, so indicators-pre.target is
+Subject: [PATCH 1/2] Build-depend on systemd-dev, so indicators-pre.target is
  installed again
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

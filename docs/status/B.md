@@ -5,6 +5,17 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Messaging menu under Unity** (2026-09-26, B-10): Unity's panel now shows
+ayatana-indicator-messages.
+- libindicator `+unity2` (Ayatana root and item types) and
+  ayatana-indicator-messages `+unity1` (link into
+  `/usr/share/unity/indicators`) are in aptly.
+- Pidgin and Geary show up; sources are clickable.
+- `research/messaging-menu/`.
+- Open, for the ubuntu-unity-meta owner: recommend
+  ayatana-indicator-messages, drop overlay-scrollbar-gtk2 (it breaks GTK2
+  apps).
+
 **Target2 checks done** (2026-09-26, B-8, after the VBoxSVC restart):
 - unity-lens-files `+unity1` checked live and published.
 - appmenu `+unity1` checked with GIMP 3, LibreOffice and Chromium (snap).
