@@ -52,3 +52,54 @@ libappmenu-gtk3-parser0 and the two -dev packages.
   panel, no menu bar inside the window; no new crash reports.
 - Not checked: opening the menu from the panel by click (the scripted click
   missed), Chrome itself.
+
+## Re-check 2026-09-26: does a783b01c close every unload path? (agent B)
+
+**The LP stack.** LP #2166410's gdb output shows
+`dlclose` ← `g_module_close` ← libgtk-3, then a GDBus dispatch into unmapped
+code. GTK 3.24.52 `gtk/gtkmodules.c`, `gtk_module_info_unref()`, drops a
+module whose `ref_count` reaches 0 when the `gtk-modules` setting changes.
+After a783b01c `g_module_make_resident()` makes that `g_module_close()` a
+no-op, so the code stays mapped. That is exactly this stack.
+
+**Neighbouring paths, from the source:**
+- **Re-init.** When the module is added back to `gtk-modules`,
+  `load_module()` does not find it in its list any more. It creates a new
+  entry and calls `gtk_module_init()` again. With a resident module the
+  statics survive, so a second `store_pre_hijacked()` would save the
+  already-hijacked vfuncs as "pre-hijacked", and the hijacked realize would
+  call itself.
+  - This does not happen: `gtk_module_should_run()` has
+    `static bool run_once`, which is false after the first run, so the
+    second init does nothing.
+- **The bus watcher** is also guarded (`watcher_id == 0`).
+- **Other hooks.** The module exports only `gtk_module_init` and
+  `g_module_check_init`, not `gtk_module_display_init`.
+- **Other unloads.** It makes no `g_module_close`/`dlclose` of its own.
+- **GTK2 and GTK4.** Our package builds the GTK3 module only; there is no
+  GTK2 module, and GTK4 has no modules.
+- **The parser library.** `libappmenu-gtk3-parser0` is an ordinary
+  dependency and stays loaded while the resident module holds it.
+
+**Measured** in a resolute chroot: Xvfb, xsettingsd, GTK 3.24.52,
+`menuapp.py`, with the module only in `Gtk/Modules`, one display per run
+(`readd.sh`).
+
+| module | scenario | result |
+|---|---|---|
+| archive 25.04-1build1 | module dropped from the setting | SIGSEGV (139), 2 of 2 |
+| ours +unity1 | kept | exit 0 |
+| ours +unity1 | dropped | exit 0, module still mapped, menu-bar windows keep being created |
+| ours +unity1 | dropped, then added back (re-init) | exit 0, 4 of 4; 6 ticks, windows with menu bars created after the re-add |
+
+An earlier run showed "exit 1" once. That was the test itself: the next
+run reused display :9 while the previous Xvfb was still exiting, and GTK
+could not open the display. Each run now gets its own display.
+
+**Conclusion.** a783b01c covers the reported stack, and no other unload or
+re-init path is open; no further change is needed.
+
+Still to do on target2, once it is back: run applications under Unity with
+the module only in `gtk-modules`. The candidates are Chromium (a snap in
+26.04; Chrome is not in the archive), GIMP 3 (GTK3) and LibreOffice (its
+GTK3 VCL).
