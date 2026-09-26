@@ -114,3 +114,25 @@ of B's current task, so no downgrade there.
   `…+unity1`, sbuild, target, aptly.
 
 Disable: `systemctl --user disable --now xorg-watch.timer`.
+
+## 2026-09-26: `1ubuntu1.3+unity2` - FindGlyphRef crash (LP #2163497)
+
+Rule 0: not in any Ubuntu upload (resolute 1ubuntu1.3 in -proposed is the
+DisplayLink fix only; 26.10 has 21.1.22-1ubuntu4 and 21.1.24-1ubuntu1 in
+-proposed); `xorg-watch` wrote no line. Upstream fixed it after the 21.1.24 tag:
+`8d604fa14` on server-21.1-branch (cherry-pick of `67e7343b`, freedesktop
+xserver #1881): `FreeGlyph` removed a global glyph entry that belonged to
+another glyph when one glyphset held two identical glyphs, leaving the global
+table's count short; freeing glyphsets later crashed in `FindGlyphRef`.
+
+Carried as `debian/patches/upstream-21.1-branch/` on top of the 29 commits.
+**The full list of what we carry is `patches/series-carried.txt`** (30 entries;
+the 8d604fa14 patch itself is in `patches/`) - a rebase onto a new Ubuntu base
+takes the whole list and drops what Ubuntu already has.
+
+Not reproduced: the crash is a use-after-free reachable from an ordinary X
+client, and a trigger for it was not written. Checked instead: builds in a
+clean resolute chroot (306 s, Xvfb check inside the build passes); on target
+after a reboot the smoke test (Dash, HUD, spread, workspaces, xkb, GLX, text
+windows) and three logout/login cycles, no crash files from the new server.
+Published to aptly in place of `1.3+unity1`; target = aptly.

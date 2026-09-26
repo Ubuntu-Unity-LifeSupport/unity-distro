@@ -1409,3 +1409,12 @@ the Dash on target2.
   no books in 26.04. virtualbox answers once VirtualBox is installed.
 
 Details and the table: `research/unity-scopes/`.
+
+## 2026-09-26 - xorg-server LP #2163497: upstream's post-21.1.24 fix carried (agent A)
+
+`8d604fa14` (server-21.1-branch, after the 21.1.24 tag; no Ubuntu upload has
+it) added to our series as `1ubuntu1.3+unity2`. Not reproduced on purpose - the
+trigger is a use-after-free any X client can reach, and writing one was not
+worth the risk; verified by build, smoke test and logout cycles instead. The
+carried list now lives in `research/xorg-versioning/patches/series-carried.txt`
+so a rebase cannot drop it.

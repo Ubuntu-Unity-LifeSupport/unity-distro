@@ -1,0 +1,66 @@
+From 8d604fa14969ca5bf941c6f9002e1d8798f7f5b2 Mon Sep 17 00:00:00 2001
+From: Octavia Togami <octy@octyl.net>
+Date: Thu, 18 Jun 2026 11:56:58 -0700
+Subject: [PATCH] Fix use-after-free caused by duplicate glyphs in one glyphset
+
+We make two glyphsets, GS1 and GS2, both with the same format depth.
+GS1 contains any glyph different from the others, let's call it U
+(unique). GS2 contains two glyphs with the same content, or at least
+sha1 hash. Let's call them A and B.
+
+We first register GS1 and GS2. GS1 has no problems, but before the
+fix, registering GS2 breaks accounting in `globalGlyphs`. Since there
+is no check for duplicate glyphs within a single set, we make two
+`GlyphNew` entries for A and B. Now in the loop at the end, we go over
+each entry and call `AddGlyph` and `FreeGlyph`:
+1. AddGlyph(GS2, A, idA) inserts A into `globalGlyphs`
+2. FreeGlyph(A) drops A's refcnt by one, but as it's being held in
+   `globalGlyphs` it's kept alive.
+3. AddGlyph(GS2, B, idB) finds A in `globalGlyphs` and reuses it
+   instead of inserting B
+4. FreeGlyph(B) drops B's refcnt by one (to zero), and B is freed.
+   Before the fix, the lookup in `globalGlyphs` finds A's entry, and
+   since it isn't a DeletedGlyph, it erroneously removes the
+   `gr->glyph` pointing to `A` and decrements `tableEntries`. This
+   results in `tableEntries` being off-by-one as `A` is still alive.
+
+Now, we free the glyphsets in a particular order. Freeing GS1 results
+in calling FreeGlyph(U), which will decrement U's refcnt to zero, and
+free U. This clears out the entry in `globalGlyphs` for U and
+decrements `tableEntries`, which due to the earlier error is now zero.
+When `FreeGlyphSet` sees this, it clears the `globalGlyphs` for that
+format depth. Now freeing A or GS2 (which transitively frees A) will
+try to check the `globalGlyphs` at that format depth, but because it
+was cleared out this crashes.
+
+The fix here is to change FreeGlyph to only free a glyph from
+`globalGlyphs` that is exactly the glyph being freed, so that
+FreeGlyph(B) doesn't touch `globalGlyphs` at all. This keeps a proper
+count in `tableEntries` and prevents `globalGlyphs[fdepth]` from being
+freed before A is freed.
+
+Closes: #1881
+See-also: https://gitlab.freedesktop.org/xorg/xserver/-/work_items/1914
+(cherry picked from commit 67e7343b588af3852418ea6a0316a326f5c947d2)
+
+Part-of: <https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/2294>
+---
+ render/glyph.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/render/glyph.c b/render/glyph.c
+index f5069d42f..227a14786 100644
+--- a/render/glyph.c
++++ b/render/glyph.c
+@@ -268,7 +268,7 @@ FreeGlyph(GlyphPtr glyph, int format)
+         gr = FindGlyphRef(&globalGlyphs[format], signature, TRUE, glyph->sha1);
+         if (gr - globalGlyphs[format].table != first)
+             DuplicateRef(glyph, "Found wrong one");
+-        if (gr->glyph && gr->glyph != DeletedGlyph) {
++        if (gr->glyph == glyph) {
+             gr->glyph = DeletedGlyph;
+             gr->signature = 0;
+             globalGlyphs[format].tableEntries--;
+-- 
+2.53.0
+
