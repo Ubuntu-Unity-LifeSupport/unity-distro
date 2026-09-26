@@ -194,15 +194,18 @@ patch. It tries to disprove the result by checking:
 
 The verifier returns exactly `PASS`, `FAIL`, or `INCOMPLETE`, with evidence.
 Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. `INCOMPLETE` names
-the missing proof; it is not a pass. Use an ephemeral reviewer when an
-independent session is available. Prefer the other physical builder agent;
-otherwise use an isolated read-only subagent. The assigned VM owner alone
-performs VM operations, and the reviewer assesses the resulting evidence.
-Do not add another permanent team role. Skills define repeatable procedures;
-they do not execute automatically or own tasks. Physical agents A and B retain
-their assigned VMs, coordinator C assigns and tracks tasks, and temporary
-subagents may do bounded research or read-only review without persistent task
-or VM ownership.
+the missing proof; it is not a pass. Run the verifier in a separate, ephemeral
+subagent context using `.claude/agents/adversarial-verifier.md`. A and B remain
+focused on their own assigned tasks; do not interrupt one to review the
+other's task. The implementer alone operates its assigned VM and supplies the
+runtime evidence. The verifier does not edit the patch, own the task, or
+operate a VM. If it cannot establish a verdict from the diff and evidence, it
+returns `INCOMPLETE` and the publish gate stays closed. Do not add another
+permanent team role. Skills define repeatable procedures; they do not execute
+automatically or own tasks. Physical agents A and B retain their assigned
+VMs, coordinator C assigns and tracks tasks, and temporary Investigator and
+Verifier subagents do bounded research or read-only review without persistent
+task or VM ownership.
 
 ## 6. Version and publish gates
 

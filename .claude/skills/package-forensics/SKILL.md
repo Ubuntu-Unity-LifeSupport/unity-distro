@@ -21,14 +21,18 @@ create a second manually maintained package-status table.
    result, and evidence paths. If it does not reproduce, investigate once for
    setup mismatch; then close as `NOT_REPRODUCED` or leave `UNKNOWN` with the
    missing evidence stated.
-3. The task owner checks the installed/source identity and this repository's
-   relevant refs, patch queues, research, decision, and patch records. Delegate
-   broad archive, newer Ubuntu/Debian, upstream history/release, and tracker
-   searches to isolated subagents with bounded source lists and questions.
-   Ask for concise findings with exact versions, commits, links, search scope,
-   and gaps; do not pull raw search output into the owner's context. Search
-   exact symptoms and signatures, not just the suspected cause. If a subagent
-   is unavailable, record that and keep any direct search bounded.
+3. The task owner checks the small, task-local facts needed to identify the
+   installed/source package and reproduce the report. Delegate result-heavy
+   discovery to the ephemeral `package-investigator` subagent defined in
+   `.claude/agents/package-investigator.md`: relevant local
+   refs and patch queues, this repository's research/decision/patch records,
+   archive pockets, newer Ubuntu/Debian, upstream history/releases, and
+   trackers. Give it bounded sources and questions. Ask for concise findings
+   with exact versions, commits, links, search scope, and gaps; do not pull raw
+   search output into the owner's context. Search exact symptoms and signatures,
+   not just the suspected cause. The subagent does not operate the VM, change
+   source, own the task, or decide whether implementation may begin. If it is
+   unavailable, record that and keep any direct search bounded.
 4. Record one exact `existing_fix_result` value from the process document and
    cite the version, commit, patch, issue, or dated queries behind it. Record
    `issue_search_result` as `FOUND`, `NOT_FOUND`, or `UNKNOWN` with the trackers
@@ -47,6 +51,7 @@ Do not edit package source in this skill's investigation stage. A successful
 investigation may end with `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`, or
 `UNKNOWN`; all are valid findings when recorded accurately.
 
-This skill is a checklist run by the assigned physical agent; it does not
-spawn workers itself or transfer task/VM ownership. The owner remains
-accountable for validating delegated findings and updating the evidence card.
+This skill is the physical task owner's checklist and does not itself launch
+workers. The owner launches the temporary investigator for broad searches,
+validates its findings, and writes the final evidence card. The subagent does
+not acquire persistent task or VM ownership.

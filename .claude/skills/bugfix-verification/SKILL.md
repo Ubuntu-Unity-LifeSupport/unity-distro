@@ -5,14 +5,17 @@ description: Independently challenge a package patch by testing the reported fai
 
 # Bug-fix verification
 
-Use a reviewer separate from the implementer for a behavior fix or a
-non-mechanical build fix. Prefer the other physical builder agent when
-available; otherwise use an isolated, read-only subagent. The coordinator
-assigns and tracks work but does not substitute for technical review. The
-reviewer reads the task's evidence card and diff, but does not accept the
-implementer's root-cause claim without checking its evidence. Do not modify the
-patch. The owner of an assigned VM alone operates that VM; the reviewer can
-challenge the recorded runtime evidence without taking VM ownership.
+Run this review in the separate, ephemeral `adversarial-verifier` subagent
+defined in `.claude/agents/adversarial-verifier.md`. Do not ask physical agents
+A or B to interrupt their own assigned task to review the other's work.
+The reviewer reads the original problem, reproduction, evidence card, and diff
+and forms its own conclusion; do not prime it with the implementer's preferred
+fix. It must not edit the patch, claim task ownership, or operate either VM.
+The task owner remains responsible for live tests on their assigned VM and for
+providing the reviewer with the resulting logs. If the evidence is insufficient
+for an independent verdict, return `INCOMPLETE` and keep the task out of the
+publish gate. The coordinator assigns and tracks work but does not substitute
+for technical review.
 
 Try to disprove the result:
 
