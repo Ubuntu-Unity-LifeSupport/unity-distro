@@ -1331,3 +1331,21 @@ grab) was weighed and not done - it would hide the next leak, not remove it,
 and would leave `"resize"` blocking Unity's Super key (LP #1644412). The
 #1-related hypothesis (idle monitor, second daemon, lock, suspend, user
 switch) was tested and not confirmed. `research/cursor-stops/`.
+
+## 2026-09-26 - indicator-keyboard +unity3 for LP #2166139 (agent B)
+
+**Context.** The coordinator's task B-1: a crash in g_variant_iter_new.
+
+**Rule 0.**
+- LP #2166139 has no fix.
+- 26.10's 0ubuntu2..4 are rebuilds.
+- Ayatana's keyboard indicator is separate C code.
+
+**Decision.** Fix it in our package. The cause is in indicator-keyboard,
+which trusted `act_user_get_input_sources()` (transfer none, NULL while
+AccountsService has nothing cached) not to return NULL. accountsservice
+documents that NULL, so it is not a bug there.
+
+Reproduced by restarting accounts-daemon under the greeter's service:
+`+unity2` crashed 3 of 3, `+unity3` survived 3 of 3. Tests pass 10 of 10,
+including a new one for NULL. Details: `research/indicator-keyboard-2166139/`.

@@ -5,6 +5,14 @@ Build directory: `~/work/b`
 
 ## Now
 
+**indicator-keyboard +unity3** (2026-09-26, coordinator's task B-1): LP #2166139.
+It crashed in g_variant_iter_new when AccountsService had no InputSources
+cached, for instance after an accounts-daemon restart.
+- Reproduced; fixed.
+- 10/10 tests, including a new one.
+- In aptly.
+- `research/indicator-keyboard-2166139/`; build in `~/work/b/ik3`.
+
 **Global menu gaps** (2026-09-26, May via the coordinator): `research/nocsd-gaps/`.
 - (a) now covers inserted action groups: 10 dead items to 0.
 - New part (d): late menus, live changes, shown menu buttons (Pinta,
