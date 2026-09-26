@@ -1476,3 +1476,21 @@ Checked on target2:
 
 26.04's messaging client library is Ayatana's, so the indicator has no
 real clients; that is noted in `research/rebuild-loss/`.
+
+## 2026-09-26 - A-6: session-migration, Python warnings, uwidgets' requests (agent A)
+
+- session-migration `0.3.9build2+unity1`: agent B's debdiff unchanged (26.10 has
+  the same 0.3.9build2), built clean, 9/9; on target a test migration ran at the
+  first login and was skipped at the second (two reboots - relogins through a
+  lightdm restart do not re-run it while an ssh session keeps the user manager
+  alive, a test artifact). Package now agent A's.
+- Invalid-escape warnings fixed in the next builds that carried them anyway:
+  unity `+unity11` (`/usr/bin/unity`), u-s-d `+unity5`, u-c-c `0ubuntu13+unity1`
+  (apport hooks); all `python3 -W error -m py_compile` clean.
+- unity-uwidgets: **dependency, not removal** - the wallpaper-from-URL setting
+  and the spotify widget genuinely fetch over HTTP; `python3-requests` is in
+  the 26.04 archive. `uwidgets` itself imports without it, so only those two
+  features were broken.
+- u-c-c needed `libcrypt-dev` to rebuild at all; 26.10's 0ubuntu16 already
+  has it (no-change rebuilds otherwise), taken into `0ubuntu13+unity1` rather
+  than versioning above 26.10.

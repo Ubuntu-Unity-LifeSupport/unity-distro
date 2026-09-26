@@ -5,7 +5,7 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last (2026-09-26): A-5 unity-greeter `+unity1` rebuildable again, in aptly (`research/unity-greeter-rebuild/`). Before: A-4 cinnamon-session #202 - not reachable in our session, nothing to
+Nothing in flight. Last (2026-09-26): A-6 session-migration +unity1, unity +unity11, u-s-d +unity5, u-c-c +unity1 in aptly. A-5 unity-greeter `+unity1` rebuildable again, in aptly (`research/unity-greeter-rebuild/`). Before: A-4 cinnamon-session #202 - not reachable in our session, nothing to
 change (`research/cinnamon-session-214-202/`); A-3 xorg-server
 `1.3+unity2`; A-2 no change needed; A-1 six known issues re-checked from a
 clean snapshot (`research/recheck-2026-09-26/`). target = aptly (restored from
@@ -42,3 +42,5 @@ test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, s
 - (`packages/gtk-nocsd` handed to agent B, 2026-09-26.)
 - `packages/unity-settings-daemon` - branch `unity/resolute` (`0ubuntu7+unity4`, worktree `~/work/a/usd`, based on the unreleased git head 216f054), https://github.com/Ubuntu-Unity-LifeSupport/unity-settings-daemon.
 - `packages/unity-greeter` - branch `unity/resolute` (`25.04.1-0ubuntu1+unity1`, native), https://github.com/Ubuntu-Unity-LifeSupport/unity-greeter.
+- `packages/unity-control-center` - branch `unity/resolute` (`0ubuntu13+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/unity-control-center.
+- `packages/session-migration` - branch `unity/resolute` (`0.3.9build2+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/session-migration.
