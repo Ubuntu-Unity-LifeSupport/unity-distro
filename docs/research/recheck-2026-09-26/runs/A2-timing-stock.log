@@ -1,0 +1,7 @@
+/home/mike/panelwait.sh: строка 4: /home/mike/envt.sh: Нет такого файла или каталога
+stock unity=7.7.1+26.04.20260306-0ubuntu3 boot=2026-09-26 16:43:47 compiz@+109s panel not drawn within 240 s = 1min 11.606s 
+/home/mike/panelwait.sh: строка 4: /home/mike/envt.sh: Нет такого файла или каталога
+stock unity=7.7.1+26.04.20260306-0ubuntu3 boot=2026-09-26 16:50:51 compiz@+82s panel not drawn within 240 s = 57.854s 
+/home/mike/panelwait.sh: строка 4: /home/mike/envt.sh: Нет такого файла или каталога
+stock unity=7.7.1+26.04.20260306-0ubuntu3 boot=2026-09-26 16:57:28 compiz@+73s panel not drawn within 240 s = 48.564s 
+stock unity=7.7.1+26.04.20260306-0ubuntu3 boot=2026-09-26 17:04:18 compiz@+95s panel@+99s = 1min 2.780s 

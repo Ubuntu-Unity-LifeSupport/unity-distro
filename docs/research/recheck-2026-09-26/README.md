@@ -48,15 +48,15 @@ one restart run (r3) and one menu cycle clicked before Unity had drawn its panel
    complete and the window ends minimized through the menu; wheel, 5 of 5 moves
    complete, window normal; no grab left, real clicks reach - on `+unity9` and
    on `+unity10` alike. No change needed; `+unity11` was not made.
-2. **Slow session start on this VM, not attributed to our packages.** After
-   `full-upgrade`, boot-to-compiz took 89-164 s and the panel appeared 9-19 s
-   after compiz; across the 12 boots since the rollback `Startup finished`
-   ranged from 47 s to 2 min 8 s and lightdm-to-compiz from 35 to 73 s, with
-   unrelated services slow alike (e2scrub 31 s, apport 23 s, accounts-daemon
-   19 s, dbus 12 s). A click in the first 1-2 minutes lands on a desktop that
-   is not drawn yet - that, not #2, explains the two early misses. The stock
-   session start was not measured separately, so this is an observation, not a
-   verdict (`tools/panelwait.sh`).
+2. **Slow session start on this VM - measured against stock (A-2): not ours.**
+   Same hour, same VM (`runs/A2-timing-*.log`, `tools/panelwait.sh`, compiz
+   start taken from the journal): stock boots - compiz at 73, 82, 95, 109 s
+   (userspace 49-72 s), panel drawn at 99 s in the one boot where the probe
+   could see it (~26 s after compiz); ours - compiz at 73, 74, 76 s (userspace
+   41-44 s), panel 15-18 s after compiz (screenshots every 2 s: wallpaper only
+   until then, then panel and launcher together). Both are slow because the VM
+   is; nothing points at our packages. Practical rule for tests: start clicking
+   only after the panel is drawn (`panelwait.sh`).
 3. **Journal on a clean boot with our packages**: one instance of every session
    daemon checked (u-s-d, compiz, panel service, cinnamon-session, nemo-desktop,
    light-locker, bamf, indicators, fallback mount helper, ibus); apport empty.
