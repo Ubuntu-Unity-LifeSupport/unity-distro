@@ -1367,3 +1367,22 @@ Measured: 29 of 29 tests pass; the control build without the fix fails the
 new test. Details: `research/indicator-datetime-tasks/`.
 
 #1515821 is intended behaviour (one occurrence per UID) and is left alone.
+
+## 2026-09-26 - libunity +unity1: scope runner without imp (agent B)
+
+**Context.** The coordinator's task B-3.
+
+**Rule 0.** Neither Debian -7/-8 nor 26.10 has a fix.
+
+**Decision.** Carry our own importlib patch as `libunity +unity1`. The
+package tree is a new git-ubuntu clone, `packages/libunity`, branch
+`unity/resolute`.
+
+Measured in the Dash:
+- `unity-scope-calculator` answers `calc: 12*7` → 84 with `+unity1`;
+- the stock runner fails with `No module named 'imp'` and there are no
+  results.
+
+Invalid-escape warnings in `/usr/bin/unity` and the u-s-d hook are listed
+for A, not changed. unity-uwidgets belongs to the unity source, so it is
+A's. The u-c-c hook has no owner.

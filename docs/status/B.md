@@ -5,6 +5,13 @@ Build directory: `~/work/b`
 
 ## Now
 
+**libunity +unity1** (2026-09-26, coordinator's task B-3): unity-scopes-runner
+now loads scopes with importlib on Python 3.14.
+- Checked in the Dash with unity-scope-calculator.
+- In aptly.
+- `packages/libunity` (git-ubuntu clone, no remote of ours);
+  `research/libunity-python314/`; build in `~/work/b/lu1`.
+
 **indicator-datetime +unity2** (2026-09-26, coordinator's task B-2): LP
 #1848969 and #2099742. A task with only a due date aborted the service.
 - Reproduced; fixed.

@@ -1,0 +1,60 @@
+Description: Load source scopes with importlib instead of imp
+ imp was removed in Python 3.12, so the scope runner failed at its first
+ import on 26.04 (Python 3.14) and no Python scope could run.
+Author: NeiroNext <mihail.rozshko@gmail.com>
+Forwarded: no
+Last-Update: 2026-09-26
+---
+Index: libunity/bindings/python/scope-runner-dbus.py
+===================================================================
+--- libunity.orig/bindings/python/scope-runner-dbus.py
++++ libunity/bindings/python/scope-runner-dbus.py
+@@ -16,8 +16,9 @@
+ # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ 
+ import argparse
+-import imp
+ import importlib
++import importlib.machinery
++import importlib.util
+ import os
+ import sys
+ 
+@@ -29,6 +30,19 @@ MODULE_TYPE = "python{0}".format(sys.ver
+ SOURCE_TYPE = MODULE_TYPE + "-source"
+ 
+ 
++def load_source(modulename, path):
++  # imp.load_source() replacement: imp is gone since Python 3.12. The
++  # loader is given explicitly so that a file with any extension loads,
++  # as it did with imp
++  loader = importlib.machinery.SourceFileLoader(modulename, path)
++  spec = importlib.util.spec_from_file_location(modulename, path,
++                                                loader=loader)
++  module = importlib.util.module_from_spec(spec)
++  sys.modules[modulename] = module
++  loader.exec_module(module)
++  return module
++
++
+ class PythonScopeLoader(Unity.ScopeLoader):
+   def do_get_scopes(self, name, module_type):
+     if module_type == MODULE_TYPE:
+@@ -36,7 +50,7 @@ class PythonScopeLoader(Unity.ScopeLoade
+       module = importlib.import_module(name)
+     elif module_type == SOURCE_TYPE:
+       modulename, _ = os.path.splitext(os.path.basename(name))
+-      module = imp.load_source(modulename, name)
++      module = load_source(modulename, name)
+     else:
+       raise RuntimeError("Unknown module type: {0}".format(module_type))
+     return [module.load_scope()]
+@@ -49,7 +63,7 @@ def load_scope(name, as_module):
+     # Treat as source file name: use the file's base name as a module
+     # name in the hope it is unique.
+     modulename, _ = os.path.splitext(os.path.basename(name))
+-    module = imp.load_source(modulename, name)
++    module = load_source(modulename, name)
+   return module.load_scope()
+ 
+ def main(argv):
