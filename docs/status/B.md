@@ -5,15 +5,12 @@ Build directory: `~/work/b`
 
 ## Now
 
-**Waits for target2** (it is wedged in `restoringsnapshot` and needs a
-VBoxSVC restart on the host, May's decision):
-1. unity-lens-files `+unity1` (Recommends plocate; a silent skip without
-   locate). Built in `~/work/b/lensfiles`, debdiff in
-   `package-patches-b/debdiff/`. Check live in the Dash, then publish.
-2. appmenu-gtk-module `+unity1` live under Unity with the module only in
-   `gtk-modules`: Chromium (snap), GIMP 3, LibreOffice
-   (`research/appmenu-resident/`).
-3. After the rollback, check it from inside: no `~/.dirty`, fresh uptime.
+**Target2 checks done** (2026-09-26, B-8, after the VBoxSVC restart):
+- unity-lens-files `+unity1` checked live and published.
+- appmenu `+unity1` checked with GIMP 3, LibreOffice and Chromium (snap).
+  With the archive module GIMP segfaults 2 of 2 when the module is
+  dropped; with `+unity1` it survives 2 of 2.
+- target2 is back on Clean-2, checked inside.
 
 **Rebuild file-loss survey** (2026-09-26, coordinator's task B-7):
 `research/rebuild-loss/`.
