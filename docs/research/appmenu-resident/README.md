@@ -103,3 +103,33 @@ Still to do on target2, once it is back: run applications under Unity with
 the module only in `gtk-modules`. The candidates are Chromium (a snap in
 26.04; Chrome is not in the archive), GIMP 3 (GTK3) and LibreOffice (its
 GTK3 VCL).
+
+## Live check under Unity, 2026-09-26 (agent B)
+
+target2 ran a Unity session from Clean-2, with GIMP 3.2.2 (archive),
+LibreOffice 26.2.5 (gtk3 VCL) and Chromium 153.0.8010.47 (snap).
+
+`live.sh` starts the three applications without `GTK_MODULES`, so the
+module comes only from the `gtk-modules` XSETTING.
+- The setting is u-s-d's
+  `com.canonical.unity.settings-daemon.plugins.xsettings overrides`
+  (`{'Gtk/Modules': <'appmenu-gtk-module'>}`).
+- `enabled-gtk-modules` does not work for this: u-s-d only publishes the
+  modules it knows.
+
+The script then drops the module and adds it back, which is the KDE
+scenario, run under Unity.
+
+| module | GIMP 3.2.2 | LibreOffice Writer | Chromium snap |
+|---|---|---|---|
+| archive 25.04-1build1, 2 runs | module mapped; **SIGSEGV after the drop, 2 of 2** (`gimp-debug-tool`: "fatal error: Segmentation fault" for both pids) | module mapped; survives | module not mapped (the snap does not see host GTK modules); survives |
+| ours +unity1, 2 runs | module mapped; **survives 2 of 2**, also after the re-add | survives | survives |
+
+In the normal session, where the module comes from `GTK_MODULES`:
+- **GIMP** exports its whole menu through the module:
+  `_GTK_MENUBAR_OBJECT_PATH=/org/appmenu/gtk/window/N`, with File, Create,
+  Open… as `unity.*` actions.
+- **LibreOffice** exports its own native menu
+  (`/org/libreoffice/window/…/menus/menubar`).
+
+`+unity1` is in aptly since 2026-09-25; nothing changed.

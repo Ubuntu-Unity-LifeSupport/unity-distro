@@ -104,3 +104,19 @@ raises `TypeError` (GTK 4's takes 7 arguments), so every search failed.
 The seven `+unity1` source packages are in aptly. Their build is in
 `~/work/b/scopes`; there is no git tree, since these are small
 Ubuntu-native packages and aptly holds the sources.
+
+## unity-lens-files +unity1 live check, 2026-09-26 (agent B)
+
+target2, Unity session. The test file had never been opened
+(`~/Documents/deep/nested/b8quokka-report.txt`), and the Files lens was
+searched for it (`lf.sh`).
+
+| lens-files | locate | locate errors in the journal per search | result |
+|---|---|---|---|
+| archive 0ubuntu6 | none | 1 ("Error performing global search … locate") | - |
+| +unity1 | none | 0 | only recent files, as expected |
+| +unity1 | plocate 1.1.23 after `updatedb` | 0 | the file is found (`shots/lf-unity1-plocate.png`) |
+
+`+unity1` is in aptly (Recommends: plocate). Its source was rebuilt from
+`package-patches-b/debdiff/`, because the builder reboot wiped the
+scratchpad copy.
