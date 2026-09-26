@@ -40,6 +40,19 @@ This draft was written on 2026-09-22. Run all four:
 If any of the first three has changed, the text needs rewriting before it goes
 anywhere.
 
+**Re-check 2026-09-26 (agent B), point 4.** The reproducer still fails:
+- Where: a clean resolute chroot (sbuild's base tarball, Ubuntu archive
+  only).
+- What: `apt install libnux-4.0-dev` gives `0ubuntu12`; then
+  `pkg-config --print-errors --exists nux-4.0` prints `Package 'libpcre',
+  required by 'nux-4.0', not found`, exit 1.
+
+Seen on the way, for points 1-2 (`rmadison`):
+- resolute has only `0ubuntu12`, nothing in -updates or -proposed;
+- 26.10 has `0ubuntu13`, and `0ubuntu15` is in its -proposed.
+
+Point 3 was not re-checked.
+
 ## Evidence
 
 | File | Shows |
