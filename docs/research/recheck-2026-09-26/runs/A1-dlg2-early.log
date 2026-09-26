@@ -1,0 +1,10 @@
+cycle 1: menu=no(66) Open-calls=+0 dialog=no(70) after-cancel=no
+cycle 2: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 3: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 4: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 5: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 6: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 7: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 8: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 9: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no
+cycle 10: menu=yes(29) Open-calls=+1 dialog=yes(215) after-cancel=no

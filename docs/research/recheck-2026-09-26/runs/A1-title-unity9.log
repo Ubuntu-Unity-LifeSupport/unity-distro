@@ -1,0 +1,16 @@
+7.7.1+26.04.20260306-0ubuntu3+unity9
+titleplain#1 ok | titleplain border@740,216 -> xterm 400x290+536+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#2 ok | titleplain border@740,216 -> xterm 400x290+534+249 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#3 ok | titleplain border@740,216 -> xterm 400x290+536+250 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#4 ok | titleplain border@740,216 -> xterm 400x290+533+248 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titleplain#5 ok | titleplain border@740,216 -> xterm 400x290+533+248 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb#1 ok | titlemovermb border@740,216 -> xterm 400x290+590+273 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb#2 ok | titlemovermb border@740,216 -> xterm 400x290+584+271 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb#3 ok | titlemovermb border@740,216 -> xterm 400x290+1040+241 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb#4 ok | titlemovermb border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb#5 ok | titlemovermb border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb2#1 ok | titlemovermb2 border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb2#2 ok | titlemovermb2 border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb2#3 ok | titlemovermb2 border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb2#4 ok | titlemovermb2 border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovermb2#5 ok | titlemovermb2 border@740,216 -> xterm 400x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free

@@ -1,0 +1,18 @@
+== logout 1
+compiz(mike)=0 greeter=1 seat0=lightdm
+0
+15:48:06.539 Рабочий стол|Hud|light-locker|SessionManager|unity-dash|unity-launcher|unity-panel|XdndCollectionWindowImp|
+15:48:07.278 
+15:48:07 watcher end k=8
+== logout 2
+compiz(mike)=0 greeter=1 seat0=lightdm
+0
+15:49:09.951 Рабочий стол|Hud|SessionManager|unity-dash|unity-launcher|unity-panel|XdndCollectionWindowImp|
+15:49:11.036 
+15:49:11 watcher end k=8
+== logout 3
+compiz(mike)=0 greeter=1 seat0=lightdm
+0
+15:50:11.928 Рабочий стол|Hud|SessionManager|unity-dash|unity-launcher|unity-panel|XdndCollectionWindowImp|
+15:50:13.029 
+15:50:13 watcher end k=8
