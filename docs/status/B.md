@@ -5,6 +5,14 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Unity scopes** (2026-09-26, coordinator's task B-4): seven Python scopes are
+`+unity1` in aptly.
+- They install together now.
+- manpages works on GTK 4 systems (it asks for GTK 3).
+- gnote starts Gnote correctly.
+- The table of all 17 packages is in `research/unity-scopes/`; build in
+  `~/work/b/scopes`.
+
 **libunity +unity1** (2026-09-26, coordinator's task B-3): unity-scopes-runner
 now loads scopes with importlib on Python 3.14.
 - Checked in the Dash with unity-scope-calculator.

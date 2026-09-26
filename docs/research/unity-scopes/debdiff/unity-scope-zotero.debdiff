@@ -1,0 +1,26 @@
+diff -u unity-scope-zotero-0.1+13.10.20130723/debian/changelog unity-scope-zotero-0.1+13.10.20130723/debian/changelog
+--- unity-scope-zotero-0.1+13.10.20130723/debian/changelog
++++ unity-scope-zotero-0.1+13.10.20130723/debian/changelog
+@@ -1,3 +1,11 @@
++unity-scope-zotero (0.1+13.10.20130723-0ubuntu4+unity1) resolute; urgency=medium
++
++  * debian/rules: do not install /usr/lib/python3/dist-packages/__init__.py,
++    which every unity-scope-* package shipped, so no two of them could be
++    installed together.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 13:10:37 +0000
++
+ unity-scope-zotero (0.1+13.10.20130723-0ubuntu4) resolute; urgency=medium
+ 
+   * No-change mass rebuild for Ubuntu 26.04 (LP: #2132257)
+diff -u unity-scope-zotero-0.1+13.10.20130723/debian/rules unity-scope-zotero-0.1+13.10.20130723/debian/rules
+--- unity-scope-zotero-0.1+13.10.20130723/debian/rules
++++ unity-scope-zotero-0.1+13.10.20130723/debian/rules
+@@ -16,3 +16,7 @@
+ 
+ override_dh_auto_install:
+ 	python3 setup.py install --root=$(CURDIR)/debian/unity-scope-zotero --install-layout=deb
++	# Every unity-scope-* installed src/__init__.py as
++	# /usr/lib/python3/dist-packages/__init__.py, so no two of them could be
++	# installed together; the scope loads from /usr/share/unity-scopes
++	rm -f $(CURDIR)/debian/unity-scope-zotero/usr/lib/python3/dist-packages/__init__.py

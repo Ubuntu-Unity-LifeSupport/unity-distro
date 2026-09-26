@@ -1386,3 +1386,26 @@ Measured in the Dash:
 Invalid-escape warnings in `/usr/bin/unity` and the u-s-d hook are listed
 for A, not changed. unity-uwidgets belongs to the unity source, so it is
 A's. The u-c-c hook has no owner.
+
+## 2026-09-26 - Unity scopes: seven +unity1, online scopes left alone (agent B)
+
+**Context.** The coordinator's task B-4. All 17 `unity-scope-*` and
+`unity-lens-*` packages of 26.04 were installed, activated and queried in
+the Dash on target2.
+
+**Decisions.**
+- Rebuild the seven local Python scopes as `+unity1`. They drop the shared
+  `dist-packages/__init__.py`, so they install together.
+  - manpages also gets `gi.require_version('Gtk', '3.0')`: it failed every
+    search on GTK 4.
+  - gnote also gets a retry while D-Bus activation brings Gnote up: it
+    found nothing unless Gnote was already open.
+- Online scopes are not fixed, per the coordinator: launchpad
+  (`/usr/bin/python`), soundcloud and yahoostock (removed by scope-home's
+  Conflicts), and facebook, flickr and picasa (the Soup 2.4/3.0 clash).
+  With remote search off, the Dash does not start them; checked, no crash
+  reports.
+- tomboy and zotero cannot work: their applications are gone. devhelp has
+  no books in 26.04. virtualbox answers once VirtualBox is installed.
+
+Details and the table: `research/unity-scopes/`.

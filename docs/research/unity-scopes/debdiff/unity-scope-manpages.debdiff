@@ -1,0 +1,45 @@
+diff -u unity-scope-manpages-3.0+14.04.20140324/debian/changelog unity-scope-manpages-3.0+14.04.20140324/debian/changelog
+--- unity-scope-manpages-3.0+14.04.20140324/debian/changelog
++++ unity-scope-manpages-3.0+14.04.20140324/debian/changelog
+@@ -1,3 +1,15 @@
++unity-scope-manpages (3.0+14.04.20140324-0ubuntu5+unity1) resolute; urgency=medium
++
++  * debian/rules: do not install /usr/lib/python3/dist-packages/__init__.py,
++    which every unity-scope-* package shipped, so no two of them could be
++    installed together.
++  * src/unity_manpages_daemon.py: ask for GTK 3 (the package depends on
++    gir1.2-gtk-3.0). Without a version PyGObject loads GTK 4, whose
++    IconTheme.lookup_icon() takes other arguments, and every search failed
++    with a TypeError.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 13:10:36 +0000
++
+ unity-scope-manpages (3.0+14.04.20140324-0ubuntu5) resolute; urgency=medium
+ 
+   * No-change mass rebuild for Ubuntu 26.04 (LP: #2132257)
+diff -u unity-scope-manpages-3.0+14.04.20140324/debian/rules unity-scope-manpages-3.0+14.04.20140324/debian/rules
+--- unity-scope-manpages-3.0+14.04.20140324/debian/rules
++++ unity-scope-manpages-3.0+14.04.20140324/debian/rules
+@@ -16,3 +16,7 @@
+ 
+ override_dh_auto_install:
+ 	python3 setup.py install --root=$(CURDIR)/debian/unity-scope-manpages --install-layout=deb
++	# Every unity-scope-* installed src/__init__.py as
++	# /usr/lib/python3/dist-packages/__init__.py, so no two of them could be
++	# installed together; the scope loads from /usr/share/unity-scopes
++	rm -f $(CURDIR)/debian/unity-scope-manpages/usr/lib/python3/dist-packages/__init__.py
+only in patch2:
+unchanged:
+--- unity-scope-manpages-3.0+14.04.20140324.orig/src/unity_manpages_daemon.py
++++ unity-scope-manpages-3.0+14.04.20140324/src/unity_manpages_daemon.py
+@@ -15,6 +15,10 @@
+ # You should have received a copy of the GNU General Public License along
+ # with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
++# Depends on gir1.2-gtk-3.0: without a version PyGObject loads GTK 4, whose
++# IconTheme.lookup_icon() takes other arguments
++import gi
++gi.require_version('Gtk', '3.0')
+ from gi.repository import GLib, Gio, Gtk
+ from gi.repository import Unity
+ import gettext
