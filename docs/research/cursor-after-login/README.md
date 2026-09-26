@@ -155,3 +155,21 @@ hardware - the mechanism does not depend on any of them, the start-up race does.
 After it, on target: one `unity-settings-daemon`, no `Lost or failed to acquire`
 and no `Name taken` in the journal, `unity-fallback-mount-helper` running,
 polkit's backlight helper path `/usr/lib/unity-settings-daemon/usd-backlight-helper`.
+
+### Follow-up 2026-09-26: the paths not tested before (`+unity4`)
+
+Two test users with a known password (`utest`, `utest2`, created for this;
+mike's password stays unknown), autologin off, the greeter showing a manual
+login field; keyboard into the greeter through XTEST (before the user's
+session exists, so the plugin is not involved), mouse after login through the
+PS/2 evdev node as before. Per boot (`tools/greeter-boots.sh`,
+`runs/series-GRS-unity4.log`, measured by `tools/cursor-loop2.sh`):
+
+| Path | Runs | One daemon instance | Name lost | Pointer shown after real input |
+|---|---|---|---|---|
+| G - cold boot, password login through lightdm-gtk-greeter | 12 | 12 | 0 | **12** |
+| R - log out (SessionManager.Logout) and log in again, same boot | 11 | 11 | 0 | **11** |
+| S - switch user (`dm-tool switch-to-greeter`), second X server `:1` | 12 | 12 | 0 | **12** |
+
+R4 is not counted: that logout did not happen (same daemon PID as G4), so it
+measured the G4 session again. Not tested: real hardware.

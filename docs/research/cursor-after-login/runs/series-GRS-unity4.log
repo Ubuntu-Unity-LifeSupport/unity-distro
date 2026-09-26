@@ -1,0 +1,37 @@
+# G1/R1/S1 (trial run; S1 finished by hand after a driver fix)
+G1 ... 2557=show
+R1 ... 5734=show
+S1 user=utest2 disp=:1 | 11507:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 11507=show
+G2 user=utest disp=:0 | 2581:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2581=show
+R2 user=utest disp=:0 | 5755:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5755=show
+S2 user=utest2 disp=:1 | 8732:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8732=show
+G3 user=utest disp=:0 | 2585:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:666 y:413]: 2585=show
+R3 user=utest disp=:0 | 5693:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5693=show
+S3 user=utest2 disp=:1 | 8714:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8714=show
+G4 user=utest disp=:0 | 2657:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2657=show
+R4 user=utest disp=:0 | 2657:AU hide=1 show=1 exit=0 lost=0 || event4 [x:668 y:414]->[x:698 y:429]: 2657=show
+S4 user=utest2 disp=:1 | 7971:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 7971=show
+G5 user=utest disp=:0 | 2511:AU hide=1 show=0 exit=0 lost=0 || event3 [x:640 y:400]->[x:668 y:414]: 2511=show
+R5 user=utest disp=:0 | 5684:AU hide=1 show=0 exit=0 lost=0 || event3 [x:640 y:400]->[x:668 y:414]: 5684=show
+S5 user=utest2 disp=:1 | 8672:AU hide=1 show=0 exit=0 lost=0 || event3 [x:640 y:400]->[x:668 y:414]: 8672=show
+G6 user=utest disp=:0 | 2593:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2593=show
+R6 user=utest disp=:0 | 5756:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5756=show
+S6 user=utest2 disp=:1 | 8740:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8740=show
+G7 user=utest disp=:0 | 2584:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2584=show
+R7 user=utest disp=:0 | 5712:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5712=show
+S7 user=utest2 disp=:1 | 8696:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8696=show
+G8 user=utest disp=:0 | 2545:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2545=show
+R8 user=utest disp=:0 | 5678:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5678=show
+S8 user=utest2 disp=:1 | 8666:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8666=show
+G9 user=utest disp=:0 | 2569:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2569=show
+R9 user=utest disp=:0 | 5676:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5676=show
+S9 user=utest2 disp=:1 | 8666:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8666=show
+G10 user=utest disp=:0 | 2615:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2615=show
+R10 user=utest disp=:0 | 5703:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 5703=show
+S10 user=utest2 disp=:1 | 8666:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 8666=show
+G11 user=utest disp=:0 | 2598:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:666 y:413]: 2598=show
+R11 user=utest disp=:0 | 5661:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 5661=show
+S11 user=utest2 disp=:1 | 8658:AU hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 8658=show
+G12 user=utest disp=:0 | 2513:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2513=show
+R12 user=utest disp=:0 | 5640:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 5640=show
+S12 user=utest2 disp=:1 | 8634:AU hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 8634=show
