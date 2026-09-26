@@ -76,8 +76,7 @@ Both are in aptly.
 **Still needed for a default install.** Clients depend only on
 `libmessaging-menu0`, and nothing in the Unity set installs
 ayatana-indicator-messages; only Lomiri pulls it in. `ubuntu-unity-desktop`
-(ubuntu-unity-meta, no owner) should recommend it, next to dropping
-overlay-scrollbar-gtk2 (below).
+(ubuntu-unity-meta) now recommends it (B-11, below).
 
 ## Checked on target2
 
@@ -114,8 +113,7 @@ should hand over to the first. The second one dies at once:
 - **Proof.** With the service restarted without `GTK2_MODULES`
   (`nogtk2.sh`), the same click raises Pidgin's buddy list.
 - **Who pulls it in.** `ubuntu-unity-desktop` (source ubuntu-unity-meta,
-  no owner) depends on overlay-scrollbar-gtk2. Dropping it from there, or
-  making the Xsession script a no-op, is the fix. It is not done here.
+  no owner) recommends overlay-scrollbar-gtk2. Fixed in B-11, below.
 
 ## Canonical indicator-messages and its double start
 
@@ -129,3 +127,68 @@ instance exits on the bus-name loss.
 It stays in aptly as `0ubuntu8~26.04.1` (it builds), but nothing should
 install it for Unity. Removing one of its starters is not worth a change.
 Ayatana's service, which Unity now uses, has a single starter.
+
+## B-11: overlay-scrollbar and the metapackage (2026-09-26, agent B)
+
+**Rule 0.** Nobody has fixed it:
+- 26.10 (stonking) ships the same overlay-scrollbar 0ubuntu5, with the
+  same dead module and Xsession script.
+- Its ubuntu-unity-meta 0.30 swaps some applications but still recommends
+  overlay-scrollbar-gtk2.
+- Debian never had the package.
+
+**Choice: a stub package, not Breaks in the metapackage.**
+- **Stub (chosen).** `overlay-scrollbar 0ubuntu5+unity1` reaches every
+  system that has the package, whether or not the metapackage is still
+  installed. Its maintscript `rm_conffile`s
+  `/etc/X11/Xsession.d/81overlay-scrollbar`. `overlay-scrollbar-gtk2`
+  becomes an empty transitional package, so a plain `apt upgrade` takes it
+  without removing anything.
+  - Nothing is compiled any more.
+  - `overlay-scrollbar` keeps only the `com.canonical.desktop.interface`
+    schemas, which unity-tweak-tool still reads.
+- **Breaks (rejected).** Breaks in `ubuntu-unity-desktop` would only reach
+  users who keep the metapackage. `apt upgrade` holds back a package whose
+  upgrade must remove another. Dropping a Recommends alone uninstalls
+  nothing, so the variable would stay.
+
+**ubuntu-unity-meta 0.29+unity1.** In `desktop-recommends-*` (all four
+architectures):
+- `overlay-scrollbar-gtk2` is replaced by `ayatana-indicator-messages`;
+- the built deb differs from the archive's by exactly these two Recommends
+  entries.
+
+The rest of both lists was checked against resolute:
+- every entry exists, and none is dead;
+- the lists name packages without versions, so the packages we override
+  in aptly (unity, the indicators, u-s-d, u-c-c, …) are taken by version
+  number, with no change to the lists.
+
+Both debdiffs are in `package-patches-b/debdiff/`, and both packages are in
+aptly.
+
+**Checked on target2.** The test ran from Clean-2, which has the archive
+0.29, overlay-scrollbar 0ubuntu5 and `GTK2_MODULES=overlay-scrollbar` in
+the session. Adding our aptly and running `apt-get full-upgrade` gave:
+- dpkg: `Removing obsolete conffile /etc/X11/Xsession.d/81overlay-scrollbar`;
+- installed: ayatana-indicator-messages +unity1, libindicator3-7 +unity2,
+  overlay-scrollbar(-gtk2) +unity1, ubuntu-unity-desktop 0.29+unity1;
+- `liboverlay-scrollbar.so` is gone.
+
+After a reboot:
+- **No `GTK2_MODULES`.** The compiz environment has no `GTK2_MODULES`,
+  and `GTK_MODULES` is `appmenu-gtk-module:gail:atk-bridge`.
+- **Pidgin** (archive, GTK2), installed afterwards, starts with no module
+  error. The envelope menu shows its status items and entry
+  (`shots/b11-pidgin-menu.png`).
+- **Clicking Pidgin** while it runs raises its buddy list, which becomes
+  the active window (`shots/b11-pidgin-raised.png`). The hand-over
+  instance exits normally; one `pidgin` process is left.
+
+**Found, not fixed.** GTK2 applications log `Failed to load module
+"appmenu-gtk-module"`, which is harmless.
+- `GTK_MODULES` names the appmenu module, and its GTK2 build,
+  `appmenu-gtk2-module`, was last shipped in noble (and Debian bookworm);
+  it left along with GTK2 support.
+- So GTK2 applications keep their menu inside the window, with no global
+  menu.

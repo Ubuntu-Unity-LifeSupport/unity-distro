@@ -1,0 +1,95 @@
+diff -Nru ubuntu-unity-meta-0.29/debian/changelog ubuntu-unity-meta-0.29+unity1/debian/changelog
+--- ubuntu-unity-meta-0.29/debian/changelog	2026-04-16 20:28:25.000000000 +0000
++++ ubuntu-unity-meta-0.29+unity1/debian/changelog	2026-09-26 18:01:35.000000000 +0000
+@@ -1,3 +1,15 @@
++ubuntu-unity-meta (0.29+unity1) resolute; urgency=medium
++
++  * desktop-recommends: drop overlay-scrollbar-gtk2. Its GTK 2 module is
++    dead (it needs a GTK 2 patch Ubuntu dropped) and its session script put
++    it into GTK2_MODULES, breaking GTK 2 applications; overlay-scrollbar
++    +unity1 removes both on upgrade.
++  * desktop-recommends: add ayatana-indicator-messages, the messaging menu
++    26.04's clients (Geary, Pidgin, ...) talk to; Unity's panel shows it
++    with libindicator +unity2.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 18:01:35 +0000
++
+ ubuntu-unity-meta (0.29) resolute; urgency=medium
+ 
+   * Replace gnome-screensaver with light-locker (LP: #2097151)
+diff -Nru ubuntu-unity-meta-0.29/desktop-recommends-amd64 ubuntu-unity-meta-0.29+unity1/desktop-recommends-amd64
+--- ubuntu-unity-meta-0.29/desktop-recommends-amd64	2026-04-16 20:28:25.000000000 +0000
++++ ubuntu-unity-meta-0.29+unity1/desktop-recommends-amd64	2026-09-26 18:01:35.000000000 +0000
+@@ -4,6 +4,7 @@
+ atril
+ avahi-autoipd
+ avahi-daemon
++ayatana-indicator-messages
+ bluez
+ bluez-cups
+ branding-ubuntu
+@@ -63,7 +64,6 @@
+ network-manager-pptp-gnome
+ onboard
+ orca
+-overlay-scrollbar-gtk2
+ packagekit
+ pcmciautils
+ plymouth-theme-ubuntu-unity
+diff -Nru ubuntu-unity-meta-0.29/desktop-recommends-arm64 ubuntu-unity-meta-0.29+unity1/desktop-recommends-arm64
+--- ubuntu-unity-meta-0.29/desktop-recommends-arm64	2026-04-16 20:28:25.000000000 +0000
++++ ubuntu-unity-meta-0.29+unity1/desktop-recommends-arm64	2026-09-26 18:01:35.000000000 +0000
+@@ -4,6 +4,7 @@
+ atril
+ avahi-autoipd
+ avahi-daemon
++ayatana-indicator-messages
+ bluez
+ bluez-cups
+ branding-ubuntu
+@@ -62,7 +63,6 @@
+ network-manager-pptp-gnome
+ onboard
+ orca
+-overlay-scrollbar-gtk2
+ packagekit
+ pcmciautils
+ plymouth-theme-ubuntu-unity
+diff -Nru ubuntu-unity-meta-0.29/desktop-recommends-armhf ubuntu-unity-meta-0.29+unity1/desktop-recommends-armhf
+--- ubuntu-unity-meta-0.29/desktop-recommends-armhf	2026-04-16 20:28:25.000000000 +0000
++++ ubuntu-unity-meta-0.29+unity1/desktop-recommends-armhf	2026-09-26 18:01:35.000000000 +0000
+@@ -4,6 +4,7 @@
+ atril
+ avahi-autoipd
+ avahi-daemon
++ayatana-indicator-messages
+ bluez
+ bluez-cups
+ branding-ubuntu
+@@ -61,7 +62,6 @@
+ network-manager-pptp-gnome
+ onboard
+ orca
+-overlay-scrollbar-gtk2
+ packagekit
+ pcmciautils
+ plymouth-theme-ubuntu-unity
+diff -Nru ubuntu-unity-meta-0.29/desktop-recommends-ppc64el ubuntu-unity-meta-0.29+unity1/desktop-recommends-ppc64el
+--- ubuntu-unity-meta-0.29/desktop-recommends-ppc64el	2026-04-16 20:28:25.000000000 +0000
++++ ubuntu-unity-meta-0.29+unity1/desktop-recommends-ppc64el	2026-09-26 18:01:35.000000000 +0000
+@@ -4,6 +4,7 @@
+ atril
+ avahi-autoipd
+ avahi-daemon
++ayatana-indicator-messages
+ bluez
+ bluez-cups
+ branding-ubuntu
+@@ -61,7 +62,6 @@
+ network-manager-pptp-gnome
+ onboard
+ orca
+-overlay-scrollbar-gtk2
+ packagekit
+ pcmciautils
+ plymouth-theme-ubuntu-unity

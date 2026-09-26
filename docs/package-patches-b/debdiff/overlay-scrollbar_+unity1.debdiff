@@ -1,0 +1,146 @@
+diff -u overlay-scrollbar-0.2.17.1+16.04.20151117/debian/changelog overlay-scrollbar-0.2.17.1+16.04.20151117/debian/changelog
+--- overlay-scrollbar-0.2.17.1+16.04.20151117/debian/changelog
++++ overlay-scrollbar-0.2.17.1+16.04.20151117/debian/changelog
+@@ -1,3 +1,19 @@
++overlay-scrollbar (0.2.17.1+16.04.20151117-0ubuntu5+unity1) resolute; urgency=medium
++
++  * Stop loading the dead GTK 2 module. It needs a GTK 2 patch Ubuntu no
++    longer carries, so /etc/X11/Xsession.d/81overlay-scrollbar, which put it
++    into GTK2_MODULES for the whole session, made GTK 2 applications fail
++    with "undefined symbol: ubuntu_gtk_set_use_overlay_scrollbar" (a second
++    Pidgin started from the messaging menu, for example).
++    - overlay-scrollbar: ship only the GSettings schemas (unity-tweak-tool
++      reads them); remove 81overlay-scrollbar with rm_conffile.
++    - overlay-scrollbar-gtk2: empty transitional package, so upgrades
++      remove the module.
++    - Nothing is compiled any more; the source no longer builds against
++      26.04's GTK 2 anyway.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 17:59:25 +0000
++
+ overlay-scrollbar (0.2.17.1+16.04.20151117-0ubuntu5) noble; urgency=medium
+ 
+   * No-change rebuild for CVE-2024-3094
+diff -u overlay-scrollbar-0.2.17.1+16.04.20151117/debian/control overlay-scrollbar-0.2.17.1+16.04.20151117/debian/control
+--- overlay-scrollbar-0.2.17.1+16.04.20151117/debian/control
++++ overlay-scrollbar-0.2.17.1+16.04.20151117/debian/control
+@@ -1,12 +1,7 @@
+ Source: overlay-scrollbar
+ Priority: optional
+ Maintainer: Ubuntu Desktop Team <ubuntu-desktop@lists.ubuntu.com>
+-Build-Depends: autotools-dev,
+-               debhelper (>= 9),
+-               dh-autoreconf,
+-               libcairo2-dev (>= 1.10),
+-               libglib2.0-dev (>= 2.26.0),
+-               libgtk2.0-dev (>= 2.24.26),
++Build-Depends: debhelper (>= 9),
+ Standards-Version: 3.9.6
+ Section: libs
+ Homepage: http://launchpad.net/ayatana-scrollbar
+@@ -17,28 +12,26 @@
+ Vcs-Browser: https://bazaar.launchpad.net/~ayatana-scrollbar-team/overlay-scrollbar/trunk/files
+ 
+ Package: overlay-scrollbar-gtk2
+-Section: libs
++Section: oldlibs
+ Architecture: any
+ Multi-Arch: same
+ Depends: ${misc:Depends},
+-         ${shlibs:Depends},
+          overlay-scrollbar (= ${source:Version}),
+-Replaces: liboverlay-scrollbar-0.2-0 (<< 0.2.16+r348),
+-          liboverlay-scrollbar-0.2-dev (<< 0.2.16+r348),
+-Conflicts: liboverlay-scrollbar-0.2-0 (<< 0.2.16+r348),
+-           liboverlay-scrollbar-0.2-dev (<< 0.2.16+r348),
+-Description: GTK 2 module for overlay scrollbars
+- Overlay scrollbar is a GtkModule enabling a dynamic overlay behavior.
++Description: transitional package, the GTK 2 overlay scrollbar module is gone
++ The module needed a GTK 2 patch that Ubuntu no longer carries: loaded from
++ GTK2_MODULES it made GTK 2 applications fail with an undefined symbol. This
++ empty package removes it on upgrade and can be removed itself.
+ 
+ Package: overlay-scrollbar
+ Section: libs
+ Architecture: all
+ Multi-Arch: foreign
++Pre-Depends: ${misc:Pre-Depends},
+ Depends: ${misc:Depends},
+ Conflicts: overlay-scrollbar-gtk3
+ Replaces: overlay-scrollbar-gtk3
+ Description: Scrollbar overlay - configuration
+  Overlay scrollbar is a GtkModule enabling a dynamic overlay behavior.
+  .
+- This package contains GSettings schemas and startup scripts for overlay
+- scrollbars.
++ This package now only contains the GSettings schemas, which settings tools
++ still read; the session script that loaded the GTK 2 module is removed.
+reverted:
+--- overlay-scrollbar-0.2.17.1+16.04.20151117/debian/overlay-scrollbar-gtk2.install
++++ overlay-scrollbar-0.2.17.1+16.04.20151117.orig/debian/overlay-scrollbar-gtk2.install
+@@ -1 +0,0 @@
+-usr/lib
+diff -u overlay-scrollbar-0.2.17.1+16.04.20151117/debian/overlay-scrollbar.install overlay-scrollbar-0.2.17.1+16.04.20151117/debian/overlay-scrollbar.install
+--- overlay-scrollbar-0.2.17.1+16.04.20151117/debian/overlay-scrollbar.install
++++ overlay-scrollbar-0.2.17.1+16.04.20151117/debian/overlay-scrollbar.install
+@@ -1,2 +1,2 @@
+-etc
+-usr/share
++data/com.canonical.desktop.interface.gschema.xml usr/share/glib-2.0/schemas
++debian/com.canonical.desktop.interface.enums.xml usr/share/glib-2.0/schemas
+diff -u overlay-scrollbar-0.2.17.1+16.04.20151117/debian/rules overlay-scrollbar-0.2.17.1+16.04.20151117/debian/rules
+--- overlay-scrollbar-0.2.17.1+16.04.20151117/debian/rules
++++ overlay-scrollbar-0.2.17.1+16.04.20151117/debian/rules
+@@ -1,22 +1,10 @@
+ #!/usr/bin/make -f
+ 
+-CONFIGURE_COMMON_FLAGS = --disable-static \
+-			 --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
+-			 --disable-silent-rules
+-
+-export DPKG_GENSYMBOLS_CHECK_LEVEL = 4
++# The GTK 2 module no longer builds or works (it needs a GTK 2 patch Ubuntu
++# dropped), so nothing is compiled: overlay-scrollbar ships only the
++# GSettings schemas, overlay-scrollbar-gtk2 is empty.
+ 
+ %:
+-	dh $@ --with autoreconf
+-
+-override_dh_autoreconf:
+-	NOCONFIGURE=1 dh_autoreconf ./autogen.sh
+-
+-override_dh_auto_configure:
+-	dh_auto_configure -- $(CONFIGURE_COMMON_FLAGS)
+-
+-override_dh_install:
+-	dh_install --fail-missing
+-	find debian/overlay-scrollbar-gtk2 -name \*.la -delete
++	dh $@
+ 
+-override_dh_makeshlibs:
++override_dh_auto_configure override_dh_auto_build override_dh_auto_test override_dh_auto_install override_dh_auto_clean:
+only in patch2:
+unchanged:
+--- overlay-scrollbar-0.2.17.1+16.04.20151117.orig/debian/com.canonical.desktop.interface.enums.xml
++++ overlay-scrollbar-0.2.17.1+16.04.20151117/debian/com.canonical.desktop.interface.enums.xml
+@@ -0,0 +1,14 @@
++
++<!-- This file is generated by glib-mkenums, do not modify it. This code is licensed under the same license as the containing project. Note that it links to GLib, so must comply with the LGPL linking clauses. -->
++
++<schemalist>
++  <enum id='com.canonical.desktop.interface.ScrollbarMode'>
++    <value nick='normal' value='0'/>
++    <value nick='overlay-auto' value='1'/>
++    <value nick='overlay-pointer' value='2'/>
++    <value nick='overlay-touch' value='3'/>
++  </enum>
++</schemalist>
++
++<!-- Generated data ends here -->
++
+only in patch2:
+unchanged:
+--- overlay-scrollbar-0.2.17.1+16.04.20151117.orig/debian/overlay-scrollbar.maintscript
++++ overlay-scrollbar-0.2.17.1+16.04.20151117/debian/overlay-scrollbar.maintscript
+@@ -0,0 +1 @@
++rm_conffile /etc/X11/Xsession.d/81overlay-scrollbar 0.2.17.1+16.04.20151117-0ubuntu5+unity1~

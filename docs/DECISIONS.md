@@ -1524,3 +1524,32 @@ are in aptly. Checked on target2:
   clients (Pidgin's hand-over instance) with an undefined
   `ubuntu_gtk_set_use_overlay_scrollbar`.
 - Canonical indicator-messages keeps its double start; it is superseded.
+
+## 2026-09-26 - overlay-scrollbar: a stub package, not Breaks in the metapackage (agent B)
+
+**Context.** The coordinator's task B-11. The criterion: after `apt upgrade`,
+an already installed system must not have `GTK2_MODULES=overlay-scrollbar`.
+
+**Rule 0.**
+- 26.10 has the same overlay-scrollbar 0ubuntu5.
+- 26.10's ubuntu-unity-meta 0.30 still recommends it.
+- Debian never had it.
+- Nobody has fixed it.
+
+**Decision.** overlay-scrollbar `+unity1`:
+- builds nothing;
+- makes `overlay-scrollbar-gtk2` an empty transitional package;
+- `rm_conffile`s `81overlay-scrollbar`.
+
+ubuntu-unity-meta `0.29+unity1` recommends ayatana-indicator-messages
+instead.
+
+**Why not Breaks.** Breaks in the metapackage reaches only users who keep
+the metapackage, and `apt upgrade` holds back an upgrade that must remove a
+package. Dropping the Recommends alone removes nothing. An upgrade of the
+package itself reaches every system that has it.
+
+**Measured.** From Clean-2, `full-upgrade` from our aptly:
+- the conffile is removed;
+- after a reboot the session has no `GTK2_MODULES`;
+- Pidgin raises from the envelope menu (`research/messaging-menu/`, B-11).

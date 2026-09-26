@@ -5,6 +5,17 @@ Build directory: `~/work/b`
 
 ## Now
 
+**overlay-scrollbar and ubuntu-unity-meta** (2026-09-26, B-11): both are
+B's now.
+- overlay-scrollbar `+unity1` is a stub: no GTK2 module, and
+  `81overlay-scrollbar` is removed on upgrade.
+- ubuntu-unity-meta `0.29+unity1` recommends ayatana-indicator-messages.
+- Both are in aptly.
+- Verified on target2 by a full-upgrade from Clean-2: the session has no
+  `GTK2_MODULES`, and Pidgin raises from the envelope.
+- `research/messaging-menu/` (B-11 section).
+- Next: hud.
+
 **Messaging menu under Unity** (2026-09-26, B-10): Unity's panel now shows
 ayatana-indicator-messages.
 - libindicator `+unity2` (Ayatana root and item types) and
@@ -12,9 +23,7 @@ ayatana-indicator-messages.
   `/usr/share/unity/indicators`) are in aptly.
 - Pidgin and Geary show up; sources are clickable.
 - `research/messaging-menu/`.
-- Open, for the ubuntu-unity-meta owner: recommend
-  ayatana-indicator-messages, drop overlay-scrollbar-gtk2 (it breaks GTK2
-  apps).
+- The meta and overlay-scrollbar follow-up was done in B-11 (above).
 
 **Target2 checks done** (2026-09-26, B-8, after the VBoxSVC restart):
 - unity-lens-files `+unity1` checked live and published.
@@ -31,7 +40,7 @@ ayatana-indicator-messages.
   archive's.
 - session-migration `+unity1` is built, not published.
 - hud `+unity1` is WIP: the googletest C++17 layer is left.
-- unity-greeter and overlay-scrollbar have no owner.
+- unity-greeter has no owner; overlay-scrollbar is B's since B-11.
 
 **Only-on-builder commits** of B's git-ubuntu clones are exported to
 `docs/package-patches-b/`, since `origin` is Launchpad and we do not push
