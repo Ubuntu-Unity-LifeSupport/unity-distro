@@ -54,3 +54,37 @@ Files: `compare.py`; the rebuild logs are in `~/work/b/b7` and
 `~/work/b/b7fix` on builder.
 
 **2026-09-26 (agent A, A-5):** unity-greeter is rebuildable again as `25.04.1-0ubuntu1+unity1` (liblightdm-gobject-dev + lightdm-vala), in aptly - `../unity-greeter-rebuild/`.
+
+## indicator-messages 0ubuntu8~26.04.1 (agent B, 2026-09-26, task B-9)
+
+This is 26.10's 0ubuntu8 (systemd-dev, LP #2166912) as a no-change backport.
+The `~26.04.1` suffix keeps it below 26.10, as with xorg-server. The branch
+is `packages/indicator-messages` `unity/resolute`, taken from
+`origin/ubuntu/stonking`; the patch is in `package-patches-b/`.
+
+**Build** in a clean `sbuild -d resolute`:
+- `compare.py` finds no file lost against the archive's 0ubuntu7.
+- `indicator-messages.service` is identical.
+- Depends differs only in the glib lower bound (2.83 instead of 2.79, from
+  building in resolute).
+
+**On target2** (Unity, Clean-2 plus this package, after a reboot):
+- **Start.** The service is started twice: by systemd
+  (`unity-panel-service.service.wants`) and by the XDG autostart entry. The
+  autostart instance owns `com.canonical.indicator.messages`; the systemd
+  one loses the name and exits 0 (`on_name_lost`). The file list equals
+  the archive's, so this is archive behaviour too. It is harmless: one
+  instance serves the panel.
+- **Menu.** It exports `/com/canonical/indicator/messages/desktop`, with
+  the root action hidden (`visible: false`) until an application
+  registers.
+- **Registration.** `imreg.py` calls `RegisterApplication` directly. The
+  root turns `visible: true` and the envelope appears on the panel
+  (`indicator-messages-panel.png`).
+
+**Found.** The only `libmessaging-menu0` in 26.04 is Ayatana's (24.5.1,
+source ayatana-indicator-messages). It talks to
+`org.ayatana.indicator.messages`, so no mail or chat client in 26.04 can
+register with this Canonical indicator. Under Unity it stays hidden unless
+something calls it directly. Whether Unity should show Ayatana's messages
+indicator instead is a separate question, not examined here.

@@ -1460,3 +1460,19 @@ unity-greeter and Debian has none, so the answer is a build-dependency fix,
 as 26.10 did for indicator-keyboard. Two test-only fixes came with it (Vala
 type, make race); the tests' valgrind failures stay ignored as they were.
 Checked live with unity-greeter as the active greeter. `research/unity-greeter-rebuild/`.
+
+## 2026-09-26 - indicator-messages: carry 26.10's 0ubuntu8 as ~26.04.1 (agent B)
+
+**Rule 0, last step.** 26.10 fixed the systemd.pc trap in 0ubuntu8
+(LP #2166912). It builds in resolute and loses no file, so we carry that
+version rather than a patch of our own: `0ubuntu8~26.04.1`, the suffix
+precedent being xorg-server. It is B's package now.
+
+Checked on target2:
+- the service runs;
+- the menu is exported;
+- a directly registered application makes the indicator visible on the
+  panel.
+
+26.04's messaging client library is Ayatana's, so the indicator has no
+real clients; that is noted in `research/rebuild-loss/`.
