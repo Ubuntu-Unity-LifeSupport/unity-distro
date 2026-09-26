@@ -2,9 +2,11 @@
 
 There is also a **coordinator** session - see `docs/COORDINATOR.md`. It handles
 what arrives from outside and what goes out: issues, replies, upstream
-conversations, questions to May. It does not drive the machines and does not
-search for you; you keep the code, the builds and the measurements. When you
-find yourself writing prose for a stranger, hand it over.
+conversations, questions to May. It does not drive the machines or perform
+package research; A/B keep the code, builds, measurements, and final technical
+decisions. Delegate result-heavy searches and independent reviews to temporary
+subagents so A and B stay focused on their own assigned tasks. When you find
+yourself writing prose for a stranger, hand it over.
 
 Since 2026-09-24 the builder hosts **two Claude Code sessions at once**, each
 driving its own test desktop. This file says what is yours, what is shared, and
@@ -88,8 +90,10 @@ Before restoring a VM:
 5. Append `DONE` with the observed state. A restore that cannot be verified is
    `BLOCKED`, not successful.
 
-These checks are the safe interface for the VBox MCP; no local shell wrapper
-can guard a direct call to that MCP server.
+These checks are the manual safety gate for the VBox MCP. No VBox-specific
+`PreToolUse` hook is currently configured. Claude Code supports hooks for MCP
+tools, so this is an automation gap rather than a platform limitation. Do not
+treat the current Bash hook as protection for VBox operations.
 
 ## The rule that prevents lost work
 
@@ -137,9 +141,10 @@ tail -20 ~/AGENTS-LOG.md
 ```
 
 The log is a record, not a reservation: it says what was running when the line
-was written. To find out what the other agent is *about to* start, ask him - see
-"Ask before you take a task" below. Two agents patching one source package
-produce two versions of the truth and a merge conflict in `debian/patches`.
+was written. Task assignment comes from the private board described below, not
+from predicting what the other agent may start. Two agents patching one source
+package produce two versions of the truth and a merge conflict in
+`debian/patches`.
 
 ## Talk to each other directly
 
@@ -150,6 +155,10 @@ not tell each other, the other one does not know.
 - `ListAgents` shows the other local sessions. Copy the name exactly as the row
   prints it.
 - `SendMessage({to: "<name>", message: "..."})` delivers to that session.
+- A message may pass a concise finding or a real coordination conflict, but it
+  does not make the recipient a reviewer or transfer task ownership. Do not ask
+  A or B to pause their own task to review the other's patch; use the temporary
+  `adversarial-verifier` subagent for independent review.
 
 **Register yourself the moment you know which agent you are.** Append one line
 to `~/AGENTS.md` - never rewrite the file:

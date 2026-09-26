@@ -20,6 +20,7 @@ REQUIRED_EQUAL = {
 REQUIRED_TEXT = (
     "task_id",
     "package",
+    "target_series",
     "candidate_version",
     "source_commit",
     "source_repo",
@@ -46,6 +47,29 @@ def log_event(event: str, package: str, version: str, task_id: str) -> None:
         )
 
 
+def tracked_and_clean(repo_root: Path, path: Path) -> bool:
+    """Return whether a repository-relative file is committed and unchanged."""
+    try:
+        relative = str(path.relative_to(repo_root))
+        tracked = subprocess.run(
+            ["git", "-C", str(repo_root), "ls-files", "--error-unmatch", relative],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if tracked.returncode != 0:
+            return False
+        status = subprocess.run(
+            ["git", "-C", str(repo_root), "status", "--porcelain", "--", relative],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, ValueError, subprocess.CalledProcessError):
+        return False
+    return not status.stdout.strip()
+
+
 def main(argv: list[str]) -> int:
     if "--" not in argv:
         return fail("usage: publish_aptly.py --gate FILE -- aptly publish snapshot|switch ...")
@@ -70,18 +94,7 @@ def main(argv: list[str]) -> int:
         return fail("the gate record must be inside the repository")
     gate_relative = str(gate_path.relative_to(repo_root))
     try:
-        tracked_gate = subprocess.run(
-            ["git", "-C", str(repo_root), "ls-files", "--error-unmatch", gate_relative],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        dirty_gate = subprocess.run(
-            ["git", "-C", str(repo_root), "status", "--porcelain", "--", gate_relative],
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
+        gate_is_tracked_and_clean = tracked_and_clean(repo_root, gate_path)
         root_head = subprocess.run(
             ["git", "-C", str(repo_root), "rev-parse", "HEAD"],
             check=True,
@@ -96,7 +109,7 @@ def main(argv: list[str]) -> int:
         ).stdout.strip()
     except (OSError, subprocess.CalledProcessError) as exc:
         return fail(f"cannot inspect the release-gate commit: {exc}")
-    if tracked_gate.returncode != 0 or dirty_gate:
+    if not gate_is_tracked_and_clean:
         return fail("the release-gate JSON must be tracked and committed")
     if not root_remote_branches:
         return fail("the release-gate commit is not present in a remote-tracking branch")
@@ -113,6 +126,8 @@ def main(argv: list[str]) -> int:
     for key in REQUIRED_TEXT:
         if not isinstance(gate.get(key), str) or not gate[key].strip():
             return fail(f"{key} is required")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", gate["target_series"]):
+        return fail("target_series must be a lowercase Ubuntu series name")
     if not re.fullmatch(r"UNITY-\d{8}-\d{3,}", gate["task_id"]):
         return fail("task_id must use UNITY-YYYYMMDD-NNN")
     if not re.fullmatch(r"[a-z0-9][a-z0-9+.-]*", gate["package"]):
@@ -150,7 +165,24 @@ def main(argv: list[str]) -> int:
         remote_ref = gate.get("source_remote_ref")
         if not isinstance(remote_ref, str) or not remote_ref.strip():
             return fail("source_remote_ref is required when source_provenance is PUSHED")
+        full_remote_ref = f"refs/remotes/{remote_ref}"
         try:
+            valid_ref = subprocess.run(
+                ["git", "-C", str(source_repo), "check-ref-format", full_remote_ref],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if valid_ref.returncode != 0:
+                return fail("source_remote_ref must name a remote-tracking branch")
+            exists_ref = subprocess.run(
+                ["git", "-C", str(source_repo), "show-ref", "--verify", "--quiet", full_remote_ref],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if exists_ref.returncode != 0:
+                return fail("source_remote_ref is not a fetched remote-tracking branch")
             pushed = subprocess.run(
                 [
                     "git",
@@ -159,7 +191,7 @@ def main(argv: list[str]) -> int:
                     "merge-base",
                     "--is-ancestor",
                     gate["source_commit"],
-                    remote_ref,
+                    full_remote_ref,
                 ],
                 check=False,
                 capture_output=True,
@@ -205,6 +237,8 @@ def main(argv: list[str]) -> int:
             return fail(f"evidence.{key} must stay inside the repository")
         if not evidence_path.is_file():
             return fail(f"evidence file does not exist: {value}")
+        if not tracked_and_clean(repo_root, evidence_path):
+            return fail(f"evidence file must be tracked, committed, and clean: {value}")
     if gate["source_provenance"] == "TRACKED_EXPORT":
         exported = evidence.get("source_export")
         if not isinstance(exported, str) or not exported.strip():
@@ -216,6 +250,8 @@ def main(argv: list[str]) -> int:
             return fail("evidence.source_export must stay inside the repository")
         if not export_path.is_file():
             return fail(f"source export does not exist: {exported}")
+        if not tracked_and_clean(repo_root, export_path):
+            return fail("source export must be tracked, committed, and clean")
 
     package = gate["package"]
     version = gate["candidate_version"]

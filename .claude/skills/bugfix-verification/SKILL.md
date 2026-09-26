@@ -40,6 +40,19 @@ FAIL
 INCOMPLETE
 ```
 
+For `FAIL`, classify the problem using one or more of these fixed findings:
+
+```text
+FIX_INVALID
+FIX_PARTIAL
+TEST_INVALID
+ROOT_CAUSE_UNPROVEN
+PATCH_TOO_BROAD
+```
+
+For `PASS`, record `PATCH_CORRECT` as the review finding. The verdict controls
+the state transition; the finding values explain why.
+
 Include concise evidence for the verdict, a counterexample if found, and any
 remaining unknowns. `PASS` means the stated reproduction and relevant checks
 support the fix; it does not mean untested scenarios are safe. Only `PASS`

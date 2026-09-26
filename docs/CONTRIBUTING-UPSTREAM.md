@@ -70,17 +70,25 @@ internet, it was in the running system we were working on.
 3. **Bug trackers**, by symptom rather than by your own theory of the cause.
    Closed bugs matter more than open ones - closed often means "done, but never
    delivered".
-4. **The web.** You reach it yourself: `curl` gets to api.launchpad.net,
-   gitlab.gnome.org, gitlab.com and api.github.com from this machine, and `gh`
-   is authenticated. Ask specific questions, not a topic. Abandoned attempts
-   with an explanation of why they failed are sometimes worth more than working
-   code. **Run the sweep in a subagent** - it returns pages of detail of which
-   three lines matter.
+4. **The web and tracker APIs.** Delegate broad searches to an isolated
+   `package-investigator` subagent. Give it a bounded question, exact package
+   version and named sources; ask for concise findings with direct links,
+   versions or commits, and gaps. The task owner may run a narrow query to
+   validate a reported finding, but does not bring result-heavy search output
+   into the implementation context. If subagents are unavailable, record the
+   search as `UNKNOWN` or `BLOCKED` instead of doing the broad sweep directly.
+
+The physical task owner directly checks only the installed package identity and
+the facts needed to reproduce the exact report. The Investigator handles
+result-heavy repository, archive, tracker, and web searches; the owner validates
+important findings and remains responsible for the final evidence card.
 
 ### Limits, so the rule does not become paralysis
 
-- Around twenty minutes for steps 1-3. Then record in DECISIONS.md **where you
-  looked**, and carry on.
+- The initial search budget is twenty minutes. Record the sources and exact
+  results in the task evidence. If required searches are incomplete, mark
+  `UNKNOWN` and stop before package code; continue only with independent work
+  while a subagent searches, or after May authorizes more investigation.
 - While a subagent searches, work on what does not depend on the answer.
 - Skip it for: our own code, typos, formatting, and anything already searched
   for in this session.

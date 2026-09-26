@@ -151,7 +151,9 @@ global menu travels over the KDE appmenu D-Bus protocol
 for Qt and GTK3; GTK4 needs the Layer B patch.
 
 A first version is person-months. Parity with Unity 7 including Dash scopes is
-person-years. Not to be started before A and B produce results.
+person-years. Defer Layer C until the Layer A and Layer B architecture research
+has been recorded; these layer names refer to product architecture work, not
+the physical builder agents A and B.
 
 ## Build pipeline
 

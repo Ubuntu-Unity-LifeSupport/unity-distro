@@ -29,7 +29,11 @@ Fires before everything else, including before analysis. Search outward:
    all series including devel and `-proposed`
 3. bug trackers, by symptom not by your theory; closed bugs often mean "done but
    never delivered"
-4. the web and official tracker APIs directly, using specific queries
+4. delegate the broad web and tracker-API sweep to an isolated
+   `package-investigator` subagent, with specific bounded queries and named
+   sources. The task owner may run narrow follow-up queries to validate a
+   finding, but does not pull a result-heavy search into the implementation
+   context.
 
 Use `package-forensics` and the fixed result values in
 `docs/ENGINEERING-PROCESS.md`. Twenty minutes is a search budget: if the

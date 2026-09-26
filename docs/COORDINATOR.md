@@ -54,8 +54,11 @@ external.
 
 - **Does not drive the virtual machines.** You do, through the `vbox` MCP
   server. Routing a snapshot through a third session only adds a round trip.
-- **Does not search the web for you.** You have direct access and subagents;
-  use them.
+- **Does not perform technical web or package-history research.** The physical
+  task owner delegates broad discovery to an isolated Investigator subagent,
+  validates the concise findings, and records the task-wide result. The
+  coordinator handles outside correspondence and task routing, not package
+  investigation.
 - **Does not write code, build packages or decide technical questions.** When
   it has an opinion on your work it says so as an opinion, with its reasoning,
   and you are free to measure and disagree. Several times it has been wrong and

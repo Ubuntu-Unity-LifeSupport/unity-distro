@@ -34,27 +34,37 @@ INVESTIGATING
 READY_FOR_FIX
 IMPLEMENTING
 VERIFYING
+REVIEW
 READY_TO_PUBLISH
 PUBLISHED
 DONE
 ```
 
-Side states are `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`, `BLOCKED`,
-`REJECTED`, and `DUPLICATE`. `BLOCKED` records the state to resume from. The
-other side states are closed outcomes; reopening work gets a new task ID.
+Side states are `ALREADY_FIXED`, `NOT_REPRODUCED`, `NOT_APPLICABLE`,
+`DEFERRED`, `BLOCKED`, `REJECTED`, and `DUPLICATE`. `BLOCKED` records the
+state to resume from. The other side states are closed outcomes; reopening
+work gets a new task ID.
 
 Normal transitions:
 
 ```text
 BACKLOG → CLAIMED → INVESTIGATING → READY_FOR_FIX → IMPLEMENTING
-         → VERIFYING → READY_TO_PUBLISH → PUBLISHED → DONE
+         → VERIFYING → REVIEW → READY_TO_PUBLISH → PUBLISHED → DONE
 ```
 
 An investigation can close as `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`,
-`BLOCKED`, `REJECTED`, or `DUPLICATE`. A non-package documentation or research
-task may move from `VERIFYING` to `DONE`. A package change may reach `DONE`
-only after `PUBLISHED`. A task is never marked done just because the agent
-finished editing.
+`NOT_APPLICABLE`, `BLOCKED`, `REJECTED`, or `DUPLICATE`. During `VERIFYING`,
+the physical task owner completes and records the regression test, relevant
+tests, build, and live check on their assigned VM. `REVIEW` is a separate,
+ephemeral Verifier subagent reading that evidence and the diff. `PASS` advances
+to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
+`BLOCKED` with resume state `REVIEW` until the evidence is supplied. A strictly
+mechanical packaging-only change may skip independent review only under the
+`NOT_APPLICABLE` exception in section 6; that path advances from `VERIFYING`
+to `READY_TO_PUBLISH` after the release gate is complete. A non-package
+documentation or research task may move from `VERIFYING` to `DONE`. A package
+change may reach `DONE` only after `PUBLISHED`. A task is never marked done
+just because the agent finished editing.
 
 ## 2. Evidence card before code
 
@@ -113,20 +123,23 @@ Search in this order and record the exact version, commit, bug, or patch found:
    session/component use.
 2. This repository: package branches, all relevant refs and tags, patch queues,
    `docs/research/`, `docs/DECISIONS.md`, and `docs/PATCHES.md`.
-3. The target Ubuntu series, its updates and proposed pockets, then the current
+3. Other work: `~/coordinator/TASKS.md`, `~/AGENTS-LOG.md`, closed/deferred task
+   evidence, and records from the other builder. Check whether an equivalent
+   task is active, finished, rejected, or waiting on a decision.
+4. The target Ubuntu series, its updates and proposed pockets, then the current
    development series and Debian.
-4. Upstream history, releases, issue tracker, and merge requests. Search by
+5. Upstream history, releases, issue tracker, and merge requests. Search by
    symptom and exact error as well as by the suspected cause.
 
 The result must be exactly one of:
 
 ```text
 FIXED_LOCAL
-FIXED_TARGET_ARCHIVE
-FIXED_NEWER_UBUNTU
-FIXED_DEBIAN
+FIXED_IN_TARGET_UBUNTU
+FIXED_IN_NEWER_UBUNTU
+FIXED_IN_DEBIAN
 FIXED_UPSTREAM
-PATCH_ALREADY_PRESENT
+PATCH_ALREADY_EXISTS
 NOT_FIXED
 UNKNOWN
 ```
@@ -192,7 +205,18 @@ patch. It tries to disprove the result by checking:
 - relevant tests, build result, packaging contents, and stated limitations
   match the evidence.
 
-The verifier returns exactly `PASS`, `FAIL`, or `INCOMPLETE`, with evidence.
+The verifier returns exactly `PASS`, `FAIL`, or `INCOMPLETE`, with evidence,
+and classifies any failure using one or more fixed finding values:
+
+```text
+FIX_INVALID
+FIX_PARTIAL
+TEST_INVALID
+ROOT_CAUSE_UNPROVEN
+PATCH_TOO_BROAD
+```
+
+`PASS` corresponds to `PATCH_CORRECT`.
 Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. `INCOMPLETE` names
 the missing proof; it is not a pass. Run the verifier in a separate, ephemeral
 subagent context using `.claude/agents/adversarial-verifier.md`. A and B remain
@@ -256,11 +280,12 @@ python3 scripts/publish_aptly.py \
   aptly publish switch <distribution> [endpoint:prefix] <new-snapshot>
 ```
 
-The wrapper checks the structured gate, evidence files, clean source tree,
-exact build commit, and pushed remote ref (or tracked export) before starting
-aptly. Refresh the named remote-tracking ref after pushing; the wrapper does
-not fetch from the network. It cannot prove a fact merely because a JSON field
-says `PASS`; the evidence file and post-publication checks remain required.
+The wrapper checks the structured gate, that the gate and each evidence file
+are tracked, committed, and clean, the clean source tree, exact build commit,
+and pushed remote-tracking ref (or tracked export) before starting aptly.
+Refresh the named remote-tracking ref after pushing; the wrapper does not fetch
+from the network. It cannot prove a fact merely because a JSON field says
+`PASS`; the evidence content and post-publication checks remain required.
 
 Before publication, append a `START` entry to `AGENTS-LOG.md`, state the
 package and full candidate version, and notify the other package owner. If
@@ -307,10 +332,14 @@ repository owner's history-removal process separately.
 ## 9. Shell command guard
 
 The project `.claude/settings.json` installs a `PreToolUse` guard for Claude
-Code's `Bash` tool. It blocks broad staging (`git add -A`, `.`, or `docs`),
-force-push, `xwd`, `pkill`/`pgrep -f`, globbed `rm -rf`, and `rm -rf` with an
-unguarded shell variable. Use explicit file paths, exact PIDs, the supported
-screenshot procedure, and a literal removal path or a checked `${NAME:?}`
-path. The hook does not validate package correctness and does not intercept
-direct VBox MCP calls; follow the VM ownership and restore checks in
-`docs/TWO-AGENTS.md` for those operations.
+Code's `Bash` tool. It blocks common direct forms of broad staging, force-push,
+`aptly publish`, `xwd`, `pkill`/`pgrep -f`, globbed `rm -rf`, and `rm -rf`
+with an unguarded shell variable. This is a narrow command-pattern guard, not a
+shell security boundary: aliases, wrappers, alternate binaries, and equivalent
+commands may bypass it. It does not validate package correctness.
+
+Claude Code `PreToolUse` hooks can also match MCP tools, but this project
+currently has no VBox MCP hook. Until one is implemented and checked against
+the actual VBox tool names and input schema, VM restores remain governed by the
+manual ownership and restore gate in `docs/TWO-AGENTS.md`. Do not describe the
+current Bash hook as protection for VBox MCP operations.

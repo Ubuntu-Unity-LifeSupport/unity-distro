@@ -1,6 +1,7 @@
 {
   "task_id": "UNITY-YYYYMMDD-NNN",
   "package": "source-package",
+  "target_series": "resolute",
   "candidate_version": "exact-version",
   "task_state": "READY_TO_PUBLISH",
   "source_tree": "CLEAN",

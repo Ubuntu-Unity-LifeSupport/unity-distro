@@ -21,24 +21,27 @@ create a second manually maintained package-status table.
    result, and evidence paths. If it does not reproduce, investigate once for
    setup mismatch; then close as `NOT_REPRODUCED` or leave `UNKNOWN` with the
    missing evidence stated.
-3. The task owner checks the small, task-local facts needed to identify the
-   installed/source package and reproduce the report. Delegate result-heavy
-   discovery to the ephemeral `package-investigator` subagent defined in
-   `.claude/agents/package-investigator.md`: relevant local
-   refs and patch queues, this repository's research/decision/patch records,
-   archive pockets, newer Ubuntu/Debian, upstream history/releases, and
-   trackers. Give it bounded sources and questions. Ask for concise findings
-   with exact versions, commits, links, search scope, and gaps; do not pull raw
-   search output into the owner's context. Search exact symptoms and signatures,
-   not just the suspected cause. The subagent does not operate the VM, change
-   source, own the task, or decide whether implementation may begin. If it is
-   unavailable, record that and keep any direct search bounded.
-4. Record one exact `existing_fix_result` value from the process document and
-   cite the version, commit, patch, issue, or dated queries behind it. Record
-   `issue_search_result` as `FOUND`, `NOT_FOUND`, or `UNKNOWN` with the trackers
-   searched. If the bounded search is incomplete, use `UNKNOWN`; do not turn
-   absence of a result into `NOT_FIXED`. `UNKNOWN` blocks package code until
-   May authorizes more investigation or defers the task.
+3. The task owner checks only the small, task-local facts needed to identify
+   the installed/source package and reproduce the report. Delegate result-heavy
+   searches to one or more ephemeral `package-investigator` subagents defined in
+   `.claude/agents/package-investigator.md`, split into bounded independent
+   scopes: local refs and patch records; other active/closed/deferred work;
+   Ubuntu/Debian archive versions; upstream history/releases; and issue
+   trackers. Parallelize independent scopes. Ask each worker for concise
+   findings with exact versions, commits, links, search scope, and gaps; do not
+   pull raw search output into the owner's context. Search exact symptoms and
+   signatures, not just the suspected cause. The subagents do not operate the
+   VM, change source, own the task, or decide whether implementation may begin.
+   If subagents are unavailable, keep the task `BLOCKED` or `UNKNOWN`; do not
+   replace a result-heavy sweep with a direct search in the owner's context.
+4. Aggregate all investigator reports. The physical task owner sets one exact
+   `existing_fix_result` from the process document and cites the version,
+   commit, patch, issue, or dated queries behind it. Set
+   `issue_search_result` to `FOUND`, `NOT_FOUND`, or `UNKNOWN` based on the
+   named trackers searched. A subagent's `NO_MATCH_IN_SCOPE` is not a global
+   `NOT_FIXED`. If any required search is incomplete, use `UNKNOWN`; do not
+   turn absence of one result into `NOT_FIXED`. `UNKNOWN` blocks package code
+   until May authorizes more investigation or defers the task.
 5. If a newer release may contain the fix, record the relevant commits and
    measure its build and dependency cost in the target-series chroot before
    selecting it over a backport. Record why the selected solution preserves

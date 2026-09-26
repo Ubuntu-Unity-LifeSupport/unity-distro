@@ -8,16 +8,19 @@ You do not remember previous sessions. This repository is your memory.
    `docs/ENGINEERING-PROCESS.md`. Confirm whether you are A, B, or C; never
    infer a role from a stale session name. If you are A or B, use only your
    assigned desktop and build directory.
-1. Read the private `~/coordinator/TASKS.md` board, your own
-   `docs/status/A.md` or `docs/status/B.md`, and the last 20 lines of
-   `~/AGENTS-LOG.md`. `docs/STATUS.md` is a dated summary, not a live task
-   board.
+1. Read the private `~/coordinator/TASKS.md` board and the last 20 lines of
+   `~/AGENTS-LOG.md`. If you are A or B, read only your own
+   `docs/status/A.md` or `docs/status/B.md`; if you are C, read
+   `~/coordinator/PENDING-MAY.md` and your coordinator inbox. `docs/STATUS.md`
+   is a dated summary, not a live task board.
 2. Do not start package work without an assigned task ID and owner entry on
    the board. Follow the evidence gates in `docs/ENGINEERING-PROCESS.md`.
    Replies, external comments, and questions for May go through the coordinator.
-3. Update your own status file, append activity to `AGENTS-LOG.md`, record
-   decisions and patches in their project records, then commit and push. A task
-   is not complete until its terminal state and evidence are recorded.
+3. A/B update only their own status file; C updates private coordinator notes
+   and assignment fields on the task board. Append activity to `AGENTS-LOG.md`,
+   record decisions and patches in their project records, then commit and push
+   repository changes. A task is not complete until its terminal state and
+   evidence are recorded.
 
 If a session is interrupted, the private task board gives the current owner
 and state; the agent status file gives its assigned machine/workspace state.
@@ -90,9 +93,9 @@ merge request or a reply to review. The three rules that matter most:
 
 **Rule 0, which fires before all of them: before writing a line of code for a
 problem, find out whether it is already solved.** The assigned physical agent
-owns the investigation and its decision. Search the installed system first
-(`apt-cache`, `dpkg -S`, `ldd`, and `Task:` in the metadata), then the package's
-history, bug trackers, and the web.
+owns the investigation and the final decision. The owner checks the installed
+system and exact reproduction directly; result-heavy history, archive, tracker,
+and web searches are delegated as described below.
 
 **Delegate broad searches to isolated subagents, not into the task owner's
 context.** A sweep of bug trackers, changelogs or upstream repositories returns
@@ -105,12 +108,12 @@ findings, recording them, and deciding the task. A skill is a procedure for
 the current session; it does not launch a subagent by itself. Physical agents
 A and B keep their assigned VMs, and coordinator C remains a separate
 physical session; subagents do not receive persistent roles or VM ownership.
-When direct network access is available, the delegated subagent can query
-tracker APIs or the web. If subagents are unavailable, record that constraint
-and keep searches bounded and summarized in the owner's context. The initial
-search budget is twenty minutes. Record sources and results in the task
-evidence; if the search is incomplete, mark `UNKNOWN` and stop before package
-code until May authorizes more investigation or defers it.
+When direct network access is available, delegated subagents can query tracker
+APIs or the web. If subagents are unavailable, keep result-heavy discovery
+`BLOCKED` or `UNKNOWN`; do not move the broad search into the task owner's
+context. The initial search budget is twenty minutes. Record sources and
+results in the task evidence; if the search is incomplete, mark `UNKNOWN` and
+stop before package code until May authorizes more investigation or defers it.
 
 **The last step of rule 0, the one we keep missing: has a newer version already
 fixed it?** A bug tracker says whether someone knows about it; a release says
@@ -174,4 +177,3 @@ build system, not a measurement by itself.
 - Rewrite history or force-push in repositories May maintains.
 - Put repositories on VirtualBox shared folders - NTFS breaks permissions,
   symlinks and case sensitivity.
-- Start Layer B or C before Layer A produces results.
