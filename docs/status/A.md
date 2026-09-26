@@ -5,12 +5,15 @@ Build directory: `~/work/a`
 
 ## Now
 
-Nothing in flight. Last (2026-09-26): known issue #3 reproduced and fixed -
-unity `+unity10` in aptly (`research/cursor-stops/`); #1 fixed in
-unity-settings-daemon `+unity4` and re-checked on greeter login, relogin and
-user switch (`research/cursor-after-login/`). xorg-server
-`2:21.1.22-1ubuntu1.3+unity1` with the `xorg-watch` timer. No known issue
-of A's list left open.
+Nothing in flight; ready for the VirtualBox restart (2026-09-26 ~15:45Z).
+Last: A-4 cinnamon-session #202 - not reachable in our session, nothing to
+change (`research/cinnamon-session-214-202/`); A-3 xorg-server
+`1.3+unity2`; A-2 no change needed; A-1 six known issues re-checked from a
+clean snapshot (`research/recheck-2026-09-26/`). target = aptly (restored from
+`Clean-updated-2026-09-23`, our aptly added, full-upgrade), plus test tools
+(xdotool, gdb, x11-utils, gnome-text-editor, gnome-characters) and the test
+scripts in `~`. The `xorg-watch` systemd user timer on builder stays enabled
+(monitoring, not a test).
 
 ## State of `target`
 

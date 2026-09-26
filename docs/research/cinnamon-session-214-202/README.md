@@ -50,3 +50,53 @@ The `g_variant_unref: assertion 'value != NULL' failed` in that report comes
 from `close_end_session_dialog()` unref'ing the reply of a failed call; our
 `+unity1` patch ("Don't ask a Cinnamon that is not running to close its
 dialog") already checks it. Nothing else to change.
+
+## #202 re-checked (A-4, 2026-09-26, agent A) - not reachable in our session
+
+Upstream: issue open since 2026-05-10, no maintainer reply, no PR. Reporter:
+Mint 22.2, Obsidian (Electron) hits a Chromium `int3` trap, and in the same
+second cinnamon-session logs "Unable to start session: Lost name on bus:
+org.gnome.SessionManager", the `g_variant_unref` warning, "Unable to close
+Cinnamon's end session dialog: The connection is closed" - back to the greeter.
+The only comment (GNOME 46) shows a different pattern. No gnome-session report
+exists.
+
+**Why a client cannot cause it** (code, 6.4.2 = master here): cinnamon-session
+owns `org.gnome.SessionManager` with `G_BUS_NAME_OWNER_FLAGS_NONE`
+(`cinnamon-session/main.c:150-156`) - no client can take the name over.
+`on_name_lost` with a NULL connection (`main.c:77-96`) means cinnamon-session's
+**own session-bus connection closed**; the "Unable to start session" prefix is
+misleading. The `g_variant_unref(NULL)` is `close_end_session_dialog()`
+unref'ing a failed call's reply - a GLib warning after the session is already
+ending, not a cause; fixed upstream only in 6.7 (cbcc364), and in ours by the
+`+unity1` patch "Don't ask a Cinnamon that is not running to close its dialog".
+
+**Measured on target** (clean snapshot + our aptly, cinnamon-session
+`6.4.2-1+unity3`, real input where input matters):
+- journals of every boot on this disk: `g_variant_unref` appears **only in
+  stock boots** (2026-09-23 and four boots on 2026-09-26 before the upgrade),
+  always at shutdown from `close_end_session_dialog`; **0 in our boots**.
+  "Lost name on bus" appears when the machine is rebooted with
+  `systemctl reboot` - systemd stops the user bus under the session, harmless.
+- clients crashing (`runs/crash-clients.sh`): nemo, gnome-text-editor,
+  gnome-characters killed with SIGTRAP (the reporter's `int3`), SIGSEGV and
+  SIGABRT, 9 kills - session untouched (same cinnamon-session and compiz),
+  no lost name, no warning.
+- logout through Unity's dialog x3, lock/unlock, switch user to a second
+  account and back, that account logging out: no lost name, no warning, no
+  CRITICAL from cinnamon-session.
+- a menu restart was attempted but did not happen (the host appears to have
+  slept mid-test: screen blanked, first ping 1 s); menu restarts on the same
+  packages passed 4 of 4 earlier the same day (`../recheck-2026-09-26/`).
+
+Nothing to change in cinnamon-session for #202. The trigger in the report
+is the user bus going away; not investigated further without a reproducer.
+
+**Found on the way, not #202 (low):** `Logout(1)` sent to a *background*
+(switched-away) Unity session does not end it: a client misses the
+query-phase reply, cinnamon-session wants a dialog, our `+unity1` path asks
+that session's Unity (`org.gnome.Shell`), which does not answer from an
+inactive VT ("Timeout was reached"), the GTK fallback reports "Session not in
+running phase" and the session waits until the user switches back; then a
+Logout ends it at once. Not a user-facing path in normal use (logout is
+requested from the active session); recorded for later.
