@@ -56,7 +56,7 @@ def cases(dirpath):
                     deb(d, "demo-bin-dbgsym", "1:1.0+b1", ext="ddeb", source="demo (1:1.0)")],
          ["demo_1:1.0_source", "demo-bin_1:1.0+b1_amd64", "demo-bin-dbgsym_1:1.0+b1_amd64"])
     case("udeb",
-         lambda d: [deb(d, "demo-bin", VER, source=SRC), deb(d, "demo-udeb", VER, ext="udeb", source=SRC, ptype="udeb")],
+         lambda d: [deb(d, "demo-bin", VER, source=SRC), deb(d, "demo-udeb", VER, ext="udeb", source=SRC)],
          "ERROR: udeb")
     case("binary from another source",
          lambda d: [deb(d, "demo-bin", VER, source=SRC), deb(d, "other-bin", VER, source="other")],

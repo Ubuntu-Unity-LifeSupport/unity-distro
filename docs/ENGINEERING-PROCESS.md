@@ -344,11 +344,12 @@ every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
 rule per kind and rejects anything else:
 
 - `source` (`.dsc`): must be in the snapshot as `<source>_<version>_source`.
-- `binary` `.deb` and `.ddeb`: Package, Version, Architecture and Source are
-  read from the file and must match the manifest record. The binary must
-  belong to this source and version by dpkg's rule (`Source: name` or
-  `Source: name (version)`; missing parts default to the binary's own), so a
-  binNMU or a `-dbgsym` with its own version is accepted. It must be in the
+- `binary` `.deb` and `.ddeb`: Package, Version and Architecture are read
+  from the file and must match the manifest record. The binary must belong
+  to this source and version by dpkg's rule, read from the file's Source
+  field (`Source: name` or `Source: name (version)`; missing parts default to
+  the binary's own), so a binNMU or a `-dbgsym` with its own version is
+  accepted. It must be in the
   snapshot as `<Package>_<Version>_<Architecture>`.
 - `binary` `.udeb`: rejected. The publication has no debian-installer index,
   so a udeb would reach the snapshot but not the published repository.

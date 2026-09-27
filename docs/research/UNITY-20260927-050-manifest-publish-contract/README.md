@@ -154,3 +154,11 @@ Plan:
 
 Not measured: a real `publish_aptly.py` run end to end (needs 046-048) and
 `aptly publish` itself (blocked by the command guard).
+
+## Verification
+
+Independent verifier: **PASS**, **INDEPENDENTLY_REPRODUCED** for the contract
+logic (`verification.md`). After the review the process text was reworded
+(Source decides the owning source; it is not in the manifest record) and the
+udeb fixture made realistic (no Package-Type, as dpkg-gencontrol strips it);
+tests 8/8 again.
