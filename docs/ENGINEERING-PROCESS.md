@@ -375,6 +375,13 @@ rule per kind and rejects anything else:
   the binary's own), so a binNMU or a `-dbgsym` with its own version is
   accepted. It must be in the
   snapshot as `<Package>_<Version>_<Architecture>`.
+- `source_file`: a file the `.dsc` names (`.orig.tar.*`, `.debian.tar.*`, a
+  native `.tar.*`, `.diff.gz`), recorded with the `.dsc`'s sha256. The set must
+  be exactly the `.dsc`'s list, and the snapshot's source package (aptly keeps
+  it as one record with all its files) must consist of exactly the `.dsc` and
+  these files with these hashes, read with `aptly snapshot search -format
+  '{{index . "Checksums-Sha256"}}'`. A regenerated source with the same name
+  and version is refused.
 - `binary` `.udeb`: rejected. The publication has no debian-installer index,
   so a udeb would reach the snapshot but not the published repository.
 - `buildinfo`, `changes`: provenance only. They are hashed with the other
