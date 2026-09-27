@@ -149,3 +149,10 @@ tests pass.
 
 Not measured: 3.0 (quilt) and 1.0 layouts in a real build (fixtures only);
 an end-to-end `publish_aptly.py` run (046/047).
+
+## Verification
+
+**PASS**, **INDEPENDENTLY_REPRODUCED** at script level (`verification.md`).
+Manifests made before this change carry no `source_file` entries and are now
+refused by the publisher (fail closed): builds for pending gates must be
+repeated with this `build_sbuild.py`.
