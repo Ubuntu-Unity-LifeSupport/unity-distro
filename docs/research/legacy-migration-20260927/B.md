@@ -57,24 +57,31 @@ Personally re-checked by B on 2026-09-27 [CURRENTLY_VERIFIED]:
   or export is missing or inconsistent.
 - **REQUIRES_REVALIDATION**: root cause, correct layer, test or target
   verification is doubtful or missing for a behaviour change.
+- An item listed under "Doubtful fixes" (root cause unproven, test
+  unreliable, or patch possibly broader than needed) is
+  REQUIRES_REVALIDATION, even when its main change is in the right layer
+  (bootstrap rule, C, 2026-09-27).
 - A source that exists only as an export in `docs/package-patches-b/` (a
   git-ubuntu clone with no remote of ours) is a provenance gap, not by itself
   a reason for PARTIAL.
 
 ## Summary
 
-57 items: LEGACY_VERIFIED 19, LEGACY_PARTIAL 17, SUPERSEDED 14, REQUIRES_REVALIDATION 7.
+57 items: LEGACY_VERIFIED 18, LEGACY_PARTIAL 15, SUPERSEDED 14, REQUIRES_REVALIDATION 10.
 
-- LEGACY_VERIFIED: B-L10, B-L11, B-L12, B-L22, B-L24, B-L25, B-L26, B-L28, B-L29, B-L31, B-L43, B-L46, B-L48, B-L49, B-L50, B-L51, B-L53, B-L55, B-L56
-- LEGACY_PARTIAL: B-L03, B-L04, B-L06, B-L08, B-L09, B-L14, B-L18, B-L19, B-L23, B-L27, B-L37, B-L39, B-L40, B-L41, B-L42, B-L45, B-L57
+- LEGACY_VERIFIED: B-L10, B-L11, B-L12, B-L22, B-L25, B-L26, B-L28, B-L29, B-L31, B-L43, B-L46, B-L48, B-L49, B-L50, B-L51, B-L53, B-L55, B-L56
+- LEGACY_PARTIAL: B-L04, B-L06, B-L08, B-L09, B-L18, B-L19, B-L23, B-L27, B-L37, B-L39, B-L40, B-L41, B-L42, B-L45, B-L57
 - SUPERSEDED: B-L01, B-L02, B-L05, B-L13, B-L15, B-L16, B-L20, B-L32, B-L34, B-L35, B-L36, B-L38, B-L44, B-L52
-- REQUIRES_REVALIDATION: B-L07, B-L17, B-L21, B-L30, B-L33, B-L47, B-L54
+- REQUIRES_REVALIDATION: B-L03, B-L07, B-L14, B-L17, B-L21, B-L24, B-L30, B-L33, B-L47, B-L54
+
+Revised 2026-09-27 on C's bootstrap rule: every item listed under
+"Doubtful fixes" is REQUIRES_REVALIDATION (B-L03, B-L14, B-L24 changed).
 
 | legacy_id | item | migration_result |
 |---|---|---|
 | B-L01 | nux: XF86VidMode crash fix | SUPERSEDED |
 | B-L02 | nux: rebase onto upstream 0ubuntu15 (0ubuntu15+unity1) + ICU finding | SUPERSEDED |
-| B-L03 | nux: FBO colour-attachment vectors | LEGACY_PARTIAL |
+| B-L03 | nux: FBO colour-attachment vectors | REQUIRES_REVALIDATION |
 | B-L04 | nux: PCRE2 reproducer re-check (B-5 point 4), prep only | LEGACY_PARTIAL |
 | B-L05 | unity-gtk4-menu 0.4–0.8 | SUPERSEDED |
 | B-L06 | unity-gtk4-menu 0.9: issue #1 recursion fix | LEGACY_PARTIAL |
@@ -85,7 +92,7 @@ Personally re-checked by B on 2026-09-27 [CURRENTLY_VERIFIED]:
 | B-L11 | indicator-power: FTBFS fix, CMake 4 + GCC 15 | LEGACY_VERIFIED |
 | B-L12 | indicator-sound: FTBFS fix cherry-picked from 26.10 0ubuntu10 | LEGACY_VERIFIED |
 | B-L13 | indicator-datetime: FTBFS fix | SUPERSEDED |
-| B-L14 | indicator-datetime: VTODO without DTSTART placed at DUE | LEGACY_PARTIAL |
+| B-L14 | indicator-datetime: VTODO without DTSTART placed at DUE | REQUIRES_REVALIDATION |
 | B-L15 | indicator-keyboard: build fix lightdm-vala + systemd-dev | SUPERSEDED |
 | B-L16 | indicator-keyboard: test mock notify fix, tests fatal | SUPERSEDED |
 | B-L17 | indicator-keyboard: NULL InputSources guard | REQUIRES_REVALIDATION |
@@ -95,7 +102,7 @@ Personally re-checked by B on 2026-09-27 [CURRENTLY_VERIFIED]:
 | B-L21 | libindicator: accept Ayatana indicators on Unity's panel, GMenuModel wrapper | REQUIRES_REVALIDATION |
 | B-L22 | libunity: Python scope runner without `imp` | LEGACY_VERIFIED |
 | B-L23 | appmenu-gtk-module: make the GTK3 module resident | LEGACY_PARTIAL |
-| B-L24 | hud: FTBFS fixes | LEGACY_VERIFIED |
+| B-L24 | hud: FTBFS fixes | REQUIRES_REVALIDATION |
 | B-L25 | overlay-scrollbar: stub package, remove 81overlay-scrollbar | LEGACY_VERIFIED |
 | B-L26 | ubuntu-unity-meta: 0.29+unity1 | LEGACY_VERIFIED |
 | B-L27 | unity-lens-files: 7.1.0+17.10.20170605-0ubuntu6+unity1 | LEGACY_PARTIAL |
@@ -196,7 +203,10 @@ index [CURRENTLY_VERIFIED]. On top of that:
 10. aptly hygiene (with A/C): first gated snapshot; retire superseded
     versions, the source-less gtk-nocsd `3+0~…+unity2` binaries (A's) and
     orphaned pool files.
-11. Record corrections (docs only): `PATCHES.md:64` and
+11. Revalidation of the doubtful fixes not named above: indicator-datetime
+    +unity2 unreachable guard (B-L14), nux vidmode double-free hunks and an
+    in-tree FBO test (B-L03), hud C++17 scope (B-L24).
+12. Record corrections (docs only): `PATCHES.md:64` and
     `status/B.md:125` still say libindicator +unity1 is not in aptly;
     `research/indicator-units/README.md:41` says "in aptly" (binaries only);
     `research/rebuild-loss/README.md:33,35` (hud row, "overlay-scrollbar
@@ -215,7 +225,7 @@ index [CURRENTLY_VERIFIED]. On top of that:
   With NULL, `migrate_input_sources()` still writes the greeter's settings;
   nothing shows the layouts recover when accounts-daemon returns. The
   LightDM user-name guard has no test.
-- **indicator-datetime +unity2 (B-L14)** — main change (a VTODO without
+- **indicator-datetime +unity2 (B-L14)** — REQUIRES_REVALIDATION. Main change (a VTODO without
   DTSTART placed at DUE) is at the producer and has a fail-before/pass-after
   test: sound. The added skip of components without a time is a defensive
   backstop the range query never reaches: untested, PATCH_TOO_BROAD
@@ -234,15 +244,25 @@ index [CURRENTLY_VERIFIED]. On top of that:
   consumer; Gnote's late registration was not traced in Gnote.
 - **calamares (B-L07)** — fix narrow and measured, but the commit also
   replaced the whole `debian/changelog` (PATCH_TOO_BROAD, packaging).
-- **nux vidmode patch (carried in B-L03)** — two hunks for a double free
-  "found by reading", never reproduced (PATCH_TOO_BROAD); the FBO fix has
+- **nux 0ubuntu15+unity2 (B-L03)** — REQUIRES_REVALIDATION. The vidmode patch it carries — two hunks for a double free
+  "found by reading" and never reproduced (PATCH_TOO_BROAD); the FBO fix has
   an out-of-tree regression program only.
-- **hud (B-L24)** — `-std=c++17` is set for the whole project, not only the
+- **hud (B-L24)** — REQUIRES_REVALIDATION. `-std=c++17` is set for the whole project, not only the
   tests (broader than needed; file lists and symbols equal the archive's).
-- **ubuntu-unity-meta (B-L26)**, **unity-scope-manpages (B-L29)** — two
-  changes in one upload (§4 "one defect per patch"); both measured.
 - **unity-scope-home relogin finding (B-L47)** — the mechanism is stated,
   not evidenced.
+
+## Process deviations that are not doubtful fixes
+
+- **ubuntu-unity-meta (B-L26)** — two changes in one upload, both asked for
+  by the task (B-11) and both measured on target2; neither is broader than
+  its own defect.
+- **unity-scope-manpages (B-L29)** — two independent fixes in one upload
+  (the shared `__init__.py` and `gi.require_version('Gtk', '3.0')`), each
+  minimal and each measured.
+
+These break §4's "one defect per patch" as a packaging practice, but no
+change is doubtful, so they stay LEGACY_VERIFIED.
 
 ## Items attributed to others (not counted)
 
@@ -316,7 +336,7 @@ index [CURRENTLY_VERIFIED]. On top of that:
 - provenance_gap: old process — no build manifest / release gate / version-safety record / aptly snapshot; commits not on any remote (only format-patch export); no .dsc in aptly; target2 install by dpkg -i. [CURRENTLY_VERIFIED]
 - unfinished: upstream (LP #2160298 / MP 508190) on hold; flaky GL test from G1-02 not investigated; ICU finding (G1-02). [HISTORICAL_FACT: PAT:59 "unreviewed"; DEC:1057-1058]
 - doubtful_fix: FBO part — root_cause_mechanism proven (assertion abort + refcount leak measured before/after); correct_layer plausible (the function that empties the vectors), and a rejection of the reporter's alternative is recorded (extra GPU query could hit null GpuDevice); no explicit `defensive_workaround_rejected` field. Regression test: out-of-tree fbo.cpp, shown failing before / passing after, NOT added to nux's test suite. Patch is minimal (one hunk). Independent verification: agent A ran Unity's unrelated session tests only; nobody but B ran fbo.cpp. Carried vidmode patch retains G1-01's bundled unreproduced hunks. [HISTORICAL_FACT: research/nux-fbo/README.md; patch]
-- proposed migration_result: LEGACY_PARTIAL — source↔aptly MATCH and export verified now, but source commits exist only on builder (no pushed git ref), no in-tree regression test, no independent verifier, and the carried vidmode patch bundles unreproduced changes.
+- proposed migration_result: REQUIRES_REVALIDATION — bootstrap rule (patch may be broader than needed): the FBO fix itself is proven, but the carried fix-missing-vidmode.patch bundles two double-free hunks found by reading and never reproduced (PATCH_TOO_BROAD). Recheck: reproduce the double free or drop those hunks, and put the FBO check into nux's test suite. [B's review, changed from LEGACY_PARTIAL on C's rule 2026-09-27]
 
 ### B-L04 — nux: PCRE2 reproducer re-check (B-5 point 4), prep only
 - legacy_id: B-L04 (collected as G1-04)
@@ -523,7 +543,7 @@ index [CURRENTLY_VERIFIED]. On top of that:
 - provenance_gap: no §6 manifest/gate/snapshot; source export-only, not pushed.
 - unfinished: upstream/LP report of fix not recorded as sent [UNVERIFIED]; LP #1515821 deliberately left [HISTORICAL_FACT: README:79-85].
 - doubtful_fix: Root cause proven (mechanism: `get_appointment()` takes begin from DTSTART only; `g_debug` args evaluated unconditionally → `DateTime::get()` asserts) with core-dump stack [HISTORICAL_FACT: README:20-38]. Three changes in diff [CURRENTLY_VERIFIED: `git show 846dfa0 -- src`]: (a) VTODO without DTSTART uses DUE — semantic fix at the producer (get_appointment), correct layer; RFC 5545 allows VTODO with DUE and no DTSTART, so this is valid input, not corruption [UNVERIFIED: RFC text not re-read in this session]. (b) `add_event_to_subtask` drops appointments with unset begin — for VEVENT, DTSTART is required by RFC 5545 (without METHOD) so skipping invalid events is defensible; for an undated VTODO RFC 5545 semantics are "applies to each successive day until completed", so skipping deviates, but README:44 says such a VTODO is not returned by the range query anyway, so (b) is effectively an untested backstop (test's third task never reaches it) [INFERENCE]. (c) `g_debug` guarded by `begin.is_set()` — redundant after (a)+(b) for reachable cases; a convenient-site guard but harmless [INFERENCE]. No §2 correct_layer / defensive_workaround_rejected fields; but DECISIONS.md:1358-1364 does reject Ayatana's NULL-return guard as hiding the cause — the reasoning §2 asks for exists informally. Patch scope: one defect, plus test [CURRENTLY_VERIFIED: diffstat 5 files, 143+/5-].
-- proposed migration_result: LEGACY_PARTIAL — root cause and fails-before/passes-after evidence present and source↔aptly MATCH, but export-only source, implementer-only verification, no §2 card; secondary skip guard (b) untested.
+- proposed migration_result: REQUIRES_REVALIDATION — bootstrap rule (patch may be broader than needed): the DUE-for-DTSTART change is at the producer and has a fail-before/pass-after test, but the added skip of components without a time is an unreachable, untested guard (PATCH_TOO_BROAD). Recheck: prove the skip is reachable and test it, or drop it and keep only the DUE change. [B's review, changed from LEGACY_PARTIAL on C's rule 2026-09-27]
 
 ### B-L15 — indicator-keyboard: build fix lightdm-vala + systemd-dev (+unity1)
 - legacy_id: B-L15 (collected as G2-08)
@@ -721,7 +741,7 @@ index [CURRENTLY_VERIFIED]. On top of that:
 - provenance_gap: common gap + no-git source (debdiff only)
 - unfinished (records show open): (a) LibreOffice HUD empty in ~half of Writer starts — "recorded, not fixed", one mechanism not traced [HISTORICAL_FACT: DECISIONS.md:1580-1584; research/hud/README.md:68-100]; (b) window-stack-bridge drops a window when bamf's DesktopFile() call fails, no retry; suggested fallback not implemented [HISTORICAL_FACT: research/hud/README.md:84-93]; (c) window-stack-bridge app id from `QFileInfo::baseName()` → reverse-DNS ids collapse to `org` ("harmless", not fixed) [HISTORICAL_FACT: same:102-104]; (d) GTK2 global menu "Not planned" [HISTORICAL_FACT: same:151-157]. Each would need a new task ID.
 - doubtful_fix: layers 1-2 are exact build-system causes at the correct layer. Layer 3: `-std=c++17` is set in the project-wide `CMAKE_CXX_FLAGS` (CMakeLists.txt:138), so it also changes the dialect of shipped C++ code (hud-service, window-stack-bridge, libhud-client/qtgmenu), while the stated cause is only googletest in the tests [HISTORICAL_FACT: debdiff; research:27]. Narrower option (C++17 only for the test targets) was not evaluated [UNVERIFIED]. Mitigation: file lists and exported symbols equal archive, tests 6/6, live check ok [HISTORICAL_FACT: research:31-41]. Three defects in one upload — acceptable for an FTBFS chain (each is a prerequisite of the next) but not "one defect per patch" (§4).
-- proposed migration_result: **LEGACY_VERIFIED** — debdiff ⇄ aptly source ⇄ binaries currently verified, tests recorded; C++17 breadth noted for review, open HUD findings need new tasks.
+- proposed migration_result: REQUIRES_REVALIDATION — bootstrap rule (patch may be broader than needed): `-std=c++17` is set for the whole project although only the tests need it. Recheck: limit C++17 to the test targets, or show that the library and service built as C++17 behave the same (file lists and symbols already equal the archive's). [B's review, changed from LEGACY_VERIFIED on C's rule 2026-09-27]
 
 ### B-L25 — overlay-scrollbar: stub package, remove 81overlay-scrollbar
 - legacy_id: B-L25 (collected as G3-04)
