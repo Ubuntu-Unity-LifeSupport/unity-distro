@@ -5,6 +5,20 @@ Build directory: `~/work/b`
 
 ## Now
 
+**UNITY-20260927-022** (2026-09-27, gtk-nocsd +unity3, target2): closed
+NOT_APPLICABLE.
+- +unity3 verified through the normal upgrade path from our aptly (apt
+  full-upgrade on Clean-2) on Unity with unity-gtk4-menu and on a full
+  Xfce 4.20.
+- The non-empty-`LD_PRELOAD` loss is dbus-x11's `--all` import plus
+  systemd's merge, with or without our script. What it drops is
+  unity-gtk4-menu's entry; that package has no Xsession snippet. Reported to C
+  as a separate finding.
+- `research/UNITY-20260927-022-gtk-nocsd-preload/`. Branch
+  `b/UNITY-20260927-022`. target2 back on Clean-2.
+
+**UNITY-20260927-021** (calamares-settings-ubuntu, oem-test): next.
+
 **hud** (2026-09-26, B-12): hud is B's now.
 - `+unity1` builds in resolute: CMake 4, systemd-dev and C++17 fixed, 6/6
   test suites pass.

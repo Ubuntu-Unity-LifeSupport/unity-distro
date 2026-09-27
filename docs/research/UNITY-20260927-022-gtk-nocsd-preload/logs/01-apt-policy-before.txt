@@ -1,0 +1,34 @@
+E: Файл Release для http://de.archive.ubuntu.com/ubuntu/dists/resolute-updates/InRelease пока не действителен (недостоверный ещё 12ч 23мин 50с). Обновление этого репозитория производиться не будет.
+libgtk-nocsd0:
+  Установлен: 3+0~20260321+0b77e1b-1
+  Кандидат:   4.8-1+unity3
+  Таблица версий:
+     4.8-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 3+0~20260321+0b77e1b-1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+libunity-gtk4-menu0:
+  Установлен: (отсутствует)
+  Кандидат:   0.9
+  Таблица версий:
+     0.9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.7 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.6 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages

@@ -1,0 +1,15 @@
+== D: unity3 via apt, full Xfce 4.20, no xsessionrc
+date_utc: 2026-09-27T00:57:07Z
+boot_id: 0cd0ced6-d744-4199-ad76-a19620409290
+uptime: up 1 minute
+session_desktop: Desktop=xfce Type=x11 
+libgtk-nocsd0: 4.8-1+unity3
+libunity-gtk4-menu0: 0.9
+dbus-x11: 1.16.2-2ubuntu4
+dbus-user-session: 1.16.2-2ubuntu4
+51gtk-nocsd: 76c21842058195e2
+xsessionrc: none
+environment.d: LD_PRELOAD=libgtk-nocsd.so.0${LD_PRELOAD:+:$LD_PRELOAD} LD_PRELOAD=libunity-gtk4-menu.so.0${LD_PRELOAD:+:$LD_PRELOAD} 
+user_manager: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+xfwm4: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+xfce4-session: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0

@@ -1,0 +1,4 @@
+up 1 minute
+ls: cannot access '/home/mike/.dirty': No such file or directory
+libgtk-nocsd0:amd64	3+0~20260321+0b77e1b-1
+ubuntu.sources

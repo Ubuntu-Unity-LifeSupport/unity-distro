@@ -1,0 +1,3 @@
+mousepad(session env): pid=2620 maps_nocsd=5 win=25165827 _GTK_FRAME_EXTENTS:  not found. _MOTIF_WM_HINTS:  not found. 
+mousepad(no LD_PRELOAD): pid=2681 maps_nocsd=0 win=25165827 _GTK_FRAME_EXTENTS:  not found. _MOTIF_WM_HINTS:  not found. 
+gnome-text-editor: maps_gtk4menu=5 maps_nocsd=5

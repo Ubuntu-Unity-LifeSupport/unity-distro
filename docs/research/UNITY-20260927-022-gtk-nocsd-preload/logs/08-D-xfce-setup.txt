@@ -1,0 +1,8 @@
+dpkg -V libgtk-nocsd0: clean
+xfce4 install exit=0
+mousepad	0.7.0-1
+xfce4	4.20.1
+xfce4-session	4.20.4-1
+grep: /var/lib/AccountsService/users/mike: Отказано в доступе
+Session=xfce
+XSession=xfce

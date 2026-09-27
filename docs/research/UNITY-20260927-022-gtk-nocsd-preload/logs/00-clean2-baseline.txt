@@ -1,0 +1,16 @@
+== clean-2-baseline
+date_utc: 2026-09-27T00:45:07Z
+boot_id: c6df6a51-6406-4a7c-959f-9317b761a236
+uptime: up 3 hours, 49 minutes
+session_desktop: Desktop= Type=tty 
+libgtk-nocsd0: 3+0~20260321+0b77e1b-1
+libunity-gtk4-menu0: not-installed
+dbus-x11: 1.16.2-2ubuntu4
+dbus-user-session: 1.16.2-2ubuntu4
+51gtk-nocsd: absent
+xsessionrc: none
+environment.d: LD_PRELOAD=libgtk-nocsd.so.0${LD_PRELOAD:+:$LD_PRELOAD} 
+user_manager: LD_PRELOAD=libgtk-nocsd.so.0
+compiz: LD_PRELOAD=libgtk-nocsd.so.0
+unity-panel-service: LD_PRELOAD=libgtk-nocsd.so.0
+hud-service: LD_PRELOAD=libgtk-nocsd.so.0

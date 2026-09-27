@@ -1,0 +1,16 @@
+== A: unity3 via apt, no xsessionrc
+date_utc: 2026-09-27T00:47:47Z
+boot_id: 38bc8cfd-b307-437d-8d84-7a999f36294b
+uptime: up 1 minute
+session_desktop: Desktop= Type=unspecified 
+libgtk-nocsd0: 4.8-1+unity3
+libunity-gtk4-menu0: 0.9
+dbus-x11: 1.16.2-2ubuntu4
+dbus-user-session: 1.16.2-2ubuntu4
+51gtk-nocsd: 76c21842058195e2
+xsessionrc: none
+environment.d: LD_PRELOAD=libgtk-nocsd.so.0${LD_PRELOAD:+:$LD_PRELOAD} LD_PRELOAD=libunity-gtk4-menu.so.0${LD_PRELOAD:+:$LD_PRELOAD} 
+user_manager: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+compiz: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+unity-panel-service: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+hud-service: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0

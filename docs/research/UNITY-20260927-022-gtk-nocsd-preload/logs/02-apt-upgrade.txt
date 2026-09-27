@@ -1,0 +1,8 @@
+full-upgrade exit=0
+install exit=0
+libgtk-nocsd0:
+  Установлен: 4.8-1+unity3
+  Кандидат:   4.8-1+unity3
+libunity-gtk4-menu0:
+  Установлен: 0.9
+  Кандидат:   0.9

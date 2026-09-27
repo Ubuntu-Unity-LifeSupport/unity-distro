@@ -1,0 +1,2 @@
+session: nocsd_mapped=5 _GTK_FRAME_EXTENTS(CARDINAL) = 0, 0, 0, 0 _MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x1, 0x0, 0x0 
+no-preload: nocsd_mapped=0 _GTK_FRAME_EXTENTS(CARDINAL) = 25, 25, 25, 25 _MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x0, 0x0, 0x0 

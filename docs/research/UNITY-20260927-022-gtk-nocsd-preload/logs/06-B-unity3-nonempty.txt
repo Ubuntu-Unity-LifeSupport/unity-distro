@@ -1,0 +1,16 @@
+== B: unity3 via apt, xsessionrc LD_PRELOAD=libm.so.6
+date_utc: 2026-09-27T00:50:54Z
+boot_id: f7f6e78c-c597-4b75-a15f-2f63a69043bc
+uptime: up 1 minute
+session_desktop: Desktop= Type=unspecified 
+libgtk-nocsd0: 4.8-1+unity3
+libunity-gtk4-menu0: 0.9
+dbus-x11: 1.16.2-2ubuntu4
+dbus-user-session: 1.16.2-2ubuntu4
+51gtk-nocsd: 76c21842058195e2
+xsessionrc: export LD_PRELOAD=libm.so.6
+environment.d: LD_PRELOAD=libgtk-nocsd.so.0${LD_PRELOAD:+:$LD_PRELOAD} LD_PRELOAD=libunity-gtk4-menu.so.0${LD_PRELOAD:+:$LD_PRELOAD} 
+user_manager: LD_PRELOAD=libgtk-nocsd.so.0:libm.so.6
+compiz: LD_PRELOAD=libgtk-nocsd.so.0:libm.so.6
+unity-panel-service: LD_PRELOAD=libgtk-nocsd.so.0:libm.so.6
+hud-service: LD_PRELOAD=libgtk-nocsd.so.0:libm.so.6

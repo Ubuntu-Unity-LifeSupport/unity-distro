@@ -1,0 +1,5 @@
+guest_before: 2026-09-27T00:45:49Z
+guest_after: 2026-09-27T17:09:56Z builder: 2026-09-27T17:09:56Z
+NTP=no
+NTPSynchronized=no
+update-ok

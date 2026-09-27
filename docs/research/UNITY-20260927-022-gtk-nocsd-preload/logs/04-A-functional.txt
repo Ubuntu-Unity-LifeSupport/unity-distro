@@ -1,0 +1,3 @@
+gnome-text-editor pid=3902 LD_PRELOAD=LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+maps: gtk4-menu=5 nocsd=5
+hud StartQuery: ('Сохранить', [('<b>Сохранить</b> (Текстовый редактор)', '', '', '', '', <uint64 7>), ('<b>Сохранить</b> как… (Текстовый редактор)', '', '', '', '', <uint64 8>)], <'/com/canonical/hud/query/

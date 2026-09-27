@@ -1,0 +1,2 @@
+/etc/X11/Xsession.d/51gtk-nocsd
+export LD_PRELOAD=libm.so.6
