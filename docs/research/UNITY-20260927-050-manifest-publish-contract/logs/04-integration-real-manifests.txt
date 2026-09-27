@@ -1,0 +1,6 @@
+calamares-settings-ubuntu 1:26.04.12+unity3: expectations ['calamares-settings-ubuntu_1:26.04.12+unity3_source', 'calamares-settings-kubuntu_1:26.04.12+unity3_all', 'calamares-settings-lubuntu_1:26.04.12+unity3_all', 'calamares-settings-ubuntu-common-data_1:26.04.12+unity3_all', 'calamares-settings-ubuntu-common-dbgsym_1:26.04.12+unity3_amd64', 'calamares-settings-ubuntu-common_1:26.04.12+unity3_amd64', 'calamares-settings-ubuntu-unity_1:26.04.12+unity3_all']
+snapshot entries: 7; missing expected: none; result PASS
+ubuntu-unity-meta 0.29+unity1: expectations ['ubuntu-unity-meta_0.29+unity1_source', 'ubuntu-unity-desktop_0.29+unity1_amd64']
+snapshot entries: 2; missing expected: none; result PASS
+unity-gtk4-menu 0.9: expectations ['unity-gtk4-menu_0.9_source', 'libunity-gtk4-menu0-dbgsym_0.9_amd64', 'libunity-gtk4-menu0_0.9_amd64']
+snapshot entries: 3; missing expected: none; result PASS

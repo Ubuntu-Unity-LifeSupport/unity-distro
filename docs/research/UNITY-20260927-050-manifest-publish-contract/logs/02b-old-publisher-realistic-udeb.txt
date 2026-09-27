@@ -1,0 +1,8 @@
+OK   deb and ddeb, source version: old -
+OK   binary named after the source, no S
+BAD  binNMU binary and dbgsym with their
+BAD  udeb: old -> ['demo_1:1.0_source', 
+BAD  binary from another source: old -> 
+BAD  binary version differs, no Source v
+BAD  manifest record differs from the fi
+BAD  unknown artifact kind: old -> ['dem

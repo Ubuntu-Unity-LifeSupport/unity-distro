@@ -1,0 +1,8 @@
+OK   deb and ddeb, source version: old -> ['demo_1:1.0_source', 'demo-bin_1:1.0_amd64', 'demo-bin-dbgsym_1:1.0_amd64']; contract -> ['demo_1:1.0_source', 'demo-bin_1:1.0_amd64', 'demo-bin-dbgsym_1:1.0_amd64']
+OK   binary named after the source, no Source field: old -> ['demo_1:1.0_source', 'demo_1:1.0_amd64']; contract -> ['demo_1:1.0_source', 'demo_1:1.0_amd64']
+BAD  binNMU binary and dbgsym with their own version: old -> ERROR: binary artifact version differs from candidate; contract -> ['demo_1:1.0_source', 'demo-bin_1:1.0+b1_amd64', 'demo-bin-dbgsym_1:1.0+b1_amd64']
+BAD  udeb: old -> ['demo_1:1.0_source', 'demo-bin_1:1.0_amd64', 'demo-udeb_1:1.0_amd64']; contract -> ERROR: udeb
+BAD  binary from another source: old -> ['demo_1:1.0_source', 'demo-bin_1:1.0_amd64', 'other-bin_1:1.0_amd64']; contract -> ERROR: built from
+BAD  binary version differs, no Source version: old -> ERROR: binary artifact version differs from candidate; contract -> ERROR: built from
+BAD  manifest record differs from the file: old -> ERROR: binary artifact version differs from candidate; contract -> ERROR: does not match
+BAD  unknown artifact kind: old -> ['demo_1:1.0_source', 'demo-bin_1:1.0_amd64']; contract -> ERROR: no publication rule

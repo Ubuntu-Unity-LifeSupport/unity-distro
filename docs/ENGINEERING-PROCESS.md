@@ -339,6 +339,24 @@ traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
+Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
+every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
+rule per kind and rejects anything else:
+
+- `source` (`.dsc`): must be in the snapshot as `<source>_<version>_source`.
+- `binary` `.deb` and `.ddeb`: Package, Version and Architecture are read
+  from the file and must match the manifest record. The binary must belong
+  to this source and version by dpkg's rule, read from the file's Source
+  field (`Source: name` or `Source: name (version)`; missing parts default to
+  the binary's own), so a binNMU or a `-dbgsym` with its own version is
+  accepted. It must be in the
+  snapshot as `<Package>_<Version>_<Architecture>`.
+- `binary` `.udeb`: rejected. The publication has no debian-installer index,
+  so a udeb would reach the snapshot but not the published repository.
+- `buildinfo`, `changes`: provenance only. They are hashed with the other
+  artifacts and never expected in a snapshot.
+- Any other kind: rejected until a rule for it is added here.
+
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
 the task to `READY_TO_PUBLISH`. The publisher also checks that board state.
