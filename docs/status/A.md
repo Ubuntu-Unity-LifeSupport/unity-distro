@@ -25,6 +25,11 @@ gnome-sound-recorder, google-chrome-stable 154 (adds `google-chrome.sources`); x
 test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, set from builder at 17:26Z
 - not synchronised, check after a host sleep. `~/.dirty` present.
 
+Correction 2026-09-27 (UNITY-20260927-036): `libunity-gtk4-menu0 0.8` in the
+list above is no longer installed on target -
+`ssh target dpkg-query -W libunity-gtk4-menu0` on 2026-09-27 reports no such
+package (checked again today). The line above is kept as written.
+
 ## Mine in `packages/`
 
 - `packages/unity` - branches `unity/resolute` (released `+unity9`),
