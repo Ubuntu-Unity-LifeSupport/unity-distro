@@ -52,15 +52,46 @@ def parse_timestamp(value):
     return parsed.astimezone(timezone.utc)
 
 
-def apt_candidate(package):
-    result = subprocess.run(["apt-cache", "policy", package], check=False, capture_output=True, text=True)
-    if result.returncode:
-        raise ValueError(f"apt-cache policy failed: {result.stderr.strip()}")
-    match = re.search(r"(?m)^\s*Candidate:\s*(\S+)\s*$", result.stdout)
-    if not match:
-        raise ValueError("apt-cache policy returned no Candidate version")
-    return match.group(1), result.stdout
+def release_date(value):
+    from email.utils import parsedate_to_datetime
+    return parsedate_to_datetime(value)
 
+
+def compare_views(gate_view, fresh_view, now):
+    """Refuse a switch-time apt view that does not continue the gate-time one:
+    another snapshot content, an archive Release that went backwards, one that
+    disappeared, or a Valid-Until that has passed. Returns an error or None."""
+    gate_snap, fresh_snap = gate_view.get("snapshot") or {}, fresh_view.get("snapshot") or {}
+    if not gate_snap.get("list_sha256") or gate_snap.get("name") != fresh_snap.get("name") \
+            or gate_snap.get("list_sha256") != fresh_snap.get("list_sha256"):
+        return "the snapshot's package list differs from the one measured at gate time"
+    fresh_releases = {r["file"]: r for r in fresh_view.get("releases", []) if not r.get("model")}
+    for old in (r for r in gate_view.get("releases", []) if not r.get("model")):
+        new = fresh_releases.get(old["file"])
+        if new is None:
+            return f"archive Release {old['file']} is missing from the fresh view"
+        try:
+            if old.get("Date") and release_date(new.get("Date", "")) < release_date(old["Date"]):
+                return f"archive Release {old['file']} went backwards ({new.get('Date')} < {old['Date']})"
+        except (TypeError, ValueError):
+            return f"archive Release {old['file']} has an unreadable Date"
+    for new in fresh_releases.values():
+        if new.get("Valid-Until"):
+            try:
+                if release_date(new["Valid-Until"]) < now:
+                    return f"archive Release {new['file']} expired ({new['Valid-Until']})"
+            except (TypeError, ValueError):
+                return f"archive Release {new['file']} has an unreadable Valid-Until"
+    return None
+
+
+def version_verdict(root, view_path, manifest_path):
+    result = subprocess.run([sys.executable, str(root / "scripts/version_safety.py"), "--view", str(view_path),
+                             "--manifest", str(manifest_path)], check=False, capture_output=True, text=True)
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return {"result": "UNKNOWN", "reasons": ["version_safety.py did not return valid JSON"]}
 
 def write_once_record(path, record):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -325,23 +356,18 @@ def main():
         if not path.is_file() or sha256(path) != item.get("sha256") or not tracked_clean(root, path):
             return fail(f"evidence.{key} must match its hash and be tracked, committed, and clean")
         evidence_files[key] = path
-    version_check = subprocess.run([sys.executable, str(root / "scripts/version_safety.py"), str(evidence_files["version_check"])],
-                                   check=False, capture_output=True, text=True)
-    try: version_result = json.loads(version_check.stdout)
-    except json.JSONDecodeError: return fail("version-safety executable did not return valid JSON")
-    if version_check.returncode != 0 or version_result.get("result") != "SAFE":
-        return fail("immediate version-safety recheck is not SAFE")
+    # version_check is the gate-time apt_view.py measurement; recompute its verdict.
+    version_result = version_verdict(root, evidence_files["version_check"], manifest_path)
+    if version_result.get("result") != "SAFE":
+        return fail(f"gate-time version check is not SAFE: {version_result.get('reasons')}")
     if version_result.get("source_package") != package or version_result.get("candidate_source_version") != version:
         return fail("version-safety evidence does not match the package and candidate version")
     if version_result.get("source_commit") != gate.get("source_commit"):
         return fail("version-safety evidence source commit does not match the build")
     if version_result.get("target_series") != gate.get("target_series"):
         return fail("version-safety evidence target series does not match the gate")
-    if version_result.get("candidate_binary_version") != version:
-        return fail("version-safety binary candidate version does not match the built version")
-    built_binary_names = {item.get("package") for item in artifacts if item.get("kind") == "binary"}
-    if version_result.get("candidate_binary_package") not in built_binary_names:
-        return fail("version-safety apt candidate is not among the built binary artifacts")
+    try: gate_view = json.loads(evidence_files["version_check"].read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc: return fail(f"cannot read the gate-time apt view: {exc}")
     try:
         checked_at = parse_timestamp(version_result.get("checked_at"))
     except (TypeError, ValueError) as exc:
@@ -359,19 +385,28 @@ def main():
     if ".." in prefix or prefix in {"dists", "pool"}:
         return fail("unsafe aptly prefix")
 
+    if (gate_view.get("snapshot") or {}).get("name") != snapshot:
+        return fail("the gate-time version check measured another snapshot")
     shown = run_aptly(["snapshot", "show", "-with-packages", snapshot])
     if shown.returncode: return fail(f"aptly cannot inspect snapshot {snapshot}: {shown.stderr.strip()}")
     for name in expected_snapshot_names:
         if not re.search(rf"(?m)^\s*{re.escape(name)}\s*$", shown.stdout):
             return fail(f"aptly snapshot {snapshot} does not contain expected artifact {name}")
 
-    fresh_policy_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-    try:
-        fresh_candidate, fresh_policy_output = apt_candidate(version_result["candidate_binary_package"])
-    except (OSError, ValueError) as exc:
-        return fail(f"fresh local apt-cache policy check failed: {exc}")
-    if fresh_candidate != version_result.get("candidate_binary_version"):
-        return fail("fresh local apt-cache policy candidate differs from the release candidate")
+    # Measure the target apt view again right before the switch; it is authoritative.
+    fresh_path = record_path.with_name(record_path.stem + "-apt-view.json")
+    fresh_run = subprocess.run([sys.executable, str(root / "scripts/apt_view.py"), "--manifest", str(manifest_path),
+                                "--snapshot", snapshot, "--write", str(fresh_path)], check=False, capture_output=True, text=True)
+    if fresh_run.returncode:
+        return fail(f"switch-time apt view failed: {fresh_run.stderr.strip()}")
+    try: fresh_view = json.loads(fresh_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc: return fail(f"cannot read the switch-time apt view: {exc}")
+    fresh_result = version_verdict(root, fresh_path, manifest_path)
+    if fresh_result.get("result") != "SAFE":
+        return fail(f"switch-time version check is not SAFE: {fresh_result.get('reasons')}")
+    view_error = compare_views(gate_view, fresh_view, datetime.now(timezone.utc))
+    if view_error:
+        return fail(view_error)
 
     try: log_event("START", package, version, task_id)
     except OSError as exc: return fail(f"cannot append publication START event: {exc}")
@@ -407,13 +442,8 @@ def main():
         "aptly_result": "PASS",
         "post_publish_check": "PASS",
         "version_evidence_checked_at": version_result.get("checked_at"),
-        "fresh_apt_policy": {
-            "checked_at": fresh_policy_at,
-            "package": version_result["candidate_binary_package"],
-            "candidate_version": fresh_candidate,
-            "result": "PASS",
-            "policy_output": fresh_policy_output,
-        },
+        "switch_time_version_check": fresh_result,
+        "switch_time_apt_view": fresh_view,
         "artifacts": [{"file": item["file"], "sha256": item["sha256"], "kind": item["kind"],
                        "package": item.get("package"), "version": item.get("version"),
                        "architecture": item.get("architecture")} for item in artifacts],

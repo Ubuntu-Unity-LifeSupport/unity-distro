@@ -1,0 +1,18 @@
+# builder apt view (the publisher's fresh check runs here), 2026-09-27T20:14:31Z
+URIs: http://de.archive.ubuntu.com/ubuntu/
+Suites: resolute resolute-updates resolute-backports
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: resolute-security
+our aptly in builder's apt sources: none
+calamares-settings-ubuntu-unity:
+  Installed: (none)
+  Candidate: 1:26.04.12
+
+# version_safety.py before publication (calamares +unity2), apt candidate as apt reports it now
+UNSAFE ['apt-cache policy selects a binary version other than the candidate']
+
+# binNMU: publish_aptly.py rejects a binary candidate whose version is not the source version
+340:    if version_result.get("candidate_binary_version") != version:
+
+# the only way the record passes today is to write the new version as the apt candidate by hand:
+SAFE ['dpkg ordering and recorded apt candidate checks pass']

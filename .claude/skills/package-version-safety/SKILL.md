@@ -5,44 +5,45 @@ description: Check Ubuntu/Debian package version ordering and update behavior be
 
 # Package version safety
 
-Run before the first build and repeat immediately before publication. Follow
-the gates in [`docs/ENGINEERING-PROCESS.md`](../../../docs/ENGINEERING-PROCESS.md).
+Run before the first build and again, as part of the gate, before publishing.
+Follow the gates in [`docs/ENGINEERING-PROCESS.md`](../../../docs/ENGINEERING-PROCESS.md)
+section 6. The verdict comes from a measurement made by
+`scripts/apt_view.py`; do not type archive versions or apt candidates into a
+record - `scripts/version_safety.py` rejects anything that is not
+`apt_view.py` output.
 
-Record these inputs:
+Before building (ordering only, never `SAFE`):
 
-```text
-source_package:
-source_commit:
-candidate_binary_package:
-apt_candidate_binary_package:
-target_series:
-archive_source_version:
-archive_binary_version:
-candidate_source_version:
-candidate_binary_version:
-security_and_update_versions:
-future_target_series_update_versions:
-newer_series_or_Debian_versions:
-candidate_source_commit:
+```sh
+python3 scripts/apt_view.py --source-package <source> --write /tmp/pockets.json
+python3 scripts/version_safety.py --view /tmp/pockets.json --pre-build \
+  --candidate-version <planned version> --source-commit <commit>
 ```
 
-Collect the exact versions in the target archive, updates/security pockets,
-proposed pocket where relevant, development series, Debian, and the release
-that contains the candidate fix. Use `rmadison` and source changelogs/history
-for discovery, `dpkg --compare-versions` for Debian version ordering, and
-`apt-cache policy` against the actual configured target repositories to see
-which binary apt will select. Do not infer installability from a suffix or
-from a successful `dpkg -i`.
+For the gate, after the build and after the snapshot exists:
 
-Store the collected versions, source identity, checked time, and whether the
-archive and apt policy checks were actually performed in a JSON input record.
-Run `scripts/version_safety.py INPUT.json --write version-check.json` from the
-project root. It applies Debian ordering using `dpkg --compare-versions` and
-checks that `apt-cache policy` selected the candidate binary version. It cannot
-replace collecting authentic archive/repository values. Attach the raw command
-output or a cited evidence record.
+```sh
+python3 scripts/apt_view.py --manifest <build manifest> --snapshot <snapshot> \
+  --write docs/research/<task>/version-check.json
+python3 scripts/version_safety.py --view docs/research/<task>/version-check.json \
+  --manifest <build manifest>
+```
 
-Return exactly one result:
+`apt_view.py` measures, in an isolated apt state (never the host's apt
+configuration, never as root):
+
+- the source package's highest version in each pocket of
+  `docs/apt/target.sources` (resolute, -updates, -security, -backports, and
+  -proposed as deb-src only), from the `Sources` indices;
+- with `--snapshot`/`--manifest`, apt's candidate for every binary of the
+  build, with the Ubuntu archive as the reference target uses it and our
+  repository as the gated snapshot will publish it;
+- the snapshot's package-list hash and each fetched Release's hash and Date.
+
+Pass `--aptly-config` to measure a scratch aptly; the live aptly is the
+default. Any fetch failure refuses.
+
+`version_safety.py` returns exactly one result:
 
 ```text
 SAFE
@@ -52,11 +53,17 @@ BLOCKS_FUTURE_UPDATE
 UNKNOWN
 ```
 
-Only `SAFE` passes. Use `UNSAFE` if the package cannot be installed or the
-candidate does not select the intended source/binaries; use
-`REPLACES_SECURITY_UPDATE` if the candidate is older than a relevant security
-or update package; use `BLOCKS_FUTURE_UPDATE` if archive version ordering would
-prevent the intended future Ubuntu update; use `UNKNOWN` if the version set or
-repository candidate cannot be established. Stop on every result except
-`SAFE` and explain the measured comparison. Re-run the check after rebuilding
-if the candidate version or source changes.
+- `REPLACES_SECURITY_UPDATE`: the candidate is not newer than the version in
+  -updates or -security.
+- `BLOCKS_FUTURE_UPDATE`: a version pending in -proposed is not older than the
+  candidate; when it migrates, Ubuntu's version supersedes ours.
+- `UNSAFE`: not newer than resolute or -backports, or apt selects another
+  version of a built binary.
+- `UNKNOWN`: not a valid measurement, an unknown pocket, binaries that do not
+  match the manifest, or a pre-build check (ordering only).
+
+Only `SAFE` passes. A binNMU binary is judged by its own version. A source
+that is in no archive pocket is recorded "not in archive". Re-run both steps
+after rebuilding or recreating the snapshot; the publisher repeats them right
+before the switch and refuses if the snapshot content or the archive changed
+backwards.

@@ -1,0 +1,36 @@
+# minimal-stanza snapshot model (scratch aptly snapshot s1 from UNITY-20260927-050), 2026-09-27T20:18:34Z
+## snapshot list
+demo_1:1.0_source
+demo-bin_1:1.0_amd64
+demo-bin-dbgsym_1:1.0_amd64
+demo-binnmu_1:1.0+b1_amd64
+demo-udeb_1:1.0_amd64
+## Release of the local model repo
+Label: . resolute
+Origin: . resolute
+Suite: resolute
+## apt-cache policy candidates
+demo-bin:
+  Candidate: 1:1.0
+demo-binnmu:
+  Candidate: 1:1.0+b1
+demo-bin-dbgsym:
+  Candidate: 1:1.0
+ 500 file:<SCRATCH>/min/repo ./ Packages
+     release o=. resolute,a=resolute,l=. resolute,c=
+
+## per-pocket source versions (apt-cache madison, deb-src in the isolated state)
+calamares-settings-ubuntu | 1:26.04.12 | http://de.archive.ubuntu.com/ubuntu resolute/universe Sources
+xorg-server | 2:21.1.22-1ubuntu1 | http://de.archive.ubuntu.com/ubuntu resolute/main Sources
+xorg-server | 2:21.1.22-1ubuntu1.2 | http://de.archive.ubuntu.com/ubuntu resolute-updates/main Sources
+
+## Release fields
+Origin: . resolute
+Label: . resolute
+Suite: resolute
+Date: Sat, 26 Sep 2026 20:53:52 UTC
+192.168.56.10:8080_dists_resolute_InRelease: Date: Sat, 26 Sep 2026 20:53:52 UTC 
+de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease: Date: Sat, 26 Sep 2026 18:05:43 UTC 
+de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease: Date: Sun, 27 Sep 2026 13:09:20 UTC 
+de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease: Date: Thu, 23 Apr 2026 17:07:15 UTC 
+security.ubuntu.com_ubuntu_dists_resolute-security_InRelease: Date: Sat, 26 Sep 2026 18:04:59 UTC 
