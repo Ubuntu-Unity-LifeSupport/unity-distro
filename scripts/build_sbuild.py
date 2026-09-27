@@ -48,33 +48,58 @@ def main():
     version = run(["dpkg-parsechangelog", "-S", "Version"], cwd=repo).stdout.strip()
     package = run(["dpkg-parsechangelog", "-S", "Source"], cwd=repo).stdout.strip()
     started = datetime.now(timezone.utc)
-    command = ["sbuild", "-d", args.target_series, "--no-clean-source"]
+    # sbuild prints its build log to stdout only when stdout is a terminal or
+    # --verbose is given; otherwise the log goes to its own .build file only.
+    command = ["sbuild", "-d", args.target_series, "--no-clean-source", "--verbose"]
     logfile = output / f"{args.task_id}-{package}-{version}-sbuild.log"
     with logfile.open("w", encoding="utf-8") as log:
         log.write("$ " + " ".join(command) + "\n")
+        log.flush()
         result = subprocess.run(command, cwd=repo, text=True, stdout=log, stderr=subprocess.STDOUT, check=False)
     finished = datetime.now(timezone.utc)
     if result.returncode:
         print(f"sbuild failed ({result.returncode}); see {logfile}", file=sys.stderr)
         return result.returncode
-    # sbuild puts result files next to the source tree by default. Capture only
-    # artifacts matching the package and version produced during this run.
-    search_roots = {repo.parent, output}
-    candidates = []
-    for root in search_roots:
-        candidates.extend(p for p in root.glob("*") if p.is_file() and p.suffix in {".deb", ".dsc", ".changes", ".buildinfo", ".udeb"})
+    # sbuild puts result files next to the source tree by default. The .changes
+    # of this run lists every binary it produced; the source package is the
+    # .dsc. Debian file names carry the version without its epoch.
+    file_version = version.split(":", 1)[-1]
+    search_roots = [repo.parent, output]
+    def fresh(pattern):
+        found = {p.resolve() for root in search_roots for p in root.glob(pattern)
+                 if p.is_file() and p.stat().st_mtime >= started.timestamp() - 2}
+        return sorted(found)
+    changes = fresh(f"{package}_{file_version}_*.changes")
+    dscs = fresh(f"{package}_{file_version}.dsc")
+    if len(changes) != 1 or len(dscs) != 1:
+        print(f"expected one .changes and one .dsc from this run, found {len(changes)} and {len(dscs)}", file=sys.stderr)
+        return 2
+    listed = []
+    section = None
+    for line in changes[0].read_text(encoding="utf-8").splitlines():
+        if line and not line[0].isspace():
+            section = line.split(":", 1)[0]
+        elif section == "Checksums-Sha256" and line.strip():
+            digest, _size, name = line.split()
+            listed.append((name, digest))
+    if not listed:
+        print(f"{changes[0].name} lists no files", file=sys.stderr)
+        return 2
+    selected = [(dscs[0], None), (changes[0], None)]
+    for name, digest in listed:
+        path = changes[0].parent / name
+        if not path.is_file() or sha256(path) != digest:
+            print(f"{name} listed in {changes[0].name} is missing or does not match its sha256", file=sys.stderr)
+            return 2
+        selected.append((path, digest))
     artifacts = []
-    for path in sorted(set(candidates)):
-        if package not in path.name or version not in path.name:
-            continue
-        if path.stat().st_mtime < started.timestamp() - 2:
-            continue
+    for path, _digest in selected:
         copied = output / path.name
         if path.resolve() != copied.resolve():
             copied.write_bytes(path.read_bytes())
             path = copied
         item = {"file": path.name, "sha256": sha256(path), "size": path.stat().st_size}
-        if path.suffix == ".deb":
+        if path.suffix in {".deb", ".ddeb", ".udeb"}:
             item.update({"kind": "binary", "package": run(["dpkg-deb", "-f", str(path), "Package"]).stdout.strip(),
                          "version": run(["dpkg-deb", "-f", str(path), "Version"]).stdout.strip(),
                          "architecture": run(["dpkg-deb", "-f", str(path), "Architecture"]).stdout.strip()})
