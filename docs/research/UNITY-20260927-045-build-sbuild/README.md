@@ -165,3 +165,11 @@ Behaviour change to note for the publisher: `.ddeb` (and `.udeb`) files of
 the `.changes` are now `kind: binary`, so `publish_aptly.py` will expect the
 dbgsym packages in the gated snapshot, as it expects every other binary of
 the build.
+
+## Verification
+
+Independent verifier: **PASS**, **INDEPENDENTLY_REPRODUCED** (tests before and
+after, own stub edge cases) - `verification.md`, with the consequences for
+`publish_aptly.py` listed there. The task ends here: the script change lives
+on `b/UNITY-20260927-045`; merging into `main` is the coordinator's
+controlled step.
