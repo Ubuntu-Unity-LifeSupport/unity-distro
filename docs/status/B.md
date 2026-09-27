@@ -5,6 +5,15 @@ Build directory: `~/work/b`
 
 ## Now
 
+**UNITY-20260927-041** (calamares sudoers.oem mode, oem-test): BLOCKED.
+- Makefile:51 chmodded Kubuntu's copy; ours shipped 0644 and became
+  /etc/sudoers in OEM mode (measured on oem-test). visudo -c of sudo-rs and
+  sudo.ws accept only 0440 (0400 is rejected too); sudo itself runs with any.
+- `221c691` (on 021's `c03daf4e`): chmod 440 on the Ubuntu Unity copy,
+  +unity3. Preliminary sbuild ok; only that tarball entry changes; on
+  oem-test the extracted file gives 440 and visudo -c OK.
+- Blocked like 021; depends on 021's +unity2. `research/UNITY-20260927-041-calamares-oem-sudoers/`.
+
 **hud** (2026-09-26, B-12): hud is B's now.
 - `+unity1` builds in resolute: CMake 4, systemd-dev and C++17 fixed, 6/6
   test suites pass.
