@@ -249,13 +249,15 @@ class AptViewIntegrationTest(unittest.TestCase):
         path.write_text(json.dumps(m))
         return path, m
 
-    def apt_view(self, *args):
+    def apt_view(self, *args, tmpdir=None):
         prefs = self.t / "prefs"
         prefs.mkdir(exist_ok=True)
         out = self.t / "view.json"
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+        if tmpdir:
+            env["TMPDIR"] = str(tmpdir)
         result = subprocess.run([sys.executable, str(SCRIPTS / "apt_view.py"), "--preferences-dir", str(prefs),
-                                 "--write", str(out)] + list(args), capture_output=True, text=True,
-                                env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+                                 "--write", str(out)] + list(args), capture_output=True, text=True, env=env)
         return result, (json.loads(out.read_text()) if out.exists() else None)
 
     def test_full_view_selects_snapshot_binaries(self):
@@ -280,6 +282,27 @@ class AptViewIntegrationTest(unittest.TestCase):
         result2, v2 = self.apt_view("--manifest", str(mpath), "--snapshot", "s", "--aptly-config", str(conf),
                                     "--sources", str(sources))
         self.assertIsNone(publish_aptly.compare_views(v, v2, datetime.now(timezone.utc)))
+
+    def test_model_release_recognised_whatever_the_temp_path(self):
+        """UNITY-20260927-056: apt escapes "_" in file: URIs ("%5f") when naming list
+        files; the model Release must be recognised with such a temporary path."""
+        sources = self.archive({"resolute": ("1:1.0", "1:1.0")})
+        indir = self.t / "in"
+        indir.mkdir()
+        entries = [(self.deb(indir, "demo-bin", "1:1.0+unity1", "amd64"), "demo-bin", "1:1.0+unity1", "amd64")]
+        conf = self.snapshot(entries)
+        mpath, m = self.manifest_file(entries)
+        for name in ("tmp_with_underscore", "tmp~tilde=equals@at"):
+            with self.subTest(tmpdir=name):
+                tmpdir = self.t / name
+                tmpdir.mkdir()
+                result, v = self.apt_view("--manifest", str(mpath), "--snapshot", "s", "--aptly-config", str(conf),
+                                          "--sources", str(sources), tmpdir=tmpdir)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual([r["file"] for r in v["releases"] if r.get("model")], ["<model>_Release"])
+                # no unmarked Release of the model repository is left (the fixture archive's
+                # own list names may legitimately contain apt's %xx quoting of the temp path)
+                self.assertFalse([r["file"] for r in v["releases"] if not r.get("model") and "_model_" in r["file"]])
 
     def test_snapshot_older_than_archive_is_unsafe(self):
         sources = self.archive({"resolute": ("1:1.0", "1:1.0"), "resolute-updates": ("1:2.0", "1:2.0")})

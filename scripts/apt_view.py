@@ -20,6 +20,7 @@ import json
 import os
 from pathlib import Path
 import re
+import secrets
 import subprocess
 import sys
 import tempfile
@@ -58,7 +59,7 @@ def snapshot_model(config, snapshot):
     return listed, debs
 
 
-def write_model_repo(directory, debs, release):
+def write_model_repo(directory, debs, release, marker):
     stanzas = []
     for entry in debs:
         name, rest = entry.split("_", 1)
@@ -68,6 +69,9 @@ def write_model_repo(directory, debs, release):
     options = []
     for key in ("Origin", "Label", "Suite", "Codename"):
         options += ["-o", f"APT::FTPArchive::Release::{key}={release[key]}"]
+    # apt names list files after the URI with its own quoting ("_" -> "%5f", ...),
+    # so the model Release is recognised by this per-run marker, not by file name.
+    options += ["-o", f"APT::FTPArchive::Release::Description={marker}"]
     release_text = run(["apt-ftparchive"] + options + ["release", str(directory)]).stdout
     (directory / "Release").write_text(release_text, encoding="utf-8")
 
@@ -80,7 +84,7 @@ def release_fields(path):
                 break
             continue
         key, _, value = line.partition(":")
-        if key in ("Origin", "Label", "Suite", "Codename", "Date", "Valid-Until"):
+        if key in ("Origin", "Label", "Suite", "Codename", "Date", "Valid-Until", "Description"):
             fields[key] = value.strip()
     return fields
 
@@ -146,6 +150,7 @@ def main():
             "measured_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "sources_file": str(args.sources), "sources_sha256": sha256_file(args.sources),
             "preferences": {p.name: sha256_file(p) for p in sorted(args.preferences_dir.glob("*")) if p.is_file()}}
+    marker = f"apt_view model {secrets.token_hex(16)}"
     with tempfile.TemporaryDirectory(prefix="apt-view-") as tmp:
         t = Path(tmp)
         for sub in ("state/lists/partial", "cache/archives/partial", "sources.list.d", "preferences.d", "model"):
@@ -159,7 +164,7 @@ def main():
             view["snapshot"] = {"name": args.snapshot, "packages": len(listed),
                                 "list_sha256": sha256_bytes(("\n".join(listed) + "\n").encode()),
                                 "model_entries": len(debs)}
-            write_model_repo(t / "model", debs, release)
+            write_model_repo(t / "model", debs, release, marker)
             view["snapshot"]["model_release"] = release
             (t / "sources.list.d" / "model.sources").write_text(
                 f"Types: deb\nURIs: file:{t / 'model'}/\nSuites: ./\nTrusted: yes\n", encoding="utf-8")
@@ -179,9 +184,11 @@ def main():
         for path in sorted((t / "state/lists").glob("*Release")):
             if path.name.endswith("_Release") and (t / "state/lists" / path.name.replace("_Release", "_InRelease")).exists():
                 continue
-            model = path.name.startswith(str(t / "model").replace("/", "_"))
+            fields = release_fields(path)
+            model = full and fields.pop("Description", None) == marker
+            fields.pop("Description", None)
             entry = {"file": "<model>_Release" if model else path.name, "sha256": sha256_file(path), "model": model}
-            entry.update(release_fields(path))
+            entry.update(fields)
             view["releases"].append(entry)
         view["pockets"] = pocket_versions(env, source)
         view["in_archive"] = bool(set(view["pockets"]) & set(POCKETS))
