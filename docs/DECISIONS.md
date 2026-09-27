@@ -1591,3 +1591,41 @@ starts) is recorded in `research/hud/`, not fixed:
   preloads.
 - The script is kept rather than removed: Xfce and other sessions without
   systemd import still need it to load gtk-nocsd.
+
+
+## 2026-09-27 - UNITY-20260927-001: the #3 early return in Edge::ButtonDownEvent stays (agent A)
+
+**Context.** Legacy item A-L06: unity `+unity10` (`f2268bef`) fixed known
+issue #3 with an early return. The task re-examined whether that is the right
+layer. Record: `research/UNITY-20260927-001-edge-resize-grab/` (branch
+`a/UNITY-20260927-001`).
+
+**Mechanism (uprobes, compiz not stopped).**
+- A second button on a border during a resize reaches
+  `Edge::ButtonDownEvent` through compiz's own active grab.
+- Its raw `XUngrabPointer` drops the X grab that compiz core still lists as
+  `"resize"`.
+- The resize plugin refuses the second `_NET_WM_MOVERESIZE`
+  (`releaseButton` stays 1). This corrects `research/cursor-stops/`, which
+  said it was accepted.
+- The resize never ends. compiz stops thawing frames' synchronous grabs, and
+  the next frame click freezes the pointer.
+
+**Measured.** Same boot, real evdev input:
+- `rmbslow`: 10/10 stuck on +unity9, 0/10 on +unity10 and 0/10 on +unity11.
+- All six variants: 31/60 against 0/60. Resize worked in all 120 runs.
+
+**Decision.** Keep `+unity10` unchanged (`ALREADY_FIXED` / `FIXED_LOCAL`).
+The only code that releases compiz's grab behind its grab list is in Edge.
+compiz core and the resize plugin keep their invariants. Thawing frames
+regardless of grabs, or filtering all decoration input, would hide or
+over-suppress instead of preventing the ungrab.
+
+**Design Challenger:**
+- First review: REVISE. The card claimed an any-grab invariant, while the
+  condition checks only `"resize"`/`"move"`.
+- Second review, after the card was narrowed: APPROVE.
+
+**Not done here.** Widening the condition to `screen->otherGrabExist(nullptr)`
+(A2) was rejected for scope only, with no evidence against it. It is now
+UNITY-20260927-040.
