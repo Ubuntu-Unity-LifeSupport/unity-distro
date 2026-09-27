@@ -30,6 +30,7 @@ def load(name):
 
 version_safety = load("version_safety")
 publish_aptly = load("publish_aptly")
+taskctl = load("taskctl")
 
 
 def manifest(version="1:1.0+unity1", binaries=(("demo-bin", None, "amd64"), ("demo-data", None, "all"))):
@@ -115,7 +116,9 @@ class ComparatorTest(unittest.TestCase):
 
 
 class CompareViewsTest(unittest.TestCase):
-    base = {"snapshot": {"name": "s", "list_sha256": "a"},
+    base = {"snapshot": {"name": "s", "list_sha256": "a",
+                         "model_release": {"Origin": ". resolute", "Label": ". resolute", "Suite": "resolute", "Codename": "resolute"}},
+            "sources_sha256": "src", "preferences": {"ubuntu-pro-esm-apps": "p1"},
             "releases": [{"file": "arch_resolute_InRelease", "Date": "Sat, 26 Sep 2026 18:00:00 UTC"},
                          {"file": "<model>_Release", "model": True, "Date": "Sun, 27 Sep 2026 20:00:00 +0000"}]}
     now = datetime(2026, 9, 27, 21, 0, tzinfo=timezone.utc)
@@ -142,10 +145,45 @@ class CompareViewsTest(unittest.TestCase):
         f = self.fresh(releases=[])
         self.assertIn("missing", publish_aptly.compare_views(self.base, f, self.now))
 
+    def test_apt_inputs_changed(self):
+        for key, value in (("sources_sha256", "other"), ("preferences", {})):
+            with self.subTest(key=key):
+                f = self.fresh(**{key: value})
+                self.assertIn("apt view inputs", publish_aptly.compare_views(self.base, f, self.now))
+
+    def test_model_release_changed(self):
+        snap = dict(self.base["snapshot"], model_release={"Origin": "unity resolute", "Label": "unity resolute",
+                                                          "Suite": "resolute", "Codename": "resolute"})
+        f = self.fresh(snapshot=snap)
+        self.assertIn("Release identity", publish_aptly.compare_views(self.base, f, self.now))
+
     def test_valid_until_passed(self):
         f = self.fresh(releases=[{"file": "arch_resolute_InRelease", "Date": "Sun, 27 Sep 2026 13:00:00 UTC",
                                   "Valid-Until": "Sun, 27 Sep 2026 14:00:00 UTC"}])
         self.assertIn("expired", publish_aptly.compare_views(self.base, f, self.now))
+
+
+class PublicationRecordContractTest(unittest.TestCase):
+    """What publish_aptly.py writes at the switch is what taskctl.py requires for PUBLISHED."""
+
+    def record(self, evidence):
+        return dict({"package": "demo", "candidate_version": "1:1.0+unity1", "snapshot": "s"}, **evidence)
+
+    def test_publisher_record_satisfies_taskctl(self):
+        m = manifest()
+        fresh_view = view(m, {"resolute": "1:1.0"})
+        fresh_result = version_safety.decide(fresh_view, m)
+        taskctl.check_switch_time_evidence(self.record(publish_aptly.publication_evidence(fresh_result, fresh_view)))
+
+    def test_old_style_or_unsafe_record_refused(self):
+        m = manifest()
+        old = {"fresh_apt_policy": {"result": "PASS", "candidate_version": "1:1.0+unity1", "checked_at": "x"}}
+        with self.assertRaises(ValueError):
+            taskctl.check_switch_time_evidence(self.record(old))
+        unsafe_view = view(m, {"resolute": "1:1.0"}, {"demo-bin": "1:2.0"})
+        evidence = publish_aptly.publication_evidence(version_safety.decide(unsafe_view, m), unsafe_view)
+        with self.assertRaises(ValueError):
+            taskctl.check_switch_time_evidence(self.record(evidence))
 
 
 @unittest.skipUnless(shutil.which("aptly") and shutil.which("apt-ftparchive") and os.geteuid() != 0,

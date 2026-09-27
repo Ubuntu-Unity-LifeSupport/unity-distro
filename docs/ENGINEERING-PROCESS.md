@@ -349,11 +349,13 @@ release record's `version_check`) to be no older than four hours, to measure
 the gate's snapshot and to be `SAFE`, and immediately before the switch runs
 `apt_view.py` and `version_safety.py` again. It refuses unless that
 switch-time view is `SAFE`, has the same snapshot package-list hash, no
-archive Release older than at gate time or past its Valid-Until; the
-switch-time view goes into the publication record. It executes the fixed `publish switch`, checks `aptly
+archive Release older than at gate time or past its Valid-Until, or
+other apt inputs (`docs/apt/`, which must be committed and clean) than at gate
+time; the switch-time view goes into the publication record. It executes the fixed `publish switch`, checks `aptly
 publish show`, and writes a write-once record at
 `~/coordinator/publish-records/<task-id>.json`. `taskctl` requires that record,
-checks its gate hash and publication details, and confirms the live Aptly
+checks its gate hash and publication details, requires its switch-time
+version check to be `SAFE` for the published snapshot, and confirms the live Aptly
 snapshot before allowing `PUBLISHED`. The target check remains separate and
 must point to an existing target-verification record. The gate and manifests are
 traceability evidence; they do not cryptographically prove that a human

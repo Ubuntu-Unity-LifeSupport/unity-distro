@@ -113,6 +113,21 @@ def sha256(path):
     return digest.hexdigest()
 
 
+def check_switch_time_evidence(record):
+    """The publisher's switch-time version check (scripts/publish_aptly.py
+    publication_evidence) must be a SAFE verdict on a full apt view of the
+    published snapshot for this package and version."""
+    check, view = record.get("switch_time_version_check"), record.get("switch_time_apt_view")
+    if (not isinstance(check, dict) or check.get("result") != "SAFE"
+            or check.get("source_package") != record.get("package")
+            or check.get("candidate_source_version") != record.get("candidate_version")
+            or not check.get("checked_at")):
+        raise ValueError("publish record lacks a SAFE switch-time version check for this package and version")
+    if (not isinstance(view, dict) or view.get("tool") != "apt_view.py" or view.get("mode") != "full"
+            or (view.get("snapshot") or {}).get("name") != record.get("snapshot")):
+        raise ValueError("publish record lacks the switch-time apt view of the published snapshot")
+
+
 def require_evidence(target, data, task_id):
     required = {
         "READY_FOR_FIX": ("reproduction", "reproduction_result", "existing_fix_result", "issue_search_result", "root_cause", "invariant", "chosen_approach"),
@@ -228,11 +243,7 @@ def require_evidence(target, data, task_id):
                               for item in build_artifacts]
         if record.get("artifacts") != expected_artifacts:
             raise ValueError("publish record artifacts do not match the gated build manifest")
-        fresh_policy = record.get("fresh_apt_policy")
-        if (not isinstance(fresh_policy, dict) or fresh_policy.get("result") != "PASS"
-                or fresh_policy.get("candidate_version") != record.get("candidate_version")
-                or not fresh_policy.get("checked_at")):
-            raise ValueError("publish record lacks a passing fresh local apt policy check")
+        check_switch_time_evidence(record)
         try:
             published_at = datetime.fromisoformat(record["published_at"].replace("Z", "+00:00"))
         except (KeyError, AttributeError, ValueError):

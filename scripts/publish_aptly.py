@@ -65,6 +65,13 @@ def compare_views(gate_view, fresh_view, now):
     if not gate_snap.get("list_sha256") or gate_snap.get("name") != fresh_snap.get("name") \
             or gate_snap.get("list_sha256") != fresh_snap.get("list_sha256"):
         return "the snapshot's package list differs from the one measured at gate time"
+    if gate_snap.get("model_release") != fresh_snap.get("model_release"):
+        return "the model repository's Release identity differs from the gate-time view"
+    for key in ("sources_sha256", "preferences"):
+        if not gate_view.get(key) and key == "sources_sha256":
+            return "the gate-time view does not record its sources"
+        if gate_view.get(key) != fresh_view.get(key):
+            return f"the apt view inputs ({key}) differ from the gate-time view"
     fresh_releases = {r["file"]: r for r in fresh_view.get("releases", []) if not r.get("model")}
     for old in (r for r in gate_view.get("releases", []) if not r.get("model")):
         new = fresh_releases.get(old["file"])
@@ -83,6 +90,11 @@ def compare_views(gate_view, fresh_view, now):
             except (TypeError, ValueError):
                 return f"archive Release {new['file']} has an unreadable Valid-Until"
     return None
+
+
+def publication_evidence(fresh_result, fresh_view):
+    """The switch-time part of the publication record; taskctl.py checks it."""
+    return {"switch_time_version_check": fresh_result, "switch_time_apt_view": fresh_view}
 
 
 def version_verdict(root, view_path, manifest_path):
@@ -394,9 +406,14 @@ def main():
             return fail(f"aptly snapshot {snapshot} does not contain expected artifact {name}")
 
     # Measure the target apt view again right before the switch; it is authoritative.
+    apt_inputs = [root / "docs/apt/target.sources"] + sorted((root / "docs/apt/preferences.d").glob("*"))
+    if not all(path.is_file() and tracked_clean(root, path) for path in apt_inputs):
+        return fail("docs/apt/target.sources and docs/apt/preferences.d must be tracked, committed, and clean")
+    origin = f"{prefix} {distribution}"
     fresh_path = record_path.with_name(record_path.stem + "-apt-view.json")
     fresh_run = subprocess.run([sys.executable, str(root / "scripts/apt_view.py"), "--manifest", str(manifest_path),
-                                "--snapshot", snapshot, "--write", str(fresh_path)], check=False, capture_output=True, text=True)
+                                "--snapshot", snapshot, "--release", f"{origin}|{origin}|{distribution}|{distribution}",
+                                "--write", str(fresh_path)], check=False, capture_output=True, text=True)
     if fresh_run.returncode:
         return fail(f"switch-time apt view failed: {fresh_run.stderr.strip()}")
     try: fresh_view = json.loads(fresh_path.read_text(encoding="utf-8"))
@@ -442,8 +459,7 @@ def main():
         "aptly_result": "PASS",
         "post_publish_check": "PASS",
         "version_evidence_checked_at": version_result.get("checked_at"),
-        "switch_time_version_check": fresh_result,
-        "switch_time_apt_view": fresh_view,
+        **publication_evidence(fresh_result, fresh_view),
         "artifacts": [{"file": item["file"], "sha256": item["sha256"], "kind": item["kind"],
                        "package": item.get("package"), "version": item.get("version"),
                        "architecture": item.get("architecture")} for item in artifacts],
