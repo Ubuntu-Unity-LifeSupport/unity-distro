@@ -137,3 +137,31 @@ Plan, before the change (only `scripts/build_sbuild.py`, plus the tests):
    builds: calamares-settings-ubuntu (epoch), ubuntu-unity-meta (binary names
    differ), overlay-scrollbar (plain), each with a manifest compared against
    its `.changes`.
+
+## Result
+
+Change: commit `6596001` on `b/UNITY-20260927-045` (`scripts/build_sbuild.py`
++38/-13, new `scripts/tests/test_build_sbuild.py`).
+
+**Tests** (`logs/02-tests-after-fix.txt`): 6 of 6 pass; before the fix 5 of 6
+failed and the control passed (`logs/01-tests-before-fix.txt`).
+
+**Real sbuild runs** (resolute chroot, `~/work/b/t045`, scripts at
+`origin/main` = old and the branch = new; manifests and outputs in `real/`,
+`check-manifest.py` compares a manifest with the `.changes` it names):
+
+| source (case) | old script | new script |
+|---|---|---|
+| ubuntu-unity-meta 0.29+unity1 (binary `ubuntu-unity-desktop`) | exit 2, no manifest, log 4 lines | exit 0; `.dsc`, `.changes`, `.buildinfo`, `ubuntu-unity-desktop_…deb`; log 1831 lines; check PASS |
+| calamares-settings-ubuntu 1:26.04.12+unity3 (epoch) | exit 2 (UNITY-20260927-021) | exit 0; 6 binaries incl. `-dbgsym.ddeb`; log 4463 lines; check PASS |
+| unity-gtk4-menu 0.9 (control, plain) | exit 0, but the `-dbgsym.ddeb` of `.changes` missing, log 4 lines; check FAIL | exit 0; both binaries; log 3458 lines; check PASS |
+
+An overlay-scrollbar run, meant as the plain control, failed in sbuild with
+both scripts: its source format 1.0 packs the test repository's `.git` into
+the diff (`real/run-osb-*.txt`). That is the test setup, not the script;
+unity-gtk4-menu replaced it.
+
+Behaviour change to note for the publisher: `.ddeb` (and `.udeb`) files of
+the `.changes` are now `kind: binary`, so `publish_aptly.py` will expect the
+dbgsym packages in the gated snapshot, as it expects every other binary of
+the build.

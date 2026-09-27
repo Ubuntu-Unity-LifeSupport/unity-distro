@@ -1,0 +1,9 @@
+meta-old: exit=2
+meta-new: exit=0
+osb-old: exit=1
+osb-new: exit=1
+cal-new: exit=0
+DONE
+g4m-old: exit=0
+g4m-new: exit=0
+DONE

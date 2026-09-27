@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-045",
+  "package": "unity-gtk4-menu",
+  "candidate_version": "0.9",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/t045/src/unity-gtk4-menu",
+  "source_commit": "7ce9092ab1b5c9e5316eb9a9ee31ecbbfa662ecf",
+  "source_tree_hash": "27bd46e22a69d109324b60ee71d667acf466c995",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source"
+  ],
+  "build_started": "2026-09-27T19:35:09.333582+00:00",
+  "build_finished": "2026-09-27T19:40:09.514734+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-045-unity-gtk4-menu-0.9-sbuild.log",
+    "sha256": "1a73037047b8110f711ff0ca1ba1112a81c417610675f8c383af6c5cfe7d0c11"
+  },
+  "artifacts": [
+    {
+      "file": "libunity-gtk4-menu0_0.9_amd64.deb",
+      "sha256": "eb3a766208c649f8be0e4bf47335f1d7df665fcf43cc10cbd370984a7d5a9f2c",
+      "size": 15230,
+      "kind": "binary",
+      "package": "libunity-gtk4-menu0",
+      "version": "0.9",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-gtk4-menu_0.9.dsc",
+      "sha256": "c3c6bdf7b164bbe3166d432c3bf1e94bdfd5d85238bc1d2af3fe95801bc3591c",
+      "size": 835,
+      "kind": "source",
+      "package": "unity-gtk4-menu",
+      "version": "0.9"
+    },
+    {
+      "file": "unity-gtk4-menu_0.9_amd64.buildinfo",
+      "sha256": "f48fe68d606c0fe49c6059683b92e8a6ff44f3f9b74bafdfc0ff3fcc3de85b70",
+      "size": 14717,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "unity-gtk4-menu_0.9_amd64.changes",
+      "sha256": "3c903d3b9546059e979a44fadb2ec7e67c7ebd67128930f676436c8cda5dd313",
+      "size": 2041,
+      "kind": "changes"
+    }
+  ]
+}
