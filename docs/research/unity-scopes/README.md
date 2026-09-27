@@ -90,6 +90,9 @@ raises `TypeError` (GTK 4's takes 7 arguments), so every search failed.
 
 - Files lens: global search runs `locate`, and neither `plocate` nor
   `mlocate` is installed or depended on. Recent files still work.
+  _Correction 2026-09-27 (UNITY-20260927-036):_ fixed by unity-lens-files `+unity1` (Recommends
+  plocate, no locate errors), in aptly - see the live check at the end of
+  this file.
 - The Python scopes print invalid-escape `SyntaxWarning`s (`"\s"`, `"\("`),
   and yahoostock uses `"is" with 'int' literal`. They are warnings only.
 - yahoostock imports `feedparser` without depending on it. It is online

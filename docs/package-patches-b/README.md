@@ -17,6 +17,8 @@ Restore with `git am` onto the base.
 | libindicator | `origin/ubuntu/resolute` 56a2331 | 2 | +unity1: systemd-dev, `indicators-pre.target` kept; +unity2: Ayatana indicators on Unity's panel |
 | libunity | `origin/ubuntu/resolute` fc47c88 | 1 | +unity1: scope runner without `imp` |
 | nux | 2c1878a (branch `b/fbo`) | 2 | +unity2: rebase onto 0ubuntu15, FBO attachment fix (LP #2160298) |
+| indicator-messages | `origin/ubuntu/stonking` 78d9113 | 1 | 0ubuntu8~26.04.1: no-change backport of 26.10 (LP #2166912); the base is the 26.10 branch, not resolute _(row added 2026-09-27, UNITY-20260927-036)_ |
+| calamares-settings-ubuntu | `origin/ubuntu/resolute` c699701 | 1 (+2 unpublished) | +unity1: basicwallpaper desktop window (known issue #4) - export in `research/calamares-oem/`, not here; +unity2 (changelog restored) and +unity3 (sudoers.oem 0440) are exported in `research/UNITY-20260927-021-calamares-oem-wallpaper/patches/` and `research/UNITY-20260927-041-calamares-oem-sudoers/patches/` on the unmerged task branches `b/UNITY-20260927-021` and `b/UNITY-20260927-041` _(row added 2026-09-27, UNITY-20260927-036)_ |
 
 `debdiff/` holds sources without a git tree:
 - `unity-lens-files_+unity1.debdiff`: in aptly.
