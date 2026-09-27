@@ -28,7 +28,7 @@ or a release gate; those gaps are listed once below, not repeated per item.
   list` -> "No snapshots found").
 - Published binary identity: `sha256sum` of every main binary of A's sources
   under `/srv/aptly/public/pool/main` compared with the local build output -
-  **26 of 26 match** a file in `~/work/a/...`, `~/unity-distro/packages/` or
+  **26 of 26 match** (plus unity-gtk4-menu 0.3 and the three gtk-nocsd `0b77e1b` +unity2 binaries, A-L42, A-L45) a file in `~/work/a/...`, `~/unity-distro/packages/` or
   `~/unity-distro/packages/ll-build/` (list in "Artifact identity").
 - git: `git for-each-ref refs/heads` per package repo, `git ls-remote
   <remote> refs/heads/<branch>` for push state, `git merge-base --is-ancestor`
@@ -242,6 +242,48 @@ Packages without our own git history: **xorg-server** (built from the Ubuntu
 ### A-L39 Deferred: unity-greeter package tests fail under valgrind
 - 150 errors in 8 contexts in one test process; ignored by `debian/rules` (`-dh_auto_test`) - HISTORICAL_FACT. migration_result: **REQUIRES_REVALIDATION**.
 
+### A-L40 unity-gtk4-menu 0.1: first packaged GTK4 global menu (pre-split, handed to B 2026-09-23 22:43Z)
+- package: unity-gtk4-menu (native). goal: GTK4 global menu through an `environment.d` preload. Ownership: built before the A/B split by the agent whose line became A; `~/AGENTS-LOG.md` 2026-09-23 22:43Z "B START unity-gtk4-menu ... A agreed to hand it over" - CURRENTLY_VERIFIED (log read). From 0.4 on the package is B's.
+- commit `9ad39071b7426cf794de4655e2e97e697e495322` ("Initial release") on `main`, pushed to `origin` = github.com/Ubuntu-Unity-LifeSupport/unity-gtk4-menu; no tag - CURRENTLY_VERIFIED (`git branch -r --contains`, `git ls-remote`). The `.tar.xz` of 0.1 is byte-identical in tree to that commit - CURRENTLY_VERIFIED (`git archive 9ad3907` vs the unpacked tarball, `diff -rq`: no differences).
+- versions: source/binary `0.1`; build logs `packages/unity-gtk4-menu_0.1_amd64-*.build` (three attempts, the last 07:22Z) - HISTORICAL_FACT. The binary `.deb` is no longer in `packages/` (only the dbgsym).
+- test_state: published to our aptly, installed with apt on target, session broke after reboot (`unity-panel-service` dead, seven crashes: the library linked `libgtk-4.so.1` into every process); removed from target and "pulled from the local archive" (`research/layer-b/README.md`, "What broke") - HISTORICAL_FACT.
+- aptly_state: not in `unity-resolute`, not in the public pool; the file is still in aptly's internal pool `/srv/aptly/pool/ca/51/…_libunity-gtk4-menu0_0.1_amd64.deb` (orphan) - CURRENTLY_VERIFIED (`aptly repo search`, `find /srv/aptly/pool`).
+- target_state: `libunity-gtk4-menu0` not installed - CURRENTLY_VERIFIED (`ssh target dpkg-query -W libunity-gtk4-menu0` -> no such package).
+- migration_result: **SUPERSEDED** - broke the session, withdrawn the same day, replaced by 0.2.
+
+### A-L41 unity-gtk4-menu 0.2: resolve GTK with dlsym, nothing linked but libc
+- commit `0d6157308be1ff072d9a4b12941620d0e416638b`, on `origin/main`, no tag - CURRENTLY_VERIFIED; tarball tree identical to that commit - CURRENTLY_VERIFIED (same method as A-L40).
+- test_state: `onboard --help` clean with the preload, non-GTK processes untouched, session after install+reboot healthy, a GTK4 app gets its menubar; `make check` fails the build if GTK/GLib reappears in `NEEDED` (`research/layer-b/README.md`, "Rewritten on dlsym") - HISTORICAL_FACT.
+- aptly_state: not in the repo; orphan file `/srv/aptly/pool/05/ec/…_libunity-gtk4-menu0_0.2_amd64.deb`, a hard link of `packages/libunity-gtk4-menu0_0.2_amd64.deb` - CURRENTLY_VERIFIED (`find -samefile`). When it left the repo - UNVERIFIED.
+- migration_result: **SUPERSEDED** - replaced by 0.3 and then by B's 0.4…0.9.
+
+### A-L42 unity-gtk4-menu 0.3: drop widget slots that cannot cross D-Bus
+- commit `d7d89e2f1ac7e81ca055baef1470f3e5f0370cd6`, on `origin/main`, no tag - CURRENTLY_VERIFIED; tarball tree identical to that commit - CURRENTLY_VERIFIED.
+- aptly_state: `libunity-gtk4-menu0_0.3_amd64` still in `unity-resolute` together with B's 0.4…0.9; **no source package** for any unity-gtk4-menu version in aptly (`aptly repo search unity-resolute 'Name (unity-gtk4-menu)'` -> no results) - CURRENTLY_VERIFIED. Published file sha256 `f17c86a3c7763034…` equals `packages/libunity-gtk4-menu0_0.3_amd64.deb` (same inode) - CURRENTLY_VERIFIED.
+- test_state: B used the 0.3 `.so` as the starting point on target2 (`~/AGENTS-LOG.md` 2026-09-23 22:46Z) - HISTORICAL_FACT; a dedicated 0.3 test record by A - UNVERIFIED (none found).
+- target_state: not installed on target (A-L40). `research/legacy-migration-20260927/B.md` says "A's target still runs 0.8"; that does not match today's `dpkg-query` - CURRENTLY_VERIFIED.
+- migration_result: **SUPERSEDED** - replaced by B's 0.4…0.9; remains in aptly as a stale binary-only version (aptly hygiene, below).
+
+### A-L43 nux: `Validator::Validate` discards its match result (finding only, no patch)
+- package: nux (B's zone since the split). Finding recorded 2026-09-22, before the split, in `docs/PATCHES.md` (commit `d1e59f6`, "docs: queue upstream work instead of sending it"), status `draft`, upstream "none yet" - CURRENTLY_VERIFIED (`git log -S`).
+- current_state: still present - `packages/nux/Nux/Validator.cpp:69-73` returns `Validator::Acceptable` from both sides of the `regex_match` branch - CURRENTLY_VERIFIED (read on branch `b/fbo`, `9793c2329dd99f0fe779c51409a79f2c4ab077cc`). The code is under `#if defined(NUX_OS_WINDOWS)`; the Linux path (`_regexp`, line 75 on) is not affected, so our packages are not affected - CURRENTLY_VERIFIED (source read); not built or run for Windows.
+- commits/versions/build/aptly/target: none - nothing was patched, built or published.
+- migration_result: **LEGACY_VERIFIED** as a record - finding re-confirmed in source today, no effect on our build; sending it upstream is May's decision via C, not a task for A.
+
+### A-L44 gtk-nocsd `0~20260321+0b77e1b-1+unity1`: backport upstream d851645 (crash handler arguments)
+- commit `ddc0822212da927224446f5e15ef76e0997a089c` on `unity/resolute`, pushed to `lifesupport` (contained in `remotes/lifesupport/unity/resolute`) - CURRENTLY_VERIFIED. `packages/gtk-nocsd_…+unity1.debian.tar.xz` `debian/` equals that commit's `debian/` - CURRENTLY_VERIFIED (`git archive ddc0822 debian`, `diff -rq`).
+- build: `~/AGENTS-LOG.md` 2026-09-24 13:05Z "A START sbuild … +unity1"; binaries in `~/work/a/out/` - CURRENTLY_VERIFIED (files present). Binary version is `3+0~20260321+0b77e1b-1+unity1` (the packaging's own binary version) - CURRENTLY_VERIFIED.
+- test_state: with this fix alone the handler died at the next SSE instruction (`research/compiz-restart/` section 4) - HISTORICAL_FACT. aptly_state: never published (no file in aptly pools) - CURRENTLY_VERIFIED.
+- migration_result: **SUPERSEDED** - incomplete on its own, never published; folded into +unity2.
+
+### A-L45 gtk-nocsd `0~20260321+0b77e1b-1+unity2`: plus upstream 664d8c6 (stack realignment)
+- commit `23900a7a468e53a1bf48614b73b4416f82067c38`, pushed to `lifesupport` - CURRENTLY_VERIFIED; `.debian.tar.xz` of +unity2 equals its `debian/` - CURRENTLY_VERIFIED.
+- test_state: root cause shown (`LD_DEBUG=libs` constructor not run; GP fault at `GTK-NoCSD.c:51`); after both backports a GTK3 window and compiz were restarted by the handler (`research/compiz-restart/` section 4) - HISTORICAL_FACT.
+- aptly_state: binaries `gtk3-nocsd`, `libgtk-nocsd0`, `libgtk3-nocsd0` `3+0~…+unity2` still in `unity-resolute`, **no source package** and **no dbgsym** in aptly - CURRENTLY_VERIFIED; the three pool files match `~/work/a/out/` (sha256 `c6d255522f499fa6…`, `51f3225b5efdf13f…`, `aac666f130ff8c40…`) - CURRENTLY_VERIFIED. Published by A 2026-09-24 17:25Z with unity +unity8 and compiz +unity2 (`~/AGENTS-LOG.md`) - HISTORICAL_FACT.
+- target_state: `libgtk-nocsd0 4.8-1+unity2` (A-L27), not this version - CURRENTLY_VERIFIED.
+- process gap: both commits were already in upstream 4.0 and 26.10 shipped 4.8 - the "newer version already fixed it" step was skipped (recorded as the lesson in `CLAUDE.md`) - HISTORICAL_FACT.
+- migration_result: **SUPERSEDED** - replaced by 4.8-1+unity1 (A-L27), which contains both upstream commits; stale source-less binaries remain in aptly.
+
 ## Artifact identity (CURRENTLY_VERIFIED, `sha256sum`, first 16 hex)
 
 cinnamon-session +unity1 8285efb981272202, +unity2 95f1b01efc850ff4, +unity3 b39e41c643032e9c;
@@ -252,7 +294,9 @@ unity-control-center +unity1 babb77a970d3f9c3, +unity2 37ab9911de5c25cd;
 unity-greeter +unity1 a344791d473d52c6; unity-session +unity1 6eba77eb6db549f8;
 unity-settings-daemon +unity1 8113e10904714be6, +unity2 1e7f4a606ebb5e15, +unity3 0ae2cf23221676d0, +unity4 d9dfc499ed7cba27, +unity5 5cfebe37685e6901;
 unity +unity1 166f0e929b3c250c, +unity2 d423774532105857, +unity4 500e90bca65af4ad, +unity5 fd2df7b3eed41f8f, +unity8 6fdef4df2817a6a6, +unity9 6c1d9360a12dbfb7, +unity10 bcd2e2ff3eee094d, +unity11 a55f069e61126bba;
-xserver-xorg-core 1.3+unity2 0bb888325e7ac407.
+xserver-xorg-core 1.3+unity2 0bb888325e7ac407;
+libunity-gtk4-menu0 0.3 f17c86a3c7763034;
+gtk3-nocsd / libgtk-nocsd0 / libgtk3-nocsd0 3+0~20260321+0b77e1b-1+unity2 c6d255522f499fa6 / 51f3225b5efdf13f / aac666f130ff8c40.
 Each equals the local build of the same name; the matching `.build` log sits next to it. Only the main binary of each source was compared.
 
 ## Incomplete work (needs a new task ID to continue)
@@ -262,6 +306,7 @@ Each equals the local build of the same name; the matching `.build` log sits nex
 - A-L26 root cause of the NULL title in the network panel.
 - A-L32 u-s-d libcolor crash at restart.
 - A-L34, A-L35, A-L36, A-L37, A-L38, A-L39 deferred findings.
+- aptly hygiene (with B and C): retire the stale binary-only versions A published (unity-gtk4-menu 0.3, gtk-nocsd `3+0~…0b77e1b-1+unity2`) and the orphan 0.1/0.2 files in `/srv/aptly/pool`, as part of the first gated snapshot (A-L40, A-L41, A-L42, A-L45).
 - Revalidation of doubtful fixes (one task each): A-L05, A-L06, A-L13, A-L14, A-L19, A-L21 (what to check is in each item's migration_result).
 - Re-checks never done on the clean snapshot (LEGACY_PARTIAL items): A-L04, A-L09, A-L10, A-L16, A-L18.
 
@@ -279,10 +324,10 @@ Per bootstrap rule 7 every item here is REQUIRES_REVALIDATION and needs a new re
 
 ## Counts
 
-- items: 39 (A-L01…A-L39)
-- LEGACY_VERIFIED: 10 (L01, L02, L07, L15, L20, L23, L24, L29, L30, L31)
+- items: 45 (A-L01…A-L45)
+- LEGACY_VERIFIED: 11 (L01, L02, L07, L15, L20, L23, L24, L29, L30, L31, L43)
 - LEGACY_PARTIAL: 7 (L03, L04, L09, L10, L16, L18, L28)
 - REQUIRES_REVALIDATION: 15 (L05, L06, L13, L14, L19, L21, L22, L26, L32, L34, L35, L36, L37, L38, L39)
-- SUPERSEDED: 7 (L08, L11, L12, L17, L25, L27, L33)
-- provenance gap: every published version (26 source versions in aptly across 11 source packages of A's zone, plus gtk-nocsd 4.8-1+unity1 now in B's zone) - no manifest, gate, version-safety record, snapshot or publish record.
-- doubtful fixes: 7 (L05, L06, L13, L14, L19, L21, L26), all REQUIRES_REVALIDATION; incomplete items needing a task: 16 (10 earlier + 6 doubtful-fix revalidations), plus 5 LEGACY_PARTIAL re-checks never done on the clean snapshot.
+- SUPERSEDED: 12 (L08, L11, L12, L17, L25, L27, L33, L40, L41, L42, L44, L45)
+- provenance gap: every published version - in aptly now 28 versions across 13 source packages (the 26 above, unity-gtk4-menu 0.3 and gtk-nocsd `0~…0b77e1b-1+unity2`, the last two binary-only, no source in aptly), plus gtk-nocsd 4.8-1+unity1 now in B's zone; published and later removed: xorg `~26.04.1` and `1.3+unity1`, unity-gtk4-menu 0.1 and 0.2 - no manifest, gate, version-safety record, snapshot or publish record.
+- doubtful fixes: 7 (L05, L06, L13, L14, L19, L21, L26), all REQUIRES_REVALIDATION; incomplete items needing a task: 17 (10 earlier + 6 doubtful-fix revalidations + aptly hygiene), plus 5 LEGACY_PARTIAL re-checks never done on the clean snapshot.
