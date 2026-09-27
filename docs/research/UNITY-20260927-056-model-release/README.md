@@ -122,3 +122,10 @@ iff its Description is exactly that; the file-name comparison goes.
 
 No retries, timeouts or tolerated failures were added; the cause is the
 file-name matching, removed.
+
+## Verification
+
+**PASS**, **INDEPENDENTLY_REPRODUCED** (`verification.md`): old code 0/10 with
+`_` or `~=@+` in TMPDIR and 37/240 failures by default; new code 45/45 full
+suite runs. Correction to a premise: real archive Releases can carry a
+Description (resolute's does); only the exact per-run nonce matches.
