@@ -285,18 +285,36 @@ BLOCKS_FUTURE_UPDATE
 UNKNOWN
 ```
 
-Run `scripts/version_safety.py <measured-version-record.json> --write
-<version-check.json>`; it applies `dpkg --compare-versions` to the recorded
-archive/update versions and checks the recorded apt candidate. The script does
-not discover archive facts on its own: attach the actual `rmadison`,
-`apt-cache policy`, and source identity evidence. Only `SAFE` is publishable.
-`UNKNOWN` stops publication until the missing archive/version evidence is
-obtained. The record includes the target series, candidate source version,
-versions in the target archive and update pockets, `dpkg` version-order
-comparison, and the candidate shown by `apt-cache policy` from the configured
-repositories. The candidate must be newer than every recorded target-archive
-source version. Newer-series versions are optional context and do not decide
-safety for the target series.
+Version safety is decided from a measurement, never from typed values.
+`scripts/apt_view.py` builds an isolated apt state (the host's apt
+configuration is not used) from `docs/apt/target.sources` and
+`docs/apt/preferences.d/` - the Ubuntu archive pockets and pins of the
+reference target system - and, for a full view, our repository as the gated
+aptly snapshot will publish it: the snapshot's `.deb`/`.ddeb` list becomes a
+local repository whose Release has our publication's Origin, Label, Suite and
+Codename (pass `--release` for the gate's prefix and distribution; the
+publisher passes the same, and refuses a different model identity). It records the source package's highest version per pocket
+(`Sources` indices), apt's candidate for every binary of the build manifest
+(with an empty dpkg status), the snapshot's name and package-list hash, and
+each fetched Release's hash and Date; any fetch failure refuses.
+Multi-Arch and Provides are not modelled: the target is single-arch amd64 and
+only concrete package names are checked.
+
+`scripts/version_safety.py --view <view.json> --manifest <manifest.json>`
+then decides: `SAFE` only if the candidate source version is newer than the
+highest version in resolute and -backports (otherwise `UNSAFE`), -updates and
+-security (otherwise `REPLACES_SECURITY_UPDATE`) and -proposed (otherwise
+`BLOCKS_FUTURE_UPDATE`: a pending Ubuntu version not older than ours would
+supersede ours when it migrates), and every built binary, a binNMU included,
+is apt's candidate at its own version. A source in no pocket is "not in
+archive" and passes the ordering part. Before a build, `apt_view.py
+--source-package <name>` and `version_safety.py --view <pockets.json>
+--pre-build --candidate-version <v> --source-commit <c>` check the ordering
+only; that result is never `SAFE`. Only `SAFE` is publishable; `UNKNOWN`
+stops publication until the missing measurement exists. A `SAFE` version of
+ours can still shadow a later Ubuntu update that sorts below it; watching for
+that is monitoring, not this gate. Newer-series versions are optional context
+and do not decide safety for the target series.
 
 `READY_TO_PUBLISH` requires all of the following:
 
@@ -327,12 +345,18 @@ artifact hashes. The gate and evidence manifest must be pushed before
 publication, along with the source package commit. `scripts/publish_aptly.py --gate FILE` accepts no aptly
 arguments: it reads distribution, prefix, and snapshot only from the gate,
 checks the manifest and artifact hashes, confirms the exact source and binary
-versions appear in the named snapshot, requires version evidence no older than
-four hours, and reruns a read-only local `apt-cache policy` check immediately
-before the switch. It executes the fixed `publish switch`, checks `aptly
+versions appear in the named snapshot, requires the gate-time apt view (the
+release record's `version_check`) to be no older than four hours, to measure
+the gate's snapshot and to be `SAFE`, and immediately before the switch runs
+`apt_view.py` and `version_safety.py` again. It refuses unless that
+switch-time view is `SAFE`, has the same snapshot package-list hash, no
+archive Release older than at gate time or past its Valid-Until, or
+other apt inputs (`docs/apt/`, which must be committed and clean) than at gate
+time; the switch-time view goes into the publication record. It executes the fixed `publish switch`, checks `aptly
 publish show`, and writes a write-once record at
 `~/coordinator/publish-records/<task-id>.json`. `taskctl` requires that record,
-checks its gate hash and publication details, and confirms the live Aptly
+checks its gate hash and publication details, requires its switch-time
+version check to be `SAFE` for the published snapshot, and confirms the live Aptly
 snapshot before allowing `PUBLISHED`. The target check remains separate and
 must point to an existing target-verification record. The gate and manifests are
 traceability evidence; they do not cryptographically prove that a human
@@ -362,12 +386,16 @@ record its path in the task evidence, commit/push it, then have `taskctl` move
 the task to `READY_TO_PUBLISH`. The publisher also checks that board state.
 
 ```sh
-python3 scripts/version_safety.py docs/research/<task-id>-<topic>/version-input.json \
-  --write docs/research/<task-id>-<topic>/version-check.json
+python3 scripts/apt_view.py --source-package <package> --write /tmp/pockets.json
+python3 scripts/version_safety.py --view /tmp/pockets.json --pre-build \
+  --candidate-version <version> --source-commit <commit>
 tmux new-session -d -s UNITY-YYYYMMDD-NNN-build \
   "python3 scripts/build_sbuild.py --task-id UNITY-YYYYMMDD-NNN \
   --source-repo packages/<package> --target-series resolute \
   --output-dir docs/research/<task-id>-<topic>/build"
+python3 scripts/apt_view.py --manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
+  --snapshot <snapshot> --release "<prefix> <distribution>|<prefix> <distribution>|<distribution>|<distribution>" \
+  --write docs/research/<task-id>-<topic>/version-check.json
 python3 scripts/create_release_gate.py --record docs/research/<task-id>-<topic>/release-record.json \
   --build-manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
   --distribution resolute --prefix unity --snapshot <snapshot> \
