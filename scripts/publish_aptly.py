@@ -146,7 +146,35 @@ def log_event(event, package, version, task_id):
 #   binary .udeb     rejected: the publication has no debian-installer index
 #   buildinfo/changes provenance only: hashed, never expected in a snapshot
 #   anything else    rejected
+#   source_file      a file the .dsc names (orig/debian tarball, native tarball,
+#                    diff.gz); the set must be exactly the .dsc's list, and the
+#                    snapshot's source package must hold these files with these
+#                    sha256 (source_package_matches)
 PROVENANCE_ONLY_KINDS = {"buildinfo", "changes"}
+
+
+def dsc_checksums(text):
+    """{name: sha256} of a Checksums-Sha256 field (a .dsc, or aptly's view of it)."""
+    found, section = {}, None
+    for line in text.splitlines():
+        if line and not line[0].isspace():
+            section = line.split(":", 1)[0]
+        elif section == "Checksums-Sha256" and line.strip():
+            digest, _size, name = line.split()
+            found[name] = digest
+    return found
+
+
+def source_package_matches(artifacts, snapshot_checksums):
+    """Compare the snapshot's source package files ({name: sha256}) with the
+    manifest's .dsc and source files. Returns an error or None."""
+    expected = {a["file"]: a["sha256"] for a in artifacts if a.get("kind") in {"source", "source_file"}}
+    if snapshot_checksums != expected:
+        missing = sorted(set(expected) - set(snapshot_checksums))
+        other = sorted(n for n in expected if n in snapshot_checksums and snapshot_checksums[n] != expected[n])
+        extra = sorted(set(snapshot_checksums) - set(expected))
+        return f"the snapshot's source package differs from the build: missing {missing}, other hash {other}, extra {extra}"
+    return None
 
 
 def control_fields(path):
@@ -194,10 +222,19 @@ def snapshot_expectations(artifacts, manifest_dir, package, version):
                 return None, f"{artifact['file']}: built from {binary_source(fields)}, not {package} {version}"
             binary_ok = True
             names.append(f"{fields['Package']}_{fields['Version']}_{fields['Architecture']}")
+        elif kind == "source_file":
+            if artifact.get("package") != package or artifact.get("version") != version:
+                return None, f"source file {artifact['file']} is not {package} {version}"
         elif kind not in PROVENANCE_ONLY_KINDS:
             return None, f"{artifact['file']}: artifact kind {kind!r} has no publication rule"
     if not source_ok or not binary_ok:
         return None, "manifest must include the matching source and binary artifacts"
+    dsc = next(a for a in artifacts if a.get("kind") == "source")
+    try: listed = dsc_checksums((manifest_dir / dsc["file"]).read_text(encoding="utf-8"))
+    except OSError as exc: return None, f"cannot read {dsc['file']}: {exc}"
+    recorded = {a["file"]: a["sha256"] for a in artifacts if a.get("kind") == "source_file"}
+    if recorded != listed:
+        return None, f"source files in the manifest are not exactly the files {dsc['file']} names with their sha256"
     return names, None
 
 
@@ -404,6 +441,11 @@ def main():
     for name in expected_snapshot_names:
         if not re.search(rf"(?m)^\s*{re.escape(name)}\s*$", shown.stdout):
             return fail(f"aptly snapshot {snapshot} does not contain expected artifact {name}")
+    source_query = run_aptly(["snapshot", "search", "-format", '{{index . "Checksums-Sha256"}}', snapshot,
+                              f"Name ({package}), $Architecture (source), Version (= {version})"])
+    if source_query.returncode: return fail(f"aptly cannot read the snapshot's source package: {source_query.stderr.strip()}")
+    source_error = source_package_matches(artifacts, dsc_checksums("Checksums-Sha256:\n" + source_query.stdout))
+    if source_error: return fail(source_error)
 
     # Measure the target apt view again right before the switch; it is authoritative.
     apt_inputs = [root / "docs/apt/target.sources"] + sorted((root / "docs/apt/preferences.d").glob("*"))

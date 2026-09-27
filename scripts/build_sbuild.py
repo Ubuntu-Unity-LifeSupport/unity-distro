@@ -74,26 +74,41 @@ def main():
     if len(changes) != 1 or len(dscs) != 1:
         print(f"expected one .changes and one .dsc from this run, found {len(changes)} and {len(dscs)}", file=sys.stderr)
         return 2
-    listed = []
-    section = None
-    for line in changes[0].read_text(encoding="utf-8").splitlines():
-        if line and not line[0].isspace():
-            section = line.split(":", 1)[0]
-        elif section == "Checksums-Sha256" and line.strip():
-            digest, _size, name = line.split()
-            listed.append((name, digest))
+    def checksums(path):
+        """(name, sha256) pairs of a .changes or .dsc Checksums-Sha256 field."""
+        pairs, section = [], None
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line and not line[0].isspace():
+                section = line.split(":", 1)[0]
+            elif section == "Checksums-Sha256" and line.strip():
+                digest, _size, name = line.split()
+                pairs.append((name, digest))
+        return pairs
+    listed = checksums(changes[0])
     if not listed:
         print(f"{changes[0].name} lists no files", file=sys.stderr)
         return 2
-    selected = [(dscs[0], None), (changes[0], None)]
+    # The source package: the .dsc and every file it names (orig/debian tarballs,
+    # native tarball, diff.gz), taken with the hashes the .dsc records.
+    source_files = checksums(dscs[0])
+    source_names = {dscs[0].name} | {name for name, _ in source_files}
+    selected = [(dscs[0], None, "source"), (changes[0], None, None)]
+    for name, digest in source_files:
+        path = dscs[0].parent / name
+        if not path.is_file() or sha256(path) != digest:
+            print(f"{name} listed in {dscs[0].name} is missing or does not match its sha256", file=sys.stderr)
+            return 2
+        selected.append((path, digest, "source_file"))
     for name, digest in listed:
         path = changes[0].parent / name
         if not path.is_file() or sha256(path) != digest:
             print(f"{name} listed in {changes[0].name} is missing or does not match its sha256", file=sys.stderr)
             return 2
-        selected.append((path, digest))
+        if name in source_names:
+            continue  # a source-full .changes: already recorded from the .dsc
+        selected.append((path, digest, None))
     artifacts = []
-    for path, _digest in selected:
+    for path, _digest, role in selected:
         copied = output / path.name
         if path.resolve() != copied.resolve():
             copied.write_bytes(path.read_bytes())
@@ -103,8 +118,10 @@ def main():
             item.update({"kind": "binary", "package": run(["dpkg-deb", "-f", str(path), "Package"]).stdout.strip(),
                          "version": run(["dpkg-deb", "-f", str(path), "Version"]).stdout.strip(),
                          "architecture": run(["dpkg-deb", "-f", str(path), "Architecture"]).stdout.strip()})
-        elif path.suffix == ".dsc":
+        elif role == "source":
             item.update({"kind": "source", "package": package, "version": version})
+        elif role == "source_file":
+            item.update({"kind": "source_file", "package": package, "version": version})
         else:
             item["kind"] = path.suffix.lstrip(".")
         artifacts.append(item)
