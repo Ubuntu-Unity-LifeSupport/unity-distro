@@ -94,6 +94,70 @@ def log_event(event, package, version, task_id):
         stream.flush()
 
 
+# Contract between build_sbuild.py manifests and the gated snapshot
+# (docs/ENGINEERING-PROCESS.md section 6, "Build manifest artifacts"):
+#   source           the .dsc; must be in the snapshot as <source>_<version>_source
+#   binary .deb/.ddeb must be in the snapshot as <Package>_<Version>_<Architecture>,
+#                    fields read from the file itself; the binary must belong to
+#                    this source and version by its control Source field
+#   binary .udeb     rejected: the publication has no debian-installer index
+#   buildinfo/changes provenance only: hashed, never expected in a snapshot
+#   anything else    rejected
+PROVENANCE_ONLY_KINDS = {"buildinfo", "changes"}
+
+
+def control_fields(path):
+    result = subprocess.run(["dpkg-deb", "-f", str(path), "Package", "Version", "Architecture", "Source", "Package-Type"],
+                            check=False, capture_output=True, text=True)
+    if result.returncode:
+        raise ValueError(f"dpkg-deb cannot read {path.name}: {result.stderr.strip()}")
+    fields = {}
+    for line in result.stdout.splitlines():
+        key, _, value = line.partition(":")
+        fields[key.strip()] = value.strip()
+    return fields
+
+
+def binary_source(fields):
+    """The source package and version a binary was built from, as dpkg records it:
+    Source is "name" or "name (version)"; missing parts default to the binary's own."""
+    match = re.fullmatch(r"(\S+)(?:\s+\((\S+)\))?", fields.get("Source", "")) if fields.get("Source") else None
+    name = match.group(1) if match else fields.get("Package")
+    source_version = match.group(2) if match and match.group(2) else fields.get("Version")
+    return name, source_version
+
+
+def snapshot_expectations(artifacts, manifest_dir, package, version):
+    """Return (expected snapshot entries, error) for a manifest's artifacts."""
+    names, source_ok, binary_ok = [], False, False
+    for artifact in artifacts:
+        kind, path = artifact.get("kind"), manifest_dir / artifact["file"]
+        if kind == "source":
+            if artifact.get("package") != package or artifact.get("version") != version:
+                return None, f"source artifact {artifact['file']} is not {package} {version}"
+            source_ok = True
+            names.append(f"{package}_{version}_source")
+        elif kind == "binary":
+            try: fields = control_fields(path)
+            except ValueError as exc: return None, str(exc)
+            if path.suffix == ".udeb" or fields.get("Package-Type") == "udeb":
+                return None, f"{artifact['file']}: udeb artifacts are not published (no debian-installer index)"
+            if path.suffix not in {".deb", ".ddeb"}:
+                return None, f"{artifact['file']}: unsupported binary artifact type"
+            for key, field in (("package", "Package"), ("version", "Version"), ("architecture", "Architecture")):
+                if artifact.get(key) != fields.get(field):
+                    return None, f"{artifact['file']}: manifest {key} does not match the file's {field}"
+            if binary_source(fields) != (package, version):
+                return None, f"{artifact['file']}: built from {binary_source(fields)}, not {package} {version}"
+            binary_ok = True
+            names.append(f"{fields['Package']}_{fields['Version']}_{fields['Architecture']}")
+        elif kind not in PROVENANCE_ONLY_KINDS:
+            return None, f"{artifact['file']}: artifact kind {kind!r} has no publication rule"
+    if not source_ok or not binary_ok:
+        return None, "manifest must include the matching source and binary artifacts"
+    return names, None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--gate", required=True, type=Path)
@@ -225,22 +289,14 @@ def main():
     artifacts = manifest.get("artifacts")
     if not isinstance(artifacts, list) or not artifacts:
         return fail("build manifest contains no artifacts")
-    source_ok = binary_ok = False
-    expected_snapshot_names = []
     for artifact in artifacts:
         if not isinstance(artifact, dict) or not isinstance(artifact.get("file"), str):
             return fail("invalid artifact record")
         artifact_path = manifest_path.parent / artifact["file"]
         if not artifact_path.is_file() or sha256(artifact_path) != artifact.get("sha256"):
             return fail(f"artifact hash mismatch: {artifact_path}")
-        if artifact.get("kind") == "source":
-            source_ok |= artifact.get("package") == package and artifact.get("version") == version
-            expected_snapshot_names.append(f"{package}_{version}_source")
-        elif artifact.get("kind") == "binary":
-            if artifact.get("version") != version: return fail("binary artifact version differs from candidate")
-            binary_ok = True
-            expected_snapshot_names.append(f"{artifact.get('package')}_{version}_{artifact.get('architecture')}")
-    if not source_ok or not binary_ok: return fail("manifest must include the matching source and binary artifacts")
+    expected_snapshot_names, contract_error = snapshot_expectations(artifacts, manifest_path.parent, package, version)
+    if contract_error: return fail(contract_error)
 
     evidence_ref = gate.get("evidence_manifest")
     if not isinstance(evidence_ref, dict) or not isinstance(evidence_ref.get("file"), str):
