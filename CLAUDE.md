@@ -5,10 +5,13 @@ You do not remember previous sessions. This repository is your memory.
 ## Every session
 
 0. Read `docs/TWO-AGENTS.md`, `docs/COORDINATOR.md`, and
-   `docs/ENGINEERING-PROCESS.md`. Confirm whether you are A, B, or C; never
-   infer a role from a stale session name. If you are A or B, use only your
+   `docs/ENGINEERING-PROCESS.md`; use `scripts/taskctl.py` for task-board
+   changes. Never edit task rows by hand. Confirm whether you are A, B, or C;
+   never infer a role from a stale session name. If you are A or B, use only your
    assigned desktop and build directory.
-1. Read the private `~/coordinator/TASKS.md` board and the last 20 lines of
+1. Run `ListAgents` and `scripts/agent_registry.py list`; register your
+   explicitly assigned role with `scripts/agent_registry.py register`, then
+   read the private `~/coordinator/TASKS.md` board and the last 20 lines of
    `~/AGENTS-LOG.md`. If you are A or B, read only your own
    `docs/status/A.md` or `docs/status/B.md`; if you are C, read
    `~/coordinator/PENDING-MAY.md` and your coordinator inbox. `docs/STATUS.md`
@@ -27,6 +30,8 @@ and state; the agent status file gives its assigned machine/workspace state.
 
 ## Conventions
 
+- Stage explicit paths and push non-forced branches with `scripts/safe_git.py`;
+  do not use force push.
 - Commits are atomic and in English: `pkg: short summary` for package changes,
   `docs:` / `build:` / `repo:` for this meta-repository.
 - Every patch gets an entry in `docs/PATCHES.md`: package, file name, what it
@@ -62,11 +67,15 @@ and state; the agent status file gives its assigned machine/workspace state.
   rollback the marker must be gone - that is how you verify it happened.
 - **You drive the virtual machines yourself, through the `vbox` MCP server.**
   It runs on May's Windows host and reaches VirtualBox there: list and inspect
-  machines, start them, power them off, take and restore snapshots, attach and
-  eject ISOs, send keys, take screenshots, manage host-only networking and port
-  forwards, make linked clones. Only `target-desktop`, `target-desktop-2` and
-  `oem-test` are controllable; `builder-server` deliberately is not, because you
-  are running inside it, and nothing there can delete a machine or a disk.
+  machines, start and shut them down, manage snapshots and ISO media, type or
+  send keys, take screenshots, and change network settings. The installed
+  schema also exposes linked cloning, VM creation, and snapshot deletion.
+  These operations are available for test work; follow the ownership rule
+  below. There is no project VBox hook; the MCP server itself limits
+  `allowed_vms` to `target-desktop`, `target-desktop-2`, and `oem-test`, with
+  `builder-server` in `never_allowed`. No tool deletes a VM or virtual disk.
+  For a restore or a suspected shared VBox/VBoxSVC failure, use
+  `$vbox-recovery`.
   Read the server's own instructions - they carry the three traps that cost us
   a day each: a restore is never confirmed by `current_snapshot`, a snapshot is
   only meaningful on a powered-off machine, and the ISO comes out *before* you
@@ -74,7 +83,7 @@ and state; the agent status file gives its assigned machine/workspace state.
 - `guest_shutdown_ssh`, or `sudo systemctl poweroff` over your own ssh, is how
   these machines shut down cleanly. The ACPI power button does nothing here: a
   session inhibitor opens a dialog and waits for a human forever. `power_off_vm`
-  is pulling the plug - fine for a machine whose contents you do not need.
+  is a hard power-off, available for these disposable test machines.
 
 ## Sending anything upstream
 
@@ -91,11 +100,12 @@ merge request or a reply to review. The three rules that matter most:
   check it is not already fixed, check nobody filed it, and test the exact
   scenario from the description rather than one that resembles it.
 
-**Rule 0, which fires before all of them: before writing a line of code for a
-problem, find out whether it is already solved.** The assigned physical agent
-owns the investigation and the final decision. The owner checks the installed
-system and exact reproduction directly; result-heavy history, archive, tracker,
-and web searches are delegated as described below.
+**Pre-Implementation Gate: Existing-Fix Discovery.** Before implementation,
+but after basic issue identification and exact reproduction, determine whether
+the issue is already fixed. The assigned physical agent owns the investigation
+and final decision. The owner checks the installed system and exact
+reproduction directly; result-heavy history, archive, tracker, and web searches
+are delegated as described below.
 
 **Delegate broad searches to isolated subagents, not into the task owner's
 context.** A sweep of bug trackers, changelogs or upstream repositories returns
@@ -115,7 +125,7 @@ context. The initial search budget is twenty minutes. Record sources and
 results in the task evidence; if the search is incomplete, mark `UNKNOWN` and
 stop before package code until May authorizes more investigation or defers it.
 
-**The last step of rule 0, the one we keep missing: has a newer version already
+**The last step of the Pre-Implementation Gate, the one we keep missing: has a newer version already
 fixed it?** A bug tracker says whether someone knows about it; a release says
 whether someone fixed it. Check the next Ubuntu series (`rmadison <pkg>`),
 Debian, and the upstream releases, not just the archive we build against.
@@ -166,7 +176,7 @@ Run the checklist in section 9 of that document in full before sending
 anything. Any "no" stops the submission.
 
 Use the fixed outcomes and evidence card in `docs/ENGINEERING-PROCESS.md` for
-Rule 0. The 20-minute search budget limits research time; an incomplete search
+the Pre-Implementation Gate. The 20-minute search budget limits research time; an incomplete search
 is `UNKNOWN`, not `NOT_FIXED`. If a newer release may contain the fix, measure
 its target-series build/dependencies and unrelated changes before choosing it
 over a backport. A versioned build dependency is a claim to check against the

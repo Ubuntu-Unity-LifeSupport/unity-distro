@@ -12,23 +12,35 @@ Record these inputs:
 
 ```text
 source_package:
+source_commit:
+candidate_binary_package:
+apt_candidate_binary_package:
 target_series:
 archive_source_version:
 archive_binary_version:
 candidate_source_version:
 candidate_binary_version:
 security_and_update_versions:
+future_target_series_update_versions:
 newer_series_or_Debian_versions:
 candidate_source_commit:
 ```
 
-Check the exact versions in the target archive, updates/security pockets,
+Collect the exact versions in the target archive, updates/security pockets,
 proposed pocket where relevant, development series, Debian, and the release
 that contains the candidate fix. Use `rmadison` and source changelogs/history
 for discovery, `dpkg --compare-versions` for Debian version ordering, and
 `apt-cache policy` against the actual configured target repositories to see
 which binary apt will select. Do not infer installability from a suffix or
 from a successful `dpkg -i`.
+
+Store the collected versions, source identity, checked time, and whether the
+archive and apt policy checks were actually performed in a JSON input record.
+Run `scripts/version_safety.py INPUT.json --write version-check.json` from the
+project root. It applies Debian ordering using `dpkg --compare-versions` and
+checks that `apt-cache policy` selected the candidate binary version. It cannot
+replace collecting authentic archive/repository values. Attach the raw command
+output or a cited evidence record.
 
 Return exactly one result:
 

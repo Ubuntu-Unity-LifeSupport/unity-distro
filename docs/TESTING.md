@@ -36,8 +36,8 @@ re-enabling after a rollback.
 ssh target 'touch ~/.dirty'
 ```
 
-Ask May for a rollback, then verify it yourself - the machine answers and the
-marker is gone:
+Restore your assigned disposable VM using `$vbox-recovery`, then verify it
+yourself - the machine answers and the marker is gone:
 
 ```bash
 ssh target 'ls ~/.dirty'

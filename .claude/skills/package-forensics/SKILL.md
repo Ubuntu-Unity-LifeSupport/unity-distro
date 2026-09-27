@@ -21,7 +21,7 @@ create a second manually maintained package-status table.
    result, and evidence paths. If it does not reproduce, investigate once for
    setup mismatch; then close as `NOT_REPRODUCED` or leave `UNKNOWN` with the
    missing evidence stated.
-3. The task owner checks only the small, task-local facts needed to identify
+3. **Discovery** is separate from validation. The task owner checks only the small, task-local facts needed to identify
    the installed/source package and reproduce the report. Delegate result-heavy
    searches to one or more ephemeral `package-investigator` subagents defined in
    `.claude/agents/package-investigator.md`, split into bounded independent
@@ -34,7 +34,11 @@ create a second manually maintained package-status table.
    VM, change source, own the task, or decide whether implementation may begin.
    If subagents are unavailable, keep the task `BLOCKED` or `UNKNOWN`; do not
    replace a result-heavy sweep with a direct search in the owner's context.
-4. Aggregate all investigator reports. The physical task owner sets one exact
+4. Aggregate investigator reports as `CANDIDATE_FIX` findings with exact
+   version/commit and affected scope. The owner then validates the candidate
+   against the reproduced case, target package, and patch scope. Do not call a
+   candidate `EXISTING_FIX` until that check passes.
+5. Aggregate all validated reports. The physical task owner sets one exact
    `existing_fix_result` from the process document and cites the version,
    commit, patch, issue, or dated queries behind it. Set
    `issue_search_result` to `FOUND`, `NOT_FOUND`, or `UNKNOWN` based on the
@@ -42,11 +46,11 @@ create a second manually maintained package-status table.
    `NOT_FIXED`. If any required search is incomplete, use `UNKNOWN`; do not
    turn absence of one result into `NOT_FIXED`. `UNKNOWN` blocks package code
    until May authorizes more investigation or defers the task.
-5. If a newer release may contain the fix, record the relevant commits and
+6. If a newer release may contain the fix, record the relevant commits and
    measure its build and dependency cost in the target-series chroot before
    selecting it over a backport. Record why the selected solution preserves
    the invariant and why plausible alternatives were rejected.
-6. Save the evidence card at `docs/research/<task-id>-<topic>/README.md`. Move
+7. Save the evidence card at `docs/research/<task-id>-<topic>/README.md`. Move
    the task to `READY_FOR_FIX` only when reproduction, root-cause evidence,
    invariant, existing-fix result, and approach decision are present.
 

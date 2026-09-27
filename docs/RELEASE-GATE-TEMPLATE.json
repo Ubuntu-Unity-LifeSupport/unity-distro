@@ -1,4 +1,5 @@
 {
+  "schema": 1,
   "task_id": "UNITY-YYYYMMDD-NNN",
   "package": "source-package",
   "target_series": "resolute",
@@ -6,19 +7,34 @@
   "task_state": "READY_TO_PUBLISH",
   "source_tree": "CLEAN",
   "source_provenance": "PUSHED",
-  "source_repo": "packages/<package>",
+  "source_repo": "packages/source-package",
   "source_remote_ref": "origin/unity/resolute",
-  "source_commit": "full-commit-id",
-  "built_from_source_commit": "full-commit-id",
+  "source_commit": "generated-from-build-manifest",
+  "source_tree_hash": "generated-from-build-manifest",
   "target_series_build": "PASS",
   "version_safety": "SAFE",
   "verification_result": "PASS",
   "patch_and_decision_docs": "COMPLETE",
   "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": "unity",
+    "snapshot": "exact-snapshot-name"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/task/evidence-manifest.json",
+    "sha256": "generated-by-create_release_gate.py"
+  },
+  "build_manifest": {
+    "file": "docs/research/task/build-manifest.json",
+    "sha256": "generated-by-create_release_gate.py"
+  },
   "evidence": {
-    "evidence_card": "docs/research/UNITY-YYYYMMDD-NNN-topic/README.md",
-    "build_log": "docs/research/UNITY-YYYYMMDD-NNN-topic/build.log",
-    "version_check": "docs/research/UNITY-YYYYMMDD-NNN-topic/version-check.md",
-    "verification_record": "docs/research/UNITY-YYYYMMDD-NNN-topic/verification.md"
+    "release_record": "docs/research/task/release-record.json",
+    "evidence_card": "docs/research/task/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "version_check": "docs/research/task/version-check.json",
+    "verification_record": "docs/research/task/verification.md"
   }
 }

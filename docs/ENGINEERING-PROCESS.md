@@ -3,7 +3,10 @@
 This document is the single policy for investigating, fixing, verifying, and
 publishing a package issue. `CLAUDE.md` gives the session entry points;
 `docs/TWO-AGENTS.md` and `docs/COORDINATOR.md` define the roles. The current
-task board is private at `~/coordinator/TASKS.md`. `AGENTS-LOG.md` is an
+task board is private at `~/coordinator/TASKS.md`; `scripts/taskctl.py` is the
+only supported writer and enforces the transition graph, owner checks, lease
+updates, locking, and required evidence fields. Direct edits bypass the state
+checks and are prohibited. `AGENTS-LOG.md` is an
 append-only activity history, not the current task state. `docs/STATUS.md` is
 a dated project summary, not an assignment board.
 
@@ -15,6 +18,8 @@ Every assigned task has a permanent ID in this format:
 UNITY-YYYYMMDD-NNN
 ```
 
+Use `python3 scripts/taskctl.py create <title> --actor C` to allocate a unique
+ID; `taskctl` derives it from the UTC date and scans active and closed rows.
 The ID is never reused, including after cancellation or discovery that the
 issue is already fixed. The coordinator or May records the task and owner on
 the private task board before work starts. Only that owner changes its state.
@@ -43,7 +48,8 @@ DONE
 Side states are `ALREADY_FIXED`, `NOT_REPRODUCED`, `NOT_APPLICABLE`,
 `DEFERRED`, `BLOCKED`, `REJECTED`, and `DUPLICATE`. `BLOCKED` records the
 state to resume from. The other side states are closed outcomes; reopening
-work gets a new task ID.
+work gets a new task ID. `taskctl` moves closed rows into the Closed tasks
+section.
 
 Normal transitions:
 
@@ -62,7 +68,10 @@ to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
 mechanical packaging-only change may skip independent review only under the
 `NOT_APPLICABLE` exception in section 6; that path advances from `VERIFYING`
 to `READY_TO_PUBLISH` after the release gate is complete. A non-package
-documentation or research task may move from `VERIFYING` to `DONE`. A package
+documentation or research task may move from `VERIFYING` to `DONE`. `taskctl`
+requires a machine-readable evidence JSON at
+`~/coordinator/evidence/<task-id>.json` (or an explicit `--evidence` path) for
+transitions; it validates stage-required keys before changing the board. A package
 change may reach `DONE` only after `PUBLISHED`. A task is never marked done
 just because the agent finished editing.
 
@@ -112,7 +121,26 @@ explicit build/packaging failure with a captured failing build, the
 and package state and close as `ALREADY_FIXED`, or create a new maintenance
 task; do not write a duplicate patch. Record root-cause evidence and the
 invariant before choosing a code change. A plausible root cause is not a
-proven one.
+proven one. Add these evidence-card fields when applicable:
+
+```yaml
+design_challenger_required: true | false
+design_review_result: APPROVE | REVISE | INCOMPLETE | NOT_REQUIRED
+architectural_task: true | false
+root_cause_mechanism: exact mechanism, not just symptom
+correct_layer: why this code location owns the invariant
+defensive_workaround_rejected: why a convenient guard elsewhere is wrong
+```
+
+The evidence must explain the mechanism, the affected invariant, and why the
+changed location is the correct layer. Mark both architecture fields
+explicitly; `architectural_task: true` requires a Design Challenger and an
+`APPROVE` result before implementation. A null check or early return is not
+accepted merely because the crash disappears. A defensive workaround is valid
+only when the evidence shows that boundary owns the failure. For material
+architecture, shared-library, lifetime, ABI/API, component-boundary, package
+version, or new-module choices, run the temporary Design Challenger before
+implementation and record its result; typos and local mechanical changes skip it.
 
 ## 3. Fixed outcomes for finding an existing fix
 
@@ -130,6 +158,12 @@ Search in this order and record the exact version, commit, bug, or patch found:
    development series and Debian.
 5. Upstream history, releases, issue tracker, and merge requests. Search by
    symptom and exact error as well as by the suspected cause.
+
+Discovery and validation are separate. An investigator reports a
+`CANDIDATE_FIX` with commit/version and scope; the task owner checks that the
+change fixes this exact reproduction and applies to the target package before
+recording one of the final outcomes below. A candidate found by search is not
+an `EXISTING_FIX` until the owner validates its scope.
 
 The result must be exactly one of:
 
@@ -205,7 +239,12 @@ patch. It tries to disprove the result by checking:
 - relevant tests, build result, packaging contents, and stated limitations
   match the evidence.
 
-The verifier returns exactly `PASS`, `FAIL`, or `INCOMPLETE`, with evidence,
+The verifier records `REVIEWED` when it has inspected the implementation and
+evidence. For a complex behavioral bug, it separately records
+`INDEPENDENTLY_REPRODUCED` only when it personally reproduces the original
+failure and patched result; reading the implementer's log is not reproduction.
+Small changes need not require an independent second VM. The verifier returns
+exactly `PASS`, `FAIL`, or `INCOMPLETE`, with evidence,
 and classifies any failure using one or more fixed finding values:
 
 ```text
@@ -217,7 +256,9 @@ PATCH_TOO_BROAD
 ```
 
 `PASS` corresponds to `PATCH_CORRECT`.
-Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. `INCOMPLETE` names
+Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. A `PASS` review
+without an independently reproduced result must say `REVIEWED`; it must not
+claim independent reproduction. `INCOMPLETE` names
 the missing proof; it is not a pass. Run the verifier in a separate, ephemeral
 subagent context using `.claude/agents/adversarial-verifier.md`. A and B remain
 focused on their own assigned tasks; do not interrupt one to review the
@@ -244,20 +285,29 @@ BLOCKS_FUTURE_UPDATE
 UNKNOWN
 ```
 
-Only `SAFE` is publishable. `UNKNOWN` stops publication until the missing
-archive/version evidence is obtained. The record includes the target series,
-candidate source version, versions in the target archive and update pockets,
-the newest relevant release, `dpkg` version-order comparison, and the
-candidate shown by `apt-cache policy` from the configured repositories.
+Run `scripts/version_safety.py <measured-version-record.json> --write
+<version-check.json>`; it applies `dpkg --compare-versions` to the recorded
+archive/update versions and checks the recorded apt candidate. The script does
+not discover archive facts on its own: attach the actual `rmadison`,
+`apt-cache policy`, and source identity evidence. Only `SAFE` is publishable.
+`UNKNOWN` stops publication until the missing archive/version evidence is
+obtained. The record includes the target series, candidate source version,
+versions in the target archive and update pockets, `dpkg` version-order
+comparison, and the candidate shown by `apt-cache policy` from the configured
+repositories. The candidate must be newer than every recorded target-archive
+source version. Newer-series versions are optional context and do not decide
+safety for the target series.
 
 `READY_TO_PUBLISH` requires all of the following:
 
 ```text
 task_state: READY_TO_PUBLISH
 source_tree: CLEAN
-source_provenance: PUSHED | TRACKED_EXPORT
-source_commit: PRESENT_IN_REMOTE_REF_OR_TRACKED_EXPORT
-build_source_commit: EXACT_MATCH
+source_provenance: PUSHED
+source_commit: PRESENT_IN_REMOTE_REF
+build_manifest: PASS + SHA256
+source_tree_hash: EXACT_MATCH
+artifact_sha256: VERIFIED
 target_series_build: PASS
 version_safety: SAFE
 verification_result: PASS | NOT_APPLICABLE
@@ -268,24 +318,55 @@ peer_notice: ACK | COORDINATOR_CONFIRMED_NO_CONFLICT
 For a strictly mechanical packaging-only change, `verification_result` may be
 `NOT_APPLICABLE` only when the evidence record states
 `verification_scope: MECHANICAL_PACKAGING_ONLY` and explains why there is no
-behavioral claim to verify. Use `docs/RELEASE-GATE-TEMPLATE.json` and publish
-through `scripts/publish_aptly.py`; the project Bash hook blocks direct
-`aptly publish` calls.
+behavioral claim to verify. Use `docs/TASK-EVIDENCE-TEMPLATE.json` for the
+private taskctl record and `docs/RELEASE-RECORD-TEMPLATE.json` for the gate
+generator input. Generate the gate with `scripts/create_release_gate.py`; do
+not hand-author it. Build with `scripts/build_sbuild.py`, which records the clean source commit and
+tree hash, exact `sbuild` command, timestamps, log hash, and source/binary
+artifact hashes. The gate and evidence manifest must be pushed before
+publication, along with the source package commit. `scripts/publish_aptly.py --gate FILE` accepts no aptly
+arguments: it reads distribution, prefix, and snapshot only from the gate,
+checks the manifest and artifact hashes, confirms the exact source and binary
+versions appear in the named snapshot, requires version evidence no older than
+four hours, and reruns a read-only local `apt-cache policy` check immediately
+before the switch. It executes the fixed `publish switch`, checks `aptly
+publish show`, and writes a write-once record at
+`~/coordinator/publish-records/<task-id>.json`. `taskctl` requires that record,
+checks its gate hash and publication details, and confirms the live Aptly
+snapshot before allowing `PUBLISHED`. The target check remains separate and
+must point to an existing target-verification record. The gate and manifests are
+traceability evidence; they do not cryptographically prove that a human
+assertion is true. Direct `aptly publish` forms are also blocked by the Bash
+hook as a best-effort safety net.
 
-Example invocation:
+Example workflow. Generate the release gate while the task is in `REVIEW`;
+record its path in the task evidence, commit/push it, then have `taskctl` move
+the task to `READY_TO_PUBLISH`. The publisher also checks that board state.
 
 ```sh
-python3 scripts/publish_aptly.py \
-  --gate docs/research/<task-id>-<topic>/release-gate.json -- \
-  aptly publish switch <distribution> [endpoint:prefix] <new-snapshot>
+python3 scripts/version_safety.py docs/research/<task-id>-<topic>/version-input.json \
+  --write docs/research/<task-id>-<topic>/version-check.json
+tmux new-session -d -s UNITY-YYYYMMDD-NNN-build \
+  "python3 scripts/build_sbuild.py --task-id UNITY-YYYYMMDD-NNN \
+  --source-repo packages/<package> --target-series resolute \
+  --output-dir docs/research/<task-id>-<topic>/build"
+python3 scripts/create_release_gate.py --record docs/research/<task-id>-<topic>/release-record.json \
+  --build-manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
+  --distribution resolute --prefix unity --snapshot <snapshot> \
+  --output docs/research/<task-id>-<topic>/release-gate.json
+python3 scripts/taskctl.py transition UNITY-YYYYMMDD-NNN READY_TO_PUBLISH \
+  --actor A --evidence ~/coordinator/evidence/UNITY-YYYYMMDD-NNN.json
+# Commit and push the gate, evidence manifest, release record, and evidence files.
+python3 scripts/publish_aptly.py --gate docs/research/<task-id>-<topic>/release-gate.json
 ```
 
-The wrapper checks the structured gate, that the gate and each evidence file
-are tracked, committed, and clean, the clean source tree, exact build commit,
-and pushed remote-tracking ref (or tracked export) before starting aptly.
-Refresh the named remote-tracking ref after pushing; the wrapper does not fetch
-from the network. It cannot prove a fact merely because a JSON field says
-`PASS`; the evidence content and post-publication checks remain required.
+The publisher checks that the gate, evidence manifest, build manifest, log,
+release record, review evidence, and parent-repository commit are pushed,
+tracked, committed, and clean; verifies source commit/tree identity, remote-ref
+ancestry, manifest linkage, and each artifact hash; and checks snapshot content
+before publication. It never accepts a caller-provided aptly command. It cannot
+cryptographically establish human-origin claims such as an ACK or verifier
+judgment, so those still require cited evidence and an independent reviewer.
 
 Before publication, append a `START` entry to `AGENTS-LOG.md`, state the
 package and full candidate version, and notify the other package owner. If
@@ -298,12 +379,19 @@ After publication, verify that aptly contains the exact source and binary
 versions. On the assigned clean target, use the repository's normal upgrade
 path and verify `apt-cache policy` and the installed package version. A manual
 `dpkg -i` experiment is useful evidence but does not satisfy this gate. Record
-the test, repository version, target state, and limitations before marking
-`PUBLISHED`; mark `DONE` only after all records are committed and pushed.
+the test, repository version, target state, and limitations in a target
+verification record; set `target_verified: true` and point
+`target_verification_record` to it before marking `PUBLISHED`. Mark `DONE` only
+after all records are committed and pushed.
 
 ## 7. Canonical fix examples
 
-Promote only independently verified fixes as examples. Copy
+Promote only independently verified fixes as examples. Every canonical record
+uses `docs/FIX-EXAMPLE-TEMPLATE.md` and includes the exact reproduction,
+observed/expected behavior, root cause, invariant, rejected approaches, chosen
+layer and reason, patch, regression test, before/after results, verifier status,
+limitations, and source commit. `CANONICAL_FIX` is allowed only after verifier
+`PASS`; a candidate or merely working patch stays non-canonical. Copy
 `docs/FIX-EXAMPLE-TEMPLATE.md` into the relevant research record or example
 collection. An example is not canonical until it names its source commit,
 review result, passing evidence, and known limits. Keep `Why this
@@ -313,12 +401,17 @@ architecturally misplaced patch is not taught as the preferred solution.
 ## 8. Policy, live state, and knowledge
 
 - **Policy:** `CLAUDE.md`, this process, `TWO-AGENTS.md`, and `COORDINATOR.md`.
-- **Live task state:** private `~/coordinator/TASKS.md`, maintained by the
-  coordinator or May. It is the sole authority for task owner and state.
+- **Live task state:** private `~/coordinator/TASKS.md`, changed only through
+  the locked `scripts/taskctl.py` interface. The board remains the authority
+  for task owner and state; `taskctl` enforces the transition graph and
+  evidence gates.
 - **Activity history:** `~/AGENTS-LOG.md`, append-only; never treat its last
   `START` as current without checking for a later `DONE`.
 - **Knowledge:** `docs/research/`, `docs/DECISIONS.md`, `docs/PATCHES.md`, and
   canonical examples in the repository.
+- **Agent identity:** `~/coordinator/AGENT-REGISTRY.json` contains current A/B/C
+  identities; `~/AGENTS-HISTORY.md` is append-only. The legacy `~/AGENTS.md` is
+  retained as historical data, never consulted as the live registry.
 - **Session state:** `docs/status/A.md` and `docs/status/B.md` record each
   assigned desktop and work-in-progress details. They do not assign tasks.
 - **Project summary:** `docs/STATUS.md` is dated and maintained by the
@@ -332,14 +425,16 @@ repository owner's history-removal process separately.
 ## 9. Shell command guard
 
 The project `.claude/settings.json` installs a `PreToolUse` guard for Claude
-Code's `Bash` tool. It blocks common direct forms of broad staging, force-push,
-`aptly publish`, `xwd`, `pkill`/`pgrep -f`, globbed `rm -rf`, and `rm -rf`
-with an unguarded shell variable. This is a narrow command-pattern guard, not a
-shell security boundary: aliases, wrappers, alternate binaries, and equivalent
-commands may bypass it. It does not validate package correctness.
-
-Claude Code `PreToolUse` hooks can also match MCP tools, but this project
-currently has no VBox MCP hook. Until one is implemented and checked against
-the actual VBox tool names and input schema, VM restores remain governed by the
-manual ownership and restore gate in `docs/TWO-AGENTS.md`. Do not describe the
-current Bash hook as protection for VBox MCP operations.
+Code's `Bash` tool. It tokenizes simple shell command lists and blocks common
+forms of broad staging, force pushes (including force refspecs), `aptly
+publish`, `xwd`, pattern-based process matches, and dangerous recursive
+removal. It handles common command/env/sudo prefixes and absolute executable
+paths. Shell syntax, aliases, nested interpreters, and wrappers cannot be
+reliably secured by this hook; use `scripts/safe_git.py stage|push` for Git
+updates, `scripts/build_sbuild.py` for package builds, and
+`scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
+agents can use their disposable VM freely. The MCP server configuration allows
+`target-desktop`, `target-desktop-2`, and `oem-test`, and lists `builder-server`
+under `never_allowed`. For a restore or suspected shared VBoxSVC failure, use
+`docs/TWO-AGENTS.md` and the `vbox-recovery` skill; a `PreToolUse` hook cannot
+reliably diagnose or contain a host-wide VBoxSVC incident.

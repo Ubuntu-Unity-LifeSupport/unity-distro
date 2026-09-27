@@ -23,7 +23,8 @@ If your role is not explicit, ask May and do not start package or VM work.
 Multiple sessions run as user `claude` in the same home directory, so nothing
 in your environment distinguishes the role.
 
-Announce yourself in `~/AGENTS-LOG.md` as soon as you know (see below).
+Announce activity in `~/AGENTS-LOG.md` as described below. Register your
+current identity with `scripts/agent_registry.py` after checking `ListAgents`.
 
 ## What is yours alone
 
@@ -54,9 +55,14 @@ you, check `hostname` before believing it.
 
 ## What is shared
 
-- `~/unity-distro` - **one git working tree, used by both of you.** There is no
-  isolation here: if you rewrite a file the other agent edited a minute ago,
-  his work is gone and git will not notice, because it only sees your version.
+- `~/unity-distro` is the shared base checkout and is not an agent work area. A
+  and B use distinct Git worktrees for repository-level edits, normally
+  `~/work/a/unity-distro` and `~/work/b/unity-distro`; keep package source
+  checkouts under the matching `~/work/a` or `~/work/b` tree. Create them with
+  `git worktree add` from the shared base and verify `git worktree list` before
+  editing. Never let two sessions edit the same checkout. If an operation
+  cannot use an isolated worktree, obtain explicit writer ownership in the
+  task record and use a locked append tool for append-only knowledge records.
 - `/srv/aptly` - one package repository. aptly locks its database, so a
   concurrent call fails loudly rather than corrupting anything. On a lock
   error, wait and retry - do not work around it.
@@ -70,52 +76,64 @@ you, check `hostname` before believing it.
   and a wrong restore destroys an experiment that is running right now.
   `builder-server` is not controllable through it at all - you are inside it.
 
-## Snapshot restore gate
+## Restoring a snapshot
 
-Before restoring a VM:
+Agents can freely restore their assigned disposable VM; this is an operational
+procedure, not a task-board or evidence gate. Use the full VM name and keep the
+ownership table above: A uses `target-desktop`, B uses `target-desktop-2`, and
+`oem-test` still needs an explicit task assignment.
 
-1. Confirm the task board assigns that exact machine to you; use the full VM
-   name (`target-desktop` or `target-desktop-2`). Never restore `oem-test`
-   without a task-board entry.
-2. Append a `START` entry to `~/AGENTS-LOG.md`. Shut the guest down cleanly
-   through your own SSH session or the guest-shutdown operation, then confirm
-   VirtualBox reports it powered off before touching snapshots.
-3. Issue one restore. If the result is ambiguous or the MCP call fails, do not
-   repeat the restore. Inspect/diagnose the VM state and ask May before any
-   recovery that could restart VBoxSVC; the builder itself runs inside that
-   VirtualBox host.
-4. Boot the guest and verify it from inside: fresh boot, expected package
-   versions, and (for a clean rollback) no `~/.dirty` marker. A reported
-   `current_snapshot` alone does not prove a restore completed.
-5. Append `DONE` with the observed state. A restore that cannot be verified is
-   `BLOCKED`, not successful.
+Shut the guest down cleanly, wait until VirtualBox reports it powered off, and
+check that the VBox server still responds. Issue one restore, wait for it to
+finish, then boot the guest and verify a fresh boot, expected package versions,
+and (for a clean rollback) no `~/.dirty` marker. A reported `current_snapshot`
+alone does not prove a restore completed. See `$vbox-recovery` for the full
+sequence.
 
-These checks are the manual safety gate for the VBox MCP. No VBox-specific
-`PreToolUse` hook is currently configured. Claude Code supports hooks for MCP
-tools, so this is an automation gap rather than a platform limitation. Do not
-treat the current Bash hook as protection for VBox operations.
+If a restore call fails, times out, or leaves the result unclear, do not repeat
+it. Inspect the VM with read-only status/diagnosis tools. If VBox calls stop
+responding or VBoxSVC appears stuck, stop all VBox calls across all VMs and use
+the shared-host incident procedure below.
+
+## Shared VirtualBox backend incident
+
+The VBox MCP server and VBoxSVC are shared by both agents, and the builder runs
+inside that VirtualBox host. A VBoxSVC hang or backend crash can therefore
+affect every VM and the builder, even when the failed operation targeted only
+one agent's guest.
+
+When tools such as `list_vms` stop responding, a restore has an ambiguous
+result, or the backend appears wedged: stop issuing VBox calls from every
+session; do not retry the restore or kill/restart VBoxSVC/VirtualBox, and do
+not reboot the builder. Notify the coordinator, May, and the other VM operator
+with the failed call and observed error. Resume only after the shared backend
+responds again and its VM state has been inspected. The `vbox-recovery` skill
+contains this recovery sequence. There is no project hook for VBox MCP calls;
+the shared-host incident procedure is operational guidance, not an ACL.
 
 ## The rule that prevents lost work
 
-For any file under `~/unity-distro` that is not yours alone:
-
-```
-git pull --rebase   →   edit   →   git commit   →   git push
-```
-
-Run those four steps back to back, without doing anything else in between. The
-window in which you can silently overwrite the other agent shrinks to seconds.
+Use your assigned worktree for all repository edits. Keep the usual pull/rebase,
+edit, commit, push sequence inside that worktree; Git then detects conflicts
+instead of silently replacing another agent's uncommitted buffer. Shared base
+checkout edits are prohibited during concurrent work.
 
 Two more habits that matter:
 
-- **Append, do not rewrite.** Adding an entry to `docs/DECISIONS.md` or
-  `docs/PATCHES.md` is safe. Regenerating the whole file destroys entries you
-  never read.
+- **Append, do not rewrite.** Add a complete entry with
+  `scripts/append_record.py decisions|patches ENTRY.md`; it takes a host-wide
+  lock and appends to the shared base checkout. This is the only approved
+  writer operation on that checkout; commit/push the resulting append there
+  before other worktrees rebase. Never regenerate a shared index.
 - **If `git push` is rejected**, the other agent pushed first. `git pull
   --rebase` and push again. Never `--force`.
 
 `docs/STATUS.md` stays the shared overview, but write your own running state to
 `docs/status/A.md` or `docs/status/B.md`. Nobody edits the other's status file.
+
+## The current-agent registry is not an activity log. `AGENT-REGISTRY.json`
+holds only the current A/B/C identities; `AGENTS-HISTORY.md` is append-only.
+The legacy `AGENTS.md` remains untouched as old history.
 
 ## The busy log
 
@@ -133,8 +151,10 @@ Stamp every line in UTC with the trailing `Z`. The builder runs on UTC while
 both test desktops run on EEST (+3), so an unmarked timestamp reads as three
 hours stale and you will mistake live work for yesterday's.
 
-Log before you start a package build, before a snapshot rollback, before an
-aptly publish, and when you finish. Read the tail of it before you pick up work:
+Log before you start a package build, before an aptly publish, and when you
+finish. For a VM restore, START/DONE entries help the other operator track the
+shared VBox host, but do not require task-board approval for your assigned VM.
+Read the tail of the log before you pick up work:
 
 ```
 tail -20 ~/AGENTS-LOG.md
@@ -160,16 +180,19 @@ not tell each other, the other one does not know.
   A or B to pause their own task to review the other's patch; use the temporary
   `adversarial-verifier` subagent for independent review.
 
-**Register yourself the moment you know which agent you are.** Append one line
-to `~/AGENTS.md` - never rewrite the file:
+**Register yourself the moment you know which agent you are.** Run
+`python3 scripts/agent_registry.py list` and then `register` with the exact
+name shown by `ListAgents`. The script atomically updates
+`~/coordinator/AGENT-REGISTRY.json` and appends to `~/AGENTS-HISTORY.md`. The
+legacy `~/AGENTS.md` is historical only and must not be used as the live list.
 
 ```
-echo "$(date -u +'%F %H:%MZ') A name=<name as ListAgents prints it> session=<your session id>" >> ~/AGENTS.md
+python3 scripts/agent_registry.py register A --name "<exact ListAgents name>" --session-id "<session id>"
 ```
 
-Run `ListAgents` first and read `~/AGENTS.md` to see who else is around. If you
-cannot determine your own session id, register with the name alone and say so -
-a name the other agent can address is the part that matters.
+Run `ListAgents` first, then inspect the JSON registry. If the session ID is
+unavailable, pass `UNKNOWN` and replace it when known. A restart or rename
+updates only the current registry; history remains append-only.
 
 ### Inbox acknowledgement
 
@@ -186,25 +209,35 @@ conflicting work.
 
 Do not start work by asking a peer whether a task is free. The coordinator or
 May assigns it on the private `~/coordinator/TASKS.md` board using a unique
-task ID and owner. The owner changes its state as work proceeds. This board is
+task ID and owner. The owner changes its state with `scripts/taskctl.py`. This board is
 the claim; a stale session name, unread message, or `START` entry is not.
 
-Example record (illustrative ID only):
+Use the executable interface rather than writing a row directly:
 
-```text
-UNITY-YYYYMMDD-NNN | A | INVESTIGATING | unity LP #12345 | evidence: docs/research/...
+```sh
+python3 scripts/taskctl.py create "unity LP #12345" --actor C
+python3 scripts/taskctl.py assign UNITY-YYYYMMDD-NNN A target-desktop --actor C
+python3 scripts/taskctl.py claim UNITY-YYYYMMDD-NNN --actor A
+python3 scripts/taskctl.py transition UNITY-YYYYMMDD-NNN READY_FOR_FIX \
+  --actor A --evidence ~/coordinator/evidence/UNITY-YYYYMMDD-NNN.json
 ```
+
+`taskctl` validates legal transitions, actor/owner match, and evidence fields;
+its `--actor` value is still an operator-supplied role label, not an OS-level
+identity proof.
 
 Only the coordinator or May may assign/reassign an owner. Before reassigning,
 check the owner's current status and activity log and get a direct answer when
 the session is reachable. An expired or silent session is not proof that a
 shared VM or build has been abandoned.
 
-If the direct channel does not work in practice - it has failed before between
-sessions on different machines - fall back to files: write to
-`~/PEER-INBOX-A.md` or `~/PEER-INBOX-B.md` (you write to the other agent's
-file, the receiver reads their own), append an ACK when read, and tell May so
-the channel can be fixed rather than quietly worked around.
+If the direct channel fails, first preserve the failure and only then use the
+file fallback with `scripts/peer_inbox.py append --recipient A|B --sender A|B|C
+--message ...`. This appends under `flock` to the recipient's inbox; do not use
+it for task assignment. The reader appends an explicit acknowledgement with
+`peer_inbox.py ack --reader A|B|C --inbox-owner A|B --through <timestamp>`.
+A write alone is not delivery. Tell May when direct messaging repeatedly fails
+so the channel can be repaired.
 
 Use the channel for anything else that helps: a measurement that contradicts
 what the other agent recorded, a chroot you are about to rebuild, a warning

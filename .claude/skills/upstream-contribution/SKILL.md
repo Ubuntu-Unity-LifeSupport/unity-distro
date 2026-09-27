@@ -18,9 +18,11 @@ Full text: `docs/CONTRIBUTING-UPSTREAM.md`. This is the operating summary.
 3. **Never write "None" or "Low" under `[Where problems could occur]`.** That
    section is an SRU rejection trigger.
 
-## Rule 0: is it already solved?
+## Pre-Implementation Gate: existing fixes
 
-Fires before everything else, including before analysis. Search outward:
+Run after basic issue identification and exact reproduction, before any code
+change. If the evidence shows a packaging/build failure, capture that failure
+first. Search outward:
 
 1. the installed system - `apt-cache policy/showsrc/search`, `dpkg -S`,
    `dpkg -l | grep`, `ldd`, and `Task:` in the metadata (`ubuntu-unity-desktop`
@@ -47,15 +49,18 @@ dismissed.
 
 ## Before writing any code
 
-Five steps, in order. Skipping step 2 or 4 has already cost us twice.
+Six steps, in order. Skipping the reproduction or existing-fix search has
+already cost us twice.
 
-1. Reproduce in a clean environment - sbuild chroot, or target on `Clean`.
-2. Check it is not already fixed: package changelog, upstream git, development
+1. Identify the reported issue and test the **exact** scenario from its
+   description. "shutdown menu not
+   working *after cancelling*" is not "shutdown menu not working".
+2. Reproduce that exact scenario in a clean environment - sbuild chroot, or
+   target on `Clean`.
+3. Check it is not already fixed: package changelog, upstream git, development
    series, `-proposed`, bug tracker. The nux PCRE2 port existed six months
    before we looked.
-3. Check nobody already filed it.
-4. Test the **exact** scenario from the bug description. "shutdown menu not
-   working *after cancelling*" is not "shutdown menu not working".
+4. Check nobody already filed it.
 5. Record evidence: versions, steps, expected, actual, log or screenshot -
    and which boot it came from. `uptime -s`, `journalctl -b` and file dates must
    agree. On a rolled-back system a crash file can predate the login; the

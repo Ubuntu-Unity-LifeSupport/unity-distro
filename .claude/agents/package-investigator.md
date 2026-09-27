@@ -35,7 +35,8 @@ issue_tracker_results:
   - tracker: tracker-name
     result: FOUND | NOT_FOUND | UNKNOWN
 fix_candidates:
-  - result: FIXED_LOCAL | FIXED_IN_TARGET_UBUNTU | FIXED_IN_NEWER_UBUNTU | FIXED_IN_DEBIAN | FIXED_UPSTREAM | PATCH_ALREADY_EXISTS | NONE | UNKNOWN
+  - classification: CANDIDATE_FIX
+    result: FIXED_LOCAL | FIXED_IN_TARGET_UBUNTU | FIXED_IN_NEWER_UBUNTU | FIXED_IN_DEBIAN | FIXED_UPSTREAM | PATCH_ALREADY_EXISTS | NONE | UNKNOWN
     version_commit_patch: exact identifier
     evidence: direct link or local path
 findings:
@@ -46,7 +47,10 @@ recommended_owner_followup:
   - narrow verification the physical task owner should perform, or []
 ```
 
-For `fix_candidates.result`, use only positive match values from
+Every result listed here is an unvalidated `CANDIDATE_FIX`; the task owner
+must inspect its commit/version scope against the exact reproduction before
+recording a final existing-fix outcome. For `fix_candidates.result`, use only
+positive match values from
 `docs/ENGINEERING-PROCESS.md`: `FIXED_LOCAL`, `FIXED_IN_TARGET_UBUNTU`,
 `FIXED_IN_NEWER_UBUNTU`, `FIXED_IN_DEBIAN`, `FIXED_UPSTREAM`, or
 `PATCH_ALREADY_EXISTS`. Use `NONE` when no candidate was found in this scope

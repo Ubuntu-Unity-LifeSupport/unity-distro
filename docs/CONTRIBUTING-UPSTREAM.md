@@ -39,9 +39,9 @@ of that is avoidable.
 
 ## 0. Find out whether it is already solved
 
-Before writing a line of code for a problem, establish whether someone has
-already solved it - wholly or in part. This fires before everything else here:
-before analysis, before code, before a patch.
+After identifying and reproducing the reported problem, and before writing a
+line of code, establish whether someone has already solved it - wholly or in
+part. This gate does not replace issue identification or exact reproduction.
 
 Three cases in a single day earned it a number of its own.
 

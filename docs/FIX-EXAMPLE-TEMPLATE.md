@@ -18,10 +18,14 @@ canonical.
 ## Root cause proof
 - Reproduction on unmodified package:
 - Root cause and source location:
+- Affected invariant:
 - Evidence:
 - Invariant that was violated:
 - Ownership/lifetime, callback/cancellation, threading/reentrancy, and ABI/API
   implications checked where relevant:
+
+- Mechanism changed and why this is the correct layer:
+- Why a defensive workaround at another layer was rejected:
 
 ## Decision
 - Chosen approach:
@@ -38,6 +42,7 @@ canonical.
 - Regression test fails before and passes after:
 - Relevant existing tests:
 - Clean target-series build:
+- Verifier status (`REVIEWED` / `INDEPENDENTLY_REPRODUCED`):
 - Independent verifier and result (`PASS` / `FAIL` / `INCOMPLETE`):
 - Live target verification:
 - ABI/API, file-list, or behavior checks actually performed:

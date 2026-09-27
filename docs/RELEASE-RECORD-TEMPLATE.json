@@ -1,0 +1,22 @@
+{
+  "task_id": "UNITY-YYYYMMDD-NNN",
+  "package": "source-package",
+  "target_series": "resolute",
+  "candidate_version": "exact-version",
+  "source_commit": "full-commit-id",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/unity/resolute",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/task/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "evidence": {
+    "evidence_card": "docs/research/task/README.md",
+    "verification_record": "docs/research/task/verification.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}
