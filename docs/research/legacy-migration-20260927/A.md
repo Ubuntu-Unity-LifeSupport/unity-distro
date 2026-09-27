@@ -86,12 +86,12 @@ Packages without our own git history: **xorg-server** (built from the Ubuntu
 ### A-L05 unity: LP #2160299 (file manager fallback) and LP #2165662 (shaped shadow) (`+unity9`)
 - commits: `53d94899143472573a98f316e1f8cbe311b076c9`, `1d618edeac60ac0502e961f25bbc4de30a900162`, `8bb626d58fc11a08af70e13ef20bb6a190e32be5`; pushed; local `fix/lp-crashes` contained in `unity/resolute` - CURRENTLY_VERIFIED.
 - test_state: reproduced before, verified after (`research/unity-lp-crashes/`) - HISTORICAL_FACT. Third-party patches (reporters' MPs).
-- migration_result: **LEGACY_PARTIAL** - never re-checked; the shaped-shadow change rebuilds on a missing pixmap (guard-like, see "Doubtful fixes").
+- migration_result: **REQUIRES_REVALIDATION** - doubtful (rule 7). Re-check: why the shadow pixmap is missing when the shaped window is drawn (rebuild-on-missing is a guard), and re-run both LP reproducers on the clean snapshot.
 
 ### A-L06 unity: known issue #3 - pointer moves, clicks nothing (`+unity10`)
 - commits: `f2268bef33bb98b503f98dc1aab550d0a635c271`, `fde810ec73a72f06ff24d323b75b2fe92a43244a`; pushed; local `fix/resize-grab-leak` contained - CURRENTLY_VERIFIED.
 - test_state: reproduced with real evdev input, leaked "resize" grab shown in compiz with gdb, 16/50 stuck before, 0/50 after; 0/50 again on the clean snapshot 2026-09-26; title-bar variants identical on +unity9/+unity10 (`research/cursor-stops/`, `research/recheck-2026-09-26/`) - HISTORICAL_FACT.
-- migration_result: **LEGACY_VERIFIED** - root cause instrumented, before/after numbers, re-checked; the fix is an early return (see "Doubtful fixes" for the design question).
+- migration_result: **REQUIRES_REVALIDATION** - doubtful (rule 7: possibly the wrong layer). Re-check: design review of where the leaked compiz "resize" grab should be handled (Unity's early return vs releasing/validating the grab in Unity or compiz); keep the 50-run evdev reproducer as the acceptance test.
 
 ### A-L07 unity: Python escapes in /usr/bin/unity, unity-uwidgets depends on python3-requests (`+unity11`)
 - commits: `d7b3401867d43263079149ec76e9208c44e1c386`, `ee9831e7d163eb672829cad61eca777ca20ae823`, `2040279dadc253e76daad4ac2e1ffacc7a2d1e74`; pushed; local `fix/python-warnings` contained - CURRENTLY_VERIFIED.
@@ -126,12 +126,12 @@ Packages without our own git history: **xorg-server** (built from the Ubuntu
 - commits `76635a14bce598a386a6e2d07909e035fa2a8c70`, `c38715c307b8578e6f293de3a6c77fb7a675803d`, `7a42c71c721183fb67d1cb0c1b677556173bc874`, `fadd8c6e97a43bb2d0e205da2fb8389b0c3a8ee3`, `patch-queue/unity/resolute` `a3d4c79ed27a8df070e35a9584b406ef01ccee40`; all pushed - CURRENTLY_VERIFIED. **Two commits both say `+unity3`** (`c38715c…` then `fadd8c6…`); which tree the published build came from is UNVERIFIED.
 - test_state: 12 restart requests -> 1, session gone in 3 s (`research/cinnamon-session-214-202/`); release re-check found none of the five patches in 6.6.4 - HISTORICAL_FACT.
 - aptly: +unity1, +unity2, +unity3; target +unity3 - CURRENTLY_VERIFIED.
-- migration_result: **LEGACY_PARTIAL** - measured, but the version-to-commit ambiguity above.
+- migration_result: **REQUIRES_REVALIDATION** - doubtful (rule 7: once-guard, root cause of the repeated quit not shown). Re-check: why `csm_manager_quit()` is re-entered 12 times per request, whether the guard hides a real state error; also settle which of the two `+unity3` commits the published build matches.
 
 ### A-L14 lightdm: SIGTERM handler leaves with `_exit()` (LP #2168421) (`+unity1`)
 - commits `91ac0049a44ed678feec3a39bf6535156aa7deaf`, `50a6a5dd8974a95db064f4a19dabe22becc329c0`, `patch-queue` `26bc280c70a5cfae035c2288d342e5ba5552db20`, pushed to lifesupport - CURRENTLY_VERIFIED.
 - test_state: reproduced on the real binary only under the reporter's conditions (libgnutls loaded); target's default PAM stack does not trigger it (`research/lightdm-sigterm-exit/`) - HISTORICAL_FACT. Upstream #484 open, not in 1.33.1 (release re-check) - HISTORICAL_FACT.
-- migration_result: **LEGACY_PARTIAL** - not reproducible on our default configuration.
+- migration_result: **REQUIRES_REVALIDATION** - doubtful (rule 7: test not on our stack). Re-check: reproduce the SIGTERM hang/crash with the stock binary on our default target configuration, or show it cannot happen there; otherwise decide whether to carry the patch.
 
 ### A-L15 light-locker: follow the display session / find the LightDM session (#5) (`+unity2`)
 - commits `26fb96d021ee77beca73df81c653693476549c6c`, `518fdadbfa160174d1f3192c9c34a284cf3929ed` (+unity1), `5c06ce56dffb5b1ee5f4bfc63ad3f816108774de`, `ce58b9a926336f8e7f3c6f80b80b1614105d6716` (+unity2), pushed to `origin` = github.com/Ubuntu-Unity-LifeSupport/light-locker - CURRENTLY_VERIFIED.
@@ -156,7 +156,7 @@ Packages without our own git history: **xorg-server** (built from the Ubuntu
 ### A-L19 unity-settings-daemon: known issue #1 - pointer invisible after login (`+unity4`)
 - commits `90f57737d9f952bbe42a041cb52055bf350743a3` (idle monitor filter), `b503ffde1addf6b49de8c2b72957193c421578cc` (libexecdir), `85d351158c4a063a87028276f1e3dbdef2b9c8ba` (single launcher), `3b549066b2c2aee5542567588f551622bfe333f8` (revert), `40ed659438ec97fa4f4e57cea6731eb79f3ce9ce`; pushed - CURRENTLY_VERIFIED.
 - test_state: archive 2/12 hidden, +unity4 0/12; gdb re-adding the filter showed the pointer; deterministic reproducer 3/3 vs 3/3; greeter login 12/12, relogin 11/11, user switch 12/12; clean-snapshot series 12/12 (`research/cursor-after-login/`, `research/recheck-2026-09-26/`) - HISTORICAL_FACT.
-- migration_result: **LEGACY_VERIFIED**.
+- migration_result: **REQUIRES_REVALIDATION** - doubtful (rule 7: patch wider than needed). Re-check: whether the libexecdir and single-launcher changes were needed for #1 beyond the idle-monitor filter, and the effect of every autostart entry the libexecdir change re-enabled (only u-s-d and the mount helper were checked).
 
 ### A-L20 unity-settings-daemon: apport hook raw string (`+unity5`)
 - commits `c7d66302bd3610539aacb1db641578e2e8c2ecfc`, `d2c24b7e883f7e597211aa9507ca2fe9ea84861b`; pushed - CURRENTLY_VERIFIED. test_state: `py_compile -W error` clean in the built package - HISTORICAL_FACT. aptly: +unity1..+unity5; target +unity5 - CURRENTLY_VERIFIED.
@@ -167,7 +167,7 @@ Packages without our own git history: **xorg-server** (built from the Ubuntu
 - versions: aptly holds only `2:21.1.22-1ubuntu1.3+unity2` - CURRENTLY_VERIFIED; `~26.04.1` and `1.3+unity1` were removed from aptly (DECISIONS 2026-09-25/26) - HISTORICAL_FACT. Archive: resolute-proposed still `1ubuntu1.3`, no newer resolute upload - CURRENTLY_VERIFIED (`rmadison`).
 - test_state: CVE triggers deliberately not reproduced; smoke test + logout cycles only - HISTORICAL_FACT. The changelogs of `+unity1/+unity2` say "29 fixes" - actually 31 (DECISIONS correction) - HISTORICAL_FACT.
 - target: `1.3+unity2` - CURRENTLY_VERIFIED.
-- migration_result: **LEGACY_PARTIAL** - security fixes applied without reproduction; version scheme measured with apt.
+- migration_result: **REQUIRES_REVALIDATION** - doubtful (rule 7: patch wider than the goal, fixes not reproduced). Re-check: map each of the 31 carried commits to a CVE or a stated reason, drop or justify the rest, fix the "29" changelog wording in the next upload.
 
 ### A-L22 xorg-watch.timer (builder monitoring)
 - units in `docs/research/xorg-versioning/` and `~/.config/systemd/user/`; `systemctl --user is-active xorg-watch.timer` -> active - CURRENTLY_VERIFIED. `grep -c 'XORG-WATCH new upload' ~/AGENTS-LOG.md` -> 0: no alert written so far - CURRENTLY_VERIFIED. Whether the Launchpad query still works was not re-run today - UNVERIFIED.
@@ -178,7 +178,7 @@ Packages without our own git history: **xorg-server** (built from the Ubuntu
 - commits `18f1cdc1e037a5cddee28c2426a1fd32324d1132`, `8baefeff895b7ca5cb51918b83b68ac24262c937`, `cc86227a5ea1952b2c28f0f21303b6b9a52fb046`, `0e71beffcf57042ce84f81a6d8291d97e1ee28c0` on `unity/resolute`, pushed to lifesupport (repo created 2026-09-26) - CURRENTLY_VERIFIED. `cc86227…` mixes a test change and a changelog line (amended).
 - test_state: live greeter, password login, user switch and back on target (`research/unity-greeter-rebuild/`); package tests compile and run but fail under valgrind (ignored, as before) - HISTORICAL_FACT.
 - target `+unity1` installed; lightdm config says `greeter-session=lightdm-greeter` (the alternatives name) - CURRENTLY_VERIFIED; which greeter that link resolves to today was not checked - UNVERIFIED.
-- migration_result: **LEGACY_VERIFIED** - build fix, live check done.
+- migration_result: **LEGACY_VERIFIED** - build fix, live check done. Not doubtful: the change only restores the build after the lightdm-vala split, and it was verified by a live password login and user switch on target, not by the package tests; the pre-existing valgrind failures are tracked separately as A-L39, and `cc86227…` mixing a test change with a changelog line is commit hygiene, not a correctness question.
 
 ### A-L24 session-migration: CMake 4 and '+' in the build path (`+unity1`)
 - commit `35f62a312de8262b043cd2fe2d04ed25ff892fe9` on top of the archive import `d8d054d34cde…`, pushed to lifesupport - CURRENTLY_VERIFIED. Patch prepared by agent B (`docs/package-patches-b/debdiff/`), built and verified by A.
@@ -262,9 +262,12 @@ Each equals the local build of the same name; the matching `.build` log sits nex
 - A-L26 root cause of the NULL title in the network panel.
 - A-L32 u-s-d libcolor crash at restart.
 - A-L34, A-L35, A-L36, A-L37, A-L38, A-L39 deferred findings.
-- Re-checks never done on the clean snapshot: A-L04, A-L05, A-L09, A-L10, A-L16, A-L18.
+- Revalidation of doubtful fixes (one task each): A-L05, A-L06, A-L13, A-L14, A-L19, A-L21 (what to check is in each item's migration_result).
+- Re-checks never done on the clean snapshot (LEGACY_PARTIAL items): A-L04, A-L09, A-L10, A-L16, A-L18.
 
 ## Doubtful fixes (root cause, test or scope)
+
+Per bootstrap rule 7 every item here is REQUIRES_REVALIDATION and needs a new re-check task.
 
 - **A-L06 unity +unity10** - early return in `Edge::ButtonDownEvent` while a "resize"/"move" grab exists. Root cause instrumented, but under the current rules an early return needs a design review (correct layer: Unity dropping compiz's X grab vs compiz keeping its internal list); compiz hardening was weighed and not done.
 - **A-L26 u-c-c +unity2** - NULL guard in the sort; the mechanism that yields a NULL title was not shown.
@@ -273,14 +276,13 @@ Each equals the local build of the same name; the matching `.build` log sits nex
 - **A-L13 cinnamon-session "request reboot/shutdown once"** - a once-guard in `csm_manager_quit()`; the repeated `end_phase()` re-entry it suppresses is upstream behaviour kept as is.
 - **A-L21 xorg-server** - 31 upstream commits carried where 11 CVE fixes were the goal (includes hardening commits beyond the CVEs); CVE triggers not reproduced; changelog text says 29.
 - **A-L19 u-s-d +unity4** - three changes in one version (filter, launcher, libexecdir) plus a revert; the libexecdir change also re-enabled autostart entries that had been dead since the 0ubuntu7 base (effects checked for u-s-d and the mount helper only).
-- **A-L23 unity-greeter** - package tests still fail (valgrind); `cc86227…` mixes a test change with a changelog line.
 
 ## Counts
 
 - items: 39 (A-L01…A-L39)
-- LEGACY_VERIFIED: 12 (L01, L02, L06, L07, L15, L19, L20, L23, L24, L29, L30, L31)
-- LEGACY_PARTIAL: 11 (L03, L04, L05, L09, L10, L13, L14, L16, L18, L21, L28)
-- REQUIRES_REVALIDATION: 9 (L22, L26, L32, L34, L35, L36, L37, L38, L39)
+- LEGACY_VERIFIED: 10 (L01, L02, L07, L15, L20, L23, L24, L29, L30, L31)
+- LEGACY_PARTIAL: 7 (L03, L04, L09, L10, L16, L18, L28)
+- REQUIRES_REVALIDATION: 15 (L05, L06, L13, L14, L19, L21, L22, L26, L32, L34, L35, L36, L37, L38, L39)
 - SUPERSEDED: 7 (L08, L11, L12, L17, L25, L27, L33)
 - provenance gap: every published version (26 source versions in aptly across 11 source packages of A's zone, plus gtk-nocsd 4.8-1+unity1 now in B's zone) - no manifest, gate, version-safety record, snapshot or publish record.
-- doubtful fixes: 8; incomplete items needing a task: 10 (+6 re-checks never done on the clean snapshot).
+- doubtful fixes: 7 (L05, L06, L13, L14, L19, L21, L26), all REQUIRES_REVALIDATION; incomplete items needing a task: 16 (10 earlier + 6 doubtful-fix revalidations), plus 5 LEGACY_PARTIAL re-checks never done on the clean snapshot.
