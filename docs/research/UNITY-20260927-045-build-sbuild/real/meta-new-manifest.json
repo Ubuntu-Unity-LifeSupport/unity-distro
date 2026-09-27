@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-045",
+  "package": "ubuntu-unity-meta",
+  "candidate_version": "0.29+unity1",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/t045/src/ubuntu-unity-meta",
+  "source_commit": "f2c75084d0bac9eadbb7881021202aa95d562f71",
+  "source_tree_hash": "33025b2d08fa884263c230e8e4c644ac9d68d869",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose"
+  ],
+  "build_started": "2026-09-27T19:19:51.094916+00:00",
+  "build_finished": "2026-09-27T19:23:17.619377+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-045-ubuntu-unity-meta-0.29+unity1-sbuild.log",
+    "sha256": "6721b5b4eb51b6d0809310f9914e2535ca0685610095a6fc3083330342d6dc97"
+  },
+  "artifacts": [
+    {
+      "file": "ubuntu-unity-meta_0.29+unity1.dsc",
+      "sha256": "770320ebde38953dd08ae6b90ffdfc93e97984446212881edf16c3a192d7f5d0",
+      "size": 697,
+      "kind": "source",
+      "package": "ubuntu-unity-meta",
+      "version": "0.29+unity1"
+    },
+    {
+      "file": "ubuntu-unity-meta_0.29+unity1_amd64.changes",
+      "sha256": "eff0e5e0ddcd937277608e5f99ac1041b1c2d4ec2673fb574d7ed300d153db1a",
+      "size": 1621,
+      "kind": "changes"
+    },
+    {
+      "file": "ubuntu-unity-desktop_0.29+unity1_amd64.deb",
+      "sha256": "c0a7fc5e6ceb891a93211377cc9884bdfc7620d9c148b96eb3854b51cfc8937c",
+      "size": 4380,
+      "kind": "binary",
+      "package": "ubuntu-unity-desktop",
+      "version": "0.29+unity1",
+      "architecture": "amd64"
+    },
+    {
+      "file": "ubuntu-unity-meta_0.29+unity1_amd64.buildinfo",
+      "sha256": "2e0b8df43184d22d87f76b3ef25dbb1b7198cc5598dd89b4006b89b7c417f098",
+      "size": 6214,
+      "kind": "buildinfo"
+    }
+  ]
+}

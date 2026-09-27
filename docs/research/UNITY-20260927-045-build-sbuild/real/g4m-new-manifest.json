@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-045",
+  "package": "unity-gtk4-menu",
+  "candidate_version": "0.9",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/t045/src/unity-gtk4-menu",
+  "source_commit": "7ce9092ab1b5c9e5316eb9a9ee31ecbbfa662ecf",
+  "source_tree_hash": "27bd46e22a69d109324b60ee71d667acf466c995",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose"
+  ],
+  "build_started": "2026-09-27T19:40:09.865525+00:00",
+  "build_finished": "2026-09-27T19:45:09.420278+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-045-unity-gtk4-menu-0.9-sbuild.log",
+    "sha256": "899d8b2e5d894415f561babde6c45934cd36becc778968ee0a1b992abc267573"
+  },
+  "artifacts": [
+    {
+      "file": "unity-gtk4-menu_0.9.dsc",
+      "sha256": "c3c6bdf7b164bbe3166d432c3bf1e94bdfd5d85238bc1d2af3fe95801bc3591c",
+      "size": 835,
+      "kind": "source",
+      "package": "unity-gtk4-menu",
+      "version": "0.9"
+    },
+    {
+      "file": "unity-gtk4-menu_0.9_amd64.changes",
+      "sha256": "7875e08d54d60955f5359ae78740199aec06e23310911653da6f89e23ca9c1b1",
+      "size": 2041,
+      "kind": "changes"
+    },
+    {
+      "file": "libunity-gtk4-menu0-dbgsym_0.9_amd64.ddeb",
+      "sha256": "8b1b27bb9482da8e8de261390c56a27ba3dbc517fff6eb48841594f0ee5d372e",
+      "size": 29428,
+      "kind": "binary",
+      "package": "libunity-gtk4-menu0-dbgsym",
+      "version": "0.9",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-gtk4-menu0_0.9_amd64.deb",
+      "sha256": "eb3a766208c649f8be0e4bf47335f1d7df665fcf43cc10cbd370984a7d5a9f2c",
+      "size": 15230,
+      "kind": "binary",
+      "package": "libunity-gtk4-menu0",
+      "version": "0.9",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-gtk4-menu_0.9_amd64.buildinfo",
+      "sha256": "683b956ed524b1509c4d2e2ce577346032bca0b0ab651de0485a6c92bb472afd",
+      "size": 14717,
+      "kind": "buildinfo"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+test_binaries_not_named_after_source (test_build_sbuild.BuildSbuildTest.test_binaries_not_named_after_source)
+(2) Binaries come from .changes, including .ddeb, whatever their names. ... ok
+test_epoch (test_build_sbuild.BuildSbuildTest.test_epoch)
+(1) An epoch in the version never appears in file names. ... ok
+test_full_log (test_build_sbuild.BuildSbuildTest.test_full_log)
+(3) The manifest's log is the whole sbuild output, command header first. ... ok
+test_partially_renamed_binaries_not_dropped (test_build_sbuild.BuildSbuildTest.test_partially_renamed_binaries_not_dropped)
+(2) xorg-server: one binary contains the source name, one does not. ... ok
+test_plain_version (test_build_sbuild.BuildSbuildTest.test_plain_version)
+Control: no epoch, binaries named after the source. ... ok
+test_unrelated_files_ignored (test_build_sbuild.BuildSbuildTest.test_unrelated_files_ignored)
+Files next to the source that this build's .changes does not name stay out. ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.443s
+
+OK
