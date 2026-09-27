@@ -1,0 +1,29 @@
+Attached 11 probes
+READY
+2030 EDGE-DOWN button=1
+2030 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+2033 RESIZE-INITIATE state=4
+2033 PUSH-POINTER-GRAB resize
+2033 XGRABPOINTER
+        XGrabPointer+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3102
+        ResizeLogic::handleEvent(_XEvent*)+3553
+        CompScreen::handleEvent(_XEvent*)+103
+
+2034 RESIZE-INITIATE returned 0
+3644 EDGE-DOWN button=3
+8405 RESIZE-TERMINATE state=8
+8405 REMOVE-GRAB
+8405 XUNGRABPOINTER
+        XUngrabPointer+0
+        ResizeLogic::terminateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+455
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+
+
+

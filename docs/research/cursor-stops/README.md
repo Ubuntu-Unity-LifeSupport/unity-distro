@@ -105,8 +105,12 @@ state 6) passive grab type 4, detail 0x0`.
 2. **Any other button pressed on the edge meanwhile goes through
    `Edge::ButtonDownEvent` again**: `XUngrabPointer` takes the X grab away from
    the running resize and a second `_NET_WM_MOVERESIZE` arrives, which the
-   plugin (already resizing) accepts without grabbing again. The button
-   releases no longer reach compiz, `terminateResize` never runs, and `"resize"`
+   plugin (already resizing) ~~accepts without grabbing again~~ **refuses**
+   (correction, UNITY-20260927-001: `initiateResize` returns early while
+   `this->w` is set; uprobes show no second grab push, and gdb in the stuck
+   state shows `releaseButton` still 1 - see
+   [`../UNITY-20260927-001-edge-resize-grab/`](../UNITY-20260927-001-edge-resize-grab/)).
+   The button releases no longer reach compiz, `terminateResize` never runs, and `"resize"`
    stays in compiz's grab list - with the X pointer free. Measured with gdb on
    compiz right after `rmb`: grab list `{"resize"}`, `grab-probe` free; after a
    plain drag: empty.

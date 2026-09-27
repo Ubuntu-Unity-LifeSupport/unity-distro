@@ -1,0 +1,18 @@
+Attached 11 probes
+READY
+1886 PUSH-GRAB unity-switcher
+1886 XGRABPOINTER
+        XGrabPointer+0
+        unity::UnityScreen::altTabInitiateCommon(CompAction*, unity::switcher::ShowMode)+410
+        unity::UnityScreen::altTabForwardInitiate(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+96
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+
+4522 REMOVE-GRAB
+4522 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::UnityScreen::altTabTerminateCommon(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+73
+        compiz::private_screen::EventManager::triggerRelease(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+131
+        PrivateScreen::triggerStateNotifyBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, _XkbStateNotifyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+630
+
+
+

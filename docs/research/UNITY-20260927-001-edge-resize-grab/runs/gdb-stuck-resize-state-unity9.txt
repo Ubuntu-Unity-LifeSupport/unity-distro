@@ -1,0 +1,21 @@
+[New LWP 30725]
+[New LWP 30724]
+[New LWP 30719]
+[New LWP 30718]
+[New LWP 30717]
+[New LWP 30716]
+[New LWP 30713]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/x86_64-linux-gnu/libthread_db.so.1".
+__syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+
+warning: 56	../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S: Нет такого файла или каталога
+Breakpoint 1 at 0x753d45b70ad0: file /usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity2/plugins/resize/src/logic/src/resize-logic.cpp, line 114.
+
+Thread 1 "compiz" hit Breakpoint 1, ResizeLogic::handleEvent (this=0x613445ed8658, event=0x7ffe9966ad50) at /usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity2/plugins/resize/src/logic/src/resize-logic.cpp:114
+warning: 114	/usr/src/compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity2/plugins/resize/src/logic/src/resize-logic.cpp: Нет такого файла или каталога
+releaseButton=1 w=0x6134471c8e50 grabIndex=0x6134473895a0
+$1 = 0x753d45b73012 "resize"
+/tmp/post.gdb:9: Error in sourced command file:
+There is no member or method named privateScreen.
+[Inferior 1 (process 2913) detached]
