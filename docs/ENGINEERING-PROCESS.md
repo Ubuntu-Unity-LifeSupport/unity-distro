@@ -438,3 +438,47 @@ agents can use their disposable VM freely. The MCP server configuration allows
 under `never_allowed`. For a restore or suspected shared VBoxSVC failure, use
 `docs/TWO-AGENTS.md` and the `vbox-recovery` skill; a `PreToolUse` hook cannot
 reliably diagnose or contain a host-wide VBoxSVC incident.
+
+## 10. Merging a task branch into `main`
+
+A task's repository changes live on its task branch (for example
+`a/UNITY-YYYYMMDD-NNN` or `b/UNITY-YYYYMMDD-NNN`) until they are merged into
+`main`. A task branch never pushes its changes directly into `main`; the merge
+happens only through the controlled project workflow, and `scripts/safe_git.py
+push` only pushes the current branch to its own ref.
+
+Before merging, verify that:
+
+- the task branch contains only the intended task changes (`git log` and
+  `git diff` from the merge base to the branch tip);
+- every gate required for the task's state has passed, and the verification
+  and review requirements in sections 5 and 6 are satisfied;
+- the local `main` is current with `origin/main`;
+- neither checkout has undeclared changes that the merge would include.
+
+Merge method:
+
+- **Fast-forward** when it is naturally possible, that is, when `main` has not
+  advanced since the task branch was created.
+- **`git merge --no-ff`** as the standard method when `main` has advanced. Name
+  the task ID in the merge commit message.
+- **Do not rebase an already-pushed task branch** solely to make a
+  fast-forward possible, and do not rewrite published task-branch history when
+  evidence, verification records, or other process artifacts reference its
+  commit hashes.
+
+`main` can advance legitimately while another agent is working on a task
+(for example, a shared decision record appended to the base checkout), so a
+fast-forward cannot be assumed. A rebase performed only to keep an artificial
+fast-forward invariant replaces the commits that the task's evidence cites;
+`--no-ff` keeps them. See `docs/DECISIONS.md`, 2026-09-27, "Task branches merge
+into `main` with `--no-ff` when fast-forward is not possible".
+
+If the merge conflicts, stop it (`git merge --abort`) and return the conflict
+to the normal engineering process for resolution. Do not make an ad-hoc
+technical decision merely to complete the merge.
+
+After merging, verify the resulting `main` (the expected task commits are its
+ancestors and the tree contains only the declared changes), then push `main`
+with `scripts/safe_git.py push`. The task ID, task branch, task commit(s), and
+the merge (or fast-forwarded tip) on `main` must stay traceable to one another.

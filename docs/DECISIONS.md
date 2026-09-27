@@ -1671,3 +1671,29 @@ Re-splitting the published version would change nothing that runs.
   `SessionIsActive`, which cinnamon-session lacks.
 - **A stray `.git` file in our u-s-d source packages** +unity2..+unity5.
 - **Our base 0ubuntu7 is not the resolute archive version** (0ubuntu6).
+
+
+## 2026-09-27 - Task branches merge into `main` with `--no-ff` when fast-forward is not possible
+
+**Context.** `main` advances while agents work on task branches: A's decision
+record `2a9b456` landed on `main` after `b/UNITY-20260927-045` branched from
+`1e4ef94`, so the branch could no longer be fast-forwarded. The task's
+evidence (`research/UNITY-20260927-045-build-sbuild/`) cites a commit hash on
+that branch. The branch was merged with `--no-ff` as `eb6553e`.
+
+**Decision.**
+- Fast-forward when it is naturally possible; otherwise `git merge --no-ff`
+  is the standard method.
+- An already-pushed task branch is not rebased solely to make a fast-forward
+  possible.
+
+**Why.**
+- A fast-forward cannot be assumed: `main` may legitimately advance while
+  another agent is working on a task.
+- Rebasing a published task branch replaces the commits that evidence,
+  verification records, and other process artifacts reference by hash. The
+  artificial fast-forward invariant is not worth that loss of traceability.
+- `--no-ff` keeps the task commits unchanged and records the integration as
+  one merge commit that names the task.
+
+Operational rules: `docs/ENGINEERING-PROCESS.md` section 10.

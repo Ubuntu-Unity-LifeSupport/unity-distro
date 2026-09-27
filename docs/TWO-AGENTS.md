@@ -116,7 +116,10 @@ the shared-host incident procedure is operational guidance, not an ACL.
 Use your assigned worktree for all repository edits. Keep the usual pull/rebase,
 edit, commit, push sequence inside that worktree; Git then detects conflicts
 instead of silently replacing another agent's uncommitted buffer. Shared base
-checkout edits are prohibited during concurrent work.
+checkout edits are prohibited during concurrent work. Do not rebase an
+already-pushed task branch solely to make a fast-forward into `main` possible;
+task branches reach `main` only through the merge procedure in
+`docs/ENGINEERING-PROCESS.md` section 10.
 
 Two more habits that matter:
 
@@ -124,9 +127,10 @@ Two more habits that matter:
   `scripts/append_record.py decisions|patches ENTRY.md`; it takes a host-wide
   lock and appends to the shared base checkout. This is the only approved
   writer operation on that checkout; commit/push the resulting append there
-  before other worktrees rebase. Never regenerate a shared index.
+  before other worktrees update from `main`. Never regenerate a shared index.
 - **If `git push` is rejected**, the other agent pushed first. `git pull
-  --rebase` and push again. Never `--force`.
+  --rebase` and push again; this replays only your unpushed commits on top of
+  the remote branch. Never `--force`.
 
 `docs/STATUS.md` stays the shared overview, but write your own running state to
 `docs/status/A.md` or `docs/status/B.md`. Nobody edits the other's status file.
