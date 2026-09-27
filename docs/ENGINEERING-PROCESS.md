@@ -292,7 +292,8 @@ configuration is not used) from `docs/apt/target.sources` and
 reference target system - and, for a full view, our repository as the gated
 aptly snapshot will publish it: the snapshot's `.deb`/`.ddeb` list becomes a
 local repository whose Release has our publication's Origin, Label, Suite and
-Codename. It records the source package's highest version per pocket
+Codename (pass `--release` for the gate's prefix and distribution; the
+publisher passes the same, and refuses a different model identity). It records the source package's highest version per pocket
 (`Sources` indices), apt's candidate for every binary of the build manifest
 (with an empty dpkg status), the snapshot's name and package-list hash, and
 each fetched Release's hash and Date; any fetch failure refuses.
@@ -393,7 +394,8 @@ tmux new-session -d -s UNITY-YYYYMMDD-NNN-build \
   --source-repo packages/<package> --target-series resolute \
   --output-dir docs/research/<task-id>-<topic>/build"
 python3 scripts/apt_view.py --manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
-  --snapshot <snapshot> --write docs/research/<task-id>-<topic>/version-check.json
+  --snapshot <snapshot> --release "<prefix> <distribution>|<prefix> <distribution>|<distribution>|<distribution>" \
+  --write docs/research/<task-id>-<topic>/version-check.json
 python3 scripts/create_release_gate.py --record docs/research/<task-id>-<topic>/release-record.json \
   --build-manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
   --distribution resolute --prefix unity --snapshot <snapshot> \

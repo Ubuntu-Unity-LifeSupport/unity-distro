@@ -301,3 +301,9 @@ Fixes (IMPLEMENTING again):
 3. The publisher passes `--release "<prefix> <distribution>|...|<distribution>|<distribution>"`.
 
 Tests: 30 of 30. ENGINEERING-PROCESS section 6 mentions both new refusals.
+
+## Verification
+
+Round 1 FAIL (fixed), round 2 **PASS**, REVIEWED - `verification.md`. The
+section 6 example now passes `--release` explicitly; test log refreshed (30
+of 30).
