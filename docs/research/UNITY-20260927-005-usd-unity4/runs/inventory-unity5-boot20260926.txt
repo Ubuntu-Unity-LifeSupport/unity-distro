@@ -1,0 +1,30 @@
+== unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity5, boot 2026-09-26 20:26:39, XDG_CURRENT_DESKTOP of compiz: XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu
+-- /etc/xdg/autostart/unity-fallback-mount-helper.desktop
+   Exec=/usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+   NoDisplay=true
+   OnlyShowIn=Unity;
+   AutostartCondition=GNOME3 unless-session gnome
+   program exists: /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+   app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service: loaded active running success 0 
+-- /etc/xdg/autostart/unity-settings-daemon.desktop
+   Exec=/usr/lib/unity-settings-daemon/unity-settings-daemon-localeexec
+   OnlyShowIn=Unity;
+   NoDisplay=true
+   X-GNOME-AutoRestart=true
+   X-systemd-skip=true
+   program exists: /usr/lib/unity-settings-daemon/unity-settings-daemon-localeexec
+   app-unity\x2dsettings\x2ddaemon@autostart.service: not-found inactive dead success 0 
+-- /usr/lib/systemd/user/unity-settings-daemon.service
+   PartOf=graphical-session.target
+   ExecStart=/usr/lib/unity-settings-daemon/unity-settings-daemon-localeexec
+-- /usr/share/polkit-1/actions/com.ubuntu.unity-settings-daemon.plugins.power.policy
+   /usr/lib/unity-settings-daemon/usd-backlight-helper (exists)
+-- /usr/share/polkit-1/actions/com.ubuntu.unity-settings-daemon.plugins.wacom.policy
+   /usr/lib/unity-settings-daemon/usd-wacom-led-helper (exists)
+-- /usr/lib/systemd/user/unity-session.target.wants/unity-settings-daemon.service
+   PartOf=graphical-session.target
+   ExecStart=/usr/lib/unity-settings-daemon/unity-settings-daemon-localeexec
+== processes
+   2296    1190 user@1000.service                             /usr/lib/unity-settings-daemon/unity-settings-daemon
+   2333    1190 user@1000.service                             /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+== journal (this boot, user) for these

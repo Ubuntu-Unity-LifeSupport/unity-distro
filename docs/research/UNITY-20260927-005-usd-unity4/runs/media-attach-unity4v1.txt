@@ -1,0 +1,21 @@
+== mounts
+== windows
+pid 2219: /usr/bin/nemo-desktop 
+pid 2806: /usr/bin/light-locker 
+pid 2874: /usr/bin/compiz 
+== journal since attach
+вер 27 22:04:53.147966 mike-virtualbox sshd-session[4108]: Accepted publickey for mike from 192.168.56.10 port 48150 ssh2: ED25519 SHA256:t/1KUIIlQRfSPlqpCqGg/OCEcULSXjiMwUxaO4zp7eU
+вер 27 22:04:53.151285 mike-virtualbox sshd-session[4108]: pam_unix(sshd:session): session opened for user mike(uid=1000) by mike(uid=0)
+вер 27 22:04:53.157626 mike-virtualbox systemd-logind[897]: New session '11' of user 'mike' with class 'user' and type 'tty'.
+вер 27 22:04:53.159196 mike-virtualbox systemd[1]: Started session-11.scope - Session 11 of User mike.
+вер 27 22:04:53.521102 mike-virtualbox sshd-session[4142]: Received disconnect from 192.168.56.10 port 48150:11: disconnected by user
+вер 27 22:04:53.521506 mike-virtualbox sshd-session[4142]: Disconnected from user mike 192.168.56.10 port 48150
+вер 27 22:04:53.523017 mike-virtualbox sshd-session[4108]: pam_unix(sshd:session): session closed for user mike
+вер 27 22:04:53.525839 mike-virtualbox systemd[1]: session-11.scope: Deactivated successfully.
+вер 27 22:04:53.528728 mike-virtualbox systemd-logind[897]: Session 11 logged out. Waiting for processes to exit.
+вер 27 22:04:53.531722 mike-virtualbox systemd-logind[897]: Removed session 11.
+вер 27 22:05:12.657087 mike-virtualbox sshd-session[4244]: Accepted publickey for mike from 192.168.56.10 port 59090 ssh2: ED25519 SHA256:t/1KUIIlQRfSPlqpCqGg/OCEcULSXjiMwUxaO4zp7eU
+вер 27 22:05:12.668952 mike-virtualbox sshd-session[4244]: pam_unix(sshd:session): session opened for user mike(uid=1000) by mike(uid=0)
+вер 27 22:05:12.676027 mike-virtualbox systemd-logind[897]: New session '12' of user 'mike' with class 'user' and type 'tty'.
+вер 27 22:05:12.682153 mike-virtualbox systemd[1]: Started session-12.scope - Session 12 of User mike.
+вер 27 22:05:12.770375 mike-virtualbox update-notifier[4248]: already running?

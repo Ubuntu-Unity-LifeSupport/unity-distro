@@ -1,0 +1,12 @@
+p1 boot=2026-09-27 21:08:04 | 2288:-? hide=0 show=0 exit=2 lost=0 | 2331:AX hide=1 show=1 exit=0 lost=0 || event4 [x:1278 y:767]->[x:1279 y:780]: 2331=show
+p2 boot=2026-09-27 21:10:38 | 2199:-? hide=0 show=0 exit=2 lost=0 | 2227:AX hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2227=show
+p3 boot=2026-09-27 21:13:07 | 2267:AU hide=1 show=0 exit=0 lost=0 | 2299:-? hide=0 show=0 exit=2 lost=1 || event4 [x:640 y:400]->[x:667 y:413]: 2267=show
+p4 boot=2026-09-27 21:15:39 | 2206:-? hide=0 show=0 exit=2 lost=0 | 2246:AX hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:667 y:413]: 2246=show
+p5 boot=2026-09-27 21:18:10 | 2191:AU hide=1 show=0 exit=0 lost=0 | 2228:-? hide=0 show=0 exit=2 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2191=show
+p6 boot=2026-09-27 21:20:49 | 2220:-? hide=0 show=0 exit=2 lost=0 | 2260:AX hide=1 show=0 exit=0 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2260=show
+p7 boot=2026-09-27 21:23:16 | 2244:AU hide=1 show=0 exit=0 lost=0 | 2272:-? hide=0 show=0 exit=2 lost=0 || event4 [x:640 y:400]->[x:666 y:413]: 2244=show
+p8 boot=2026-09-27 21:25:19 | 2179:-? hide=0 show=0 exit=2 lost=0 | 2214:AX hide=1 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2214=show
+p9 boot=2026-09-27 21:27:15 | 2244:AU hide=1 show=0 exit=0 lost=0 | 2291:-? hide=0 show=0 exit=2 lost=0 || event4 [x:640 y:400]->[x:667 y:413]: 2244=show
+p10 boot=2026-09-27 21:29:21 | 2261:-? hide=0 show=0 exit=2 lost=1 | 2284:AX hide=1 show=0 exit=0 lost=0 || event3 [x:640 y:400]->[x:668 y:414]: 2284=show
+p11 boot=2026-09-27 21:31:20 | 2159:AU hide=1 show=0 exit=0 lost=0 | 2225:-? hide=0 show=0 exit=2 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2159=show
+p12 boot=2026-09-27 21:33:20 | 2157:AU hide=1 show=0 exit=0 lost=0 | 2192:-? hide=0 show=0 exit=2 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2157=show

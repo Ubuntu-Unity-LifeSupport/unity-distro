@@ -1,0 +1,11 @@
+== helper debug after re-insert
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.190: Starting automounting manager
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.227: ScreenSaver name appeared
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.228: ScreenSaver proxy ready
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.229: Unity name appeared
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.231: Screensaver GetActive() returned 0
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.232: Unity Session proxy ready
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:40.234: Unity Session IsLocked() returned 0
+** (unity-fallback-mount-helper:4485): DEBUG: 22:05:54.349: Volume 0x58f1bb7a2620 removed, removing from the queue
+== mounts
+== new windows

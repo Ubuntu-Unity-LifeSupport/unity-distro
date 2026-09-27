@@ -1,0 +1,68 @@
+tmpfs
+/tmp/usd-2493.log
+/tmp/usd-2531.log
+p0 boot=2026-09-27 21:01:03 | 2493:AU hide=0 show=0 exit=0 lost=0 | 2531:-? hide=0 show=0 exit=1 lost=0 || event5 [x:640 y:400]->[x:668 y:414]: 2493=none
+== unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu6, boot 2026-09-27 21:01:03, XDG_CURRENT_DESKTOP of compiz: XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu
+-- /etc/xdg/autostart/unity-fallback-mount-helper.desktop
+   Exec=/usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+   NoDisplay=true
+   OnlyShowIn=Unity;
+   AutostartCondition=GNOME3 unless-session gnome
+   program exists: /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+   app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service: loaded active running success 0 
+-- /etc/xdg/autostart/unity-settings-daemon.desktop
+   Exec=/usr/lib/unity-settings-daemon/unity-settings-daemon-localeexec
+   OnlyShowIn=Unity;
+   NoDisplay=true
+   X-GNOME-AutoRestart=true
+   program exists: /usr/lib/unity-settings-daemon/unity-settings-daemon-localeexec
+   app-unity\x2dsettings\x2ddaemon@autostart.service: loaded inactive dead success 0 
+-- /usr/lib/systemd/user/unity-settings-daemon.service
+   PartOf=graphical-session.target
+   ExecStart=/usr/lib/unity-settings-daemon/unity-settings-daemon
+-- /usr/share/polkit-1/actions/com.ubuntu.unity-settings-daemon.plugins.power.policy
+   /usr/lib/unity-settings-daemon/usd-backlight-helper (exists)
+-- /usr/share/polkit-1/actions/com.ubuntu.unity-settings-daemon.plugins.wacom.policy
+   /usr/lib/unity-settings-daemon/usd-wacom-led-helper (exists)
+-- /usr/share/upstart/xdg/autostart/unity-settings-daemon.desktop
+   Exec=/usr/lib/unity-settings-daemon/unity-settings-daemon
+   Hidden=true
+   program exists: /usr/lib/unity-settings-daemon/unity-settings-daemon
+   app-unity\x2dsettings\x2ddaemon@autostart.service: loaded inactive dead success 0 
+-- /usr/lib/systemd/user/unity-session.target.wants/unity-settings-daemon.service
+   PartOf=graphical-session.target
+   ExecStart=/usr/lib/unity-settings-daemon/unity-settings-daemon
+== processes
+   2493    1247 user@1000.service                             /usr/lib/unity-settings-daemon/unity-settings-daemon.real --debug
+   2526    1247 user@1000.service                             /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+== journal (this boot, user) for these
+[   80.850627] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dmedia\x2dkeys@autostart.service: Skipped due to 'exec-condition'.
+[   80.852405] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dmedia\x2dkeys@autostart.service - Cinnamon Settings Daemon - media-keys being skipped.
+[   80.853224] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service: Skipped due to 'exec-condition'.
+[   80.857433] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service - Cinnamon Settings Daemon - power being skipped.
+[   80.858412] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service: Skipped due to 'exec-condition'.
+[   80.860049] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service - Cinnamon Settings Daemon - print-notifications being skipped.
+[   80.860554] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service: Skipped due to 'exec-condition'.
+[   80.861417] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service - Cinnamon Settings Daemon - screensaver-proxy being skipped.
+[   80.861750] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service: Skipped due to 'exec-condition'.
+[   80.862022] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service - Cinnamon Settings Daemon - settings-remap being skipped.
+[   80.862314] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service: Skipped due to 'exec-condition'.
+[   80.863861] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service - Cinnamon Settings Daemon - smartcard being skipped.
+[   80.864609] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service: Skipped due to 'exec-condition'.
+[   80.867297] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service - Cinnamon Settings Daemon - wacom being skipped.
+[   80.869480] mike-virtualbox systemd[1247]: app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service: Skipped due to 'exec-condition'.
+[   80.869859] mike-virtualbox systemd[1247]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service - Cinnamon Settings Daemon - xsettings being skipped.
+[   80.895724] mike-virtualbox systemd[1247]: app-light\x2dlocker@autostart.service: Skipped due to 'exec-condition'.
+[   80.896057] mike-virtualbox systemd[1247]: Condition check resulted in app-light\x2dlocker@autostart.service - Screen Locker being skipped.
+[   81.035879] mike-virtualbox systemd[1247]: app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service: Skipped due to 'exec-condition'.
+[   81.067346] mike-virtualbox systemd[1247]: Condition check resulted in app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service - gnome-disk-utility notification plugin for GNOME Settings Daemon being skipped.
+[   81.073891] mike-virtualbox systemd[1247]: app-print\x2dapplet@autostart.service: Skipped due to 'exec-condition'.
+[   81.074652] mike-virtualbox systemd[1247]: Condition check resulted in app-print\x2dapplet@autostart.service - Print Queue Applet being skipped.
+[   84.134803] mike-virtualbox dbus-daemon[1327]: [session uid=1000 pid=1327 pidfd=5] Activating via systemd: service name='org.gtk.vfs.UDisks2VolumeMonitor' unit='gvfs-udisks2-volume-monitor.service' requested by ':1.35' (uid=1000 pid=2526 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+[   84.647026] mike-virtualbox dbus-daemon[1327]: [session uid=1000 pid=1327 pidfd=5] Activating via systemd: service name='org.gtk.vfs.MTPVolumeMonitor' unit='gvfs-mtp-volume-monitor.service' requested by ':1.35' (uid=1000 pid=2526 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+[   85.663389] mike-virtualbox dbus-daemon[1327]: [session uid=1000 pid=1327 pidfd=5] Activating via systemd: service name='org.gtk.vfs.GoaVolumeMonitor' unit='gvfs-goa-volume-monitor.service' requested by ':1.35' (uid=1000 pid=2526 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+[   86.685589] mike-virtualbox fcitx-qimpanel-autostart[2500]: Fcitx seems is not running
+[   87.200346] mike-virtualbox dbus-daemon[1327]: [session uid=1000 pid=1327 pidfd=5] Activating via systemd: service name='org.gtk.vfs.GPhoto2VolumeMonitor' unit='gvfs-gphoto2-volume-monitor.service' requested by ':1.35' (uid=1000 pid=2526 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+[   87.704784] mike-virtualbox dbus-daemon[1327]: [session uid=1000 pid=1327 pidfd=5] Activating via systemd: service name='org.gtk.vfs.AfcVolumeMonitor' unit='gvfs-afc-volume-monitor.service' requested by ':1.35' (uid=1000 pid=2526 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+[   92.568625] mike-virtualbox systemd[1247]: Reached target xdg-desktop-autostart.target - Startup of XDG autostart applications.
+[   93.722355] mike-virtualbox fcitx-qimpanel-autostart.desktop[3045]: Fcitx seems is not running

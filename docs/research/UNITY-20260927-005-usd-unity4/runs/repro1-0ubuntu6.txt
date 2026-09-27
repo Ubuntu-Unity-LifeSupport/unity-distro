@@ -1,0 +1,21 @@
+== repro 1
+pid 2291 (15.04.1+21.10.20220802-0ubuntu6), instances: 1
+stolen org.gnome.Mutter.IdleMonitor
+released
+ARNING **: 21:05:40.547: Lost or failed to acquire name org.gnome.Mutter.IdleMonitor
+EBUG: 21:05:42.560: Acquired name org.gnome.Mutter.IdleMonitor
+moved event4 [x:668 y:414]->[x:699 y:429]; plugin: 05:31.679: Attempting to show the cursor
+== repro 2
+pid 2291 (15.04.1+21.10.20220802-0ubuntu6), instances: 1
+stolen org.gnome.Mutter.IdleMonitor
+released
+ARNING **: 21:05:51.147: Lost or failed to acquire name org.gnome.Mutter.IdleMonitor
+EBUG: 21:05:53.306: Acquired name org.gnome.Mutter.IdleMonitor
+moved event4 [x:699 y:429]->[x:722 y:441]; plugin: 05:31.679: Attempting to show the cursor
+== repro 3
+pid 2291 (15.04.1+21.10.20220802-0ubuntu6), instances: 1
+stolen org.gnome.Mutter.IdleMonitor
+released
+ARNING **: 21:06:02.558: Lost or failed to acquire name org.gnome.Mutter.IdleMonitor
+EBUG: 21:06:04.679: Acquired name org.gnome.Mutter.IdleMonitor
+moved event4 [x:722 y:441]->[x:749 y:454]; plugin: 05:31.679: Attempting to show the cursor

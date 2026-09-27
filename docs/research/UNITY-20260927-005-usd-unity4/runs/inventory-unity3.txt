@@ -1,0 +1,59 @@
+u3 boot=2026-09-27 22:07:26 | 2180:AU hide=0 show=0 exit=0 lost=0 || event4 [x:640 y:400]->[x:668 y:414]: 2180=show
+== unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity3, boot 2026-09-27 22:07:26, XDG_CURRENT_DESKTOP of compiz: XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu
+-- /etc/xdg/autostart/unity-fallback-mount-helper.desktop
+   Exec=/usr/libexec/unity-fallback-mount-helper
+   NoDisplay=true
+   OnlyShowIn=Unity;
+   AutostartCondition=GNOME3 unless-session gnome
+   PROGRAM MISSING: /usr/libexec/unity-fallback-mount-helper
+   app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service: not-found inactive dead success 0 
+-- /etc/xdg/autostart/unity-settings-daemon.desktop
+   Exec=/usr/libexec/unity-settings-daemon-localeexec
+   OnlyShowIn=Unity;
+   NoDisplay=true
+   X-GNOME-AutoRestart=true
+   PROGRAM MISSING: /usr/libexec/unity-settings-daemon-localeexec
+   app-unity\x2dsettings\x2ddaemon@autostart.service: not-found inactive dead success 0 
+-- /usr/lib/systemd/user/unity-settings-daemon.service
+   PartOf=graphical-session.target
+   ExecStart=/usr/lib/unity-settings-daemon/unity-settings-daemon
+-- /usr/share/polkit-1/actions/com.ubuntu.unity-settings-daemon.plugins.power.policy
+   /usr/libexec/usd-backlight-helper (MISSING)
+-- /usr/share/polkit-1/actions/com.ubuntu.unity-settings-daemon.plugins.wacom.policy
+   /usr/libexec/usd-wacom-led-helper (MISSING)
+-- /usr/lib/systemd/user/unity-session.target.wants/unity-settings-daemon.service
+   PartOf=graphical-session.target
+   ExecStart=/usr/lib/unity-settings-daemon/unity-settings-daemon
+== processes
+   2180    1223 user@1000.service                             /usr/lib/unity-settings-daemon/unity-settings-daemon.real --debug
+== journal (this boot, user) for these
+[  116.033436] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service: Skipped due to 'exec-condition'.
+[  116.033945] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service - Cinnamon Settings Daemon - power being skipped.
+[  116.034750] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service: Skipped due to 'exec-condition'.
+[  116.036072] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service - Cinnamon Settings Daemon - print-notifications being skipped.
+[  116.037004] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service: Skipped due to 'exec-condition'.
+[  116.058650] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service - Cinnamon Settings Daemon - screensaver-proxy being skipped.
+[  116.060588] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service: Skipped due to 'exec-condition'.
+[  116.061103] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service - Cinnamon Settings Daemon - settings-remap being skipped.
+[  116.062010] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service: Skipped due to 'exec-condition'.
+[  116.062840] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service - Cinnamon Settings Daemon - smartcard being skipped.
+[  116.063645] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service: Skipped due to 'exec-condition'.
+[  116.064780] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service - Cinnamon Settings Daemon - wacom being skipped.
+[  116.065004] mike-virtualbox systemd[1223]: app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service: Skipped due to 'exec-condition'.
+[  116.113421] mike-virtualbox systemd[1223]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service - Cinnamon Settings Daemon - xsettings being skipped.
+[  116.147481] mike-virtualbox systemd[1223]: app-light\x2dlocker@autostart.service: Skipped due to 'exec-condition'.
+[  116.147903] mike-virtualbox systemd[1223]: Condition check resulted in app-light\x2dlocker@autostart.service - Screen Locker being skipped.
+[  116.166045] mike-virtualbox systemd[1223]: app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service: Skipped due to 'exec-condition'.
+[  116.166795] mike-virtualbox systemd[1223]: Condition check resulted in app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service - gnome-disk-utility notification plugin for GNOME Settings Daemon being skipped.
+[  116.172642] mike-virtualbox systemd[1223]: app-print\x2dapplet@autostart.service: Skipped due to 'exec-condition'.
+[  116.174791] mike-virtualbox systemd[1223]: Condition check resulted in app-print\x2dapplet@autostart.service - Print Queue Applet being skipped.
+[  118.938012] mike-virtualbox cinnamon-session[2178]: cinnamon-session-binary[2178]: WARNING: t+0.78839s: Could not read /etc/xdg/autostart/unity-settings-daemon.desktop: Could not parse desktop file unity-settings-daemon.desktop or it references a not found TryExec binary
+[  118.939402] mike-virtualbox cinnamon-session-binary[2178]: WARNING: t+0.78839s: Could not read /etc/xdg/autostart/unity-settings-daemon.desktop: Could not parse desktop file unity-settings-daemon.desktop or it references a not found TryExec binary
+[  119.044337] mike-virtualbox cinnamon-session[2178]: cinnamon-session-binary[2178]: WARNING: t+0.89389s: Could not read /etc/xdg/autostart/unity-fallback-mount-helper.desktop: Could not parse desktop file unity-fallback-mount-helper.desktop or it references a not found TryExec binary
+[  119.044337] mike-virtualbox cinnamon-session[2178]: cinnamon-session-binary[2178]: WARNING: t+0.89396s: Could not read /etc/xdg/autostart/unity-settings-daemon.desktop: Could not parse desktop file unity-settings-daemon.desktop or it references a not found TryExec binary
+[  119.043472] mike-virtualbox cinnamon-session-binary[2178]: WARNING: t+0.89389s: Could not read /etc/xdg/autostart/unity-fallback-mount-helper.desktop: Could not parse desktop file unity-fallback-mount-helper.desktop or it references a not found TryExec binary
+[  119.043524] mike-virtualbox cinnamon-session-binary[2178]: WARNING: t+0.89396s: Could not read /etc/xdg/autostart/unity-settings-daemon.desktop: Could not parse desktop file unity-settings-daemon.desktop or it references a not found TryExec binary
+[  120.306871] mike-virtualbox fcitx-qimpanel-autostart[2199]: Fcitx seems is not running
+[  124.843432] mike-virtualbox systemd[1223]: Reached target xdg-desktop-autostart.target - Startup of XDG autostart applications.
+[  125.492359] mike-virtualbox fcitx-qimpanel-autostart.desktop[2686]: Fcitx seems is not running
+[  126.326598] mike-virtualbox systemd[1223]: app-org.gnome.Evolution\x2dalarm\x2dnotify@autostart.service: Consumed 207ms CPU time over 10.470s wall clock time, 76M memory peak.

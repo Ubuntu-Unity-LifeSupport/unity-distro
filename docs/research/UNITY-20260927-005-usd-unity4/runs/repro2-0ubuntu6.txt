@@ -1,0 +1,23 @@
+== repro2 1
+pid 4393 (15.04.1+21.10.20220802-0ubuntu6), instances: 1, hidden at start: 1
+stolen org.gnome.Mutter.IdleMonitor
+released
+  ARNING **: 21:06:32.264: Lost or failed to acquire name org.gnome.Mutter.IdleMonitor EBUG: 21:06:34.286: Acquired name org.gnome.Mutter.IdleMonitor 
+  moved event4 [x:749 y:454]->[x:777 y:468]; after the move: nothing => FAIL
+== repro2 2
+pid 4494 (15.04.1+21.10.20220802-0ubuntu6), instances: 1, hidden at start: 1
+stolen org.gnome.Mutter.IdleMonitor
+released
+  ARNING **: 21:06:44.508: Lost or failed to acquire name org.gnome.Mutter.IdleMonitor EBUG: 21:06:46.534: Acquired name org.gnome.Mutter.IdleMonitor 
+  moved event4 [x:777 y:468]->[x:804 y:482]; after the move: nothing => FAIL
+== repro2 3
+pid 4589 (15.04.1+21.10.20220802-0ubuntu6), instances: 1, hidden at start: 1
+stolen org.gnome.Mutter.IdleMonitor
+released
+  ARNING **: 21:06:56.494: Lost or failed to acquire name org.gnome.Mutter.IdleMonitor EBUG: 21:06:58.497: Acquired name org.gnome.Mutter.IdleMonitor 
+  moved event4 [x:804 y:482]->[x:834 y:497]; after the move: nothing => FAIL
+== control (NOSTEAL)
+pid 4922 (15.04.1+21.10.20220802-0ubuntu6), instances: 1, hidden at start: 1
+  control: name not taken
+  EBUG: 21:07:27.137: Acquired name org.gnome.Mutter.IdleMonitor 
+  moved event4 [x:865 y:512]->[x:895 y:527]; after the move: became active;Attempting to show the cursor; => PASS
