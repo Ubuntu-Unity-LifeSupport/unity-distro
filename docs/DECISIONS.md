@@ -1629,3 +1629,45 @@ over-suppress instead of preventing the ungrab.
 **Not done here.** Widening the condition to `screen->otherGrabExist(nullptr)`
 (A2) was rejected for scope only, with no evidence against it. It is now
 UNITY-20260927-040.
+
+
+## 2026-09-27 - UNITY-20260927-005: which u-s-d +unity4 change fixes #1, and the other two (agent A)
+
+**Context.** `unity-settings-daemon 0ubuntu7+unity4` carried three changes
+and a revert in one version (legacy A-L19). Record:
+`research/UNITY-20260927-005-usd-unity4/` (branch `a/UNITY-20260927-005`).
+
+**Measured on target, real evdev input.** Regression test `repro2.sh` takes
+the IdleMonitor name away from a running daemon:
+- archive 0ubuntu6 FAIL 3/3;
+- a test build of +unity4 without the launcher change (still two instances
+  at every login) PASS 3/3;
+- +unity5 PASS 3/3.
+
+Cold logins, 12 per build: the pointer was shown 12/12 on every build. The
+race is rare (2/12 on 2026-09-26, 0/12 today), so logins are not the
+regression test.
+
+**Decision.** Keep +unity4/+unity5 as published (`ALREADY_FIXED` /
+`FIXED_LOCAL`):
+- **D1, the #1 fix** - `90f5773`, idle-monitor filter kept independent of
+  the D-Bus name. Design Challenger: REVISE, then APPROVE.
+- **D2, the daemon started twice** - `85d3511`, a separate defect. It is
+  present in the archive and in 26.10. +unity5 starts one instance in 12/12.
+- **D3, libexecdir broken by our 0ubuntu7 base** - `b503ffd`, a separate
+  defect.
+  - It restores the archive's paths and so revives the archive's double
+    start, which is why D2 came with it.
+  - The only program it brought back in a Unity session is
+    `unity-fallback-mount-helper`, which the archive runs too. No journal
+    errors, and no duplicate on media insertion.
+
+Re-splitting the published version would change nothing that runs.
+
+**Found, for separate tasks:**
+- **D4.** `name_vanished_callback` frees the global `xsync` state without
+  resetting it. This is a use-after-free since 2014.
+- **Automount is inert in the Unity session.** The helper needs
+  `SessionIsActive`, which cinnamon-session lacks.
+- **A stray `.git` file in our u-s-d source packages** +unity2..+unity5.
+- **Our base 0ubuntu7 is not the resolute archive version** (0ubuntu6).
