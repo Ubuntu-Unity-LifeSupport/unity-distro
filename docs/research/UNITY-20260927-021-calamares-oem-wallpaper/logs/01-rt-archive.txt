@@ -1,0 +1,4 @@
+deb: calamares-settings-ubuntu-unity_1%3a26.04.12_all.deb basicwallpaper sha256: cdd40699dae079fb
+round 1: calamares windows visible: 1/1 | 1 start=calamares | 2 alt+tab=WALLPAPER,calamares | 3 late wallpaper=WALLPAPER | wallpaper: _NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL _NET_WM_STATE(ATOM) = _NET_WM_STATE_FULLSCREEN 
+round 2: calamares windows visible: 1/1 | 1 start=WALLPAPER | 2 alt+tab=WALLPAPER,calamares | 3 late wallpaper=WALLPAPER | wallpaper: _NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL _NET_WM_STATE(ATOM) = _NET_WM_STATE_FULLSCREEN 
+round 3: calamares windows visible: 1/1 | 1 start=calamares | 2 alt+tab=WALLPAPER,calamares | 3 late wallpaper=WALLPAPER | wallpaper: _NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL _NET_WM_STATE(ATOM) = _NET_WM_STATE_FULLSCREEN 
