@@ -69,8 +69,10 @@ root_cause_mechanism: >-
   raw XUngrabPointer releases the X pointer grab that compiz core still lists
   as "resize". The second _NET_WM_MOVERESIZE is refused by initiateResize
   (this->w already set): no grab push, no XGrabPointer, releaseButton stays 1.
-  (3) With no X grab, the left release goes to another client, so
-  terminateResize never runs and "resize" stays in compiz's grab list.
+  (3) terminateResize never runs and "resize" stays in compiz's grab list
+  (traced). That the left release goes to another client because no X grab
+  is left is INFERENCE from the missing terminate/removeGrab; the release's
+  destination was not probed.
   (4) compiz thaws the synchronous passive AnyButton grab on inactive frames
   (XAllowEvents AsyncPointer/ReplayPointer, src/event.cpp:1370, 1684) only
   when its grab list is empty, so the next click on such a frame freezes the
@@ -86,10 +88,14 @@ root_cause_evidence: >-
   RESIZE-TERMINATE (StateTermButton) -> REMOVE-GRAB -> XUngrabPointer from
   compiz core.
 invariant: >-
-  While compiz core's grab list holds a pointer grab, the X pointer grab
-  belongs to compiz core and is released only by CompScreen::removeGrab
-  (src/screen.cpp pushGrabGeneric/removeGrab keep the two in step). A running
-  move/resize therefore ends on its own button release.
+  While compiz's move or resize operation runs, the X pointer (and, for a
+  keyboard-initiated one, keyboard) grab that compiz core took for it stays
+  with compiz until the operation ends through CompScreen::removeGrab, so a
+  running move/resize ends on its own button release. This is what the
+  +unity10 condition protects. The general form - no in-process component may
+  release an X grab while compiz lists any grab (src/screen.cpp
+  pushGrabGeneric/removeGrab keep list and X grab in step) - is NOT enforced
+  by +unity10; see A2.
 existing_fix_result: FIXED_LOCAL
 existing_fix_evidence: >-
   Only candidate anywhere is our unity f2268bef (+unity10, in aptly, +unity11
@@ -102,9 +108,12 @@ candidate_approaches:
   - "A (current, +unity10): Edge::ButtonDownEvent returns while compiz holds a
     'resize' or 'move' grab. Measured: stuck 0/60 vs 31/60 on +unity9, resize
     10/10 in every variant."
-  - "A2: same place, condition 'compiz holds any grab' (screen->grabbed()).
-    Not built; would also cover grabs of other plugins, none of which was shown
-    to reach this path."
+  - "A2: same place, condition 'compiz lists any grab'
+    (screen->otherGrabExist(nullptr); not screen->grabbed(), which reports
+    compiz's GrabNotify flag). Not built. Matches the general invariant: while
+    any grab is listed, move and resize refuse _NET_WM_MOVERESIZE anyway
+    (move.cpp:57, resize-logic.cpp:1281 otherGrabExist(<self>, NULL)), so
+    Edge's ungrab can then only do harm."
   - "B: drop the raw XUngrabPointer/XUngrabKeyboard from Edge::ButtonDownEvent
     (compiz is the same process). Not built."
   - "C: compiz resize ignores a _NET_WM_MOVERESIZE while resizing. Already
@@ -119,17 +128,21 @@ why_chosen: >-
   The code that breaks the invariant is the raw XUngrabPointer in
   Edge::ButtonDownEvent, reached only because Unity's decorations live inside
   compiz and receive events under compiz's own grab. A stops exactly that call
-  in exactly the state where it is wrong, by asking compiz's own grab list,
-  which is the idiom the move and resize plugins use before initiating
-  (move.cpp:57, resize-logic.cpp:1281 otherGrabExist). It leaves the first
-  press, the title bar and every other widget untouched. Measured fail before
-  and pass after with the same harness on the same boot.
+  in the proven failing state (a move or resize running), by asking compiz's
+  own grab list. It leaves the first press, the title bar and every other
+  widget untouched. Measured fail before and pass after with the same harness
+  on the same boot. Chosen over A2 for scope only: it is the published change
+  and covers every state shown to fail; A2 is not worse on evidence (see
+  alternatives_rejected).
 alternatives_rejected:
-  - "A2: broadens the change to every compiz grab. The one other grab measured
-    (Unity's Alt+Tab 'unity-switcher') never reaches Edge::ButtonDownEvent
-    (runs/uprobe-switcher-edge-unity9.*); scale is filtered in
-    HandleFrameEvent. No evidence that another grab reaches this path, so the
-    wider condition is unproven."
+  - "A2: rejected for scope minimality only, not on evidence. No cost of A2
+    was identified, and it is arguably the condition that matches the general
+    invariant. Of the other grabs, the one measured (Unity's Alt+Tab
+    'unity-switcher') never reaches Edge::ButtonDownEvent
+    (runs/uprobe-switcher-edge-unity9.*) and scale is filtered in
+    HandleFrameEvent (code read); the rest are unknowns below. Changing the
+    published condition is a new package change: proposed as a separate task,
+    with the same A/B series plus the title bar."
   - "B: changes every first press on every border (the ungrab mimics the EWMH
     client protocol before _NET_WM_MOVERESIZE; INFERENCE, not measured: the first
     press can arrive under compiz's frozen passive frame grab). It would also still send a
@@ -149,18 +162,19 @@ code_risks:
   threading_reentrancy: checked
   ABI_API_file_list: not_applicable
 unknowns:
-  - "Grabs of other compiz plugins than move, resize, unity-switcher and scale
-    (e.g. expo) were not measured on this path."
+  - "Grabs other than move, resize, unity-switcher and scale were not
+    measured on this path: unityshell's own 'unity' grab
+    (WindowGestureTarget.cpp:140, window drag by touch gesture), expo."
   - "A mouse click on a border during a keyboard-initiated resize or move
-    (Alt+F8/Alt+F7) is covered by the same condition by construction; not
-    measured."
+    (Alt+F8/Alt+F7, pushGrab ALL): +unity9 would also XUngrabKeyboard compiz's
+    keyboard grab; +unity10 returns first by construction. Not measured."
   - "The middle button during a border drag did not reproduce on +unity9
     (0/10); why was not traced."
   - "unity-shared XWindowManager::StartMove (panel drag of a maximized window)
     also ungrabs raw before _NET_WM_MOVERESIZE; outside #3, not examined."
   - "Real hardware not tested; VirtualBox evdev devices only."
 design_challenger_required: true
-design_review_result: PENDING
+design_review_result: APPROVE
 architectural_task: true
 correct_layer: >-
   Unity's decorations (DecorationsEdge.cpp) are the component that violates
@@ -173,12 +187,47 @@ correct_layer: >-
   compiz's grab list is the authority it must ask.
 defensive_workaround_rejected: >-
   Not a guard at a convenient call site: the early return is at the only place
-  that performs the invariant-breaking ungrab, and its condition is the
-  invariant's own state (compiz holds a move/resize grab). The convenient
+  that performs the invariant-breaking ungrab, and its condition is the state
+  of the invariant it protects (compiz holds a move or resize grab) - not the
+  general any-grab invariant, which A2 would cover. The convenient
   guards elsewhere - compiz thawing frames regardless (D), filtering all
   decoration input (E) - would hide the leaked grab or suppress unrelated input
   instead of preventing the ungrab.
 ```
+
+## Design review
+
+Temporary Design Challenger (`.claude/agents/design-challenger.md`), separate
+read-only subagent.
+
+1. **REVISE** (2026-09-27): layer supported - the lost grab comes from Edge's
+   raw `XUngrabPointer` under compiz's own grab; compiz keeps list and X grab
+   in step on its own paths and the resize plugin correctly refuses the
+   duplicate. But the card claimed more than the code enforces: the invariant
+   was written for any grab while the condition checks only "resize"/"move";
+   the move/resize `otherGrabExist` idiom was cited for A although it supports
+   A2; A2 was misdescribed as `screen->grabbed()` (that is compiz's GrabNotify
+   flag, `privatescreen.h:315-317`, checked); the "unity" gesture grab, expo
+   and the keyboard half of a keyboard-initiated move/resize were missing from
+   the unknowns; step 3 of the mechanism was inferred, not probed. Option (a)
+   taken: invariant, why_chosen, alternatives_rejected (A2),
+   defensive_workaround_rejected, mechanism step 3 and unknowns narrowed or
+   labelled; A2 proposed as a separate task.
+2. **APPROVE** (2026-09-27, same reviewer): every finding of review 1 fixed;
+   layer and regression evidence unchanged and adequate.
+
+## Outcome
+
+`ALREADY_FIXED` / `FIXED_LOCAL`: the published unity `+unity10` change
+(`f2268bef`, in `+unity11` on target) stays as it is. Its layer is confirmed
+by trace, its condition covers every state shown to fail, and the regression
+scenario fails 10/10 without it and passes 10/10 with it (also 10/10 on the
+published `+unity11`). No new package change in this task.
+
+Proposed follow-up (new task, coordinator's decision): A2 - widen the
+condition to `screen->otherGrabExist(nullptr)`, then rerun `rmbslow`, `rmb`,
+`rmb2`, `wheel`, `plain` and the title-bar variants on one boot, and cover the
+unknowns above (gesture "unity" grab, expo, keyboard-initiated move/resize).
 
 ## Measurements (2026-09-27, target-desktop, boot 2026-09-26 20:26:39)
 
