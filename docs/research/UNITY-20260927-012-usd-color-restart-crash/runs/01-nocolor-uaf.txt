@@ -1,0 +1,17 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2144 tunables: GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+STOP-CALLED
+Thread 1 "unity-settings-" received signal SIGSEGV, Segmentation fault.
+AFTER-CONTINUE
+#0  0x000071cc306c0148 in idle_is_session_inhibited (manager=0x5ad54dcc88e0, mask=GSM_INHIBITOR_FLAG_IDLE, is_inhibited=<synthetic pointer>) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1/plugins/power/gsd-power-manager.c:2459
+#1  idle_configure (manager=0x5ad54dcc88e0) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1/plugins/power/gsd-power-manager.c:2495
+#2  0x000071cc3683c68c in g_closure_invoke () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#3  0x000071cc3685abc9 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#4  0x000071cc3685cb66 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#5  0x000071cc3685cdc8 in g_signal_emit_valist () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#6  0x000071cc3685ce83 in g_signal_emit () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#7  0x000071cc35f4efe1 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#8  0x000071cc35f36920 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#9  0x000071cc35d2bc1b in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+u-s-d pid 2144 alive: no; journal since 00:17:34: 0
+вер 29 00:17:35 mike-virtualbox unity-settings-daemon[2144]: g_signal_handlers_disconnect_matched: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+crash files: _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
