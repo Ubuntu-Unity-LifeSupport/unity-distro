@@ -1,0 +1,93 @@
+From 35ecca4d99553a7538260e2a8193ce37067f98bb Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 15:45:34 +0000
+Subject: [PATCH 5/5] fix-fullscreen-mode-list-double-free.patch: detect the
+ second free with AddressSanitizer
+
+glibc's malloc checking missed it in the build (the control passed): the
+chunk had been handed out again before the destructor freed it. ASan's
+quarantine reports it every time (5 of 5 on target2).
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ ...fix-fullscreen-mode-list-double-free.patch | 25 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/debian/patches/fix-fullscreen-mode-list-double-free.patch b/debian/patches/fix-fullscreen-mode-list-double-free.patch
+index 9ff2a68..f17aeac 100644
+--- a/debian/patches/fix-fullscreen-mode-list-double-free.patch
++++ b/debian/patches/fix-fullscreen-mode-list-double-free.patch
+@@ -8,8 +8,11 @@ Description: Do not free the XF86VidMode mode list twice after a fullscreen swit
+  fullscreen, so shipped consumers do not reach it.
+  .
+  Clear the pointer and the count after the free. The test creates a fullscreen
+- display at the current mode's size and destroys it in a child running with
+- libc_malloc_debug; it is skipped when the server has no XF86VidMode modes.
++ display at the current mode's size and destroys it in a child with
++ AddressSanitizer preloaded (libasan.so.8), which reports the second free
++ every time; glibc's malloc checking misses it once the chunk is reused. It is
++ skipped when the server has no XF86VidMode modes and fails if the child has
++ no AddressSanitizer.
+ Author: NeiroNext <mihail.rozshko@gmail.com>
+ Forwarded: no
+ Last-Update: 2026-09-28
+@@ -45,10 +48,11 @@ Index: nux/tests/gtest-nuxgraphics-graphic-display.cpp
+ ===================================================================
+ --- nux.orig/tests/gtest-nuxgraphics-graphic-display.cpp
+ +++ nux/tests/gtest-nuxgraphics-graphic-display.cpp
+-@@ -1,9 +1,16 @@
++@@ -1,9 +1,17 @@
+  #include <memory>
+ +#include <cstdlib>
+ +#include <unistd.h>
+++#include <dlfcn.h>
+  #include <gmock/gmock.h>
+  #include <glib.h>
+  
+@@ -62,14 +66,15 @@ Index: nux/tests/gtest-nuxgraphics-graphic-display.cpp
+  
+  using namespace testing;
+  using namespace nux;
+-@@ -42,6 +49,47 @@ TEST_F(TestGraphicsDisplay, X11Timestamp
++@@ -42,6 +50,50 @@ TEST_F(TestGraphicsDisplay, X11Timestamp
+    EXPECT_EQ(xevent.xbutton.time, event_time);
+  }
+  
+ +// A fullscreen window switches to the XF86VidMode mode of its size and frees
+ +// the mode list; the destructor then freed the same list a second time. The
+-+// display is created and destroyed in a child process that runs with glibc's
+-+// malloc checking, so the second free aborts it.
+++// display is created and destroyed in a child process with AddressSanitizer
+++// preloaded: its quarantine reports the second free every time, where glibc's
+++// own checks miss it once the chunk has been handed out again.
+ +TEST(TestGraphicsDisplayFullscreen, DestroyAfterModeSwitchFreesModeListOnce)
+ +{
+ +  Display* dpy = XOpenDisplay(NULL);
+@@ -90,10 +95,12 @@ Index: nux/tests/gtest-nuxgraphics-graphic-display.cpp
+ +
+ +  // The child is a new exec of this test, so it inherits the environment.
+ +  GTEST_FLAG_SET(death_test_style, "threadsafe");
+-+  g_setenv("LD_PRELOAD", "libc_malloc_debug.so.0", TRUE);
+-+  g_setenv("GLIBC_TUNABLES", "glibc.malloc.check=3", TRUE);
+++  g_setenv("LD_PRELOAD", "libasan.so.8", TRUE);
+++  g_setenv("ASAN_OPTIONS", "detect_leaks=0:verify_asan_link_order=0:alloc_dealloc_mismatch=0", TRUE);
+ +
+ +  EXPECT_EXIT({
+++    if (!dlsym(RTLD_DEFAULT, "__asan_init"))
+++      _exit(3); // no AddressSanitizer in the child: the test would prove nothing
+ +    nux::NuxCoreInitialize(0);
+ +    nux::NuxGraphicsInitialize();
+ +    nux::GraphicsDisplay* display =
+@@ -104,7 +111,7 @@ Index: nux/tests/gtest-nuxgraphics-graphic-display.cpp
+ +  }, ::testing::ExitedWithCode(0), "");
+ +
+ +  g_unsetenv("LD_PRELOAD");
+-+  g_unsetenv("GLIBC_TUNABLES");
+++  g_unsetenv("ASAN_OPTIONS");
+ +}
+ +
+  #endif
+-- 
+2.53.0
+

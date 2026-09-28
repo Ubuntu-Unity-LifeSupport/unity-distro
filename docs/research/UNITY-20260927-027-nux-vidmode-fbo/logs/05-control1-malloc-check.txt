@@ -1,0 +1,21 @@
+# Control 1 (53d5639, +unity3~ctl1, not for release): both new tests, neither fix; the double-free test then
+# detected with libc_malloc_debug + glibc.malloc.check=3. sbuild 2026-09-28.
+# - TestFrameBufferObject FAILS without the FBO fix: the texture's references stay at 2 (1 expected). Fail before.
+# - TestGraphicsDisplayFullscreen PASSES without the fix: malloc checking did not catch the second free here
+#   (on target2 it did, logs/02). INFERENCE, not traced: the chunk is handed out again between the two frees,
+#   and freeing someone else's live chunk passes the check. The test was switched to AddressSanitizer (quarantine), control 2.
+11648:[  PASSED  ] 130 tests.
+11697:[ RUN      ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce
+11698:[       OK ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (230 ms)
+11702:[ RUN      ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased
+11704:gtest-nuxgraphics-fbo.cpp:47: Failure
+11705:Expected equality of these values:
+11706:  texture->GetReferenceCount()
+11707:    Which is: 2
+11708:  refs_before
+11709:    Which is: 1
+11711:[  FAILED  ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (286 ms)
+11716:[  PASSED  ] 10 tests.
+11717:[  FAILED  ] 1 test, listed below:
+11718:[  FAILED  ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased
+11762:Status: attempted
