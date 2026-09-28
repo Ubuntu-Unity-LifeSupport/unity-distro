@@ -1,0 +1,21 @@
+# dialogtitle clock (Mahjongg stand-in): the window title must follow the header label. Same 4 builds, same session.
+== 6b1f70a
+  clock: label 00:01, window title '00:01', label opacity 1, visible 0
+  clock: label 00:02, window title '00:02', label opacity 1, visible 0
+  clock: label 00:03, window title '00:03', label opacity 1, visible 0
+  clock: label 00:04, window title '00:04', label opacity 1, visible 0
+== 2cfc8f1
+  clock: label 00:01, window title '00:01', label opacity 1, visible 0
+  clock: label 00:02, window title '00:02', label opacity 1, visible 0
+  clock: label 00:03, window title '00:03', label opacity 1, visible 0
+  clock: label 00:04, window title '00:04', label opacity 1, visible 0
+== e817d80
+  clock: label 00:01, window title '00:01', label opacity 1, visible 0
+  clock: label 00:02, window title '00:02', label opacity 1, visible 0
+  clock: label 00:03, window title '00:03', label opacity 1, visible 0
+  clock: label 00:04, window title '00:04', label opacity 1, visible 0
+== a57e976
+  clock: label 00:01, window title '00:01', label opacity 1, visible 0
+  clock: label 00:02, window title '00:02', label opacity 1, visible 0
+  clock: label 00:03, window title '00:03', label opacity 1, visible 0
+  clock: label 00:04, window title '00:04', label opacity 1, visible 0
