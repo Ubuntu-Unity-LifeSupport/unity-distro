@@ -21,7 +21,7 @@ snapshot, before and after the normal update from our aptly. Agent A, target
    `/etc/apt/keyrings/unity-distro.asc` as before the rollback), `apt-get
    update && apt-get full-upgrade`, reboot: unity `+unity11`, compiz `+unity2`,
    gtk-nocsd `4.8-1+unity3`, nux `0ubuntu15+unity2`, cinnamon-session
-   `+unity3` and the rest of our packages (`runs/after/packages.txt`, 60
+   `+unity3` and the rest of our packages (`runs/after/packages.txt`, 55
    packages with `+unity`).
 4. **After**: the same `tools/run-all.sh` (`runs/after/`), then
    `tools/logout-cycles.sh` (two logouts, root through systemd-run, as in
@@ -39,7 +39,7 @@ gtk-nocsd's crash handler with a GTK3 window that segfaults
 segfault / general protection / core dump / `g_hash_table` lines in the
 journal, and `/var/crash`.
 
-Two before-runs were lost to my tools, kept for the record: the xterms'
+Three before-runs were lost to my tools, the first two kept for the record: the xterms'
 shell retitled them (`runs/00-...`), then `vpdump.sh` read only
 `_NET_WM_NAME` (`runs/00b-...`); a third hung in `xwininfo` because the run
 started before compiz managed windows (not kept). All three already showed
