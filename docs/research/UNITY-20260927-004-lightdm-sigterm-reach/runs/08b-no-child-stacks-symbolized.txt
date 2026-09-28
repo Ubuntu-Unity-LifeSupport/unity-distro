@@ -1,0 +1,38 @@
+== 120077
+0x76abc06ac802 libc.so.6+0xac802: __syscall_cancel_arch + 50 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 56 of "../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S" starts at address 0xac802 <__syscall_cancel_arch+50> and ends at 0xac80
+0x76abc02c21e4 pam_systemd.so+0x5b1e4: No symbol matches 0x5b1e4. | No line number information available for address 0x5b1e4
+0x76abc02a1e7b pam_systemd.so+0x3ae7b: No symbol matches 0x3ae7b. | No line number information available for address 0x3ae7b
+0x76abc08a8b2f libpam.so.0.85.1+0x9b2f: No symbol matches 0x9b2f. | No line number information available for address 0x9b2f
+== 124497
+0x7a5437eac802 libc.so.6+0xac802: __syscall_cancel_arch + 50 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 56 of "../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S" starts at address 0xac802 <__syscall_cancel_arch+50> and ends at 0xac80
+0x7a5437f2c462 libc.so.6+0x12c462: fsync + 34 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 28 of "../sysdeps/unix/sysv/linux/fsync.c" starts at address 0x12c462 <__GI_fsync+34> and ends at 0x12c464.
+0x598f45eac6d7 lightdm+0x236d7: x_authority_write + 1623 in section .text of /usr/sbin/lightdm | Line 353 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/x-authority.c" starts at address 0x236d7 <x_authority_write+1623> and ends at 0x236de <x_authority
+0x598f45eb23eb lightdm+0x293eb: session_child_run + 5899 in section .text of /usr/sbin/lightdm | Line 780 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/session-child.c" starts at address 0x293eb <session_child_run+5899> and ends at 0x293f5 <session_c
+0x598f45e93351 lightdm+0xa351: main + 2193 in section .text of /usr/sbin/lightdm | Line 562 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/lightdm.c" starts at address 0xa347 <main+2183> and ends at 0xa36a <main+2218>.
+0x7a5437e2a601 libc.so.6+0x2a601: __libc_start_call_main + 129 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 83 of "../sysdeps/nptl/libc_start_call_main.h" starts at address 0x2a601 <__libc_start_call_main+129> and ends at 0x2a608 <__lib
+0x7a5437e2a718 libc.so.6+0x2a718: __libc_start_main + 136 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 128 of "../csu/libc-start.c" starts at address 0x2a718 <__libc_start_main_impl+136> and ends at 0x2a722 <__libc_start_main_impl+146>.
+0x598f45e94bc5 lightdm+0xbbc5: _start + 37 in section .text of /usr/sbin/lightdm | No line number information available for address 0xbbc5 <_start+37>
+== 127605
+0x7b4b38cac802 libc.so.6+0xac802: __syscall_cancel_arch + 50 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 56 of "../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S" starts at address 0xac802 <__syscall_cancel_arch+50> and ends at 0xac80
+0x7b4b38d2c462 libc.so.6+0x12c462: fsync + 34 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 28 of "../sysdeps/unix/sysv/linux/fsync.c" starts at address 0x12c462 <__GI_fsync+34> and ends at 0x12c464.
+0x5c7c523616d7 lightdm+0x236d7: x_authority_write + 1623 in section .text of /usr/sbin/lightdm | Line 353 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/x-authority.c" starts at address 0x236d7 <x_authority_write+1623> and ends at 0x236de <x_authority
+0x5c7c523673eb lightdm+0x293eb: session_child_run + 5899 in section .text of /usr/sbin/lightdm | Line 780 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/session-child.c" starts at address 0x293eb <session_child_run+5899> and ends at 0x293f5 <session_c
+0x5c7c52348351 lightdm+0xa351: main + 2193 in section .text of /usr/sbin/lightdm | Line 562 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/lightdm.c" starts at address 0xa347 <main+2183> and ends at 0xa36a <main+2218>.
+0x7b4b38c2a601 libc.so.6+0x2a601: __libc_start_call_main + 129 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 83 of "../sysdeps/nptl/libc_start_call_main.h" starts at address 0x2a601 <__libc_start_call_main+129> and ends at 0x2a608 <__lib
+0x7b4b38c2a718 libc.so.6+0x2a718: __libc_start_main + 136 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 128 of "../csu/libc-start.c" starts at address 0x2a718 <__libc_start_main_impl+136> and ends at 0x2a722 <__libc_start_main_impl+146>.
+0x5c7c52349bc5 lightdm+0xbbc5: _start + 37 in section .text of /usr/sbin/lightdm | No line number information available for address 0xbbc5 <_start+37>
+== 130651
+0x7678cc6ac802 libc.so.6+0xac802: __syscall_cancel_arch + 50 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 56 of "../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S" starts at address 0xac802 <__syscall_cancel_arch+50> and ends at 0xac80
+== 133663
+0x7d35b7eb2258 libc.so.6+0xb2258: _int_free_merge_chunk + 376 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 4465 of "./malloc/malloc.c" starts at address 0xb2258 <_int_free_merge_chunk+376> and ends at 0xb225b <_int_free_merge_chunk+379>
+0x7d35b7eb23b4 libc.so.6+0xb23b4: _int_free_chunk + 180 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 4368 of "./malloc/malloc.c" starts at address 0xb23b4 <_int_free_chunk+180> and ends at 0xb23b8 <_int_free_chunk+184>.
+0x7d35b8806072 ld-linux-x86-64.so.2+0x3072: _dl_close_worker.part.0 + 2290 in section .text of /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 | Line 491 of "./elf/dl-close.c" starts at address 0x3072 <_dl_close_worker+2290> and ends at 0x3083 <_dl_close_worker+230
+0x7d35b880671c ld-linux-x86-64.so.2+0x371c: _dl_close + 124 in section .text of /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 | Line 120 of "./elf/dl-close.c" starts at address 0x3708 <_dl_close+104> and ends at 0x3720 <_dl_close+128>.
+0x7d35b8805513 ld-linux-x86-64.so.2+0x2513: _dl_catch_exception + 163 in section .text of /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 | Line 69 of "./elf/dl-catch.c" starts at address 0x2513 <__GI__dl_catch_exception+163> and ends at 0x251a <__GI__dl_catch_exce
+0x7d35b8805659 ld-linux-x86-64.so.2+0x2659: _dl_catch_error + 41 in section .text of /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 | Line 260 of "./elf/dl-catch.c" starts at address 0x2659 <_dl_catch_error+41> and ends at 0x265b <_dl_catch_error+43>.
+0x7d35b7e9f993 libc.so.6+0x9f993: _dlerror_run + 163 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 145 of "./dlfcn/dlerror.c" starts at address 0x9f993 <_dlerror_run+163> and ends at 0x9f997 <_dlerror_run+167>.
+0x7d35b7e9f6d3 libc.so.6+0x9f6d3: dlclose + 51 in section .text of /usr/lib/x86_64-linux-gnu/libc.so.6 | Line 32 of "./dlfcn/dlclose.c" starts at address 0x9f6d3 <__dlclose+51> and ends at 0x9f6d4 <__dlclose+52>.
+0x7d35b8216efb libpam.so.0.85.1+0x3efb: No symbol matches 0x3efb. | No line number information available for address 0x3efb
+0x7d35b821813a libpam.so.0.85.1+0x513a: pam_end + 122 in section .text | No line number information available for address 0x513a <pam_end+122>
+0x640361232859 lightdm+0x28859: session_child_run + 2937 in section .text of /usr/sbin/lightdm | Line 799 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/session-child.c" starts at address 0x28859 <session_child_run+2937> and ends at 0x28863 <session_c
+0x640361214351 lightdm+0xa351: main + 2193 in section .text of /usr/sbin/lightdm | Line 562 of "/usr/src/lightdm-1.32.0-6ubuntu4+unity1/src/lightdm.c" starts at address 0xa347 <main+2183> and ends at 0xa36a <main+2218>.

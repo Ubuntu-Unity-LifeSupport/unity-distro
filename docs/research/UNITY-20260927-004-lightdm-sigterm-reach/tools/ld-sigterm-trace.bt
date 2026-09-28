@@ -19,6 +19,15 @@ tracepoint:sched:sched_process_exec /pid > 0 && comm != "lightdm" && curtask->re
   printf("%s exec %d %s (parent %d)\n", strftime("%H:%M:%S.%f", nsecs), pid, str(args.filename), curtask->real_parent->tgid);
 }
 
+// Save the maps of the greeter's session-child while it is alive (it starts
+// the greeter wrapper), so that the unsymbolized stacks printed when it is
+// interrupted can be resolved afterwards (tools/symbolize.sh). Needs
+// bpftrace --unsafe.
+tracepoint:sched:sched_process_exec /str(args.filename) == "/usr/lib/lightdm/lightdm-greeter-session"/
+{
+  system("cp /proc/%d/maps /var/tmp/ldmaps.%d", curtask->real_parent->tgid, curtask->real_parent->tgid);
+}
+
 tracepoint:signal:signal_generate /args.sig == 15 && (args.comm == "lightdm" || comm == "lightdm")/
 {
   printf("%s SIGTERM %d(%s) -> %d(%s) result %d\n", strftime("%H:%M:%S.%f", nsecs), pid, comm, args.pid, args.comm, args.result);

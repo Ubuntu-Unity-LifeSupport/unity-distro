@@ -1,0 +1,24 @@
+== 120077
+вер 28 17:57:12.970915 mike-virtualbox lightdm[120077]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 17:57:13.575646 mike-virtualbox lightdm[120077]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 17:57:44.593752 mike-virtualbox lightdm[120077]: pam_unix(lightdm-greeter:session): session closed for user lightdm
+вер 28 17:57:44.596492 mike-virtualbox lightdm[120077]: pam_unix(lightdm-greeter:session): session closed for user lightdm
+вер 28 17:57:44.588317 mike-virtualbox systemd[1]: session-c29.scope: Killing process 120077 (lightdm) with signal SIGTERM.
+== 124497
+вер 28 17:59:50.406691 mike-virtualbox lightdm[124497]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 17:59:51.552704 mike-virtualbox lightdm[124497]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:00:00.570893 mike-virtualbox systemd[1]: session-c30.scope: Killing process 124497 (lightdm) with signal SIGTERM.
+== 127605
+вер 28 18:00:29.003605 mike-virtualbox lightdm[127605]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:00:29.632425 mike-virtualbox lightdm[127605]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:00:39.316480 mike-virtualbox systemd[1]: session-c31.scope: Killing process 127605 (lightdm) with signal SIGTERM.
+== 130651
+вер 28 18:01:07.739258 mike-virtualbox lightdm[130651]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:01:08.156727 mike-virtualbox lightdm[130651]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:01:17.123718 mike-virtualbox systemd[1]: session-c32.scope: Killing process 130651 (lightdm) with signal SIGTERM.
+== 133663
+вер 28 18:01:45.706153 mike-virtualbox lightdm[133663]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:01:46.193293 mike-virtualbox lightdm[133663]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+вер 28 18:01:55.832151 mike-virtualbox lightdm[133663]: pam_unix(lightdm-greeter:session): session closed for user lightdm
+вер 28 18:01:55.833780 mike-virtualbox lightdm[133663]: pam_unix(lightdm-greeter:session): session closed for user lightdm
+вер 28 18:01:55.826221 mike-virtualbox systemd[1]: session-c33.scope: Killing process 133663 (lightdm) with signal SIGTERM.
