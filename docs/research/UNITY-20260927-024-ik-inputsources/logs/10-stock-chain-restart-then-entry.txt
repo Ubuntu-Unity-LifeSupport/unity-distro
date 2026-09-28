@@ -1,0 +1,18 @@
+# The whole chain under the systemd unit, stock indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1, unity-greeter,
+# target2 after a normal reboot (2026-09-28 17:47 EEST). pid 1405 (boot) had no UNITY_GREETER_DBUS_NAME;
+# 17:48:01 systemctl restart accounts-daemon -> SIGSEGV; the unit restarts as pid 1776 with
+# UNITY_GREETER_DBUS_NAME=:1.4; ~17:48:30 up/down/up/down (mike <-> *other) -> SIGSEGV again. journalctl -b:
+вер 28 17:47:47 target2 systemd[1235]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 28 17:47:48 target2 indicator-keyboard-service[1405]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 28 17:48:02 target2 indicator-keyboard-service[1405]: g_variant_ref: assertion 'value != NULL' failed
+вер 28 17:48:02 target2 kernel: indicator-keybo[1405]: segfault at 30 ip 00007c7860ba82c8 sp 00007fffdc050380 error 6 in libglib-2.0.so.0.8800.0[222c8,7c7860ba5000+a60
+вер 28 17:48:04 target2 systemd[1235]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 17:48:04 target2 systemd[1235]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 28 17:48:04 target2 indicator-keyboard-service[1776]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 28 17:48:04 target2 indicator-keyboard-service[1776]: ActUserManager: user (null) has no username (uid: -1)
+вер 28 17:48:31 target2 indicator-keyboard-service[1776]: g_variant_ref: assertion 'value != NULL' failed
+вер 28 17:48:31 target2 kernel: indicator-keybo[1776]: segfault at 30 ip 000078e6eceb42c8 sp 00007fff81435310 error 6 in libglib-2.0.so.0.8800.0[222c8,78e6eceb1000+a60
+вер 28 17:48:33 target2 systemd[1235]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 17:48:33 target2 systemd[1235]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 28 17:48:33 target2 indicator-keyboard-service[1833]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 28 17:48:33 target2 indicator-keyboard-service[1833]: ActUserManager: user (null) has no username (uid: -1)

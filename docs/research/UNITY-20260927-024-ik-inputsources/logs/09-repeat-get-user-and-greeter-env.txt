@@ -18,7 +18,6 @@ round 2 mike: is_loaded=True nonexistent=False user_name='mike' input_sources=[{
 #  - pid 14718 and later, started with `systemctl --user restart indicator-keyboard.service` after
 #    unity-greeter had run: environ has UNITY_GREETER_DBUS_NAME=:1.39 (the greeter's unique name), no
 #    DISPLAY. The entry path is live (logs/06, 07, 08).
-#  Which of the two a normal boot gives was not measured.
 
 # 3. Normal boot (systemctl reboot, 2026-09-28 17:41 EEST, unity-greeter, +unity3 installed): the
 #    service (pid 1402, started 17:42:47) has neither UNITY_GREETER_DBUS_NAME nor DISPLAY; the lightdm

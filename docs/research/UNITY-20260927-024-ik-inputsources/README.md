@@ -65,7 +65,7 @@ observed: >
   restart. +unity3 survives six switches with no message.
 expected: the service does not crash, and the greeter's layouts are whole again once the daemon is back
 reproduction: act-probe.py, nonexistent-probe.py, repeat-get-user-probe.py, greeter-restart.sh, greeter-trace.bt, restart-trace.bt (this directory); unity-greeter + up/down keys (logs/06-08); the restart crash in research/indicator-keyboard-2166139/ (ik.sh, +unity2 3 of 3 SIGSEGV)
-evidence: logs/01-09
+evidence: logs/01-10
 root_cause: see "Mechanism"
 root_cause_mechanism: >
   libaccountsservice keeps each ActUser's AccountsUser GDBusProxy across a
@@ -87,7 +87,7 @@ invariant: >
   After a daemon restart the greeter's layout list is whole again.
 existing_fix_result: PATCH_ALREADY_EXISTS  # our +unity3 10eb95c
 design_challenger_required: true
-design_review_result: REVISE (round 1; findings answered below), round 2 pending
+design_review_result: APPROVE  # round 1 REVISE, round 2 REVISE on the record only (DECISIONS.md), fixed; see "Design review"
 architectural_task: false
 correct_layer: >
   The consumer. For a name that does not exist, libaccountsservice hands
@@ -116,7 +116,10 @@ unknowns:
     lightdm_user_list_get_user_by_name) still has no test of its own; it only
     removes a g_return_val_if_fail critical, not a crash
   - the empty list written inside the restart window (see below) was only
-    watched for about 0.2 s; typing a password in that window was not tested
+    watched for about 0.2 s. Not tested: typing a password in that window,
+    and other readers of the greeter's input-sources settings in the
+    greeter session (the service's own readers check the index,
+    main.vala:620 and 690)
   - the case of a daemon that never comes back is inferred: the greeter's
     list would stay empty until the service or greeter restarts
 ```
@@ -128,7 +131,10 @@ unknowns:
 `act-probe.py` watches the manager and the user `mike` with 20 ms snapshots
 while accounts-daemon restarts. Every run looked the same (3 of 3):
 
-Times below are from logs/01; the NULL span is 0.10-0.17 s per run.
+Times below are from logs/01; the NULL span is 0.10-0.17 s per run. That is
+the library window. The 0.21-0.25 s under unity-greeter (below) is a
+different measure: how long the settings write inside the window is
+visible.
 
 | time (s) | event | user object |
 |---|---|---|
@@ -193,8 +199,12 @@ when `UNITY_GREETER_DBUS_NAME` is set (main.vala:105-113). After a normal
 boot the unit starts before unity-greeter puts that variable into the
 lightdm user manager's environment, so the path is dead. Any later start
 of the unit has it, for example a `Restart=on-failure` after a crash
-(logs/09). With the stock package, one daemon restart therefore arms the
-entry crash. This start-order dependency is a separate defect: after boot
+(logs/09). With the stock package, one daemon restart arms the entry crash. This was
+run as one chain after a normal boot (logs/10):
+- the restart crashes the service;
+- `Restart=on-failure` brings it back with the variable;
+- two `*other` selections crash it again.
+This start-order dependency is a separate defect: after boot
 the greeter's layout does not follow the selected user at all.
 
 ## The consumer inside the restart window (logs/05, 06)
@@ -215,7 +225,10 @@ What gets written differs by greeter:
 | lightdm-gtk-greeter, started by hand with DISPLAY=:0 (logs/05) | `[gb]`, current 0 | `[gb, us]`, 0 | 3 of 3 |
 | unity-greeter, systemd unit, no DISPLAY (logs/06) | `[]`, current 4294967295, for 0.21-0.25 s | `[gb, us]`, 0 | 3 of 3 |
 
-Under the unit, LightDM's system layout adds nothing without a display.
+Under the unit, LightDM's system layout added nothing: `lightdm_get_layout`
+was called and the list still came out empty. That it returns nothing
+without a display is deduced from that result, not read from its return
+value.
 The list is then empty, and `current = list.size - 1` underflows. That
 line is stock code; +unity3 only makes it reachable instead of crashing
 first. Nothing was seen to persist. For a lasting effect the daemon would

@@ -1346,6 +1346,10 @@ which trusted `act_user_get_input_sources()` (transfer none, NULL while
 AccountsService has nothing cached) not to return NULL. accountsservice
 documents that NULL, so it is not a bug there.
 
+*Corrected 2026-09-28 by UNITY-20260927-024 (below): accountsservice does
+not document that NULL, and the crash is also reachable without a daemon
+restart.*
+
 Reproduced by restarting accounts-daemon under the greeter's service:
 `+unity2` crashed 3 of 3, `+unity3` survived 3 of 3. Tests pass 10 of 10,
 including a new one for NULL. Details: `research/indicator-keyboard-2166139/`.
@@ -1746,3 +1750,36 @@ resolute upload fixes any of the 11 CVEs.
 changelog at the next upload, which xorg-watch triggers: "29" becomes "31",
 with the CVE-to-commit list. A CVE-only subset would be a combination nobody
 else builds; a new upload only for the wording is not worth a version.
+
+## 2026-09-28 - UNITY-20260927-024: a NULL InputSources is the consumer's to handle (agent B)
+
+**Context.** Legacy B-L17: indicator-keyboard +unity3 (LP #2166139) guards a
+NULL `act_user_get_input_sources()`, and the record said accountsservice
+documents that NULL. Record: `research/UNITY-20260927-024-ik-inputsources/`
+(branch `b/UNITY-20260927-024`).
+
+**Measured.** On target2, accountsservice 23.13.9-8ubuntu5.2:
+
+- **A nonexistent user.** libaccountsservice hands out a nonexistent user
+  as a loaded object whose getters all return NULL. Under unity-greeter,
+  moving the selection mike -> `*other` -> mike -> `*other` makes the
+  greeter's indicator-keyboard read that NULL. Stock 0ubuntu1 segfaults
+  3 of 3; +unity3 survives.
+- **A daemon restart.** The manager reports `is-loaded` 0.10-0.17 s before
+  its users have their properties back, so its handler reads NULL (3 of 3).
+  Upstream MR !58 (2020) fixed the manager half of this; the user half is
+  still open on main.
+- The getter is Ubuntu's patch 0016 and is not annotated `(nullable)`.
+
+**Decision.** The consumer owns the NULL. +unity3 stays unchanged:
+`ALREADY_FIXED` / `PATCH_ALREADY_EXISTS`. A libaccountsservice fix, best
+done on the manager side, would remove only the notification-time read. It
+would not cover the owner-gone span or nonexistent users, so we do not carry
+it. It can go upstream as a report through C and May.
+
+Follow-ups are listed in the record:
+
+- the empty source list written inside the restart window;
+- the greeter unit starting without `UNITY_GREETER_DBUS_NAME` after boot;
+- the weak `users` list;
+- libaccountsservice1 in 26.10.
