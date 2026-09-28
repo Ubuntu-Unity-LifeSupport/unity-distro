@@ -19,8 +19,8 @@ issue_search_result: NOT_FOUND  # project-local package; DECISIONS/PATCHES/board
 source_version: unity-session 49.4+unity1 (our aptly; archive 49.4 in resolute and stonking)
 binary_version: libunity-gtk4-menu0 0.9 (our aptly)
 observed: >
-  logs/01: clean Clean-2 plus our repository, full-upgrade. It installs 79
-  packages from our aptly, including new Recommends of upgraded packages
+  logs/01: clean Clean-2 plus our repository, full-upgrade. It upgrades and
+  installs packages from our aptly, including new Recommends of upgraded packages
   (ayatana-indicator-messages from ubuntu-unity-desktop 0.29+unity1), but not
   libunity-gtk4-menu0 (candidate 0.9, "Reverse Depends:" empty). Its
   environment.d snippet is absent, so no GTK4 global menu in the session.
@@ -116,6 +116,26 @@ unknowns:
     this task
   - libunity-gtk4-menu0 is Architecture: any, Multi-Arch: same, published for
     amd64 only
+  - (verifier) the measured path is 49.4 -> +unity2; users of our repository
+    will go +unity1 -> +unity2, which APT's new-Recommends rule treats the
+    same way, but this was not measured
+  - (verifier) once installed by default, the environment.d snippet preloads
+    the library into every process of any systemd user session on the
+    machine, not only Unity's. The library is installed setuid root
+    (mode 4644, not executable; deliberate, copied from gtk-nocsd's lintian
+    overrides), so glibc also preloads it into setuid programs such as sudo
+    and pkexec. "Does nothing outside a Unity session" was measured only for
+    the gtk-nocsd-merged build (DECISIONS 2026-09-25), not for 0.9 alone.
+    libgtk-nocsd0 has the same properties and the same Recommends precedent,
+    so this is not a blocker, but it widens the exposure from hand-installed
+    to default: a decision for May, reported to C
+  - (verifier) logs/06 has no negative control (the same application
+    without the library); crediting _GTK_MENUBAR_OBJECT_PATH to the library
+    rests on its design and research/layer-b
+  - (verifier) repro.sh's "simulate full-upgrade: newly installed" section is
+    empty because `grep -v '\['` drops every Inst line; logs/01's list of
+    upgraded/new packages is cut at 40 lines, so "79 packages" is not
+    verifiable from the log
 ```
 
 ## Reproduction
@@ -208,6 +228,22 @@ below. With these added the verdict is APPROVE, as stated in round 1.
   With publication stopped (047), that waits for the pipeline. Nothing was
   written to aptly.
 
+## Verification
+
+Independent verifier (read-only; no aptly, sudo or VMs): **PASS**, finding
+PATCH_CORRECT, review status REVIEWED. What was confirmed:
+
+- the failure and the root cause, with no pin, architecture or Conflicts
+  involved;
+- the patch: one Recommends line, the version order and a UTC changelog
+  trailer;
+- the built .deb, which matches the +unity1 one except for Version and
+  Recommends, and whose hash matches the installed file;
+- the claims of logs/05 and logs/06.
+
+The unknowns it added are in the card above.
+
 ## Status
 
-VERIFYING -> independent review; then BLOCKED at the publication gate (047).
+BLOCKED at the publication gate: the version check and gate need the
+package in an aptly snapshot (047).
