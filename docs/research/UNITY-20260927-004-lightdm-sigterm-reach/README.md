@@ -15,7 +15,7 @@ Default stack on target: lightdm `+unity1`, greeter `lightdm-gtk-greeter`
 PAM service `lightdm-greeter` (pam_env, pam_permit, pam_unix, pam_systemd,
 common-session), systemd 259.5-0ubuntu3.4, glibc 2.43-2ubuntu2.4.
 
-## 1. The path is reached on every login from the greeter
+## 1. The path is open on every login from the greeter, and taken in most
 
 `tools/ld-sigterm-trace.bt` (bpftrace, whole machine) logs every SIGTERM to or
 from a lightdm process, its delivery, and what `signal_cb()` does next:
@@ -27,7 +27,8 @@ own comm; runs 03-04 match them by the thread-group leader (a process-directed
 signal can land on any of session-child's four threads: lightdm, pool-spawner,
 gmain, gdbus - `runs/05`).
 
-What happens when the greeter stops (FACT, every stop in the runs):
+What happens when the greeter stops (FACT, steps 1-3 in every stop in the
+runs; step 4 depends on the timing, table below):
 
 1. `systemd` (PID 1) sends SIGTERM to the greeter's session-child: logind is
    stopping the greeter's scope (`session-cN.scope: Killing process ... with
@@ -100,7 +101,7 @@ task_id: UNITY-20260927-004
 package: lightdm
 target_series: resolute
 issue: LP #2168421 / canonical/lightdm#484 - reachability of signal_cb()'s exit() on our default stack, and the layer of our _exit() fix
-status: REPRODUCED   # the no-child branch, naturally, on every greeter login (9/15 stops); the hang: NOT_REPRODUCED on the default stack
+status: REPRODUCED   # the no-child branch, naturally: exposed on every greeter login, taken in 9/15 stops; the hang: NOT_REPRODUCED on the default stack
 issue_search_result: FOUND   # #484 open, maintainer asked the reporter to try _exit (2026-09-28); LP task New
 source_version: 1.32.0-6ubuntu4+unity1 (published); stock 1.32.0-6ubuntu4 for the before runs
 binary_version: 1.32.0-6ubuntu4+unity1 on target (restored after the runs)
@@ -108,7 +109,7 @@ source_commit: >-
   Ubuntu-Unity-LifeSupport/lightdm unity/resolute
   50a6a5dd8974a95db064f4a19dabe22becc329c0 (patch 91ac0049a44e)
 observed: >-
-  On every login from the greeter, logind's scope stop and the lightdm daemon
+  On every stop of the greeter, logind's scope stop and the lightdm daemon
   each send the greeter's session-child a SIGTERM; in 9 of 15 stops the second
   arrives after the greeter was reaped and signal_cb() leaves through the
   no-child branch during cleanup. On the default stack exit() there completes
