@@ -1,0 +1,34 @@
+вер 28 16:16:33.443536 mike-virtualbox delaytest[4198]: action=poweroff cinnamon-session 6.4.2-1+unity3; inhibitors: 1
+вер 28 16:16:33.447373 mike-virtualbox delaytest[4199]: calling org.gnome.SessionManager.Shutdown
+вер 28 16:16:33.535256 mike-virtualbox delaytest[4211]: t=1 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:16:34.611481 mike-virtualbox delaytest[4223]: t=2 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:16:35.684384 mike-virtualbox delaytest[4258]: t=3 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:16:36.748230 mike-virtualbox delaytest[4267]: t=4 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:16:37.807602 mike-virtualbox delaytest[4276]: t=5 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:16:38.866910 mike-virtualbox delaytest[4285]: t=6 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:16:43.119734 mike-virtualbox delaytest[4321]: t=10 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:17:04.713074 mike-virtualbox delaytest[4606]: t=30 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:17:37.083216 mike-virtualbox delaytest[4876]: t=60 seat0=3/mike compiz=3027 csm=2361
+вер 28 16:18:40.830252 mike-virtualbox delaytest[5146]: action=poweroff cinnamon-session 6.4.2-1+unity3; inhibitors: 1
+вер 28 16:18:40.832735 mike-virtualbox delaytest[5147]: calling org.gnome.SessionManager.Shutdown
+вер 28 16:18:43.844041 mike-virtualbox delaytest[5172]: clicking Выключить
+вер 28 16:18:43.929206 mike-virtualbox cinnamon-session[2361]: cinnamon-session-binary[2361]: WARNING: t+179.98496s: Requesting system shutdown...
+вер 28 16:18:43.928665 mike-virtualbox cinnamon-session-binary[2361]: WARNING: t+179.98496s: Requesting system shutdown...
+вер 28 16:18:44.387447 mike-virtualbox delaytest[5237]: t=1 seat0=3/mike compiz=3027 csm=
+вер 28 16:18:45.520462 mike-virtualbox delaytest[5278]: t=2 seat0= compiz= csm=
+вер 28 16:18:46.588218 mike-virtualbox delaytest[5314]: t=3 seat0=c1/lightdm compiz= csm=
+вер 28 16:18:47.653998 mike-virtualbox delaytest[5387]: t=4 seat0=c1/lightdm compiz= csm=
+вер 28 16:18:48.740316 mike-virtualbox delaytest[5460]: t=5 seat0=c1/lightdm compiz= csm=
+вер 28 16:18:49.804769 mike-virtualbox delaytest[5478]: t=6 seat0=c1/lightdm compiz= csm=
+вер 28 16:18:54.040678 mike-virtualbox delaytest[5514]: t=10 seat0=c1/lightdm compiz= csm=
+вер 28 16:19:15.242924 mike-virtualbox delaytest[5727]: t=30 seat0=c1/lightdm compiz= csm=
+вер 28 16:19:44.102787 mike-virtualbox systemd-logind[5107]: System is powering down.
+--- counts (cinnamon-session-binary tag only, to avoid the doubled stderr copy)
+Requesting system restart: 0
+Requesting system shutdown: 1
+OperationInProgress: 0
+not confirmed by logind: 0
+--- last delaytest tick with the session manager alive
+вер 28 16:17:47.944875 mike-virtualbox delaytest[4966]: t=70 seat0=3/mike compiz=3027 csm=2361
+--- first tick without it
+вер 28 16:18:44.387447 mike-virtualbox delaytest[5237]: t=1 seat0=3/mike compiz=3027 csm=
