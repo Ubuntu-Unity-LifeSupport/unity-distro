@@ -206,3 +206,17 @@ sources from git (UNITY-20260928-007); then a real build with a manifest,
 the same checks on it, Verifier, gate. Publication also waits for the aptly
 freeze.
 
+## Gated build (2026-09-28, after UNITY-20260928-007 was merged)
+
+`scripts/build_sbuild.py` at origin/main 629cb20, from the clone of the
+package branch at `f674b6b` (tree `c5736601e80f`), output
+`~/work/a/052/build-1`: result PASS, 12 artifacts, build command ends with
+`--dpkg-source-opt=-i --dpkg-source-opt=-I`, no `.git` in the `.diff.gz`,
+package tests `# TOTAL: 1 # PASS: 1`. Manifest copy:
+`build/UNITY-20260927-052-unity-settings-daemon-build-manifest.json`.
+
+All 7 binaries (.deb and .ddeb, including `libunity-settings-daemon1`, which
+holds the idle monitor) are byte-identical to the test build the target
+checks ran on (`runs/gated-vs-test-build.txt`), so those checks apply to the
+gated artifacts as they are. Not published: the aptly freeze is in force.
+
