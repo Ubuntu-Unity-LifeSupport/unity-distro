@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-023",
+  "package": "libindicator",
+  "candidate_version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro/packages/libindicator",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "source_tree_hash": "26b4500293aafa9c2453f58b61c876e146798eb2",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose"
+  ],
+  "build_started": "2026-09-28T08:40:23.371789+00:00",
+  "build_finished": "2026-09-28T08:46:18.427892+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-023-libindicator-16.10.0+18.04.20180321.1-0ubuntu8+unity3-sbuild.log",
+    "sha256": "65855d73ccebfb1b0701d7e3d049933b4f35e372e9299658b6f7243645b6deb4"
+  },
+  "artifacts": [
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3.dsc",
+      "sha256": "49132da37032c52aa8aac8654c8da9511d7c1d8d394f82ff6b98486a03ec956f",
+      "size": 1640,
+      "kind": "source",
+      "package": "libindicator",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.changes",
+      "sha256": "26169ae23df1eb38fc21449dfbddf782ad0ece5cc364b2c4424085036c7e28bf",
+      "size": 5209,
+      "kind": "changes"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3.tar.gz",
+      "sha256": "a8a27f393ab940eb0934366a15f695a85502a9251c6cd87e5a52b311d8293072",
+      "size": 1519579,
+      "kind": "source_file",
+      "package": "libindicator",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "file": "indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb",
+      "sha256": "4f08381784a89c0aa81ba56f15d86e8121f5c1406481ad7fdc494fca96739603",
+      "size": 2632,
+      "kind": "binary",
+      "package": "indicator-common",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libindicator-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "dfd2886fd4d377726a6aca2dc1996e12c919dee03309fcb5c8ed6071d1b6bc30",
+      "size": 28978,
+      "kind": "binary",
+      "package": "libindicator-dev",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-7-dbgsym_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.ddeb",
+      "sha256": "bd066712f904337e59c37e0dec052f7514f18f52c1567494092d8b35a309d07d",
+      "size": 93348,
+      "kind": "binary",
+      "package": "libindicator3-7-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "7903fe4044f71a2303cd40153628ebeab1a1b514db3a08379f2252c90b1bf222",
+      "size": 28722,
+      "kind": "binary",
+      "package": "libindicator3-7",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "a6f2c19ee78c46b5d3ec8097c0aa9b32db912f66a48cf38efec5de9197727ed5",
+      "size": 36518,
+      "kind": "binary",
+      "package": "libindicator3-dev",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-tools-dbgsym_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.ddeb",
+      "sha256": "d91514e11a9869c7d70b1b0e15ae6efba111ee73d769bcf5d4b840c8a5ec59f7",
+      "size": 17674,
+      "kind": "binary",
+      "package": "libindicator3-tools-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-tools_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "7ea70acf65be106bb742ab501e580c787484957fc75ed033d26a9c75f99c07ff",
+      "size": 8548,
+      "kind": "binary",
+      "package": "libindicator3-tools",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator7-dbgsym_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.ddeb",
+      "sha256": "29d67a316d1d19d1f2f22c8a916ef6a3b4aa9395a8cf5bac5ee19b0f29760127",
+      "size": 77180,
+      "kind": "binary",
+      "package": "libindicator7-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "d125991efe3e70b30fabcbd24b0b75c7421cfa413ca5aef52e2547b672b89dcc",
+      "size": 22778,
+      "kind": "binary",
+      "package": "libindicator7",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.buildinfo",
+      "sha256": "8b8dcbef14737c9f8afc10ecdb79f36eb7d9dd23356b1baf42c0ac42d7dcd9bc",
+      "size": 19822,
+      "kind": "buildinfo"
+    }
+  ]
+}

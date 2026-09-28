@@ -1,0 +1,15 @@
+== install host=target2 boot=ec549ff8-2953-4b82-bb07-8fe62a747757 utc=2026-09-28T08:47:14Z
+== snapshot marker: ~/.dirty absent
+== policy libindicator3-7
+libindicator3-7:
+  Установлен: 16.10.0+18.04.20180321.1-0ubuntu8
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity3
+  Таблица версий:
+     16.10.0+18.04.20180321.1-0ubuntu8+unity3 500
+        500 file:/var/tmp/localrepo ./ Packages
+     16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+full-upgrade rc=0
+ayatana-indicator-messages 24.5.1-1build1+unity1 ii 
+libindicator3-7 16.10.0+18.04.20180321.1-0ubuntu8+unity3 ii 
+unity 7.7.1+26.04.20260306-0ubuntu3+unity11 ii 
