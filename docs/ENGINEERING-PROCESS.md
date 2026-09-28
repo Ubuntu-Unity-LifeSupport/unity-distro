@@ -386,13 +386,35 @@ traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
-Aptly freeze. While a freeze is in force, an agent or subagent must not call
-`aptly publish` directly in any form, including `show` and `list`. The one
-exception is the internal `aptly publish show` that `scripts/taskctl.py`
-runs as part of an authorized publication workflow, after the corresponding
-gate has passed. The exception covers only `taskctl.py` and only `aptly
-publish show`. It does not cover manual or direct calls by agents or
-subagents.
+Aptly freeze. A freeze protects the live publication state and
+/srv/aptly.
+
+- **Lifecycle.** Only May declares and lifts a freeze. C records the fact,
+  the start and end times and the scope in the coordinator log. Agents and
+  subagents never treat a freeze as lifted and never widen its exceptions.
+- **Default.** While a freeze is in force, an agent or subagent must not
+  call `aptly publish` directly in any form, including `show` and `list`.
+- **taskctl exception.** The internal `aptly publish show` that
+  `scripts/taskctl.py` runs as part of an authorized publication workflow,
+  after the corresponding gate has passed. It covers only `taskctl.py` and
+  only `aptly publish show`, never manual or direct calls by agents or
+  subagents.
+- **Rehearsal exception.** Direct `aptly publish` commands are allowed only
+  for the rehearsal phase of a specific task that May has explicitly
+  authorized, and only on an isolated aptly state. For such a command the
+  command guard checks:
+  - every place aptly writes lies inside the authorized rehearsal root:
+    rootDir, publish endpoint roots, package pool storage, the database
+    and its dbPath;
+  - remote endpoints are absent or empty;
+  - no link leads out of the root (UNITY-20260927-057).
+
+  The authorization takes effect only through a dated marker that C writes
+  after May's approval (task, rehearsal root, validity window, reference to
+  the approval). The guard checks it and logs every rehearsal command it
+  allows. The exception gives no right to /srv/aptly or to any other live
+  aptly state. It ends automatically when the rehearsal ends: C removes the
+  marker, or it expires.
 
 Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
 every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
