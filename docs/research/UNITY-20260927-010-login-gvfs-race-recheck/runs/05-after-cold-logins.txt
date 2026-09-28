@@ -1,0 +1,10 @@
+login 1: boot 0 (2026-09-28T22:54:58) login 22:55:45: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 2: boot 0 (2026-09-28T22:57:46) login 22:58:34: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 3: boot 0 (2026-09-28T23:02:21) login 23:03:02: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 4: boot 0 (2026-09-28T23:06:56) login 23:07:35: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 5: boot 0 (2026-09-28T23:11:34) login 23:12:14: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 6: boot 0 (2026-09-28T23:16:07) login 23:16:45: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 7: boot 0 (2026-09-28T23:20:39) login 23:21:24: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 8: boot 0 (2026-09-28T23:25:17) login 23:25:58: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 9: boot 0 (2026-09-28T23:29:51) login 23:30:42: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 10: boot 0 (2026-09-28T23:34:34) login 23:35:15: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
