@@ -174,6 +174,29 @@ class TaskctlKindsTest(unittest.TestCase):
         self.assert_refused(self.go("DONE", package_change=False, terminal_evidence="x", **REVIEW_PASS),
                             "package_change contradicts", "REVIEW")
 
+    def test_invalid_lock_contents_refused(self):
+        """Verifier finding (UNITY-20260928-005 review 1): a lock that does not
+        hold exactly one kind must never stand in for a kind."""
+        for content in ("", "garbage", "Package", "package\nxx", "tool tool"):
+            with self.subTest(content=content):
+                self.tearDown(); self.setUp(); self.make_board("VERIFYING")
+                self.lock.parent.mkdir(parents=True)
+                self.lock.write_text(content)
+                self.assert_refused(self.go("DONE", validation_record="v", terminal_evidence="x"),
+                                    "repair it before any transition", "VERIFYING")
+
+    def test_lock_with_surrounding_whitespace_accepted(self):
+        self.make_board("REVIEW")
+        self.lock.parent.mkdir(parents=True)
+        self.lock.write_text("  tool \n\n")
+        self.assert_ok(self.go("DONE", terminal_evidence="x", **REVIEW_PASS), "DONE")
+
+    def test_lock_written_whole(self):
+        self.make_board("INVESTIGATING")
+        self.assert_ok(self.go("READY_FOR_FIX", task_kind="documentation", **PLAN), "READY_FOR_FIX")
+        self.assertEqual(self.lock.read_text(), "documentation\n")
+        self.assertEqual(sorted(p.name for p in self.lock.parent.iterdir()), [self.lock.name])
+
     # READY_FOR_FIX per kind
 
     def test_operation_and_documentation_ready_without_defect_fields(self):

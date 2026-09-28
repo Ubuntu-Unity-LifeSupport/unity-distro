@@ -69,6 +69,31 @@ def kind_lock_path(task_id):
     return board_path().parent / "evidence" / f"{task_id}.kind"
 
 
+def read_kind_lock(path):
+    """The locked kind, or None when there is no lock. A lock that does not
+    hold exactly one kind (empty, unknown, extra lines) is an error: it must
+    never stand in for a kind and let a task past its gates."""
+    if not path.exists():
+        return None
+    text = path.read_text(encoding="utf-8").strip()
+    if text not in KINDS:
+        raise ValueError(f"kind lock {path} holds {text!r}, not one of {', '.join(KINDS)}; repair it before any transition")
+    return text
+
+
+def write_kind_lock(path, kind):
+    """Write the lock atomically: a reader sees the old state or the whole kind."""
+    if kind not in KINDS:
+        raise ValueError(f"refusing to lock unknown kind {kind!r}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    with temporary.open("w", encoding="utf-8") as stream:
+        stream.write(kind + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+
+
 def now():
     return datetime.now(timezone.utc)
 
@@ -334,6 +359,8 @@ def require_evidence(target, data, task_id, kind=None, state=None):
             raise ValueError("live aptly publish show does not confirm the recorded snapshot")
     if target == "DONE":
         # UNITY-20260928-005: DONE by kind and by the state it comes from.
+        if kind not in KINDS:
+            raise ValueError(f"DONE requires a known task kind, not {kind!r}")
         if kind == "package" and state != "PUBLISHED":
             raise ValueError("package tasks reach DONE only after PUBLISHED")
         if kind == "tool" and state != "REVIEW":
@@ -441,7 +468,7 @@ def main():
                         return fail("a blocked task may resume only at its recorded resume_state")
                     kind = resolve_kind(data)
                     lock = kind_lock_path(args.task_id)
-                    locked = lock.read_text(encoding="utf-8").strip() if lock.is_file() else None
+                    locked = read_kind_lock(lock)
                     if locked is not None and kind is None:
                         kind = locked
                     if locked is not None and kind != locked:
@@ -452,8 +479,7 @@ def main():
                         return fail(f"package_change contradicts the task's kind {kind}")
                     require_evidence(target, data, args.task_id, kind, state)
                     if locked is None and kind is not None and target in KIND_STATES:
-                        lock.parent.mkdir(parents=True, exist_ok=True)
-                        lock.write_text(kind + "\n", encoding="utf-8")
+                        write_kind_lock(lock, kind)
                     cols[4], cols[7] = target, stamp()
                     cols[8] = str(evidence_path)
                     if target in CLOSED:

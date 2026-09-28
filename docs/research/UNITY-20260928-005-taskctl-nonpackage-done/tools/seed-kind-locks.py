@@ -47,14 +47,19 @@ for line in board.read_text(encoding="utf-8").splitlines():
     if resolved is not None and kind != resolved:
         print(f"{task_id} {state}: CONFLICT --set {kind} but evidence resolves to {resolved}"); status = 1; continue
     lock = taskctl.kind_lock_path(task_id)
-    if lock.is_file():
-        held = lock.read_text(encoding="utf-8").strip()
-        print(f"{task_id} {state}: already held to {held}" + ("" if held == kind or kind is None else f" (CONFLICT: {kind})"))
+    try:
+        held = taskctl.read_kind_lock(lock)
+    except ValueError as exc:
+        print(f"{task_id} {state}: CONFLICT invalid lock: {exc}"); status = 1; continue
+    if held is not None:
+        if kind is not None and held != kind:
+            print(f"{task_id} {state}: CONFLICT already held to {held}, evidence or --set says {kind}"); status = 1
+        else:
+            print(f"{task_id} {state}: already held to {held}")
         continue
     if kind is None:
         print(f"{task_id} {state}: no kind yet - lock at READY_FOR_FIX"); continue
     if not args.dry_run:
-        lock.parent.mkdir(parents=True, exist_ok=True)
-        lock.write_text(kind + "\n", encoding="utf-8")
+        taskctl.write_kind_lock(lock, kind)
     print(f"{task_id} {state}: {'would lock' if args.dry_run else 'locked'} {kind}")
 sys.exit(status)
