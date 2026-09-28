@@ -183,7 +183,39 @@ package's manifest>` against the live aptly, whose model Release identity
 must equal the live Release; and the first real gated publication
 (UNITY-20260927-021) as the end-to-end proof.
 
+## Correction and phase R preparation (2026-09-28)
+
+**Correction.** The plan of 2026-09-27 wrote every phase R command in the
+form `aptly -config=<scratchpad>/aptly.conf publish …`. That form got past
+the guard only through the bypass B had itself reported. Asking permission
+for those commands was asking permission for a bypass, which was B's
+mistake. None of them was run. Since then:
+
+- UNITY-20260927-058 closed the bypass;
+- UNITY-20260927-057 added the narrow rehearsal allowance and section 6's
+  freeze rule;
+- May allowed phase R only. Phase L is not authorized.
+
+`blocked-commands.md` now lists the phase R commands for
+/var/tmp/aptly-rehearsal. They use a fresh rehearsal database built from
+copies of the package files (`prepare-rehearsal.py`, `logs/20`) rather than
+a copy of the live database, as 057 requires. After every aptly command the
+tree is chmodded `go-w`, because the Bash tool's umask is 0002.
+
+**Dry run** (`guard-dry-run.py`, `logs/21`). With the main hook, no command
+executed:
+
+- repo, snapshot and chmod commands are allowed;
+- every publish command passes the shape, binary, root, tree and config
+  checks and is then denied, because /home/claude/coordinator is
+  group-writable (0775, umask 0002). The guard requires that directory to
+  be private before it reads the marker. C has been asked to `chmod go-w`
+  it. Once that is done and C writes the marker, the denial will be "no
+  rehearsal authorization is recorded" until May's GO.
+
 ## Commands that the guard blocks (need May's one-time permission)
+
+(Superseded 2026-09-28: see the correction above and `blocked-commands.md`.)
 
 Exactly listed in `blocked-commands.md` (Phase R in a scratch configuration,
 Phase L live). No other blocked command is needed.
