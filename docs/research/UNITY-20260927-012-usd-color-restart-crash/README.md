@@ -145,6 +145,34 @@ On target (+unity7 with its dbgsym, perturb drop-in): power regression
 callback after stop, no crash (`runs/14`); session manager vanishing: no
 callback, no crash (`runs/15`).
 
+## Verifier: PASS
+
+Independent Verifier (subagent, 2026-09-29), `verification_result: PASS`,
+`review_status: INDEPENDENTLY_REPRODUCED`:
+
+- provenance: manifest `source_commit` b570a22 = the GitHub ref; tree hash
+  and all 12 artifacts plus the log match the manifest; the installed
+  binaries on target equal the build's (`unity-settings-daemon`,
+  `libpower.so` sha256); `dpkg -V` clean; the tools on target equal `tools/`;
+- diff f674b6b..b570a22: only `debian/changelog` and
+  `gsd-power-manager.c`; the only handlers power has on those two proxies,
+  both with `manager` as data;
+- on +unity7: inhibitor trigger - no SIGSEGV, and with extra dprintfs on
+  `engine_session_properties_changed_cb`, `screensaver_signal_cb`,
+  `idle_configure` and the color callback, **zero** callbacks after the
+  forced stop (closing the gap that `usd-color-uaf.sh` breaks only on
+  color's); fresh-session regression 2/0/2, not doubled; name vanish - no
+  callback, exited normally, no crash - against +unity5's `runs/02`,
+  `runs/05`, `runs/11`.
+
+Notes kept: the changelog's "crashed the daemon" is the crash reproduced
+under gdb (deterministic reproducer), not a natural one (0 in 11 restarts);
+killing cinnamon-session in the name-vanish script also makes **compiz**
+crash (apport, Signal 11, three seconds after the kill, also at `runs/15`'s
+time) - not a u-s-d finding, not investigated; a session is up only when
+`org.gnome.SessionManager` has an owner - checking the process names alone
+once met a lightdm restart whose session could not open `:0`.
+
 ## Evidence card
 
 ```yaml
@@ -216,4 +244,6 @@ follow_ups_proposed:
 architectural_task: false
 design_challenger_required: true
 design_review_result: APPROVE   # review 1: REVISE, review 2: APPROVE with four card edits (applied)
+verification_result: PASS   # independent Verifier, INDEPENDENTLY_REPRODUCED
+release: blocked by the aptly freeze; +unity7 contains 052's +unity6 and publishes after or instead of it
 ```
