@@ -70,8 +70,9 @@ candidate_approaches:
     READY_FOR_FIX: package and tool - the section 2 defect card, as today;
     operation - scope, chosen_approach, existing_state_check (what is already
     there - the operation's counterpart of existing_fix_result) and a
-    structured authorization {approved_by: May|C, reference: an existing file
-    path or a PENDING-MAY entry, scope}; documentation - scope and
+    structured authorization {approved_by: May|C, reference: where the approval
+    is recorded (a file path or a PENDING-MAY entry; taskctl checks it is not a
+    placeholder, not that it exists), scope}; documentation - scope and
     chosen_approach. All kinds keep architectural_task,
     design_challenger_required and correct_layer (and design_review_result
     APPROVE when required).
@@ -172,4 +173,47 @@ fixture evidence:
    evidence. Known limit accepted: the lock sits in a directory agents can
    write, so it detects a relabel rather than preventing one - the same
    trust level as the evidence JSON.
+
+## Implementation
+
+Branch `a/UNITY-20260928-005`:
+
+- `9a1ba26` build: taskctl task kinds (taskctl.py, tests/test_taskctl.py,
+  ENGINEERING-PROCESS sections 1-2);
+- `ff02416` docs: this record, tools/reproduce.sh, tools/open-tasks.py,
+  tools/seed-kind-locks.py;
+- fix after Verifier review 1 (below): the kind lock is validated and written
+  atomically; 3 more tests.
+
+Tests: pre-fix taskctl (629cb20) - 31 failures and 1 error in the 20 first
+tests (runs/unittest-before-fix.txt; the Verifier separated 16 behavioural
+failures + 1 error from 15 that only differ in the refusal message); lock
+tests against 9a1ba26 - 5 of 5 invalid-lock cases fail
+(runs/unittest-lock-before-fix2.txt); fixed - scripts/tests 70/70
+(runs/unittest-after-fix2.txt). tools/reproduce.sh: runs/reproduction-before.txt
+(pre-fix), runs/reproduction-after-fix.txt (WITH_KINDS=1).
+
+## Independent verification
+
+1. **FAIL - FIX_PARTIAL** (Verifier, INDEPENDENTLY_REPRODUCED, re-run from a
+   `git archive ff02416` export after the owner's warning that the worktree
+   had been on another branch for about a minute): `main()` used the lock's
+   text as the kind without checking it, so with evidence silent on the kind
+   a lock of `garbage`, `Package`, an empty file or `package` plus a junk
+   line let VERIFYING -> DONE pass; `write_text` was not atomic (an
+   interrupted write leaves an empty lock); the seed script printed CONFLICT
+   for an invalid lock but exited 0. Fixed: `read_kind_lock()` refuses any
+   lock that is not exactly one kind (whitespace around it allowed), for
+   every transition; `write_kind_lock()` writes a temporary file and
+   replaces; DONE also refuses an unknown kind; the seed script uses both and
+   exits 1 on an invalid or conflicting lock (runs/seed-invalid-lock-copy.txt,
+   on a copy of the board). Tests for empty, unknown, wrong-case, extra-line
+   and two-word locks, a whitespace-padded valid lock, and a whole write.
+
+   Accepted limits it named: package markers are recognised by truthiness,
+   so evidence with an empty `build_manifest` or `version_safety` value is
+   not forced to package; a task that is past READY_FOR_FIX with no lock yet
+   can still declare its kind - closed only when the coordinator runs
+   tools/seed-kind-locks.py at merge. The lock detects a relabel; it cannot
+   prevent an agent from editing it (same trust level as the evidence JSON).
 
