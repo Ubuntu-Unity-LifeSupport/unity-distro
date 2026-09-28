@@ -36,7 +36,7 @@ root_cause: >
   so every external name without a leading underscore is exported. The
   type's other functions are static.
 root_cause_mechanism: G_DEFINE_TYPE's get_type has external linkage and matches the library's export regex
-root_cause_evidence: libindicator/indicator-ng.c:367 (branch unity/resolute, 67bfe16); logs/01
+root_cause_evidence: libindicator/indicator-ng.c:367 at 67bfe16 (371 after the fix); libindicator/Makefile.am:78; logs/01
 invariant: >
   libindicator3-7's exported symbols equal its public headers' API: the 40 of
   the archive package
@@ -177,6 +177,42 @@ APPROVE.
   package in an aptly snapshot, and publication is stopped (047). Nothing
   was written to aptly.
 
+## Verification
+
+Independent verifier (read-only; no aptly, sudo or VMs): **PASS**, finding
+PATCH_CORRECT, review status REVIEWED. It re-measured every package and ABI
+claim itself:
+
+- the archive's 0ubuntu8, +unity1 and +unity3 export the same 40 symbols;
+- GTK2 exports 34 in all three versions;
+- no wrapper global is left in libindicator3.a;
+- between +unity2 and +unity3 only the dropped export differs: the 198
+  imports, NEEDED, Depends, shlibs and the file lists of all six packages
+  are identical;
+- the version order holds and the changelog trailer is UTC;
+- the pool scan was re-run with the same result.
+
+A test program compiled with `-Wall -Wextra -Wpedantic` gives no warning
+for the pattern.
+
+**Limit stated by the verifier.** The Unity-session claims rest on B's
+target run. Not every observation of it is in the saved logs:
+
+- logs/06's scripted phase shows the installed +unity3 (40 exports, none
+  Ayatana's) mapped by unity-panel-service;
+- its panel-entry grep printed nothing, because the script queried the
+  wrong bus name;
+- the Sync output listing `org.ayatana.indicator.messages` (before and
+  with the client) came from interactive commands, quoted in logs/06's
+  note;
+- the envelope and menu screenshots are on the Windows host.
+
+The change alters only symbol linkage, so this does not affect the verdict.
+The build runs no test suite: the build shows only that it compiles.
+
 ## Status
 
-VERIFYING -> independent review; then BLOCKED at the publication gate (047).
+BLOCKED at the publication gate: the version check and gate need the
+package in an aptly snapshot (047). Follow-up proposed: a symbols file for
+libindicator3-7 with the archive's 40 symbols, so that any future
+accidental export fails the build.
