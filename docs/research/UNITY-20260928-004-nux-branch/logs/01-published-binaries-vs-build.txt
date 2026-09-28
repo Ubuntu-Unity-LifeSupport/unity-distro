@@ -1,0 +1,12 @@
+# nux 4.0.8+18.10.20180623-0ubuntu15+unity2: published binaries vs the build in /home/claude/work/b/nux/outu2 (sha256), 2026-09-28T09:01:17Z
+SAME libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity2_amd64.deb build=034d390443199897847dd954a7bbcde0ade2b782e102f53a30b9fc17815730eb pool=034d390443199897847dd954a7bbcde0ade2b782e102f53a30b9fc17815730eb
+SAME libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb build=b0b517a0d9bb3901851cdf22e018110b566249fe476c6f553e7fb5fdb4b1af62 pool=b0b517a0d9bb3901851cdf22e018110b566249fe476c6f553e7fb5fdb4b1af62
+SAME libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity2_amd64.deb build=c64e9ada4b8f3a8504c993648ffe4dab8da7241d9cde5d16d0f1d4fac3325109 pool=c64e9ada4b8f3a8504c993648ffe4dab8da7241d9cde5d16d0f1d4fac3325109
+SAME nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity2_amd64.deb build=178ced0186d698640e6d4c50e9bd96dc7e7e949a8fd961d65104bd9c6d70e41b pool=178ced0186d698640e6d4c50e9bd96dc7e7e949a8fd961d65104bd9c6d70e41b
+## .dsc
+Format: 1.0
+Source: nux
+Version: 4.0.8+18.10.20180623-0ubuntu15+unity2
+Checksums-Sha256:
+ a701a354399048311ffae4e1aaa2e6c0325ae57b24e34bd391846167eb32ce75 1042644 nux_4.0.8+18.10.20180623-0ubuntu15+unity2.tar.gz
+Files:
