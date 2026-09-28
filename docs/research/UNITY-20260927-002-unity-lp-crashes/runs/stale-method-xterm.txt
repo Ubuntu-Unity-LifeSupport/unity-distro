@@ -1,0 +1,7 @@
+# method check: xterm -geometry 30x8+300+300 vs empty desktop (phase 1); phases 2/3 are copies of phase 0
+threshold  2 phase 1:  31009 pixels changed, box (42, 42, 249, 200)
+threshold  2 phase 2:      0 pixels changed, box None
+threshold  2 phase 3:      0 pixels changed, box None
+threshold 24 phase 1:  20992 pixels changed, box (50, 59, 239, 191)
+threshold 24 phase 2:      0 pixels changed, box None
+threshold 24 phase 3:      0 pixels changed, box None
