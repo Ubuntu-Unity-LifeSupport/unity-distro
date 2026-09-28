@@ -41,8 +41,8 @@ chosen_approach: >-
   scripts/alerts.py: an append-only ~/coordinator/ALERTS.md under flock, one
   RAISE per key, closed by an ACK from C or May; scripts/taskctl.py prints
   every open alert on each run; watch.sh raises xorg-server:<version>@<pocket>
-  per upload (plus the AGENTS-LOG line as before) and xorg-watch-failing:<day>
-  after 3 failed runs in a row
+  per upload (plus the AGENTS-LOG line as before) and
+  xorg-watch-failing:<UTC time the streak began> after 3 failed runs in a row
 correct_layer: >-
   The board tool is the one place the coordinator (and A and B) must use for
   every task operation, so an alert shown there cannot be passed over; the
@@ -61,7 +61,7 @@ alternatives_rejected:
   - "PEER-INBOX files (peer_inbox.py): they are A's and B's, read by their
     owners; the recipient here is C."
 regression_test: scripts/tests/test_alerts.py (11 tests; red on the old taskctl for the two notice tests)
-validation_record: runs/01-validation.txt
+validation_record: runs/02-validation.txt   # runs/01 is round 1
 architectural_task: false
 design_challenger_required: false   # a routing change inside our own tooling, no package or lifetime choice
 unknowns:
