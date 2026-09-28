@@ -1,0 +1,45 @@
+# restart-trace.bt on indicator-keyboard +unity3 (pid 14718) under unity-greeter, 2026-09-28 ~16:41 EEST.
+# ms since attach. 9162-9278: entry switches mike, *other, mike, *other (the second *other: input_sources = 0,
+# a nonexistent user). 25176-27615: accounts-daemon restarted with mike selected. The greeter settings in
+# that run: [gb, us]/0 -> current 4294967295 -> [] -> [gb, us]/0 (16:41:56.28-.80). Runs 2 and 3: [] with
+# current 4294967295 for ~0.25 s and ~0.21 s, then [gb, us]/0.
+Attached 7 probes
+  9162 get_user(mike)
+  9163   input_sources(0x585c4dabd4d0) = 0x7a6000004480
+  9189 get_user(*other)
+  9190   lightdm_get_layout
+  9228 get_user(mike)
+  9230   input_sources(0x585c4dabd4d0) = 0x7a6000004480
+  9276 get_user(*other)
+  9277   input_sources(0x7a6000002540) = 0
+  9277   lightdm get_user_by_name(0x585c4dd215b0)
+  9278   lightdm_get_layout
+ 25174 get_user(mike)
+ 25176   input_sources(0x585c4dabd4d0) = 0x7a6000004480
+ 27307 list_users (manager notify::is-loaded handler)
+ 27307   input_sources(0x585c4dabd4d0) = 0
+ 27307   input_sources(0x585c4dabe700) = 0
+ 27307   lightdm_get_layout
+ 27313 get_user(mike)
+ 27313   input_sources(0x585c4dabd4d0) = 0
+ 27313   lightdm get_user_by_name(0x585c4daba160)
+ 27313   lightdm_get_layout
+ 27313   input_sources(0x585c4dabd4d0) = 0
+ 27314   input_sources(0x585c4dabe700) = 0
+ 27314   lightdm_get_layout
+ 27314 get_user(mike)
+ 27314   input_sources(0x585c4dabd4d0) = 0
+ 27314   lightdm get_user_by_name(0x585c4daba160)
+ 27314   lightdm_get_layout
+ 27580   input_sources(0x585c4dabd4d0) = 0x7a600000af50
+ 27580   input_sources(0x585c4dabe700) = 0x7a6000007060
+ 27580   lightdm get_user_by_name(0x7a6000005f40)
+ 27581   lightdm_get_layout
+ 27583 get_user(mike)
+ 27583   input_sources(0x585c4dabd4d0) = 0x7a600000af50
+ 27615   input_sources(0x585c4dabd4d0) = 0x7a600000af50
+ 27615   input_sources(0x585c4dabe700) = 0x7a6000007060
+ 27615   lightdm get_user_by_name(0x7a6000005f40)
+ 27615   lightdm_get_layout
+ 27615 get_user(mike)
+ 27615   input_sources(0x585c4dabd4d0) = 0x7a600000af50
