@@ -169,6 +169,35 @@ engine's own merge of overrides; see Correction.
 - The main fix's regression is unchanged (logs/03). Without the due-date
   fallback, the DUE-only task aborts.
 
+## Verification round 2: PASS
+
+Result: PATCH_CORRECT, review status REVIEWED. The Verifier read the logs
+and did not rebuild. It confirmed:
+
+- the merge path;
+- that src/ is unchanged from +unity2;
+- that the test separates "merged and kept out by the guard" from "never
+  merged" (the passing log shows only 06-22 and 06-24);
+- fail before and pass after (logs/08), and the correction in this card.
+
+Its non-blocking caveats:
+
+- **Version reuse.** The superseded 5d6492d was also +unity3. It never
+  reached aptly: the pool holds indicator-datetime 0ubuntu6+unity1 and
+  +unity2 only (checked read-only, 2026-09-28). So +unity3 stays the right
+  version for 9a00446.
+- **The TZID pair "did not match".** The evidence is the first build of
+  the test with both pairs, before the TZID pair was removed. That build
+  had the guard kept and 29 tests; test-eds-ics-tasks-without-start failed
+  only on the expected list. Its actual appointments contained the TZID
+  master's 06-23 instance (`recurring-tzid@example.org`, 2015-06-23 10:00
+  -0500), next to 06-22 and 06-24, while the UTC pair's 06-23 was missing.
+  So the TZID override was not merged. That build's log was overwritten by
+  the final build; the list is quoted here from its output.
+- logs/07 and logs/08 are summaries; the full sbuild log is only for the
+  final build. The earlier logs/04 build log is in git history (8ee9991).
+
 ## Status
 
-IMPLEMENTING -> VERIFYING (independent verification, round 2).
+BLOCKED at the publication gate (047; freeze no. 1). The version check and
+release gate need the package in an aptly snapshot.
