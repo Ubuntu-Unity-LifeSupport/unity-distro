@@ -24,19 +24,21 @@ published `6.4.2-1+unity3` from our aptly (fadd8c6). The running binary was
 checked against the installed one before the +unity3 runs 06-07 (md5
 `1c6af850...`).
 
-| Run | Build | Action | Requests logged | logind calls: accepted / refused | Session manager gone | Machine down |
+| Run | Build | Action | Requests logged | logind calls: accepted / refused | Session manager gone (first request -> first 1 s tick without it) | Machine down |
 |---|---|---|---|---|---|---|
-| `runs/01-unity3-reboot.txt` | +unity3 | reboot | 1 | not recorded | < 1.4 s | +60 s |
-| `runs/02-unity3-poweroff.txt` | +unity3 | poweroff | 1 | not recorded | < 0.5 s | +60 s |
-| `runs/06-unity3-reboot-busmon.txt` | +unity3 | reboot | 1 | 1 / 0 | < 0.5 s | +60 s |
-| `runs/07-unity3-poweroff-busmon.txt` | +unity3 | poweroff | 1 | 1 / 0 | < 0.5 s | +60 s |
-| `runs/03-noonce-reboot.txt` | ~noonce1 | reboot | 4 in 120 ms | not recorded | < 0.6 s | +60 s |
-| `runs/04-noonce-poweroff.txt` | ~noonce1 | poweroff | 8 in 125 ms | 1 / 7 (7x ENXIO) | < 0.5 s | +60 s |
-| `runs/05-noonce-reboot-busmon.txt` | ~noonce1 | reboot | 8 in 230 ms | 1 / 7 (1x OperationInProgress, 6x ENXIO) | < 0.5 s | +60 s |
+| `runs/01-unity3-reboot.txt` | +unity3 | reboot | 1 | not recorded | <= 1.44 s | +60 s |
+| `runs/02-unity3-poweroff.txt` | +unity3 | poweroff | 1 | not recorded | <= 0.46 s | +60 s |
+| `runs/06-unity3-reboot-busmon.txt` | +unity3 | reboot | 1 | 1 / 0 | <= 0.54 s | +60 s |
+| `runs/07-unity3-poweroff-busmon.txt` | +unity3 | poweroff | 1 | 1 / 0 | <= 0.44 s | +60 s |
+| `runs/03-noonce-reboot.txt` | ~noonce1 | reboot | 4 in 120 ms | not recorded | <= 0.56 s | +60 s |
+| `runs/04-noonce-poweroff.txt` | ~noonce1 | poweroff | 8 in 125 ms | 1 / 7 (7x ENXIO) | <= 0.59 s | +60 s |
+| `runs/05-noonce-reboot-busmon.txt` | ~noonce1 | reboot | 8 in 230 ms | 1 / 7 (1x OperationInProgress, 6x ENXIO) | <= 0.67 s | +60 s |
 
 Run 02's boot also holds a first attempt that called `Shutdown()` without
 clicking the dialog (the script had no click yet); nothing was requested, and
-it was cancelled with Escape before the recorded run.
+it was cancelled with Escape before the recorded run. Run 04 was recorded
+with the bus monitor too (its file name lacks `-busmon`: the monitor was
+added to the script just before it).
 
 What the measurement shows:
 
@@ -45,11 +47,13 @@ What the measurement shows:
 - FACT: user-visible behaviour is the same in all seven runs: the session
   manager is gone within 1.5 s, and logind reboots or powers off when the
   delay inhibitor's 60 s run out.
-- FACT: in every recorded run logind emitted PrepareForShutdown before its
-  reply to the first call (signal cookie N, method return N+1), and every
-  refusal arrived 30-115 ms after PrepareForShutdown. The session manager
-  quits its main loop on that signal, so it never processed a refusal:
-  neither "Unable to shutdown/restart system via systemd" nor "Shutdown/restart
+- FACT: in the four bus-monitored runs (04-07) logind emitted
+  PrepareForShutdown just before its reply to the first call (signal cookie
+  N, method return N+1); in 04 and 05 the later calls reached logind before
+  that (logind answered the first call after 63 and 160 ms, and the others
+  after it), and every refusal arrived 30-115 ms after PrepareForShutdown.
+  The session manager quits its main loop on that signal and never processed
+  a refusal: neither "Unable to shutdown/restart system via systemd" nor "Shutdown/restart
   was not confirmed by logind" was logged in any run.
 
 ## Evidence card
@@ -82,13 +86,27 @@ root_cause_mechanism: >-
   end_phase() is entered in EXIT once from do_phase_exit() and again from
   on_client_disconnected() / remove_clients_for_connection() every time the
   client store is empty while phase >= QUERY_END_SESSION - a state test, so it
-  fires for each late disconnect. Before 9409c18, csm_manager_quit() asked
-  logind and then quit the main loop at once (6.6.4, per the sweep), so the
-  process ended before late disconnects could re-enter.
-  9409c18 keeps the process alive until PrepareForShutdown, and every
-  re-entry in that window repeats the logind call: it connects another
-  "shutdown-prepared" handler, sets prepare_for_shutdown_expected again and
-  sends another Reboot/PowerOff (csm-systemd.c).
+  fires for each late disconnect. The Unity/Cinnamon end-session dialog's
+  Restart, Shutdown, Logout and IgnoreInhibitors methods also reach
+  end_phase() with no phase check (handle_dialog_method_call ->
+  request_reboot/request_shutdown/request_logout/do_inhibit_dialog_action,
+  csm-manager.c:2653-2705, 3745-3805, 1282 unpatched; upstream master the
+  same), overwriting logout_type; RequestReboot/RequestShutdown do check
+  the phase (:2312, :2336).
+  This is old upstream behaviour, not something 9409c18 introduced: in
+  unpatched 6.4.2 (and upstream 6.6.4 / 9409c18^) the REBOOT and SHUTDOWN
+  cases of csm_manager_quit() only connect "request-failed" and call
+  csm_system_attempt_restart/stop; csm_quit() is called only for LOGOUT and
+  the *_MDM cases (csm-manager.c:471-513). The process stayed alive after the
+  request and every late disconnect sent another one - measured on +unity2 as
+  twelve requests in 120 ms with OperationInProgress refusals and the MDM
+  fallback (research/cinnamon-session-214-202, runs/01). 9409c18 shortened
+  the window (it quits on PrepareForShutdown) but kept the request in EXIT.
+  Each re-entry connects another "shutdown-prepared" handler, sets
+  prepare_for_shutdown_expected again and sends another Reboot/PowerOff
+  (csm-systemd.c); the inhibitor take/drop are guarded by fd checks and
+  g_signal_handlers_disconnect_by_func removes every duplicate handler, so
+  the only effect is the extra logind calls.
 invariant: >-
   one Reboot/PowerOff request to logind per end of session; actions of the
   EXIT phase must be safe to repeat, because end_phase() is re-entered in EXIT
@@ -110,8 +128,8 @@ upstream_precedent: >-
   (gsm_systemd_prepare_shutdown()), and the EXIT phase only calls
   gsm_system_complete_shutdown() (drops a delay inhibitor, guarded by fd != -1)
   and gsm_quit() - both idempotent. 9409c18 took gnome-session's
-  prepare/complete idea but left the request in the EXIT phase, where
-  gnome-session removed it in 8b187ec5. mate-session-manager keeps the request
+  prepare/complete idea but kept cinnamon-session's request in the EXIT
+  phase, where gnome-session removed it in 8b187ec5. mate-session-manager keeps the request
   in EXIT but quits the main loop synchronously after the first one.
 candidate_approaches:
   - "F1 (published, a3d4c79): csm_manager_quit() returns early after its first
@@ -124,8 +142,9 @@ chosen_approach: keep F1 as published
 correct_layer: >-
   The re-entry itself is upstream's design, shared with gnome-session, and not
   a defect to remove: the last-client check is a state test and EXIT never
-  advances. What is not safe to repeat is the terminal action 9409c18 put in
-  EXIT - the logind request in csm_manager_quit(). Making that action
+  advances. What is not safe to repeat is the terminal action cinnamon-session
+  has always taken in EXIT (gnome-session moved it out in 8b187ec5) - the
+  logind request in csm_manager_quit(). Making that action
   idempotent at the function that performs it is exactly the property that
   makes the same re-entry harmless in gnome-session (its EXIT actions are
   idempotent). csm_manager_quit() is the owner of "one request to logind"; its
@@ -145,37 +164,61 @@ defensive_workaround_rejected:
     user-visible behaviour). Belongs upstream if anywhere."
 why_chosen: >-
   Measured: F1 reduces 4-8 logind calls with 3-7 refusals to one accepted
-  call, with the same user-visible timing. It restores the invariant in the
-  function that owns it, at a size that is cheap to carry until upstream
+  call, with the same user-visible timing. It establishes the invariant in
+  the function that owns it, at a size that is cheap to carry until upstream
   addresses it.
 not_justified: >-
-  The published patch description and the 2026-09 record present the
-  repeated requests as a behaviour problem. Measured: they are not visible to
-  the user. The premature quit a refusal would cause (a refusal ->
-  shutdown-prepared(FALSE) -> "not confirmed by logind" -> csm_quit() before
-  PrepareForShutdown) did not happen in any run, because logind handles the
-  calls in order, emits PrepareForShutdown before replying to the first, and
-  the session manager quits on that signal (INFERENCE from the bus order
-  above: it is unreachable while the first call succeeds). The patch is
-  protocol hygiene - one request, one handler, no refusals - not a fix for a
-  visible failure.
+  The published patch description says that with the PrepareForShutdown
+  backport the refusals meant "quitting on a false 'not confirmed by
+  logind'". Not observed: in the bus-monitored runs without the flag (04,
+  05) and with it (06, 07) no refusal was processed and that line was never
+  logged, because PrepareForShutdown arrived first and the session manager
+  quit on it. Structurally this order is implied only for
+  OperationInProgress (it can only follow the accepted call); ENXIO is
+  unexplained, and the argument also relies on GDBus dispatching the signal
+  before the later replies on the same main context - so it is "not
+  observed", not "unreachable". The "twelve times in 120 ms" and
+  OperationInProgress facts in that description were measured on +unity2,
+  before the backport; +unity3~noonce1 made 4-8 calls, refused mostly with
+  ENXIO. What the patch measurably buys: one request, one handler, no
+  refusals - protocol hygiene, not a fix for a visible failure. Correct the
+  patch description at the next upload made for another reason.
 code_risks:
   ownership_lifetime: checked - flag lives in CsmManagerPrivate, set once, never reset; the manager does not outlive the process
   callbacks_cancellation: >-
-    checked - with the flag only one "shutdown-prepared" handler is connected;
-    no cancellation path exists after the EXIT phase starts
+    checked - with the flag only one "shutdown-prepared" handler is connected.
+    cancel_end_session() accepts phase EXIT (csm-manager.c:1066-1096, reached
+    by the dialog's Cancel while dialog_action is set) and resets the phase
+    to RUNNING, but not quit_requested. INFERENCE: this cannot strand a
+    later end of session, because the request was already sent: if logind
+    accepts it, the machine goes down anyway and PrepareForShutdown quits the
+    process (prepare_for_shutdown_expected and the handler survive the
+    cancel); if logind refuses it, shutdown-prepared(FALSE) quits the process.
+    Not exercised in a run.
+  first_request_wins: >-
+    the flag is set before the outcome of the first call is known. If that
+    call is refused (polkit denial, another operation), the session ends
+    like a logout with no retry - the intended "one request, act on its
+    answer". Without the flag, duplicate calls already in flight (runs 04,
+    05: sent before the first reply) might have been accepted by accident.
+    Dialog methods arriving in EXIT (above) no longer change the action:
+    the first request wins. No run covers a refused first call or a polkit
+    prompt; HYPOTHESIS: with interactive=TRUE each repeated call could raise
+    its own polkit prompt, which the flag prevents.
   threading_reentrancy: checked - main-loop only; the re-entry is the case the flag handles
   ABI_API_file_list: not_applicable - static private field, no API change
 unknowns:
   - "Why logind answers the later repeats with ENXIO rather than
     OperationInProgress was not investigated (session already closing is the
     likely reason - HYPOTHESIS)."
-  - "The quit timing is 'gone before the next 1 s tick'; finer timing was not
-    measured."
+  - "The quit timing is 'gone before the next 1 s tick' (upper bounds in the
+    table); finer timing was not measured."
+  - "No run with a refused first call, a polkit prompt, or a Cancel during
+    EXIT."
   - "GNOME GitLab issues could not be searched with authentication."
 design_challenger_required: true
 architectural_task: false
-design_review_result: PENDING
+design_review_result: PENDING   # review 1: REVISE (addressed); review 2 pending
 ```
 
 ## Outcome
