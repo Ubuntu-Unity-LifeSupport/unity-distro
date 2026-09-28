@@ -15,7 +15,7 @@ package: hud
 target_series: resolute
 issue: local - intermittent empty HUD for LibreOffice (legacy B-L45)
 status: REPRODUCED  # mechanism 1; mechanism 2 NOT_REPRODUCED (see below)
-issue_search_result: UNKNOWN  # pending
+issue_search_result: FOUND  # the symptom: LP #1771173 (HUD not working for LibreOffice, 2018, New, no diagnosis); the cause: none; see "Search"
 source_version: hud 14.10+17.10.20170619-0ubuntu6 (archive; ours +unity1 is a rebuild with FTBFS fixes)
 binary_version: target2 Clean-2: hud 0ubuntu6, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6, LibreOffice 26.2.5.2-0ubuntu0.26.04.1
 observed: >
@@ -26,13 +26,21 @@ observed: >
   starts: 4 empty, all of the first kind. 5 first starts after a reboot:
   1 of the first kind; in 3 the window is kept but its application id is
   the window number (58720292, 60817444) instead of libreoffice-writer.
-  FACT (logs/02): when it fails, bamf announces the Writer window
-  (ViewOpened window) while the window's parent is a temporary application
-  (a pointer-style path, application/0x652c…). Within ~50 ms bamf publishes
-  that application, closes it and opens the matched one
-  (application/746707297, libreoffice-writer.desktop). A DesktopFile() on
-  the temporary one in that window answers UnknownMethod (no application
-  interface, or no object), or "".
+  FACT (logs/02, observed): in the failing runs Parents() of the Writer
+  window names a temporary application (a pointer-style path,
+  application/0x652c…). bamf then closes that application and opens the
+  matched one (application/746707297, libreoffice-writer.desktop). A
+  DesktopFile() on the temporary one answered "no interface
+  org.ayatana.bamf.application on object …" (run 14) or "" (run 15). The
+  watcher is synchronous and logs signals late, so its timings (~50 ms)
+  are only an upper bound.
+  FACT (source, bamf 0.5.6): the re-match is on_raw_window_class_changed
+  (bamf-matcher.c:2117-2160). When the temporary application loses its last
+  child it closes itself (bamf-application.c:1122-1127) and is unregistered.
+  So the object can disappear between window-stack-bridge's Parents() and
+  DesktopFile() calls (BamfWindowStack.cpp:45, :60) even with bamf working
+  as designed. bamf offers ChildAdded/ChildRemoved and
+  WindowAdded/WindowRemoved for following it.
   FACT (logs/03, deterministic): with a stand-in bamf on a private bus, the
   installed window-stack-bridge drops a window whose parent application
   does not answer (3 of 3), and gives a window whose application has no
@@ -55,16 +63,37 @@ root_cause_mechanism: >
   bamf-matcher.c: LibreOffice sets the window class after mapping).
   window-stack-bridge reads the parent in that window and treats the
   resulting error as permanent.
-invariant: window-stack-bridge keeps every window bamf announces, as long as bamf can give its XID
-existing_fix_result: UNKNOWN  # pending search
+invariant: >
+  window-stack-bridge keeps every window bamf announces, unless the window
+  object itself is gone (GetXid or Parents fails). A parent that
+  disappears or answers badly does not lose the window.
+existing_fix_result: NOT_FIXED  # see "Search"
 design_challenger_required: true
-design_review_result: PENDING
+design_review_result: REVISE (round 1: design approved, card and tests to fix) - round 2 pending
 architectural_task: false
-correct_layer: PENDING (see "Layer")
+correct_layer: >
+  hud's window-stack-bridge (BamfWindow constructor): it is the component
+  that turns a parent that disappears mid-query into a permanent loss.
+  Parents() and DesktopFile() are separate calls, so no bamf ordering can
+  make the second one safe.
+defensive_workaround_rejected: >
+  Not a guard in the wrong place: the failing call is in this component,
+  and the fallback is the one it already uses for an application without a
+  desktop file.
 unknowns:
-  - mechanism 2 (window known, HUD empty) seen once in ~57 starts (the very
-    first start of the session in logs/01), not reproduced since, also not
-    in 5 first starts after a reboot; its cause is not known
+  - mechanism 2 (window known, HUD empty) seen once in 37 starts that
+    recorded both the window stack and the HUD answer (lo4 12, lo7 20,
+    coldloop 5); the 15-run lo7 batch and the 38 observer runs recorded
+    failures of mechanism 1 only. That one run (lo4 run 1, the first of the
+    session) is also the only one with xid 56623243 and recorded no app id,
+    so it is not shown that the measured window was the Writer window and
+    not a first-start dialog (Tip of the Day). Cause unknown
+  - side effects of the window-id fallback (present upstream already for an
+    empty desktop file, BamfWindowStack.cpp:75-77): the HUD shows no icon
+    (it looks for "<xid>.desktop", ApplicationImpl.cpp:86-103), and usage
+    history is stored under the window number (ItemStore.cpp:295,
+    SqliteUsageTracker.cpp:117), which repeats across starts (58720292 in
+    most runs)
   - the application id stays the window number when the first parent was
     the temporary one (3 of 5 first starts); the HUD still answered in all
     of them, and what the id changes (the HUD's usage history is kept per
@@ -78,12 +107,51 @@ unknowns:
 | Layer | Change | Assessment |
 |---|---|---|
 | **hud: window-stack-bridge** | on a DesktopFile error keep the window, with the window id as application id, as for an empty desktop file | the component that turns a transient answer into a permanent loss; one branch; fixes mechanism 1 as measured |
-| hud: window-stack-bridge, more | follow bamf's re-matching (update the application id when the window gets a new parent) | makes the id right in the 3-of-5 case; more code (subscribe to the new application's children or re-ask on ActiveWindowChanged); not needed for the HUD to answer |
-| bamf | announce a window only once it is matched, or keep the temporary application exported until its children moved | re-matching on a class change is by design (LibreOffice changes the class after mapping); every bamf client already sees views come and go; a change in announce order would affect Unity's launcher too |
+| hud: window-stack-bridge, more | follow bamf's re-matching: on an application's ViewOpened/WindowAdded (and ChildAdded for an already running one) ask Xids() and re-emit WindowDestroyed/WindowCreated for fallback windows | makes the id right in the 3-of-5 case; ~30 lines with its own tests; re-asking Parents on ActiveWindowChanged is not enough (it arrives before the temporary application closes, logs/02). **A follow-up task**, not this one: the HUD answers without it |
+| bamf | announce a window only once it is matched, or keep the temporary application exported until its children moved | re-matching on a class change is by design (LibreOffice changes the class after mapping). A client's Parents() and DesktopFile() are two calls with nothing held between them, so the parent can close in between even then; a bamf change would only narrow the window. bamf gives clients the signals to follow re-parenting |
 | LibreOffice | set the final WM_CLASS before mapping | not ours; the class change is legitimate X11 behaviour |
+
+## Search (2026-09-28)
+
+A delegated search; the trunk history was checked by the owner through
+Launchpad's API.
+
+- **hud upstream:** Launchpad bzr lp:hud, trunk.15.10, 420 revisions. The
+  merge proposals merged after the 2017-06-19 snapshot that every Ubuntu
+  ships are "reupload-to-focal" (2020-03-05) and "fix-build-vala"
+  (2020-03-16), build fixes only. There is no git mirror without login.
+  26.10 has the same 0ubuntu6; hud is not in Debian.
+- **Launchpad bugs:**
+  - LP #1771173, "HUD not working for Firefox, LibreOffice & others in
+    18.04" (2018, New): the symptom, with no diagnosis.
+  - LP #1243654 and #1238338, #1242032, #1242339 (2013, Fix Released):
+    window-stack-bridge crashes, not this silent drop.
+  - None mentions "Could not get desktop file".
+- **bamf:** the re-match is deliberate. Commit dd81623 (2013, "If a Window
+  has changed its class, then we try to rematch it", "mostly the case of
+  LibreOffice") says the old application "may eventually be closed".
+  libbamf itself had to handle re-matched views (453e2d0, LP #1238064).
+  Latest resolute/26.10: 0.5.6+22.04.20220217-0ubuntu6.
+- **LibreOffice:** TDF #119202 "should not change their WM_CLASS after being
+  launched" was fixed for the kde5 VCL only (2018). Whether the gtk3
+  backend of 26.2 still does it is inferred from bamf's re-match, not
+  checked in LibreOffice.
+
+## Design review, round 1: REVISE (design approved; card text and tests)
+
+- Layer: window-stack-bridge owns it, because the race exists even with
+  bamf working as designed; the card now says so (from source, not from the
+  launcher argument).
+- Invariant reworded: a GetXid or Parents error still drops the window (it
+  is gone); only a failing parent no longer does.
+- Evidence: "1 in 37 measured" for mechanism 2 with its open alternative;
+  observed and source-read parts told apart; the ~50 ms timing is an upper
+  bound.
+- Side effects of the fallback id recorded under unknowns.
+- Following the re-match: a follow-up task.
+- Tests: both entry paths (startup WindowPaths and ViewOpened) with
+  WindowCreated(id, "<id>"), and WindowDestroyed with the same fallback id.
 
 ## Status
 
-INVESTIGATING: Design Challenger next, then the existing-fix search, then
-the fix in hud with a unit test in tests/unit/window-stack-bridge
-(TestBamfWindowStack runs against a D-Bus mock of bamf).
+READY_FOR_FIX after the existing-fix search.
