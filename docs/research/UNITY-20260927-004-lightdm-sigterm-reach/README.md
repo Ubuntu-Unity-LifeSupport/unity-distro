@@ -309,7 +309,7 @@ unknowns:
     later)."
 design_challenger_required: true
 architectural_task: false
-design_review_result: PENDING   # review 1: REVISE, review 2: REVISE (wording; addressed); review 3 pending
+design_review_result: APPROVE   # review 1: REVISE, review 2: REVISE (wording), review 3: APPROVE
 ```
 
 ## Target state
@@ -318,6 +318,45 @@ Restored: lightdm `1.32.0-6ubuntu4+unity1`, no drop-in, no lightdm-dbgsym,
 user `utest` deleted, test scripts and `/var/tmp` files removed. `libc6-dbg`
 was already installed before this task.
 
+## Design review
+
+Temporary Design Challenger, separate read-only subagent.
+
+1. **REVISE**: step 2 overstated (the scope stop signals the greeter too);
+   where the main thread is interrupted was inferred, not shown - led to
+   run 08 with saved maps and symbolized stacks; stock classification
+   criterion unstated; a probable GLib-thread delivery left out; the model
+   claim too broad (dl_load_lock, allocator state, stdio, GLib/PAM locks);
+   invariant not met by the fix in the passed-on/merged case; F4 missing;
+   journal claims not archived; fork-window notes; status should be
+   NOT_REPRODUCED.
+2. **REVISE** (wording): prove the arena mutex from the disassembly instead
+   of implying it; mark patched-source line numbers; label the
+   pam_close_session attribution of 120077 as INFERENCE.
+3. **APPROVE**.
+
 ## Outcome
 
-PENDING the Design Challenger.
+`ALREADY_FIXED` / `FIXED_LOCAL`: the +unity1 fix (`_exit()` in the no-child
+branch of `signal_cb()`) is in the right layer and stays; no new version.
+
+What is proven on our default stack:
+
+- the no-child branch is not an edge case: it runs in 14 of 20 greeter stops
+  (every login from the greeter exposes it), interrupting the X authority
+  removal, `pam_close_session` or `pam_end`, once inside `free()` with an
+  arena mutex held - the #484 precondition, naturally;
+- stock `exit()` there does not hang today, because the destructors of the
+  loaded libraries make only `free(NULL)` calls; so the fix has no
+  measurable effect for us now and protects against any PAM/NSS module that
+  brings a heap-using destructor into the greeter's session-child;
+- not covered by the fix, both builds: a blocking cleanup when both SIGTERMs
+  were used up before `child_pid = 0` (6/20), and the greeter's skipped
+  `pam_close_session` (separate question).
+
+Follow-ups, none needing a version now: the unknowns above (which real
+PAM/NSS modules bring such destructors; consequences of the skipped greeter
+PAM close); `volatile sig_atomic_t` and errno saving in the handler if the
+patch is ever reworked or offered upstream (only through May). The 2026-09
+record `research/lightdm-sigterm-exit/` is superseded on reachability and on
+session-child's library list by this one.
