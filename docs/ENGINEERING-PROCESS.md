@@ -363,6 +363,14 @@ traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
+Aptly freeze. While a freeze is in force, an agent or subagent must not call
+`aptly publish` directly in any form, including `show` and `list`. The one
+exception is the internal `aptly publish show` that `scripts/taskctl.py`
+runs as part of an authorized publication workflow, after the corresponding
+gate has passed. The exception covers only `taskctl.py` and only `aptly
+publish show`. It does not cover manual or direct calls by agents or
+subagents.
+
 Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
 every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
 rule per kind and rejects anything else:
