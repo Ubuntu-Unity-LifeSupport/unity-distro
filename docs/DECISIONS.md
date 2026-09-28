@@ -1783,3 +1783,15 @@ Follow-ups are listed in the record:
 - the greeter unit starting without `UNITY_GREETER_DBUS_NAME` after boot;
 - the weak `users` list;
 - libaccountsservice1 in 26.10.
+
+
+## 2026-09-28 - gtk-nocsd issue #1: second reply sent (coordinator)
+
+May replied on `Ubuntu-Unity-LifeSupport/unity-distro#1` on 2026-09-28 20:19Z
+(as NeiroNext). The reply accepts the maintainer's division of work (he
+finishes the base; we send the cleanup/proxies, the realize replacement and the
+settings part as separate patches on top) and reports measurements on his main
+`a57e976`: `research/UNITY-20260927-034-nocsd-series-port/`, facts checked in
+`research/UNITY-20260927-038-nocsd-reply2-recheck/`. It offers a Codeberg issue
+for the types bug that still reproduces on `a57e976`; opened only if he wants
+it. Nothing else was sent.
