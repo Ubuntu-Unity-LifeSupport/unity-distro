@@ -1,7 +1,7 @@
 From 35ecca4d99553a7538260e2a8193ce37067f98bb Mon Sep 17 00:00:00 2001
 From: NeiroNext <mihail.rozshko@gmail.com>
 Date: Mon, 28 Sep 2026 15:45:34 +0000
-Subject: [PATCH 5/5] fix-fullscreen-mode-list-double-free.patch: detect the
+Subject: [PATCH 5/8] fix-fullscreen-mode-list-double-free.patch: detect the
  second free with AddressSanitizer
 
 glibc's malloc checking missed it in the build (the control passed): the

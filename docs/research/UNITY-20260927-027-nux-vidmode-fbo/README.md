@@ -31,7 +31,7 @@ issue: legacy B-L03; LP #2160298 (FBO)
 status: REPRODUCED
 issue_search_result: NOT_FOUND  # the fullscreen double free; see "Search"; the FBO bug is LP #2160298 (found earlier)
 source_version: 4.0.8+18.10.20180623-0ubuntu15+unity2 (9793c23, aptly) -> +unity3
-source_commit: 35ecca4 (packages/nux, local branch b/UNITY-20260927-027: 336ec68, 5230f4c, ad4da6a, 85c6c4a, 35ecca4; exports in patches/)
+source_commit: 0274bc5 (packages/nux, local branch b/UNITY-20260927-027: 336ec68, 5230f4c, ad4da6a, 85c6c4a, 35ecca4 for this task, then d50b77c, d869093, 0274bc5 from UNITY-20260928-020; exports in patches/)
 observed: >
   FACT (logs/01, 02; target2, Xorg with XFree86-VidModeExtension, archive
   libnux 0ubuntu12, whose GraphicsDisplayX11.cpp is the same as ours apart
@@ -78,7 +78,7 @@ code_risks:
   ABI_API_file_list: checked  # no header change; see Result for the symbol comparison
 unknowns:
   - the double free is reachable only by a caller outside the archive asking for fullscreen; no such caller is known
-  - gtest-nux segfaults in most of today's builds, including unchanged +unity2 (logs/08); cause not investigated
+  - the gtest-nux-slow segfaults (logs/03, 07, 08) are explained and fixed in UNITY-20260928-020
 ```
 
 ## The two extra hunks of fix-missing-vidmode.patch
@@ -151,26 +151,30 @@ Fail before / pass after, in the package build (sbuild, resolute, dummy Xorg):
   +unity2's (3420, 1052 and 1910; no differences).
 - nux's suites 130 / 11 (was 9) / 18 pass in every build.
 
-**BLOCKED: no clean build of the final source.** `gtest-nux` (113 tests)
-segfaults in most of today's builds, in different tests
-(`TestWindowThread.WatchFd`, `.MultiWatchFd`, `.OneFdEvent`,
-`EmbeddedContext.WindowThreadIsEmbedded`):
+**The clean build came after UNITY-20260928-020.** The final source first
+had no clean build: `gtest-nux-slow` (113 tests, the fourth suite; an
+earlier version of this card called it `gtest-nux`) segfaulted in most
+builds of 2026-09-28. That included the unchanged published +unity2 (0 of
+2; logs/08), in `TestWindowThread.*` and `EmbeddedContext*`.
 
-- +unity3: 1 of 5 builds passed, and that one was 85c6c4a, not the final
-  35ecca4;
-- unchanged +unity2 (9793c23, the published source): 0 of 2 (logs/08);
-- earlier nux builds (2026-09-22..24): 1 segfault in 5.
+- **Not the chroot:** the build chroot's 446 package versions were
+  identical to those of the passing build of 2026-09-24. An earlier
+  version of this card guessed Mesa or GLib; that was wrong.
+- **Two races in nux's own tests** (research/UNITY-20260928-020-nux-gtest-segfault):
+  - the dummy X server reset between tests;
+  - the `TestWindowThread` watchdog was deleted while it still ran.
+- **Two test-only patches:** d50b77c `tests-dummy-xorg-noreset.patch` and
+  d869093 `tests-windowthread-join-watchdog.patch`, with the changelog in
+  0274bc5. They sit on top of 35ecca4 in the same `0ubuntu15+unity3`.
 
-The library code behind gtest-nux is the same as +unity2's for every
-non-fullscreen window, and the new tests are in another binary, so this
-task did not cause it. Today nux cannot be built reliably from any source
-of ours. The cause (the chroot's packages have moved since 2026-09-24,
-possibly Mesa or GLib) is not investigated; that is a separate task.
-Retrying until a build passes would publish on luck.
+**sbuild of 0274bc5, three builds in a row: all successful**, suites
+130 / 11 / 18 / 113 (`build/`: manifest and log of the third). Both new
+tests of this task are OK in each. The exported symbols still equal
++unity2's.
 
 ## Not done
 
 - target2 was used only for the API reproduction (logs/01, 02), then rolled
   back to `Clean-2` (checked inside: no `~/.dirty`, no libnux-4.0-dev, no
   test binaries).
-- No independent verification yet; it waits for a clean build of 35ecca4.
+- Independent verification: next, on the clean build of 0274bc5.

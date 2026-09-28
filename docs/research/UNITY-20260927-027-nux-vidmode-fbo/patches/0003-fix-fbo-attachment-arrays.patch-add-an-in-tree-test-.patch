@@ -1,7 +1,7 @@
 From ad4da6a2bcc14382c2bfef5e50eab9ca1a359a4a Mon Sep 17 00:00:00 2001
 From: NeiroNext <mihail.rozshko@gmail.com>
 Date: Mon, 28 Sep 2026 15:02:55 +0000
-Subject: [PATCH 3/5] fix-fbo-attachment-arrays.patch: add an in-tree test (LP:
+Subject: [PATCH 3/8] fix-fbo-attachment-arrays.patch: add an in-tree test (LP:
  #2160298)
 
 Assisted-by: LLM claude-opus-5-5

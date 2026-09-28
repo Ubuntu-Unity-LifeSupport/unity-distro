@@ -1,7 +1,7 @@
 From 85c6c4a2c737e609f262c42145052cef06531c42 Mon Sep 17 00:00:00 2001
 From: NeiroNext <mihail.rozshko@gmail.com>
 Date: Mon, 28 Sep 2026 15:02:55 +0000
-Subject: [PATCH 4/5] 4.0.8+18.10.20180623-0ubuntu15+unity3
+Subject: [PATCH 4/8] 4.0.8+18.10.20180623-0ubuntu15+unity3
 
 Assisted-by: LLM claude-opus-5-5
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

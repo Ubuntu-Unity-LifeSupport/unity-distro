@@ -1,7 +1,7 @@
 From 336ec683fa5898516b8f30374ebf77eae985d65b Mon Sep 17 00:00:00 2001
 From: NeiroNext <mihail.rozshko@gmail.com>
 Date: Mon, 28 Sep 2026 15:02:55 +0000
-Subject: [PATCH 1/5] fix-missing-vidmode.patch: keep only the
+Subject: [PATCH 1/8] fix-missing-vidmode.patch: keep only the
  missing-extension fix
 
 Drop the NULL after the fullscreen free (moved to its own patch) and the

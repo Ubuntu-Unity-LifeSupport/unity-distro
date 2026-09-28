@@ -1,7 +1,7 @@
 From 5230f4c105f8ab7ec742bd4deb06c51b602e8ae4 Mon Sep 17 00:00:00 2001
 From: NeiroNext <mihail.rozshko@gmail.com>
 Date: Mon, 28 Sep 2026 15:02:55 +0000
-Subject: [PATCH 2/5] Do not free the XF86VidMode mode list twice after a
+Subject: [PATCH 2/8] Do not free the XF86VidMode mode list twice after a
  fullscreen switch
 
 Reproduced through GLWindowManager::CreateGLWindow with fullscreen_flag on
