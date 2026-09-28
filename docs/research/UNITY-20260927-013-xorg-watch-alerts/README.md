@@ -60,7 +60,7 @@ alternatives_rejected:
     place to remember to look - the failure this task is about."
   - "PEER-INBOX files (peer_inbox.py): they are A's and B's, read by their
     owners; the recipient here is C."
-regression_test: scripts/tests/test_alerts.py (9 tests; red on the old taskctl for the two notice tests; full suite 103 OK)
+regression_test: scripts/tests/test_alerts.py (11 tests; red on the old taskctl for the two notice tests)
 validation_record: runs/01-validation.txt
 architectural_task: false
 design_challenger_required: false   # a routing change inside our own tooling, no package or lifetime choice
@@ -72,7 +72,30 @@ unknowns:
     nothing new."
 ```
 
-## Validation (runs/01-validation.txt)
+## Verifier, round 1: FAIL (fixed)
+
+Independent Verifier (subagent), own simulated uploads under dash: most of it
+held (parallel runs and raises, Security/Pending/superseded/equal-to-base,
+ack then re-run, taskctl notice never blocks or alters a board operation,
+no forged ACK or hidden alert). Findings fixed in watch.sh:
+
+1. blocking - the failure key carried the day, so a second streak after an
+   ack on the same day raised nothing: the key is now the UTC time the streak
+   began (test `test_a_second_failure_streak_after_an_ack_is_a_new_alert`);
+2. a run whose alert could not be written exited 0, counted nothing and
+   wrote no log line: it now logs the line with "ALERT NOT RAISED", exits 1
+   and counts as a failure (test updated);
+3. a damaged failure counter aborted every run: it restarts at 0 (test
+   `test_a_damaged_failure_counter_restarts`).
+
+Notes kept as they are: two concurrent runs could log an upload twice (the
+oneshot timer cannot overlap itself; a duplicate raise is no longer logged);
+a non-UTF-8 key crashes `alerts.py raise` (not reachable from Launchpad
+data); `--actor` is self-declared, as in taskctl; `open_alerts` reads without
+the lock (a line being written shows at the next run); a valid but empty
+Launchpad answer counts as success.
+
+## Validation (runs/01-validation.txt, round 1; runs/02-validation.txt after the fixes)
 
 - `python3 -m unittest scripts/tests/test_alerts.py`: 9 OK, no network
   (`XORG_WATCH_LP_JSON` stands in for Launchpad, `XORG_WATCH_BASE` for aptly,

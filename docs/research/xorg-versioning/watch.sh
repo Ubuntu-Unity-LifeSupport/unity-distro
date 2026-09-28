@@ -38,15 +38,17 @@ TMP=$(mktemp); trap 'rm -f "$TMP"' EXIT
 
 fail() {
     echo "xorg-watch: $1" >&2
-    n=$(( $(cat "$FAILS" 2>/dev/null || echo 0) + 1 ))
+    n=$(cat "$FAILS" 2>/dev/null)
+    case "$n" in ''|*[!0-9]*) n=0 ;; esac   # a damaged counter restarts at 0
+    n=$((n + 1))
     echo "$n" > "$FAILS"
+    # the streak is named by the moment it began, so a streak after an
+    # acknowledged one - even on the same day - is a new alert
+    [ -s "$FAILS.since" ] || date -u +%Y%m%dT%H%M%SZ > "$FAILS.since"
     if [ "$n" -ge "$LIMIT" ]; then
-        # one alert per failure streak: the key carries the streak's first day
-        first=$(cat "$FAILS.since" 2>/dev/null || date -u +%F)
-        python3 "$ALERTS" raise --source xorg-watch --key "xorg-watch-failing:$first" \
+        python3 "$ALERTS" raise --source xorg-watch --key "xorg-watch-failing:$(cat "$FAILS.since")" \
             --message "xorg-watch failed $n runs in a row (last: $1); new resolute xorg-server uploads are not being seen. journalctl --user -u xorg-watch.service" >/dev/null
     fi
-    [ -f "$FAILS.since" ] || date -u +%F > "$FAILS.since"
     exit 1
 }
 
@@ -97,13 +99,21 @@ for e in entries:
     print("%s\t%s XORG-WATCH new upload %s in resolute-%s (ours %s): %s; rebase needed" % (
         key, now.strftime("%F %H:%MZ"), v, pocket.lower(), ours, eta))
 ' "$BASE" "$OURS" "$STATE" > "$TMP" 2> "$TMP.err" || { err=$(cat "$TMP.err"); rm -f "$TMP.err"; fail "${err:-Launchpad check failed}"; }
-rm -f "$TMP.err" "$FAILS" "$FAILS.since"
+rm -f "$TMP.err"
 
 TAB=$(printf '\t')
+unraised=0
 while IFS="$TAB" read -r key line; do
     [ -n "$key" ] || continue
-    python3 "$ALERTS" raise --source xorg-watch --key "xorg-server:$key" --message "$line" >/dev/null || {
-        echo "xorg-watch: cannot raise the alert for $key; retried next run" >&2; continue; }
-    echo "$line" >> "$LOG"
-    echo "$key" >> "$STATE"
+    if out=$(python3 "$ALERTS" raise --source xorg-watch --key "xorg-server:$key" --message "$line"); then
+        # "already raised": another run got there first; do not log it twice
+        case "$out" in "already raised:"*) ;; *) echo "$line" >> "$LOG" ;; esac
+        echo "$key" >> "$STATE"
+    else
+        # keep the log line, leave the upload unseen so the next run retries it
+        echo "$line (ALERT NOT RAISED, retried next run)" >> "$LOG"
+        unraised=$((unraised + 1))
+    fi
 done < "$TMP"
+[ "$unraised" -eq 0 ] || fail "cannot raise the coordinator alert for $unraised upload(s) (scripts/alerts.py)"
+rm -f "$FAILS" "$FAILS.since"

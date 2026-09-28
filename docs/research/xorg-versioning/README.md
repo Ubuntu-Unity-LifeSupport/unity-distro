@@ -108,9 +108,11 @@ of B's current task, so no downgrade there.
 - **Check it**: `systemctl --user list-timers xorg-watch.timer`,
   `journalctl --user -u xorg-watch.service`. A failure to read aptly or
   Launchpad goes to the journal; three failed runs in a row (9 h) raise the
-  alert `xorg-watch-failing:<day the streak began>`, once per streak; a
-  successful run resets the count. The pair is remembered in `seen` only
-  after its alert is written, so an alert that cannot be written is retried.
+  alert `xorg-watch-failing:<UTC time the streak began>`, once per streak (a
+  later streak is a new alert, also on the same day); a successful run resets
+  the count. The pair is remembered in `seen` only after its alert is
+  written; a run whose alert cannot be written logs the line with "ALERT NOT
+  RAISED", exits 1 and counts as a failure, and the next run retries it.
   Tests without network: `scripts/tests/test_alerts.py`
   (`XORG_WATCH_LP_JSON` stands in for Launchpad).
 - **Verified**: with a fake base `1ubuntu1.2` (env overrides, temp log) it

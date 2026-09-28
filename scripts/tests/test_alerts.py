@@ -133,13 +133,36 @@ class AlertsTest(unittest.TestCase):
         blocked.mkdir()
         blocked.chmod(0o500)
         env = dict(self.env, ALERTS_FILE=str(blocked / "sub/ALERTS.md"))
-        self.watch(lp_answer((NEW, "Proposed", "Published")), env=env)
+        r = self.watch(lp_answer((NEW, "Proposed", "Published")), env=env)
         blocked.chmod(0o700)
-        self.assertEqual(self.lines("AGENTS-LOG.md"), [])
+        # a failed run: logged, counted, not recorded as seen
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("ALERT NOT RAISED", self.lines("AGENTS-LOG.md")[0])
         self.assertEqual(self.lines("state/seen"), [])
-        self.watch(lp_answer((NEW, "Proposed", "Published")))
+        self.assertEqual(self.lines("state/failures"), ["1"])
+        r = self.watch(lp_answer((NEW, "Proposed", "Published")))
+        self.assertEqual(r.returncode, 0, r.stderr)
         self.assertIn(f"xorg-server:{NEW}@Proposed", self.alert("open").stdout)
-        self.assertEqual(len(self.lines("AGENTS-LOG.md")), 1)
+        self.assertEqual(len(self.lines("AGENTS-LOG.md")), 2)
+        self.assertFalse((self.d / "state/failures").exists())
+
+    def test_a_second_failure_streak_after_an_ack_is_a_new_alert(self):
+        for _ in range(3):
+            self.watch("not json")
+        key = next(l.split()[3] for l in self.alerts.read_text().splitlines() if " RAISE " in l)
+        self.alert("ack", "--actor", "C", "--key", key)
+        self.watch(lp_answer((BASE, "Proposed", "Published")))
+        import time; time.sleep(1.1)   # a new streak, the same day
+        for _ in range(3):
+            self.watch("not json")
+        self.assertEqual(self.alert("open").stdout.count("RAISE xorg-watch-failing:"), 1)
+
+    def test_a_damaged_failure_counter_restarts(self):
+        (self.d / "state").mkdir()
+        (self.d / "state/failures").write_text("x y\n")
+        r = self.watch("not json")
+        self.assertEqual(r.returncode, 1, r.stderr)
+        self.assertEqual(self.lines("state/failures"), ["1"])
 
     def test_repeated_failures_raise_one_alert_and_success_resets(self):
         for _ in range(2):
