@@ -1,0 +1,30 @@
+// greeter-trace.bt - UNITY-20260927-024: what indicator-keyboard-service asks
+// libaccountsservice while unity-greeter switches entries. Run with -p PID.
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_manager_get_user
+{
+	printf("%s get_user(%s)\n", strftime("%H:%M:%S", nsecs), str(arg1));
+}
+uretprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_manager_get_user
+{
+	printf("  -> user %p\n", retval);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_is_loaded
+{
+	@u[tid] = arg0;
+}
+uretprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_is_loaded
+{
+	printf("  is_loaded(%p) = %d\n", @u[tid], retval);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_get_input_sources
+{
+	@s[tid] = arg0;
+}
+uretprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_get_input_sources
+{
+	printf("  input_sources(%p) = %p\n", @s[tid], retval);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_get_x_keyboard_layouts
+{
+	printf("  xkeyboard_layouts(%p)\n", arg0);
+}

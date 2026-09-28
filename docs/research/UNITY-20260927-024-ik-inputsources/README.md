@@ -18,13 +18,21 @@ The task is to establish which layer owns the invariant.
 closes ALREADY_FIXED (PATCH_ALREADY_EXISTS).** libaccountsservice returns
 NULL for a loaded user in two states:
 
-- **by design**, for every nonexistent user;
+- **for every nonexistent user**, with no restart involved. indicator-keyboard
+  reaches this state in normal use. Under unity-greeter, moving the
+  selection mike -> `*other` -> mike -> `*other` crashes Ubuntu's stock
+  service 3 of 3; +unity3 survives (logs/06-08).
 - **during a daemon restart**, because of an ordering weakness in the
   library itself: the manager says "loaded" before the user proxies have
   their properties back.
 
-A consumer has to handle NULL either way. Fixing the library would close
-only the restart window and would not remove the need for the guard.
+A consumer has to handle NULL either way. A library fix would close only the
+restart window and would not remove the need for the guard.
+
+One new observation is not blocking. Inside the restart window, +unity3
+writes an empty source list with `current` = 4294967295 to the greeter's
+settings, for about 0.2 s, then recovers (3 of 3). See "The consumer inside
+the window".
 
 ```yaml
 task_id: UNITY-20260927-024
@@ -44,13 +52,20 @@ observed: >
   still is-loaded=TRUE but has user_name NULL, uid 0 and InputSources NULL.
   About 240 ms later the daemon's Changed signal arrives and the values are
   back.
-  FACT (logs/04): a nonexistent user (`nosuchuser`, `*other`, `*guest`) is
-  is-loaded=TRUE, nonexistent=TRUE, user_name NULL and InputSources NULL,
-  with no restart involved. A real user without a keyfile gets `[]`, not
-  NULL.
+  FACT (logs/04, logs/09): a nonexistent user (`nosuchuser`, `*other`,
+  `*guest`) is is-loaded=TRUE, nonexistent=TRUE, user_name NULL and
+  InputSources NULL, with no restart involved. Read the way the consumer
+  reads it (get_user() and is_loaded at once), the first call is not
+  loaded; the next call for the same name returns that NULL. A real user
+  without a keyfile gets `[]`, not NULL.
+  FACT (logs/06-08): under unity-greeter, the greeter's service calls
+  get_user("*other") on EntrySelected. On the second selection it reads
+  input_sources = NULL. Stock 0ubuntu1 then segfaults with
+  `g_variant_ref: assertion 'value != NULL' failed`, 3 of 3, with no daemon
+  restart. +unity3 survives six switches with no message.
 expected: the service does not crash, and the greeter's layouts are whole again once the daemon is back
-reproduction: act-probe.py, nonexistent-probe.py, greeter-restart.sh (this directory); the crash itself in research/indicator-keyboard-2166139/ (ik.sh, +unity2 3 of 3 SIGSEGV)
-evidence: logs/01-05
+reproduction: act-probe.py, nonexistent-probe.py, repeat-get-user-probe.py, greeter-restart.sh, greeter-trace.bt, restart-trace.bt (this directory); unity-greeter + up/down keys (logs/06-08); the restart crash in research/indicator-keyboard-2166139/ (ik.sh, +unity2 3 of 3 SIGSEGV)
+evidence: logs/01-09
 root_cause: see "Mechanism"
 root_cause_mechanism: >
   libaccountsservice keeps each ActUser's AccountsUser GDBusProxy across a
@@ -72,34 +87,38 @@ invariant: >
   After a daemon restart the greeter's layout list is whole again.
 existing_fix_result: PATCH_ALREADY_EXISTS  # our +unity3 10eb95c
 design_challenger_required: true
-design_review_result: PENDING
+design_review_result: REVISE (round 1; findings answered below), round 2 pending
 architectural_task: false
 correct_layer: >
-  The consumer. NULL from these getters is part of the library's
-  observable contract for nonexistent users; this is its steady state, not
-  a race. indicator-keyboard reaches that state: update_greeter_user() calls
-  get_user() on the unity-greeter entry name, and the entries include
-  `*other` and `*guest` (INFERENCE from main.vala:306-324 and logs/04; not
-  run under unity-greeter). A library fix would remove only the restart
-  window.
+  The consumer. For a name that does not exist, libaccountsservice hands
+  out a loaded user object marked nonexistent, and every getter on it
+  returns NULL. The library logs a warning for it but gives no other answer.
+  get_user() documents only waiting for is-loaded, so a consumer that reads
+  a name it does not control (a greeter entry) must check
+  act_user_is_nonexistent() or NULL. indicator-keyboard does not, and it
+  crashes (logs/07). +unity3's NULL check covers both the nonexistent user
+  and the restart window. A library fix would remove only the window.
 defensive_workaround_rejected: >
-  Not a workaround: the guard is where the library's NULL arrives, and the
-  library returns NULL in a documented-by-behaviour state that no library
-  change would remove. Hiding NULL inside libaccountsservice (returning an
-  empty aa{ss}) would change a shared library's API for every consumer.
+  Not a workaround: the failure is the consumer's unchecked use of a value
+  the library returns for a nonexistent user (logs/07, no library defect
+  involved). The restart window is a separate library weakness. Fixing it
+  in libaccountsservice would not change what the consumer must do, and it
+  is left for upstream (see "Layer decision").
 code_risks:
   ownership_lifetime: checked  # (transfer none) value is only read in place
   callbacks_cancellation: not_applicable
   threading_reentrancy: not_applicable
   ABI_API_file_list: not_applicable  # no code change
 unknowns:
-  - the `*other`/`*guest` path was shown at library level (logs/04) and in
-    the code, not run under unity-greeter
+  - `*guest` was checked at library level only (logs/09); the greeter here
+    offers no guest entry. It takes the same code path as `*other`
   - the LightDM user-name guard in +unity3 (no NULL name to
     lightdm_user_list_get_user_by_name) still has no test of its own; it only
     removes a g_return_val_if_fail critical, not a crash
-  - the ~240 ms recovery comes through LightDM.UserList user-changed; that it
-    is this signal and not another one is inferred from timing
+  - the empty list written inside the restart window (see below) was only
+    watched for about 0.2 s; typing a password in that window was not tested
+  - the case of a daemon that never comes back is inferred: the greeter's
+    list would stay empty until the service or greeter restarts
 ```
 
 ## Mechanism
@@ -108,6 +127,8 @@ unknowns:
 
 `act-probe.py` watches the manager and the user `mike` with 20 ms snapshots
 while accounts-daemon restarts. Every run looked the same (3 of 3):
+
+Times below are from logs/01; the NULL span is 0.10-0.17 s per run.
 
 | time (s) | event | user object |
 |---|---|---|
@@ -138,7 +159,9 @@ Source (accountsservice 23.13.9-8ubuntu5.2):
 `act_user_manager_get_user()` on a name that does not exist loads the user
 as nonexistent. It is `is-loaded=TRUE`, `nonexistent=TRUE`, and every getter
 returns NULL (accounts_proxy NULL). This is how the library reports "no such
-user", and it holds for as long as the object lives. An existing user with
+user", and it holds for as long as the object lives. The library logs a
+warning for it ("user (null) has no username"), so it treats the state as
+abnormal, but it still hands the object out as loaded. An existing user with
 no keyfile gets an empty `aa{ss}` from the daemon (patch 0016), never NULL.
 
 ### What the library documents
@@ -151,20 +174,60 @@ getter written on the `accounts_proxy == NULL` pattern. `act_user_is_loaded()`
 says the object is "loaded and ready to read from", which the restart window
 contradicts.
 
-## The consumer after the restart: layouts recover (logs/05)
+## The consumer and a nonexistent user (logs/06-09)
 
-On target2, at lightdm-gtk-greeter, +unity3 ran as `lightdm` on the
-greeter's bus (the same method as `ik.sh`). The greeter's
-`org.gnome.desktop.input-sources` was recorded on every change, 3 runs:
+target2 was switched to unity-greeter with manual login shown, so the list
+has ik024test, Mike and `*other` ("Войти"). The entry was moved with the
+arrow keys through the vbox tools. dbus-monitor showed `EntrySelected`
+for each move.
 
-- before: `[gb, us]`;
-- 0.3-0.8 s after the restart: `[gb]`, only LightDM's system layout, written
-  by `migrate_input_sources()` inside the window;
-- 0.2-0.4 s later: `[gb, us]` again, right after the daemon's `Changed`;
-- the service stayed alive, with no critical and no segfault.
+- **Stock 0ubuntu1:** SIGSEGV 3 of 3 rounds (logs/07). Each round logged
+  "user (null) has no username", then `g_variant_ref: assertion 'value !=
+  NULL' failed`, then a segfault in libglib. systemd restarted the unit.
+- **+unity3:** a trace of the library calls (logs/06) shows the second
+  get_user("*other") returning input_sources = 0. The service falls back to
+  LightDM and carries on. Six switches, no message, same pid (logs/08).
 
-`current` stayed 0 throughout. The unchanged +unity2 code (Ubuntu's
-0ubuntu1 behaves the same here) crashed 3 of 3 in the same setup
+The path depends on the environment. The service watches the greeter only
+when `UNITY_GREETER_DBUS_NAME` is set (main.vala:105-113). After a normal
+boot the unit starts before unity-greeter puts that variable into the
+lightdm user manager's environment, so the path is dead. Any later start
+of the unit has it, for example a `Restart=on-failure` after a crash
+(logs/09). With the stock package, one daemon restart therefore arms the
+entry crash. This start-order dependency is a separate defect: after boot
+the greeter's layout does not follow the selected user at all.
+
+## The consumer inside the restart window (logs/05, 06)
+
+Recovery does not depend on timing luck. The daemon's `reload_users()`
+registers each user, then thaws notifications (daemon.c:625-634), and
+`on_user_property_notify()` emits `Changed` after a 250 ms debounce
+(user.c:1150-1165). liblightdm reloads the user on it and emits
+user-changed, and the indicator re-runs `migrate_input_sources()`
+(main.vala:433). The indicator's write inside the window comes from the
+manager's `notify::is-loaded` handler: `list_users` at the same
+millisecond as the NULL reads (logs/06, 27307 ms).
+
+What gets written differs by greeter:
+
+| greeter, how the service runs | inside the window | after | runs |
+|---|---|---|---|
+| lightdm-gtk-greeter, started by hand with DISPLAY=:0 (logs/05) | `[gb]`, current 0 | `[gb, us]`, 0 | 3 of 3 |
+| unity-greeter, systemd unit, no DISPLAY (logs/06) | `[]`, current 4294967295, for 0.21-0.25 s | `[gb, us]`, 0 | 3 of 3 |
+
+Under the unit, LightDM's system layout adds nothing without a display.
+The list is then empty, and `current = list.size - 1` underflows. That
+line is stock code; +unity3 only makes it reachable instead of crashing
+first. Nothing was seen to persist. For a lasting effect the daemon would
+have to stay away, and then the greeter has no user data anyway.
+
+The earlier claim "current stayed 0" proved little. In logs/05 the system
+layout and the first user layout are both `gb` at index 0. Under
+lightdm-gtk-greeter, `update_greeter_user()` never has a selected user. Under
+unity-greeter the selected user is re-applied on the recovery pass (logs/06,
+`get_user(mike)` at 27583 and 27615).
+
+The unchanged +unity2 code crashes on the restart 3 of 3
 (research/indicator-keyboard-2166139/).
 
 ## Layer decision
@@ -172,13 +235,16 @@ greeter's bus (the same method as `ik.sh`). The greeter's
 | Layer | What a fix there would do | Verdict |
 |---|---|---|
 | indicator-keyboard (consumer) | treat NULL as "no layouts", fall back; already +unity3 | **owns it**: NULL reaches it by design (nonexistent users) and in the window |
-| libaccountsservice | reset `ActUser:is-loaded` on owner loss, or hold the manager's `is-loaded` until every user proxy has reloaded | closes only the restart window; nonexistent users still return NULL. `is-loaded` has been one-way (`_act_user_update_as_nonexistent` asserts `!loaded`), and consumers connect `notify::is-loaded` as a one-shot, so going back to FALSE is a behaviour change in a shared library for gnome-shell, gdm, unity-greeter, unity-control-center and others. Security updates (now 5.2) would need rebasing |
+| libaccountsservice, manager side | hold the manager's `is-loaded` until every user proxy has its properties back (GDBusProxy notifies `g-name-owner` after its GetAll, so the manager can wait for each user's proxy) | leaves ActUser's behaviour unchanged and would stop this consumer's handler from reading NULL at the notification. Between owner loss and the new owner, users still read NULL, and nonexistent users always do. So the consumer check stays. A patch to carry in a package under security maintenance (5.2) |
+| libaccountsservice, user side | reset `ActUser:is-loaded` on owner loss | `is-loaded` is one-way today (`_act_user_update_as_nonexistent` asserts `!loaded`; `set_is_loaded (user, TRUE)` only). Consumers written for that would see a new FALSE. Not considered further |
+| libaccountsservice, signals | forward the proxy's `g-properties-changed` as ActUser `changed` | would tell consumers ~250 ms earlier that data is back. It does not help indicator-keyboard, which does not listen to ActUser |
 | accounts-daemon | nothing: it always exports InputSources (`[]` with no keyfile) | not involved |
 
 The ordering in libaccountsservice is a real weakness: the manager reports
-"loaded" before its users are readable. It lasts about 150 ms, heals itself,
-and does not change what the consumer must do. It can go upstream as a
-report (through C and May). We do not carry it as our own patch.
+"loaded" before its users are readable. It lasts 0.10-0.17 s, heals itself,
+and does not change what the consumer must do. The manager-side fix is the
+right upstream shape. It can go there as a report (through C and May). We
+do not carry it as our own patch.
 
 ## Search for an existing fix (2026-09-28)
 
@@ -213,9 +279,57 @@ read; errors.ubuntu.com buckets were not searched.
 +unity3. Nothing newer in Ubuntu, Debian or upstream fixes either the
 consumer or the library window.
 
+## Design review, round 1: REVISE
+
+Findings and answers:
+
+1. **The nonexistent-user path was not shown for this consumer.** Now it
+   is, with the consumer's own calling pattern (logs/09) and in the real
+   greeter (logs/06-08: the stock package crashes 3 of 3, +unity3 survives).
+   The start-order condition that the reviewer did not know about is in
+   logs/09.
+2. **logs/05 did not exercise update_greeter_user().** Rerun under
+   unity-greeter with a selected user (logs/06). The "current stayed 0"
+   claim is narrowed; the underflow found there is recorded.
+3. **Other getters.** +unity3 survived `xkeyboard_layouts` on a
+   nonexistent user: that path runs on every `*other` selection (logs/08).
+4. **The manager-side library fix.** The table now weighs it properly.
+   The conclusion stands, because it leaves the owner-gone span and
+   nonexistent users to the consumer.
+5. **The recovery path** is now cited from the source instead of inferred
+   from timing.
+6. **Wording.**
+   - One set of window figures is used throughout.
+   - Unsupported consumer claims (the one-shot `notify::is-loaded` list)
+     were dropped.
+   - "Documented by behaviour" was replaced by what the library does,
+     including its warning.
+   - `is_nonexistent` is named as the check that fits the library's model.
+   - The empty-`aa{ss}` straw man was removed.
+   - The trigger of the write is identified (logs/06).
+7. **The `users` list is `SList<weak Act.User>`** (main.vala:34). If the
+   manager drops a user, the entry dangles. Not verified here; listed as a
+   follow-up.
+
+## Follow-ups (not this task; for C to decide)
+
+- indicator-keyboard: do not rewrite the greeter's sources while
+  AccountsService has no data (a loaded, not-nonexistent user with a NULL
+  name), and clamp `current` when the list is empty. Transient today; see
+  "The consumer inside the window".
+- indicator-keyboard/unity-greeter: after boot the unit starts without
+  `UNITY_GREETER_DBUS_NAME`, so the greeter's layout does not follow the
+  selected user (logs/09).
+- indicator-keyboard: the weak `users` list (finding 7).
+- Upstream report for accountsservice: the manager is loaded before its
+  users are readable (the manager-side shape above). Through C and May.
+- Ubuntu 26.10 renames libaccountsservice0 to libaccountsservice1, which
+  consumers such as indicator-keyboard need for the next series.
+
 ## Result
 
 - No package change. +unity3 (`10eb95c`) stays as published.
-- The previous record is corrected in `docs/DECISIONS.md`: the NULL is not
-  documented; the consumer owns it for the reasons above.
+- The previous record is corrected in `docs/DECISIONS.md`. The NULL is
+  not documented. The consumer owns it for the reasons above. The crash is
+  also reachable without any daemon restart.
 - target2 is rolled back to `Clean-2` afterwards.

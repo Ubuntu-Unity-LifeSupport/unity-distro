@@ -1,0 +1,27 @@
+# 1. repeat-get-user-probe.py on target2 (2026-09-28 ~16:35-16:38 EEST): get_user() read at once, as
+#    update_greeter_user() does, then again after DELAY. As mike, DELAY 0.2, 1 and 3 s, and as lightdm, 1 s.
+#    Every run the same:
+round 1 *guest: is_loaded=False (the consumer skips it)
+round 1 *other: is_loaded=False (the consumer skips it)
+round 1 mike: is_loaded=False (the consumer skips it)
+round 2 *guest: is_loaded=True nonexistent=True user_name=None input_sources=NULL
+round 2 *other: is_loaded=True nonexistent=True user_name=None input_sources=NULL
+round 2 mike: is_loaded=True nonexistent=False user_name='mike' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+
+# 2. Whether the greeter's service follows the selected entry depends on its environment.
+#    indicator-keyboard-service only watches the greeter when UNITY_GREETER_DBUS_NAME is set
+#    (main.vala:105-113). It is started by the lightdm user's systemd unit indicator-keyboard.service.
+#  - pid 12841, started 16:36:43 when unity-greeter first came up: environ has only
+#    DBUS_SESSION_BUS_ADDRESS (no UNITY_GREETER_DBUS_NAME, no DISPLAY). unity-greeter emitted
+#    EntrySelected mike/*other/mike/*other (dbus-monitor), and greeter-trace.bt on the service saw no
+#    act_user_manager_get_user() call at all: the entry path was dead, and the stock service survived.
+#  - pid 14718 and later, started with `systemctl --user restart indicator-keyboard.service` after
+#    unity-greeter had run: environ has UNITY_GREETER_DBUS_NAME=:1.39 (the greeter's unique name), no
+#    DISPLAY. The entry path is live (logs/06, 07, 08).
+#  Which of the two a normal boot gives was not measured.
+
+# 3. Normal boot (systemctl reboot, 2026-09-28 17:41 EEST, unity-greeter, +unity3 installed): the
+#    service (pid 1402, started 17:42:47) has neither UNITY_GREETER_DBUS_NAME nor DISPLAY; the lightdm
+#    user manager's environment has UNITY_GREETER_DBUS_NAME=:1.4 afterwards (unity-greeter calls
+#    UpdateActivationEnvironment, strings /usr/sbin/unity-greeter). So after boot the entry path is dead;
+#    any later start of the unit (Restart=on-failure after a crash, a manual restart) gets the variable.
