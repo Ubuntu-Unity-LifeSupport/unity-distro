@@ -24,7 +24,8 @@ observed: >-
   /org/gnome/Mutter/IdleMonitor/Core and exit without RemoveWatch. The second
   exit makes unity-settings-daemon print "double free or corruption (!prev)"
   and abort (SIGABRT, core dumped, apport crash file); systemd restarts it.
-  +unity5: 4/4 runs; archive 0ubuntu6: 2/2.
+  +unity5: 4/4 runs (1 by hand, journal in runs/two-clients-unity5-first-manual-run.txt,
+  and 3 by tools/two-clients.sh); archive 0ubuntu6: 2/2.
 expected: a client leaving removes only its own watch; the daemon keeps running.
 reproduction: tools/two-clients.sh (tools/watch-client.py twice)
 reproduction_result: PASS   # reproduced: 4/4 on +unity5, 2/2 on 0ubuntu6
@@ -180,7 +181,7 @@ the test build `+unity6`; both with dbgsym for valgrind):
 
 | Check | +unity5 (and archive 0ubuntu6) | +unity6 |
 |---|---|---|
-| A: two clients leave without RemoveWatch (`two-clients.sh`) | daemon aborts, double free: 4/4 (+unity5), 2/2 (0ubuntu6), plus 1/1 inside `verify-run.sh` | survives 3/3 (same PID through 12 departures) |
+| A: two clients leave without RemoveWatch (`two-clients.sh`) | daemon aborts, double free: 4/4 (+unity5: 1 by hand + 3 scripted), 2/2 (0ubuntu6), plus 1/1 inside `verify-run.sh` | survives 3/3 (same PID through 12 departures) |
 | valgrind, real input after each departure (`INPUT=1 usd-valgrind.sh`) | 6 errors in 2 contexts: Invalid read at xevent_filter:332 into the freed xsync, Invalid free | **0 errors** |
 | B: kept client after two others leave (`watch-listener.py`) | daemon dead before the input; nothing fires after the departures | 3/3: user-active fires on the input, idle (4 s) fires 4 s later |
 | C: RemoveWatch then exit, x2 | daemon survives (well-behaved clients were never affected) | survives 3/3 |
@@ -219,4 +220,24 @@ All 7 binaries (.deb and .ddeb, including `libunity-settings-daemon1`, which
 holds the idle monitor) are byte-identical to the test build the target
 checks ran on (`runs/gated-vs-test-build.txt`), so those checks apply to the
 gated artifacts as they are. Not published: the aptly freeze is in force.
+
+## Independent verification
+
+Verifier (`.claude/agents/adversarial-verifier.md`, separate subagent):
+**PASS, REVIEWED** (evidence, code and hashes; no VM). It checked the
+before/after runs, the root cause and the lifecycle paths at d2c24b7 and
+f674b6b (client leaves, RemoveWatch then exit, a fired watch, several
+clients, daemon exit), the diff (3 lines removed plus the changelog; +unity6
+> +unity5; UTC date), and the gated build (manifest commit and tree, all
+artifact hashes, the .dsc hashes, no .git in the .diff.gz, all 7 binaries
+byte-identical to the tested ones). It corrected one count: the scripted
+file holds 3 runs; the fourth +unity5 crash was the first, manual run, now
+kept as runs/two-clients-unity5-first-manual-run.txt.
+
+Seen by the Verifier, outside this task: `handle_remove_watch` does not check
+that the calling client owns the watch, so one client can remove another's
+(present before this change). Proposed as a separate task.
+
+**State:** REVIEW passed; publication waits for the aptly freeze (and the
+release gate once it is lifted).
 
