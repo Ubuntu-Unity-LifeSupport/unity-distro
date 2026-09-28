@@ -212,6 +212,10 @@ executed:
   be private before it reads the marker. C has been asked to `chmod go-w`
   it. Once that is done and C writes the marker, the denial will be "no
   rehearsal authorization is recorded" until May's GO.
+- Repeat (`logs/22`), after C made ~/coordinator 0755: all 14 publish
+  commands are denied only with "no rehearsal authorization is recorded",
+  and the 5 repo, snapshot and chmod commands are allowed. Phase R is
+  ready and waits for May's GO and C's marker.
 
 ## Commands that the guard blocks (need May's one-time permission)
 
