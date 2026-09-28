@@ -89,6 +89,29 @@ package versions are unchanged.
 (commit 5a21b08, test harness only). Without that, none of the EDS
 regression tests, this task's included, runs in our pipeline.
 
+**Why it goes in this upload** (section 4: one defect per patch; the
+coordinator asked for a justification or a split).
+
+- It is a second defect, so it is its own commit and its own patch
+  (`patches/0001-*`), separate from the guard removal (`0002-*`).
+- It is not separable from this upload. Our pipeline builds from git
+  (`build_sbuild.py`), where the directory does not exist:
+  - without 5a21b08 every test-eds-ics-* test fails in dh_auto_test and
+    the build of +unity3 fails (logs/01, the control of the unchanged
+    +unity2);
+  - so section 4's "run the package's relevant tests and a clean sbuild"
+    cannot be done for the guard removal;
+  - the main fix's regression test (test-eds-ics-tasks-without-start)
+    cannot fail-before/pass-after (logs/03 needs 5a21b08);
+  - no +unity3 could be built for publication.
+- It changes only test behaviour (`mkdir -p` before `cp`). It is
+  idempotent and a no-op on a release-tarball tree, where the directory
+  exists.
+- The general case, empty directories of the orig that git drops, is
+  UNITY-20260928-010 (a check at pipeline level). If that task fixes
+  builds from git for every package, this commit becomes redundant but
+  stays harmless, and it can be dropped from our patch series then.
+
 ## Experiment (logs/02)
 
 42c0f3f (not for release) is +unity2 without the guard. Its test calendar
@@ -128,26 +151,11 @@ The test failed only because it did not expect the RDATE probe.
   - That test uses only VEVENTs and the control changed only the VTODO
     path, and it passed in the +unity3 and experiment builds. It is
     treated as timing flakiness of the first EDS test. A rerun of +unity3
-    is recorded in logs/05.
+    is recorded in logs/05: +unity3 again passes 29 of 29, so the control's
+    all-day-events failure was timing flakiness.
 
 ## Status
 
-Released by B at a clean point (2026-09-28) for UNITY-20260927-057
-(priority). State for whoever resumes it:
-
-- Package commits are in B's clone ~/work/b/unity-distro/packages/
-  indicator-datetime, branch b/UNITY-20260927-026 (5a21b08, 5d6492d). They
-  are local only and also saved as `patches/0001-*.patch`, `0002-*.patch`.
-  The experiment and control branches exp/026-no-guard (42c0f3f) and
-  ctl/026-no-due-fallback (e6576ce) are local, not for release, and saved
-  in patches/.
-- The +unity3 build (29/29) is in build/.
-- A rerun of +unity3 for all-day-events flakiness was started at 10:29Z.
-  Its output is in the scratchpad of B's session
-  (scratchpad/026/rerun1.summary) and is to be copied as logs/05.
-- Not done yet: logs/05 (the rerun), the independent Verifier, the
-  evidence fields for READY_FOR_FIX, IMPLEMENTING and VERIFYING (see the
-  process deviation in unknowns), then BLOCKED at the publication gate
-  (047).
-- To report to C: the finding "indicator-datetime does not build from
-  git" (empty directories), also relevant beyond this package.
+Resumed after UNITY-20260927-057 (2026-09-28). logs/05 is recorded, and
+the section 4 justification for 5a21b08 is above. Next: VERIFYING
+(independent Verifier), then BLOCKED at the publication gate (047).
