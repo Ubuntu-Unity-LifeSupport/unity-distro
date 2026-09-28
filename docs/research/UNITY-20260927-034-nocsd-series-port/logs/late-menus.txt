@@ -1,0 +1,37 @@
+# Late menus on main a57e976, target2 Unity, 2026-09-28 ~19:05-19:16Z. GTK_NOCSD_GLOBAL_MENU=1 added to each start
+# (research/nocsd-gaps/tests/naut.sh, papers2.sh with that change).
+## Nautilus: rename a file over D-Bus, read Undo/Redo from the exported menu
+#### nautilus ABC
+before:  disabled win.undo _Отменить; disabled win.redo _Повторить;
+after rename:  ok win.undo _Отменить; disabled win.redo _Повторить;
+#### nautilus ABCD
+before:  disabled win.undo _Отменить; disabled win.redo _Повторить;
+after rename:  ok win.undo _Отменить переименование; disabled win.redo _Повторить;
+## Papers (papers2.sh; the same-window step redone by hand because the file chooser is a separate window
+## the script did not activate; its own run of that step opened nothing and is not counted)
+START:  - Просмотрщик документов; ok win.open Открыть…; ok win.night-mode _Ночной режим; ok app.shortcuts _Комбинации кл; ok app.help _Справка; ok app.about _О приложении;
+START:  - Просмотрщик документов; ok app.shortcuts _Комбинации кл; ok app.help _Справка; ok app.about _О приложении;
+STARTED WITH PDF:  - Просмотрщик документов; ok win.gtk-nocsd-doc-print _Печ; ok win.fullscreen Полноэкранный; ok win.presentation Показать ка; ok win.gtk-nocsd-doc-digital-si; ok win.gtk-nocsd-doc-open-copy ; ok win.gtk-nocsd-doc-open-with ; ok win.gtk-nocsd-doc-save-as Со; ok win.gtk-nocsd-doc-continuous; ok win.gtk-nocsd-doc-dual-page ; disabled win.gtk-nocsd-doc-dual; ok win.gtk-nocsd-doc-rtl Докуме; ok win.gtk
+# same window, PDF opened through the chooser (title then '() – test.pdf'):
+ABC:  - Просмотрщик документов; ok win.open; ok win.night-mode; ok app.shortcuts; ok app.help; ok app.about  (sidebar menu before and after)
+ABCD: - Просмотрщик документов; ok win.open; ok win.night-mode; ok app.shortcuts; ok app.help; ok app.about  (switched from the start menu to the sidebar menu)
+## Pinta 3.1.2 (built with dotnet-sdk-10.0 from resolute, DOTNET_ROLL_FORWARD=Major)
+### ABC
+  NO-MENUBAR bus=:1.881
+### ABCD
+            -                                        _File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        _Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
