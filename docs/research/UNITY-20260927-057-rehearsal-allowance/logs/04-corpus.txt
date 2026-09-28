@@ -1,0 +1,6 @@
+# corpus replay: origin/main guard (058) vs b/UNITY-20260927-057, no rehearsal marker on the machine, 2026-09-28T11:00:56Z
+unique commands: 5043
+
+== newly_denied: 0
+
+== newly_allowed: 0
