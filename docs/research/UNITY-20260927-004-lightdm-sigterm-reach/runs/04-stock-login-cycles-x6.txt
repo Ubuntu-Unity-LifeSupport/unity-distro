@@ -1,0 +1,366 @@
+cycle 1: utest session on seat0, greeter gone after 1s
+cycle 2: utest session on seat0, greeter gone after 1s
+cycle 3: utest session on seat0, greeter gone after 1s
+cycle 4: utest session on seat0, greeter gone after 1s
+cycle 5: utest session on seat0, greeter gone after 1s
+cycle 6: utest session on seat0, greeter gone after 1s
+Started ldtrace4.service - [systemd-run] /usr/bin/bpftrace /home/mike/ld-sigterm-trace.bt.
+Attached 9 probes
+17:21:57.701162 fork 51385 -> 51659
+17:21:57.701608 exec 51659 /usr/sbin/unix_chkpwd (parent 51385)
+17:21:57.775707 51385 reaped 51659
+17:21:57.777717 fork 51385 -> 51673
+17:21:57.778602 exec 51673 /usr/sbin/unix_chkpwd (parent 51385)
+17:21:57.781771 51385 reaped 51673
+17:21:57.782385 fork 51385 -> 51674
+17:21:57.782660 fork 51385 -> 51675
+17:21:57.783736 fork 51385 -> 51676
+17:21:57.835290 SIGTERM 1(systemd) -> 51244(lightdm) result 0
+17:21:57.835373 deliver SIGTERM to 51244 tid 51244 (lightdm) (reaped a child before: no)
+17:21:57.835383 51244 tid 51244 (lightdm) kill(51279, 15) after SIGTERM delivery - handler passes it on
+17:21:57.835566 SIGTERM 51244(lightdm) -> 51279(lightdm-greeter) result 0
+17:21:57.836054 51244 reaped 51279
+17:21:57.839136 SIGTERM 44906(lightdm) -> 51244(lightdm) result 0
+17:21:57.841094 deliver SIGTERM to 51244 tid 51244 (lightdm) (reaped a child before: yes)
+        0x72daddaa138a
+        0x72daddb1aca6
+        0x637c6260e98d
+        0x637c6260367d
+        0x637c625eb34d
+        0x72dadda2a601
+        0x72dadda2a718
+        0x637c625ecb05
+17:21:57.841183 51244 tid 51244 (lightdm) exit(0) after SIGTERM delivery
+17:21:57.842389 51244 tid 51244 (lightdm) _exit(0) at the end of exit()
+17:21:57.843677 51244 gone
+17:21:57.847223 fork 44906 -> 51678
+17:21:57.847507 51678 tid 51678 (lightdm) _exit(1) direct
+17:21:57.848480 51678 gone
+17:21:57.849687 44906 reaped 51678
+17:21:58.328136 fork 51385 -> 51724
+17:21:58.411706 51724 tid 51724 (lightdm) exit(0)
+17:21:58.413719 51724 tid 51724 (lightdm) _exit(0) at the end of exit()
+17:21:58.413923 51724 gone
+17:21:58.414203 51385 reaped 51724
+17:21:58.424662 fork 51385 -> 51732
+17:21:58.427396 exec 51732 /usr/sbin/lightdm-session (parent 51385)
+17:21:59.943657 exec 51732 /usr/bin/im-launch (parent 51385)
+17:22:01.014649 exec 51732 /usr/bin/env (parent 51385)
+17:22:01.021582 exec 51732 /usr/bin/unity-session (parent 51385)
+17:22:27.085721 51385 reaped 51732
+17:22:27.096560 51385 tid 51385 (lightdm) exit(0)
+17:22:27.097010 51385 tid 51385 (lightdm) _exit(0) at the end of exit()
+17:22:27.097156 51385 gone
+17:22:27.100660 SIGTERM 44906(lightdm) -> 51200(Xorg) result 0
+17:22:27.391193 fork 44906 -> 54491
+17:22:27.392601 exec 54491 /usr/bin/X (parent 44906)
+17:22:27.396687 exec 54491 /usr/lib/xorg/Xorg.wrap (parent 44906)
+17:22:27.401211 exec 54491 /usr/lib/xorg/Xorg (parent 44906)
+17:22:28.130338 fork 44906 -> 54499
+17:22:28.131064 54499 tid 54499 (lightdm) _exit(1) direct
+17:22:28.131175 54499 gone
+17:22:28.132591 44906 reaped 54499
+17:22:28.133163 fork 44906 -> 54500
+17:22:28.141241 fork 54500 -> 54502
+17:22:28.141358 fork 54500 -> 54503
+17:22:28.144147 fork 54500 -> 54504
+17:22:28.635143 fork 54500 -> 54545
+17:22:28.640518 exec 54545 /usr/lib/lightdm/lightdm-greeter-session (parent 54500)
+17:22:29.822883 fork 44906 -> 54656
+17:22:29.838127 fork 54656 -> 54658
+17:22:29.839509 exec 54658 /usr/sbin/unix_chkpwd (parent 54656)
+17:22:29.943423 54656 reaped 54658
+17:22:37.781424 fork 54656 -> 54804
+17:22:37.782454 exec 54804 /usr/sbin/unix_chkpwd (parent 54656)
+17:22:37.853265 54656 reaped 54804
+17:22:37.856648 fork 54656 -> 54811
+17:22:37.857527 exec 54811 /usr/sbin/unix_chkpwd (parent 54656)
+17:22:37.860508 54656 reaped 54811
+17:22:37.861072 fork 54656 -> 54812
+17:22:37.861172 fork 54656 -> 54813
+17:22:37.863291 fork 54656 -> 54814
+17:22:37.909550 SIGTERM 1(systemd) -> 54500(lightdm) result 0
+17:22:37.909669 deliver SIGTERM to 54500 tid 54500 (lightdm) (reaped a child before: no)
+17:22:37.909963 54500 tid 54500 (lightdm) kill(54545, 15) after SIGTERM delivery - handler passes it on
+17:22:37.910036 SIGTERM 54500(lightdm) -> 54545(lightdm-greeter) result 2
+17:22:37.911317 54500 reaped 54545
+17:22:37.916647 SIGTERM 44906(lightdm) -> 54500(lightdm) result 0
+17:22:37.916831 deliver SIGTERM to 54500 tid 54500 (lightdm) (reaped a child before: yes)
+        0x7718286a138a
+        0x77182871aca6
+        0x59b312e3298d
+        0x59b312e2767d
+        0x59b312e0f34d
+        0x77182862a601
+        0x77182862a718
+        0x59b312e10b05
+17:22:37.916947 54500 tid 54500 (lightdm) exit(0) after SIGTERM delivery
+17:22:37.917113 54500 tid 54500 (lightdm) _exit(0) at the end of exit()
+17:22:37.917166 54500 gone
+17:22:37.920359 fork 44906 -> 54815
+17:22:37.923471 54815 tid 54815 (lightdm) _exit(1) direct
+17:22:37.923603 54815 gone
+17:22:37.924524 44906 reaped 54815
+17:22:38.414513 fork 54656 -> 54862
+17:22:38.456267 54862 tid 54862 (lightdm) exit(0)
+17:22:38.457160 54862 tid 54862 (lightdm) _exit(0) at the end of exit()
+17:22:38.457535 54862 gone
+17:22:38.458060 54656 reaped 54862
+17:22:38.464588 fork 54656 -> 54869
+17:22:38.471675 exec 54869 /usr/sbin/lightdm-session (parent 54656)
+17:22:39.439605 exec 54869 /usr/bin/im-launch (parent 54656)
+17:22:40.240666 exec 54869 /usr/bin/env (parent 54656)
+17:22:40.245737 exec 54869 /usr/bin/unity-session (parent 54656)
+17:23:05.860387 54656 reaped 54869
+17:23:05.869216 54656 tid 54656 (lightdm) exit(0)
+17:23:05.869489 54656 tid 54656 (lightdm) _exit(0) at the end of exit()
+17:23:05.869932 54656 gone
+17:23:05.871969 SIGTERM 44906(lightdm) -> 54491(Xorg) result 0
+17:23:06.039161 fork 44906 -> 57529
+17:23:06.042082 exec 57529 /usr/bin/X (parent 44906)
+17:23:06.044528 exec 57529 /usr/lib/xorg/Xorg.wrap (parent 44906)
+17:23:06.131203 exec 57529 /usr/lib/xorg/Xorg (parent 44906)
+17:23:06.731470 fork 44906 -> 57544
+17:23:06.732351 57544 tid 57544 (lightdm) _exit(1) direct
+17:23:06.732487 57544 gone
+17:23:06.732681 44906 reaped 57544
+17:23:06.733243 fork 44906 -> 57545
+17:23:06.740528 fork 57545 -> 57546
+17:23:06.740661 fork 57545 -> 57547
+17:23:06.743147 fork 57545 -> 57548
+17:23:07.233071 fork 57545 -> 57582
+17:23:07.234139 exec 57582 /usr/lib/lightdm/lightdm-greeter-session (parent 57545)
+17:23:08.441942 fork 44906 -> 57690
+17:23:08.465397 fork 57690 -> 57693
+17:23:08.466555 exec 57693 /usr/sbin/unix_chkpwd (parent 57690)
+17:23:08.542332 57690 reaped 57693
+17:23:16.712220 fork 57690 -> 57836
+17:23:16.713048 exec 57836 /usr/sbin/unix_chkpwd (parent 57690)
+17:23:16.782433 57690 reaped 57836
+17:23:16.784785 fork 57690 -> 57843
+17:23:16.786484 exec 57843 /usr/sbin/unix_chkpwd (parent 57690)
+17:23:16.789200 57690 reaped 57843
+17:23:16.789464 fork 57690 -> 57844
+17:23:16.789703 fork 57690 -> 57845
+17:23:16.792241 fork 57690 -> 57846
+17:23:16.930211 SIGTERM 1(systemd) -> 57545(lightdm) result 0
+17:23:16.930402 deliver SIGTERM to 57545 tid 57545 (lightdm) (reaped a child before: no)
+17:23:16.930540 57545 tid 57545 (lightdm) kill(57582, 15) after SIGTERM delivery - handler passes it on
+17:23:16.930739 SIGTERM 57545(lightdm) -> 57582(lightdm-greeter) result 2
+17:23:16.933949 SIGTERM 44906(lightdm) -> 57545(lightdm) result 0
+17:23:16.937473 57545 reaped 57582
+17:23:16.937925 deliver SIGTERM to 57545 tid 57545 (lightdm) (reaped a child before: yes)
+        0x7ee725aac802
+        __wait4+31
+        0x60025253d8a4
+        0x60025252634d
+        __libc_start_call_main+129
+        __libc_start_main@@GLIBC_2.34+136
+        0x600252527b05
+17:23:16.941123 57545 tid 57545 (lightdm) kill(57582, 15) after SIGTERM delivery - handler passes it on
+17:23:16.957556 57545 tid 57545 (lightdm) exit(0) after SIGTERM delivery
+17:23:16.957736 57545 tid 57545 (lightdm) _exit(0) at the end of exit()
+17:23:16.958146 57545 gone
+17:23:16.960354 fork 44906 -> 57847
+17:23:16.960995 57847 tid 57847 (lightdm) _exit(1) direct
+17:23:16.962056 57847 gone
+17:23:16.962532 44906 reaped 57847
+17:23:17.541207 fork 57690 -> 57899
+17:23:17.617524 57899 tid 57899 (lightdm) exit(0)
+17:23:17.619559 57899 tid 57899 (lightdm) _exit(0) at the end of exit()
+17:23:17.619799 57899 gone
+17:23:17.620919 57690 reaped 57899
+17:23:17.633958 fork 57690 -> 57908
+17:23:17.634680 exec 57908 /usr/sbin/lightdm-session (parent 57690)
+17:23:18.797216 exec 57908 /usr/bin/im-launch (parent 57690)
+17:23:19.476063 exec 57908 /usr/bin/env (parent 57690)
+17:23:19.483428 exec 57908 /usr/bin/unity-session (parent 57690)
+17:23:44.865596 57690 reaped 57908
+17:23:44.873486 57690 tid 57690 (lightdm) exit(0)
+17:23:44.874299 57690 tid 57690 (lightdm) _exit(0) at the end of exit()
+17:23:44.874425 57690 gone
+17:23:44.878095 SIGTERM 44906(lightdm) -> 57529(Xorg) result 0
+17:23:45.058417 fork 44906 -> 60562
+17:23:45.059438 exec 60562 /usr/bin/X (parent 44906)
+17:23:45.062468 exec 60562 /usr/lib/xorg/Xorg.wrap (parent 44906)
+17:23:45.066530 exec 60562 /usr/lib/xorg/Xorg (parent 44906)
+17:23:45.761706 fork 44906 -> 60616
+17:23:45.762211 60616 tid 60616 (lightdm) _exit(1) direct
+17:23:45.762432 60616 gone
+17:23:45.762742 44906 reaped 60616
+17:23:45.763422 fork 44906 -> 60617
+17:23:45.770527 fork 60617 -> 60618
+17:23:45.770655 fork 60617 -> 60619
+17:23:45.771677 fork 60617 -> 60620
+17:23:46.294275 fork 60617 -> 60654
+17:23:46.298058 exec 60654 /usr/lib/lightdm/lightdm-greeter-session (parent 60617)
+17:23:47.207702 fork 44906 -> 60759
+17:23:47.221217 fork 60759 -> 60762
+17:23:47.222623 exec 60762 /usr/sbin/unix_chkpwd (parent 60759)
+17:23:47.332707 60759 reaped 60762
+17:23:55.804702 fork 60759 -> 60836
+17:23:55.810267 exec 60836 /usr/sbin/unix_chkpwd (parent 60759)
+17:23:55.899024 60759 reaped 60836
+17:23:55.901919 fork 60759 -> 60843
+17:23:55.902706 exec 60843 /usr/sbin/unix_chkpwd (parent 60759)
+17:23:55.905599 60759 reaped 60843
+17:23:55.906384 fork 60759 -> 60844
+17:23:55.906643 fork 60759 -> 60845
+17:23:55.909358 fork 60759 -> 60846
+17:23:55.962664 SIGTERM 1(systemd) -> 60617(lightdm) result 0
+17:23:55.962793 deliver SIGTERM to 60617 tid 60617 (lightdm) (reaped a child before: no)
+17:23:55.962803 60617 tid 60617 (lightdm) kill(60654, 15) after SIGTERM delivery - handler passes it on
+17:23:55.962984 SIGTERM 60617(lightdm) -> 60654(lightdm-greeter) result 2
+17:23:55.970924 SIGTERM 44906(lightdm) -> 60617(lightdm) result 0
+17:23:55.977940 deliver SIGTERM to 60617 tid 60617 (lightdm) (reaped a child before: no)
+17:23:55.978058 60617 tid 60617 (lightdm) kill(60654, 15) after SIGTERM delivery - handler passes it on
+17:23:55.978277 SIGTERM 60617(lightdm) -> 60654(lightdm-greeter) result 1
+17:23:55.979119 60617 reaped 60654
+17:23:55.989674 60617 tid 60617 (lightdm) exit(0) after SIGTERM delivery
+17:23:55.990251 60617 tid 60617 (lightdm) _exit(0) at the end of exit()
+17:23:55.990341 60617 gone
+17:23:55.992623 fork 44906 -> 60850
+17:23:55.997171 60850 tid 60850 (lightdm) _exit(1) direct
+17:23:55.997306 60850 gone
+17:23:55.998329 44906 reaped 60850
+17:23:56.734609 fork 60759 -> 60961
+17:23:56.882129 60961 tid 60961 (lightdm) exit(0)
+17:23:56.882612 60961 tid 60961 (lightdm) _exit(0) at the end of exit()
+17:23:56.882679 60961 gone
+17:23:56.889641 60759 reaped 60961
+17:23:56.902921 fork 60759 -> 60980
+17:23:56.905630 exec 60980 /usr/sbin/lightdm-session (parent 60759)
+17:23:58.180088 exec 60980 /usr/bin/im-launch (parent 60759)
+17:23:58.947406 exec 60980 /usr/bin/env (parent 60759)
+17:23:58.958365 exec 60980 /usr/bin/unity-session (parent 60759)
+17:24:23.874572 60759 reaped 60980
+17:24:23.894406 60759 tid 60759 (lightdm) exit(0)
+17:24:23.895113 60759 tid 60759 (lightdm) _exit(0) at the end of exit()
+17:24:23.895324 60759 gone
+17:24:23.902160 SIGTERM 44906(lightdm) -> 60562(Xorg) result 0
+17:24:24.214695 fork 44906 -> 63624
+17:24:24.217597 exec 63624 /usr/bin/X (parent 44906)
+17:24:24.222148 exec 63624 /usr/lib/xorg/Xorg.wrap (parent 44906)
+17:24:24.225477 exec 63624 /usr/lib/xorg/Xorg (parent 44906)
+17:24:24.852977 fork 44906 -> 63631
+17:24:24.853572 63631 tid 63631 (lightdm) _exit(1) direct
+17:24:24.855102 63631 gone
+17:24:24.855676 44906 reaped 63631
+17:24:24.856214 fork 44906 -> 63632
+17:24:24.862625 fork 63632 -> 63633
+17:24:24.862945 fork 63632 -> 63634
+17:24:24.863902 fork 63632 -> 63635
+17:24:25.447973 fork 63632 -> 63669
+17:24:25.449583 exec 63669 /usr/lib/lightdm/lightdm-greeter-session (parent 63632)
+17:24:26.641557 fork 44906 -> 63777
+17:24:26.659983 fork 63777 -> 63780
+17:24:26.660969 exec 63780 /usr/sbin/unix_chkpwd (parent 63777)
+17:24:26.721221 63777 reaped 63780
+17:24:34.767637 fork 63777 -> 63919
+17:24:34.772460 exec 63919 /usr/sbin/unix_chkpwd (parent 63777)
+17:24:34.855632 63777 reaped 63919
+17:24:34.857125 fork 63777 -> 63926
+17:24:34.858136 exec 63926 /usr/sbin/unix_chkpwd (parent 63777)
+17:24:34.860802 63777 reaped 63926
+17:24:34.861232 fork 63777 -> 63927
+17:24:34.861522 fork 63777 -> 63928
+17:24:34.863567 fork 63777 -> 63929
+17:24:34.904016 SIGTERM 1(systemd) -> 63632(lightdm) result 0
+17:24:34.904081 deliver SIGTERM to 63632 tid 63632 (lightdm) (reaped a child before: no)
+17:24:34.904093 63632 tid 63632 (lightdm) kill(63669, 15) after SIGTERM delivery - handler passes it on
+17:24:34.904166 SIGTERM 63632(lightdm) -> 63669(lightdm-greeter) result 0
+17:24:34.904634 63632 reaped 63669
+17:24:34.910654 SIGTERM 44906(lightdm) -> 63632(lightdm) result 0
+17:24:34.910713 deliver SIGTERM to 63632 tid 63632 (lightdm) (reaped a child before: yes)
+        0x7f68bc6a138a
+        0x7f68bc71ac06
+        0x616be4921a08
+        0x616be49166a7
+        0x616be48fe34d
+        0x7f68bc62a601
+        0x7f68bc62a718
+        0x616be48ffb05
+17:24:34.910722 63632 tid 63632 (lightdm) exit(0) after SIGTERM delivery
+17:24:34.911204 63632 tid 63632 (lightdm) _exit(0) at the end of exit()
+17:24:34.911380 63632 gone
+17:24:34.920944 fork 44906 -> 63930
+17:24:34.921589 63930 tid 63930 (lightdm) _exit(1) direct
+17:24:34.921771 63930 gone
+17:24:34.922441 44906 reaped 63930
+17:24:35.540732 fork 63777 -> 63985
+17:24:35.615688 63985 tid 63985 (lightdm) exit(0)
+17:24:35.616630 63985 tid 63985 (lightdm) _exit(0) at the end of exit()
+17:24:35.616926 63985 gone
+17:24:35.617532 63777 reaped 63985
+17:24:35.625514 fork 63777 -> 63993
+17:24:35.626725 exec 63993 /usr/sbin/lightdm-session (parent 63777)
+17:24:36.714312 exec 63993 /usr/bin/im-launch (parent 63777)
+17:24:37.441293 exec 63993 /usr/bin/env (parent 63777)
+17:24:37.447258 exec 63993 /usr/bin/unity-session (parent 63777)
+17:25:02.925396 63777 reaped 63993
+17:25:02.986207 63777 tid 63777 (lightdm) exit(0)
+17:25:02.987588 63777 tid 63777 (lightdm) _exit(0) at the end of exit()
+17:25:02.988002 63777 gone
+17:25:03.002368 SIGTERM 44906(lightdm) -> 63624(Xorg) result 0
+17:25:04.477174 fork 44906 -> 66662
+17:25:04.486098 exec 66662 /usr/bin/X (parent 44906)
+17:25:04.496197 exec 66662 /usr/lib/xorg/Xorg.wrap (parent 44906)
+17:25:04.500422 exec 66662 /usr/lib/xorg/Xorg (parent 44906)
+17:25:05.578448 fork 44906 -> 66670
+17:25:05.579322 66670 tid 66670 (lightdm) _exit(1) direct
+17:25:05.580620 66670 gone
+17:25:05.581636 44906 reaped 66670
+17:25:05.582592 fork 44906 -> 66671
+17:25:05.595084 fork 66671 -> 66672
+17:25:05.595728 fork 66671 -> 66673
+17:25:05.600282 fork 66671 -> 66674
+17:25:06.354395 fork 66671 -> 66706
+17:25:06.374634 exec 66706 /usr/lib/lightdm/lightdm-greeter-session (parent 66671)
+17:25:08.067938 fork 44906 -> 66913
+17:25:08.081484 fork 66913 -> 66915
+17:25:08.082335 exec 66915 /usr/sbin/unix_chkpwd (parent 66913)
+17:25:08.185060 66913 reaped 66915
+17:25:15.218430 fork 66913 -> 66959
+17:25:15.221555 exec 66959 /usr/sbin/unix_chkpwd (parent 66913)
+17:25:15.334811 66913 reaped 66959
+17:25:15.336606 fork 66913 -> 66966
+17:25:15.338297 exec 66966 /usr/sbin/unix_chkpwd (parent 66913)
+17:25:15.344946 66913 reaped 66966
+17:25:15.345474 fork 66913 -> 66967
+17:25:15.345588 fork 66913 -> 66968
+17:25:15.361197 fork 66913 -> 66969
+17:25:15.412109 SIGTERM 1(systemd) -> 66671(lightdm) result 0
+17:25:15.412330 deliver SIGTERM to 66671 tid 66671 (lightdm) (reaped a child before: no)
+17:25:15.412343 66671 tid 66671 (lightdm) kill(66706, 15) after SIGTERM delivery - handler passes it on
+17:25:15.412416 SIGTERM 66671(lightdm) -> 66706(lightdm-greeter) result 2
+17:25:15.417427 66671 reaped 66706
+17:25:15.423119 SIGTERM 44906(lightdm) -> 66671(lightdm) result 0
+17:25:15.423289 deliver SIGTERM to 66671 tid 66671 (lightdm) (reaped a child before: yes)
+        0x78b45b2ac802
+        0x78b45b328136
+        0x78b45afbd1e4
+        0x78b45af9ce7b
+        0x78b45af769cf
+        0x78b45b5a4b2f
+        0x61dc89f53ac2
+        0x61dc89f3c34d
+        0x78b45b22a601
+        0x78b45b22a718
+        0x61dc89f3db05
+17:25:15.423300 66671 tid 66671 (lightdm) exit(0) after SIGTERM delivery
+17:25:15.423945 66671 tid 66671 (lightdm) _exit(0) at the end of exit()
+17:25:15.424232 66671 gone
+17:25:15.430662 fork 44906 -> 66971
+17:25:15.435481 66971 tid 66971 (lightdm) _exit(1) direct
+17:25:15.439300 66971 gone
+17:25:15.440319 44906 reaped 66971
+17:25:16.454289 fork 66913 -> 67023
+17:25:16.580545 67023 tid 67023 (lightdm) exit(0)
+17:25:16.582324 67023 tid 67023 (lightdm) _exit(0) at the end of exit()
+17:25:16.582964 67023 gone
+17:25:16.584101 66913 reaped 67023
+17:25:16.595437 fork 66913 -> 67031
+17:25:16.597791 exec 67031 /usr/sbin/lightdm-session (parent 66913)
+17:25:18.695005 exec 67031 /usr/bin/im-launch (parent 66913)
+17:25:19.786741 exec 67031 /usr/bin/env (parent 66913)
+17:25:19.796475 exec 67031 /usr/bin/unity-session (parent 66913)
