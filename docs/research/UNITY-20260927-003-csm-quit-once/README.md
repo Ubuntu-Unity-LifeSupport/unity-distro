@@ -14,7 +14,7 @@ Agent A, target `target-desktop`, 2026-09-28.
 `tools/cs-delay.sh reboot|poweroff` run as root through `systemd-run`: another
 process holds a logind `shutdown` delay inhibitor, then Unity's end-session
 dialog is used to reboot or power off; a tick is logged every second.
-Runs 05-07 also record logind's bus traffic (`busctl monitor`).
+Runs 04-07 also record logind's bus traffic (`busctl monitor`).
 `tools/cs-extract.sh` reads the previous boot. "Before" is a test build
 without the flag, `6.4.2-1+unity3~noonce1` (NOT FOR PUBLICATION; only
 `debian/patches/series` and the changelog differ from +unity3,
@@ -189,8 +189,8 @@ code_risks:
     checked - with the flag only one "shutdown-prepared" handler is connected.
     cancel_end_session() accepts phase EXIT (csm-manager.c:1066-1096, reached
     by the dialog's Cancel while dialog_action is set) and resets the phase
-    to RUNNING, but not quit_requested. INFERENCE: this cannot strand a
-    later end of session, because the request was already sent: if logind
+    to RUNNING, but not quit_requested. INFERENCE: once logind answers the
+    first call, this cannot strand a later end of session, because the request was already sent: if logind
     accepts it, the machine goes down anyway and PrepareForShutdown quits the
     process (prepare_for_shutdown_expected and the handler survive the
     cancel); if logind refuses it, shutdown-prepared(FALSE) quits the process.
@@ -215,12 +215,44 @@ unknowns:
     table); finer timing was not measured."
   - "No run with a refused first call, a polkit prompt, or a Cancel during
     EXIT."
+  - "Cancel during EXIT while logind waits on an unanswered polkit prompt
+    (the call has a G_MAXINT timeout): a later logout would return early
+    from csm_manager_quit() and wait on that prompt. Degenerate - the
+    clients are already stopped in EXIT - and not exercised."
   - "GNOME GitLab issues could not be searched with authentication."
 design_challenger_required: true
 architectural_task: false
-design_review_result: PENDING   # review 1: REVISE (addressed); review 2 pending
+design_review_result: APPROVE   # review 1: REVISE, review 2: APPROVE with two wording fixes (applied)
 ```
+
+## Design review
+
+Temporary Design Challenger, separate read-only subagent.
+
+1. **REVISE**: the repeated request is old upstream behaviour, not introduced
+   by 9409c18; dialog-method paths into end_phase() were missing; Cancel is
+   possible in EXIT; the failure path of the first call and first-request-wins
+   were not stated; "unreachable" had to become "not observed"; the timing
+   column did not match the runs; the patch header's claims needed
+   correcting.
+2. **APPROVE** with two wording fixes (the Cancel INFERENCE holds once
+   logind answers; runs 04-07 are bus-monitored), both applied.
 
 ## Outcome
 
-PENDING the Design Challenger.
+`ALREADY_FIXED` / `FIXED_LOCAL`: the flag in `csm_manager_quit()` (a3d4c79,
+published in +unity3) is in the right layer and stays. The re-entry into
+end_phase() in EXIT is upstream design; the non-idempotent logind request is
+what the flag makes safe to repeat, as gnome-session does by keeping EXIT's
+actions idempotent. Measured effect: one accepted logind call instead of 4-8
+with 3-7 refusals; no user-visible difference. No new version for this task.
+
+Follow-ups, none needing a version now:
+
+- at the next cinnamon-session upload made for another reason, correct the
+  patch description of `Request-the-reboot-or-shutdown-only-once.patch`
+  ("twelve times" and OperationInProgress were measured on +unity2, before
+  the backport; the false "not confirmed by logind" quit was not observed);
+- upstream candidate (only through May): the missing guard, or gnome-session's
+  structure (request at the end of QUERY_END_SESSION), in
+  linuxmint/cinnamon-session.
