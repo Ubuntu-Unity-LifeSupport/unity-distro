@@ -62,13 +62,35 @@ An investigation can close as `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`,
 `NOT_APPLICABLE`, `BLOCKED`, `REJECTED`, or `DUPLICATE`. During `VERIFYING`,
 the physical task owner completes and records the regression test, relevant
 tests, build, and live check on their assigned VM. `REVIEW` is a separate,
-ephemeral Verifier subagent reading that evidence and the diff. `PASS` advances
-to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
+ephemeral Verifier subagent reading that evidence and the diff. For a package,
+`PASS` advances to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
 `BLOCKED` with resume state `REVIEW` until the evidence is supplied. A strictly
 mechanical packaging-only change may skip independent review only under the
 `NOT_APPLICABLE` exception in section 6; that path advances from `VERIFYING`
-to `READY_TO_PUBLISH` after the release gate is complete. A non-package
-documentation or research task may move from `VERIFYING` to `DONE`. `taskctl`
+to `READY_TO_PUBLISH` after the release gate is complete.
+
+Every task has a kind, recorded as `task_kind` in its evidence; it decides the
+path to `DONE`. A task that changes several things takes the first kind that
+applies in this order:
+
+| Kind | What it changes | `READY_FOR_FIX` needs | `VERIFYING` needs | `DONE` |
+|---|---|---|---|---|
+| `package` | a source package we build or publish | the section 2 defect card | `regression_test`, `build_manifest` | only from `PUBLISHED` |
+| `tool` | code that changes behaviour and is not a package (`scripts/*.py`, hooks) | the section 2 defect card | `regression_test`, `validation_record` | only from `REVIEW`, with the Verifier's `PASS` |
+| `operation` | shared infrastructure: repositories, VMs, archive state | `scope`, `chosen_approach`, `existing_state_check` (what is already there), `authorization` {`approved_by`: May or C, `reference` to where the approval is recorded, `scope`} | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+| `documentation` | documentation and research records | `scope`, `chosen_approach` | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+
+Every kind records `architectural_task`, `design_challenger_required` and
+`correct_layer` at `READY_FOR_FIX`, and needs the Design Challenger's
+`APPROVE` when required. `READY_FOR_FIX` means "approach recorded, ready to
+implement" for every kind. Only package tasks enter `READY_TO_PUBLISH` or
+`PUBLISHED`. A legacy task whose evidence has `package_change: true` and no
+`task_kind` is a package; evidence carrying `build_manifest`, `release_gate`,
+`candidate_version` or `version_safety` is always a package. From
+`READY_FOR_FIX` on, `taskctl` refuses a transition whose kind it cannot
+resolve, and it records the kind in `<task-id>.kind` beside the evidence at
+the first transition that resolves it; later evidence must keep that kind.
+`taskctl`
 requires a machine-readable evidence JSON at
 `~/coordinator/evidence/<task-id>.json` (or an explicit `--evidence` path) for
 transitions; it validates stage-required keys before changing the board. A package
@@ -114,7 +136,8 @@ unknowns:
   - unanswered checks; use [] when none
 ```
 
-Do not enter `READY_FOR_FIX` until the issue is reproduced or the task is an
+For `package` and `tool` tasks (section 1): do not enter `READY_FOR_FIX`
+until the issue is reproduced or the task is an
 explicit build/packaging failure with a captured failing build, the
 `existing_fix_result` is `NOT_FIXED`, and `issue_search_result` is `FOUND` or
 `NOT_FOUND` with evidence. If a fix or patch already exists, verify its scope
