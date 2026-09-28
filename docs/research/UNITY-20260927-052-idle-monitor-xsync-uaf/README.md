@@ -48,7 +48,13 @@ root_cause_mechanism: >-
   client leaves: the same pointer is freed again (double free); glibc aborts
   the daemon.
 root_cause_evidence: >-
-  FACT (runs/valgrind-pause60-unity5.log, 60 s of normal running first, no
+  FACT (runs/valgrind-input-unity5.log, real mouse input after each
+  departure): "Invalid read of size 4 at xevent_filter
+  (gsd-idle-monitor.c:332)", "Address ... is 8 bytes inside a block of size
+  24 free'd", "Block was alloc'd at gsd_idle_monitor_init_dbus
+  (gsd-idle-monitor.c:959)" - a read of xsync->sync_event_base after the
+  first departure; then "Invalid free()" at the second. FACT
+  (runs/valgrind-pause60-unity5.log, 60 s of normal running first, no
   error): "Invalid free()" at the second client's exit, "Address ... is 0
   bytes inside a block of size 24 free'd" by the first, "Block was alloc'd at
   gsd_idle_monitor_init_dbus (gsd-idle-monitor.c:959)" - the xsync
@@ -148,4 +154,55 @@ nothing in the tree tests the idle monitor (`git grep` of d2c24b7 for
 idle-monitor in test files: none); a test would need an X server with XSync,
 a session bus and the daemon's D-Bus export. The regression test is the live
 reproducer below (fail before / pass after on target).
+
+## Fix and verification (2026-09-28)
+
+Package repository `github.com/Ubuntu-Unity-LifeSupport/unity-settings-daemon`,
+branch `a/UNITY-20260927-052` from `unity/resolute` `d2c24b7`:
+
+- `09f45d9` idle-monitor: don't free the XSync state when a D-Bus watcher
+  leaves - removes exactly `if (xsync) g_slice_free(GsdXSync, xsync);` (and
+  the blank line before it) from `name_vanished_callback`;
+- `f674b6b` d/changelog: `15.04.1+21.10.20220802-0ubuntu7+unity6`.
+
+**Build.** `scripts/build_sbuild.py` could not build it: for this format 1.0
+source, sbuild's `dpkg-source -b` in the git clone tries to put `.git` into
+the diff and stops ("cannot represent change to .git/index",
+`~/work/a/052/out-1/`). That tool defect is UNITY-20260928-007. The runtime
+checks below used a **test build, not for publication**: `git archive
+f674b6b` -> `dpkg-source -b` -> `sbuild -d resolute` in
+`~/work/a/052/test-build-NOT-FOR-PUBLICATION/` (Status: successful, 263 s;
+package tests `# TOTAL: 1 # PASS: 1`, gcm-self-test - they do not cover the
+idle monitor). No build manifest was made from it.
+
+**Measured on target** (same boot; unfixed = published `+unity5`, fixed =
+the test build `+unity6`; both with dbgsym for valgrind):
+
+| Check | +unity5 (and archive 0ubuntu6) | +unity6 |
+|---|---|---|
+| A: two clients leave without RemoveWatch (`two-clients.sh`) | daemon aborts, double free: 4/4 (+unity5), 2/2 (0ubuntu6), plus 1/1 inside `verify-run.sh` | survives 3/3 (same PID through 12 departures) |
+| valgrind, real input after each departure (`INPUT=1 usd-valgrind.sh`) | 6 errors in 2 contexts: Invalid read at xevent_filter:332 into the freed xsync, Invalid free | **0 errors** |
+| B: kept client after two others leave (`watch-listener.py`) | daemon dead before the input; nothing fires after the departures | 3/3: user-active fires on the input, idle (4 s) fires 4 s later |
+| C: RemoveWatch then exit, x2 | daemon survives (well-behaved clients were never affected) | survives 3/3 |
+| D: the daemon's own watch - cursor plugin shows the pointer on input after two departures (`plugin-check.sh`) | FAIL: nothing logged, daemon going down | PASS 3/3 |
+
+Runs: `runs/verify-run-unity5.txt`, `runs/verify-run-unity6.txt`,
+`runs/valgrind-input-unity5*.{log,txt}`, `runs/valgrind-input-unity6*.{log,txt}`,
+`runs/plugin-check-unity5.txt`, `runs/plugin-check-unity6.txt`.
+
+Regression test: `tools/two-clients.sh` (fail = daemon aborts) and
+`INPUT=1 tools/usd-valgrind.sh` (fail = any gsd-idle-monitor error) - fail
+before, pass after. Scripts are copied from `tools/` to the target's home
+directory before a run (`watch-client.py`, `watch-listener.py`,
+`two-clients.sh`, `verify-run.sh`, `usd-valgrind.sh`, `plugin-check.sh`,
+`usd-debug-wrapper*.sh` from UNITY-20260927-005, and `evinject.py`,
+`envt.sh` from research/cursor-after-login).
+
+Target left on the published `+unity5`; test build, dbgsym and the debug
+wrapper removed.
+
+**State:** BLOCKED at VERIFYING until `build_sbuild.py` can build format 1.0
+sources from git (UNITY-20260928-007); then a real build with a manifest,
+the same checks on it, Verifier, gate. Publication also waits for the aptly
+freeze.
 
