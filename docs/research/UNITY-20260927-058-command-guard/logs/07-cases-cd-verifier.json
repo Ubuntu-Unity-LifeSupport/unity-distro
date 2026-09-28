@@ -1,0 +1,24 @@
+{
+  "_note": "UNITY-20260927-058 verifier-added cases. DATA ONLY: never execute. Every entry must be DENIED (exit 2) by the new hook.",
+  "C_incident_heredoc_closed_early": [
+    "cat > /tmp/v.txt <<EOF\ndata line\nEOF\naptly publish drop resolute",
+    "cat >> /tmp/v.txt << \"EOF\"\ndata\nEOF\naptly publish list",
+    "tee /tmp/v.txt <<EOF >/dev/null\nx\nEOF\naptly -config=/tmp/s/aptly.conf publish list",
+    "cat > /tmp/v.txt <<END\nx\nEND\nenv HOME=/tmp/s aptly publish update resolute",
+    "cat > /tmp/v.txt <<EOF\nx\nEOF\ntrue && aptly publish list",
+    "cat > /tmp/v.txt <<EOF\nx\nEOF\n/usr/bin/aptly publish list",
+    "cat > /tmp/v.txt <<EOF\nx\nEOF\ncommand aptly publish list",
+    "cat > /tmp/v.txt <<EOF\nx\nEOF\n  aptly   publish   list  "
+  ],
+  "D_config_family": [
+    "aptly -config=\"/tmp/s/aptly.conf\" publish list",
+    "aptly -config='/tmp/s/aptly.conf' publish switch resolute snap",
+    "HOME=/tmp/s /usr/bin/aptly publish list",
+    "env -i HOME=/tmp/s aptly -config /tmp/s/aptly.conf publish list",
+    "sudo HOME=/tmp/s aptly --config=/tmp/s/aptly.conf publish list",
+    "sudo -E command aptly -config=/tmp/s/aptly.conf publish list",
+    "/usr/local/../bin/aptly -config=./../s/aptly.conf publish list",
+    "cd /tmp/s && aptly -config=../s/aptly.conf publish list",
+    "aptly -batch -config=/tmp/s/aptly.conf publish repo -distribution=resolute main"
+  ]
+}

@@ -103,6 +103,17 @@ unknowns:
     interpreter (printf with octal escapes piped to bash, base64), a script
     written by the Write tool and run later, a command built only from
     expansions (${a}ly ${b}lish)
+  - part E of the verification (adversarial search for bypasses) is NOT
+    VERIFIED: the environment's safety classifier stopped every attempt to
+    write adversarial cases. Residual risk: a form outside the tested cases
+    may pass through a mechanism no adversarial test exercised (scanner,
+    heredoc classification, _exposed(), reader list, prefixes). Follow-up:
+    UNITY-20260928-002 (backlog)
+  - scripts/taskctl.py, listed as a reader, runs `aptly publish show`
+    itself (read-only, from the publication record, when moving a task to
+    PUBLISHED). It passes none of its arguments to a shell. Section 6's
+    Aptly freeze allows that call only inside an authorized publication
+    workflow
 ```
 
 ## Reproduction
@@ -435,6 +446,19 @@ groups keep the expansion rule.
 - `timeout`, `xargs` or `bash -c` around aptly.
 - A variable holding an aptly command (`A="aptly ..."; $A ...`).
 
+## Verification
+
+Verdict by part (`verification.md`): A PASS, B PASS, C PASS, D PASS,
+**E NOT VERIFIED**, F PASS. Review status REVIEWED.
+
+- **Bounds of what was checked:** 127 must-deny tests, 41 C/D cases, 36
+  documented forms, and 4566 real commands with no newly allowed command.
+- **Not claimed:** full adversarial or security coverage. The residual risk
+  and the follow-up UNITY-20260928-002 are listed under unknowns.
+- **Also added on the owner's decision:** the Aptly freeze rule in
+  ENGINEERING-PROCESS section 6.
+
 ## Status
 
-IMPLEMENTING -> VERIFYING: adversarial Verifier next.
+DONE (not a package task). Merge by the coordinator. The DECISIONS entry
+is added at merge time.
