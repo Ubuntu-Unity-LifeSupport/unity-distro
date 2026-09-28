@@ -7,6 +7,9 @@
 # the next boot. Clicks as in research/cinnamon-session-214-202/runs/cs-delay.sh.
 M="setpriv --reuid=mike --regid=mike --init-groups env HOME=/home/mike DISPLAY=:0 XAUTHORITY=/home/mike/.Xauthority"
 sysctl -q kernel.core_pattern=/var/tmp/core.%e.%p.%t
+# how compiz leaves (tools/compiz-exit.bt; its lines are read from the
+# previous boot's journal by restart-check.sh)
+[ -f /home/mike/compiz-exit.bt ] && systemd-run --unit=u009trace -p After=systemd-journald.service bpftrace /home/mike/compiz-exit.bt >/dev/null && sleep 8
 logger -t u009 "restart via dialog; compiz $(dpkg-query -W -f='${Version}' compiz-core); pid $(pgrep -x compiz); core_pattern $(cat /proc/sys/kernel/core_pattern)"
 $M xdotool mousemove 1253 14 click 1; sleep 1.5
 $M xdotool mousemove 1100 234 click 1; sleep 3
