@@ -96,8 +96,15 @@ unknowns:
      in `gtest-nuxgraphics`. The test finds the current mode's size, and a
      gtest death-test child (threadsafe style, a fresh exec) creates and
      deletes the fullscreen display with AddressSanitizer preloaded. The
-     test is skipped when the server has no XF86VidMode modes. It fails if
-     the child has no ASan, so it cannot pass vacuously.
+     test is skipped when the server has no XF86VidMode modes, and it fails
+     if the child has no ASan. It does not check that the window was
+     created: `GLWindowManager::CreateGLWindow` returns a display even when
+     `CreateOpenGLWindow` fails early (no GLX, no visual), so such a child
+     would exit 0 without reaching the branch. Control 2 shows the branch is
+     reached in the build's dummy Xorg (Verifier finding 4). The test's
+     stability also relies on UNITY-20260928-020's `-noreset`: the parent's
+     own X connection could otherwise let the server reset before the child
+     connects.
    - The first version detected the second free with glibc's malloc checking
      (`libc_malloc_debug`), as on target2. In the build it passed without the
      fix (control 1, logs/05): glibc missed the second free there. ASan's
@@ -177,4 +184,7 @@ tests of this task are OK in each. The exported symbols still equal
 - target2 was used only for the API reproduction (logs/01, 02), then rolled
   back to `Clean-2` (checked inside: no `~/.dirty`, no libnux-4.0-dev, no
   test binaries).
-- Independent verification: next, on the clean build of 0274bc5.
+- Independent verification: **PASS** (REVIEWED, 2026-09-28), together with
+  UNITY-20260928-020, on the evidence and the clean build of 0274bc5. Its
+  notes are in the card (death-test wording). `docs/PATCHES.md` and
+  `docs/DECISIONS.md` entries were added through `append_record.py`.
