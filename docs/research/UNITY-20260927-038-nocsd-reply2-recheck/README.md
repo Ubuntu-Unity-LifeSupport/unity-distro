@@ -68,12 +68,27 @@ Status values:
 | 24 | Main has no global-menu export of its own | holds | No menu export on `e817d80` or `a57e976` (grep: no GMenuModel export, no menubar code). |
 | 25 | Our package: environment.d does not reach Xfce, fixed via Xsession.d | holds, since +unity3 | 4.8-1+unity2 added `/etc/X11/Xsession.d/51gtk-nocsd`. 4.8-1+unity3 (2026-09-26) fixed that script's regression: it replaced the environment.d value and dropped `libunity-gtk4-menu.so.0` in Unity sessions. 4.8-1+unity3 is the newest published version (the published `Packages` index, read as a file). |
 
+## Re-measurement on main a57e976 (UNITY-20260927-034, 2026-09-28)
+
+Our series carried over to main `a57e976` (research/UNITY-20260927-034-nocsd-series-port):
+all 16 combinations build with 0 warnings, and the figures were measured
+again on target2 by the same scenarios. The rows marked "after 034":
+
+| # | Finding | Status on `a57e976` | Evidence |
+|---|---|---|---|
+| 1 | Holder menu on the panel | holds on Unity; Plasma not repeated | Text Editor: one panel entry with its name, a click opens every item with sections as separators (034 `shots/u-holder-*.png`). |
+| 2 | Flat variant | not repeated | An experiment branch, not part of the series. |
+| 4 | The parts build independently | holds | All 16 combinations (base, A, B, C, AB, AC, BC, ABC, D, AD, BD, CD, ABD, ACD, BCD, ABCD): 0 warnings, libc only (034 `logs/build-combinations.txt`). |
+| 5 | Present finds 35 menus, realize brings 42 | **correct figures: 34 → 41 of 43** | The 44 applications include Apostrophe, which opens no window, so 43 are audited. The earlier files on `6b1f70a` give 34 and 41 as well; "35 → 42" was an off-by-one in our record. `a57e976`: base 33 (Showtime's slow start timed out the audit; it exports in every other run), (a) 34, (b) 41, the same 7 applications added by (b) (034 `logs/counts.txt`). |
+| 6 | Late menus: Pinta, Papers, Nautilus, Console | holds | With (d): Pinta 3.1.2 its full menubar, Nautilus "Undo Rename", Papers start / same-window / file-start menus, Console its main menu; without (d) as described (034 `logs/late-menus.txt`). |
+| 8 | Hiding the button loses items in 7 of 44 apps | holds | A debug build logs dropped custom-widget items in the same 7 applications (034 `logs/dropped-custom.txt`). |
+| 10 | Inserted groups: 10 items in 4 apps before; 3 left | holds | Before the groups change (`6b1f70a` files): 10 in 4. Now, from (b) on: 3 (Epiphany "Uninstall web app", Sudoku "Reset puzzle" before a game, Déjà Dup "Select all"), missing in the applications too. |
+| 21 | The series applies to main | holds again, as a new series | `patches/` of 034: five commits on `a57e976`. |
+
 ## Unknowns
 
-- Every row marked "after 034" (1, 2, 4, 5, 6, 8, 10): re-measured once our
-  series is on the current main, by the same scenarios over the same 44
-  apps. The results go into a new section of this file, with the date and
-  main's hash.
+- The rows marked "after 034" are re-measured in the section above. Not
+  repeated there: Plasma's Global Menu widget (#1) and the flat variant (#2).
 - Epiphany itself was not run on the fixed main; the evidence is the
   reproducer (#16).
 - #12, #13 and #15 were not re-run (the apps are not on Clean-2). Their code
