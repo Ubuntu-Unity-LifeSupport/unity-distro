@@ -235,6 +235,9 @@ to compare. This is recorded, not restricted.
   copy of the live database would carry published records, and drop,
   switch and update act on the stored records. The hook cannot inspect a
   leveldb; this belongs to the 047 procedure.
+- **Shell functions** (verification F4): a profile function named
+  `/usr/bin/aptly` would shadow the binary. The absolute path defeats
+  aliases and PATH, but not a function. This is a same-uid limit.
 - **Time of check against time of use.** The config file or the root
   could be changed between the hook's check and aptly's run by another
   process of the same user. Only the owner can write to the root and the
@@ -311,6 +314,37 @@ allowance.
   case, so each is denied by its own check and not by a failure elsewhere.
 - The full suite passes: 90 tests (`python3 -m unittest discover -s
   scripts/tests`).
+
+## Verification round 1: PASS with findings, fixed
+
+The Verifier checked the code against every design point: none is missing
+or weaker. The allowance cannot admit anything 058 denies except a command
+meeting all conditions, and other exceptions fail closed in main(). All
+tests pass. Its findings, all fixed on this branch:
+
+- **F1 (low).** aptly's global flags that take a value (`-architectures`,
+  `-gpg-provider`) accept it as the next separate word (Go's flag parser),
+  so `publish` could become a flag's value and the next bare word the
+  real subcommand. That would grant nothing 058 does not already allow,
+  but it contradicts the invariant. The command must now start
+  `-config=P publish`, with no other flag before publish, and five tests
+  cover it.
+- **F2.** Wording: section 6 now says remote endpoints are "absent" (the
+  code denies the keys even when empty); section 9 mentions `--config=`
+  and paths below the root.
+- **F3.** Test gaps, now covered:
+  - the `url` key without `//`;
+  - the allowance's own ordering check (not only the legacy floor);
+  - a non-root binary;
+  - a mount point under the root (MOUNTINFO can be pointed at a test
+    file);
+  - the 64 KiB limit;
+  - a symlinked coordinator directory.
+
+  The rehearsal tests are now 24.
+- **F4 (note).** A Bash function name may contain `/`. A function defined in
+  the user's profile named `/usr/bin/aptly` would shadow the binary; this is
+  a same-uid limit like the others and is listed under unknowns.
 
 ## Status
 

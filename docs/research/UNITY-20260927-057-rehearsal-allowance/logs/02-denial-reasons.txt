@@ -1,4 +1,5 @@
-# denial reason for every negative case of test_command_guard_rehearsal.py, 2026-09-28T10:59:22Z; temporary paths shown as <tmp>
+# denial reason for every negative case of test_command_guard_rehearsal.py, 2026-09-28T11:07:38Z; temporary paths shown as <tmp>
+.test_binary_must_be_roots_aptly :: aptly rehearsal not allowed: <tmp>/aptly must be the root-owned aptly on PATH
 .test_command_shape :: aptly rehearsal not allowed: call aptly as /usr/bin/aptly
 test_command_shape :: aptly rehearsal not allowed: exactly one -config=PATH (or --config=PATH) is required
 test_command_shape :: aptly rehearsal not allowed: exactly one -config=PATH (or --config=PATH) is required
@@ -22,6 +23,11 @@ test_command_shape :: aptly rehearsal not allowed: the config must be an absolut
 test_command_shape :: aptly rehearsal not allowed: the config must be an absolute normalised path inside <tmp>/aptly-rehearsal
 test_command_shape :: aptly rehearsal not allowed: the config must be an absolute normalised path inside <tmp>/aptly-rehearsal
 test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: the command must start: -config=PATH publish
+test_command_shape :: aptly rehearsal not allowed: the command must start: -config=PATH publish
+test_command_shape :: aptly rehearsal not allowed: the command must start: -config=PATH publish
+test_command_shape :: aptly rehearsal not allowed: the command must start: -config=PATH publish
+test_command_shape :: aptly rehearsal not allowed: the command must start: -config=PATH publish
 .test_config_content :: aptly rehearsal not allowed: config must set rootDir
 test_config_content :: aptly rehearsal not allowed: config rootDir is outside <tmp>/aptly-rehearsal
 test_config_content :: aptly rehearsal not allowed: config rootDir is outside <tmp>/aptly-rehearsal
@@ -33,6 +39,7 @@ test_config_content :: aptly rehearsal not allowed: config rootDir must be a non
 test_config_content :: aptly rehearsal not allowed: config databaseBackend.dbPath is outside <tmp>/aptly-rehearsal
 test_config_content :: aptly rehearsal not allowed: config databaseBackend type must be exactly leveldb
 test_config_content :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
+test_config_content :: aptly rehearsal not allowed: config databaseBackend may only have type and dbPath
 test_config_content :: aptly rehearsal not allowed: config databaseBackend type must be exactly leveldb
 test_config_content :: aptly rehearsal not allowed: config packagePoolStorage.path is outside <tmp>/aptly-rehearsal
 test_config_content :: aptly rehearsal not allowed: config packagePoolStorage type must be exactly local
@@ -61,7 +68,9 @@ test_config_encoding :: aptly rehearsal not allowed: the config file is not vali
 test_config_encoding :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
 .test_config_file_properties :: aptly rehearsal not allowed: the config file must be owned by uid 1000 and not writable by group or others
 test_config_file_properties :: aptly rehearsal not allowed: the config file must be a regular file, not a link
+.test_config_too_large :: aptly rehearsal not allowed: the config file is too large
 ..test_coordinator_directory_properties :: aptly rehearsal not allowed: <tmp>/coordinator must be owned by uid 1000 and not writable by group or others
+.test_coordinator_directory_symlink :: aptly rehearsal not allowed: <tmp>/coordinator must be a directory, not a link
 ..test_log_must_be_appendable :: aptly rehearsal not allowed: [Errno 40] Too many levels of symbolic links: '<tmp>/coordinator/rehearsal-log.jsonl'
 .test_log_permissions :: aptly rehearsal not allowed: the rehearsal log must be owned by uid 1000 and not writable by group or others
 .test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization is not valid now
@@ -82,6 +91,7 @@ test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorizati
 test_marker_file_properties :: aptly rehearsal not allowed: the rehearsal authorization must not resolve elsewhere
 .test_marker_required :: aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approval)
 .test_marker_session_absent :: aptly rehearsal not allowed: the rehearsal authorization belongs to another session
+.test_mount_under_root :: aptly rehearsal not allowed: a mount point is at or under <tmp>/aptly-rehearsal
 .test_root_properties :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal must be owned by uid 1000 and not writable by group or others
 .test_root_symlink :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal must be a directory, not a link
 .test_too_many_entries :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal has too many entries

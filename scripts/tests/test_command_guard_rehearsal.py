@@ -196,6 +196,11 @@ class RehearsalAllowanceTest(unittest.TestCase):
             f"{APTLY} -config=/var/tmp/other/aptly.conf {P} list",
             f"{APTLY} -config={self.root}//aptly.conf {P} list",  # not normalised
             f"{APTLY} -config={c} {P} list\n{APTLY} -config={c} {P} drop x",
+            f"{APTLY} -architectures {P} -config={c} repo list",   # a flag value as the command word
+            f"{APTLY} -config={c} -architectures {P} repo list",
+            f"{APTLY} -batch -config={c} {P} list",                # config not first
+            f"{APTLY} -config={c} -batch {P} list",                # publish not second
+            f"{APTLY} foo -config={c} {P} list",
         ]
         for command in cases:
             with self.subTest(command=command):
@@ -217,6 +222,7 @@ class RehearsalAllowanceTest(unittest.TestCase):
             "dbPath live": {"rootDir": r + "/r", "databaseBackend": {"dbPath": "/srv/aptly/db"}},
             "db etcd": {"rootDir": r + "/r", "databaseBackend": {"type": "etcd"}},
             "db url": {"rootDir": r + "/r", "databaseBackend": {"type": "leveldb", "url": "http://x"}},
+            "db url key": {"rootDir": r + "/r", "databaseBackend": {"url": "x"}},
             "db LevelDB": {"rootDir": r + "/r", "databaseBackend": {"type": "LevelDB"}},
             "pool outside": {"rootDir": r + "/r", "packagePoolStorage": {"path": "/srv/aptly/pool"}},
             "pool azure": {"rootDir": r + "/r", "packagePoolStorage": {"type": "azure"}},
@@ -335,6 +341,30 @@ class RehearsalAllowanceTest(unittest.TestCase):
         for i in range(5):
             (self.root / f"f{i}").write_text("x")
         self.assertDenied(self.command())
+
+    def test_config_too_large(self):
+        self.write_config(None, raw='{"rootDir": "%s/r", "logLevel": "%s"}' % (self.root, "x" * 70000))
+        self.assertIn("too large", self.assertDenied(self.command()))
+
+    def test_coordinator_directory_symlink(self):
+        base = Path(self.tmp.name)
+        self.coord.rename(base / "real-coordinator")
+        self.coord.symlink_to(base / "real-coordinator")
+        self.assertDenied(self.command())
+
+    def test_mount_under_root(self):
+        fake = Path(self.tmp.name) / "mountinfo"
+        fake.write_text("36 35 98:0 / %s rw - ext4 /dev/x rw\n" % str(self.root / "db").replace(" ", "\\040"))
+        self.hook.MOUNTINFO = str(fake)
+        self.assertIn("mount point", self.assertDenied(self.command()))
+
+    def test_binary_must_be_roots_aptly(self):
+        fake = Path(self.tmp.name) / "aptly"
+        fake.write_text("#!/bin/sh\n")
+        os.chmod(fake, 0o755)
+        self.hook.APTLY_BINARY = str(fake)
+        command = self.command().replace(APTLY, str(fake), 1)
+        self.assertIn("root-owned", self.assertDenied(command))
 
     # --- audit log -----------------------------------------------------------
 

@@ -824,6 +824,7 @@ REHEARSAL_MARKER = REHEARSAL_COORDINATOR + "/rehearsal-authorization.json"
 REHEARSAL_LOG = REHEARSAL_COORDINATOR + "/rehearsal-log.jsonl"
 APTLY_BINARY = "/usr/bin/aptly"
 LIVE_APTLY = "/srv/aptly"
+MOUNTINFO = "/proc/self/mountinfo"
 REHEARSAL_MAX_ENTRIES = 200000
 REHEARSAL_MAX_FILE = 64 * 1024
 REHEARSAL_MAX_WINDOW = 24 * 3600
@@ -983,7 +984,7 @@ def _check_root():
     real = os.path.realpath(REHEARSAL_ROOT)
     if real != REHEARSAL_ROOT or _inside(real, LIVE_APTLY) or _inside(LIVE_APTLY, real):
         _deny(f"{REHEARSAL_ROOT} must not resolve elsewhere or overlap {LIVE_APTLY}")
-    with open("/proc/self/mountinfo", encoding="utf-8") as f:
+    with open(MOUNTINFO, encoding="utf-8") as f:
         for line in f:
             point = re.sub(r"\\([0-7]{3})", lambda m: chr(int(m.group(1), 8)), line.split()[4])
             if _inside(point, REHEARSAL_ROOT):
@@ -1093,12 +1094,13 @@ def _check_rehearsal(command: str, session_id: str | None):
     configs = [i for i, a in enumerate(args) if a.lstrip("-").startswith("config")]
     if len(configs) != 1 or not (args[configs[0]].startswith("-config=") or args[configs[0]].startswith("--config=")):
         _deny("exactly one -config=PATH (or --config=PATH) is required")
-    bare = [i for i, a in enumerate(args) if not a.startswith("-")]
-    if not bare or args[bare[0]] != "publish" or configs[0] > bare[0]:
-        _deny("-config=PATH must come before the command word publish")
-    if any(_DENIED_WORD.search(args[i]) for i in bare[1:]):
+    # No other global flag: one written as `-flag value` would make the
+    # value the command word (Go's flag parser, aptly cmd/cmd.go).
+    if len(args) < 2 or configs[0] != 0 or args[1] != "publish":
+        _deny("the command must start: -config=PATH publish")
+    if any(_DENIED_WORD.search(a) for a in args[2:] if not a.startswith("-")):
         _deny("publish, task or api may appear only as the command word")
-    path = args[configs[0]].split("=", 1)[1]
+    path = args[0].split("=", 1)[1]
     if not path.startswith(REHEARSAL_ROOT + "/") or os.path.normpath(path) != path:
         _deny(f"the config must be an absolute normalised path inside {REHEARSAL_ROOT}")
     _check_root()
