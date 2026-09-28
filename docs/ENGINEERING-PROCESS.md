@@ -549,6 +549,15 @@ For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
 - Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
   `echo`, project scripts such as `taskctl.py`) may mention aptly and
   publish freely.
+- The rehearsal exception of section 6 (UNITY-20260927-057) is the only
+  allowance for `publish`. The command must be exactly
+  `/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/<file> publish ...`, as
+  one plain command with no quoting, expansion, redirection or prefix. The
+  config is strict JSON, with every place aptly writes inside
+  /var/tmp/aptly-rehearsal. The root is checked for links, hard links and
+  mounts. C's dated marker
+  `~/coordinator/rehearsal-authorization.json` must name the session, and
+  every allowed command is logged to `~/coordinator/rehearsal-log.jsonl`.
 
 In practice:
 

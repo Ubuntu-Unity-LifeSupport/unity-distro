@@ -30,7 +30,7 @@ invariant: >
   writes to the rehearsal root.
 chosen_approach: see Design
 design_challenger_required: true
-design_review_result: PENDING  # rounds 1-3 REVISE
+design_review_result: APPROVE  # rounds 1-3 REVISE, round 4 APPROVE
 architectural_task: false
 package_change: false
 ```
@@ -215,6 +215,14 @@ to compare. This is recorded, not restricted.
   dated marker, and that "ends automatically" means C removes the marker
   or it expires.
 
+**Round 4: APPROVE.** Notes taken into the implementation:
+- The audit log is opened with O_NOFOLLOW and O_APPEND, with the marker's
+  owner and mode checks.
+- A log line records that the hook allowed a command, written before the
+  command runs. It is not a record of what the command did.
+- Subagents of the owner's session send the same session_id, so the
+  allowance covers them. This is accepted and recorded.
+
 **Merge and use.** The freeze decision comes first (see unknowns).
 
 ## Not covered (unknowns)
@@ -244,6 +252,66 @@ to compare. This is recorded, not restricted.
 - 047's blocked-commands.md uses a scratchpad path. It will have to use
   /var/tmp/aptly-rehearsal/aptly.conf.
 
+## Implementation
+
+The code is `.claude/hooks/command_guard.py` (the "aptly rehearsal
+allowance" block): `_check_rehearsal`, `_check_root`, `_strict_json`,
+`_check_config`, `_check_marker` and `_log_rehearsal`.
+
+- `inspect(command, session_id)` receives the session from the hook input
+  (`main()`). The legacy floor comes first, as before.
+- A command meant as a rehearsal (aptly as its first word, a config flag
+  and the word publish) goes through `_check_rehearsal`. Any failure
+  denies with the reason, and on success only the non-aptly rules remain.
+- Every other command goes through 058's `_aptly_rules`, unchanged.
+- The command shape is enforced by one character-set regex: single spaces,
+  `[A-Za-z0-9_./=:,+@-]` only. That rules out quoting, expansion,
+  redirection, separators, newlines and comments in one check.
+
+`docs/ENGINEERING-PROCESS.md`: section 6 now has the freeze rule as May
+decided it, with the marker sentence; section 9 has one paragraph on the
+allowance.
+
+## Result
+
+- `scripts/tests/test_command_guard_rehearsal.py`: 20 tests. They load the
+  hook module with its root, coordinator directory, marker and log in a
+  temporary directory, so every check runs against real files. Nothing is
+  executed.
+  - Allowed: `publish list` and `publish repo ...` with a complete marker,
+    both logged as JSONL; a config with every path field inside the root;
+    links and hard links that stay inside the root.
+  - Denied: the marker missing, expired, future, over 24 hours, reversed,
+    with an offset, not May's, not recorded by C, for another root, for
+    another session, or without a session; a wrong schema (also as a
+    bool); extra or missing keys; an empty reference; a group-writable or
+    symlinked marker; a group-writable coordinator directory.
+  - Denied, command shape (23 cases): no absolute binary; the space form
+    of -config; two configs; the config after publish; `..`; separators;
+    redirection; a pipe; extra spaces; quoting; expansion; task; api;
+    publish twice; an assignment; env; sudo; a relative config, one
+    outside the root or not normalised; a second line.
+  - Denied, config content (25 cases): rootDir missing, live, outside,
+    with `~`, relative, with `..`, a number or empty; dbPath live; the db
+    type etcd or LevelDB, or a url; the pool outside or azure; an endpoint
+    live or with a bad linkMethod; S3, Swift or Azure endpoints; a key in
+    another case; an unknown key; a bool as int; an int out of range; not
+    an object.
+  - Denied, encoding (12 cases): duplicate keys, null, NaN, float, a block
+    or line comment, non-ASCII raw, escaped or as a lone surrogate, two
+    values, YAML, a BOM. Also a symlinked or group-writable config.
+  - Denied, root and tree: the root group-writable or a symlink; a
+    directory, file or hard link leading outside; a FIFO; a group-writable
+    or unlistable subdirectory; too many entries. A symlinked or
+    world-writable audit log is denied too.
+  - The legacy floor does not match the rehearsal form, and a test pins
+    that. Through the real hook process, without C's marker, the rehearsal
+    command stays denied.
+- `logs/02-denial-reasons.txt` lists the denial reason of each negative
+  case, so each is denied by its own check and not by a failure elsewhere.
+- The full suite passes: 90 tests (`python3 -m unittest discover -s
+  scripts/tests`).
+
 ## Status
 
-INVESTIGATING -> Design Challenger round 2.
+IMPLEMENTING -> VERIFYING (independent Verifier).

@@ -1,0 +1,93 @@
+# denial reason for every negative case of test_command_guard_rehearsal.py, 2026-09-28T10:59:22Z; temporary paths shown as <tmp>
+.test_command_shape :: aptly rehearsal not allowed: call aptly as /usr/bin/aptly
+test_command_shape :: aptly rehearsal not allowed: exactly one -config=PATH (or --config=PATH) is required
+test_command_shape :: aptly rehearsal not allowed: exactly one -config=PATH (or --config=PATH) is required
+test_command_shape :: aptly rehearsal not allowed: exactly one -config=PATH (or --config=PATH) is required
+test_command_shape :: Publish through scripts/publish_aptly.py with a passing release gate.
+test_command_shape :: aptly rehearsal not allowed: no argument may contain ..
+test_command_shape :: aptly rehearsal not allowed: no argument may contain ..
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+test_command_shape :: aptly rehearsal not allowed: publish, task or api may appear only as the command word
+test_command_shape :: aptly rehearsal not allowed: publish, task or api may appear only as the command word
+test_command_shape :: aptly rehearsal not allowed: publish, task or api may appear only as the command word
+test_command_shape :: aptly publish/task/api is blocked in any form (publish through scripts/publish_aptly.py; a command with a shell expansion must not name them).
+test_command_shape :: aptly publish/task/api is blocked in any form (publish through scripts/publish_aptly.py; a command with a shell expansion must not name them).
+test_command_shape :: aptly publish/task/api is blocked in any form (publish through scripts/publish_aptly.py; a command with a shell expansion must not name them).
+test_command_shape :: aptly rehearsal not allowed: the config must be an absolute normalised path inside <tmp>/aptly-rehearsal
+test_command_shape :: aptly rehearsal not allowed: the config must be an absolute normalised path inside <tmp>/aptly-rehearsal
+test_command_shape :: aptly rehearsal not allowed: the config must be an absolute normalised path inside <tmp>/aptly-rehearsal
+test_command_shape :: aptly rehearsal not allowed: one plain command only: no quoting, expansion, redirection or separators
+.test_config_content :: aptly rehearsal not allowed: config must set rootDir
+test_config_content :: aptly rehearsal not allowed: config rootDir is outside <tmp>/aptly-rehearsal
+test_config_content :: aptly rehearsal not allowed: config rootDir is outside <tmp>/aptly-rehearsal
+test_config_content :: aptly rehearsal not allowed: config rootDir must be a non-empty absolute normalised path without ~
+test_config_content :: aptly rehearsal not allowed: config rootDir must be a non-empty absolute normalised path without ~
+test_config_content :: aptly rehearsal not allowed: config rootDir must be a non-empty absolute normalised path without ~
+test_config_content :: aptly rehearsal not allowed: config rootDir must be a non-empty absolute normalised path without ~
+test_config_content :: aptly rehearsal not allowed: config rootDir must be a non-empty absolute normalised path without ~
+test_config_content :: aptly rehearsal not allowed: config databaseBackend.dbPath is outside <tmp>/aptly-rehearsal
+test_config_content :: aptly rehearsal not allowed: config databaseBackend type must be exactly leveldb
+test_config_content :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
+test_config_content :: aptly rehearsal not allowed: config databaseBackend type must be exactly leveldb
+test_config_content :: aptly rehearsal not allowed: config packagePoolStorage.path is outside <tmp>/aptly-rehearsal
+test_config_content :: aptly rehearsal not allowed: config packagePoolStorage type must be exactly local
+test_config_content :: aptly rehearsal not allowed: config FileSystemPublishEndpoints.x.rootDir is outside <tmp>/aptly-rehearsal
+test_config_content :: aptly rehearsal not allowed: endpoint 'x' linkMethod is not allowed
+test_config_content :: aptly rehearsal not allowed: config key 'S3PublishEndpoints' is not allowed
+test_config_content :: aptly rehearsal not allowed: config key 'SwiftPublishEndpoints' is not allowed
+test_config_content :: aptly rehearsal not allowed: config key 'AzurePublishEndpoints' is not allowed
+test_config_content :: aptly rehearsal not allowed: config key 'RootDir' is not allowed
+test_config_content :: aptly rehearsal not allowed: config key 'serveInAPIMode' is not allowed
+test_config_content :: aptly rehearsal not allowed: config downloadConcurrency must be an integer 0..1000
+test_config_content :: aptly rehearsal not allowed: config downloadConcurrency must be an integer 0..1000
+test_config_content :: aptly rehearsal not allowed: config gpgDisableSign must be bool
+test_config_content :: aptly rehearsal not allowed: the config file must be one JSON object
+.test_config_encoding :: aptly rehearsal not allowed: the config file has duplicate keys
+test_config_encoding :: aptly rehearsal not allowed: the config file contains null
+test_config_encoding :: aptly rehearsal not allowed: the config file contains NaN
+test_config_encoding :: aptly rehearsal not allowed: config downloadConcurrency must be an integer 0..1000
+test_config_encoding :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
+test_config_encoding :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
+test_config_encoding :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
+test_config_encoding :: aptly rehearsal not allowed: the config file decodes to non-ASCII text
+test_config_encoding :: aptly rehearsal not allowed: the config file decodes to non-ASCII text
+test_config_encoding :: aptly rehearsal not allowed: the config file is not valid JSON
+test_config_encoding :: aptly rehearsal not allowed: the config file is not valid JSON
+test_config_encoding :: aptly rehearsal not allowed: the config file must be plain ASCII JSON without comments
+.test_config_file_properties :: aptly rehearsal not allowed: the config file must be owned by uid 1000 and not writable by group or others
+test_config_file_properties :: aptly rehearsal not allowed: the config file must be a regular file, not a link
+..test_coordinator_directory_properties :: aptly rehearsal not allowed: <tmp>/coordinator must be owned by uid 1000 and not writable by group or others
+..test_log_must_be_appendable :: aptly rehearsal not allowed: [Errno 40] Too many levels of symbolic links: '<tmp>/coordinator/rehearsal-log.jsonl'
+.test_log_permissions :: aptly rehearsal not allowed: the rehearsal log must be owned by uid 1000 and not writable by group or others
+.test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization is not valid now
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization is not valid now
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization window must be positive and at most 24 hours
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization window must be positive and at most 24 hours
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization not_after must be YYYY-MM-DDTHH:MM:SSZ
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization is not May's, recorded by C, for the rehearsal root
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization is not May's, recorded by C, for the rehearsal root
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization is not May's, recorded by C, for the rehearsal root
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization belongs to another session
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization has an unknown schema
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization has an unknown schema
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization must have exactly ['authorized_by', 'not_after', 'not_before', 'recorded_by', 'reference', 'root', 'schema', 'session_id', 'task_id']
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization must have exactly ['authorized_by', 'not_after', 'not_before', 'recorded_by', 'reference', 'root', 'schema', 'session_id', 'task_id']
+test_marker_conditions :: aptly rehearsal not allowed: the rehearsal authorization reference must be a non-empty string
+.test_marker_file_properties :: aptly rehearsal not allowed: the rehearsal authorization must be owned by uid 1000 and not writable by group or others
+test_marker_file_properties :: aptly rehearsal not allowed: the rehearsal authorization must not resolve elsewhere
+.test_marker_required :: aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approval)
+.test_marker_session_absent :: aptly rehearsal not allowed: the rehearsal authorization belongs to another session
+.test_root_properties :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal must be owned by uid 1000 and not writable by group or others
+.test_root_symlink :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal must be a directory, not a link
+.test_too_many_entries :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal has too many entries
+.test_tree :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal/db links outside <tmp>/aptly-rehearsal
+test_tree :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal/Release links outside <tmp>/aptly-rehearsal
+test_tree :: aptly rehearsal not allowed: a file in <tmp>/aptly-rehearsal has hard links outside it
+test_tree :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal/fifo is not a regular file, directory or link
+test_tree :: aptly rehearsal not allowed: <tmp>/aptly-rehearsal/pool must be owned by uid 1000 and not writable by group or others
+test_tree :: aptly rehearsal not allowed: [Errno 13] Permission denied: '<tmp>/aptly-rehearsal/db2'
