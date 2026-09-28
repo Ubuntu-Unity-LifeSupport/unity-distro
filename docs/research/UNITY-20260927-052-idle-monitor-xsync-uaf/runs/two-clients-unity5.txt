@@ -1,0 +1,21 @@
+== run 1
+watch id 4 from :1.104
+watch id 5 from :1.105
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5: pid 5276 -> 5527: DIED
+  вер 28 04:44:05.207466 mike-virtualbox unity-settings-daemon-localeexec[5276]: double free or corruption (!prev)
+  вер 28 04:44:16.667721 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+  вер 28 04:44:16.851504 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 2.
+== run 2
+watch id 4 from :1.108
+watch id 5 from :1.109
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5: pid 5527 -> 5602: DIED
+  вер 28 04:44:42.969641 mike-virtualbox unity-settings-daemon-localeexec[5527]: double free or corruption (!prev)
+  вер 28 04:44:44.243830 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+  вер 28 04:44:44.348318 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 3.
+== run 3
+watch id 4 from :1.113
+watch id 5 from :1.114
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5: pid 5602 -> 5738: DIED
+  вер 28 04:45:20.803122 mike-virtualbox unity-settings-daemon-localeexec[5602]: double free or corruption (!prev)
+  вер 28 04:45:22.407158 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+  вер 28 04:45:22.598054 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 4.
