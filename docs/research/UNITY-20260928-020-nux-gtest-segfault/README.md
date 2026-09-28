@@ -48,7 +48,9 @@ root_cause_mechanism: >
   (1) Xorg without -noreset regenerates whenever its last client
   disconnects; the tests connect and disconnect test by test, so the server
   resets about once per test (88 and 114 GLX initialisations in two runs).
-  An XOpenDisplay during the reset fails.
+  An XOpenDisplay during the reset fails (INFERENCE: core 1 shows the NULL
+  dereference, not the reset itself; supported by the -noreset
+  intervention).
   (2) ~TestWindowThread deletes the nux::SystemThread watchdog. The
   watchdog's write to the quit pipe ends the test. SystemThread::Run then
   still reads parent_ and calls SetThreadState and TerminateChildThreads on
@@ -93,6 +95,10 @@ unknowns:
     need it. Not changed here.
   - unity's tests/dummy-xorg-test-runner.sh starts Xorg the same way,
     without -noreset (unity's tests are off in its package build).
+  - 14 of nux's `xtest-*.cpp` programs use the same create-then-delete
+    SystemThread pattern. They run only in `make test-apps`, not in
+    `check-headless`, so the package build never runs them (Verifier
+    finding 9). Not changed.
 ```
 
 ## Mechanism
@@ -113,8 +119,12 @@ NULL. `EmbeddedContext`'s constructor passes that straight to
 crashed too (run 6 in logs/01 §2); a core of that case was not taken, so
 which of the two races hit them there is not known.
 
-With `-noreset` there is one server generation per run, and no
-`EmbeddedContext` crash in 10 runs (logs/01 §3).
+With `-noreset` there is one server generation per run. No
+`EmbeddedContext` test crashed; 6 of those 10 runs reached them, since the
+other 4 stopped earlier in `TestWindowThread` (logs/01 §3). The 20 clean
+full runs and 3 clean sbuilds after both fixes carry the rest (logs/03, 05).
+That a failing `XOpenDisplay()` happens exactly during a regeneration is
+inferred from this intervention; core 1 shows the NULL dereference only.
 
 ### 2. The watchdog thread
 
@@ -178,6 +188,9 @@ recorded as an unknown, not made.
   the fix: 1 clean build in 5 for 027, 0 in 2 for the published +unity2.
 - The exported symbols of libnux, libnux-core and libnux-graphics equal
   +unity2's; only tests change.
-- UNITY-20260927-027 can now take its clean build to the Verifier.
+- Independent verification: **PASS** (REVIEWED, 2026-09-28), together with
+  UNITY-20260927-027. The wording on the reset (an inference) and on the
+  -noreset runs was corrected from its notes. `docs/PATCHES.md` and
+  `docs/DECISIONS.md` entries were added through `append_record.py`.
 
 target2 is rolled back to `Clean-2` afterwards.
