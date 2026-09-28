@@ -1720,3 +1720,29 @@ command against the production repository, so the freeze names `show` and
 `list` explicitly. 058 tightens `.claude/hooks/command_guard.py` so that
 these forms are refused. Its verification is recorded by part, and the
 adversarial part is NOT VERIFIED (follow-up UNITY-20260928-002).
+
+
+## 2026-09-28 - UNITY-20260927-006: xorg-server 1.3+unity2 keeps its 31 upstream commits (agent A)
+
+**Context.** Legacy A-L21: `2:21.1.22-1ubuntu1.3+unity2` carries 31 upstream
+commits for 11 CVEs, and its changelog says 29. Record:
+`research/UNITY-20260927-006-xorg-scope/` (branch `a/UNITY-20260927-006`).
+
+**Measured.** The 31 commits break down as follows:
+
+- 11 fix the 11 CVEs. CVE-2026-50257 and -50260 share one commit, and
+  CVE-2026-50264 takes the two DRI2 commits.
+- 1 must travel with the CVE-2026-56000 fix: d6fff22, which introduces that
+  CVE.
+- 1 is a likely companion of CVE-2026-55999: 0f1f4bc.
+- 11 are security-looking fixes without an advisory.
+- 7 are cleanup.
+
+Together that is upstream's 21.1.23 and 21.1.24 minus the version bumps and
+the XQuartz/GL commits, which Debian unstable and 26.10 ship in full. No
+resolute upload fixes any of the 11 CVEs.
+
+**Decision.** Keep `1.3+unity2` (`ALREADY_FIXED` / `FIXED_LOCAL`). Fix the
+changelog at the next upload, which xorg-watch triggers: "29" becomes "31",
+with the CVE-to-commit list. A CVE-only subset would be a combination nobody
+else builds; a new upload only for the wording is not worth a version.
