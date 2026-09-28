@@ -193,3 +193,51 @@ defensive_workaround_rejected: >-
    the design is supported. The approval covers the design only; the patch
    is checked against the test plan and by the Verifier.
 
+
+## Implementation and verification
+
+Branch `a/UNITY-20260928-007` of unity-distro:
+
+- `865d702` build: build_sbuild.py keeps VCS metadata out of the source
+  package - O1 (two `--dpkg-source-opt` in the sbuild command) and O4
+  (`vcs_entries()` before the manifest; unreadable source file fails the
+  build); tests.
+- `7387d3d` docs: this record.
+
+**Test infrastructure change (why).** The stub sbuild used to write random
+bytes for `.diff.gz` and tarballs; O4 must refuse files it cannot read, so
+the stub now writes valid archives (`source_members` injects paths for the
+negative cases, `random_source` keeps the unreadable case). A new
+`real_source` mode runs the real `dpkg-source --before-build` / `-b` /
+`--after-build` with exactly the `--dpkg-source-opt` values it receives, as
+/usr/bin/sbuild does. `BUILD_SBUILD` lets the same tests run against another
+copy of the script.
+
+**Unit tests** (`runs/unittest-before-fix.txt`, `runs/unittest-after-fix.txt`):
+
+| | pre-fix script (ba514fe copy) | fixed |
+|---|---|---|
+| 1.0 non-native from a clone (real dpkg-source) | FAIL: sbuild failed | pass |
+| 1.0 non-native from a worktree | FAIL: `tiny-1.0/.git` in the source | pass |
+| 1.0 native from a clone / a worktree | FAIL: `.git` tree in the tarball | pass |
+| 3.0 (quilt), 3.0 (native) from a clone | pass | pass |
+| O4: .git file in .diff.gz, .git/ in native tarball, nested sub/.git in debian.tar, .svn in native tarball | FAIL: manifest written | rejected, no manifest |
+| orig tarball containing .gitignore and .git/config | pass | pass |
+| unreadable produced source file | FAIL: manifest written | fails closed |
+| whole `scripts/tests` suite | - | 47/47 OK |
+
+**Real sbuild** (`runs/real-sbuild-before-after.txt`; builds in
+`~/work/a/007/*/out-*-NOT-FOR-PUBLICATION`, not for publication):
+
+- unity-settings-daemon `f674b6b` (1.0): old script from a clone - fails
+  ("cannot represent change to .git/index", UNITY-20260927-052); old script
+  from a worktree - manifest PASS with `.git` in the `.diff.gz`; fixed script
+  from a clone - builds; its source differs from the old worktree build by
+  exactly one path, `.git`; fixed from a clone and from a worktree -
+  identical sources (names, paths, orig sha256).
+- gtk-nocsd `a2a0747` (3.0 quilt): old and fixed script from a clone -
+  identical sources.
+
+Remaining: Verifier; B reviews the diff as author of UNITY-20260927-045;
+the coordinator merges. Separate task proposed: git-ignored untracked files
+and building from an export (O3).
