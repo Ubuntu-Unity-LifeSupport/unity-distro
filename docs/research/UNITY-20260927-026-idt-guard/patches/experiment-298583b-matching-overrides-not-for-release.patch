@@ -1,0 +1,62 @@
+commit 298583b4b8b810e51c5f1c24506e5a03a87d0d67
+Author: NeiroNext <mihail.rozshko@gmail.com>
+Date:   Mon Sep 28 11:51:29 2026 +0000
+
+    EXPERIMENT (not for release): overrides whose RECURRENCE-ID matches the generated instance (UTC and TZID)
+
+diff --git a/tests/test-eds-ics-tasks-without-start.ics.in b/tests/test-eds-ics-tasks-without-start.ics.in
+index 4527af5..c8eced9 100644
+--- a/tests/test-eds-ics-tasks-without-start.ics.in
++++ b/tests/test-eds-ics-tasks-without-start.ics.in
+@@ -37,4 +37,51 @@ RECURRENCE-ID:20150623T090000
+ SUMMARY:Probe override without DTSTART and DUE
+ STATUS:NEEDS-ACTION
+ END:VTODO
++BEGIN:VTODO
++UID:probe-utc@example.org
++DTSTAMP:20150601T000000Z
++DTSTART:20150622T140000Z
++RRULE:FREQ=DAILY;COUNT=3
++SUMMARY:Probe UTC recurring task
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:probe-utc@example.org
++DTSTAMP:20150601T000000Z
++RECURRENCE-ID:20150623T140000Z
++SUMMARY:Probe UTC override without DTSTART and DUE
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTIMEZONE
++TZID:America/Chicago
++BEGIN:DAYLIGHT
++TZOFFSETFROM:-0600
++TZOFFSETTO:-0500
++DTSTART:19700308T020000
++RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
++TZNAME:CDT
++END:DAYLIGHT
++BEGIN:STANDARD
++TZOFFSETFROM:-0500
++TZOFFSETTO:-0600
++DTSTART:19701101T020000
++RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
++TZNAME:CST
++END:STANDARD
++END:VTIMEZONE
++BEGIN:VTODO
++UID:probe-tzid@example.org
++DTSTAMP:20150601T000000Z
++DTSTART;TZID=America/Chicago:20150622T090000
++RRULE:FREQ=DAILY;COUNT=3
++SUMMARY:Probe TZID recurring task
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:probe-tzid@example.org
++DTSTAMP:20150601T000000Z
++RECURRENCE-ID;TZID=America/Chicago:20150623T090000
++SUMMARY:Probe TZID override without DTSTART and DUE
++STATUS:NEEDS-ACTION
++END:VTODO
+ END:VCALENDAR

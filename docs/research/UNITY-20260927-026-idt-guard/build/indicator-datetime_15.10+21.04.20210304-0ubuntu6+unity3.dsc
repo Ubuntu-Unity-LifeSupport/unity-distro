@@ -12,8 +12,8 @@ Build-Depends: cmake, cmake-extras (>= 1.1), dbus, debhelper (>= 9), dh-translat
 Package-List:
  indicator-datetime deb misc optional arch=any
 Checksums-Sha1:
- 9ac7864a10b227f46a82002f6e05aab35abbdeca 3324079 indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz
+ 81948f29f79e7c405da9489203ad049ca6ee38b6 3368980 indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz
 Checksums-Sha256:
- 98f48882109cbeb6541f75ab7b6910720d759cbbba53c04009ae8081785822f3 3324079 indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz
+ 7bca6706b4ed62539a725e55fe7e4772bd95abbed838cf08ee9fc237aa059617 3368980 indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz
 Files:
- 4ed27f8442b97b2e20f987eb646f7b6b 3324079 indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz
+ a4a777259e3d921a075b6c66753bd660 3368980 indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz
