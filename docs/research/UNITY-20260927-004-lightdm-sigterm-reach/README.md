@@ -48,14 +48,25 @@ runs; step 4 depends on the timing, table below):
    no-child branch - `exit()` in stock, `_exit()` in +unity1 - while the main
    thread is in its cleanup. Where exactly, from the symbolized stacks of
    run 08 (maps saved while the process was alive, our dbgsym,
-   `runs/08b-no-child-stacks-symbolized.txt`):
+   `runs/08b-no-child-stacks-symbolized.txt`; line numbers there are of the
+   built source with debian/patches applied, from DWARF - unpatched
+   src/session-child.c line in brackets):
    - 2x in `fsync()` inside `x_authority_write()` - the X authority removal
-     at session-child.c:780, before any PAM close (124497, 127605);
-   - 1x in a syscall inside pam_systemd - `pam_close_session` (120077);
-   - 1x **inside `free()`** (`_int_free_merge_chunk` <- `_int_free_chunk`)
-     called from `_dl_close_worker` <- `dlclose` <- `pam_end`
-     (session-child.c:799): PAM unloading its modules (133663);
-   - 1x in a syscall, stack cut after the first frame (130651).
+     at session-child.c:780 [769], before any PAM close (124497, 127605);
+   - 1x in a syscall inside pam_systemd, stack ending unsymbolized in libpam
+     (120077) - during `pam_close_session` [784] by INFERENCE: both pam_unix
+     "session closed" lines precede it in the journal, and pam_unix runs
+     before pam_systemd in common-session (`runs/08d`);
+   - 1x **inside `_int_free_merge_chunk` with an arena mutex held**, in
+     `free()` called from `_dl_close_worker` <- `dlclose` <- `pam_end`
+     (session-child.c:799 [789]): PAM unloading its modules (133663). The
+     lock is FACT from the disassembly of `_int_free_chunk` in libc
+     2.43-2ubuntu2.4 (same sha256 on builder and target,
+     `runs/08e-int_free_chunk-disasm.txt`): lock `cmpxchg` at 0xb23a4, the
+     return address 0xb23b4 after the call, unlock `xchg` at 0xb23ba. That it
+     is `main_arena` is INFERENCE (a chunk allocated on the main thread);
+   - 1x in a syscall, stack cut after the first frame (130651); the journal
+     (0 "session closed") places it before `pam_close_session`.
 
 | Greeter stops | Build | no-child branch | 2nd SIGTERM before `child_pid = 0` (passed on) | merged with the 1st (already pending) | undetermined |
 |---|---|---|---|---|---|
@@ -127,7 +138,8 @@ interrupted in (`pam_end` -> `dlclose` -> `_dl_close_worker` -> `free`), and
 `_dl_fini` walks that list; stdio or other locks held by another thread when
 `exit()` runs on a GLib thread; GLib and PAM internal locks. The
 precondition of #484 - SIGTERM landing inside `free()` in session-child's
-cleanup - occurred naturally in 1 of the 5 symbolized stops; what keeps the
+cleanup with an arena mutex held - occurred naturally in 1 of the 5
+symbolized stops; what keeps the
 default stack from hanging is only that its destructors do not use the heap.
 
 Correction to the 2026-09 record: it lists session-child's libraries as
@@ -144,7 +156,7 @@ task_id: UNITY-20260927-004
 package: lightdm
 target_series: resolute
 issue: LP #2168421 / canonical/lightdm#484 - reachability of signal_cb()'s exit() on our default stack, and the layer of our _exit() fix
-status: NOT_REPRODUCED   # the hang, on the default stack; the no-child branch itself is taken naturally in 14/20 greeter stops (observed); the hang: NOT_REPRODUCED on the default stack
+status: NOT_REPRODUCED   # the hang on the default stack; the no-child branch itself is taken naturally in 14/20 greeter stops; the hang: NOT_REPRODUCED on the default stack
 issue_search_result: FOUND   # #484 open, maintainer asked the reporter to try _exit (2026-09-28); LP task New
 source_version: 1.32.0-6ubuntu4+unity1 (published); stock 1.32.0-6ubuntu4 for the before runs
 binary_version: 1.32.0-6ubuntu4+unity1 on target (restored after the runs)
@@ -156,7 +168,8 @@ observed: >-
   each send the greeter's session-child a SIGTERM; in 14 of 20 stops the
   second arrives after the greeter was reaped and signal_cb() leaves through
   the no-child branch during cleanup - interrupting the X authority removal,
-  pam_close_session or pam_end, once inside free() under dlclose. On the
+  pam_close_session or pam_end, once inside free() under dlclose with an
+  arena mutex held (disassembly, runs/08e). On the
   default stack exit() there completes in < 7 ms, also with the arena lock
   held in the model; its allocator calls are 35 free(NULL). The hang itself is
   not reproduced on the default stack.
@@ -296,7 +309,7 @@ unknowns:
     later)."
 design_challenger_required: true
 architectural_task: false
-design_review_result: PENDING   # review 1: REVISE (addressed); review 2 pending
+design_review_result: PENDING   # review 1: REVISE, review 2: REVISE (wording; addressed); review 3 pending
 ```
 
 ## Target state
