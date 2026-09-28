@@ -1,0 +1,3 @@
+login 1: boot 2026-09-28 22:24:02 session 1 unity-session 49.4: injected=1 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=3 nemo-desktop=1983 gvfsd=
+login 2: boot 2026-09-28 22:28:43 session 1 unity-session 49.4: injected=1 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=3 nemo-desktop=2011 gvfsd=
+login 3: boot 2026-09-28 22:33:36 session 1 unity-session 49.4: injected=1 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=3 nemo-desktop=1999 gvfsd=
