@@ -13,6 +13,7 @@ import json
 import os
 import re
 import shlex
+import stat
 import sys
 
 
@@ -808,7 +809,308 @@ def _legacy_groups(command: str) -> list[list[str]]:
     return [group for group in groups if group]
 
 
-def inspect(command: str) -> str | None:
+# --- aptly rehearsal allowance (UNITY-20260927-057) ----------------------------
+#
+# ENGINEERING-PROCESS section 6: during a freeze direct `aptly publish` is
+# denied, except for the rehearsal phase of a task May authorized, on an
+# isolated aptly state, through C's dated marker. The allowance admits one
+# literal /usr/bin/aptly publish command whose configuration confines every
+# place aptly writes to the rehearsal root. Design and review:
+# docs/research/UNITY-20260927-057-rehearsal-allowance/.
+
+REHEARSAL_ROOT = "/var/tmp/aptly-rehearsal"
+REHEARSAL_COORDINATOR = "/home/claude/coordinator"
+REHEARSAL_MARKER = REHEARSAL_COORDINATOR + "/rehearsal-authorization.json"
+REHEARSAL_LOG = REHEARSAL_COORDINATOR + "/rehearsal-log.jsonl"
+APTLY_BINARY = "/usr/bin/aptly"
+LIVE_APTLY = "/srv/aptly"
+MOUNTINFO = "/proc/self/mountinfo"
+REHEARSAL_MAX_ENTRIES = 200000
+REHEARSAL_MAX_FILE = 64 * 1024
+REHEARSAL_MAX_WINDOW = 24 * 3600
+
+# Only these characters, single spaces between words: no quoting, expansion,
+# redirection, separator, newline or comment can occur.
+_REHEARSAL_SHAPE = re.compile(r"^[A-Za-z0-9_./=:,+@-]+( [A-Za-z0-9_./=:,+@-]+)*$")
+_UTC_STAMP = re.compile(r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$")
+
+# config key -> expected type ("path" is a string checked as a path)
+_CONFIG_SCHEMA = {
+    "rootDir": "path", "architectures": "strlist",
+    "gpgDisableSign": bool, "gpgDisableVerify": bool,
+    "dependencyFollowSuggests": bool, "dependencyFollowRecommends": bool,
+    "dependencyFollowAllVariants": bool, "dependencyFollowSource": bool,
+    "skipContentsPublishing": bool, "skipBz2Publishing": bool,
+    "gpgProvider": str, "logLevel": str, "logFormat": str, "downloader": str,
+    "downloadConcurrency": int, "databaseOpenAttempts": int,
+    "FileSystemPublishEndpoints": "endpoints",
+    "databaseBackend": "database", "packagePoolStorage": "pool",
+}
+_MARKER_KEYS = {"schema", "task_id", "root", "authorized_by", "recorded_by",
+                "not_before", "not_after", "reference", "session_id"}
+
+
+class RehearsalDenied(Exception):
+    pass
+
+
+def _deny(reason: str):
+    raise RehearsalDenied(reason)
+
+
+def _owned_private(st, what: str):
+    if st.st_uid != os.getuid() or st.st_mode & 0o022:
+        _deny(f"{what} must be owned by uid {os.getuid()} and not writable by group or others")
+
+
+def _inside(path: str, root: str) -> bool:
+    return path == root or path.startswith(root + "/")
+
+
+def _real_inside(path: str, root: str) -> bool:
+    """realpath of path (or of its nearest existing ancestor plus the rest) is inside root."""
+    head, tail = path, []
+    while not os.path.lexists(head):
+        head, name = os.path.split(head)
+        tail.insert(0, name)
+        if not head or head == "/":
+            break
+    real = os.path.join(os.path.realpath(head), *tail) if tail else os.path.realpath(head)
+    return _inside(os.path.normpath(real), root)
+
+
+def _strict_json(path: str, what: str):
+    st = os.lstat(path)
+    if not stat.S_ISREG(st.st_mode):
+        _deny(f"{what} must be a regular file, not a link")
+    _owned_private(st, what)
+    if st.st_size > REHEARSAL_MAX_FILE:
+        _deny(f"{what} is too large")
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    with os.fdopen(fd, "rb") as f:
+        data = f.read(REHEARSAL_MAX_FILE + 1)
+    if not data.isascii() or b"//" in data or b"/*" in data:
+        _deny(f"{what} must be plain ASCII JSON without comments")
+
+    def pairs(items):
+        keys = [k for k, _ in items]
+        if len(keys) != len(set(keys)):
+            _deny(f"{what} has duplicate keys")
+        return dict(items)
+
+    def constant(name):
+        _deny(f"{what} contains {name}")
+
+    try:
+        value = json.loads(data.decode("ascii"), object_pairs_hook=pairs, parse_constant=constant)
+    except ValueError:
+        _deny(f"{what} is not valid JSON")
+
+    def walk(v):
+        if v is None:
+            _deny(f"{what} contains null")
+        if isinstance(v, str) and not v.isascii():
+            _deny(f"{what} decodes to non-ASCII text")
+        if isinstance(v, dict):
+            for k, item in v.items():
+                walk(k)
+                walk(item)
+        if isinstance(v, list):
+            for item in v:
+                walk(item)
+    walk(value)
+    if type(value) is not dict:
+        _deny(f"{what} must be one JSON object")
+    return value, data
+
+
+def _check_path(value, key: str):
+    if type(value) is not str or not value or not value.startswith("/") or "~" in value \
+            or os.path.normpath(value) != value:
+        _deny(f"config {key} must be a non-empty absolute normalised path without ~")
+    if not _real_inside(value, REHEARSAL_ROOT):
+        _deny(f"config {key} is outside {REHEARSAL_ROOT}")
+
+
+def _check_config(config: dict):
+    for key, value in config.items():
+        kind = _CONFIG_SCHEMA.get(key)
+        if kind is None:
+            _deny(f"config key {key!r} is not allowed")
+        if kind == "path":
+            _check_path(value, key)
+        elif kind == "strlist":
+            if type(value) is not list or any(type(v) is not str for v in value):
+                _deny(f"config {key} must be a list of strings")
+        elif kind is int:
+            if type(value) is not int or not 0 <= value <= 1000:
+                _deny(f"config {key} must be an integer 0..1000")
+        elif kind in (bool, str):
+            if type(value) is not kind:
+                _deny(f"config {key} must be {kind.__name__}")
+        elif kind == "endpoints":
+            if type(value) is not dict:
+                _deny("config FileSystemPublishEndpoints must be an object")
+            for name, endpoint in value.items():
+                if type(endpoint) is not dict or "rootDir" not in endpoint \
+                        or set(endpoint) - {"rootDir", "linkMethod"}:
+                    _deny(f"endpoint {name!r} must have rootDir and at most linkMethod")
+                _check_path(endpoint["rootDir"], f"FileSystemPublishEndpoints.{name}.rootDir")
+                if "linkMethod" in endpoint and endpoint["linkMethod"] not in ("hardlink", "symlink", "copy"):
+                    _deny(f"endpoint {name!r} linkMethod is not allowed")
+        elif kind == "database":
+            if type(value) is not dict or set(value) - {"type", "dbPath"}:
+                _deny("config databaseBackend may only have type and dbPath")
+            if "type" in value and value["type"] != "leveldb":
+                _deny("config databaseBackend type must be exactly leveldb")
+            if "dbPath" in value:
+                _check_path(value["dbPath"], "databaseBackend.dbPath")
+        elif kind == "pool":
+            if type(value) is not dict or set(value) - {"type", "path"}:
+                _deny("config packagePoolStorage may only have type and path")
+            if "type" in value and value["type"] != "local":
+                _deny("config packagePoolStorage type must be exactly local")
+            if "path" in value:
+                _check_path(value["path"], "packagePoolStorage.path")
+    if "rootDir" not in config:
+        _deny("config must set rootDir")
+
+
+def _check_root():
+    st = os.lstat(REHEARSAL_ROOT)
+    if not stat.S_ISDIR(st.st_mode):
+        _deny(f"{REHEARSAL_ROOT} must be a directory, not a link")
+    _owned_private(st, REHEARSAL_ROOT)
+    real = os.path.realpath(REHEARSAL_ROOT)
+    if real != REHEARSAL_ROOT or _inside(real, LIVE_APTLY) or _inside(LIVE_APTLY, real):
+        _deny(f"{REHEARSAL_ROOT} must not resolve elsewhere or overlap {LIVE_APTLY}")
+    with open(MOUNTINFO, encoding="utf-8") as f:
+        for line in f:
+            point = re.sub(r"\\([0-7]{3})", lambda m: chr(int(m.group(1), 8)), line.split()[4])
+            if _inside(point, REHEARSAL_ROOT):
+                _deny(f"a mount point is at or under {REHEARSAL_ROOT}")
+    links: dict = {}
+    count = 0
+
+    def fail(error):
+        raise error
+
+    for top, dirs, files in os.walk(REHEARSAL_ROOT, onerror=fail, followlinks=False):
+        for name in dirs + files:
+            count += 1
+            if count > REHEARSAL_MAX_ENTRIES:
+                _deny(f"{REHEARSAL_ROOT} has too many entries")
+            path = os.path.join(top, name)
+            st = os.lstat(path)
+            if stat.S_ISLNK(st.st_mode):
+                if not _inside(os.path.realpath(path), REHEARSAL_ROOT):
+                    _deny(f"{path} links outside {REHEARSAL_ROOT}")
+            elif stat.S_ISDIR(st.st_mode):
+                _owned_private(st, path)
+            elif stat.S_ISREG(st.st_mode):
+                key = (st.st_dev, st.st_ino)
+                links[key] = (st.st_nlink, links.get(key, (0, 0))[1] + 1)
+            else:
+                _deny(f"{path} is not a regular file, directory or link")
+    for nlink, seen in links.values():
+        if nlink != seen:
+            _deny(f"a file in {REHEARSAL_ROOT} has hard links outside it")
+
+
+def _check_marker(session_id: str | None) -> tuple[dict, str]:
+    st = os.lstat(REHEARSAL_COORDINATOR)
+    if not stat.S_ISDIR(st.st_mode):
+        _deny(f"{REHEARSAL_COORDINATOR} must be a directory, not a link")
+    _owned_private(st, REHEARSAL_COORDINATOR)
+    if not os.path.lexists(REHEARSAL_MARKER):
+        _deny("no rehearsal authorization is recorded (C writes it after May's approval)")
+    if os.path.realpath(REHEARSAL_MARKER) != REHEARSAL_MARKER:
+        _deny("the rehearsal authorization must not resolve elsewhere")
+    marker, data = _strict_json(REHEARSAL_MARKER, "the rehearsal authorization")
+    if set(marker) != _MARKER_KEYS:
+        _deny(f"the rehearsal authorization must have exactly {sorted(_MARKER_KEYS)}")
+    if marker["schema"] != 1 or type(marker["schema"]) is not int:
+        _deny("the rehearsal authorization has an unknown schema")
+    for key in _MARKER_KEYS - {"schema"}:
+        if type(marker[key]) is not str or not marker[key]:
+            _deny(f"the rehearsal authorization {key} must be a non-empty string")
+    if marker["root"] != REHEARSAL_ROOT or marker["authorized_by"] != "May" or marker["recorded_by"] != "C":
+        _deny("the rehearsal authorization is not May's, recorded by C, for the rehearsal root")
+    if not session_id or marker["session_id"] != session_id:
+        _deny("the rehearsal authorization belongs to another session")
+    stamps = []
+    for key in ("not_before", "not_after"):
+        if not _UTC_STAMP.match(marker[key]):
+            _deny(f"the rehearsal authorization {key} must be YYYY-MM-DDTHH:MM:SSZ")
+        from datetime import datetime, timezone
+        stamps.append(datetime.strptime(marker[key], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp())
+    import time
+    if not stamps[0] < stamps[1] or stamps[1] - stamps[0] > REHEARSAL_MAX_WINDOW:
+        _deny("the rehearsal authorization window must be positive and at most 24 hours")
+    if not stamps[0] <= time.time() < stamps[1]:
+        _deny("the rehearsal authorization is not valid now")
+    import hashlib
+    return marker, hashlib.sha256(data).hexdigest()
+
+
+def _log_rehearsal(command: str, session_id: str, marker: dict, marker_sha: str):
+    fd = os.open(REHEARSAL_LOG, os.O_WRONLY | os.O_APPEND | os.O_CREAT | os.O_NOFOLLOW, 0o600)
+    try:
+        st = os.fstat(fd)
+        if not stat.S_ISREG(st.st_mode):
+            _deny("the rehearsal log must be a regular file")
+        _owned_private(st, "the rehearsal log")
+        from datetime import datetime, timezone
+        line = json.dumps({"time": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                           "session_id": session_id, "task_id": marker["task_id"],
+                           "reference": marker["reference"], "command": command,
+                           "marker_sha256": marker_sha}) + "\n"
+        os.write(fd, line.encode("ascii"))
+    finally:
+        os.close(fd)
+
+
+def _rehearsal_candidate(command: str) -> bool:
+    """A command meant as a rehearsal: aptly with a config flag and publish."""
+    tokens = command.split()
+    return bool(tokens) and os.path.basename(tokens[0]) == "aptly" \
+        and any(t.lstrip("-").startswith("config") for t in tokens[1:]) and "publish" in tokens
+
+
+def _check_rehearsal(command: str, session_id: str | None):
+    if not _REHEARSAL_SHAPE.match(command):
+        _deny("one plain command only: no quoting, expansion, redirection or separators")
+    tokens = command.split(" ")
+    if tokens[0] != APTLY_BINARY:
+        _deny(f"call aptly as {APTLY_BINARY}")
+    st = os.lstat(APTLY_BINARY)
+    on_path = _which("aptly")
+    if not stat.S_ISREG(st.st_mode) or st.st_uid != 0 or st.st_mode & 0o022 \
+            or not on_path or not os.path.samefile(on_path, APTLY_BINARY):
+        _deny(f"{APTLY_BINARY} must be the root-owned aptly on PATH")
+    args = tokens[1:]
+    if any(".." in a for a in args):
+        _deny("no argument may contain ..")
+    configs = [i for i, a in enumerate(args) if a.lstrip("-").startswith("config")]
+    if len(configs) != 1 or not (args[configs[0]].startswith("-config=") or args[configs[0]].startswith("--config=")):
+        _deny("exactly one -config=PATH (or --config=PATH) is required")
+    # No other global flag: one written as `-flag value` would make the
+    # value the command word (Go's flag parser, aptly cmd/cmd.go).
+    if len(args) < 2 or configs[0] != 0 or args[1] != "publish":
+        _deny("the command must start: -config=PATH publish")
+    if any(_DENIED_WORD.search(a) for a in args[2:] if not a.startswith("-")):
+        _deny("publish, task or api may appear only as the command word")
+    path = args[0].split("=", 1)[1]
+    if not path.startswith(REHEARSAL_ROOT + "/") or os.path.normpath(path) != path:
+        _deny(f"the config must be an absolute normalised path inside {REHEARSAL_ROOT}")
+    _check_root()
+    config, _ = _strict_json(path, "the config file")
+    _check_config(config)
+    marker, marker_sha = _check_marker(session_id)
+    _log_rehearsal(command, session_id, marker, marker_sha)
+
+
+def inspect(command: str, session_id: str | None = None) -> str | None:
     # The earlier tokenisation stays as a floor: UNITY-20260927-058 only adds denials.
     message = _group_rules(_legacy_groups(command))
     if message:
@@ -817,8 +1119,14 @@ def inspect(command: str) -> str | None:
         levels = _levels(command)
     except ScanError:
         return "Command guard could not parse shell quoting; tool call blocked."
-    return _aptly_rules(levels) or _group_rules(
-        group for level in levels if not level.body for group in level.groups)
+    rest = _group_rules(group for level in levels if not level.body for group in level.groups)
+    if _rehearsal_candidate(command):
+        try:
+            _check_rehearsal(command, session_id)
+        except (RehearsalDenied, OSError, ValueError) as error:
+            return f"aptly rehearsal not allowed: {error}"
+        return rest
+    return _aptly_rules(levels) or rest
 
 
 def _group_rules(groups) -> str | None:
@@ -881,7 +1189,8 @@ def main() -> int:
         print("Command guard found no shell command; tool call blocked.", file=sys.stderr)
         return 2
     try:
-        message = inspect(command)
+        session = payload.get("session_id")
+        message = inspect(command, session if isinstance(session, str) else None)
     except Exception as error:  # fail closed on any bug in the guard itself
         message = f"Command guard failed ({type(error).__name__}); tool call blocked."
     if message:
