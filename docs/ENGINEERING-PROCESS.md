@@ -478,14 +478,39 @@ repository owner's history-removal process separately.
 ## 9. Shell command guard
 
 The project `.claude/settings.json` installs a `PreToolUse` guard for Claude
-Code's `Bash` tool. It tokenizes simple shell command lists and blocks common
-forms of broad staging, force pushes (including force refspecs), `aptly
+Code's `Bash` and `Monitor` tools (both run shell text). It tokenizes shell
+command lists (newlines, `$(...)`, backticks and heredocs included) and blocks
+common forms of broad staging, force pushes (including force refspecs), `aptly
 publish`, `xwd`, pattern-based process matches, and dangerous recursive
 removal. It handles common command/env/sudo prefixes and absolute executable
-paths. Shell syntax, aliases, nested interpreters, and wrappers cannot be
-reliably secured by this hook; use `scripts/safe_git.py stage|push` for Git
-updates, `scripts/build_sbuild.py` for package builds, and
-`scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
+paths.
+
+For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
+
+- `aptly` must be called literally, with one of `repo snapshot mirror
+  package db config serve version graph` as its first command word, and
+  without the words `publish`, `task` or `api`.
+- Any other mention of aptly is allowed only when it cannot reach a command
+  that runs something. It must not be a wrapper, a remote or nested shell, an
+  interpreter, a pipe into one, or a copy of the binary.
+- Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
+  `echo`, project scripts such as `taskctl.py`) may mention aptly and
+  publish freely.
+
+In practice:
+
+- Run aptly directly, not through `timeout`, `xargs`, `bash -c` or a
+  variable.
+- Write `-architectures=amd64` rather than `-architectures amd64`.
+- Commit messages go in the heredoc form.
+- A Python heredoc that mentions aptly and starts processes is refused. Use
+  the Edit and Write tools for files.
+
+Shell syntax, aliases, interpreters that build words at run time, and files
+written earlier and run later cannot be reliably secured by this hook
+(`docs/research/UNITY-20260927-058-command-guard/`). Use `scripts/safe_git.py
+stage|push` for Git updates, `scripts/build_sbuild.py` for package builds,
+and `scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
 agents can use their disposable VM freely. The MCP server configuration allows
 `target-desktop`, `target-desktop-2`, and `oem-test`, and lists `builder-server`
 under `never_allowed`. For a restore or suspected shared VBoxSVC failure, use
