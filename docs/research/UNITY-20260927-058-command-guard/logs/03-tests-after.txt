@@ -1,0 +1,21 @@
+# tests after the fix, 2026-09-28T06:49:24Z, branch b/UNITY-20260927-058
+test_allowed (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_allowed) ... ok
+test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) ... ok
+test_hard_link_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_hard_link_to_aptly)
+Identity by device and inode: a hard link is aptly whatever its name. ... ok
+test_monitor_tool (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_monitor_tool)
+Monitor runs shell commands too; a WebSocket-only Monitor has no shell. ... ok
+test_other_rules_unchanged (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) ... ok
+test_settings_register_monitor (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_settings_register_monitor) ... ok
+test_symlink_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly)
+A pre-existing link to the aptly binary under another name is aptly. ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 18.586s
+
+OK
+
+# full suite
+Ran 43 tests in 26.086s
+
+OK

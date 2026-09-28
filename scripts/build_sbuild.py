@@ -3,11 +3,13 @@
 
 import argparse
 from datetime import datetime, timezone
+import gzip
 import hashlib
 import json
 from pathlib import Path
 import subprocess
 import sys
+import tarfile
 
 
 def run(args, cwd=None, check=True, capture=True):
@@ -22,6 +24,34 @@ def sha256(path):
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+# Version-control metadata that must never be in a source package we build.
+VCS_NAMES = {".git", ".svn", ".hg", ".bzr", "CVS", "_darcs", "_MTN", "RCS"}
+
+
+def source_paths(path):
+    """Paths inside a source file produced by this build: the '+++' paths of
+    a .diff.gz, the members of a tarball. Raises on anything unreadable."""
+    if path.name.endswith(".diff.gz"):
+        with gzip.open(path, "rt", encoding="utf-8", errors="replace") as stream:
+            return [line[4:].split("\t", 1)[0].rstrip("\n") for line in stream if line.startswith("+++ ")]
+    with tarfile.open(path) as archive:
+        return archive.getnames()
+
+
+def vcs_entries(dsc_dir, names):
+    """UNITY-20260928-007: every VCS path in the source files this build made.
+    Orig tarballs (and their signatures) are upstream's, pinned by the .dsc's
+    sha256, and not produced from the checkout, so they are not inspected."""
+    found = []
+    for name in names:
+        if ".orig." in name or ".orig-" in name or name.endswith(".asc"):
+            continue
+        for member in source_paths(dsc_dir / name):
+            if VCS_NAMES & set(member.split("/")):
+                found.append(f"{name}: {member}")
+    return found
 
 
 def main():
@@ -50,7 +80,12 @@ def main():
     started = datetime.now(timezone.utc)
     # sbuild prints its build log to stdout only when stdout is a terminal or
     # --verbose is given; otherwise the log goes to its own .build file only.
-    command = ["sbuild", "-d", args.target_series, "--no-clean-source", "--verbose"]
+    # UNITY-20260928-007: sbuild builds the source package from this checkout
+    # with dpkg-source. Format 3.0 ignores VCS metadata by default, format 1.0
+    # does not (.git is diffed, or tarred for full tarballs): -i and -I apply
+    # dpkg-source's default ignore lists to every format.
+    command = ["sbuild", "-d", args.target_series, "--no-clean-source", "--verbose",
+               "--dpkg-source-opt=-i", "--dpkg-source-opt=-I"]
     logfile = output / f"{args.task_id}-{package}-{version}-sbuild.log"
     with logfile.open("w", encoding="utf-8") as log:
         log.write("$ " + " ".join(command) + "\n")
@@ -99,6 +134,16 @@ def main():
             print(f"{name} listed in {dscs[0].name} is missing or does not match its sha256", file=sys.stderr)
             return 2
         selected.append((path, digest, "source_file"))
+    try:
+        leaked = vcs_entries(dscs[0].parent, [name for name, _ in source_files])
+    except (OSError, EOFError, tarfile.TarError) as exc:
+        print(f"cannot inspect the source files of {dscs[0].name} for VCS metadata: {exc}", file=sys.stderr)
+        return 2
+    if leaked:
+        print("the source package contains version-control metadata; no manifest written:", file=sys.stderr)
+        for entry in leaked:
+            print(f"  {entry}", file=sys.stderr)
+        return 2
     for name, digest in listed:
         path = changes[0].parent / name
         if not path.is_file() or sha256(path) != digest:

@@ -1,0 +1,49 @@
+# part F: documentation examples through the hook, 2026-09-28T08:02:35Z, branch b/UNITY-20260927-058
+## fenced shell blocks in the docs (documented workflows: expected to pass)
+ok   docs/ENGINEERING-PROCESS.md:404  python3 scripts/apt_view.py --source-package <package> --write /tmp/pockets.json
+ok   docs/TWO-AGENTS.md:150  echo "$(date -u +'%F %H:%MZ') A START build cinnamon-session 6.4.2 on target" >> ~/AGENTS-
+ok   docs/TWO-AGENTS.md:164  tail -20 ~/AGENTS-LOG.md
+ok   docs/TWO-AGENTS.md:194  python3 scripts/agent_registry.py register A --name "<exact ListAgents name>" --session-id
+ok   docs/TWO-AGENTS.md:222  python3 scripts/taskctl.py create "unity LP #12345" --actor C
+ok   .claude/skills/package-version-safety/SKILL.md:18  python3 scripts/apt_view.py --source-package <source> --write /tmp/pockets.json
+ok   .claude/skills/package-version-safety/SKILL.md:26  python3 scripts/apt_view.py --manifest <build manifest> --snapshot <snapshot> \
+
+## forms documented in section 6/9 and the card
+ok   expect allow rc=0  section 9: readers may mention aptly and publish
+ok   expect allow rc=0  section 9: readers
+ok   expect allow rc=0  section 9: readers
+ok   expect allow rc=0  section 9: git log is a reader
+ok   expect allow rc=0  section 9: echo
+ok   expect allow rc=0  section 9: project scripts such as taskctl.py
+ok   expect allow rc=0  section 9: write -architectures=amd64
+ok   expect deny  rc=2  section 9 / card: space-separated value
+ok   expect allow rc=0  section 9: commit messages in the heredoc form
+ok   expect deny  rc=2  section 9: no timeout around aptly
+ok   expect deny  rc=2  section 9: no xargs around aptly
+ok   expect deny  rc=2  section 9: no bash -c around aptly
+ok   expect deny  rc=2  section 9 / card: no variable holding aptly
+ok   expect deny  rc=2  section 9 / card: Python heredoc that mentions aptly and starts processes
+ok   expect deny  rc=2  card: apt-get with aptly
+ok   expect deny  rc=2  card: ssh with aptly
+ok   expect deny  rc=2  card: script written and run in the same call
+ok   expect deny  rc=2  card: variable in a runner plus a listed word
+ok   expect deny  rc=2  section 9 bullet 1: no word task in a literal aptly call
+ok   expect deny  rc=2  section 9 bullet 1: no word api in a literal aptly call
+ok   expect deny  rc=2  section 9 bullet 1: first command word outside the allowed list
+ok   expect deny  rc=2  section 9 bullet 2: a pipe into a shell
+ok   expect deny  rc=2  section 9 bullet 2: a copy of the binary
+ok   expect deny  rc=2  card: apt-get install ... aptly
+ok   expect deny  rc=2  card: variable in a runner plus api
+ok   expect deny  rc=2  card: variable in a runner plus task
+ok   expect deny  rc=2  section 9: broad staging
+ok   expect deny  rc=2  section 9: force push
+ok   expect deny  rc=2  section 9: force refspec
+ok   expect deny  rc=2  section 9: xwd
+ok   expect deny  rc=2  section 9: pattern-based process match
+ok   expect deny  rc=2  section 9: recursive removal with an unguarded variable
+ok   expect allow rc=0  section 9 (by contrast): guarded variable
+ok   expect deny  rc=2  section 6 Aptly freeze: no direct aptly publish, list included
+ok   expect deny  rc=2  section 6 Aptly freeze: show included
+ok   expect allow rc=0  section 6 Aptly freeze: taskctl.py's internal call is the exception
+
+mismatches: 0

@@ -1,0 +1,31 @@
+{
+  "_note": "UNITY-20260927-058 verification cases C and D, written by agent B with the Write tool. DATA ONLY: never execute these strings in a shell. Every entry must be DENIED (exit 2) by the new hook.",
+  "C_incident_heredoc_closed_early": [
+    "cat > /tmp/cases.txt <<EOF\naptly -config=x publish list\nEOF\naptly publish list\nEOF",
+    "cat > /tmp/cases.txt <<'EOF'\nfirst case\nEOF\naptly publish list\nfind . -exec aptly publish list \\;\nnice aptly publish list\nexec aptly publish list\n(aptly publish list)\nsudo aptly publish list\nsudo bash -c 'aptly publish list'\nEOF",
+    "cat > /tmp/cases.txt <<EOF\nx\nEOF\nfind . -exec aptly publish list \\;",
+    "cat > /tmp/cases.txt <<EOF\nx\nEOF\nnice aptly publish list",
+    "cat > /tmp/cases.txt <<EOF\nx\nEOF\nexec aptly publish list",
+    "cat > /tmp/cases.txt <<EOF\nx\nEOF\n(aptly publish list)",
+    "cat > /tmp/cases.txt <<EOF\nx\nEOF\nsudo aptly publish list",
+    "cat > /tmp/cases.txt <<EOF\nx\nEOF\nsudo bash -c 'aptly publish list'",
+    "cat > /tmp/cases.txt <<'EOF'\nx\nEOF\n\n\naptly publish list\n",
+    "cat > /tmp/cases.txt <<-EOF\n\tx\n\tEOF\naptly publish list",
+    "python3 - <<'EOF'\nprint(1)\nEOF\naptly publish list"
+  ],
+  "D_config_family": [
+    "aptly -config=/tmp/s/aptly.conf publish list",
+    "aptly -config /tmp/s/aptly.conf publish list",
+    "aptly --config=/tmp/s/aptly.conf publish list",
+    "aptly --config /tmp/s/aptly.conf publish list",
+    "HOME=/tmp/s aptly -config=/tmp/s/aptly.conf publish list",
+    "env HOME=/tmp/s aptly --config /tmp/s/aptly.conf publish drop resolute",
+    "sudo -u claude aptly -config=/tmp/s/aptly.conf publish list",
+    "command aptly -config /tmp/s/aptly.conf publish list",
+    "/usr/bin/aptly -config=/tmp/s/aptly.conf publish list",
+    "/usr/bin/../bin/aptly --config=/tmp/s/../s/aptly.conf publish list",
+    "aptly -config=../../srv/aptly.conf publish switch resolute snap",
+    "aptly -architectures=amd64 -config=/tmp/s/aptly.conf -batch publish snapshot -distribution=resolute snap",
+    "aptly -config=/tmp/s/aptly.conf -- publish list"
+  ]
+}

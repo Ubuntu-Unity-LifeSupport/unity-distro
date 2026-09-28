@@ -62,13 +62,35 @@ An investigation can close as `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`,
 `NOT_APPLICABLE`, `BLOCKED`, `REJECTED`, or `DUPLICATE`. During `VERIFYING`,
 the physical task owner completes and records the regression test, relevant
 tests, build, and live check on their assigned VM. `REVIEW` is a separate,
-ephemeral Verifier subagent reading that evidence and the diff. `PASS` advances
-to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
+ephemeral Verifier subagent reading that evidence and the diff. For a package,
+`PASS` advances to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
 `BLOCKED` with resume state `REVIEW` until the evidence is supplied. A strictly
 mechanical packaging-only change may skip independent review only under the
 `NOT_APPLICABLE` exception in section 6; that path advances from `VERIFYING`
-to `READY_TO_PUBLISH` after the release gate is complete. A non-package
-documentation or research task may move from `VERIFYING` to `DONE`. `taskctl`
+to `READY_TO_PUBLISH` after the release gate is complete.
+
+Every task has a kind, recorded as `task_kind` in its evidence; it decides the
+path to `DONE`. A task that changes several things takes the first kind that
+applies in this order:
+
+| Kind | What it changes | `READY_FOR_FIX` needs | `VERIFYING` needs | `DONE` |
+|---|---|---|---|---|
+| `package` | a source package we build or publish | the section 2 defect card | `regression_test`, `build_manifest` | only from `PUBLISHED` |
+| `tool` | code that changes behaviour and is not a package (`scripts/*.py`, hooks) | the section 2 defect card | `regression_test`, `validation_record` | only from `REVIEW`, with the Verifier's `PASS` |
+| `operation` | shared infrastructure: repositories, VMs, archive state | `scope`, `chosen_approach`, `existing_state_check` (what is already there), `authorization` {`approved_by`: May or C, `reference` to where the approval is recorded, `scope`} | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+| `documentation` | documentation and research records | `scope`, `chosen_approach` | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+
+Every kind records `architectural_task`, `design_challenger_required` and
+`correct_layer` at `READY_FOR_FIX`, and needs the Design Challenger's
+`APPROVE` when required. `READY_FOR_FIX` means "approach recorded, ready to
+implement" for every kind. Only package tasks enter `READY_TO_PUBLISH` or
+`PUBLISHED`. A legacy task whose evidence has `package_change: true` and no
+`task_kind` is a package; evidence carrying `build_manifest`, `release_gate`,
+`candidate_version` or `version_safety` is always a package. From
+`READY_FOR_FIX` on, `taskctl` refuses a transition whose kind it cannot
+resolve, and it records the kind in `<task-id>.kind` beside the evidence at
+the first transition that resolves it; later evidence must keep that kind.
+`taskctl`
 requires a machine-readable evidence JSON at
 `~/coordinator/evidence/<task-id>.json` (or an explicit `--evidence` path) for
 transitions; it validates stage-required keys before changing the board. A package
@@ -114,7 +136,8 @@ unknowns:
   - unanswered checks; use [] when none
 ```
 
-Do not enter `READY_FOR_FIX` until the issue is reproduced or the task is an
+For `package` and `tool` tasks (section 1): do not enter `READY_FOR_FIX`
+until the issue is reproduced or the task is an
 explicit build/packaging failure with a captured failing build, the
 `existing_fix_result` is `NOT_FIXED`, and `issue_search_result` is `FOUND` or
 `NOT_FOUND` with evidence. If a fix or patch already exists, verify its scope
@@ -363,6 +386,36 @@ traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
+Aptly freeze. A freeze protects the live publication state and
+/srv/aptly.
+
+- **Lifecycle.** Only May declares and lifts a freeze. C records the fact,
+  the start and end times and the scope in the coordinator log. Agents and
+  subagents never treat a freeze as lifted and never widen its exceptions.
+- **Default.** While a freeze is in force, an agent or subagent must not
+  call `aptly publish` directly in any form, including `show` and `list`.
+- **taskctl exception.** The internal `aptly publish show` that
+  `scripts/taskctl.py` runs as part of an authorized publication workflow,
+  after the corresponding gate has passed. It covers only `taskctl.py` and
+  only `aptly publish show`, never manual or direct calls by agents or
+  subagents.
+- **Rehearsal exception.** Direct `aptly publish` commands are allowed only
+  for the rehearsal phase of a specific task that May has explicitly
+  authorized, and only on an isolated aptly state. For such a command the
+  command guard checks:
+  - every place aptly writes lies inside the authorized rehearsal root:
+    rootDir, publish endpoint roots, package pool storage, the database
+    and its dbPath;
+  - remote (S3, Swift, Azure) endpoints are absent;
+  - no link leads out of the root (UNITY-20260927-057).
+
+  The authorization takes effect only through a dated marker that C writes
+  after May's approval (task, rehearsal root, validity window, reference to
+  the approval). The guard checks it and logs every rehearsal command it
+  allows. The exception gives no right to /srv/aptly or to any other live
+  aptly state. It ends automatically when the rehearsal ends: C removes the
+  marker, or it expires.
+
 Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
 every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
 rule per kind and rejects anything else:
@@ -478,14 +531,49 @@ repository owner's history-removal process separately.
 ## 9. Shell command guard
 
 The project `.claude/settings.json` installs a `PreToolUse` guard for Claude
-Code's `Bash` tool. It tokenizes simple shell command lists and blocks common
-forms of broad staging, force pushes (including force refspecs), `aptly
+Code's `Bash` and `Monitor` tools (both run shell text). It tokenizes shell
+command lists (newlines, `$(...)`, backticks and heredocs included) and blocks
+common forms of broad staging, force pushes (including force refspecs), `aptly
 publish`, `xwd`, pattern-based process matches, and dangerous recursive
 removal. It handles common command/env/sudo prefixes and absolute executable
-paths. Shell syntax, aliases, nested interpreters, and wrappers cannot be
-reliably secured by this hook; use `scripts/safe_git.py stage|push` for Git
-updates, `scripts/build_sbuild.py` for package builds, and
-`scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
+paths.
+
+For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
+
+- `aptly` must be called literally, with one of `repo snapshot mirror
+  package db config serve version graph` as its first command word, and
+  without the words `publish`, `task` or `api`.
+- Any other mention of aptly is allowed only when it cannot reach a command
+  that runs something. It must not be a wrapper, a remote or nested shell, an
+  interpreter, a pipe into one, or a copy of the binary.
+- Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
+  `echo`, project scripts such as `taskctl.py`) may mention aptly and
+  publish freely.
+- The rehearsal exception of section 6 (UNITY-20260927-057) is the only
+  allowance for `publish`. The command must start exactly
+  `/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/<path> publish`
+  (`--config=` also works), with no other flag before `publish`, as one
+  plain command with no quoting, expansion, redirection or prefix. The
+  config is strict JSON, with every place aptly writes inside
+  /var/tmp/aptly-rehearsal. The root is checked for links, hard links and
+  mounts. C's dated marker
+  `~/coordinator/rehearsal-authorization.json` must name the session, and
+  every allowed command is logged to `~/coordinator/rehearsal-log.jsonl`.
+
+In practice:
+
+- Run aptly directly, not through `timeout`, `xargs`, `bash -c` or a
+  variable.
+- Write `-architectures=amd64` rather than `-architectures amd64`.
+- Commit messages go in the heredoc form.
+- A Python heredoc that mentions aptly and starts processes is refused. Use
+  the Edit and Write tools for files.
+
+Shell syntax, aliases, interpreters that build words at run time, and files
+written earlier and run later cannot be reliably secured by this hook
+(`docs/research/UNITY-20260927-058-command-guard/`). Use `scripts/safe_git.py
+stage|push` for Git updates, `scripts/build_sbuild.py` for package builds,
+and `scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
 agents can use their disposable VM freely. The MCP server configuration allows
 `target-desktop`, `target-desktop-2`, and `oem-test`, and lists `builder-server`
 under `never_allowed`. For a restore or suspected shared VBoxSVC failure, use

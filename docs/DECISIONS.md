@@ -1697,3 +1697,26 @@ that branch. The branch was merged with `--no-ff` as `eb6553e`.
   one merge commit that names the task.
 
 Operational rules: `docs/ENGINEERING-PROCESS.md` section 10.
+
+
+## 2026-09-28 - Aptly freeze: no direct `aptly publish`, only taskctl's internal show
+
+**Decision (May).** While an aptly freeze is in force, agents and subagents
+must not call `aptly publish` directly in any form, including `show` and
+`list`. The one exception is the internal `aptly publish show` that
+`scripts/taskctl.py` runs as part of an authorized publication workflow,
+after the corresponding gate has passed. The exception is not extended
+beyond `taskctl.py` and `aptly publish show`. The rule is in
+`docs/ENGINEERING-PROCESS.md` section 6.
+
+**Why.** During UNITY-20260927-058 read-only publish commands ran twice.
+At 06:54:37Z a verifier subagent's test-data heredoc was closed early, and
+bash ran `aptly publish list` about 13 times, 3 of them as root. At 06:56Z
+a check of the incident added `aptly publish show`. The main-branch guard
+let both through. Nothing was published or changed. The root calls created
+`/root/.aptly.conf` and `/root/.aptly`, which were removed after checks
+(evidence of UNITY-20260927-058). A read-only command is still a live
+command against the production repository, so the freeze names `show` and
+`list` explicitly. 058 tightens `.claude/hooks/command_guard.py` so that
+these forms are refused. Its verification is recorded by part, and the
+adversarial part is NOT VERIFIED (follow-up UNITY-20260928-002).

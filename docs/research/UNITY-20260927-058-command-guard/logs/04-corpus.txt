@@ -1,0 +1,102 @@
+# corpus replay, 2026-09-28T06:51:41Z: Bash/Monitor commands of 8 Claude Code transcripts on builder (agents A, B, C, all sessions)
+# old = origin/main 03f5cea command_guard.py, new = b/UNITY-20260927-058; commands are parsed, never run
+unique commands: 4544
+denied by old, allowed by new: 0
+allowed by old, denied by new: 88
+    39  Stage explicit file paths; broad staging is blocked.
+    23  aptly publish/task/api is blocked in any form (publish through scripts/publish_aptly.py; a command with a shell expansion must not name them).
+    18  aptly may only be run directly, or named in a command made of plain readers (grep, ls, cat, git log, ...).
+     3  Recursive forced removal with a glob or unguarded variable is blocked.
+     3  Pattern-based process matching is blocked; identify the exact PID.
+     1  aptly must be called literally with one of: repo snapshot mirror package db config serve version graph.
+     1  Command guard could not parse shell quoting; tool call blocked.
+
+## newly denied (first 140 characters, newlines as ' / ')
+[Command guard could not ] cd ~/work/a/out && V=15.04.1+21.10.20220802-0ubuntu7+unity2; F="libunity-settings-daemon1_${V}_amd64.deb unity-settings-daemon_${V}_amd64.de
+[Pattern-based process ma] echo "sbuild: $(pgrep -c sbuild)  aptly: $(pgrep -xc aptly)  my ssh/bg: $(pgrep -u claude -f 'confirm-restart|cursor-boots|greeter-boots|res
+[Pattern-based process ma] echo "sbuild=$(pgrep -c sbuild) aptly=$(pgrep -xc aptly) tests=$(pgrep -u claude -f 'ucc-panels|ucc-apply|cursor-boots|confirm-' | wc -l)"; 
+[Pattern-based process ma] ps -o pid,user,etime,args -p $(pgrep -d, sbuild) 2>/dev/null | cut -c1-150; echo ---; ps -o pid,etime,args -p $(pgrep -d, -u claude -f 'conf
+[Recursive forced removal] SP=/tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-80fa-832f9a2bcca7/scratchpad; mkdir -p $SP/ut && cd /home/claude/unity-distro/packages/u
+[Recursive forced removal] cd /home/claude/unity-distro/packages/unity / rm -rf /home/claude/build-tmp/sbuild-unshare-* 2>/dev/null / P=/home/claude/unity-distro/packages / 
+[Recursive forced removal] set -e / D=/home/claude/unity-distro/packages/unity-gtk4-menu / rm -rf $D; mkdir -p $D/src $D/data $D/debian/source / cp /tmp/claude-1000/-home-cl
+[Stage explicit file path] cat >> docs/DECISIONS.md <<'EOF' /  / ## 2026-09-23 - #6 in cinnamon-session would be a feature, not a regression fix /  / Before any code for #6, M
+[Stage explicit file path] cd /home/claude/unity-distro / git add -A / git -c user.name="NeiroNext" -c user.email="mihail.rozshko@gmail.com" commit -q -m "repo: local aptl
+[Stage explicit file path] cd /home/claude/unity-distro && git pull -q --rebase && D=docs/research/shutdown-path; SP=/tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-8
+[Stage explicit file path] cd /home/claude/unity-distro && git pull -q --rebase && D=docs/research/shutdown-path; mkdir -p $D/option-runs/unity4-optA && S=/tmp/claude-
+[Stage explicit file path] cd /home/claude/unity-distro; python3 - <<'PY' / import pathlib / def fix(path, old, new): /     p = pathlib.Path(path); t = p.read_text() /     ass
+[Stage explicit file path] cd /home/claude/unity-distro; python3 - <<'PY' / import pathlib / p=pathlib.Path('docs/STATUS.md'); t=p.read_text() / old = t[t.index("## Known bu
+[Stage explicit file path] cd ~/unity-distro && cat >> docs/DECISIONS.md <<'EOF' /  / ## 2026-09-24 - login race: guard the stop in run-systemd-session /  / `run-systemd-sessi
+[Stage explicit file path] cd ~/unity-distro && git pull -q --rebase origin main; R=docs/research/ucc-panels; mkdir -p $R/tools; S=/tmp/claude-1000/-home-claude/dcdcb4
+[Stage explicit file path] cd ~/unity-distro && git pull -q --rebase origin main; R=docs/research/xorg-versioning; mkdir -p $R/patches; grep -E "^upstream-" ~/work/a/x
+[Stage explicit file path] cd ~/unity-distro && git pull -q --rebase origin main; cat >> docs/PATCHES.md <<'EOF' / | session-migration | `CMakeLists.txt` requires CMake 
+[Stage explicit file path] cd ~/unity-distro && git pull -q --rebase origin main; mkdir -p docs/research/unity-greeter-rebuild && cp ~/work/a/greeter/unity-greeter_*un
+[Stage explicit file path] cd ~/unity-distro && git pull -q --rebase; D=docs/research/usd-color-logout-crash; S=/tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-80fa-8
+[Stage explicit file path] cd ~/unity-distro && git pull -q --rebase; D=docs/research/usd-color-logout-crash; for n in u1 u2 u3 u4; do ssh target "cat /home/mike/lo/$n
+[Stage explicit file path] cd ~/unity-distro && python3 - <<'EOF' / p='docs/research/messaging-menu/README.md'; s=open(p).read() / a="""Both are in aptly. / """ / b="""Both ar
+[Stage explicit file path] cd ~/unity-distro/packages/unity-gtk4-menu && python3 - <<'EOF' / p='debian/changelog' / s=open(p).read() / entry='''unity-gtk4-menu (0.5) resolut
+[Stage explicit file path] echo "$(date -u +'%F %H:%MZ') A DONE  compiz +exp1: 0 crashes in 8 restarts (before: 3 in 7)" >> ~/AGENTS-LOG.md; cd /home/claude/unity-dist
+[Stage explicit file path] git pull -q --rebase && cat >> docs/research/cursor-after-login/README.md <<'EOF' /  / ## Corroboration from the release notes (host session, 20
+[Stage explicit file path] sed -i 's/| power key, inhibitor | GTK dialog; inhibitors listed after confirming | same, by code - not measured |/| power key, inhibitor | 
+[Stage explicit file path] set -e; cd /home/claude/unity-distro /  / cat >> docs/DECISIONS.md <<'EOF' /  / --- /  / ## 2026-09-22 - deb-src had to be enabled by hand /  / **Decision.*
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cat >> docs/DECISIONS.md <<'EOF' /  / --- /  / ## 2026-09-23 - the LD_PRELOAD precedent was installed on our ow
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cat >> docs/research/layer-b/README.md <<'REOF' /  / --- /  / # Does nocsd show us a different widget tree? /  / It
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cat >> docs/research/layer-b/README.md <<'REOF' /  / --- /  / # Packaged, installed, and it broke the session /  / 
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cp /tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-80fa-832f9a2bcca7/scratchpad/unity-gtk4-shim.c docs
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cp /tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-80fa-832f9a2bcca7/scratchpad/unity-gtk4-shim.c docs
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cp ~/shots/c.png docs/screenshots/2026-09-23-shutdown-path-clean-run.png / python3 - <<'PY' / import pathli
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / cp ~/shots/hv-cmp.png docs/screenshots/2026-09-23-panel-hover-states.png / cat >> docs/research/layer-b/R
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / mkdir -p docs/research/shutdown-path / cp ~/shots/dd.png docs/screenshots/2026-09-23-double-shutdown-dial
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib /  / # STATUS.md - убрать ложный баг, поставить галочку по §8 / p = pathlib.P
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib /  / # TESTING.md — новая схема снапшотов + ловушка с экранированием / p = pa
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/ARCHITECTURE.md'); t = p.read_text() / old = """Th
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/ARCHITECTURE.md'); t = p.read_text() / old = "| `u
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/STATUS.md'); t = p.read_text() /  / old = """## In f
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/STATUS.md'); t = p.read_text() /  / old = """- curso
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/STATUS.md'); t = p.read_text() /  / old = """The one
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/STATUS.md'); t = p.read_text() /  / old = t[t.index(
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/STATUS.md'); t = p.read_text() / old = """1. **Sta
+[Stage explicit file path] set -e; cd /home/claude/unity-distro / python3 - <<'PY' / import pathlib / p = pathlib.Path('docs/STATUS.md'); t = p.read_text() / old = """Checked 
+[Stage explicit file path] set -e; cd /home/claude/unity-distro/packages/unity-gtk4-menu / git add -A / git -c user.name="NeiroNext" -c user.email="mihail.rozshko@gmail.co
+[Stage explicit file path] set -e; cd /home/claude/unity-distro; python3 - <<'PY' / import pathlib / p=pathlib.Path('docs/research/shutdown-path/README.md'); t=p.read_text
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/058; echo "=== mention"; python3 $S/show.py $S/denied.txt "a
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/aptly050; rm -rf "${S:?}"; mkdir -p $S/root $S/in && cd $S/i
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; A="aptly -config=$S/aptly050/aptly.conf"; $A snapshot searc
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; A="aptly -config=$S/int-cal/aptly.conf"; $A package show -w
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; A="aptly -config=$S/int-cal/aptly.conf"; $A snapshot search
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; A="aptly -config=$S/int-cal/aptly.conf"; for f in '{{index 
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; mkdir -p $S/058 && cd $S/058 && (apt-get source aptly >/dev
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; scp -q $S/unity-distro.asc target2:/tmp/ && ssh target2 'to
+[aptly may only be run di] S=/tmp/claude-1000/-home-claude/ff7c415d-a453-4b36-bf96-3ae4a13b23fd/scratchpad; cd ~/unity-distro && git pull -q --rebase && python3 - <<'E
+[aptly may only be run di] SPD=/tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-80fa-832f9a2bcca7/scratchpad; D=/home/claude/unity-distro/docs/upstream/unity-stale-pen
+[aptly may only be run di] cd ~/unity-distro/docs/research/xorg-versioning && cat > xorg-watch.service <<'EOF' / [Unit] / Description=xorg-watch: new resolute xorg-server 
+[aptly may only be run di] cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-050-manifest-publish-contract; cat > $R/integration.py <<'EOF' / #!/usr/bin/env pyt
+[aptly may only be run di] cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-051-source-files; cat > $R/integration.py <<'EOF' / #!/usr/bin/env python3 / """integ
+[aptly may only be run di] cd ~/work/b/unity-distro && S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/058; cat > $S/why2.py <<'EOF' / im
+[aptly may only be run di] cd ~/work/b/unity-distro && S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/058; cat > $S/why3.py <<'EOF' / im
+[aptly may only be run di] f=docs/research/legacy-migration-20260927/A.md && grep -n '26 of 26' $f && sed -i 's/\*\*26 of 26 match\*\* a file in/**26 of 26 match** (pl
+[aptly may only be run di] set -e / sudo mkdir -p /srv/aptly && sudo chown claude:claude /srv/aptly && chmod 755 /srv/aptly / cat > /home/claude/.aptly.conf <<'EOF' / { /   "r
+[aptly may only be run di] sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \ /   tmux git-buildpackage sbuild schroot debootstrap devscripts ubuntu-dev-tools \ /   
+[aptly must be called lit] cd ~/unity-distro; while IFS= read -r t; do [ -n "$t" ] && printf '%s\t%s\n' "$(python3 scripts/taskctl.py create --actor C "$t")" "$t"; don
+[aptly publish/task/api i] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/058; awk '/^== newly_denied/{f=1} /^== newly_allowed/{f=0} f
+[aptly publish/task/api i] S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad; scp -q $S/unity-distro.asc ~/work/b/nocsd-up/build/libgtk-n
+[aptly publish/task/api i] cd /home/claude / aptly repo add unity-resolute /home/claude/unity-distro/packages/ll-build/light-locker_1.8.0-3ubuntu4+unity1_amd64.deb 2>&1 
+[aptly publish/task/api i] cd /home/claude / aptly repo remove unity-resolute 'libunity-gtk4-menu0' 2>&1 | tail -2 / aptly publish update -gpg-key=7BF3F77FC27B152C -batch 
+[aptly publish/task/api i] cd /home/claude / aptly repo remove unity-resolute 'light-locker (= 1.8.0-3ubuntu4+unity1)' 2>&1 | tail -1 / aptly repo add unity-resolute /home
+[aptly publish/task/api i] cd /home/claude / rm -f /home/claude/unity-distro/packages/libunity-gtk4-menu0_0.1_amd64.deb / aptly repo add unity-resolute /home/claude/unity-
+[aptly publish/task/api i] cd /tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/mig && cat > assemble.py <<'EOF' / import re, json / groups = [
+[aptly publish/task/api i] cd ~/unity-distro/docs && python3 - <<'EOF' / import subprocess / p='research/rebuild-loss/README.md'; s=open(p).read() / old="| - | two layers fi
+[aptly publish/task/api i] cd ~/work/b/unity-distro && S=/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/058; cat > $S/why.py <<'EOF' / imp
+[aptly publish/task/api i] cd ~/work/b/unity-distro && python3 - <<'EOF' / import re / # --- publish_aptly.py / p='scripts/publish_aptly.py'; s=open(p).read() / old='''    gat
+[aptly publish/task/api i] cd ~/work/b/unity-distro && python3 - <<'EOF' / p="docs/research/UNITY-20260927-058-command-guard/README.md" / s=open(p).read() / start=s.index("#
+[aptly publish/task/api i] cd ~/work/b/unity-distro && python3 - <<'PYEOF' / p=".claude/hooks/command_guard.py" / s=open(p).read() / def rep(old,new): /     global s /     asser
+[aptly publish/task/api i] cd ~/work/b/unity-distro && python3 - <<'PYEOF' / p="scripts/tests/test_command_guard.py" / s=open(p).read() / a=s.index("    def test_hard_link_t
+[aptly publish/task/api i] cd ~/work/b/unity-distro && python3 - <<'PYEOF' / p="scripts/tests/test_command_guard.py" / s=open(p).read() / s=s.replace('''    "install -m755 /
+[aptly publish/task/api i] curl -s "https://api.launchpad.net/devel/~riku55432/ubuntu/+source/unity/+git/unity/+merge/508187" | python3 -c "import json,sys; d=json.loa
+[aptly publish/task/api i] echo "$(date -u +'%F %H:%MZ') A START cinnamon-session linuxmint#214, #202" >> ~/AGENTS-LOG.md; for n in 214 202; do echo "===== #$n"; gh ap
+[aptly publish/task/api i] echo "$(date -u +'%F %H:%MZ') B START issue #1 reply 2 (May via coordinator): holder menu measurement, menu finding vs his version, GTK3 ham
+[aptly publish/task/api i] echo "$(date -u +'%F %H:%MZ') B START nux: LP #2160298 FBO attachment arrays emptied (May approved), on builder/target2" >> ~/AGENTS-LOG.md;
+[aptly publish/task/api i] echo "===== GITHUB ORGS ====="; gh api user/orgs --jq '.[] | "\(.login)  —  \(.description // "без описания")"' 2>&1 / echo; echo "===== сущес
+[aptly publish/task/api i] for b in 1414950 1213220; do curl -s "https://api.launchpad.net/devel/bugs/$b" | python3 -c " / import json,sys; d=json.load(sys.stdin); print
+[aptly publish/task/api i] mkdir -p /tmp/claude-1000/-home-claude/269a92ce-b2a3-443a-9484-2dedc60226d7/scratchpad/tx; cd ~/.claude/projects/-home-claude; cat > /tmp/cl
+[aptly publish/task/api i] set -e; cd /home/claude / aptly publish repo -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute 2>&1 | tail -8 / echo; echo "=
+[aptly publish/task/api i] set -e; cd /home/claude/unity-distro/packages/unity-gtk4-menu / cat > .gitignore <<'GI' / libunity-gtk4-menu.so.0 / *.o / GI / git init -q -b main / git
