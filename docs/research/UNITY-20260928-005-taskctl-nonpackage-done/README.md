@@ -217,3 +217,33 @@ tests against 9a1ba26 - 5 of 5 invalid-lock cases fail
    tools/seed-kind-locks.py at merge. The lock detects a relabel; it cannot
    prevent an agent from editing it (same trust level as the evidence JSON).
 
+
+2. **PASS - INDEPENDENTLY_REPRODUCED** (same Verifier, from a `git archive`
+   of 69ba3b0): every invalid lock (garbage, wrong case, empty, extra line;
+   also a directory in place of the file) is refused with rc 2 at every
+   transition, including BLOCKED and when the evidence names a valid kind;
+   a padded valid lock works; all earlier scenarios unchanged (package
+   REVIEW->DONE and VERIFYING->DONE refused, tool VERIFYING->DONE refused,
+   tool REVIEW->DONE with PASS allowed, package and legacy package
+   PUBLISHED->DONE allowed, documentation VERIFYING->DONE allowed); new lock
+   tests fail 5/5 behaviourally against 9a1ba26; scripts/tests pass. Seed
+   script on copies of the board: --dry-run writes nothing, invalid and
+   conflicting locks reported with exit 1, a real run wrote 9 locks
+   atomically (the live board had changed: 026 is now BLOCKED and resolves
+   to package). Scope limited to lock reading/writing, the DONE guard, the
+   seed script and tests.
+
+## Merge (coordinator)
+
+1. Merge `a/UNITY-20260928-005`.
+2. Straight after, before any other transition, give open tasks their kind
+   locks (dry run first):
+
+       python3 docs/research/UNITY-20260928-005-taskctl-nonpackage-done/tools/seed-kind-locks.py \
+           --dry-run --set UNITY-20260927-047=operation --set UNITY-20260928-007=tool
+       python3 docs/research/UNITY-20260928-005-taskctl-nonpackage-done/tools/seed-kind-locks.py \
+           --set UNITY-20260927-047=operation --set UNITY-20260928-007=tool
+
+   It must exit 0; a CONFLICT line means an evidence file to fix first.
+3. Then 007 and this task can close REVIEW -> DONE with `task_kind: tool` in
+   their evidence.
