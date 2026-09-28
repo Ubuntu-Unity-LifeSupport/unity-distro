@@ -1,0 +1,40 @@
+== after host=target2 boot=662cb2cb-06bb-4aa5-8bac-7b59639a700a utc=2026-09-28T08:23:18Z
+== snapshot marker: ~/.dirty absent
+== policy unity-session
+unity-session:
+  Установлен: 49.4
+  Кандидат:   49.4+unity2
+  Таблица версий:
+     49.4+unity2 500
+        500 file:/var/tmp/localrepo ./ Packages
+     49.4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+== candidate Recommends
+Version: 49.4+unity2
+Recommends: libgtk-nocsd0, libunity-gtk4-menu0, rhythmbox-plugin-zeitgeist, zeitgeist-datahub
+== simulate apt-get upgrade (never installs new packages)
+== simulate full-upgrade
+Inst libunity-gtk4-menu0 (0.9 . resolute:resolute [amd64])
+Inst unity-session [49.4] (49.4+unity2 localhost [all])
+== full-upgrade
+rc=0
+  ayatana-indicator-common ayatana-indicator-messages libunity-gtk4-menu0
+  unity-session unity-settings-daemon unity-settings-daemon-schemas
+Пол:1 file:/var/tmp/localrepo ./ unity-session 49.4+unity2 [8 168 B]
+Пол:41 http://192.168.56.10:8080 resolute/main amd64 libunity-gtk4-menu0 amd64 0.9 [15,2 kB]
+Выбор ранее не выбранного пакета libunity-gtk4-menu0:amd64.
+Подготовка к распаковке …/53-libunity-gtk4-menu0_0.9_amd64.deb …
+Распаковывается libunity-gtk4-menu0:amd64 (0.9) …
+Подготовка к распаковке …/72-unity-session_49.4+unity2_all.deb …
+Распаковывается unity-session (49.4+unity2) на замену (49.4) …
+Настраивается пакет libunity-gtk4-menu0:amd64 (0.9) …
+== dpkg-query after
+libgtk-nocsd0 4.8-1+unity3 ii 
+libunity-gtk4-menu0 0.9 ii 
+unity-session 49.4+unity2 ii 
+== apt-mark: libunity-gtk4-menu0 is auto
+== reverse dependencies now
+  unity-session
+== environment.d
+LD_PRELOAD=libunity-gtk4-menu.so.0${LD_PRELOAD:+:$LD_PRELOAD}
+== done

@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 49.4+unity2 is newer than resolute 49.4",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity-session",
+  "source_commit": "7af2106",
+  "candidate_source_version": "49.4+unity2",
+  "pockets": {
+    "resolute": "49.4"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-28T08:31:48Z",
+  "mode": "pockets",
+  "view_sha256": "602130d83c8c267f6925e8dc9d66f9ecf6af4f84263417d9fb265ca39f0a4f2a"
+}
