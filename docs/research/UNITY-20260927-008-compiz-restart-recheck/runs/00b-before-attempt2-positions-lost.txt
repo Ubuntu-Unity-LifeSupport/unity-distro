@@ -1,0 +1,22 @@
+packages: cinnamon-session=6.4.2-1 compiz-core=1:0.9.14.2+25.10.20250930-0ubuntu3 libgtk-nocsd0=3+0~20260321+0b77e1b-1 nux-tools=4.0.8+18.10.20180623-0ubuntu12 unity=7.7.1+26.04.20260306-0ubuntu3 
+geometry: 2560, 1600
+before:     compiz=2719 gt-1280-0@-654,62 
+sighup 1:   compiz= gt-1280-0@-654,30 
+compiz: процесс не найден
+sighup 2:   compiz=4533 gt-1280-0@-654,62 
+sighup 3:   compiz=5493 gt-1280-0@-654,62 
+sighup 4:   compiz=6440 gt-1280-0@-654,62 
+sighup 5:   compiz=7395 gt-1280-0@-654,62 
+journal since 2026-09-28 18:20:39: segfault|general protection|dumped core|g_hash_table: 80
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 
+unity7 restart: compiz=8564 gt-1280-0@-654,62 
+journal since 2026-09-28 18:20:39: segfault|general protection|dumped core|g_hash_table: 100
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 
+--- gtk-nocsd crash handler
+pid 9734 argv ['/tmp/segv.py', 'first-run']
+Segmentation fault (core dumped)
+python exit=139
+вер 28 18:24:56 mike-virtualbox kernel: ld-linux-x86-64[9739]: segfault at 10 ip 000073264f798b47 sp 00007ffe4b898548 error 4 in libgtk-nocsd.so.0[8b47,73264f797000+9000] likely on CPU 1 (core 1, socket 0)
+2547 -- /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/python3 /usr/bin/unity-indicator-appearance
+journal since 2026-09-28 18:20:39: segfault|general protection|dumped core|g_hash_table: 101
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_cargo_bin_coreutils_timeout.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 
