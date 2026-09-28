@@ -241,3 +241,53 @@ copy of the script.
 Remaining: Verifier; B reviews the diff as author of UNITY-20260927-045;
 the coordinator merges. Separate task proposed: git-ignored untracked files
 and building from an export (O3).
+
+## Review by B (author of UNITY-20260927-045)
+
+No blocking remarks: the layer is right, the path split catches `.git` as a
+file and as a directory, the `+++` parsing and the orig/.asc exemption are
+sound. Recorded from the review:
+
+- **Future edits are dropped silently.** With `-i`, a later change of ours
+  to `.gitignore`, `.gitattributes`, `.gitmodules`, `.mailmap`, `.deps/`,
+  `*~`, `.#*` or `*.sw?` in a format-1.0 package will not reach its source
+  package, without an error (format 3.0 already behaves this way). Today no
+  tracked file of our published 1.0 packages matches (runs/side-effects.txt).
+- **`RCS` / `CVS` as legitimate upstream directory names.** dpkg's default
+  lists include both, so `-i -I` already leave such directories out of a 1.0
+  diff or full tarball, and O4 does not see them - they would be dropped
+  silently, not rejected. O4 would stop a build only if one reached a
+  produced source file by another route (for example format 3.0 with its
+  own options). None exists in our trees today.
+- **Related, not this task** (B, from UNITY-20260928-026): empty directories
+  present in an orig tarball but not storable in git (indicator-datetime's
+  test data) are lost when building from a git checkout; B fixes that
+  package in 026 and suggests a general orig-vs-tree directory check - a
+  candidate task for the coordinator.
+
+## Independent verification
+
+Verifier (`.claude/agents/adversarial-verifier.md`, separate subagent):
+**PASS**, INDEPENDENTLY_REPRODUCED at the dpkg-source and unit-test level
+(the real-sbuild outputs reviewed, not rebuilt). It re-ran the suite
+against the pre-fix copy (9 intended failures, 38 pass) and the fixed
+script (47/47), reproduced the clone failure and the `-i -I` fix with the
+real dpkg-source by hand, re-ran `tools/compare-source.sh` on the real
+outputs (same results), and checked that the diff is no broader than
+needed.
+
+Limitations it found in O4, kept as limitations (none blocks, all either
+fail closed or need `-i -I` to have failed first):
+
+- a `.diff.gz` path that itself contains a tab is cut at the first tab, so a
+  `.git` after that tab would be missed (dpkg's `-i` regex already drops
+  `.git` at any depth);
+- any produced file whose name contains `.orig.` is skipped as an orig
+  tarball, so a native tarball of a source named like `x.orig.y` would go
+  unchecked (no package of ours is named so);
+- a corrupt gzip stream raises `zlib.error`, which is not caught: the script
+  stops with a traceback (exit 1) instead of the message - still before any
+  manifest is written;
+- the card's "every '+++' path" / "any path component" are therefore
+  slightly broader than the code; this list is the precise statement.
+- Test-only noise: a no-op `.replace("xz", "xz")` in the stub.
