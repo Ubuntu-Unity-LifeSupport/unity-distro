@@ -156,7 +156,7 @@ task_id: UNITY-20260927-004
 package: lightdm
 target_series: resolute
 issue: LP #2168421 / canonical/lightdm#484 - reachability of signal_cb()'s exit() on our default stack, and the layer of our _exit() fix
-status: NOT_REPRODUCED   # the hang on the default stack; the no-child branch itself is taken naturally in 14/20 greeter stops; the hang: NOT_REPRODUCED on the default stack
+status: NOT_REPRODUCED   # the hang on the default stack; the no-child branch itself is taken naturally in 14/20 greeter stops
 issue_search_result: FOUND   # #484 open, maintainer asked the reporter to try _exit (2026-09-28); LP task New
 source_version: 1.32.0-6ubuntu4+unity1 (published); stock 1.32.0-6ubuntu4 for the before runs
 binary_version: 1.32.0-6ubuntu4+unity1 on target (restored after the runs)
