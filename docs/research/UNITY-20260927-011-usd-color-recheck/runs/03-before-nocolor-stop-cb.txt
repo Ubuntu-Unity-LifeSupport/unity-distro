@@ -1,0 +1,27 @@
+=== stop-cb run 1
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2266
+STOP manager=0x64a831ee5ad0
+CB manager=0x64a831ee5ad0 client=(nil)
+CB manager=0x64a831ee5ad0 client=(nil)
+session manager PropertiesChanged signals: 2
+criticals since 00:02:39: 2
+      2 ettings-daemon[2266]: cd_client_get_connected: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 2266
+=== stop-cb run 2
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2266
+STOP manager=0x64a831ee5ad0
+CB manager=0x64a831ee5ad0 client=(nil)
+CB manager=0x64a831ee5ad0 client=(nil)
+session manager PropertiesChanged signals: 2
+criticals since 00:03:09: 2
+      2 ettings-daemon[2266]: cd_client_get_connected: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 2266
+=== stop-cb run 3
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2266
+STOP manager=0x64a831ee5ad0
+CB manager=0x64a831ee5ad0 client=(nil)
+CB manager=0x64a831ee5ad0 client=(nil)
+session manager PropertiesChanged signals: 2
+criticals since 00:03:37: 2
+      2 ettings-daemon[2266]: cd_client_get_connected: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 2266
