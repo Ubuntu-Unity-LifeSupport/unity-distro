@@ -346,6 +346,18 @@ tests pass. Its findings, all fixed on this branch:
   the user's profile named `/usr/bin/aptly` would shadow the binary; this is
   a same-uid limit like the others and is listed under unknowns.
 
+## Verification round 2: PASS (final)
+
+The Verifier confirmed F1-F4 at 510c1c9. The five new shape cases are
+denied by the new first-arguments check, the F2 wording matches the code,
+and each F3 test is denied by the check it targets. Results: 24 rehearsal
+tests, 7 in test_command_guard.py, 94 in the full suite; the corpus again
+shows 0 newly allowed and 0 newly denied. The allowed cases are still
+allowed. The Verifier ran no aptly, no sudo and wrote nothing. Review
+status: REVIEWED. The Verifier re-read the code and re-ran the tests; the
+target behaviour (an actual rehearsal) is 047 phase R's.
+
 ## Status
 
-IMPLEMENTING -> VERIFYING (independent Verifier).
+DONE (tool task, REVIEW with PASS). Merge by C. 047 phase R only after the
+merge, with C's marker.
