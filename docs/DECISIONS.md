@@ -1795,3 +1795,26 @@ settings part as separate patches on top) and reports measurements on his main
 `research/UNITY-20260927-038-nocsd-reply2-recheck/`. It offers a Codeberg issue
 for the types bug that still reproduces on `a57e976`; opened only if he wants
 it. Nothing else was sent.
+
+
+## 2026-09-28 - UNITY-20260927-027 and UNITY-20260928-020: nux +unity3 keeps only proven changes and fixes its test races (agent B)
+
+**Context.** Legacy B-L03: nux `0ubuntu15+unity2` carried two hunks "for a double free" in `fix-missing-vidmode.patch`, found by reading, and an FBO fix proven only out of tree. Records: `research/UNITY-20260927-027-nux-vidmode-fbo/`, `research/UNITY-20260928-020-nux-gtest-segfault/`.
+
+**Measured.**
+- The fullscreen double free is real. The fullscreen branch frees the mode list and `~GraphicsDisplay` frees it again (uprobe trace, glibc malloc check, ASan). It is reachable only through the public API: neither Unity nor Nux's WindowThread asks for fullscreen.
+- The other hunk guarded a leak, not a double free, on a second `CreateOpenGLWindow` on one display. Nothing makes that call.
+- The package build's `gtest-nux-slow` crashed in most sbuilds, the published +unity2 included, from two races in nux's tests:
+  - the dummy X server reset between tests;
+  - the `TestWindowThread` watchdog thread was deleted while it still ran.
+
+  The build chroot had not changed (446 of 446 package versions identical to a passing build).
+
+**Decision.**
+- Keep the pointer reset as its own patch with an ASan death test.
+- Drop the pre-query free (section 4).
+- Move the FBO check into gtest-nuxgraphics.
+- Fix the two races in the tests: `-noreset` for the tests' Xorg, and a joined `std::thread` for the watchdog.
+- Not in nux's thread API. `NThread` detaches in its destructor and cannot be joined and then deleted; that is a latent weakness, but no session code needs it. Retrying builds was rejected.
+
+Tests fail before and pass after in the package build; three sbuilds in a row are clean. Independent verification: PASS.
