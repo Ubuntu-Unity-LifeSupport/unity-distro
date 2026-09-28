@@ -1,0 +1,36 @@
+# bamfwatch.py during lo7.sh (GAP=3 WATCH_DELAY=0) runs 14 and 15 on target2, 2026-09-28 ~22:27Z; both
+# runs ended with the Writer window missing from window-stack-bridge (in_window_stack=0, "Could not get
+# desktop file"). Seconds since the watcher started. bamfwatch.py is synchronous, so a signal can be logged
+# after the calls that were running when it arrived. The unpack tracebacks are its own bug on signals
+# without arguments (StackingOrderChanged) and are left out.
+#### run 14
+    1.292 ViewClosed window /org/ayatana/bamf/window/56623105            <- the splash window
+    1.292 ViewClosed application /org/ayatana/bamf/application/0x70e3f40145b0
+    1.500 ViewOpened window /org/ayatana/bamf/window/58720292            <- the Writer window
+    1.523    Parents -> ['/org/ayatana/bamf/application/0x652c03dbaae0']
+    1.552    DesktopFile -> ERROR Не существует интерфейса "org.ayatana.bamf.application" на объекте по пути /org/...
+    1.552 ViewOpened application /org/ayatana/bamf/application/0x652c03dbaae0
+    1.555 ActiveWindowChanged  /org/ayatana/bamf/window/44040195
+    1.555 ActiveWindowChanged /org/ayatana/bamf/window/58720292
+    1.556 ActiveApplicationChanged  /org/ayatana/bamf/application/492623398
+    1.556 ActiveApplicationChanged /org/ayatana/bamf/application/0x652c03dbaae0
+    1.556 ViewClosed application /org/ayatana/bamf/application/0x652c03dbaae0   <- the temporary application closes
+    1.556 ViewOpened application /org/ayatana/bamf/application/746707297        <- the matched one opens
+    1.556 ActiveApplicationChanged /org/ayatana/bamf/application/746707297
+    2.046 RunningApplicationsChanged [] ['/usr/share/applications/libreoffice-writer.desktop']
+#### run 15
+    1.312 ViewClosed window /org/ayatana/bamf/window/56623105
+    1.328 ViewClosed application /org/ayatana/bamf/application/0x70e3f4015750
+    1.696 ViewOpened window /org/ayatana/bamf/window/58720292
+    1.780    Parents -> ['/org/ayatana/bamf/application/0x652c03b6f7d0']
+    1.831    DesktopFile ->                                                   <- empty: the temporary application
+    1.832 ViewOpened application /org/ayatana/bamf/application/0x652c03b6f7d0
+    1.838 ActiveWindowChanged  /org/ayatana/bamf/window/44040195
+    1.840 ActiveWindowChanged /org/ayatana/bamf/window/58720292
+    1.840 ActiveApplicationChanged  /org/ayatana/bamf/application/492623398
+    1.840 ActiveApplicationChanged /org/ayatana/bamf/application/0x652c03b6f7d0
+    1.850 ViewClosed application /org/ayatana/bamf/application/0x652c03b6f7d0
+    1.854 ViewOpened application /org/ayatana/bamf/application/746707297
+    1.854 ActiveApplicationChanged /org/ayatana/bamf/application/746707297
+    2.344 RunningApplicationsChanged [] ['/usr/share/applications/libreoffice-writer.desktop']
+# (in run 15 the watcher got "" where window-stack-bridge, a few ms apart, got the error: it also dropped the window)

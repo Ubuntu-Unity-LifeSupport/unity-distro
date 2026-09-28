@@ -1,0 +1,47 @@
+# lo4.sh 12 on target2 (Clean-2: archive hud 14.10+17.10.20170619-0ubuntu6, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6, LibreOffice 26.2.5.2), 2026-09-28 ~21:55Z
+run 1: xid=56623243 in_window_stack=1 hud_now=0 hud_after_5s=0 illegal_args=0 no_desktop_file=0
+run 2: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 3: xid=58720292 in_window_stack=0 hud_now=0 hud_after_5s=0 illegal_args=0 no_desktop_file=1
+run 4: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 5: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 6: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 7: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 8: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 9: xid=58720292 in_window_stack=0 hud_now=0 hud_after_5s=0 illegal_args=0 no_desktop_file=1
+run 10: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 11: xid=58720292 in_window_stack=1 hud_now=1 hud_after_5s=1 illegal_args=0 no_desktop_file=0
+run 12: xid=58720292 in_window_stack=0 hud_now=0 hud_after_5s=0 illegal_args=0 no_desktop_file=1
+hud-service pid: 3850
+
+# lo5.sh (dbus-monitor) 8 + 15 runs and lo6.sh (bamfwatch.py, +1 s before Writer) 15 runs: 0 failures of 38 (the observers shift the timing; see logs/02)
+
+# lo7.sh 15, GAP=3 WATCH_DELAY=0 (bamfwatch.py, no extra second): failures in runs 1, 14, 15 (in_window_stack=0, no_desktop_file=1)
+# lo7.sh 20, the same with app ids and HUD answers: 4 of 20 empty, all mechanism 1
+run 1: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 2: xid=58720292 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=62914596 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 4: xid=58720292 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 5: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 7: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 8: xid=58720292 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 9: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 10: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 11: xid=56623140 in_window_stack=0 app_id= hud_now=0 hud_after_5s=0 no_desktop_file=1
+run 12: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 13: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 14: xid=56623140 in_window_stack=0 app_id= hud_now=0 hud_after_5s=0 no_desktop_file=1
+run 15: xid=56623140 in_window_stack=0 app_id= hud_now=0 hud_after_5s=0 no_desktop_file=1
+run 16: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 17: xid=56623140 in_window_stack=0 app_id= hud_now=0 hud_after_5s=0 no_desktop_file=1
+run 18: xid=58720292 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 19: xid=58720292 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 20: xid=56623140 in_window_stack=1 app_id= hud_now=1 hud_after_5s=1 no_desktop_file=0
+(app_id empty: the script's parser did not match GetWindowStack's format in this run; fixed for coldloop.sh)
+
+# coldloop.sh 5: a reboot before each start (first LibreOffice start after login)
+boot 1: run 1: xid=58720292 in_window_stack=0 app_id= hud_now=0 hud_after_5s=0 no_desktop_file=1
+boot 2: run 1: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 3: run 1: xid=58720292 in_window_stack=1 app_id=libreoffice-writer hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 4: run 1: xid=60817444 in_window_stack=1 app_id=60817444 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 5: run 1: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
