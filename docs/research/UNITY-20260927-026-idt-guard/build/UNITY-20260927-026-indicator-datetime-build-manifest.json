@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-026",
+  "package": "indicator-datetime",
+  "candidate_version": "15.10+21.04.20210304-0ubuntu6+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro/packages/indicator-datetime",
+  "source_commit": "5d6492d5bd97d676547549bb6146914e0887b497",
+  "source_tree_hash": "6191dca49cb4cb1eca8f49c3fa0e4dcbf3a545df",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose"
+  ],
+  "build_started": "2026-09-28T09:57:16.835707+00:00",
+  "build_finished": "2026-09-28T10:12:16.039698+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-026-indicator-datetime-15.10+21.04.20210304-0ubuntu6+unity3-sbuild.log",
+    "sha256": "691aec12786dac9193a165812f047e2acabe17b11b2eef91b00afc9811a09574"
+  },
+  "artifacts": [
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.dsc",
+      "sha256": "11d9af06a8b785edab3a34bda8f58aa30a7e2dd44fce174875b4816fa9f0d430",
+      "size": 1485,
+      "kind": "source",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.changes",
+      "sha256": "0dc7291cfe22288d2ee3310a47d476f91d9d142d79d38bfdbc0173750351563c",
+      "size": 2361,
+      "kind": "changes"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.tar.gz",
+      "sha256": "98f48882109cbeb6541f75ab7b6910720d759cbbba53c04009ae8081785822f3",
+      "size": 3324079,
+      "kind": "source_file",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3"
+    },
+    {
+      "file": "indicator-datetime-dbgsym_15.10+21.04.20210304-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "120a2b9e127d683d0d544021dd7573b20c677508ffdadfb8e028f3ce095ce0a3",
+      "size": 6058252,
+      "kind": "binary",
+      "package": "indicator-datetime-dbgsym",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.buildinfo",
+      "sha256": "f2f51a42c7aeded8df4d8952e57bd2e44f564e36f834b701a9899163e2a5f19b",
+      "size": 23974,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb",
+      "sha256": "203925cdc11c3e4a38a6b60dff3f40055b8e89bfc527fb8dc6db2340782fb35c",
+      "size": 222420,
+      "kind": "binary",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3",
+      "architecture": "amd64"
+    }
+  ]
+}

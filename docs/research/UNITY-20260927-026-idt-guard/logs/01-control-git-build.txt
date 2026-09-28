@@ -1,0 +1,23 @@
+# control: unmodified +unity2 (846dfa0) built from a fresh git clone with build_sbuild.py, 2026-09-28T09:57:30Z
+62% tests passed, 11 tests failed out of 29
+	 19 - test-eds-ics-all-day-events (Failed)
+	 20 - test-eds-ics-repeating-events (Failed)
+	 21 - test-eds-ics-nonrepeating-events (Failed)
+	 22 - test-eds-ics-repeating-valarms (Failed)
+	 23 - test-eds-ics-missing-trigger (Failed)
+	 24 - test-eds-ics-tzids (Failed)
+	 25 - test-eds-ics-tzids-2 (Failed)
+	 26 - test-eds-ics-tzids-utc (Failed)
+	 27 - test-eds-ics-non-attending-alarms (Failed)
+	 28 - test-eds-ics-repeating-events-with-individual-change (Failed)
+	 29 - test-eds-ics-tasks-without-start (Failed)
+## why: run-eds-ics-test.sh cannot copy tasks.ics
+## the release tarball has the empty directories git does not keep:
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/share/
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/share/evolution/
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/share/evolution/calendar/
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/share/evolution/calendar/system/
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/share/evolution/tasks/
+indicator-datetime-15.10+21.04.20210304/tests/test-eds-ics-config-files/.local/share/evolution/tasks/system/
+## package versions in the chroot are those of the 2026-09-26 build (29/29): evolution-data-server 3.56.2-8, libical3t64 3.0.20-2build1, libglib2.0-0t64 2.88.0-1
