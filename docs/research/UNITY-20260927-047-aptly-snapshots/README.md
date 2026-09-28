@@ -217,6 +217,28 @@ executed:
   and the 5 repo, snapshot and chmod commands are allowed. Phase R is
   ready and waits for May's GO and C's marker.
 
+## First phase R run (2026-09-28 11:20-11:24Z): preliminary, not counted
+
+May's decision is that the run does not count as final. Its results are
+kept as preliminary, with this caveat: **the hook was not active in the
+session and the commands ran without any check.** B's session runs with
+project /home/claude, where no command guard is configured. The results
+themselves are in logs/30 and logs/31 and the evidence JSON
+(`phase_r_run_1`): every R step passed, and /srv/aptly is unchanged.
+
+Next steps:
+
+1. UNITY-20260928-012 connects the guard to all agent sessions. A new,
+   real B session then proves four things without any real `aptly
+   publish`:
+   - a forbidden command without a marker is denied;
+   - the rehearsal command with a valid marker is allowed;
+   - an ordinary command against /srv/aptly is denied;
+   - the log is written.
+2. The whole of R is repeated in the approved order (blocked-commands.md,
+   order corrected), then stop and report.
+3. Phase L only with a separate GO.
+
 ## Commands that the guard blocks (need May's one-time permission)
 
 (Superseded 2026-09-28: see the correction above and `blocked-commands.md`.)

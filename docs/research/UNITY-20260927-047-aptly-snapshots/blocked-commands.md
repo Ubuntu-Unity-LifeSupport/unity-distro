@@ -72,13 +72,24 @@ C publish switch resolute unity-resolute-20260927-047b
 # R8a - rollback by republishing the repo
 C publish drop resolute
 C publish repo -distribution=resolute -architectures=amd64 K -batch unity-resolute
-# R8b - rollback by restoring the R4 backup (mv aside, cp -a, sha256 compare), then
-C publish list
 
-# R9 - drop candidate: only state/public/candidate goes
+# R9 - drop candidate: only state/public/candidate goes (before R8b: the R4
+# backup predates candidate, so after the restore there is none to drop)
 C publish drop resolute candidate
 C publish list
+
+# R8b - rollback by restoring the R4 backup (mv aside, cp -a, sha256 compare), then
+C publish list
 ```
+
+**Order corrected (2026-09-28).** In the first run R9 had to be run before
+R8b, because the R4 backup predates `candidate`. The list above now has that
+order; the commands are unchanged. The first run (logs/31) is preliminary
+and not counted (May): B's session had no command guard. Before a repeat,
+the state from the first run has to be reset. The repeat must start from
+the prepared root (aptly.conf and incoming only), which is the root with
+`state/`, `backup-r4/`, `aside-r8b/` and `backup-r4.sha256` moved aside.
+That reset is part of the repeat and is done only after UNITY-20260928-012.
 
 Every `publish` command above is allowed only while C's marker
 `~/coordinator/rehearsal-authorization.json` is valid (May's separate GO).
