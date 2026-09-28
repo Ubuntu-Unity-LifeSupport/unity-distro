@@ -18,12 +18,16 @@ import tempfile
 import textwrap
 import unittest
 
-SCRIPT = Path(__file__).resolve().parents[1] / "build_sbuild.py"
+# BUILD_SBUILD lets the same tests run against another copy of the script
+# (UNITY-20260928-007 ran them against the pre-fix version to show them fail).
+SCRIPT = Path(os.environ.get("BUILD_SBUILD", Path(__file__).resolve().parents[1] / "build_sbuild.py"))
 
 STUB = r'''#!/usr/bin/env python3
-import hashlib, json, os, subprocess, sys
+import gzip, hashlib, io, json, os, subprocess, sys, tarfile
 from pathlib import Path
 spec = json.loads(os.environ["STUB_SPEC"])
+# Options sbuild would hand to dpkg-source (--dpkg-source-opt=X, repeatable).
+dpkg_source_opts = [a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--dpkg-source-opt=")]
 verbose = "--verbose" in sys.argv[1:]
 src, ver = spec["source"], spec["version"]
 noepoch = ver.split(":", 1)[-1]
@@ -31,16 +35,42 @@ out = Path.cwd().parent
 # dpkg-source runs before sbuild's log is set up and always reaches stdout.
 print(f"dpkg-source: info: building {src} in ../{src}_{noepoch}.dsc", flush=True)
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-source_files = []
-for name in spec.get("source_files", []):
-    path = out / name
-    path.write_bytes(os.urandom(64))
-    source_files.append(path)
+def write_source_file(path, members):
+    # Valid archives, as dpkg-source makes them: a .diff.gz with one '+++'
+    # line per member, a tarball with the members; anything else random.
+    if path.name.endswith(".diff.gz"):
+        text = "".join(f"--- a/{m}\n+++ {m}\t2026-09-28\n@@ -0,0 +1 @@\n+x\n" for m in members)
+        path.write_bytes(gzip.compress(text.encode()))
+    elif ".tar." in path.name:
+        with tarfile.open(path, "w:" + path.name.rsplit(".", 1)[1].replace("xz", "xz")) as t:
+            for m in members:
+                data = b"x\n"; info = tarfile.TarInfo(m); info.size = len(data)
+                t.addfile(info, io.BytesIO(data))
+    else:
+        path.write_bytes(os.urandom(64))
 dsc = out / f"{src}_{noepoch}.dsc"
-dsc_lines = [f"Format: 3.0 (quilt)", f"Source: {src}", f"Version: {ver}", "Checksums-Sha256:"]
-dsc_lines += [f" {sha(p)} {p.stat().st_size} {p.name}" for p in source_files]
-dsc_lines += ["Files:"] + [f" {hashlib.md5(p.read_bytes()).hexdigest()} {p.stat().st_size} {p.name}" for p in source_files]
-dsc.write_text("\n".join(dsc_lines) + "\n")
+source_files = []
+if spec.get("real_source"):
+    # What /usr/bin/sbuild does with a source directory (lines 262-312):
+    # dpkg-source --before-build, -b and --after-build with the options, in it.
+    for step in (["--before-build"], ["-b"], ["--after-build"]):
+        rc = subprocess.run(["dpkg-source"] + step + dpkg_source_opts + ["."], stdout=sys.stdout, stderr=sys.stdout).returncode
+        if rc:
+            print(f"E: Failed to package source directory ({' '.join(step)})", flush=True)
+            sys.exit(1)
+else:
+    for name in spec.get("source_files", []):
+        path = out / name
+        default = [f"{src}-1.0/debian/changelog"]
+        if spec.get("random_source"):
+            path.write_bytes(os.urandom(64))
+        else:
+            write_source_file(path, spec.get("source_members", {}).get(name, default))
+        source_files.append(path)
+    dsc_lines = [f"Format: 3.0 (quilt)", f"Source: {src}", f"Version: {ver}", "Checksums-Sha256:"]
+    dsc_lines += [f" {sha(p)} {p.stat().st_size} {p.name}" for p in source_files]
+    dsc_lines += ["Files:"] + [f" {hashlib.md5(p.read_bytes()).hexdigest()} {p.stat().st_size} {p.name}" for p in source_files]
+    dsc.write_text("\n".join(dsc_lines) + "\n")
 log = [f"sbuild (stub) {src} {ver}"] + [f"log line {i}" for i in range(spec.get("log_lines", 50))]
 files = []
 for name, arch in spec["binaries"]:
@@ -84,9 +114,15 @@ class BuildSbuildTest(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def build(self, source, version, binaries, unrelated=(), source_files=(), source_full=False):
+    def build(self, source, version, binaries, unrelated=(), source_files=(), source_full=False,
+              source_members=None, random_source=False, real=None):
+        """real: None (stub makes the source files) or (format, checkout) to
+        build a tiny real package with the real dpkg-source; format is "1.0",
+        "1.0 native", "3.0 (quilt)" or "3.0 (native)", checkout "clone" or
+        "worktree"."""
         work = self.base / "work"
-        repo = work / source
+        upstream = version.split(":", 1)[-1].split("-", 1)[0]
+        repo = work / (f"{source}-{upstream}" if real else source)
         (repo / "debian").mkdir(parents=True)
         (repo / "debian" / "changelog").write_text(textwrap.dedent(f"""\
             {source} ({version}) resolute; urgency=medium
@@ -95,13 +131,35 @@ class BuildSbuildTest(unittest.TestCase):
 
              -- test <t@example.com>  Sun, 27 Sep 2026 00:00:00 +0000
             """))
-        git = ["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@example.com"]
-        subprocess.run(git + ["init", "-q"], check=True)
-        subprocess.run(git + ["add", "-A"], check=True)
-        subprocess.run(git + ["commit", "-q", "-m", "test"], check=True)
+        if real:
+            fmt, checkout = real
+            (repo / "debian" / "control").write_text(
+                f"Source: {source}\nMaintainer: t <t@example.com>\n\nPackage: {source}\nArchitecture: all\nDescription: t\n")
+            if fmt.startswith("3.0"):
+                (repo / "debian" / "source").mkdir()
+                (repo / "debian" / "source" / "format").write_text(fmt + "\n")
+            (repo / "src").mkdir()
+            (repo / "src" / "a.c").write_text("int main(void) { return 0; }\n")
+            if "native" not in fmt:
+                subprocess.run(["tar", "-czf", str(work / f"{source}_{upstream}.orig.tar.gz"),
+                                "--exclude=debian", "-C", str(work), repo.name], check=True)
+        git = ["git", "-c", "user.name=t", "-c", "user.email=t@example.com"]
+        if real and real[1] == "worktree":
+            main = self.base / "main-checkout"
+            repo.rename(main)
+            subprocess.run(git + ["-C", str(main), "init", "-q"], check=True)
+            subprocess.run(git + ["-C", str(main), "add", "-A"], check=True)
+            subprocess.run(git + ["-C", str(main), "commit", "-q", "-m", "test"], check=True)
+            subprocess.run(git + ["-C", str(main), "worktree", "add", "-q", str(repo)], check=True, capture_output=True)
+        else:
+            subprocess.run(git + ["-C", str(repo), "init", "-q"], check=True)
+            subprocess.run(git + ["-C", str(repo), "add", "-A"], check=True)
+            subprocess.run(git + ["-C", str(repo), "commit", "-q", "-m", "test"], check=True)
         spec = {"source": source, "version": version, "binaries": binaries,
                 "unrelated": list(unrelated), "log_lines": 50,
-                "source_files": list(source_files), "source_full": source_full}
+                "source_files": list(source_files), "source_full": source_full,
+                "source_members": source_members or {}, "random_source": random_source,
+                "real_source": bool(real)}
         env = dict(self.env, STUB_SPEC=json.dumps(spec))
         output = self.base / "out"
         result = subprocess.run([sys.executable, str(SCRIPT), "--task-id", "UNITY-20260927-045",
@@ -209,6 +267,79 @@ class BuildSbuildTest(unittest.TestCase):
         self.assertTrue(log[0].startswith("$ sbuild"), log[:3])
         self.assertIn("log line 49", log)
         self.assertEqual(hashlib.sha256((o / m["log"]["file"]).read_bytes()).hexdigest(), m["log"]["sha256"])
+
+    # UNITY-20260928-007: the source package never carries VCS metadata.
+
+    def source_members(self, work, manifest):
+        """Every path in the non-orig source files the manifest records."""
+        import gzip, tarfile
+        paths = []
+        for art in manifest["artifacts"]:
+            name = art["file"]
+            if art["kind"] != "source_file" or ".orig." in name:
+                continue
+            path = work / name
+            if name.endswith(".diff.gz"):
+                paths += [l[4:].split("\t")[0].strip() for l in gzip.decompress(path.read_bytes()).decode().splitlines()
+                          if l.startswith("+++ ")]
+            else:
+                with tarfile.open(path) as t:
+                    paths += t.getnames()
+        return paths
+
+    def test_real_dpkg_source_no_vcs_metadata(self):
+        """End to end with the real dpkg-source, run the way sbuild runs it: every
+        format from a clone and a worktree builds, and no .git is in the source."""
+        cases = [("1.0", "clone", "1.0-1+unity1"), ("1.0", "worktree", "1.0-1+unity1"),
+                 ("1.0 native", "clone", "1.0+unity1"), ("1.0 native", "worktree", "1.0+unity1"),
+                 ("3.0 (quilt)", "clone", "1.0-1+unity1"), ("3.0 (native)", "clone", "1.0+unity1")]
+        for fmt, checkout, version in cases:
+            with self.subTest(format=fmt, checkout=checkout):
+                self.tearDown(); self.setUp()
+                r, m, w, o = self.build("tiny", version, [["tiny", "all"]], real=(fmt, checkout))
+                self.assertEqual(r.returncode, 0, r.stdout[-2000:] + r.stderr[-2000:])
+                self.assertIsNotNone(m)
+                members = self.source_members(w, m)
+                self.assertTrue(members, "no source file was inspected")
+                self.assertEqual([p for p in members if ".git" in p.split("/")], [])
+
+    def test_vcs_metadata_rejected(self):
+        """A produced source file with VCS metadata: no manifest, exit 2."""
+        cases = {".git file in a .diff.gz": ("demo_1.0.orig.tar.gz", "demo_1.0-1+unity1.diff.gz",
+                                             ["demo-1.0/debian/changelog", "demo-1.0/.git"]),
+                 ".git/ directory in a native tarball": (None, "demo_1.0+unity1.tar.xz",
+                                                        ["demo-1.0/src/a.c", "demo-1.0/.git/HEAD"]),
+                 "nested sub/.git in a debian.tar": ("demo_1.0.orig.tar.gz", "demo_1.0-1+unity1.debian.tar.xz",
+                                                     ["debian/control", "debian/sub/.git"]),
+                 ".svn in a native tarball": (None, "demo_1.0+unity1.tar.gz",
+                                              ["demo-1.0/src/a.c", "demo-1.0/.svn/entries"])}
+        for label, (orig, produced, members) in cases.items():
+            with self.subTest(case=label):
+                self.tearDown(); self.setUp()
+                version = "1.0-1+unity1" if orig else "1.0+unity1"
+                files = ([orig] if orig else []) + [produced]
+                r, m, w, o = self.build("demo", version, [["demo-bin", "amd64"]],
+                                        source_files=files, source_members={produced: members})
+                self.assertEqual(r.returncode, 2, r.stderr)
+                self.assertIsNone(m)
+                self.assertIn("version-control metadata", r.stderr)
+                self.assertIn(members[-1], r.stderr)
+
+    def test_orig_tarball_not_inspected(self):
+        """Upstream's orig tarball may hold .git/.gitignore: it is not ours, it passes."""
+        r, m, w, o = self.build("demo", "1.0-1+unity1", [["demo-bin", "amd64"]],
+                                source_files=["demo_1.0.orig.tar.gz", "demo_1.0-1+unity1.diff.gz"],
+                                source_members={"demo_1.0.orig.tar.gz": ["demo-1.0/.gitignore", "demo-1.0/.git/config"]})
+        self.check_complete(r, m, w, o, "demo", "1.0-1+unity1")
+
+    def test_unreadable_source_file_fails_closed(self):
+        """A produced source file that cannot be read is not waved through."""
+        r, m, w, o = self.build("demo", "1.0-1+unity1", [["demo-bin", "amd64"]],
+                                source_files=["demo_1.0.orig.tar.gz", "demo_1.0-1+unity1.diff.gz"],
+                                random_source=True)
+        self.assertEqual(r.returncode, 2, r.stderr)
+        self.assertIsNone(m)
+        self.assertIn("cannot inspect", r.stderr)
 
 
 if __name__ == "__main__":
