@@ -1,0 +1,18 @@
+=== stop-cb run 1
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2265
+STOP manager=0x5688fedd87a0
+session manager PropertiesChanged signals: 2
+criticals since 23:56:30: 0
+u-s-d pid now 2265
+=== stop-cb run 2
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2265
+STOP manager=0x5688fedd87a0
+session manager PropertiesChanged signals: 2
+criticals since 23:56:59: 0
+u-s-d pid now 2265
+=== stop-cb run 3
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2265
+STOP manager=0x5688fedd87a0
+session manager PropertiesChanged signals: 2
+criticals since 23:57:28: 0
+u-s-d pid now 2265
