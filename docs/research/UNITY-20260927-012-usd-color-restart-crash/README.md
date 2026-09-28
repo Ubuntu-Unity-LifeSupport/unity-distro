@@ -125,6 +125,26 @@ called. The screensaver path could not be exercised: compiz owns
 either build (`runs/11b`: a second run in one +unity5 process started with
 the handlers already doubled).
 
+## Release build +unity7
+
+`15.04.1+21.10.20220802-0ubuntu7+unity7`: the fix (`7c5f234`, cherry-picked
+from `2ac4128`) and its changelog (`b570a22`) on top of
+`a/UNITY-20260927-052` (`f674b6b`, u-s-d +unity6 - the idle-monitor fix,
+built and reviewed, waiting for the aptly freeze to lift), branch
+`a/UNITY-20260927-012` on Ubuntu-Unity-LifeSupport/unity-settings-daemon
+(pushed from a GitHub clone; the push reported `remote rejected (failure)`
+but the remote ref is `b570a22` - `git fetch`, `ls-remote`, `push --dry-run`
+"Everything up-to-date"). Built with `scripts/build_sbuild.py`, exit 0
+(`build/UNITY-20260927-012-unity-settings-daemon-build-manifest.json`);
+pre-build ordering check `version-prebuild.json` (newer than resolute's
+0ubuntu6; `UNKNOWN` by design before a build). So +unity7 carries both
+fixes and publishes after, or instead of, 052's +unity6.
+
+On target (+unity7 with its dbgsym, perturb drop-in): power regression
+2 / 0 / 2 callbacks, not doubled (`runs/13`); inhibitor reproducer: no
+callback after stop, no crash (`runs/14`); session manager vanishing: no
+callback, no crash (`runs/15`).
+
 ## Evidence card
 
 ```yaml
