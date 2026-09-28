@@ -95,6 +95,23 @@ data); `--actor` is self-declared, as in taskctl; `open_alerts` reads without
 the lock (a line being written shows at the next run); a valid but empty
 Launchpad answer counts as success.
 
+## Verifier, round 2: PASS
+
+verification_result PASS, review_status INDEPENDENTLY_REPRODUCED, at 8ae4057:
+suites 11 + 105 OK; its own dash scenario reproduced all three fixes (a
+same-day second streak gets a new key; with alerts.py missing every run
+fails and counts, the uploads stay unseen and are raised once alerts.py is
+back; a damaged counter restarts at 1); two parallel runs now log each
+upload once. Remaining notes: if alerts.py itself is missing, the streak
+alert cannot be raised either - what stays visible is the failed systemd
+unit and the "ALERT NOT RAISED" lines in AGENTS-LOG; those lines repeat on
+every run (about 8 a day) until raising works again.
+
+## Outcome
+
+DONE. The change takes effect for the real timer once this branch is merged
+and `~/unity-distro` is at the merge (the unit runs `watch.sh` from there).
+
 ## Validation (runs/01-validation.txt, round 1; runs/02-validation.txt after the fixes)
 
 - `python3 -m unittest scripts/tests/test_alerts.py`: 9 OK, no network
