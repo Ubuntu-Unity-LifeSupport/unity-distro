@@ -35,7 +35,7 @@ shared session-manager proxy outlived `stop()`. Agent A, target
     crashes; power's `engine_session_properties_changed_cb` touches
     `manager` only when `changed` holds `SessionIsActive` or
     `InhibitedActions` (gsd-power-manager.c:2933-2959) and does nothing.
-    This is why the 2026-09-24 crash was in libcolor.
+    INFERENCE: this is why the 2026-09-24 crash was in libcolor.
   - an **`InhibitedActions`** change (an inhibitor taken or dropped, e.g. by
     an application exiting at logout) or a **`SessionIsActive`** change after
     Stop crashes power's handler; a screensaver `ActiveChanged` would reach
@@ -77,8 +77,8 @@ main-loop iteration; there is no QueryEndSession/EndSession sequence.
 | Build | Inhibitor trigger | Session manager vanishes |
 |---|---|---|
 | +unity5~nocolor1 (011's test build, color fixes reverted) | SIGSEGV in power: `idle_is_session_inhibited` <- `idle_configure` (:2495) (`runs/01`) | - |
-| +unity5 (published) | SIGSEGV in power, same frame; apport report `Date: 00:22:24` (`runs/02`) | power's handler **runs on the freed manager** and returns (empty `changed`); color's is not called; no crash (`runs/05`) |
-| +unity5+test2 (power fix, color fixes reverted) | SIGSEGV in color: `gcm_session_active_changed_cb`, `priv=0xa5a5a5a5a5a5a5a5` (`runs/06`) | **SIGSEGV in color**, same frame, apport report - the 2026-09-24 crash (`runs/07`) |
+| +unity5 (published) | SIGSEGV in power, same frame; apport report `Date: 00:22:24` (`runs/02`) | power's handler **runs on the freed manager** and returns (empty `changed`); color's is not called; no SIGSEGV until gdb stopped on a SIGCONT of the session teardown (an earlier version of the tool, before `handle SIGCONT nostop`; the backtrace in the file is that pango thread's), no crash report afterwards (`runs/05`) |
+| +unity5+test2 (power fix, color fixes reverted) | SIGSEGV in color: `gcm_session_active_changed_cb`, `priv=0xa5a5a5a5a5a5a5a5` (`runs/06`) | **SIGSEGV in color**, same frame, one apport report (`/var/crash` was emptied right before this run, so the count is of new reports; the report itself was deleted later, its `Date:` not kept) - the 2026-09-24 crash (`runs/07`) |
 | +unity5+test1 (power fix) | no power or color callback after stop, no crash (`runs/08`) | no callback, no crash (`runs/09`) |
 
 So: the 2026-09-24 libcolor crash is the color handler outliving the
@@ -175,7 +175,7 @@ code_risks:
     disconnect_by_data matches its closures (data = manager); power connects
     only these two handlers on these proxies and no other plugin passes the
     power manager as data
-  callbacks_cancellation: checked - after stop() no power handler remains on the two proxies (runs/10); a second stop is a no-op
+  callbacks_cancellation: checked - after stop() no power handler remains on the session proxy (measured, runs/10) nor on the screensaver proxy (code read only: the screensaver path could not be triggered); a second stop is a no-op
   threading_reentrancy: main-loop only
   ABI_API_file_list: not_applicable - static functions, no API change
 unknowns:
@@ -195,5 +195,5 @@ follow_ups_proposed:
     trigger; not reproduced"
 architectural_task: false
 design_challenger_required: true
-design_review_result: PENDING   # review 1: REVISE (addressed here); review 2 pending
+design_review_result: APPROVE   # review 1: REVISE, review 2: APPROVE with four card edits (applied)
 ```
