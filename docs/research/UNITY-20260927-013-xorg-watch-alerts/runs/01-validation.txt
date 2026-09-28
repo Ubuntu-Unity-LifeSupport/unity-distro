@@ -1,0 +1,32 @@
+# UNITY-20260927-013 validation, 2026-09-28 16:57Z, builder
+## python3 -m unittest -v scripts/tests/test_alerts.py
+test_message_is_kept_on_one_line (scripts.tests.test_alerts.AlertsTest.test_message_is_kept_on_one_line) ... ok
+test_new_upload_raises_one_alert_and_one_log_line (scripts.tests.test_alerts.AlertsTest.test_new_upload_raises_one_alert_and_one_log_line) ... ok
+test_nothing_above_the_base_raises_nothing (scripts.tests.test_alerts.AlertsTest.test_nothing_above_the_base_raises_nothing) ... ok
+test_only_c_or_may_acknowledge_and_only_known_keys (scripts.tests.test_alerts.AlertsTest.test_only_c_or_may_acknowledge_and_only_known_keys) ... ok
+test_raise_is_idempotent_and_ack_closes (scripts.tests.test_alerts.AlertsTest.test_raise_is_idempotent_and_ack_closes) ... ok
+test_repeated_failures_raise_one_alert_and_success_resets (scripts.tests.test_alerts.AlertsTest.test_repeated_failures_raise_one_alert_and_success_resets) ... ok
+test_taskctl_ignores_an_unreadable_alert_file (scripts.tests.test_alerts.AlertsTest.test_taskctl_ignores_an_unreadable_alert_file) ... ok
+test_taskctl_shows_open_alerts_until_acknowledged (scripts.tests.test_alerts.AlertsTest.test_taskctl_shows_open_alerts_until_acknowledged) ... ok
+test_upload_is_retried_when_the_alert_cannot_be_written (scripts.tests.test_alerts.AlertsTest.test_upload_is_retried_when_the_alert_cannot_be_written) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.463s
+
+OK
+## red: TASKCTL=origin/main taskctl.py (81e6f6e)
+FAIL: test_taskctl_shows_open_alerts_until_acknowledged (scripts.tests.test_alerts.AlertsTest.test_taskctl_shows_open_alerts_until_acknowledged)
+AssertionError: '1 unacknowledged alert' not found in ''
+FAIL: test_new_upload_raises_one_alert_and_one_log_line (scripts.tests.test_alerts.AlertsTest.test_new_upload_raises_one_alert_and_one_log_line)
+AssertionError: 'xorg-server:' not found in ''
+Ran 2 tests in 0.779s
+FAILED (failures=2)
+## full suite
+Ran 103 tests in 51.527s
+
+OK
+## live, temporary files, real aptly + Launchpad
+real base: rc=0 alerts=0 log=0
+fake base 1ubuntu1.2: rc=0
+2026-09-28 16:58Z RAISE xorg-server:2:21.1.22-1ubuntu1.3@Proposed xorg-watch: 2026-09-28 16:58Z XORG-WATCH new upload 2:21.1.22-1ubuntu1.3 in resolute-proposed (ours 2:21.1.22-1ubuntu1.2+unity?): in -proposed since 2026-09-25 19:22Z; SRU minimum 7 days -> earliest -updates 2026-10-02 (4d 2h left); rebase needed
+2026-09-28 16:58Z XORG-WATCH new upload 2:21.1.22-1ubuntu1.3 in resolute-proposed (ours 2:21.1.22-1ubuntu1.2+unity?): in -proposed since 2026-09-25 19:22Z; SRU minimum 7 days -> earliest -updates 2026-10-02 (4d 2h left); rebase needed

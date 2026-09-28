@@ -401,6 +401,26 @@ def require_evidence(target, data, task_id, kind=None, state=None):
             raise ValueError("READY_TO_PUBLISH requires verification_result=PASS or documented NOT_APPLICABLE")
 
 
+def show_open_alerts():
+    """Print alerts nobody has acknowledged yet (scripts/alerts.py) to stderr.
+
+    Automation raises alerts into ALERTS.md next to the board; they stay on
+    every taskctl run until C or May acknowledges them. Read-only and
+    best-effort: a missing or unreadable file never blocks a board operation."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import alerts
+        path = Path(os.environ.get("ALERTS_FILE", str(board_path().parent / "ALERTS.md"))).expanduser()
+        pending = alerts.open_alerts(path)
+    except Exception:
+        return
+    if pending:
+        print(f"taskctl: {len(pending)} unacknowledged alert(s) in {path}"
+              " - C or May: act on it and run scripts/alerts.py ack --actor C|May --key KEY", file=sys.stderr)
+        for line in pending:
+            print(f"  ALERT {line}", file=sys.stderr)
+
+
 def main():
     parser = argparse.ArgumentParser(prog="taskctl")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -412,6 +432,7 @@ def main():
     p = sub.add_parser("inspect"); p.add_argument("task_id")
     p = sub.add_parser("release"); p.add_argument("task_id"); p.add_argument("--actor", required=True); p.add_argument("--confirmed-idle", action="store_true")
     args = parser.parse_args()
+    show_open_alerts()
     path = board_path()
     path.parent.mkdir(parents=True, exist_ok=True)
     lockpath = path.with_suffix(path.suffix + ".lock")
