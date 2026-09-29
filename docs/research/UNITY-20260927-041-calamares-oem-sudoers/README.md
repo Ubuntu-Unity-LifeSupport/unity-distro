@@ -187,6 +187,18 @@ Results:
     unchanged. The difference is only the build ID, the package-version
     note and a build-path string. The target check runs this binary through
     cold boots again.
+- **The build environment changed** (found by the Verifier; corrects the
+  claim that basicwallpaper is the only binary that differs).
+  - Since main's UNITY-20260929-013 changes to `build_sbuild.py`, the
+    chroot also takes resolute-updates and resolute-security. The +unity2
+    build-r2 took the release pocket only.
+  - `-common`'s statically linked `snap-seed-glue-emb` was therefore built
+    against a newer snapd: `Static-Built-Using: snapd (= 2.74.1+ubuntu26.04.4)`
+    became `(= 2.76.3+ubuntu26.04)`, and the binary grew from 12035328 to
+    12254432 bytes.
+  - The file list is unchanged. The snap seeding step of the installer runs
+    this binary, so the target check covers it: the OEM install's Calamares
+    log must complete that step.
 - **Regression (mode in the shipped tarball)**: 0644 in the archive
   1:26.04.12 (logs/01) and in +unity2; 0440 in +unity3 (logs/09).
 - **On the real path**, logs/07 covers the preliminary build. The published
