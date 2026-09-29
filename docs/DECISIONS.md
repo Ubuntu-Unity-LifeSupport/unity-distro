@@ -1818,3 +1818,24 @@ it. Nothing else was sent.
 - Not in nux's thread API. `NThread` detaches in its destructor and cannot be joined and then deleted; that is a latent weakness, but no session code needs it. Retrying builds was rejected.
 
 Tests fail before and pass after in the package build; three sbuilds in a row are clean. Independent verification: PASS.
+
+
+## 2026-09-29 - UNITY-20260927-029: the empty LibreOffice HUD is fixed in hud's window-stack-bridge (agent B)
+
+**Context.** Legacy B-L45: the HUD was empty in about a third to half of LibreOffice Writer starts, in the archive hud as in ours. Record: `research/UNITY-20260927-029-hud-libreoffice/`.
+
+**Measured.**
+- bamf matches Writer's window to a temporary application first, then re-matches it, and the temporary application closes. That is by design (bamf commit dd81623, "mostly the case of LibreOffice").
+- window-stack-bridge asks the parent's DesktopFile() in between. On an error it dropped the window for good.
+- Reproduced live on target2: 4 of 20 starts, and 3 of 12. Reproduced deterministically with a stand-in bamf on a private bus.
+
+**Decision.**
+- Fix it in hud's window-stack-bridge. Keep the window, with its id as application id, as the code already does for an application without a desktop file.
+- Not in bamf: Parents() and DesktopFile() are separate calls, so the race stays whatever bamf's order.
+- Not in LibreOffice.
+
+Design Challenger APPROVE after two rounds. Tests fail before and pass after. target2 16/20 -> 20/20. Verifier PASS_WITH_NOTES.
+
+Left for follow-ups:
+- following bamf's re-match: for LibreOffice the application id is now the window number most of the time, so the HUD shows no icon;
+- a rarer second mechanism (the window is known, but the HUD is empty) with a dbusmenu/bamf-restart lead.
