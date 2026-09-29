@@ -1839,3 +1839,17 @@ Design Challenger APPROVE after two rounds. Tests fail before and pass after. ta
 Left for follow-ups:
 - following bamf's re-match: for LibreOffice the application id is now the window number most of the time, so the HUD shows no icon;
 - a rarer second mechanism (the window is known, but the HUD is empty) with a dbusmenu/bamf-restart lead.
+
+
+## 2026-09-29 - UNITY-20260927-028: hud builds with C++14 again, C++17 only for its tests (agent B)
+
+**Context.** Legacy B-L24: hud's +unity1 set `-std=c++17` for the whole project, though only resolute's googletest needed C++17. Record: `research/UNITY-20260927-028-hud-cxx17-scope/`.
+
+**Decision.** Restrict C++17 to `tests/` rather than prove equivalence. With C++17 the machine code of every C++ binary differs from C++14's, so "the same" would need behaviour tests of all of it. Returning to upstream's level for everything shipped is the narrower change (section 4).
+
+**Measured.**
+- The sbuild log: 78 hud units now compile with C++14, 47 test units with C++17.
+- Against +unity2: identical file lists in all 14 packages, and identical dynamic symbols including versions. libhud-client's C++ class is pimpl, with no ABI tags.
+- Tests 6/6. On target2: LibreOffice's window kept 10/10, HUD answered 9/10; the miss is a first-start case tracked in UNITY-20260929-002.
+
+hud +unity3 contains +unity2 (UNITY-20260927-029). Verifier: PASS.

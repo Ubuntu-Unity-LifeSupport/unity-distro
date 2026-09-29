@@ -107,3 +107,10 @@ hud 14.10+17.10.20170619-0ubuntu6+unity2, 2026-09-29 (UNITY-20260927-029; the hu
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
 | hud | window-stack-bridge: keep a window whose application is gone (+unity2, af43552, in the tree; format 1.0) | bamf re-matches LibreOffice's window from a temporary application that closes; a DesktopFile() error on it dropped the window for good and the HUD was empty for LibreOffice in about a quarter of Writer starts. The window now gets its id as application id, as for an application without a desktop file. Three unit tests in TestBamfWindowStack (fail before / pass after); target2: 16/20 -> 20/20. | lp:hud (inactive); symptom LP: #1771173 | [`research/UNITY-20260927-029-hud-libreoffice/`](research/UNITY-20260927-029-hud-libreoffice/) | local |
+
+
+hud 14.10+17.10.20170619-0ubuntu6+unity3, 2026-09-29 (UNITY-20260927-028; the hud rows above are left as written). Source commit 2f2fa89 (B's local git tree packages/hud, on top of +unity2 0e99dca), non-native 1.0. Verification: independent Verifier PASS (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| hud | build flags: hud with C++14, only tests/ with C++17 (+unity3, 31fb59c, in the tree; format 1.0) | +unity1 had raised the whole project to C++17 while only resolute's googletest needed it. hud itself is compiled with C++14 again, as 0ubuntu6 was. File lists and every dynamic symbol are identical to +unity2; tests 6/6. | none (our build change) | [`research/UNITY-20260927-028-hud-cxx17-scope/`](research/UNITY-20260927-028-hud-cxx17-scope/) | local |
