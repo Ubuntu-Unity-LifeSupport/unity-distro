@@ -72,3 +72,18 @@ lrwxrwxrwx 1 claude claude 59 Sep 29 22:38 /home/claude/.local/bin/gpg -> /home/
 gpg (GnuPG) 2.4.8
 == deviation 5 at 2026-09-29T22:39:22Z: publish snapshot rhA aborted at 'unable to initialize GPG signer' - the stand-in found no config at its default path ~/.config/aptly-signer/standin.json (the aptly command can carry no environment prefix), and aptly's initialisation calls gpg with arguments other than a bare --version (not yet traced). Nothing was published (aptly stops before writing). Symlink removed; the local signer (127.0.0.1) stays up with A's approval.
 /usr/bin/gpg
+== window-only stand-in config at the default path ~/.config/aptly-signer/standin.json (to be deleted at the end); step 0, sixth time
+2026-09-29T22:42:44Z
+{
+ "url": "http://127.0.0.1:40263",
+ "timeout": 60,
+ "store": "/var/tmp/aptly-rehearsal/021/switch",
+ "trace": "/var/tmp/aptly-rehearsal/021/standin-trace.jsonl",
+ "key_id": "F4519D46D8548C4632A632B53527F3A17DEA9C06"
+}lrwxrwxrwx 1 claude claude 59 Sep 29 22:42 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/home/claude/.local/bin/gpg
+gpg (GnuPG) 2.4.8
+pub   F4519D46D8548C4632A632B53527F3A17DEA9C06 (held by the aptly-signer; gpg stand-in)
+== deviation 6 at 2026-09-29T22:43:43Z: /propose of B refused - signer_core.entries() keys entries by (index, package, arch) and refuses 'signer-demo all is listed twice'; a repository legitimately lists several versions of one package (the live one has unity +unity1..+unity12). Code bug. Symlink removed; the local signer stays up (127.0.0.1).
+/usr/bin/gpg
+9

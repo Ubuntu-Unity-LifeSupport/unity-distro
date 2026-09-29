@@ -170,8 +170,10 @@ def parse_stanzas(text, path):
 
 
 def entries(content):
-    """{(index, package, arch): fields} of every Packages/Sources in the content,
-    each validated; duplicates refused."""
+    """{(index, package, version, arch): fields} of every Packages/Sources in the
+    content, each validated. A repository lists several versions of a package
+    (rehearsal deviation 6); an entry is a duplicate only when index, package,
+    version and architecture all match."""
     result = {}
     for path, data in sorted(content.items()):
         if path.endswith("/Release"):
@@ -190,9 +192,9 @@ def entries(content):
                 if not SHA256_RE.fullmatch(fields.get("SHA256", "")) or not fields.get("Size", "").isdigit() \
                         or not FILENAME_RE.fullmatch(fields.get("Filename", "")) or ".." in fields["Filename"].split("/"):
                     raise Refused(f"{path}: entry {name} has an invalid SHA256, Size or Filename")
-            key = (path, name, arch)
+            key = (path, name, version, arch)
             if key in result:
-                raise Refused(f"{path}: {name} {arch} is listed twice")
+                raise Refused(f"{path}: {name} {version} {arch} is listed twice")
             result[key] = fields
     return result
 
@@ -206,9 +208,12 @@ def diff(base_entries, new_entries):
         old, new = base_entries.get(key), new_entries.get(key)
         if old == new:
             continue
-        index, name, arch = key
-        row = {"index": index, "package": name, "arch": arch,
+        index, name, version, arch = key
+        row = {"index": index, "package": name, "version": version, "arch": arch,
                "change": "added" if old is None else "removed" if new is None else "changed"}
+        others = sorted(k[2] for k in base_entries if k[:2] == (index, name) and k[3] == arch and k[2] != version)
+        if others:
+            row["other_versions_before"] = others
         for side, fields in (("old", old), ("new", new)):
             if fields:
                 row[side] = {"version": fields["Version"], "sha256": fields.get("SHA256"), "size": fields.get("Size")}
@@ -324,7 +329,7 @@ def propose(state, template, files, task_id, deb_checker, now, max_pending=8):
         raise Refused("the proposal is the content that is already live")
     for row in changes:
         if row["change"] != "removed" and row["index"].endswith("Packages"):
-            row["maintainer_scripts"] = deb_checker(found[(row["index"], row["package"], row["arch"])])
+            row["maintainer_scripts"] = deb_checker(found[(row["index"], row["package"], row["version"], row["arch"])])
     pid = sha(canonical([set_id(content), format_date(now)]).encode())[:16]
     state["proposals"][pid] = {
         "set_id": set_id(content), "base": (state.get("last_live") or {}).get("set_id"),
@@ -348,6 +353,8 @@ def console_lines(state, pid):
             line += f"  new {row['new']['version']} sha256 {row['new']['sha256']} size {row['new']['size']}"
         if "maintainer_scripts" in row:
             line += f"  [{row['maintainer_scripts']}]"
+        if row.get("other_versions_before"):
+            line += f"  (other versions before: {', '.join(row['other_versions_before'])})"
         out.append(line)
         for f in row.get("other_fields", []):
             out.append(f"         field {f['field']} changed ({f['old']} -> {f['new']})")

@@ -238,6 +238,30 @@ class SignerCoreTest(unittest.TestCase):
                 with self.assertRaises(core.Refused):
                     core.propose(core.new_state(), TEMPLATE, files_for(text), None, deb_ok, T0)
 
+    def test_several_versions_of_one_package(self):
+        """Rehearsal deviation 6: a repository lists several versions of a package."""
+        v2 = PKGS.split("\n\n")[0].replace("1.0+unity1", "1.0+unity2").replace("a" * 64, "e" * 64)
+        text = PKGS + "\n" + v2 + "\n"
+        found = core.entries(core.check_index_set(TEMPLATE, files_for(text)))
+        self.assertEqual(len([k for k in found if k[1] == "demo"]), 2)
+        self.approved()
+        self.go_live(self.sign())
+        pid = core.propose(self.state, TEMPLATE, files_for(text), None, deb_ok, T0 + timedelta(minutes=5))
+        rows = self.state["proposals"][pid]["diff"]
+        self.assertEqual([(r["change"], r["package"], r["version"]) for r in rows], [("added", "demo", "1.0+unity2")])
+        self.assertEqual(rows[0]["other_versions_before"], ["1.0+unity1"])
+        self.assertIn("other versions before: 1.0+unity1", "\n".join(core.console_lines(self.state, pid)))
+        with self.assertRaises(core.Refused):  # the same version twice is still a duplicate
+            core.entries(core.check_index_set(TEMPLATE, files_for(PKGS + "\n" + PKGS.split("\n\n")[0] + "\n")))
+
+    def test_live_packages_fragment_with_nine_unity_versions(self):
+        """The 9 unity entries of the live Packages (2026-09-29): all accepted."""
+        text = (ROOT / "scripts" / "tests" / "fixtures" / "live-packages-unity.txt").read_text()
+        found = core.entries(core.check_index_set(TEMPLATE, files_for(text)))
+        versions = sorted(k[2] for k in found if k[1] == "unity")
+        self.assertEqual(len(versions), 9)
+        self.assertEqual(len(set(versions)), 9)
+
     def test_decompression_limit(self):
         saved = core.MAX_INDEX
         core.MAX_INDEX = 100
