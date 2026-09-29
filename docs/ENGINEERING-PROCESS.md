@@ -521,11 +521,12 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
 - **Refresh.** Create a new tarball when the current snapshot is more than
   7 days old, or when a task needs a newer archive state.
 - **Test build and gated build.** The build tested on target and the gated
-  build of one task use the same tarball. `build_sbuild.py --tested-with
-  <tested manifest>` refuses any other. If they differ, compare the
-  `.buildinfo` Installed-Build-Depends and repeat the target test on any
-  difference. A gated build on the tested tarball may use
-  `--allow-old-chroot`.
+  build of one task use the same tarball: the gated build passes
+  `build_sbuild.py --tested-with <tested manifest>`, which refuses any other
+  tarball. Only when the tested build has no usable manifest (one built
+  before this policy) compare the `.buildinfo` Installed-Build-Depends
+  instead, and repeat the target test on any difference. A gated build on
+  the tested tarball may use `--allow-old-chroot`.
 - **Retention.** Keep every tarball named by a committed manifest; others
   may be deleted by hand. `~/.cache/sbuild/resolute-amd64.tar.zst` (release
   pocket only, 2026-09-22) is the record of the builds up to 2026-09-29.

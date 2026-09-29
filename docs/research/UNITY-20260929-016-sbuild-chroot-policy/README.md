@@ -386,3 +386,13 @@ Real runs (`tools/run-real.sh`, `runs/run-real.log`, `runs/run-real-s4.txt`):
   `20260929T201245Z`.
 - **S4** the old `~/.cache/sbuild/resolute-amd64.tar.zst`: refused before
   sbuild (not a snapshot tarball); exit 2, output empty.
+
+## 9. Design review 3: APPROVE
+
+Round 3 on the design as implemented (section 8): APPROVE. Notes: the D5
+records go to base via `append_record.py` (the on-demand entry is in main
+`21b98ed`; the policy entry follows); `--tested-with` is optional and no gate
+requires it (follow-up proposed); the ENGINEERING-PROCESS wording on the
+`.buildinfo` fallback was clarified; `.sbuildrc` is UNITY-20260929-017.
+The implementation and real runs came after review 2 (REVISE) and before
+this APPROVE; the task was still in INVESTIGATING then.
