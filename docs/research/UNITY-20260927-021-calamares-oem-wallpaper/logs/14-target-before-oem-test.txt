@@ -1,0 +1,29 @@
+# UNITY-20260927-021 target step 1a: oem-test before any change (2026-09-29 16:26Z)
+# oem-test restored to OEM-ready, booted from ubuntu-unity-26.04-desktop-amd64.iso (live, archive),
+# installed disk /dev/sda1 (ext4, LABEL ubuntu_unity_260) mounted read-only-in-practice at /mnt/t, nothing written.
+
+## installed disk (OEM-ready)
+os-release: Ubuntu 26.04 LTS
+dpkg-query -W 'calamares*':
+  calamares 3.3.14-0ubuntu25 ii
+  calamares-data 3.3.14-0ubuntu25 ii
+  (no calamares-settings-* package installed)
+apt-cache policy calamares-settings-ubuntu-unity: Installed: (none), Candidate: 1:26.04.12 (de.archive.ubuntu.com resolute/universe)
+sources: only /etc/apt/sources.list.d/ubuntu.sources (de.archive.ubuntu.com resolute, -updates, -backports; security.ubuntu.com resolute-security)
+/usr/bin/basicwallpaper: 1234152 bytes, sha256 cdd40699dae079fb730a287289c9d3f78bfd8d663b7a9a1181f125699feb0ba1
+  (= archive build, logs/01); dpkg -S: no package owns it
+/usr/share/xsessions/ubuntu-unity-oem-environment.desktop: present, unowned
+
+## live session (installer medium)
+calamares-settings-ubuntu-unity 1:26.04.12, calamares-settings-ubuntu-common 1:26.04.12 (archive)
+/etc/calamares/oemconfig.tar.gz sha256 6baf2926c0b15beefc025e7a4a8fab7754ce29b101e58ffef57d9b9edaaa2eff
+  contains ubuntuunity/oemconfig/usr/bin/basicwallpaper sha256 cdd40699...
+/etc/calamares/modules/shellprocess_oemprep.conf (dontChroot) runs /usr/libexec/calamares-oemprep.sh ${ROOT}:
+  tar xvzf /etc/calamares/oemconfig.tar.gz -C "$1" --strip-components=2
+
+## consequence
+The OEM environment's basicwallpaper is copied into the target at OEM install time from the
+installer medium's oemconfig.tar.gz. It is not managed by dpkg on the installed system, and the
+installed system has no calamares-settings package. An apt upgrade inside the installed OEM-ready
+disk cannot replace /usr/bin/basicwallpaper; the +unity2 fix reaches an OEM machine only when the
+OEM install runs from a medium that carries calamares-settings-ubuntu-unity 1:26.04.12+unity2.
