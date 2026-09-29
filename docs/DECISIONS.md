@@ -1878,3 +1878,25 @@ Design Challenger: REVISE, REVISE, APPROVE (design A''). +unity4 is built with t
 - A partial multi-user union was not seen.
 - A `current` of 4294967295 already stored becomes the last index once, as in stock.
 - With no accounts-daemon, nothing is written.
+
+
+## 2026-09-29 - UNITY-20260928-019: lightdm's session-child finishes its cleanup when SIGTERM comes after the session ended (agent A)
+
+**Context.** Follow-up of UNITY-20260927-004. A greeter is stopped twice: logind's `TerminateSession` stops its scope, then the daemon `kill()`s session-child 2-19 ms later. `signal_cb()` leaves the process whenever `child_pid` is 0, and `child_pid` is 0 again once `waitpid()` has reaped the greeter - during the cleanup (X authority removal, `pam_close_session`, `pam_setcred`, `pam_end`). Record: `research/UNITY-20260928-019-lightdm-greeter-pam-close/`.
+
+**Measured.**
+- The cleanup was cut in 16 of 21 traced greeter stops (stock 10/10, +unity1 6/11), and in 2/2 with a SIGTERM forced right after `waitpid()`.
+- When it was cut before the X authority removal finished, the greeter's cookie stayed in `/var/lib/lightdm/.Xauthority` and opened the user's display (same X server) as uid lightdm.
+- Nothing else lasting: logind already stops the session; the greeter's PAM modules only log on close.
+- User sessions stopped by the daemon were not affected (6/6).
+
+**Decision.** Fix it in session-child's handler, where the ambiguous `child_pid == 0` is read: a flag set right after `waitpid()` (before `child_pid = 0`, which becomes volatile) makes a later SIGTERM let the cleanup finish, and the first such SIGTERM arms `alarm(10)` so that a cleanup that blocks still ends. Before the session starts the handler still `_exit()`s (+unity1).
+
+**Rejected.**
+- Removing the daemon's second `kill()` (the handler's ambiguity stays; it changes the daemon for every session type).
+- `SIG_IGN` or blocking SIGTERM after `waitpid()` (no place for a watchdog; the disposition or mask survives `execve()` into PAM helpers).
+- The flag without a watchdog: it is -004's rejected F3 - a blocking cleanup would hold the next session until systemd's 90 s SIGKILL in every double stop, and a single late SIGTERM without a logind scope stop would never end.
+
+Design Challenger: REVISE, APPROVE. lightdm +unity2 built; on target 13/13 natural greeter stops complete, forced SIGTERM after `waitpid()` / in pam_systemd's close / at `pam_end` all complete, a SIGTERM at `fork()` still `_exit()`s, a 60 s blocked close ends by SIGALRM after 10.0 s, user sessions 6/6. Verifier: FAIL (a test signalled before the handler was installed), then PASS (REVIEWED) with no code change.
+
+**Limits, stated.** When both SIGTERMs are passed on before reaping, no alarm is armed and a blocked cleanup still waits for the 90 s SIGKILL, as before (follow-up proposed). EINTR inside PAM modules is covered only incidentally.
