@@ -177,30 +177,40 @@ def fetch(base, rel, limit, timeout):
 
 
 def bounded_decompress(name, body, limit):
-    """The control archive decompressed in memory, never beyond limit bytes."""
+    """The control archive decompressed in memory, never beyond limit bytes,
+    as exactly one complete stream with nothing after it. dpkg reads every
+    gzip member, so a second member could carry a postinst that a
+    one-member reader never sees (Verifier round 1): anything but one stream
+    is refused."""
     try:
         if name == "control.tar":
-            out = body
-        elif name == "control.tar.gz":
+            return body if len(body) <= limit else _too_big()
+        if name == "control.tar.gz":
             d = zlib.decompressobj(16 + zlib.MAX_WBITS)
-            out = d.decompress(body, limit + 1)
         elif name == "control.tar.xz":
-            out = lzma.LZMADecompressor().decompress(body, limit + 1)
+            d = lzma.LZMADecompressor()
         elif name == "control.tar.zst":
             if zstd is None:
                 raise core.Refused("no zstd support")
-            out = zstd.ZstdDecompressor().decompress(body, limit + 1)
+            d = zstd.ZstdDecompressor()
         else:
             raise core.Refused(f"unsupported control archive {core.printable(name)}")
+        out = d.decompress(body, limit + 1)
+        if len(out) > limit:
+            _too_big()
+        if not d.eof or d.unused_data or (hasattr(d, "unconsumed_tail") and d.unconsumed_tail):
+            raise core.Refused(f"{core.printable(name)} is not exactly one complete compressed stream")
     except (zlib.error, lzma.LZMAError, ValueError, EOFError) as exc:
         raise core.Refused(f"malformed {core.printable(name)}: {exc}")
     except core.Refused:
         raise
     except Exception as exc:  # zstd raises its own error type
         raise core.Refused(f"malformed {core.printable(name)}: {exc}")
-    if len(out) > limit:
-        raise core.Refused("a control archive decompresses beyond the limit")
     return out
+
+
+def _too_big():
+    raise core.Refused("a control archive decompresses beyond the limit")
 
 
 def control_members(deb, limit=16 * 1024 * 1024):
@@ -223,7 +233,12 @@ def control_members(deb, limit=16 * 1024 * 1024):
             plain = bounded_decompress(name, body, limit)
             try:
                 with tarfile.open(fileobj=io.BytesIO(plain), mode="r:") as tar:
-                    return [m.name.lstrip("./") for m in tar.getmembers()]
+                    names = [m.name.lstrip("./") for m in tar.getmembers()]
+                    end = tar.offset
+                # a complete tar ends with two zero blocks after its last member
+                if plain[end:end + 1024] != b"\0" * 1024:
+                    raise core.Refused("the control archive has no end-of-archive marker")
+                return names
             except (tarfile.TarError, EOFError, OSError) as exc:
                 raise core.Refused(f"malformed control archive: {exc}")
         pos += 60 + size + (size % 2)
@@ -274,9 +289,12 @@ def make_handler(config, store, template, backend):
             if length < 0 or length > config["max_body"]:
                 raise core.Refused("the request is too large")
             try:
-                return json.loads(self.rfile.read(length))
+                request = json.loads(self.rfile.read(length))
             except ValueError:
                 raise core.Refused("the request is not JSON")
+            if not isinstance(request, dict):
+                raise core.Refused("the request is not a JSON object")
+            return request
 
         def do_POST(self):
             now = datetime.now(timezone.utc)

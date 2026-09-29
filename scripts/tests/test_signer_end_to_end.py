@@ -202,7 +202,7 @@ class SignerEndToEndTest(unittest.TestCase):
     def test_full_cycle(self):
         raw = self.packages()
         pid, shown = self.propose_and_approve(raw)
-        self.assertIn("scripts: postinst", shown)          # read from the .deb on :8080
+        self.assertIn("scripts: postinst", shown)          # read from the .deb sent in /propose
         self.assertIn("no scripts", shown)
         self.assertIn("task (claimed by builder): UNITY-20260929-021", shown)
         release, tmp, _ = self.aptly_switch(raw)
@@ -390,6 +390,77 @@ class SignerEndToEndTest(unittest.TestCase):
         self.assertIn("changed  libdemo1", out.getvalue())
         self.assertIn("scripts: postinst", out.getvalue())
 
+    def crafted_deb(self, compress, split=True, end_blocks=True):
+        """A .deb whose control archive hides a postinst from a one-stream reader:
+        control in one compressed stream, postinst in a second (dpkg reads both
+        for gzip). split=False: one stream; end_blocks=False: a tar without its
+        end-of-archive marker."""
+        import tarfile as tf
+        def tar_of(members, end):
+            buf = io.BytesIO()
+            with tf.open(fileobj=buf, mode="w", format=tf.USTAR_FORMAT) as t:
+                for name, data, mode in members:
+                    info = tf.TarInfo(name); info.size = len(data); info.mode = mode
+                    t.addfile(info, io.BytesIO(data))
+            raw = buf.getvalue()
+            return raw if end else raw.rstrip(b"\0")[:((len(raw.rstrip(b"\0")) + 511) // 512) * 512]
+        control = ("./control", b"Package: demo\nVersion: 1\nArchitecture: amd64\nMaintainer: t <t@e>\nDescription: t\n", 0o644)
+        postinst = ("./postinst", b"#!/bin/sh\nexit 0\n", 0o755)
+        if split:
+            body = compress(tar_of([control], False)) + compress(tar_of([postinst], True))
+        else:
+            body = compress(tar_of([control, postinst] if end_blocks else [control], end_blocks))
+        name = {gzip.compress: b"control.tar.gz", }.get(compress, b"control.tar.xz")
+        def member(n, data):
+            header = n.ljust(16) + b"0".ljust(12) + b"0".ljust(6) + b"0".ljust(6) + b"100644".ljust(8) + str(len(data)).encode().ljust(10) + b"`\n"
+            return header + data + (b"\n" if len(data) % 2 else b"")
+        return b"!<arch>\n" + member(b"debian-binary", b"2.0\n") + member(name, body) + member(b"data.tar.gz", gzip.compress(b""))
+
+    def test_hidden_postinst_in_a_second_stream_is_refused(self):
+        import lzma
+        for label, compress in (("gz", functools.partial(gzip.compress, mtime=0)), ("xz", lzma.compress)):
+            with self.subTest(compression=label):
+                deb = self.crafted_deb(compress if label == "xz" else gzip.compress)
+                with self.assertRaises(core.Refused):
+                    aptly_signer.control_members(deb)
+        honest = self.crafted_deb(gzip.compress, split=False)
+        self.assertIn("postinst", aptly_signer.control_members(honest))
+        with self.assertRaises(core.Refused):  # a tar without its end-of-archive marker
+            aptly_signer.control_members(self.crafted_deb(gzip.compress, split=False, end_blocks=False))
+
+    def test_refresh_write_order(self):
+        raw = self.packages()
+        self.propose_and_approve(raw)
+        self.aptly_switch(raw)
+        order = []
+        real = os.replace
+        def spy(src, dst):
+            order.append(Path(dst).name)
+            return real(src, dst)
+        signer_client.os.replace = spy
+        try:
+            signer_client.refresh(self.client, TASK, switch=True)
+        finally:
+            signer_client.os.replace = real
+        self.assertEqual(order, ["Release", "Release.gpg", "InRelease"])
+
+    def test_refresh_refuses_an_unlisted_served_index(self):
+        raw = self.packages()
+        self.propose_and_approve(raw)
+        self.aptly_switch(raw)
+        (self.dist / "main/binary-amd64/Packages.xz").write_bytes(b"not listed")
+        with self.assertRaises(core.Refused):
+            signer_client.refresh(self.client, TASK, switch=True)
+
+    def test_non_object_json_body(self):
+        import urllib.request, urllib.error
+        url = f"http://127.0.0.1:{self.signer.server_port}/propose"
+        request = urllib.request.Request(url, data=b"[1, 2]", headers={"Content-Type": "application/json"})
+        with self.assertRaises(urllib.error.HTTPError) as caught:
+            urllib.request.urlopen(request, timeout=10)
+        self.assertEqual(caught.exception.code, 409)
+        caught.exception.close()
+
     def test_control_archive_decompression_cap(self):
         deb = (self.public / self.debs["demo"]).read_bytes()
         with self.assertRaises(core.Refused):
@@ -418,7 +489,7 @@ class SignerEndToEndTest(unittest.TestCase):
     def test_deb_problems_refuse_the_proposal(self):
         raw = self.packages()
         cases = {
-            "404": lambda: (self.public / self.debs["demo"]).unlink(),
+            # a .deb that differs from its Packages entry is refused by the signer
             "sha256 mismatch": lambda: (self.public / self.debs["demo"]).write_bytes(b"!<arch>\n" + b"x" * 100),
         }
         for label, damage in cases.items():

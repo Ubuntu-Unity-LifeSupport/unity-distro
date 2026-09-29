@@ -262,6 +262,26 @@ class SignerCoreTest(unittest.TestCase):
         self.assertEqual(len(versions), 9)
         self.assertEqual(len(set(versions)), 9)
 
+    def test_index_streams_exactly_one(self):
+        """Verifier round 1: a second stream or trailing bytes in a bz2/xz index."""
+        import lzma
+        raw = PKGS.encode()
+        for variant, data in (("main/binary-amd64/Packages.bz2", bz2.compress(raw) + bz2.compress(b"x")),
+                              ("main/binary-amd64/Packages.bz2", bz2.compress(raw) + b"trailing"),
+                              ("main/binary-amd64/Packages.xz", lzma.compress(raw) + lzma.compress(b"x")),
+                              ("main/binary-amd64/Packages.xz", lzma.compress(raw)[:-10])):
+            with self.subTest(variant=variant, size=len(data)):
+                with self.assertRaises(core.Refused):
+                    core.check_index_set(TEMPLATE, dict(self.files, **{variant: data}))
+        self.assertTrue(core.check_index_set(TEMPLATE, dict(self.files, **{"main/binary-amd64/Packages.xz": lzma.compress(raw)})))
+
+    def test_ascii_digits_only(self):
+        with self.assertRaises(core.Refused):
+            core.entries(core.check_index_set(TEMPLATE, files_for(PKGS.replace("Size: 1000", "Size: \u00b2\u0661"))))
+        state = core.new_state()
+        pid = core.propose(state, TEMPLATE, self.files, "UNITY-2026092\u0669-021", deb_ok, T0)
+        self.assertIsNone(state["proposals"][pid]["task_id"])
+
     def test_decompression_limit(self):
         saved = core.MAX_INDEX
         core.MAX_INDEX = 100
@@ -349,8 +369,13 @@ class SignerCoreTest(unittest.TestCase):
         trio = core.resign(self.state, TEMPLATE, self.backend, T0 + timedelta(days=1))
         self.assertEqual(core.current_trio(self.state), trio)
         self.assertIsNone(core.compare_release(aptly_release(self.files), trio["release"]))
-        with self.assertRaises(core.Refused):
-            core.resign_set(self.state, "another set")
+        # a signed but not yet live approval does not change what is re-signed
+        other = files_for(PKGS.replace("Size: 2000", "Size: 2001"))
+        self.approved(other, now=T0 + timedelta(days=1, minutes=1))
+        self.sign(files=other, now=T0 + timedelta(days=1, minutes=2))
+        again = core.resign(self.state, TEMPLATE, self.backend, T0 + timedelta(days=1, minutes=3))
+        self.assertIsNone(core.compare_release(aptly_release(self.files), again["release"]))
+        self.assertIsNotNone(core.compare_release(aptly_release(other), again["release"]))
         self.state["signed"][self.state["last_live"]["signed_key"]]["files"]["main/binary-amd64/Packages"] = b"x".hex()
         with self.assertRaises(core.Refused):  # stored files no longer match the approved content
             core.resign(self.state, TEMPLATE, self.backend, T0 + timedelta(days=2))

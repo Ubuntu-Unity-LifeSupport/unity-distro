@@ -33,7 +33,8 @@ VERSION_RE = re.compile(r"(?:[0-9]+:)?[0-9][A-Za-z0-9.+~-]*")
 ARCH_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
 FILENAME_RE = re.compile(r"pool/[A-Za-z0-9][A-Za-z0-9+._~/-]*\.deb")
-TASK_RE = re.compile(r"UNITY-\d{8}-\d{3}")
+TASK_RE = re.compile(r"UNITY-[0-9]{8}-[0-9]{3}")
+DIGITS_RE = re.compile(r"[0-9]+")
 FIELD_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9-]*")
 
 
@@ -98,10 +99,13 @@ def decompress(data, kind):
             out = data
         elif kind == "gz":
             out = gzip.GzipFile(fileobj=__import__("io").BytesIO(data)).read(MAX_INDEX + 1)
-        elif kind == "bz2":
-            out = bz2.BZ2Decompressor().decompress(data, MAX_INDEX + 1)
-        elif kind == "xz":
-            out = lzma.LZMADecompressor().decompress(data, MAX_INDEX + 1)
+        elif kind in ("bz2", "xz"):
+            # exactly one complete stream: a second stream or trailing bytes
+            # would be read differently by other tools (Verifier round 1)
+            d = bz2.BZ2Decompressor() if kind == "bz2" else lzma.LZMADecompressor()
+            out = d.decompress(data, MAX_INDEX + 1)
+            if len(out) <= MAX_INDEX and (not d.eof or d.unused_data):
+                raise Refused(f"a {kind} index is not exactly one complete stream")
         else:
             raise Refused(f"unknown compression {kind}")
     except (OSError, EOFError, lzma.LZMAError, ValueError) as exc:
@@ -189,7 +193,7 @@ def entries(content):
                     or not (arch and ARCH_RE.fullmatch(arch)):
                 raise Refused(f"{path}: an entry has an invalid Package, Version or Architecture")
             if path.endswith("Packages"):
-                if not SHA256_RE.fullmatch(fields.get("SHA256", "")) or not fields.get("Size", "").isdigit() \
+                if not SHA256_RE.fullmatch(fields.get("SHA256", "")) or not DIGITS_RE.fullmatch(fields.get("Size", "")) \
                         or not FILENAME_RE.fullmatch(fields.get("Filename", "")) or ".." in fields["Filename"].split("/"):
                     raise Refused(f"{path}: entry {name} has an invalid SHA256, Size or Filename")
             key = (path, name, version, arch)
@@ -526,12 +530,6 @@ def resign(state, template, backend, now):
     state["last_date"] = date.isoformat()
     log(state, f"re-signed last-live Date {format_date(date)}")
     return trio
-
-
-def resign_set(state, sid):
-    """A re-sign is only ever of last-live."""
-    if sid != (state.get("last_live") or {}).get("set_id"):
-        raise Refused("only the last-live set is re-signed")
 
 
 def current_trio(state):

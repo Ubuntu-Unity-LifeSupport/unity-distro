@@ -46,7 +46,7 @@ import signer_core as core  # noqa: E402
 
 CONFIG = os.environ.get("APTLY_SIGNER_CLIENT_CONFIG",
                         str(Path.home() / ".config" / "aptly-signer" / "client.json"))
-TASK_RE = re.compile(r"UNITY-\d{8}-\d{3}")
+TASK_RE = re.compile(r"UNITY-[0-9]{8}-[0-9]{3}")
 SIGNED_FILES = re.compile(r"[a-z0-9-]+/(binary-[a-z0-9-]+/(Packages(\.gz|\.bz2|\.xz)?|Release)"
                           r"|source/(Sources(\.gz|\.bz2|\.xz)?|Release))")
 
@@ -138,6 +138,10 @@ def check_trio(config, trio, dist_dir, aptly_release=None):
             listed[path] = (digest, int(size))
     if not listed:
         raise core.Refused("the trio's Release lists no files")
+    for path in sorted(dist_dir.rglob("*")):
+        rel = path.relative_to(dist_dir).as_posix()
+        if path.is_file() and SIGNED_FILES.fullmatch(rel) and rel not in listed:
+            raise core.Refused(f"{core.printable(rel)} is served but not listed by the trio's Release")
     for path, (digest, size) in listed.items():
         served = dist_dir / path
         if served.is_symlink() or not served.is_file():
