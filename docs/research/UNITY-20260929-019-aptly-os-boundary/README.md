@@ -335,6 +335,53 @@ must refuse:
 And the positive case: only `Date` and `Valid-Until` change, and the
 signer signs.
 
+Design Challenger round 4: **APPROVE**, with two changes taken:
+
+1. **The signer always builds the Release itself**, at the first sign and
+   at every cadence re-sign. It uses:
+   - a fixed field template stored on the signer;
+   - the approved index set;
+   - its own clock for `Date`, and `Valid-Until` = `Date` + 3 days.
+
+   aptly's Release is only compared with that result. The invariant becomes
+   byte equality apart from those two values, which also replaces the
+   "reordering" wording above.
+2. **More refusal tests:**
+   - an approval used after last-live moved;
+   - an approval used a second time;
+   - a cadence re-sign of a set that is not last-live;
+   - `InRelease` and `Release.gpg` signed over different bytes;
+   - `Date` earlier than the last signed `Date`;
+   - `Valid-Until` more than 3 days after `Date`.
+
+## What May does by hand (step 1), before any code runs
+
+1. **Create the VM `aptly-signer`** in VirtualBox on the host:
+   - Ubuntu Server 26.04, minimal: 1 CPU, 512 MB to 1 GB, a 10 GB disk,
+     no desktop;
+   - network: one host-only adapter (the same host-only network as
+     builder) and one NAT adapter with its cable disconnected;
+   - a fixed address on host-only, for example 192.168.56.50;
+   - an account for May only. No ssh server: remove or disable
+     `openssh-server` during install. Autostart with the host.
+2. **Change the vbox MCP configuration** on the host:
+   - add `aptly-signer` to `never_allowed`, next to builder-server;
+   - make sure no tool accepts its disk, its folder or its exports, in
+     `clone_linked`, `create_vm`, `attach_iso` and `list_media`. If the
+     server has no such restriction yet, say so: that is then a separate
+     small change to the MCP server, and it is May's host;
+   - check that the MCP configuration file and the folder where May keeps
+     the signer backup are not writable from builder, which has no
+     shared folders.
+3. **Updates.** May connects the NAT cable only while he runs `apt upgrade`
+   on the signer, then disconnects it.
+4. **Report back to C:** the signer's host-only address, and that sshd is
+   off and the MCP change is in. Then B writes the service, the stand-in
+   and the tests (step 2).
+
+The service and the new key come later (step 3), from files in this
+repository that May copies onto the signer himself.
+
 ### What changes for existing tools
 
 | Tool or operation | Effect |
