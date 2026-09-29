@@ -1,0 +1,27 @@
+Attached 14 probes
+READY
+9538 PUSH-GRAB wall
+9540 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::initiate(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, WallScreen::Direction, bool)+204
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+
+9927 REMOVE-GRAB
+9927 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+12615 UNITY-SEES ButtonPress window=0x3200c82 button=1
+12615 REMOVE-GRAB
+12615 XUNGRABPOINTER
+        XUngrabPointer+0
+        0x7d1658551d1f
+        MoveScreen::handleEvent(_XEvent*)+437
+        CompScreen::handleEvent(_XEvent*)+103
+
+14505 UNITY-SEES ButtonPress window=0x32001ae button=1
+
+

@@ -1,0 +1,31 @@
+== /var/tmp/ea/round1
+greeter session c20, session-child 77499: lightdm --session-child 17 20 
+Attached 7 probes
+77499 first allocator call in exit(): uprobe:/lib/x86_64-linux-gnu/libc.so.6:free
+        cfree@GLIBC_2.2.5+0
+        _dl_call_fini+98
+        _dl_fini+624
+        __run_exit_handlers+497
+        0x73842a6486be
+        __libc_start_call_main+136
+        __libc_start_main@@GLIBC_2.34+136
+        0x62559b9fcbc5
+17:35:53.352439 77499 exit() -> _exit after 3145 us; allocator calls:
+@calls[77499, uprobe:/lib/x86_64-linux-gnu/libc.so.6:free]: 35
+17:35:53.352441 77499 _exit(0) without exit() - no destructors ran
+== /var/tmp/ea/round2
+greeter session c21, session-child 80760: lightdm --session-child 17 20 
+Attached 7 probes
+17:36:50.268053 80760 _exit(0) without exit() - no destructors ran
+== /var/tmp/ea/round3
+greeter session c22, session-child 83963: lightdm --session-child 17 20 
+Attached 7 probes
+17:37:47.290353 83963 _exit(0) without exit() - no destructors ran
+== /var/tmp/ea/round4
+greeter session c23, session-child 87173: lightdm --session-child 17 20 
+Attached 7 probes
+17:38:44.368456 87173 _exit(0) without exit() - no destructors ran
+== /var/tmp/ea/round5
+greeter session c24, session-child 90295: lightdm --session-child 17 20 
+Attached 7 probes
+17:39:42.426138 90295 _exit(0) without exit() - no destructors ran

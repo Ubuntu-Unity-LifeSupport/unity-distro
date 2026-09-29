@@ -1,0 +1,15 @@
+### 18:14:09 base-off
+base-off: 44 apps, menus 0 top, NO-MENUBAR 39, NO-GTK-PROPS 5, MISSING 0, crashes 1
+### 18:20:21 base
+base: 44 apps, menus 43 top, NO-MENUBAR 8, NO-GTK-PROPS 2, MISSING 38, crashes 1
+### 18:26:40 A
+A: 44 apps, menus 42 top, NO-MENUBAR 8, NO-GTK-PROPS 2, MISSING 2, crashes 1
+### 18:33:07 AB
+AB: 44 apps, menus 51 top, NO-MENUBAR 2, NO-GTK-PROPS 2, MISSING 2, crashes 2
+### 18:39:34 ABC
+ABC: 44 apps, menus 51 top, NO-MENUBAR 2, NO-GTK-PROPS 2, MISSING 2, crashes 2
+### 18:46:01 ABCD
+ABCD: 44 apps, menus 51 top, NO-MENUBAR 0, NO-GTK-PROPS 2, MISSING 2, crashes 2
+### 18:52:38 ABCD-debug
+ABCD-debug: 44 apps, menus 51 top, NO-MENUBAR 0, NO-GTK-PROPS 2, MISSING 2, crashes 2
+### done 18:59:13

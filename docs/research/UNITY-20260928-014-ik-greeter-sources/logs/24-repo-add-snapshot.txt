@@ -1,0 +1,6 @@
+# 2026-09-29T21:48:54Z UNITY-20260928-014: backup ~/backups/repo-014-20260929T214236Z (db, 16 files, sha256 checked); repo add of the gated build (3 records: source, .deb, .ddeb) to unity-resolute (321 -> 324); snapshot unity-resolute-20260928-014
+# live ./resolute before: unity-resolute-20260927-040 (latest publish record UNITY-20260927-040)
+  Arch   | Package                                  | Version in A                             | Version in B
++ amd64  | indicator-keyboard                       | -                                        | 0.0.0+19.10.20240924-0ubuntu1+unity4    
++ amd64  | indicator-keyboard-dbgsym                | -                                        | 0.0.0+19.10.20240924-0ubuntu1+unity4    
++ source | indicator-keyboard                       | -                                        | 0.0.0+19.10.20240924-0ubuntu1+unity4    

@@ -1,0 +1,22 @@
+Настраивается пакет gir1.2-accountsservice-1.0:amd64 (23.13.9-8ubuntu5.2) …
+== run 1
+  0.029 MANAGER is-loaded = True
+  0.065   list_users: loaded=True nonexistent=False name='mike' uid=1000 input_sources=set
+  2.052 RESTART accounts-daemon
+  2.190 MANAGER is-loaded = False
+  2.781 MANAGER is-loaded = True
+  2.782   list_users: loaded=True nonexistent=False name=None uid=0 input_sources=NULL
+== run 2
+  0.117 MANAGER is-loaded = True
+  0.278   list_users: loaded=True nonexistent=False name='mike' uid=1000 input_sources=set
+  2.245 RESTART accounts-daemon
+  2.346 MANAGER is-loaded = False
+  2.995 MANAGER is-loaded = True
+  2.995   list_users: loaded=True nonexistent=False name=None uid=0 input_sources=NULL
+== run 3
+  0.046 MANAGER is-loaded = True
+  0.210   list_users: loaded=True nonexistent=False name='mike' uid=1000 input_sources=set
+  2.090 RESTART accounts-daemon
+  2.281 MANAGER is-loaded = False
+  3.297 MANAGER is-loaded = True
+  3.297   list_users: loaded=True nonexistent=False name=None uid=0 input_sources=NULL

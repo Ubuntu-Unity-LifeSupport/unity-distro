@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-014",
+  "package": "indicator-keyboard",
+  "candidate_version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-014/packages/indicator-keyboard",
+  "source_commit": "5d6a8c57443061f624258c43d39fc7cee36bb759",
+  "source_tree_hash": "07661b25891c6a352451f942cf034243bbd6e9e8",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst"
+  ],
+  "build_started": "2026-09-29T21:29:03.248647+00:00",
+  "build_finished": "2026-09-29T21:38:59.590774+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260928-014-indicator-keyboard-0.0.0+19.10.20240924-0ubuntu1+unity4-sbuild.log",
+    "sha256": "2341734c99a9cf7f759cc06a789c1b5e8356aa38ddb33eee47f887620dd8d6c5"
+  },
+  "artifacts": [
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4.dsc",
+      "sha256": "b733ace740eeb4102e730d898e31957ac50ff3ba3f53f195cc0319d3dfd04290",
+      "size": 1325,
+      "kind": "source",
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.changes",
+      "sha256": "febced2ae154da6a80a83c5b56bae528ecc125e8fd3bd20a2ed9136c9a18dcce",
+      "size": 2811,
+      "kind": "changes"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4.tar.gz",
+      "sha256": "0d7abeb642cfdf94572f45be4442a8e0ab17f98e300227ec9a101c6b526ca146",
+      "size": 71815,
+      "kind": "source_file",
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4"
+    },
+    {
+      "file": "indicator-keyboard-dbgsym_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.ddeb",
+      "sha256": "716d4923526ee3cb9ba92b303effc6244869b76d1d82fa44b14ad8fecc3f4485",
+      "size": 239146,
+      "kind": "binary",
+      "package": "indicator-keyboard-dbgsym",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+      "architecture": "amd64"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.buildinfo",
+      "sha256": "63b952933817cbd07a5017336aa7c4d87daa442ce3a27710328ec7559e425aa9",
+      "size": 19728,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.deb",
+      "sha256": "005ba12edc9953b8b37c9a52f581531bd9b93a67556d83285ed20e7f427b4846",
+      "size": 54062,
+      "kind": "binary",
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst",
+    "sha256": "d48b78645647c32d4c649374fb6920b135028de2a62715d142938b1f05defe80",
+    "size": 143090706,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json",
+    "sidecar_sha256": "228d4a7f87daaac9957dbb5e2d62e3a4fb0449a1670dd34e141de19545d46640",
+    "snapshot": "20260929T201245Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Tue, 29 Sep 2026 19:18:11 UTC",
+        "sha256": "d6d58182351b401877a611adfb38c7a6a5c249de6f6d5cf84c08de66e7bd0b0d"
+      },
+      "resolute-security": {
+        "date": "Tue, 29 Sep 2026 18:35:33 UTC",
+        "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-014/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

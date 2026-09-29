@@ -1,0 +1,90 @@
+Attached 14 probes
+READY
+562 PUSH-GRAB wall
+563 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+565 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+911 REMOVE-GRAB
+911 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+912 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+1892 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7d1662908c1b
+
+2241 PUSH-GRAB expo
+2241 XGRABPOINTER
+        XGrabPointer+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+2242 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+4374 UNITY-SEES ButtonPress window=0x3200163 button=1
+4375 EDGE-DOWN button=1
+4375 EXPO-SEES ButtonPress window=0x3200163 button=1
+4461 UNITY-SEES ButtonRelease window=0x3200163 button=1
+4461 EXPO-SEES ButtonRelease window=0x3200163 button=1
+4760 REMOVE-GRAB
+4761 XUNGRABPOINTER
+        XUngrabPointer+0
+        ExpoScreen::donePaint()+684
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+4761 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+5560 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7d1662908c1b
+
+5917 PUSH-GRAB expo
+5917 XGRABPOINTER
+        XGrabPointer+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+5921 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+8500 UNITY-SEES ButtonPress window=0x3200006 button=1
+8501 EXPO-SEES ButtonPress window=0x3200006 button=1
+8575 UNITY-SEES ButtonRelease window=0x3200006 button=1
+8575 EXPO-SEES ButtonRelease window=0x3200006 button=1
+
+

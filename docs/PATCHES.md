@@ -89,3 +89,95 @@ Record corrections, 2026-09-27 (UNITY-20260927-036; the rows above are left as w
 |---|---|---|---|---|---|
 | libindicator | _Correction 2026-09-27 (UNITY-20260927-036) to the `+unity1` row above:_ `0ubuntu8+unity1` is in aptly (published after that row was written), superseded by `+unity2`; both versions are in the repository. | - | - | [`research/UNITY-20260927-036-record-corrections/`](research/UNITY-20260927-036-record-corrections/) | local |
 | unity-lens-files | +unity1: the global search no longer calls `locate` when none is installed; Recommends plocate (debdiff `package-patches-b/debdiff/unity-lens-files_+unity1.debdiff`) _(row added 2026-09-27, UNITY-20260927-036; the upload predates it)_ | Every Files-lens search logged "Error performing global search ... locate" because neither plocate nor mlocate was installed or depended on. Ours; in aptly (binary and source; the source was regenerated from the debdiff after the build, see the legacy ledger). Verified live on target2 (0 locate errors; with plocate the file is found). | none | [`research/unity-scopes/`](research/unity-scopes/) | local |
+
+
+nux 4.0.8+18.10.20180623-0ubuntu15+unity3, 2026-09-28 (UNITY-20260927-027, UNITY-20260928-020; the nux rows above are left as written). Source commit 0274bc5 (packages/nux, branch b/UNITY-20260927-027) on top of +unity2 9793c23. Verification: independent Verifier PASS (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| nux | `fix-missing-vidmode.patch`, narrowed in +unity3 (UNITY-20260927-027) | Keeps only the fix for a server without XF86VidMode. The two extra hunks go: the NULL after the fullscreen free moves to its own patch (below); freeing an old list before a new query guarded a leak on a second CreateOpenGLWindow on one display, which nothing does. | none (upstream on hold) | [`research/UNITY-20260927-027-nux-vidmode-fbo/`](research/UNITY-20260927-027-nux-vidmode-fbo/) | local |
+| nux | `fix-fullscreen-mode-list-double-free.patch` (+unity3, UNITY-20260927-027) | The fullscreen branch of CreateOpenGLWindow freed the XF86VidMode mode list and ~GraphicsDisplay freed it again. Reproduced through GLWindowManager::CreateGLWindow on Xorg (uprobe trace, malloc check, ASan); Unity never asks for fullscreen. Clears the pointer; ASan death test in gtest-nuxgraphics, fails before / passes after in the package build. | none | [`research/UNITY-20260927-027-nux-vidmode-fbo/`](research/UNITY-20260927-027-nux-vidmode-fbo/) | local |
+| nux | `fix-fbo-attachment-arrays.patch`: in-tree test added in +unity3 (UNITY-20260927-027) | The FBO fix of +unity2 (LP: #2160298) now has `TestFrameBufferObject` in gtest-nuxgraphics: the attachment reads back and its reference is released; without the fix the reference leaks (2 instead of 1). | LP: #2160298 | [`research/UNITY-20260927-027-nux-vidmode-fbo/`](research/UNITY-20260927-027-nux-vidmode-fbo/) | local |
+| nux | `tests-dummy-xorg-noreset.patch` (+unity3, UNITY-20260928-020) | Test harness only: the tests' dummy Xorg starts with `-noreset`. It reset whenever the last client disconnected, about once per test, and a test connecting during a reset crashed on a NULL display (EmbeddedContext). | none | [`research/UNITY-20260928-020-nux-gtest-segfault/`](research/UNITY-20260928-020-nux-gtest-segfault/) | local |
+| nux | `tests-windowthread-join-watchdog.patch` (+unity3, UNITY-20260928-020) | Test fixture only: TestWindowThread's watchdog becomes a std::thread joined in the destructor; the nux::SystemThread it replaces was deleted while still running (use-after-free in SystemThread::Run). With both test patches gtest-nux-slow went from 5 of 6 crashing runs to 0 of 20, and three sbuilds in a row are clean. | none | [`research/UNITY-20260928-020-nux-gtest-segfault/`](research/UNITY-20260928-020-nux-gtest-segfault/) | local |
+
+
+hud 14.10+17.10.20170619-0ubuntu6+unity2, 2026-09-29 (UNITY-20260927-029; the hud row above is left as written). Source commit 0e99dca (B's local git tree packages/hud; base = the published +unity1 source), non-native 1.0. Verification: independent Verifier PASS_WITH_NOTES (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| hud | window-stack-bridge: keep a window whose application is gone (+unity2, af43552, in the tree; format 1.0) | bamf re-matches LibreOffice's window from a temporary application that closes; a DesktopFile() error on it dropped the window for good and the HUD was empty for LibreOffice in about a quarter of Writer starts. The window now gets its id as application id, as for an application without a desktop file. Three unit tests in TestBamfWindowStack (fail before / pass after); target2: 16/20 -> 20/20. | lp:hud (inactive); symptom LP: #1771173 | [`research/UNITY-20260927-029-hud-libreoffice/`](research/UNITY-20260927-029-hud-libreoffice/) | local |
+
+
+hud 14.10+17.10.20170619-0ubuntu6+unity3, 2026-09-29 (UNITY-20260927-028; the hud rows above are left as written). Source commit 2f2fa89 (B's local git tree packages/hud, on top of +unity2 0e99dca), non-native 1.0. Verification: independent Verifier PASS (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| hud | build flags: hud with C++14, only tests/ with C++17 (+unity3, 31fb59c, in the tree; format 1.0) | +unity1 had raised the whole project to C++17 while only resolute's googletest needed it. hud itself is compiled with C++14 again, as 0ubuntu6 was. File lists and every dynamic symbol are identical to +unity2; tests 6/6. | none (our build change) | [`research/UNITY-20260927-028-hud-cxx17-scope/`](research/UNITY-20260927-028-hud-cxx17-scope/) | local |
+
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| indicator-keyboard | +unity4: greeter input sources not rewritten without AccountsService data (`lib/main.vala`, `lib/input-sources.vala` `greeter_sources_known()` / `greeter_current()`, tests `greeter-sources-known`, `greeter-current`; branch `b/UNITY-20260928-014`, `949c6c3` + `5d6a8c5` on `10eb95c`) | While accounts-daemon restarts, the listed users are loaded with an empty cache for a fraction of a second. The greeter's `migrate_input_sources()` then wrote `sources=[]` and `current=4294967295` (`list.size - 1`); a stored 4294967295 came back after a reboot as the last layout. An instance started inside the reload window also never re-listed users. Now the pass is skipped while no counted user has data, redone on `ActUserManager::user-changed`; users are listed afresh; the manager `notify::is-loaded` handler exists in both start branches; sources are written before current, and only changed values. Verifier PASS (REVIEWED); target2 +unity3 3/3 window, +unity4 0/9 bad writes. Not in aptly (freeze #1). | not fixed in 26.10 (0ubuntu4); follow-up of LP: #2166139 | [`research/UNITY-20260928-014-ik-greeter-sources/`](research/UNITY-20260928-014-ik-greeter-sources/) | local, at the publication gate |
+
+
+lightdm 1.32.0-6ubuntu4+unity2, 2026-09-29 (UNITY-20260928-019; the lightdm row above is left as written). Source commit f5af23c on Ubuntu-Unity-LifeSupport/lightdm branch `a/UNITY-20260928-019` (patch db13faf, on +unity1 50a6a5d). Verification: independent Verifier PASS (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| lightdm | `session-child: finish the cleanup when SIGTERM arrives after the session ended` (quilt, `0010-...`, +unity2, on top of 0009) | A greeter is stopped by both logind and the daemon; the second SIGTERM usually reached session-child after `waitpid()`, where `signal_cb()` took `child_pid == 0` for "not started" and quit: the greeter's X authority removal and PAM close were skipped in most greeter stops, and the greeter's cookie could stay in lightdm's `.Xauthority`, opening the user's display as uid lightdm. A flag set after `waitpid()` now lets the cleanup finish, bounded by `alarm(10)`; before the session starts the handler still `_exit()`s. On target: 13/13 greeter stops complete, forced cases complete, blocked close ends after 10 s, user sessions unchanged; file lists identical to +unity1. | none (ours; not reported) | [`research/UNITY-20260928-019-lightdm-greeter-pam-close/`](research/UNITY-20260928-019-lightdm-greeter-pam-close/) | local |
+
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity2: `debian/changelog: restore the archive history; release +unity2` (branch `b/UNITY-20260927-021`, `c03daf4`, on `b6b546b`; native package) | Packaging defect of ours: +unity1 had replaced the whole archive `debian/changelog` (1491 lines) with 11 lines. +unity2 restores it byte for byte, with our two entries on top; the shipped changelog goes from 1 to 95 entries. The known issue #4 fix (basicwallpaper) is carried unchanged and revalidated (rt.sh 3/3). All 6 binaries are published (May, 2026-09-29), including calamares-settings-kubuntu/-lubuntu, whose patched basicwallpaper is unmeasured (UNITY-20260927-044). Verifier PASS (REVIEWED). | none | [`research/UNITY-20260927-021-calamares-oem-wallpaper/`](research/UNITY-20260927-021-calamares-oem-wallpaper/) | local, gated publication |
+
+
+lightdm 1.32.0-6ubuntu4+unity2 published 2026-09-29 17:06:28Z (UNITY-20260928-019; the "Not yet published" line above is left as written): live `./resolute` = snapshot `unity-resolute-20260928-019`, built by `scripts/build_sbuild.py` from `packages/lightdm` at f5af23c (payload identical to the verified build), gate on `a/UNITY-20260928-019` fdab8e3, Verifier short round on the gated build PASS (REVIEWED); target-desktop upgraded from the repository.
+
+
+calamares-settings-ubuntu 1:26.04.12+unity2 published 2026-09-29 16:10:23Z (UNITY-20260927-021; the calamares-settings-ubuntu +unity2 row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-021-r2`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at c03daf4 (build-r2). The gate is on `b/UNITY-20260927-021`.
+- 17:06:28Z: `./resolute` moved to `unity-resolute-20260928-019` (UNITY-20260928-019). That snapshot carries every -021 artifact byte for byte; `taskctl` confirmed this by content (UNITY-20260929-015).
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from snapshot `OEM-ready-unity2`: Calamares is on top, and the wallpaper is DESKTOP/BELOW and never focused.
+- Limit: apt does not deliver the fix to an OEM system that is already installed. basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz` and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`.
+
+
+unity 7.7.1+26.04.20260306-0ubuntu3+unity12, 2026-09-29 (UNITY-20260927-040; the unity rows above are left as written). Source commit 7b0eca27 on Ubuntu-Unity-LifeSupport/unity branch `a/UNITY-20260927-040` (code 78153782, on `unity/resolute` 2040279d). Verification: independent Verifier PASS (REVIEWED) on the gated build. Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| unity | `decorations: Edge ignores presses while compiz lists any grab` (`decorations/DecorationsEdge.cpp`, +unity12; widens the +unity10 guard) | `Edge::ButtonDownEvent` releases the X pointer and keyboard with raw Xlib on every border or title-bar press; +unity10 stopped that only during move and resize. In expo a title drag or border press still ungrabbed behind compiz: expo missed its button release, stayed on compiz's grab list, and frame clicks froze the pointer (5/5 title drags on +unity11). The guard is now `screen->otherGrabExist(nullptr)`; move and resize already refuse `_NET_WM_MOVERESIZE` while another grab is listed, so only the harmful ungrab is removed. On target from the gated build: 0/5 stuck, replay 0/3, border, title bar, first press after expo, keyboard resize and the UNITY-20260927-001 set unchanged; packages identical to the tested build. | LP: #1393523 (the pointer freeze half; title-bar buttons in expo stay, UNITY-20260929-010) | [`research/UNITY-20260927-040-edge-grab-guard/`](research/UNITY-20260927-040-edge-grab-guard/) | local |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3, 2026-09-29 (UNITY-20260927-041; the calamares-settings-ubuntu rows above are left as written).
+- Source commit 221c691 on `Ubuntu-Unity-LifeSupport/calamares-settings-ubuntu` `b/UNITY-20260927-041`, on +unity2 c03daf4. Native package.
+- Built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu`, with resolute-updates/-security in the chroot. `-common`'s `snap-seed-glue-emb` is therefore statically built with snapd 2.76.3+ubuntu26.04.
+- Verification: independent Verifier PASS (INDEPENDENTLY_REPRODUCED).
+- Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity3: `Makefile: chmod the Ubuntu Unity sudoers.oem, to 0440; release +unity3` (branch `b/UNITY-20260927-041`, `221c691`) | The Ubuntu Unity section of the Makefile ran chmod on Kubuntu's `sudoers.oem`, so ours shipped 0644 in `oemconfig.tar.gz` and became `/etc/sudoers` in OEM mode, with a mode that `visudo -c` of sudo-rs and sudo.ws rejects. Now 0440 root:root, the mode of the distribution's own `/etc/sudoers`. Nothing else in the tarballs changes. Kubuntu/Lubuntu stay 0400, out of scope. | none (Launchpad search: no bug; 26.10 has the same line) | [`research/UNITY-20260927-041-calamares-oem-sudoers/`](research/UNITY-20260927-041-calamares-oem-sudoers/) | local, gated publication |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3 published 2026-09-29 18:15:21Z (UNITY-20260927-041; the "Not yet published" line above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-041`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at 221c691; the gate is on `b/UNITY-20260927-041`.
+- ~18:4xZ: `./resolute` moved to `unity-resolute-20260927-040` (UNITY-20260927-040). It carries the same 7 records; `taskctl` confirmed this by content.
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository, then a fresh Calamares OEM install;
+  - in OEM mode, `/etc/sudoers` is 0440 root:root, and `visudo -c` of sudo-rs and sudo.ws passes;
+  - `snap-seed-glue-emb`, statically built with snapd 2.76.3, was exercised;
+  - a cold first boot from snapshot `OEM-ready-unity3` shows Calamares on top.
+- Record: `research/UNITY-20260927-041-calamares-oem-sudoers/target-verification.md`.
+
+
+indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1+unity4 published 2026-09-29 21:51:54Z (UNITY-20260928-014; the "Not in aptly (freeze #1)" note in the row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260928-014` (-040 plus 3 records).
+- Build: `scripts/build_sbuild.py` from `packages/indicator-keyboard` at 5d6a8c5 (`Ubuntu-Unity-LifeSupport/indicator-keyboard` `b/UNITY-20260928-014`), on the pinned chroot 20260929T201245Z. The payload is byte-identical to the build tested on target2.
+- Verifier round 3 on the gated build: PASS (INDEPENDENTLY_REPRODUCED).
+- target2, normal upgrade path: candidate +unity4 from our repository; the running binary after a reboot is the gated one.

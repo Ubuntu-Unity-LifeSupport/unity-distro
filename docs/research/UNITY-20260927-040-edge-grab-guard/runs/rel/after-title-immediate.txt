@@ -1,0 +1,61 @@
+Attached 14 probes
+READY
+1022 PUSH-GRAB wall
+1022 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1023 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1359 REMOVE-GRAB
+1365 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+1365 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+5311 UNITY-SEES ButtonPress window=0x34009b1 button=1
+5311 GRABEDGE-DOWN button=1
+5311 EDGE-DOWN button=1
+5311 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+5312 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+5313 PUSH-POINTER-GRAB move
+5313 XGRABPOINTER
+        XGrabPointer+0
+        0x73bcec112031
+        MoveScreen::handleEvent(_XEvent*)+2189
+        CompScreen::handleEvent(_XEvent*)+103
+
+5654 UNITY-SEES ButtonRelease window=0x34009b1 button=1
+5654 REMOVE-GRAB
+5655 XUNGRABPOINTER
+        XUngrabPointer+0
+        0x73bcec110d1f
+        MoveScreen::handleEvent(_XEvent*)+437
+        CompScreen::handleEvent(_XEvent*)+103
+
+7163 UNITY-SEES ButtonPress window=0x34001a4 button=1
+
+

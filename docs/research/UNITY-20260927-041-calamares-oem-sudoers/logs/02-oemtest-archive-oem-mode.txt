@@ -1,0 +1,21 @@
+== OEM-ready (archive 1:26.04.12), OEM mode before end-user setup
+boot_id: d528af5c-d8dd-4e2f-b60d-45bf51924d48 uptime: 95.41s user: oem
+-rw-r--r-- 644 root:root /etc/sudoers
+-r--r----- 440 root:root /etc/sudoers.orig
+drwxr-xr-x 755 root:root /etc/sudoers.d
+sudo: /usr/lib/cargo/bin/sudo (sudo-rs)
+sudo-rs 0.2.13-0ubuntu1
+Value: /usr/lib/cargo/bin/sudo
+Alternative: /usr/bin/sudo.ws
+Alternative: /usr/lib/cargo/bin/sudo
+dpkg-query: no packages found matching calamares-settings-ubuntu-unity
+sudo	1.9.17p2-1ubuntu3
+sudo-rs	0.2.13-0ubuntu1
+sudo -n true: ok rc=0
+sudo -n -l (first lines):
+User oem may run the following commands on oem-virtualbox:
+    (ALL : ALL) ALL
+    (ALL) ALL
+    (ALL : ALL) NOPASSWD: ALL
+calamares running: yes
+journal (sudo, this boot):

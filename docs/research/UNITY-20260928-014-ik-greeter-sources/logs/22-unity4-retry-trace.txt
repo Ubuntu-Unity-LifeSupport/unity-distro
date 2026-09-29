@@ -1,0 +1,42 @@
+service pid 2787
+trace attached ~10:42:44
+# 2026-09-29T10:42:44Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity4
+--- run 1 seeded: sources=[('xkb', 'fr')] current=uint32 0
+10:42:50.116 ACTION restart accounts-daemon
+10:42:52.665 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:42:55.751 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+--- run 2 seeded: sources=[('xkb', 'fr')] current=uint32 0
+10:43:00.399 ACTION restart accounts-daemon
+10:43:02.385 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:43:06.091 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+--- run 3 seeded: sources=[('xkb', 'fr')] current=uint32 0
+10:43:11.394 ACTION restart accounts-daemon
+10:43:12.692 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:43:17.383 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+=== trace (ms since attach)
+Attached 7 probes
+attached
+  9604 ms   migrate_input_sources
+  9607 ms     greeter_sources_known(with=0, without=1)
+  9608 ms     -> 0
+ 10025 ms LightDM user-changed lambda29
+ 10026 ms   migrate_input_sources
+ 10026 ms     greeter_sources_known(with=1, without=0)
+ 10026 ms     -> 1
+ 10035 ms manager user-changed -> retry lambda27
+ 19533 ms   migrate_input_sources
+ 19541 ms     greeter_sources_known(with=0, without=1)
+ 19541 ms     -> 0
+ 19793 ms LightDM user-changed lambda29
+ 19795 ms   migrate_input_sources
+ 19802 ms     greeter_sources_known(with=1, without=0)
+ 19802 ms     -> 1
+ 19803 ms manager user-changed -> retry lambda27
+ 29699 ms   migrate_input_sources
+ 29699 ms     greeter_sources_known(with=0, without=1)
+ 29700 ms     -> 0
+ 30138 ms LightDM user-changed lambda29
+ 30138 ms   migrate_input_sources
+ 30138 ms     greeter_sources_known(with=1, without=0)
+ 30138 ms     -> 1
+ 30140 ms manager user-changed -> retry lambda27
