@@ -1,0 +1,12 @@
+# UNITY-20260927-040 peer notice (ENGINEERING-PROCESS section 6), 2026-09-29
+A -> B (SendMessage to "Agent B"): unity 7.7.1+26.04.20260306-0ubuntu3+unity12, the artifacts of
+build-gated/UNITY-20260927-040-unity-build-manifest.json; snapshot unity-resolute-20260927-040, created only after
+the coordinator reports UNITY-20260927-041 switched; snapshot diff against the live one sent to B before the gate.
+B -> A, first line: "B ACK UNITY-20260927-040 unity +unity12, no conflict"
+- no package overlap with calamares-settings-ubuntu; B has nothing else in unity-resolute.
+- repo add and snapshot do not affect B's apt (only the switch changes Release); allowed right after -041 switched.
+- window for the -040 switch: not during B's -041 target check on oem-test right after the -041 switch
+  (apt-get update + install of 3 calamares packages, about 5 minutes); B writes "-041 apt done, window open";
+  after that B has no apt operations against our repository.
+- B asked to see the snapshot diff before the gate.
+Order: per the coordinator, the notice and ACK come before repo add; the gate waits for "-041 switched".
