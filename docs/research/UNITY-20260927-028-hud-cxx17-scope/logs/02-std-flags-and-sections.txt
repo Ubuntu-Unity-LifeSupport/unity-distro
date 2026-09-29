@@ -1,9 +1,10 @@
-# The last -std= of every C++ compile command in the sbuild logs (hud = everything outside tests/)
+# The last -std= of every C++ compile command in the sbuild logs (hud = everything outside tests/).
+# Corrected after the Verifier: the first count (82) put the 4 googletest/gmock units under hud; its regex missed gnu++17.
 == +unity2 (0e99dca)
-('hud', 'c++17') 82
+('hud', 'c++17') 78   (+ 4 googletest/gmock units, -std=gnu++17)
 ('tests', 'c++17') 47
 == +unity3 (2f2fa89)
-('hud', 'c++14') 82
+('hud', 'c++14') 78   (+ 4 googletest/gmock units, -std=gnu++17)
 ('tests', 'c++17') 47
 
 # ELF sections, +unity2 vs +unity3 (objcopy --only-section | sha256)

@@ -13,20 +13,25 @@ as 0ubuntu6 did, and `tests/` with C++17.
 - Every package's file list is identical to +unity2's.
 - The exported dynamic symbols of every ELF file are identical.
 - All 6 test suites pass.
-- On target2, HUD answered for LibreOffice as with +unity2.
+- On target2 the LibreOffice window was kept 10 of 10 times, and HUD
+  answered 9 of 10 (see Measurements for the one miss).
 
 ```yaml
 task_id: UNITY-20260927-028
 package: hud
 target_series: resolute
 issue: local - +unity1 set -std=c++17 for the whole project (legacy B-L24)
-status: REPRODUCED  # a build-scope finding: +unity2's sbuild log compiles all 129 C++ units with -std=c++17
+status: REPRODUCED  # a build-scope finding: +unity2's sbuild log compiles every hud and test unit with -std=c++17
 issue_search_result: NOT_FOUND  # our own change; upstream and 26.10 ship 0ubuntu6 with -std=c++14 (UNITY-20260927-029 search)
 source_version: 14.10+17.10.20170619-0ubuntu6+unity2 (0e99dca, not yet published) -> +unity3
 source_commit: 2f2fa89 (B's local git tree packages/hud; 31fb59c the change); the whole series from archive 0ubuntu6 is in patches/full-series
+binary_version: +unity2 and +unity3 built from packages/hud (0e99dca, 2f2fa89); target2 ran +unity3 via dpkg -i
+reproduction: the sbuild logs (build/; +unity2's in research/UNITY-20260927-029-hud-libreoffice/build/), counted by the last -std= of each compile command
+evidence: logs/01-03, build/
 observed: >
-  FACT (logs/02): +unity2's build compiles all 82 C++ units of hud and all
-  47 of tests/ with -std=c++17.
+  FACT (logs/02): +unity2's build compiles all 78 C++ units of hud and all
+  47 of tests/ with -std=c++17 (the 4 googletest/gmock units with
+  -std=gnu++17 from googletest's own CMake).
 expected: hud compiled as upstream (C++14); only the tests, which include resolute's googletest, with C++17
 root_cause: CMakeLists.txt:141 set -std=c++17 for CMAKE_CXX_FLAGS of the whole tree in +unity1
 invariant: >
@@ -48,10 +53,11 @@ code_risks:
   threading_reentrancy: not_applicable
   ABI_API_file_list: checked  # logs/01: file lists and exported symbols identical
 unknowns:
-  - the tests (C++17) link objects of common/ and service/ built with C++14
-    (the same mix 0ubuntu6's own test build used before googletest needed
-    C++17); GCC keeps one libstdc++ ABI across these levels, and the 6
-    suites pass
+  - the tests (C++17) link objects of common/ and service/ built with
+    C++14. 0ubuntu6 did not have that mix: it built everything, tests
+    included, with C++14. INFERENCE: sound, because GCC keeps one libstdc++
+    ABI across these levels; it concerns only unshipped test binaries, and
+    the 6 suites pass
 ```
 
 ## Measurements
@@ -61,14 +67,22 @@ unknowns:
 
   | build | hud | tests/ |
   |---|---|---|
-  | +unity2 | c++17 (82) | c++17 (47) |
-  | +unity3 | **c++14 (82)** | c++17 (47) |
+  | +unity2 | c++17 (78) | c++17 (47) |
+  | +unity3 | **c++14 (78)** | c++17 (47) |
 
-- **Packages** (logs/01, `abicompare.py`, +unity2 against +unity3, all 15
-  binary packages):
+  Plus 4 googletest/gmock units with `-std=gnu++17` from googletest's own
+  CMake in both builds. An earlier count said 82 for hud because its regex
+  missed `gnu++17` (Verifier finding 2).
+
+- **Packages** (logs/01, `abicompare.py`, +unity2 against +unity3, all 14
+  .deb packages; the 5 .ddeb are not compared):
   - every file list is identical;
-  - the exported dynamic symbols of all ELF files are identical: libhud 25,
-    libhud-client 67, libhud-gtk 3, and the executables;
+  - the exported dynamic symbols of the libraries are identical: libhud
+    25, libhud-client 67, libhud-gtk 3. The executables export nothing.
+    The Verifier also compared every dynamic symbol including imports,
+    with versions, and found them identical. libhud-client's 31 C++
+    symbols are all hud::client::HudClient (pimpl): no [abi:cxx11] tags, no
+    std:: in its headers, and the vtable and typeinfo sizes are unchanged;
   - contents differ in the changelogs and the ELF files.
 - **ELF sections** (logs/02):
   - `libhud.so` (C) differs only in its build-id; its code is identical;
@@ -82,9 +96,11 @@ unknowns:
   answered 9 of 10.
   - The empty run is the session's first start, with xid 56623243. That
     is the same xid as the one mechanism-2 case in UNITY-20260927-029,
-    which was also a first start on the archive hud. So it is not specific
-    to this change; it is a lead for UNITY-20260929-002, pointing to a
-    first-start dialog.
+    also a first start, on the archive hud. INFERENCE, not proven: it is
+    unrelated to the language level. The case has been seen on the two
+    C++14 builds (archive and +unity3) and not on +unity2. In 029, +unity2
+    answered 20/20, and 5 of 5 on first starts, where boot 4 was empty 5 s
+    later. It stays open for UNITY-20260929-002.
 
 ## Result
 
@@ -96,6 +112,18 @@ unknowns:
   change, +unity3). The git tree `packages/hud` exists only on builder
   (~/work/b/unity-distro/packages/hud), and the series rebuilds it: `git
   am` on `dpkg-source -x` of the archive 0ubuntu6.
+
+## Verification: PASS (REVIEWED)
+
+The independent Verifier checked:
+- the diff (two flag lines);
+- the flags per compile unit in the sbuild log;
+- the ABI (all dynamic symbols with versions, libhud-client's C++ class);
+- the tests (6/6);
+- the source format (non-native 1.0) and the manifest against 2f2fa89.
+
+Its notes are applied above: the unit counts, the 0ubuntu6 statement,
+INFERENCE labels, 14 .debs, and the missing card fields.
 
 ## Status
 
