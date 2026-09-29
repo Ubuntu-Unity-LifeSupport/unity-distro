@@ -29,7 +29,6 @@ import posixpath
 import re
 import subprocess
 import sys
-import tarfile
 import tempfile
 import urllib.error
 import urllib.parse
@@ -220,17 +219,59 @@ def _too_big():
     raise core.Refused("a control archive decompresses beyond the limit")
 
 
-def control_member_name(member):
-    """The name of a control-archive member, or None for the top directory
-    itself; refuses anything but a regular file directly at the top level."""
-    name = member.name[2:] if member.name.startswith("./") else member.name
-    if name in ("", ".") and member.isdir():
-        return None
-    if not member.isreg() or member.islnk() or member.issym():
-        raise core.Refused(f"the control archive holds a non-regular member {core.printable(member.name)}")
+def control_name(name):
+    """A control-archive member name: one optional leading "./", then a plain
+    top-level file name."""
+    name = name[2:] if name.startswith("./") else name
     if "/" in name or not CONTROL_NAME_RE.fullmatch(name):
-        raise core.Refused(f"the control archive holds a member not at its top level: {core.printable(member.name)}")
+        raise core.Refused(f"the control archive holds a member not at its top level: {core.printable(name)}")
     return name
+
+
+def control_tar_names(plain):
+    """The member names of a control tar, read from its raw 512-byte headers,
+    not through tarfile: Python's tarfile and GNU tar (dpkg) pick different
+    names when pax or GNU long-name headers precede a member (Verifier round
+    3). Only plain ustar headers pass: typeflag '0'/NUL (a regular file) and
+    '5' for the top directory itself, a valid checksum, an octal size, and the
+    two zero end blocks. Every real control archive in the live pool is of that
+    form (card section 17)."""
+    names, i = [], 0
+    while True:
+        header = plain[i:i + 512]
+        if len(header) < 512:
+            raise core.Refused("the control archive is truncated")
+        if header == b"\0" * 512:
+            if plain[i + 512:i + 1024] != b"\0" * 512:
+                raise core.Refused("the control archive has no end-of-archive marker")
+            return names
+        stored = header[148:156].rstrip(b"\0 ")
+        if not stored or not all(48 <= c <= 55 for c in stored):
+            raise core.Refused("a control archive header has a malformed checksum")
+        if int(stored, 8) != sum(header[:148]) + 8 * 32 + sum(header[156:]):
+            raise core.Refused("a control archive header checksum does not match")
+        magic = header[257:265]
+        if magic not in (b"ustar\x0000", b"ustar  \x00"):
+            raise core.Refused("the control archive is not plain ustar")
+        if magic == b"ustar\x0000" and header[345:500].strip(b"\0"):
+            raise core.Refused("the control archive uses a ustar name prefix")
+        kind = header[156:157]
+        raw_size = header[124:136].rstrip(b"\0 ").lstrip(b" ")
+        if raw_size and not all(48 <= c <= 55 for c in raw_size):
+            raise core.Refused("a control archive header has a non-octal size")
+        size = int(raw_size or b"0", 8)
+        try:
+            name = header[:100].split(b"\0", 1)[0].decode("ascii")
+        except UnicodeDecodeError:
+            raise core.Refused("a control archive member name is not ASCII")
+        if kind == b"5":
+            if name not in ("./", ".") or size:
+                raise core.Refused(f"the control archive holds a directory {core.printable(name)}")
+        elif kind in (b"0", b"\0"):
+            names.append(control_name(name))
+        else:
+            raise core.Refused(f"the control archive holds a member of type {core.printable(kind)} ({core.printable(name)})")
+        i += 512 + ((size + 511) // 512) * 512
 
 
 def control_members(deb, limit=16 * 1024 * 1024):
@@ -250,18 +291,7 @@ def control_members(deb, limit=16 * 1024 * 1024):
         if len(body) != size:
             raise core.Refused("truncated ar member")
         if name.startswith("control.tar"):
-            plain = bounded_decompress(name, body, limit)
-            try:
-                with tarfile.open(fileobj=io.BytesIO(plain), mode="r:") as tar:
-                    names = [control_member_name(m) for m in tar.getmembers()]
-                    names = [n for n in names if n is not None]
-                    end = tar.offset
-                # a complete tar ends with two zero blocks after its last member
-                if plain[end:end + 1024] != b"\0" * 1024:
-                    raise core.Refused("the control archive has no end-of-archive marker")
-                return names
-            except (tarfile.TarError, EOFError, OSError) as exc:
-                raise core.Refused(f"malformed control archive: {exc}")
+            return control_tar_names(bounded_decompress(name, body, limit))
         pos += 60 + size + (size % 2)
     raise core.Refused("no control archive in the .deb")
 

@@ -465,8 +465,38 @@ class SignerEndToEndTest(unittest.TestCase):
             with self.subTest(case=label):
                 with self.assertRaises(core.Refused):
                     aptly_signer.control_members(self.deb_with_control(self.control_tar(members)))
-        ok = self.control_tar([(".", tf.DIRTYPE, b"", ""), control, ("./postinst", tf.REGTYPE, b"#!/bin/sh\n", "")])
+        ok = self.control_tar([("./", tf.DIRTYPE, b"", ""), control, ("./postinst", tf.REGTYPE, b"#!/bin/sh\n", "")])
         self.assertEqual(aptly_signer.control_members(self.deb_with_control(ok)), ["control", "postinst"])
+
+    def test_extended_tar_headers_refused(self):
+        """Verifier round 3: tarfile and GNU tar pick different names when pax
+        or GNU long-name headers precede a member. Only plain ustar passes."""
+        import tarfile as tf
+        long_name = "./" + "c" * 120
+        for label, fmt, members in (
+                ("pax x header", tf.PAX_FORMAT, [("./control", b"x"), (long_name, b"x")]),
+                ("pax path=preinst", tf.PAX_FORMAT, [("./control", b"x"), ("./preinst\u00e9", b"x")]),
+                ("GNU long name", tf.GNU_FORMAT, [("./control", b"x"), (long_name, b"x")])):
+            with self.subTest(case=label):
+                buf = io.BytesIO()
+                with tf.open(fileobj=buf, mode="w", format=fmt) as t:
+                    for name, data in members:
+                        info = tf.TarInfo(name); info.size = len(data)
+                        t.addfile(info, io.BytesIO(data))
+                with self.assertRaises(core.Refused):
+                    aptly_signer.control_members(self.deb_with_control(buf.getvalue()))
+        # a broken header checksum, and a non-octal size
+        good = bytearray(self.control_tar([("./control", tf.REGTYPE, b"x", "")]))
+        bad = bytearray(good); bad[0] ^= 1
+        with self.assertRaises(core.Refused):
+            aptly_signer.control_members(self.deb_with_control(bytes(bad)))
+        # the Verifier's two crafted .debs, if present
+        scratch = Path("/tmp/claude-1000/-home-claude/a9056178-c052-41ac-b853-73b5663b476b/scratchpad/r2t")
+        for name in ("twox.deb", "Lctl2_xpreinst.deb"):
+            if (scratch / name).exists():
+                with self.subTest(deb=name):
+                    with self.assertRaises(core.Refused):
+                        aptly_signer.control_members((scratch / name).read_bytes())
 
     def test_refresh_write_order(self):
         raw = self.packages()
