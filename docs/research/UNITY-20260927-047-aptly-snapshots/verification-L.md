@@ -58,3 +58,25 @@ Remarks and what was done:
   v2.
 - The empty `public/candidate/` directory is recorded.
 - L1 is not in live-log, by design.
+
+## Round 2 (2026-09-29, same Verifier; branch tip 18b2f6f)
+
+Verdict: **INCOMPLETE**, `REVIEWED`. One remaining finding: the top-level
+`scope` of the evidence card still read "phase R only ... phase L not
+authorized". Fixed after the round: `scope` now states the task,
+phase R counted, phase L executed under May's GO with the 008 allowance,
+the live state, and the list removal.
+
+Re-verified in round 2:
+
+- the second false positive is recorded in logs/47;
+- logs/50, with the Verifier's own parser:
+  - the live db/LOG has no rotation;
+  - the 2026-09-29 section holds exactly the 11 in-window opens;
+  - the backup's db/LOG is a byte-for-byte prefix of the live one, so
+    nothing opened the db between the backup and L1. This is proven.
+- the test asserts the missing-list reason; suite 158 OK / 1 skipped;
+- README step 3 is consistent with blocked-commands.md.
+
+Accepted as stated: the db holding the snapshot rests on the P5/P7 output
+and the Release/Packages consistency.
