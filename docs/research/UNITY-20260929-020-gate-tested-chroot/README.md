@@ -200,3 +200,38 @@ the three modes.
     changed after the gate;
   - publish refuses when the recorded `tested_build` differs from the
     recomputed one.
+
+## 6. Design review 2: REVISE, and the changes
+
+R1-R4 and the test list resolve every point from round 1. One change is
+still needed. It also answers the open question: for a tested build without
+a manifest, the link from `target_test.debs` to `tested_buildinfo` must not
+rest on free text.
+
+- A hash found by grep in free text only proves the string is there, not
+  what role it plays.
+- A hand-written JSON record, made now, is no more trustworthy than that
+  text.
+
+The link comes from the build tool itself: the tested build's own
+`.changes`, written by sbuild at build time. Its `Checksums-Sha256` field
+lists the sha256 of both the debs and the `.buildinfo`.
+
+Changes to section 5:
+
+1. **R2, `buildinfo_identical`.** For a tested build without a manifest, a
+   committed `tested_changes` file is required. Its `Checksums-Sha256` must
+   contain every `target_test.debs` hash and the `tested_buildinfo` hash.
+   With `tested_manifest`, its artifacts list covers the link, as before.
+2. **R2, every mode.** The gate also checks that `target_test.record` is a
+   committed file that names each deb, by file name or sha256. This is a
+   cross-check of the attestation in `target_test.debs`, not the proof.
+   Where a legacy task's log names neither, the task needs a new target
+   test.
+3. **R3.** `tested_build.py` parses `Checksums-Sha256` from a `.changes`.
+   `publish_aptly.py`'s `dsc_checksums` already parses the same field from
+   a `.dsc`, and is reused or moved there.
+4. **Tests added:**
+   - `tested_changes` missing, uncommitted or changed after the gate;
+   - a deb or `.buildinfo` hash missing from `Checksums-Sha256`;
+   - a target test record that does not name a deb.
