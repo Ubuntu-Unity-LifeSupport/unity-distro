@@ -500,6 +500,9 @@ class BuildSbuildTest(unittest.TestCase):
                 self.assertIsNone(m)
                 self.assertIsNone(self.sbuild_argv(), f"sbuild ran for: {label}")
                 self.assertIn("--extra-package", r.stderr)
+                # UNITY-20260929-014: a refusal leaves no copies behind
+                left = sorted(q.name for q in o.iterdir()) if o.exists() else []
+                self.assertEqual(left, [], f"left in the output for {label}: {left}")
 
     def test_relative_symlink_and_space_accepted(self):
         """A relative path (against the caller's cwd), a symlink and a space in the path."""

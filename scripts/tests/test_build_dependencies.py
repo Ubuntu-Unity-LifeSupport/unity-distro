@@ -107,6 +107,11 @@ class CheckTest(unittest.TestCase):
             "missing copy": [dict(self.entry, file="build-dependencies/nothere.deb")],
             "wrong sha256": [dict(self.entry, sha256="0" * 64)],
             "pool_path outside the pool": [dict(self.entry, pool_path=str(self.base / "elsewhere.deb"))],
+            # UNITY-20260929-014: size is an int that is not a bool, and the file's size
+            "size true": [dict(self.entry, size=True)],
+            "size as text": [dict(self.entry, size=str(self.entry["size"]))],
+            "size negative": [dict(self.entry, size=-1)],
+            "size differs from the file": [dict(self.entry, size=self.entry["size"] + 1)],
         }
         for label, entries in cases.items():
             with self.subTest(case=label):
@@ -115,6 +120,25 @@ class CheckTest(unittest.TestCase):
         self.copy.write_bytes(self.copy.read_bytes() + b"x")
         self.assertIn("does not match", self.check([self.entry]))
 
+    def test_build_dependencies_directory_symlinked_refused(self):
+        """UNITY-20260929-014: the copies must sit in the manifest directory's own
+        build-dependencies/, not in a directory a symlink points to."""
+        elsewhere = self.base / "elsewhere"
+        (self.out / "build-dependencies").rename(elsewhere)
+        (self.out / "build-dependencies").symlink_to(elsewhere)
+        self.assertIn("build-dependencies", self.check([self.entry]) or "")
+        # a symlink inside the directory pointing out of it is refused as before
+        (self.out / "build-dependencies").unlink()
+        (self.out / "build-dependencies").mkdir()
+        (self.out / "build-dependencies" / self.copy.name).symlink_to(elsewhere / self.copy.name)
+        self.assertIsNotNone(self.check([self.entry]))
+
+    def test_manifest_directory_reached_through_a_symlink_accepted(self):
+        """A symlink above the manifest directory is not the case refused above."""
+        link = self.base / "link-to-out"
+        link.symlink_to(self.out)
+        self.assertIsNone(bd.check_entries([self.entry], link, self.pool))
+
     def test_not_in_pool(self):
         """Bytes in candidate/ only (unpublished staging) or other bytes in the pool: refused."""
         other = make_deb(self.candidate / "libnux-4.0-common_4.0.8-0ubuntu15+unity2_all.deb",
@@ -122,7 +146,8 @@ class CheckTest(unittest.TestCase):
         copy = self.out / "build-dependencies" / other.name
         copy.write_bytes(other.read_bytes())
         entry = dict(self.entry, file=f"build-dependencies/{other.name}", package="libnux-4.0-common",
-                     architecture="all", sha256=hashlib.sha256(other.read_bytes()).hexdigest())
+                     architecture="all", sha256=hashlib.sha256(other.read_bytes()).hexdigest(),
+                     size=other.stat().st_size)
         entry.pop("pool_path")
         self.assertIn("not in our published pool", self.check([entry]))
         # same name in the pool, different bytes
@@ -139,7 +164,8 @@ class CheckTest(unittest.TestCase):
         copy = self.out / "build-dependencies" / other.name
         copy.write_bytes(other.read_bytes())
         entry = dict(self.entry, file=f"build-dependencies/{other.name}", package="libnux-4.0-common",
-                     architecture="all", sha256=hashlib.sha256(other.read_bytes()).hexdigest())
+                     architecture="all", sha256=hashlib.sha256(other.read_bytes()).hexdigest(),
+                     size=other.stat().st_size)
         entry.pop("pool_path")
         rel_to_copy = Path("..") / ".." / ".." / ".." / ".." / "out" / "build-dependencies"
         cases = {"source into candidate/": dict(entry, source="nux/../../../../candidate/pool/main/n/nux"),
