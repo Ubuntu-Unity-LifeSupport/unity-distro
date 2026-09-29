@@ -432,3 +432,59 @@ Challenger if an assumption fails. The rehearsal proves:
 - the index temporary files present in aptly's temporary directory when gpg
   is called (A1);
 - the argv aptly passes.
+
+## 10. Design review 2: REVISE, and the changes
+
+The review accepts amendment (a), A1 (it fails closed) and May's invariant,
+which is unchanged. It found the refresh path as written in section 8
+wrong: `/current` serves last-live, and last-live moves only at `/live`. So
+a refresh before a successful `/live` would put the old set's trio over the
+new indexes. Section 8 is corrected as follows.
+
+R1. **The refresh right after the switch installs the switch-time trio.**
+- The stand-in stores the trio it received at the switch in a 0600 file,
+  named by the sha256 of aptly's Release, under
+  `~/.cache/aptly-signer/switch/`.
+- The run is: switch, then refresh with that stored trio (no `/current`),
+  then `/live`.
+- The one-call window does not depend on `/live`.
+
+R2. **Every refresh checks before writing**, the cadence refresh included.
+The trio's checksums must equal the index files served under
+`dists/resolute/`. On a mismatch it writes nothing, marks the publication
+and signals C.
+
+R3. **Section 8's "the next cadence refresh repairs it" is corrected.** It
+holds only if `/live` succeeded. If `/live` failed, the cadence re-signs
+the previous set. R2 refuses to install it, and the repository expires at
+`Valid-Until`. That is reported as expiry (the "repository has expired"
+report from -019 round 3), with the refresh marker.
+
+R4. **The marker.** In this task, `signer_client.py refresh` writes only
+the marker file `~/coordinator/publish-records/<task>.refresh-failed` and
+the `REFRESH-FAILED <task>` log line; the publish record is write-once. In
+the `publish_aptly.py` follow-up, the refresh runs before the write-once
+record, so the record carries the refresh result.
+
+R5. **Write order.** `Release` and `Release.gpg` are each written through a
+temporary file and a rename, then `InRelease`.
+
+R6. **The stand-in's inputs (A1).**
+- It reads only regular files, with no symlinks, from aptly's temporary
+  directory.
+- The names are mapped strictly from the Release's file list (`/` becomes
+  `_`).
+- The rehearsal records the directory listing at the moment gpg is
+  called. If the rehearsal refutes the temporary-directory assumption, the
+  design goes back to the Challenger. There is no quiet switch to storage
+  `.tmp` paths.
+
+Tests added:
+- a refresh with the old set's trio over new indexes is refused, and
+  nothing is written;
+- the ordering: the refresh after the switch uses the stored switch-time
+  trio, and works without `/current` and before `/live`;
+- the cadence refresh before `/live` is refused by R2;
+- the write order;
+- a symlink or an unlisted file in the temporary directory is refused by
+  the stand-in.
