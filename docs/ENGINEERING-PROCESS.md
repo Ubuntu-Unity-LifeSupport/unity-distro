@@ -488,6 +488,63 @@ unpublished `candidate/` staging does not count). A publishable build
 depends only on extra packages we publish. Without the option nothing
 changes.
 
+The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
+
+- **What the builds use.** Every build runs in a chroot tarball made from a
+  pinned snapshot of the Ubuntu archive:
+  `https://snapshot.ubuntu.com/ubuntu/<T>`, with the target series' release,
+  `-updates` and `-security` pockets and the components main, universe and
+  restricted (no multiverse, no -backports, no -proposed).
+- **Why the snapshot.** The tarball's `/etc/apt/sources.list` keeps exactly
+  those three lines. sbuild's `apt-get update`/`dist-upgrade` in each build
+  therefore sees the same archive state as the tarball ("0 upgraded"). The
+  same tarball gives the same build dependencies, now and later.
+- **Creating a tarball.** `python3 scripts/sbuild_chroot.py create
+  [--snapshot <T>]`, where `<T>` defaults to now. It writes
+  `~/.cache/sbuild/chroots/<series>-<arch>-<T>.tar.zst` and a sidecar
+  `.json`: the sources, each pocket's InRelease Date, the mmdebstrap argv,
+  the package list and the sha256. It never overwrites.
+- **What `build_sbuild.py` does.**
+  - It takes `--chroot-tarball PATH`; the default is the newest tarball
+    with a sidecar.
+  - Before sbuild it refuses a symlink, a tarball without a matching
+    sidecar, one whose sources are not exactly the snapshot pockets, and a
+    snapshot more than 7 days old. `--allow-old-chroot` overrides the age
+    limit, and the manifest records it.
+  - It passes `--chroot-mode=unshare --chroot=<path>` and
+    `SBUILD_CONFIG=build/sbuild-config.pl`. That file is read after the
+    user's own sbuild config and resets what could add apt sources, packages
+    or change the chroot: extra repositories and keys, extra packages (only
+    the command line's `--extra-package` copies remain), external and setup
+    commands, unauthenticated packages, the apt-get command, the build
+    environment command and bind mounts; it keeps apt update and
+    dist-upgrade on.
+  - After sbuild it refuses, with no manifest, a tarball that changed, a
+    log without `I: Unpacking <path> to`, a chroot sbuild built on its own
+    ("Creating chroot on-demand"), a log without the InRelease of each of
+    the three pockets from the snapshot, and any apt fetch from elsewhere -
+    another mirror, another snapshot, or a local repository other than
+    sbuild's own resolver archives
+    (`file:`/`copy:/build/reproducible-path/resolver-*/apt_archive`), and any
+    package sbuild copies into that archive other than this build's
+    `build-dependencies/` copies. This guards against ordinary settings in
+    the user's sbuild config; the config is executable Perl, and a
+    deliberately hostile one is out of scope.
+  - The manifest's `chroot` key records the tarball, its sha256, `<T>`, the
+    sources and the InRelease lines.
+- **Refresh.** Create a new tarball when the current snapshot is more than
+  7 days old, or when a task needs a newer archive state.
+- **Test build and gated build.** The build tested on target and the gated
+  build of one task use the same tarball: the gated build passes
+  `build_sbuild.py --tested-with <tested manifest>`, which refuses any other
+  tarball. Only when the tested build has no usable manifest (one built
+  before this policy) compare the `.buildinfo` Installed-Build-Depends
+  instead, and repeat the target test on any difference. A gated build on
+  the tested tarball may use `--allow-old-chroot`.
+- **Retention.** Keep every tarball named by a committed manifest; others
+  may be deleted by hand. `~/.cache/sbuild/resolute-amd64.tar.zst` (release
+  pocket only, 2026-09-22) is the record of the builds up to 2026-09-29.
+
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
 the task to `READY_TO_PUBLISH`. The publisher also checks that board state.
