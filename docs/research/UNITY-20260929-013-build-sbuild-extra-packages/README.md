@@ -250,6 +250,28 @@ because main's argparse rejects the unknown option (exit 2 before sbuild).
 | R2 | tiny013 + libnux-4.0-common `0ubuntu15+unity2` from the pool | exit 0; `build_dependencies` 1 entry, `in_our_repository_pool: true`, `pool_path` `.../pool/main/n/nux/...`; `manifest_error` with the real pool: none (`real-runs/r2-tiny013-build-manifest.json`) |
 | R3 | unity `7b0eca27` (UNITY-20260927-040) + libnux-4.0-0/-common/-dev `0ubuntu15+unity2` from the pool | exit 0, 14 artifacts; all three in `build_dependencies`, in the pool; `.buildinfo` lists the three at `0ubuntu15+unity2` (`real-runs/r3-buildinfo-nux.txt`); `manifest_error` with the real pool: none; manifest keys = today's + `build_dependencies` (`real-runs/r3-unity-build-manifest.json`, log `real-runs/r3-unity-sbuild.log.xz`) |
 
+**Verifier round 1: FAIL (FIX_PARTIAL), fixed in `94341a1`.** The pool
+check could be steered by the manifest's own name fields: `source` (or
+package/version/architecture) containing `/` or `..` made the computed pool
+path point at the unpublished `candidate/` or at the manifest's own copy, and
+`check_entries` accepted it; `build_sbuild.py` took `Source` from the `.deb`
+unchecked. Fix: every name field must be a valid Debian package name,
+version and architecture (`field_error`, both in build_sbuild and the
+consumers), and the computed pool path must resolve inside the pool root
+(`in_pool`). Remarks also taken: non-string fields refused with a message;
+the fields are read from the copy, not the original; a second file of the
+same package is refused in any architecture; a consumer entry must be under
+`build-dependencies/`; docs wording. New tests: both counterexamples,
+non-string fields, file outside `build-dependencies/`, a pool symlink out of
+the root, `field_error` cases; in build_sbuild: a `.deb` with
+`Source: ../../../etc` and the same package in `all` and `amd64` refused
+before sbuild. Suite 180 OK (1 skipped); against main's build_sbuild.py the
+same 7 new tests fail (`real-runs/new-tests-on-main-build_sbuild.txt`).
+Real runs repeated on `94341a1` (`real-runs/run-real-2.log`): R1 refused
+("was not used by the build (Installed-Build-Depends: ...0ubuntu12)"), R2
+and R3 exit 0, all dependencies in the pool, `manifest_error` with the real
+pool: none (manifests and the R3 log in `real-runs/` are those of this rerun).
+
 Not exercised end to end: `create_release_gate.py` and `publish_aptly.py`
 as whole programs on R3 (the gate needs a task in REVIEW, a pushed source in
 `packages/`, a version check against a snapshot; the publisher a gate) - their

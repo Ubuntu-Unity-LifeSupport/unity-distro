@@ -17,12 +17,12 @@
     "--dpkg-source-opt=-I",
     "--extra-package=/home/claude/work/a/013-real/out-r2/build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb"
   ],
-  "build_started": "2026-09-29T15:25:22.101583+00:00",
-  "build_finished": "2026-09-29T15:27:20.574943+00:00",
+  "build_started": "2026-09-29T16:00:08.497499+00:00",
+  "build_finished": "2026-09-29T16:02:21.157817+00:00",
   "result": "PASS",
   "log": {
     "file": "UNITY-20260929-013-tiny013-1.0-sbuild.log",
-    "sha256": "dd186910ad28cc67c8cd82a7aca44bed2a19d6533b5127d97c39f5e9edfd638a"
+    "sha256": "8f09bf8a98ca7b64784fdbf82efbcb77320ad4fd846e0cc07889c5f3e3c44a52"
   },
   "artifacts": [
     {
@@ -35,7 +35,7 @@
     },
     {
       "file": "tiny013_1.0_amd64.changes",
-      "sha256": "b859a948c68820a6ae41908d76fb91663131b49b76bd5b7b49fa66f393254321",
+      "sha256": "64f8d345ef2179a3a1711dbf1700a754c7c0dcf8137442f4074111c9d5103517",
       "size": 902,
       "kind": "changes"
     },
@@ -58,7 +58,7 @@
     },
     {
       "file": "tiny013_1.0_amd64.buildinfo",
-      "sha256": "4801c0fd9aa57a9ded533c5c271e24b954fc58f0e97a7e66c229b650adba6c80",
+      "sha256": "3278960330a371f906f8366125df5db85d09f5f696953a2794c80333fb1c0822",
       "size": 5432,
       "kind": "buildinfo"
     }

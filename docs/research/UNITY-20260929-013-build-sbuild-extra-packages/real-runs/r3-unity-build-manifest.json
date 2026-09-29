@@ -19,12 +19,12 @@
     "--extra-package=/home/claude/work/a/013-real/out-r3/build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb",
     "--extra-package=/home/claude/work/a/013-real/out-r3/build-dependencies/libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity2_amd64.deb"
   ],
-  "build_started": "2026-09-29T15:27:20.997217+00:00",
-  "build_finished": "2026-09-29T15:41:55.399965+00:00",
+  "build_started": "2026-09-29T16:02:22.042875+00:00",
+  "build_finished": "2026-09-29T16:23:57.563209+00:00",
   "result": "PASS",
   "log": {
     "file": "UNITY-20260927-040-unity-7.7.1+26.04.20260306-0ubuntu3+unity12-sbuild.log",
-    "sha256": "b926974bd910034108564b3caecbda21e384e51850ef6c7a14531fa8b0d3ffe6"
+    "sha256": "22f79407d5897a466f3c32ff3cfb46eb87a6fc43fc8318aecaea7056a67f01b9"
   },
   "artifacts": [
     {
@@ -37,7 +37,7 @@
     },
     {
       "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64.changes",
-      "sha256": "4c57fa7404839c10d1164fe4d9b9e0c466e37d3289310c005cd656fc897d0dbf",
+      "sha256": "3adbac4e7f1b4582811c568f68ea25063b929c65378895a0057e692e922a62c4",
       "size": 5425,
       "kind": "changes"
     },
@@ -87,8 +87,8 @@
     },
     {
       "file": "unity-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64.ddeb",
-      "sha256": "5bc891f10605bf813415ed527a9b6f5157f521656431da316b4dba882a5d253d",
-      "size": 35464788,
+      "sha256": "2c81cd42143e7835208967077119a03e32020feecd7248170bd07a6d24cf8390",
+      "size": 35467518,
       "kind": "binary",
       "package": "unity-dbgsym",
       "version": "7.7.1+26.04.20260306-0ubuntu3+unity12",
@@ -132,14 +132,14 @@
     },
     {
       "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64.buildinfo",
-      "sha256": "af0409b488d985c784723e21d85fe40c36bef96da02cca9652fb7b12f239e9c4",
+      "sha256": "191fdd42da0f5c18fb4da3c3c15999937ae2ec27ce2971ae89b86428045e41a6",
       "size": 27616,
       "kind": "buildinfo"
     },
     {
       "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64.deb",
-      "sha256": "c5bf2ed73720dce620424b33fb819a443844253e08157f740e2bf47913e2f927",
-      "size": 1861554,
+      "sha256": "c944375eeab25d649019c7d0630d87afb65b2a3d63900d889f17436df0715576",
+      "size": 1861550,
       "kind": "binary",
       "package": "unity",
       "version": "7.7.1+26.04.20260306-0ubuntu3+unity12",
