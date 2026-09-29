@@ -115,7 +115,7 @@ task_id: UNITY-20260928-022
 package: unity-settings-daemon
 target_series: resolute
 issue: power plugin registrations outliving stop() - which fire, with what effect
-status: REPRODUCED   # D-Bus object (stopped: calls hang; finalized: SIGSEGV), async start callbacks after stop (leak); idle watches and battery paths unreachable on our stack
+status: BLOCKED   # aptly freeze, resume REVIEW; fix verified (+unity9). Found: D-Bus object (stopped: calls hang; finalized: SIGSEGV), async start callbacks after stop (leak); idle watches and battery paths unreachable on our stack
 issue_search_result: NOT_FOUND   # follow-up of UNITY-20260927-012; upstream master has the same code
 source_version: 15.04.1+21.10.20220802-0ubuntu7+unity7 (base; built, not published; waits for the aptly freeze)
 candidate_version: 15.04.1+21.10.20220802-0ubuntu7+unity9   # +unity8 superseded (Verifier round 1 FAIL), never published
