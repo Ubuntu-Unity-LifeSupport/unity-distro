@@ -311,3 +311,27 @@ Fix (on d743b73):
     are admitted there; the later subtests fail as a cascade on the log line
     left behind;
   - now 23/23 (logs/03), full suite 157/157 (logs/04).
+
+## Result
+
+- Verifier round 2: PASS (PATCH_CORRECT, INDEPENDENTLY_REPRODUCED;
+  verification.md).
+- May confirmed the section 6 and 9 wording and the eight-command list. C
+  merged fast-forward to main 3559561; tests 157/157; `--check` OK. The list
+  on main has sha256
+  `4e9dde5a5b862f58a27f47bfaea80942fab73c46ac0b9434a0c0d6e70f42294a`.
+- `~/.aptly.conf`: `chmod g-w` at C's request (the L0 operation of -047).
+  Mode went from 664 to 644, and sha256 stayed `ece05ab8...` (= the list's
+  `aptly_conf_sha256`) (logs/06). So the chain now reaches the marker check.
+- New-session proof (logs/07), in session 19e09c15 rooted at /home/claude,
+  run by May one command at a time and checked by B against its transcript:
+  - `--check` OK;
+  - the `pgrep -f` probe denied by the hook;
+  - `live-proof.py` (payloads only, nothing executed), under that session's
+    id with no live marker:
+    - all 8 listed strings denied with "no live authorization is recorded";
+    - both near-misses denied with "not an exact entry";
+    - Monitor and background denied with "only as a foreground Bash call";
+  - `~/coordinator/live-log.jsonl` absent.
+- Open for -047: C writes the live marker after L0 and May's GO for the run;
+  at -047's DONE, C removes the marker and the list.
