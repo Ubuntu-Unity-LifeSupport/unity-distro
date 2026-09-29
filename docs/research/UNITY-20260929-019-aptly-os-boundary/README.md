@@ -271,6 +271,24 @@ model treats it as copied. It is retired:
    served on :8080 carries its own signature over exactly the Release it
    signed, not just that a file is there.
 
+### Design Challenger round 3: APPROVE
+
+Non-blocking findings, taken:
+
+- **Valid-Until is 3 days.** A set that was signed but held back by builder
+  can be served at most until then. This window is accepted.
+- **Gate.** If a rehearsal proof fails, the design goes back to the Design
+  Challenger instead of being patched during implementation. The two
+  proofs are "aptly signs temporary files before renaming them" and "the
+  stand-in can overwrite Release, InRelease and Release.gpg before that
+  rename".
+- **Contents: `skipContentsPublishing`, decided now.** The signer refuses
+  any Release that lists `Contents-*`.
+- **Expiry is reported as such.** If the cadence refresh stops, the
+  repository expires for every user, the test targets included.
+  `publish_aptly.py` and taskctl's PUBLISHED gate report this as "the
+  repository has expired (Valid-Until passed)", not as a generic failure.
+
 ### What changes for existing tools
 
 | Tool or operation | Effect |
