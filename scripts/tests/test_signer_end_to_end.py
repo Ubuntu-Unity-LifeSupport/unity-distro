@@ -152,10 +152,15 @@ class SignerEndToEndTest(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
 
+    def rehearsal(self, raw):
+        """A rehearsal (proposal) publication: its dists and its pool."""
+        top = self.base / f"rehearsal-{hashlib.sha256(raw).hexdigest()[:8]}"
+        self.write_tree(top / "dists" / "resolute", self.index_set(raw, gzip_mtime=1))
+        shutil.copytree(self.public / "pool", top / "pool", dirs_exist_ok=True)
+        return top
+
     def propose_and_approve(self, raw):
-        rehearsal = self.base / f"rehearsal-{hashlib.sha256(raw).hexdigest()[:8]}"
-        self.write_tree(rehearsal / "dists" / "resolute", self.index_set(raw, gzip_mtime=1))
-        pid = signer_client.propose(self.client, rehearsal, TASK)
+        pid = signer_client.propose(self.client, self.rehearsal(raw), TASK)
         out = io.StringIO()
         self.assertEqual(aptly_signer.console(self.config, ["approve", pid], out=out, confirm=lambda _: "approve"), 0)
         return pid, out.getvalue()
@@ -340,6 +345,57 @@ class SignerEndToEndTest(unittest.TestCase):
         finally:
             os.environ["PATH"] = saved
 
+    def post_propose(self, raw, debs):
+        files = {k: base64.b64encode(v).decode() for k, v in self.index_set(raw).items()}
+        return signer_client.call(self.client, "POST", "/propose",
+                                  {"task_id": TASK, "files": files,
+                                   "debs": {k: base64.b64encode(v).decode() for k, v in debs.items()}})
+
+    def test_proposal_debs_missing_extra_mismatched(self):
+        """Amendment (b): the .debs travel in /propose; the signer checks them
+        against the Packages it validated itself."""
+        raw = self.packages()
+        all_debs = {rel: (self.public / rel).read_bytes() for rel in self.debs.values()}
+        demo = self.debs["demo"]
+        cases = {
+            "missing": {k: v for k, v in all_debs.items() if k != demo},
+            "extra": dict(all_debs, **{"pool/main/e/extra/extra_1_all.deb": b"x"}),
+            "mismatched": dict(all_debs, **{demo: all_debs[demo] + b"x"}),
+        }
+        for label, debs in cases.items():
+            with self.subTest(case=label):
+                with self.assertRaises(core.Refused):
+                    self.post_propose(raw, debs)
+        self.assertTrue(self.post_propose(raw, all_debs)["ok"])
+
+    def test_changed_entry_same_key_needs_its_deb(self):
+        """An entry changed under the same name, version and arch (other bytes)
+        is new content: its .deb is required."""
+        raw = self.packages()
+        self.propose_and_approve(raw)
+        self.aptly_switch(raw)
+        signer_client.refresh(self.client, TASK, switch=True)
+        signer_client.call(self.client, "POST", "/live", {})
+        rel = self.debs["libdemo1"]
+        (self.public / rel).unlink()
+        shutil.rmtree(self.base / ".deb-libdemo1")
+        self.debs["libdemo1"] = self.make_deb("libdemo1", postinst=True)  # same name/version/arch, new bytes
+        raw2 = self.packages()
+        with self.assertRaises(core.Refused):  # without the new .deb
+            self.post_propose(raw2, {})
+        answer = self.post_propose(raw2, {rel: (self.public / rel).read_bytes()})
+        self.assertTrue(answer["ok"])
+        out = io.StringIO()
+        aptly_signer.console(self.config, ["show", answer["proposal"]], out=out)
+        self.assertIn("changed  libdemo1", out.getvalue())
+        self.assertIn("scripts: postinst", out.getvalue())
+
+    def test_control_archive_decompression_cap(self):
+        deb = (self.public / self.debs["demo"]).read_bytes()
+        with self.assertRaises(core.Refused):
+            aptly_signer.control_members(deb, limit=10)
+        self.assertIn("control", aptly_signer.control_members(deb))
+
     def test_pinned_fingerprint_refuses_another_key(self):
         other = aptly_signer.GpgBackend(self.home, "0" * 40, self.keyring)
         with self.assertRaises(core.Refused):
@@ -370,10 +426,8 @@ class SignerEndToEndTest(unittest.TestCase):
                 self.tearDown(); self.setUp()
                 raw = self.packages()
                 damage()
-                rehearsal = self.base / "rehearsal"
-                self.write_tree(rehearsal / "dists" / "resolute", self.index_set(raw))
                 with self.assertRaises(core.Refused):
-                    signer_client.propose(self.client, rehearsal, TASK)
+                    signer_client.propose(self.client, self.rehearsal(raw), TASK)
         with self.assertRaises(core.Refused):
             aptly_signer.control_members(b"!<arch>\ncontrol.tar.gz  0           0     0     100644  10        `\nnotgzip!!!")
 

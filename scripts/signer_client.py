@@ -6,7 +6,10 @@
   signer_client.py live
 
 propose: sends the rehearsal publication's index set (dists/<dist>/<component>
-files the signer signs) for May's approval.
+files the signer signs) for May's approval, with every .deb whose SHA256 is not
+in the live Packages under public_root, read from the rehearsal publication's
+pool (design amendment (b): a new .deb is not on :8080 before the switch). The
+signer checks each against the Packages it validated itself.
 
 refresh --switch: right after the switch, installs the trio the gpg stand-in
 received at the switch (stored under its sha256 of aptly's Release, which is
@@ -77,6 +80,16 @@ def call(config, method, path, payload=None):
         raise core.Refused(f"the signer is not reachable: {exc}")
 
 
+def packages_entries(dist_dir):
+    """Every Packages entry under dists/<dist>/<component>/binary-*/Packages."""
+    found = []
+    for path in sorted(Path(dist_dir).glob("*/binary-*/Packages")):
+        if path.is_symlink() or not path.is_file():
+            raise core.Refused(f"{path.name} is not a regular file")
+        found += core.parse_stanzas(path.read_text(encoding="utf-8"), str(path))
+    return found
+
+
 def propose(config, public_dir, task):
     dist = Path(public_dir) / "dists" / config["distribution"]
     files = {}
@@ -88,7 +101,18 @@ def propose(config, public_dir, task):
             files[rel] = base64.b64encode(path.read_bytes()).decode()
     if not files:
         raise core.Refused("no index files found")
-    answer = call(config, "POST", "/propose", {"task_id": task, "files": files})
+    live_dist = Path(config["public_root"]) / "dists" / config["distribution"]
+    live = {e.get("SHA256") for e in packages_entries(live_dist)} if live_dist.exists() else set()
+    debs = {}
+    for entry in packages_entries(dist):
+        name = entry.get("Filename", "")
+        if entry.get("SHA256") in live or name in debs:
+            continue
+        deb = Path(public_dir) / name
+        if ".." in name.split("/") or name.startswith("/") or deb.is_symlink() or not deb.is_file():
+            raise core.Refused(f"the proposal's pool lacks {core.printable(name)}")
+        debs[name] = base64.b64encode(deb.read_bytes()).decode()
+    answer = call(config, "POST", "/propose", {"task_id": task, "files": files, "debs": debs})
     return answer["proposal"]
 
 

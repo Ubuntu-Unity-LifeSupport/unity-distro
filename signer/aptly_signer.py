@@ -22,6 +22,7 @@ import hashlib
 import http.server
 import io
 import json
+import lzma
 import os
 from pathlib import Path
 import posixpath
@@ -32,6 +33,7 @@ import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
+import zlib
 from datetime import datetime, timezone
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -42,7 +44,10 @@ try:
 except ImportError:  # pragma: no cover
     zstd = None
 
-DEFAULTS = {"port": 8580, "max_body": 96 * 1024 * 1024, "timeout": 30, "max_deb": 512 * 1024 * 1024,
+# max_body bounds a whole request; the .debs of a proposal travel base64 inside
+# it, so together they may be at most about 3/4 of it (~72 MiB). Larger
+# proposals are refused (fail closed).
+DEFAULTS = {"port": 8580, "max_body": 96 * 1024 * 1024, "timeout": 30, "max_control": 16 * 1024 * 1024,
             "distribution": "resolute", "gpg": "/usr/bin/gpg", "gpgv": "/usr/bin/gpgv"}
 SCRIPTS = ("preinst", "postinst", "prerm", "postrm", "config")
 
@@ -171,8 +176,36 @@ def fetch(base, rel, limit, timeout):
     return data
 
 
-def control_members(deb):
-    """The member names of a .deb's control archive (ar, control.tar.{gz,xz,zst})."""
+def bounded_decompress(name, body, limit):
+    """The control archive decompressed in memory, never beyond limit bytes."""
+    try:
+        if name == "control.tar":
+            out = body
+        elif name == "control.tar.gz":
+            d = zlib.decompressobj(16 + zlib.MAX_WBITS)
+            out = d.decompress(body, limit + 1)
+        elif name == "control.tar.xz":
+            out = lzma.LZMADecompressor().decompress(body, limit + 1)
+        elif name == "control.tar.zst":
+            if zstd is None:
+                raise core.Refused("no zstd support")
+            out = zstd.ZstdDecompressor().decompress(body, limit + 1)
+        else:
+            raise core.Refused(f"unsupported control archive {core.printable(name)}")
+    except (zlib.error, lzma.LZMAError, ValueError, EOFError) as exc:
+        raise core.Refused(f"malformed {core.printable(name)}: {exc}")
+    except core.Refused:
+        raise
+    except Exception as exc:  # zstd raises its own error type
+        raise core.Refused(f"malformed {core.printable(name)}: {exc}")
+    if len(out) > limit:
+        raise core.Refused("a control archive decompresses beyond the limit")
+    return out
+
+
+def control_members(deb, limit=16 * 1024 * 1024):
+    """The member names of a .deb's control archive (ar, control.tar.{gz,xz,zst}),
+    read in memory with a decompression cap; nothing is extracted."""
     if not deb.startswith(b"!<arch>\n"):
         raise core.Refused("not an ar archive")
     pos = 8
@@ -187,20 +220,9 @@ def control_members(deb):
         if len(body) != size:
             raise core.Refused("truncated ar member")
         if name.startswith("control.tar"):
-            if name == "control.tar.zst":
-                if zstd is None:
-                    raise core.Refused("no zstd support")
-                try:
-                    body = zstd.decompress(body)
-                except Exception as exc:
-                    raise core.Refused(f"malformed control.tar.zst: {exc}")
-                mode = "r:"
-            else:
-                mode = {"control.tar": "r:", "control.tar.gz": "r:gz", "control.tar.xz": "r:xz"}.get(name)
-                if mode is None:
-                    raise core.Refused(f"unsupported control archive {core.printable(name)}")
+            plain = bounded_decompress(name, body, limit)
             try:
-                with tarfile.open(fileobj=io.BytesIO(body), mode=mode) as tar:
+                with tarfile.open(fileobj=io.BytesIO(plain), mode="r:") as tar:
                     return [m.name.lstrip("./") for m in tar.getmembers()]
             except (tarfile.TarError, EOFError, OSError) as exc:
                 raise core.Refused(f"malformed control archive: {exc}")
@@ -208,17 +230,11 @@ def control_members(deb):
     raise core.Refused("no control archive in the .deb")
 
 
-def deb_checker(config):
-    def check(fields):
-        size = int(fields["Size"])
-        if size > config["max_deb"]:
-            raise core.Refused("a .deb is larger than the limit")
-        data = fetch(config["repo_base"], fields["Filename"], size, config["timeout"])
-        if len(data) != size or hashlib.sha256(data).hexdigest() != fields["SHA256"]:
-            raise core.Refused(f"{core.printable(fields['Filename'])} does not match its Packages sha256 or size")
-        found = sorted(set(control_members(data)) & set(SCRIPTS))
+def script_scanner(config):
+    def scan(data):
+        found = sorted(set(control_members(data, config.get("max_control", DEFAULTS["max_control"]))) & set(SCRIPTS))
         return "scripts: " + ",".join(found) if found else "no scripts"
-    return check
+    return scan
 
 
 # ---- the API -----------------------------------------------------------------
@@ -267,9 +283,10 @@ def make_handler(config, store, template, backend):
             try:
                 request = self.body()
                 if self.path == "/propose":
+                    debs = core.DebSet(decode_files(request.get("debs", {})), script_scanner(config))
                     with store.locked() as state:
                         pid = core.propose(state, template, decode_files(request.get("files")),
-                                           request.get("task_id"), deb_checker(config), now)
+                                           request.get("task_id"), debs, now)
                     return self.reply(200, {"ok": True, "proposal": pid})
                 if self.path == "/sign":
                     release = base64.b64decode(request.get("release", ""), validate=True)

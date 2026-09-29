@@ -316,20 +316,56 @@ def store_entries(found):
     return {json.dumps(list(k)): v for k, v in found.items()}
 
 
+class DebSet:
+    """The .debs builder sends with a proposal (design amendment (b), after the
+    rehearsal: a new .deb is not on :8080 before the switch). The signer takes
+    the maintainer-script flag only from bytes that match the SHA256 and Size of
+    an entry in the Packages it checked itself; a missing, mismatched or extra
+    .deb refuses the proposal. scanner(bytes) -> "scripts: ..." / "no scripts"."""
+
+    def __init__(self, debs, scanner):
+        if not isinstance(debs, dict):
+            raise Refused("debs must be an object")
+        self.debs, self.scanner, self.used = debs, scanner, set()
+
+    def __call__(self, fields):
+        name = fields["Filename"]
+        data = self.debs.get(name)
+        if data is None:
+            raise Refused(f"the proposal lacks the .deb of {printable(name)}")
+        if len(data) != int(fields["Size"]) or sha(data) != fields["SHA256"]:
+            raise Refused(f"the .deb sent for {printable(name)} does not match its Packages SHA256 or Size")
+        self.used.add(name)
+        return self.scanner(data)
+
+    def unused(self):
+        return sorted(set(self.debs) - self.used)
+
+
 def propose(state, template, files, task_id, deb_checker, now, max_pending=8):
     """A proposal from builder: checked, diffed against last-live by the signer.
-    deb_checker(fields) -> "scripts" / "no scripts", or raises Refused."""
+    deb_checker(fields) -> "scripts: ..." / "no scripts", or raises Refused; it
+    is asked for every entry whose SHA256 is not in last-live (added, or changed
+    under the same name, version and arch)."""
     check_state(state)
     if len(state["proposals"]) >= max_pending:
         raise Refused("too many pending proposals")
     content = check_index_set(template, files)
     found = entries(content)
-    changes = diff(live_entries(state), found)
+    base = live_entries(state)
+    changes = diff(base, found)
     if not changes and state.get("last_live") and state["last_live"]["set_id"] == set_id(content):
         raise Refused("the proposal is the content that is already live")
+    live_shas = {fields.get("SHA256") for fields in base.values()}
     for row in changes:
-        if row["change"] != "removed" and row["index"].endswith("Packages"):
-            row["maintainer_scripts"] = deb_checker(found[(row["index"], row["package"], row["version"], row["arch"])])
+        if row["change"] == "removed" or not row["index"].endswith("Packages"):
+            continue
+        fields = found[(row["index"], row["package"], row["version"], row["arch"])]
+        if fields["SHA256"] not in live_shas:
+            row["maintainer_scripts"] = deb_checker(fields)
+    extra = deb_checker.unused() if hasattr(deb_checker, "unused") else []
+    if extra:
+        raise Refused(f"the proposal carries .debs that are not new in it: {printable(', '.join(extra))}")
     pid = sha(canonical([set_id(content), format_date(now)]).encode())[:16]
     state["proposals"][pid] = {
         "set_id": set_id(content), "base": (state.get("last_live") or {}).get("set_id"),
