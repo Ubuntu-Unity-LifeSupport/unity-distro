@@ -65,3 +65,44 @@ Correct layer: `build_dependencies.py` is the one check both consumers call;
 
 Not in scope: the pool guarantee and the consumers' order of checks
 (unchanged).
+
+## 5. Implementation and validation
+
+Code `7a2afea` (branch `a/UNITY-20260929-014`, on main `02e0af8`):
+
+- `build_dependencies.check_entries`: refuses unless `build-dependencies/`
+  in the manifest directory is itself a directory, not a symlink, and
+  resolves to itself; `size` must be an `int` that is not a `bool`, not
+  negative, and equal to the file's size (checked after the sha256).
+- `build_sbuild.extra_packages`: split into `extra_package_paths` (all path
+  checks, nothing copied) and `copy_and_check` (copy, fields from the copy);
+  the copies go to `build-dependencies.partial/`, renamed to
+  `build-dependencies/` only when every package passed, removed on a
+  refusal or an exception.
+- `scripts/tests/test_build_dependencies_consumers.py`: the real
+  `create_release_gate.py` and `publish_aptly.py` in a temporary repository
+  (section 4). A good `build_dependencies` gives the same exit code and
+  message as a manifest without the key; a wrong sha256, `size: true`, a
+  file missing from the pool, and a symlinked `build-dependencies/` are
+  each refused with the dependency message. The fake `aptly` log stays
+  empty in every case.
+- Existing fixture fix: two tests in `test_build_dependencies.py` reused the
+  first package's `size` for another file; they now record the file's own
+  size (with the new size check they failed whenever the two sizes
+  differed).
+
+Results:
+
+- The new and changed tests on main's scripts fail 16 times
+  (`runs/new-tests-on-main-02e0af8.txt`: R1 1, R2 3, R3 8, consumers 4 =
+  size and symlink for each consumer; the sha256 and pool cases already
+  pass on main). On the branch: full suite 200 tests OK (1 skipped), three
+  consecutive runs of the two changed modules OK.
+- `tools/repro.py` on the branch: R1 and R2 REFUSED, R3 CLEAN
+  (`runs/repro-fixed.txt`).
+- Real runs (`tools/run-real.sh`, `runs/run-real.log`): Q1 a real sbuild of
+  `tiny013` with our pool's `libnux-4.0-common` exits 0, with
+  `build-dependencies/` and no `.partial` in the output, `manifest_error`
+  None; Q2 the same plus an arm64 package exits 2 before sbuild, and the
+  output directory stays empty; Q3 the UNITY-20260927-040 gated manifest
+  under the new check (real pool) returns None.
