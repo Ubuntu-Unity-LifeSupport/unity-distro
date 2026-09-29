@@ -21,9 +21,8 @@
     }
   },
   "tested_build": "this_build | same_chroot | buildinfo_identical",
-  "tested_manifest": "docs/research/task/test-build/TASK-package-build-manifest.json (same_chroot)",
+  "tested_manifest": "docs/research/task/test-build/TASK-package-build-manifest.json (same_chroot, buildinfo_identical)",
   "tested_buildinfo": "docs/research/task/test-build/package_version_arch.buildinfo (buildinfo_identical)",
-  "tested_changes": "docs/research/task/test-build/package_version_arch.changes (buildinfo_identical without tested_manifest)",
   "evidence": {
     "evidence_card": "docs/research/task/README.md",
     "verification_record": "docs/research/task/verification.md",

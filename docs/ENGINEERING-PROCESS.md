@@ -542,7 +542,8 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
   the gated build, and `create_release_gate.py` refuses otherwise:
   - `target_test`: `{"record": <committed record>, "debs": {<file>:
     <sha256>}}`. These are the debs the target test installed. The record
-    must name each one.
+    must name each one by its exact file name. Record paths are
+    repository-relative, without `..` or symlinks.
   - `tested_build: "this_build"`. The debs are binaries of the gated build,
     matched by name and sha256.
   - `tested_build: "same_chroot"`, with `tested_manifest` (committed). The
@@ -550,16 +551,21 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
     `--tested-with` that manifest. Both builds have the same chroot sha256,
     source commit and tree, and extra build dependencies. A gated build on
     the tested tarball may use `--allow-old-chroot`.
-  - `tested_build: "buildinfo_identical"`, with `tested_buildinfo`
-    (committed). For a tested build on another tarball, or from before
-    UNITY-20260929-016:
-    - the debs and that `.buildinfo` must be listed together, either in the
-      committed `tested_manifest` or, without one, in the
-      `Checksums-Sha256` of the committed `tested_changes`;
-    - the gated build's `.buildinfo` must match on Source, Version and
-      Build-Architecture, with identical Installed-Build-Depends.
+  - `tested_build: "buildinfo_identical"`, with `tested_manifest` and
+    `tested_buildinfo` (both committed). For a tested build on another
+    tarball, or from before UNITY-20260929-016:
+    - the tested manifest must be a `build_sbuild.py` manifest (schema 1,
+      with its source commit and tree; `chroot` is not needed) listing the
+      debs and that `.buildinfo`;
+    - both builds must have the same source commit and tree and the same
+      extra build dependencies (package, version, architecture, sha256);
+    - the gated build's `.buildinfo` must match on Source, Binary,
+      Architecture, Version and Build-Architecture, with identical
+      Installed-Build-Depends and no package listed twice.
 
-    Any difference means a new target test.
+    Any difference means a new target test. A tested build made without a
+    `build_sbuild.py` manifest (plain sbuild) cannot use this mode: nothing
+    else ties a binary build to its source. It needs a new target test.
   - A gated manifest without `chroot` (built before UNITY-20260929-016) is
     refused.
 

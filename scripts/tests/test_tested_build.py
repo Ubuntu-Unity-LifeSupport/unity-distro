@@ -43,7 +43,7 @@ class TestedBuildTest(unittest.TestCase):
         (self.gdir / "demo_1.0+unity1_amd64.buildinfo").write_text(buildinfo())
         self.chroot_sha = H("tarball")
         self.manifest = {
-            "source_commit": "c" * 40, "source_tree_hash": "t" * 40,
+            "schema": 1, "source_commit": "c" * 40, "source_tree_hash": "t" * 40,
             "artifacts": [{"file": DEB, "sha256": self.debs[DEB], "kind": "binary"},
                           {"file": DEB2, "sha256": self.debs[DEB2], "kind": "binary"},
                           {"file": "demo_1.0+unity1_amd64.buildinfo", "kind": "buildinfo",
@@ -52,13 +52,12 @@ class TestedBuildTest(unittest.TestCase):
             "build_dependencies": [{"package": "libnux-4.0-dev", "version": "4.0.8-0ubuntu15+unity2",
                                     "architecture": "amd64", "sha256": H("nux"), "file": "build-dependencies/x.deb"}],
         }
-        # the tested build: its manifest, .buildinfo, .changes; the target test record
+        # the tested build: its manifest and .buildinfo; the target test record
         tested = copy.deepcopy(self.manifest)
         tested["artifacts"][2]["sha256"] = H(buildinfo())
         tested["build_dependencies"][0]["file"] = "build-dependencies/other-path.deb"  # paths may differ
         self.write("tested/manifest.json", json.dumps(tested))
         self.write("tested/demo_1.0+unity1_amd64.buildinfo", buildinfo())
-        self.write("tested/demo_1.0+unity1_amd64.changes", self.changes())
         self.write("tests/target-test.txt", f"installed {DEB} and {DEB2} with apt-get install ./*.deb\n")
         self.commit()
         self.manifest["chroot"]["tested_with"] = {"manifest_sha256": H(json.dumps(tested)), "chroot_sha256": self.chroot_sha}
@@ -79,11 +78,6 @@ class TestedBuildTest(unittest.TestCase):
         self.git("add", "-A")
         self.git("commit", "-qm", "x", "--allow-empty")
 
-    def changes(self, entries=None):
-        entries = entries if entries is not None else [
-            (DEB, self.debs[DEB]), (DEB2, self.debs[DEB2]), ("demo_1.0+unity1_amd64.buildinfo", H(buildinfo()))]
-        return "Format: 1.8\nSource: demo\nChecksums-Sha256:\n" + "".join(f" {h} 100 {n}\n" for n, h in entries) + "Files:\n x\n"
-
     def fields(self, mode, **extra):
         f = {"tested_build": mode, "target_test": {"record": "tests/target-test.txt", "debs": dict(self.debs)}}
         f.update(extra)
@@ -95,10 +89,8 @@ class TestedBuildTest(unittest.TestCase):
     MODES = {
         "this_build": {},
         "same_chroot": {"tested_manifest": "tested/manifest.json"},
-        "buildinfo_identical (changes)": {"tested_buildinfo": "tested/demo_1.0+unity1_amd64.buildinfo",
-                                          "tested_changes": "tested/demo_1.0+unity1_amd64.changes"},
-        "buildinfo_identical (manifest)": {"tested_buildinfo": "tested/demo_1.0+unity1_amd64.buildinfo",
-                                           "tested_manifest": "tested/manifest.json"},
+        "buildinfo_identical": {"tested_buildinfo": "tested/demo_1.0+unity1_amd64.buildinfo",
+                                "tested_manifest": "tested/manifest.json"},
     }
 
     def mode_fields(self, label):
@@ -168,8 +160,11 @@ class TestedBuildTest(unittest.TestCase):
         self.assertIn("manifest_sha256", self.check(f)[1])  # committed, but not the one --tested-with named
 
     def test_buildinfo_identical_refusals(self):
-        f = self.mode_fields("buildinfo_identical (changes)")
+        f = self.mode_fields("buildinfo_identical")
         for case, text in {
+            "Binary": buildinfo().replace("Binary: demo", "Binary: demo demo-extra"),
+            "Architecture": buildinfo().replace("Format: 1.0", "Format: 1.0\nArchitecture: all"),
+            "duplicate entry": buildinfo(ibd=IBD.replace(" autoconf (= 2.72-3),", " autoconf (= 9.9),\n autoconf (= 2.72-3),")),
             "one version differs": buildinfo(ibd=IBD.replace("2.72-3", "2.72-4")),
             "one entry more": buildinfo(ibd=IBD.rstrip("\n") + ",\n zlib1g (= 1:1.3)\n"),
             "one entry less": buildinfo(ibd=IBD.replace(",\n autoconf (= 2.72-3)", "").replace(" autoconf (= 2.72-3),\n", "")),
@@ -184,24 +179,70 @@ class TestedBuildTest(unittest.TestCase):
                 manifest["artifacts"][2]["sha256"] = H(text)
                 self.assertIsNotNone(self.check(f, manifest)[1])
 
-    def test_tested_changes_link(self):
-        f = self.mode_fields("buildinfo_identical (changes)")
-        for case, text in {
-            "deb missing": self.changes([(DEB2, self.debs[DEB2]), ("demo_1.0+unity1_amd64.buildinfo", H(buildinfo()))]),
-            "buildinfo missing": self.changes([(DEB, self.debs[DEB]), (DEB2, self.debs[DEB2])]),
-            "hash under another name": self.changes([("x.deb", self.debs[DEB]), (DEB2, self.debs[DEB2]),
-                                                     ("demo_1.0+unity1_amd64.buildinfo", H(buildinfo()))]),
-            "name listed twice": self.changes([(DEB, self.debs[DEB]), (DEB, H("other")), (DEB2, self.debs[DEB2]),
-                                               ("demo_1.0+unity1_amd64.buildinfo", H(buildinfo()))]),
+    def test_buildinfo_identical_needs_the_tested_source(self):
+        """Verifier round 1: the same version from another source tree, or other
+        extra-package bytes, is not the tested build; a tested manifest is required."""
+        f = self.mode_fields("buildinfo_identical")
+        for case, change in {
+            "same version, other source tree": lambda m: m.update(source_tree_hash="u" * 40),
+            "same version, other source commit": lambda m: m.update(source_commit="d" * 40),
+            "same version, other extra-package bytes": lambda m: m["build_dependencies"][0].update(sha256=H("other nux")),
         }.items():
             with self.subTest(case=case):
-                self.write("tested/demo_1.0+unity1_amd64.changes", text)
+                manifest = copy.deepcopy(self.manifest)
+                change(manifest)
+                self.assertIn("differ in", self.check(f, manifest)[1])
+        self.assertIsNotNone(self.check({k: v for k, v in f.items() if k != "tested_manifest"})[1])
+
+    def test_tested_manifest_needs_source_fields(self):
+        f = self.mode_fields("buildinfo_identical")
+        tested = json.loads((self.root / "tested/manifest.json").read_text())
+        for case, change in {"no source_commit": lambda t: t.pop("source_commit"),
+                             "empty source_tree_hash": lambda t: t.update(source_tree_hash=""),
+                             "schema 0": lambda t: t.update(schema=0)}.items():
+            with self.subTest(case=case):
+                t = copy.deepcopy(tested)
+                change(t)
+                self.write("tested/manifest.json", json.dumps(t))
                 self.commit()
+                self.assertIn("source commit and tree", self.check(f)[1])
+
+    def test_legacy_tested_manifest_accepted(self):
+        """A tested manifest from before UNITY-20260929-016 (no chroot) is fine in buildinfo_identical."""
+        tested = json.loads((self.root / "tested/manifest.json").read_text())
+        tested.pop("chroot")
+        self.write("tested/manifest.json", json.dumps(tested))
+        self.commit()
+        result, error = self.check(self.mode_fields("buildinfo_identical"))
+        self.assertIsNone(error)
+        self.assertIsNone(tb.publish_error(result, self.manifest, self.gdir, self.root))
+
+    def test_record_names_whole_file_names(self):
+        for text in (f"installed x{DEB} and {DEB2}\n", f"installed {DEB}.bak and {DEB2}\n",
+                     f"installed {self.debs[DEB]} and {DEB2}\n"):
+            with self.subTest(text=text):
+                self.write("tests/target-test.txt", text)
+                self.commit()
+                self.assertIn("does not name", self.check(self.fields("this_build"))[1])
+        self.write("tests/target-test.txt", f"apt-get install ./{DEB} ./{DEB2}\n")  # a path prefix is fine
+        self.commit()
+        self.assertIsNone(self.check(self.fields("this_build"))[1])
+
+    def test_paths_without_dotdot_or_symlinks(self):
+        (self.root / "link").symlink_to(self.root / "tests")
+        self.git("add", "link")
+        self.commit()
+        for rel in ("link/target-test.txt", "tests/../tests/target-test.txt"):
+            with self.subTest(rel=rel):
+                f = dict(self.fields("this_build"), target_test={"record": rel, "debs": self.debs})
                 self.assertIsNotNone(self.check(f)[1])
-        self.assertIsNotNone(self.check({k: v for k, v in f.items() if k != "tested_changes"})[1])  # neither link
+        result, error = self.check(dict(self.fields("this_build"), target_test={"record": "./tests/target-test.txt",
+                                                                                "debs": self.debs}))
+        self.assertIsNone(error)
+        self.assertEqual(result["target_test"]["record"]["file"], "tests/target-test.txt")  # normalized
 
     def test_publisher_refuses_changes_after_the_gate(self):
-        for label in ("same_chroot", "buildinfo_identical (changes)", "buildinfo_identical (manifest)", "this_build"):
+        for label in ("same_chroot", "buildinfo_identical", "this_build"):
             with self.subTest(mode=label):
                 self.tearDown(); self.setUp()
                 recorded, error = self.check(self.mode_fields(label))
@@ -224,11 +265,6 @@ class TestedBuildTest(unittest.TestCase):
         }.items():
             with self.subTest(case=case):
                 self.assertIsNotNone(tb.publish_error(forged, self.manifest, self.gdir, self.root))
-
-    def test_checksum_pairs(self):
-        self.assertEqual(tb.checksum_pairs(self.changes([(DEB, self.debs[DEB])])), [(DEB, self.debs[DEB])])
-        with self.assertRaises(ValueError):
-            tb.checksum_pairs("Checksums-Sha256:\n nothex 1 x.deb\n")
 
 
 if __name__ == "__main__":
