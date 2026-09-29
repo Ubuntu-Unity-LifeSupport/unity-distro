@@ -340,3 +340,41 @@ repeat of R as above.
 - Nothing in /srv/aptly has been changed.
 - target2 is at `Clean-2`: it no longer holds our repository source or
   `.dirty`; the before/after capture is redone in the repeat.
+
+## Repeat of phase R: preparation (2026-09-29, B session b7902aab)
+
+C, relaying May's GO for the repeat, chose option (a). The marker-allow check
+plus "exactly one log line" counts as the first command of the repeated R.
+The R order follows blocked-commands.md: R9 before R8b. Freeze no. 1 stays in
+force, and phase L is not allowed.
+
+- FACT: the old baseline `80f8df5c...` (logs/30) cannot be reproduced. It was
+  computed by code that was never saved, and seven candidate formulas did not
+  give it; only the file count (633) matches. From now on the baseline is
+  `live-list.py` (this directory): a sha256sum-format list of every regular
+  file, sorted by path, plus the sha256 of that list. Before and after R it is
+  computed the same way.
+- FACT: the newest change under /srv/aptly is 2026-09-28T13:09:08Z (after
+  the first preparation, 11:15Z, and run 1). It touched only `db/CURRENT`,
+  `CURRENT.bak`, `MANIFEST-002272`, `LOG` and an empty `002271.log`, which is
+  leveldb housekeeping when something opens the live database. No `.ldb`
+  file has changed since 2026-09-27 16:22Z, and `public/` has no change after
+  11:25Z. Who opened it is not established; `~/AGENTS-LOG.md` has
+  `13:09Z A START ... build_sbuild` at that minute. C chose to prepare again
+  rather than argue that the content was unchanged.
+- `keep-run1.py`: the first preparation's `aptly.conf` and `incoming/`, and
+  run 1's `state/`, `backup-r4/`, `backup-r4.sha256` and `aside-r8b/` moved
+  to `/var/tmp/aptly-rehearsal/run1/` inside the root. Nothing was deleted
+  (logs/40).
+- `prepare-rehearsal.py`, which now accepts a root that holds only `run1/`:
+  `incoming/` (333 files, 258 binaries, 27 sources + 48) and `aptly.conf`
+  (rootDir `/var/tmp/aptly-rehearsal/state`) were rebuilt at the same paths,
+  so blocked-commands.md is unchanged. The incoming manifest is
+  byte-identical to logs/20 (logs/40b). /srv/aptly is unchanged across the
+  preparation. New baseline: 633 files, list sha256
+  `e09a4db711a20d349db591a08e37b57b9e5673bd79636e0260d3b3ab81170aa1`
+  (logs/40c is the list).
+- Pre-marker checks (logs/41, `pre-marker-check.py`, the guard's own
+  functions from main 5ef8e4a, no `inspect()`): root/tree/mounts OK, config
+  schema OK, no marker, rehearsal log has 1 line, `install_command_guard.py
+  --check` OK. In this session the hook denies the `pgrep -f` probe.

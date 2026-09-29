@@ -25,6 +25,7 @@ import sys
 LIVE = Path("/srv/aptly")
 ROOT = Path("/var/tmp/aptly-rehearsal")
 PACKAGES = LIVE / "public/dists/resolute/main/binary-amd64/Packages"
+KEPT = {"run1"}
 
 
 def sha256(path):
@@ -54,10 +55,17 @@ def main():
     log = []
     before = tree(LIVE)
     log.append(f"/srv/aptly files before: {len(before)}")
-    if ROOT.exists():
-        sys.exit(f"{ROOT} exists already; not touching it")
     os.umask(0o077)
-    ROOT.mkdir(mode=0o700)
+    if ROOT.exists():
+        # Repeat of phase R (2026-09-29): earlier runs are kept inside the root
+        # as run1/ (May: keep them); anything else there stops the preparation.
+        st = os.lstat(ROOT)
+        others = sorted(set(os.listdir(ROOT)) - KEPT)
+        if not ROOT.is_dir() or ROOT.is_symlink() or st.st_uid != os.getuid() or st.st_mode & 0o077 or others:
+            sys.exit(f"{ROOT} exists and holds more than {sorted(KEPT)} or is not a private directory: {others}")
+        log.append(f"{ROOT} exists, kept: {sorted(set(os.listdir(ROOT)))}")
+    else:
+        ROOT.mkdir(mode=0o700)
     incoming = ROOT / "incoming"
     incoming.mkdir(mode=0o700)
 
