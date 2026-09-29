@@ -1913,3 +1913,29 @@ It is taken knowing that:
 - systems that use our repository and have those packages installed will move to ours and no longer receive 1:26.04.12ubuntuN SRUs for them.
 
 The measurement stays with UNITY-20260927-044.
+
+
+## 2026-09-29 - UNITY-20260929-015: PUBLISHED means the recorded bytes are still live, not that apt selects them (agent B, decision by C)
+
+**Context.** taskctl's PUBLISHED gate now accepts a live snapshot other than the record's when that snapshot carries every artifact of the publish record with the recorded sha256. The Design Challenger's finding 6: the live snapshot may carry those bytes and also a newer version of the same package, and apt would then install the newer one. Record: `research/UNITY-20260929-015-taskctl-live-snapshot/`.
+
+**Decision (C, 2026-09-29).** A newer version of the same package in the live snapshot is not a reason to refuse PUBLISHED. PUBLISHED means "these bytes were published and are still in the live publication". It does not mean "apt will choose them". Which version apt selects is the concern of the later task that published the newer version, and of its own version-safety and target checks.
+
+
+## 2026-09-29 - UNITY-20260927-040: unity's decoration Edge ignores presses while compiz lists any grab (agent A)
+
+**Context.** Follow-up of UNITY-20260927-001, whose +unity10 guard stops `Edge::ButtonDownEvent` from ungrabbing only while compiz lists a `resize` or `move` grab. Record: `research/UNITY-20260927-040-edge-grab-guard/`.
+
+**Measured.**
+- In expo a press on a window border or title reaches `Edge::ButtonDownEvent`, which calls `XUngrabPointer`/`XUngrabKeyboard` behind compiz. The button release then reaches neither unity nor expo, expo stays on compiz's grab list, and the next frame click leaves the pointer frozen: title drag in expo 5/5 on +unity11, replay of the first case 4/4 (LP: #1393523).
+- Keyboard move and resize were already covered by +unity10 (0/25). The `unity` gesture grab cannot be driven here.
+
+**Decision.** A2: the guard becomes `screen->otherGrabExist(nullptr)`, so no in-process component releases an X grab while compiz lists any grab. While a grab is listed, move and resize refuse Edge's `_NET_WM_MOVERESIZE` anyway, so the ungrab was the only effect left. The first press with no grab listed is unchanged. The title bar's drag goes through the same function (`GrabEdge`) and is covered too. Wall, unity-switcher, the `unity` gesture grab and ezoom are covered by construction, not measured.
+
+**Rejected.**
+- F, ignoring decoration input in `HandleFrameEvent` during expo: it filters by one plugin's state, stops title-bar buttons and menus as well (the other half of LP: #1393523, a behaviour change of its own, UNITY-20260929-010), and covers expo only.
+- B, dropping Edge's raw ungrab, and D, compiz thawing frames' passive grabs regardless of its grab list: both rejected in UNITY-20260927-001 for the same reasons (every first press changed, unmeasured; leaked grabs hidden).
+
+Design Challenger: REVISE, APPROVE. unity +unity12 built with `scripts/build_sbuild.py --extra-package` and our published nux (UNITY-20260929-013), identical in content to the test build; on target title drag in expo 0/5, replay 0/3, the rest of the plan unchanged. Verifier: PASS (REVIEWED).
+
+**Limits, stated.** Title-bar buttons and menus still react in expo (UNITY-20260929-010). The panel's `XWindowManager::UnGrabMousePointer` during move or resize is not covered (UNITY-20260929-011). No unit test covers `Edge::ButtonDownEvent`; the package build runs no unit tests. The gesture grab, wall and ezoom under A2, and real hardware are not measured.

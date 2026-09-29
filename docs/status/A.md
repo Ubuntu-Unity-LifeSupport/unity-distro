@@ -3,52 +3,38 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-09-29, after UNITY-20260927-040)
+## Now (2026-09-29 18:00Z)
 
 **UNITY-20260927-040** (unity: Edge::ButtonDownEvent releases compiz's grab
-during expo; A2 = any-grab guard) - BLOCKED, resume_state IMPLEMENTING.
-Reproduced on published +unity11 (title drag in expo: pointer frozen 5/5, LP
-#1393523); keyboard move/resize unknown closed (covered by +unity10); gesture
-grab not measurable. Fix `+unity12` = Ubuntu-Unity-LifeSupport/unity branch
-`a/UNITY-20260927-040` `7b0eca27` (commit `78153782`, on `unity/resolute`
-`2040279d`); Design Challenger APPROVE (round 2); verified on target from a
-test build (regression 5/5 -> 0/5, full plan green). Blocked because
-`scripts/build_sbuild.py` cannot build unity (archive nux breaks configure; no
-way to add our nux) - no approved build manifest for VERIFYING. Card (task
-branch, not merged): `docs/research/UNITY-20260927-040-edge-grab-guard/README.md`.
-Package checkout `~/work/a/040-unity`; test build debs `~/work/a/040-build/test/`.
-Evidence `~/coordinator/evidence/UNITY-20260927-040.json`. Follow-ups proposed
-in the report to C.
+during expo; A2 = any-grab guard) - REVIEW, waiting for the coordinator
+(publication gate to be discussed). Fix `+unity12` =
+Ubuntu-Unity-LifeSupport/unity branch `a/UNITY-20260927-040` `7b0eca27`
+(checkout `~/work/a/unity-distro-040/packages/unity`). Gated build with
+`build_sbuild.py --extra-package` (our nux `0ubuntu15+unity2` from the pool):
+PASS, content-identical to the test build; regression 0/5 and plan sample
+green on target; Verifier round 1 PASS (REVIEWED). Card (task branch, not
+merged): `docs/research/UNITY-20260927-040-edge-grab-guard/README.md`
+(worktree `~/work/a/unity-distro-040`). Evidence
+`~/coordinator/evidence/UNITY-20260927-040.json`.
 
-UNITY-20260927-047 phase L: before-L/after-L client captures on target in
-`~/work/a/047-capture/` (diff: label and our Release Date only).
-
-**UNITY-20260928-019** (lightdm: the greeter's session cleanup is cut short
-by the second SIGTERM) - BLOCKED at the publication gate (aptly freeze #1),
-resume_state REVIEW. Verifier round 2 PASS (REVIEWED; round 1 FAIL
-TEST_INVALID on the tests, fixed with no code change); Design Challenger
-APPROVE (round 2). Card:
-`docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/README.md`.
-Candidate lightdm `1.32.0-6ubuntu4+unity2` =
-Ubuntu-Unity-LifeSupport/lightdm branch `a/UNITY-20260928-019` at `f5af23c`
-(patch `db13faf` = `d/p/0010-...`, on `unity/resolute` `50a6a5d`). Debs and
-full build log in `~/work/a/019-build/out/` (manifest and xz log committed
-under `build-unity2/`); package checkout `~/work/a/019-lightdm`. Evidence:
-`~/coordinator/evidence/UNITY-20260928-019.json`. Still to do when the freeze
-lifts: full `apt_view.py` + `version_safety.py` against the gated snapshot,
-release gate, publication, check on target. DECISIONS/PATCHES entries in
-main (`eef5c1e`, via `append_record.py`).
-
-Follow-ups proposed to C (no IDs yet): arm the alarm after `waitpid()` also
-when a SIGTERM was passed on before reaping (that path keeps today's 90 s
-bound); cinnamon-session refusing `Logout` (`NotInRunning`) or hanging in it
-on an unresponsive at-spi-registryd inhibitor, seen in the test cycles.
+**UNITY-20260928-019** (lightdm `+unity2`) - DONE: published
+2026-09-29T17:06:28Z, target verification on branch `a/UNITY-20260928-019`.
+**UNITY-20260929-013** (`build_sbuild.py --extra-package`) - DONE, merged by
+the coordinator (`2de93ad`). **UNITY-20260927-047** phase L captures done
+(`~/work/a/047-capture/`).
 
 My other open tasks are unchanged: UNITY-20260928-022 (its handoff is on
 branch `a/UNITY-20260928-022`, not in main - the coordinator handles that),
 UNITY-20260927-012, UNITY-20260927-052, UNITY-20260928-008.
 
 ## State of `target`
+
+2026-09-29 18:00Z (UNITY-20260927-040): the gated unity `+unity12` build
+installed (unity, libunity-core-6.0-9, unity-schemas, -services, -uwidgets;
+debs in `~/u12g`), lightdm `+unity2` from our repository, workspaces 2x2,
+test tools and `~/rel` in `~mike`, `~/.dirty` present. To go back to the
+published `+unity11`, 1x1 and no test files once the publication decision is
+made. Earlier states below are history:
 
 Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
 `Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
