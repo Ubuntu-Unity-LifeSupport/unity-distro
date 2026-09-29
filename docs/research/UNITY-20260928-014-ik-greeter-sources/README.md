@@ -296,3 +296,39 @@ sequence, M2 and M3 of round2-measure.sh, 3 multi-user restarts, and one
 boot (first write present). Pass criterion: no write of `[]` or of an index
 out of range, and no write with different content between the good values
 and the recovered ones.
+
+## Implementation and validation record
+
+Package: `packages/indicator-keyboard`, branch `b/UNITY-20260928-014`, commit
+949c6c3 plus build fix 5d6a8c5 (on 10eb95c +unity3; diff in logs/17, 219 lines).
+Version `0.0.0+19.10.20240924-0ubuntu1+unity4`. The first sbuild failed at
+compile time: `is_nonexistent` is a method in the vapi, and `user_name` is
+non-nullable. Fixed in 5d6a8c5.
+
+- sbuild resolute (`build_sbuild.py`, manifest logs/19): successful. Package
+  tests 12/12 (logs/18), including the new `greeter-sources-known` and
+  `greeter-current`. The helpers are new, so their unit tests cannot fail on
+  +unity3. The regression evidence for the behaviour is the live pair below
+  (the same scenarios on +unity3 and on +unity4).
+- deb sha256 `a1205c9d393fbc8c27d3ead27cf78119ffa3f96d2a34d28129cd9b7824d95865`,
+  installed on target2 with `dpkg -i`, then a reboot.
+- Boot (FACT): the stored greeter sources were first set to `[fr]`. After the
+  reboot the service wrote `[gb, us]` / 0, so the first migration still
+  happens with the early return in place.
+- logs/20 (`validate.sh`, +unity4, 10:29-10:31Z), each against its +unity3
+  counterpart:
+
+| scenario | +unity3 | +unity4 |
+|---|---|---|
+| daemon restart, mike only | `current 4294967295`, `[]`, then `[gb, us]`, 3 of 3 (logs/02) | no write at all, 3 of 3 (V1) |
+| daemon stop 15-30 s, start | window on start (logs/03) | no write (V2) |
+| kill inside the window, then new user + restart | new user missing in the restarted instance (logs/10, 12 M3) | restarted instance picks up de at once; no write on the restart (V3) |
+| three users, daemon restart | window, then the full union (logs/12 M2) | no write, 3 of 3; union `[gb, us, fr, de]` stable (V4) |
+| users removed | - | two writes, one per removal, ending `[gb, us]` (V5) |
+
+  No crash in the journal. So no write of `[]` or of an out-of-range index,
+  and no intermediate write, was seen in 9 daemon restarts. The partial union
+  residual was not seen in 4 multi-user restarts.
+
+target2 stays dirty with +unity4 (not published), unity-greeter, and
+gir1.2-accountsservice-1.0.
