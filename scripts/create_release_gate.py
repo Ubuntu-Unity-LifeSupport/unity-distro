@@ -8,6 +8,9 @@ from pathlib import Path
 import re
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dependencies import manifest_error  # noqa: E402
+
 
 def digest(path):
     h = hashlib.sha256()
@@ -81,6 +84,9 @@ def main():
         path = args.build_manifest.parent / artifact.get("file", "")
         if not path.is_file() or digest(path) != artifact.get("sha256"):
             parser.error(f"missing or changed build artifact: {path}")
+    # UNITY-20260929-013: extra build dependencies, only when the build had any.
+    dependency_error = manifest_error(manifest, args.build_manifest.parent)
+    if dependency_error: parser.error(dependency_error)
     if not args.snapshot or not args.distribution: parser.error("snapshot and distribution are required")
     evidence_paths = record.get("evidence", {})
     if not isinstance(evidence_paths, dict) or not all(isinstance(evidence_paths.get(key), str) for key in ("evidence_card", "verification_record", "patch_record")):

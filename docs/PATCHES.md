@@ -126,3 +126,40 @@ lightdm 1.32.0-6ubuntu4+unity2, 2026-09-29 (UNITY-20260928-019; the lightdm row 
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
 | lightdm | `session-child: finish the cleanup when SIGTERM arrives after the session ended` (quilt, `0010-...`, +unity2, on top of 0009) | A greeter is stopped by both logind and the daemon; the second SIGTERM usually reached session-child after `waitpid()`, where `signal_cb()` took `child_pid == 0` for "not started" and quit: the greeter's X authority removal and PAM close were skipped in most greeter stops, and the greeter's cookie could stay in lightdm's `.Xauthority`, opening the user's display as uid lightdm. A flag set after `waitpid()` now lets the cleanup finish, bounded by `alarm(10)`; before the session starts the handler still `_exit()`s. On target: 13/13 greeter stops complete, forced cases complete, blocked close ends after 10 s, user sessions unchanged; file lists identical to +unity1. | none (ours; not reported) | [`research/UNITY-20260928-019-lightdm-greeter-pam-close/`](research/UNITY-20260928-019-lightdm-greeter-pam-close/) | local |
+
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity2: `debian/changelog: restore the archive history; release +unity2` (branch `b/UNITY-20260927-021`, `c03daf4`, on `b6b546b`; native package) | Packaging defect of ours: +unity1 had replaced the whole archive `debian/changelog` (1491 lines) with 11 lines. +unity2 restores it byte for byte, with our two entries on top; the shipped changelog goes from 1 to 95 entries. The known issue #4 fix (basicwallpaper) is carried unchanged and revalidated (rt.sh 3/3). All 6 binaries are published (May, 2026-09-29), including calamares-settings-kubuntu/-lubuntu, whose patched basicwallpaper is unmeasured (UNITY-20260927-044). Verifier PASS (REVIEWED). | none | [`research/UNITY-20260927-021-calamares-oem-wallpaper/`](research/UNITY-20260927-021-calamares-oem-wallpaper/) | local, gated publication |
+
+
+lightdm 1.32.0-6ubuntu4+unity2 published 2026-09-29 17:06:28Z (UNITY-20260928-019; the "Not yet published" line above is left as written): live `./resolute` = snapshot `unity-resolute-20260928-019`, built by `scripts/build_sbuild.py` from `packages/lightdm` at f5af23c (payload identical to the verified build), gate on `a/UNITY-20260928-019` fdab8e3, Verifier short round on the gated build PASS (REVIEWED); target-desktop upgraded from the repository.
+
+
+calamares-settings-ubuntu 1:26.04.12+unity2 published 2026-09-29 16:10:23Z (UNITY-20260927-021; the calamares-settings-ubuntu +unity2 row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-021-r2`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at c03daf4 (build-r2). The gate is on `b/UNITY-20260927-021`.
+- 17:06:28Z: `./resolute` moved to `unity-resolute-20260928-019` (UNITY-20260928-019). That snapshot carries every -021 artifact byte for byte; `taskctl` confirmed this by content (UNITY-20260929-015).
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from snapshot `OEM-ready-unity2`: Calamares is on top, and the wallpaper is DESKTOP/BELOW and never focused.
+- Limit: apt does not deliver the fix to an OEM system that is already installed. basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz` and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`.
+
+
+unity 7.7.1+26.04.20260306-0ubuntu3+unity12, 2026-09-29 (UNITY-20260927-040; the unity rows above are left as written). Source commit 7b0eca27 on Ubuntu-Unity-LifeSupport/unity branch `a/UNITY-20260927-040` (code 78153782, on `unity/resolute` 2040279d). Verification: independent Verifier PASS (REVIEWED) on the gated build. Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| unity | `decorations: Edge ignores presses while compiz lists any grab` (`decorations/DecorationsEdge.cpp`, +unity12; widens the +unity10 guard) | `Edge::ButtonDownEvent` releases the X pointer and keyboard with raw Xlib on every border or title-bar press; +unity10 stopped that only during move and resize. In expo a title drag or border press still ungrabbed behind compiz: expo missed its button release, stayed on compiz's grab list, and frame clicks froze the pointer (5/5 title drags on +unity11). The guard is now `screen->otherGrabExist(nullptr)`; move and resize already refuse `_NET_WM_MOVERESIZE` while another grab is listed, so only the harmful ungrab is removed. On target from the gated build: 0/5 stuck, replay 0/3, border, title bar, first press after expo, keyboard resize and the UNITY-20260927-001 set unchanged; packages identical to the tested build. | LP: #1393523 (the pointer freeze half; title-bar buttons in expo stay, UNITY-20260929-010) | [`research/UNITY-20260927-040-edge-grab-guard/`](research/UNITY-20260927-040-edge-grab-guard/) | local |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3, 2026-09-29 (UNITY-20260927-041; the calamares-settings-ubuntu rows above are left as written).
+- Source commit 221c691 on `Ubuntu-Unity-LifeSupport/calamares-settings-ubuntu` `b/UNITY-20260927-041`, on +unity2 c03daf4. Native package.
+- Built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu`, with resolute-updates/-security in the chroot. `-common`'s `snap-seed-glue-emb` is therefore statically built with snapd 2.76.3+ubuntu26.04.
+- Verification: independent Verifier PASS (INDEPENDENTLY_REPRODUCED).
+- Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity3: `Makefile: chmod the Ubuntu Unity sudoers.oem, to 0440; release +unity3` (branch `b/UNITY-20260927-041`, `221c691`) | The Ubuntu Unity section of the Makefile ran chmod on Kubuntu's `sudoers.oem`, so ours shipped 0644 in `oemconfig.tar.gz` and became `/etc/sudoers` in OEM mode, with a mode that `visudo -c` of sudo-rs and sudo.ws rejects. Now 0440 root:root, the mode of the distribution's own `/etc/sudoers`. Nothing else in the tarballs changes. Kubuntu/Lubuntu stay 0400, out of scope. | none (Launchpad search: no bug; 26.10 has the same line) | [`research/UNITY-20260927-041-calamares-oem-sudoers/`](research/UNITY-20260927-041-calamares-oem-sudoers/) | local, gated publication |
