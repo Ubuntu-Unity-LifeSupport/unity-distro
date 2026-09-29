@@ -1,0 +1,739 @@
+# origin/main 03f5cea hook, tests after design review round 1; 2026-09-28T06:15:47Z
+test_allowed (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_allowed) ... ok
+test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) ... 
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=/tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config /tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly --config=/tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly --config /tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=/home/claude/.aptly.conf publish drop resolute') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=../../home/claude/.aptly.conf publish drop resolute') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -architectures=amd64 -config=x.conf publish drop resolute') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -architectures amd64 publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -dep-follow-source publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -dep-follow-source=true -config x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x -- publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='HOME=/tmp aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='sudo -u claude aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='command aptly -config x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='exec aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='/usr/bin/aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='timeout 60 aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='nice -n 5 aptly publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='nohup aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='setsid aptly publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='stdbuf -oL aptly publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo resolute | xargs aptly -config=x publish drop') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='true && aptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="bash -c 'aptly -config=x publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='sh -c "aptly publish list"') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="bash -lc 'aptly -config x publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="eval 'aptly -config=x publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo "$(aptly -config=x publish list)"') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo $(aptly -config=x publish list)') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo `aptly -config=x publish list`') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='(aptly -config=x publish list)') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='{ aptly -config=x publish list; }') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly task run publish drop resolute') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x task run -filename=cmds.txt') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly task run') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly api serve -listen=127.0.0.1:8080') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x api serve') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='ln -s /usr/bin/aptly /tmp/a && /tmp/a publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='cp /usr/bin/aptly ./tool') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='install -m755 /usr/bin/aptly ./tool') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='true\naptly publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='true\naptly -config=x publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x \\\npublish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="aptly $'publish' list") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly {publish,} list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='p=publish; aptly $p list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly publis? list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='f(){ aptly "$@"; }; f publish list') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo publish list | xargs aptly') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo publish list | xargs -n2 aptly -config=x') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='find . -name publish -exec aptly {} list \\;') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly foo') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="su claude -c 'aptly publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="ssh localhost 'aptly -config=x publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="runuser -u claude -- sh -c 'aptly publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="script -qc 'aptly publish list' /dev/null") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="flock /tmp/l -c 'aptly -config=x publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="watch -n1 'aptly publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="tmux new -d 'aptly publish list'") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='python3 -c "import os; os.system(\'aptly -config=x publish list\')"') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="bash <<'EOF'\naptly -config=x publish list\nEOF") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="python3 - <<'EOF'\nimport subprocess\nsubprocess.run('aptly publish list', shell=True)\nEOF") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='cat > /tmp/x <<EOF\n$(aptly -config=x publish list)\nEOF') ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="aptly task run <<'EOF'\npublish list\nEOF") ... FAIL
+  test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="grep -rn 'aptly publish' docs") ... FAIL
+test_hard_link_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_hard_link_to_aptly)
+Identity by device and inode: a hard link is aptly whatever its name. ... FAIL
+test_other_rules_unchanged (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) ... 
+  test_other_rules_unchanged (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) (command='true\ngit push --force origin x') ... FAIL
+  test_other_rules_unchanged (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) (command='true\nrm -rf $X/y') ... FAIL
+test_symlink_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly)
+A pre-existing link to the aptly binary under another name is aptly. ... 
+  test_symlink_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly) (command='/tmp/tmpwxdw18ji/tool publish list')
+A pre-existing link to the aptly binary under another name is aptly. ... FAIL
+  test_symlink_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly) (command='/tmp/tmpwxdw18ji/tool -config=x publish list')
+A pre-existing link to the aptly binary under another name is aptly. ... FAIL
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=/tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=/tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config /tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config /tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly --config=/tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly --config=/tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly --config /tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly --config /tmp/claude-1000/x/scratchpad/aptly047/aptly.conf publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=/home/claude/.aptly.conf publish drop resolute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=/home/claude/.aptly.conf publish drop resolute
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=../../home/claude/.aptly.conf publish drop resolute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=../../home/claude/.aptly.conf publish drop resolute
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -architectures=amd64 -config=x.conf publish drop resolute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -architectures=amd64 -config=x.conf publish drop resolute
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -architectures amd64 publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -architectures amd64 publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -dep-follow-source publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -dep-follow-source publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -dep-follow-source=true -config x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -dep-follow-source=true -config x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x -- publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=x -- publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='HOME=/tmp aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: HOME=/tmp aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='sudo -u claude aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: sudo -u claude aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='command aptly -config x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: command aptly -config x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='exec aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: exec aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='/usr/bin/aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: /usr/bin/aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='timeout 60 aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: timeout 60 aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='nice -n 5 aptly publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: nice -n 5 aptly publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='nohup aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: nohup aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='setsid aptly publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: setsid aptly publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='stdbuf -oL aptly publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: stdbuf -oL aptly publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo resolute | xargs aptly -config=x publish drop')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: echo resolute | xargs aptly -config=x publish drop
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='true && aptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: true && aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="bash -c 'aptly -config=x publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: bash -c 'aptly -config=x publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='sh -c "aptly publish list"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: sh -c "aptly publish list"
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="bash -lc 'aptly -config x publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: bash -lc 'aptly -config x publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="eval 'aptly -config=x publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: eval 'aptly -config=x publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo "$(aptly -config=x publish list)"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: echo "$(aptly -config=x publish list)"
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo $(aptly -config=x publish list)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: echo $(aptly -config=x publish list)
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo `aptly -config=x publish list`')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: echo `aptly -config=x publish list`
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='(aptly -config=x publish list)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: (aptly -config=x publish list)
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='{ aptly -config=x publish list; }')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: { aptly -config=x publish list; }
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly task run publish drop resolute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly task run publish drop resolute
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x task run -filename=cmds.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=x task run -filename=cmds.txt
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly task run')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly task run
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly api serve -listen=127.0.0.1:8080')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly api serve -listen=127.0.0.1:8080
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x api serve')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=x api serve
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='ln -s /usr/bin/aptly /tmp/a && /tmp/a publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: ln -s /usr/bin/aptly /tmp/a && /tmp/a publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='cp /usr/bin/aptly ./tool')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: cp /usr/bin/aptly ./tool
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='install -m755 /usr/bin/aptly ./tool')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: install -m755 /usr/bin/aptly ./tool
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='true\naptly publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: true
+aptly publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='true\naptly -config=x publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: true
+aptly -config=x publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly -config=x \\\npublish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly -config=x \
+publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="aptly $'publish' list")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly $'publish' list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly {publish,} list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly {publish,} list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='p=publish; aptly $p list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: p=publish; aptly $p list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly publis? list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly publis? list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='f(){ aptly "$@"; }; f publish list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: f(){ aptly "$@"; }; f publish list
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo publish list | xargs aptly')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: echo publish list | xargs aptly
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='echo publish list | xargs -n2 aptly -config=x')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: echo publish list | xargs -n2 aptly -config=x
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='find . -name publish -exec aptly {} list \\;')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: find . -name publish -exec aptly {} list \;
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly foo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly foo
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='aptly')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="su claude -c 'aptly publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: su claude -c 'aptly publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="ssh localhost 'aptly -config=x publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: ssh localhost 'aptly -config=x publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="runuser -u claude -- sh -c 'aptly publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: runuser -u claude -- sh -c 'aptly publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="script -qc 'aptly publish list' /dev/null")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: script -qc 'aptly publish list' /dev/null
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="flock /tmp/l -c 'aptly -config=x publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: flock /tmp/l -c 'aptly -config=x publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="watch -n1 'aptly publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: watch -n1 'aptly publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="tmux new -d 'aptly publish list'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: tmux new -d 'aptly publish list'
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='python3 -c "import os; os.system(\'aptly -config=x publish list\')"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: python3 -c "import os; os.system('aptly -config=x publish list')"
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="bash <<'EOF'\naptly -config=x publish list\nEOF")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: bash <<'EOF'
+aptly -config=x publish list
+EOF
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="python3 - <<'EOF'\nimport subprocess\nsubprocess.run('aptly publish list', shell=True)\nEOF")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: python3 - <<'EOF'
+import subprocess
+subprocess.run('aptly publish list', shell=True)
+EOF
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command='cat > /tmp/x <<EOF\n$(aptly -config=x publish list)\nEOF')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: cat > /tmp/x <<EOF
+$(aptly -config=x publish list)
+EOF
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="aptly task run <<'EOF'\npublish list\nEOF")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: aptly task run <<'EOF'
+publish list
+EOF
+
+======================================================================
+FAIL: test_denied (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_denied) (command="grep -rn 'aptly publish' docs")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 147, in test_denied
+    self.assertEqual(result.returncode, 2, f"allowed: {command}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : allowed: grep -rn 'aptly publish' docs
+
+======================================================================
+FAIL: test_hard_link_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_hard_link_to_aptly)
+Identity by device and inode: a hard link is aptly whatever its name.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 181, in test_hard_link_to_aptly
+    self.assertEqual(run_hook(f"{link} publish list", env).returncode, 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_other_rules_unchanged (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) (command='true\ngit push --force origin x')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 190, in test_other_rules_unchanged
+    self.assertEqual(run_hook(command).returncode, 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_other_rules_unchanged (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) (command='true\nrm -rf $X/y')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 190, in test_other_rules_unchanged
+    self.assertEqual(run_hook(command).returncode, 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_symlink_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly) (command='/tmp/tmpwxdw18ji/tool publish list')
+A pre-existing link to the aptly binary under another name is aptly.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 166, in test_symlink_to_aptly
+    self.assertEqual(run_hook(command).returncode, 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_symlink_to_aptly (scripts.tests.test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly) (command='/tmp/tmpwxdw18ji/tool -config=x publish list')
+A pre-existing link to the aptly binary under another name is aptly.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_command_guard.py", line 166, in test_symlink_to_aptly
+    self.assertEqual(run_hook(command).returncode, 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2
+
+----------------------------------------------------------------------
+Ran 5 tests in 5.512s
+
+FAILED (failures=71)

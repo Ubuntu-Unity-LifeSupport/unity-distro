@@ -1,0 +1,62 @@
+# isolated apt state (/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/t048/sim), overlay = calamares-settings-ubuntu 1:26.04.12+unity3 binaries from UNITY-20260927-045, 2026-09-27T20:16:14Z
+## apt.conf
+Dir::State "/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/t048/sim/state"; Dir::State::status "/dev/null"; Dir::Cache "/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/t048/sim/cache";
+Dir::Etc::SourceList "/dev/null"; Dir::Etc::SourceParts "/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/t048/sim/etc/sources.list.d";
+Dir::Etc::Preferences "/dev/null"; Dir::Etc::PreferencesParts "/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/t048/sim/etc/preferences.d";
+Dir::Etc::TrustedParts "/tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/t048/sim/etc/trusted.gpg.d"; APT::Architecture "amd64"; APT::Architectures { "amd64"; };
+Acquire::Languages "none"; APT::Sandbox::User "";
+## sources
+Types: deb deb-src
+URIs: http://de.archive.ubuntu.com/ubuntu/
+Suites: resolute resolute-updates resolute-backports
+Components: main restricted universe multiverse
+Architectures: amd64
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb deb-src
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: resolute-security
+Components: main restricted universe multiverse
+Architectures: amd64
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb
+URIs: http://192.168.56.10:8080/
+Suites: resolute
+Components: main
+Architectures: amd64
+Signed-By: <SIM>/etc/unity-distro.asc
+
+Types: deb
+URIs: file:<SIM>/overlay/
+Suites: ./
+Trusted: yes
+## apt-cache policy
+calamares-settings-ubuntu-unity:
+  Installed: (none)
+  Candidate: 1:26.04.12+unity3
+  Version table:
+     1:26.04.12+unity3 500
+        500 file:<SIM>/overlay ./ Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+calamares-settings-ubuntu-common:
+  Installed: (none)
+  Candidate: 1:26.04.12+unity3
+  Version table:
+     1:26.04.12+unity3 500
+        500 file:<SIM>/overlay ./ Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+calamares-settings-ubuntu-common-dbgsym:
+  Installed: (none)
+  Candidate: 1:26.04.12+unity3
+  Version table:
+     1:26.04.12+unity3 500
+        500 file:<SIM>/overlay ./ Packages
+## apt-cache showsrc (deb-src of the archive pockets)
+Version: 1:26.04.12

@@ -1,0 +1,17 @@
+(2) Binaries come from .changes, including .ddeb, whatever their names. ... ok
+(1) An epoch in the version never appears in file names. ... ok
+(3) The manifest's log is the whole sbuild output, command header first. ... ok
+(2) xorg-server: one binary contains the source name, one does not. ... ok
+Control: no epoch, binaries named after the source. ... ok
+UNITY-20260927-051: every file the .dsc names is in the manifest with the .dsc's sha256. ... 
+UNITY-20260927-051: every file the .dsc names is in the manifest with the .dsc's sha256. ... FAIL
+UNITY-20260927-051: every file the .dsc names is in the manifest with the .dsc's sha256. ... FAIL
+UNITY-20260927-051: every file the .dsc names is in the manifest with the .dsc's sha256. ... FAIL
+A .changes that also lists the source: no duplicate .dsc, no unknown kinds. ... FAIL
+Files next to the source that this build's .changes does not name stay out. ... ok
+AssertionError: {} != {'demo_1.0+unity1.tar.xz': '5c4a036e9ef8c6[47 chars]a49'}
+AssertionError: {} != {'demo_1.0.orig.tar.gz': '6fc996085baf5fcb[148 chars]99f'}
+AssertionError: {} != {'demo_1.0.orig.tar.gz': '594d0cd05fd8e40d[142 chars]a3b'}
+AssertionError: 7 != 6 : ['demo_1.0-1+unity1.dsc', 'demo_1.0-1+unity1_amd64.changes', 'demo_1.0-1+unity1.dsc', 'demo_1.0.orig.tar.gz', 'demo_1.0-1+unity1.debian.tar.xz', 'demo-bin_1.0-1+unity1_amd64.deb', 'demo_1.0-1+unity1_amd64.buildinfo']
+Ran 8 tests in 4.613s
+FAILED (failures=4)

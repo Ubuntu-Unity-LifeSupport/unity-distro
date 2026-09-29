@@ -1,0 +1,29 @@
+вер 28 16:39:26.917027 mike-virtualbox delaytest[4127]: action=reboot cinnamon-session 6.4.2-1+unity3; inhibitors: 1
+вер 28 16:39:31.737344 mike-virtualbox delaytest[4234]: clicking Перезагрузить
+вер 28 16:39:32.183881 mike-virtualbox cinnamon-session[2213]: cinnamon-session-binary[2213]: WARNING: t+40.54324s: Requesting system restart...
+вер 28 16:39:32.166650 mike-virtualbox cinnamon-session-binary[2213]: WARNING: t+40.54324s: Requesting system restart...
+вер 28 16:39:32.702733 mike-virtualbox delaytest[4280]: t=1 seat0=3/mike compiz=2862 csm=
+вер 28 16:39:33.815340 mike-virtualbox delaytest[4330]: t=2 seat0=3/mike compiz= csm=
+вер 28 16:39:34.900425 mike-virtualbox delaytest[4364]: t=3 seat0= compiz= csm=
+вер 28 16:39:35.959282 mike-virtualbox delaytest[4379]: t=4 seat0= compiz= csm=
+вер 28 16:39:37.083596 mike-virtualbox delaytest[4472]: t=5 seat0=c1/lightdm compiz= csm=
+вер 28 16:39:38.201804 mike-virtualbox delaytest[4534]: t=6 seat0=c1/lightdm compiz= csm=
+вер 28 16:39:42.509502 mike-virtualbox delaytest[4664]: t=10 seat0=c1/lightdm compiz= csm=
+вер 28 16:40:04.909011 mike-virtualbox delaytest[4996]: t=30 seat0=c1/lightdm compiz= csm=
+вер 28 16:40:32.653504 mike-virtualbox systemd-logind[3993]: System is rebooting.
+--- counts (cinnamon-session-binary tag only, to avoid the doubled stderr copy)
+Requesting system restart: 1
+Requesting system shutdown: 0
+OperationInProgress: 0
+not confirmed by logind: 0
+--- last delaytest tick with the session manager alive
+--- first tick without it
+вер 28 16:39:32.702733 mike-virtualbox delaytest[4280]: t=1 seat0=3/mike compiz=2862 csm=
+--- logind bus traffic (/var/tmp/cs-busmon.txt, if tools/cs-delay.sh recorded it)
+  Sender=:1.111  Destination=:1.91
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=12  Timestamp="Mon 2026-09-28 13:39:32.324272 UTC"
+  Sender=:1.91  Destination=:1.111  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=signal  Endian=l  Flags=1  Version=1 Cookie=122  Timestamp="Mon 2026-09-28 13:39:32.475311 UTC"
+  Sender=:1.111  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PrepareForShutdown
+--- logind's replies to the session manager's Reboot/PowerOff calls
+‣ Type=method_return  Endian=l  Flags=1  Version=1 Cookie=123  ReplyCookie=12  Timestamp="Mon 2026-09-28 13:39:32.475347 UTC"

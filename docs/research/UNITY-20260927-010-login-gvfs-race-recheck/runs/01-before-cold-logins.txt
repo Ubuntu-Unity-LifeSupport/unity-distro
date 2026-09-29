@@ -1,0 +1,10 @@
+login 1: boot 2026-09-28 21:37:09 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2008 gvfsd=1648
+login 2: boot 2026-09-28 21:41:38 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=1984 gvfsd=1636
+login 3: boot 2026-09-28 21:46:13 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2039 gvfsd=1641
+login 4: boot 2026-09-28 21:50:43 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2018 gvfsd=1647
+login 5: boot 2026-09-28 21:55:18 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2055 gvfsd=1664
+login 6: boot 2026-09-28 21:59:47 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2005 gvfsd=1637
+login 7: boot 2026-09-28 22:04:21 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2047 gvfsd=1648
+login 8: boot 2026-09-28 22:09:25 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=1997 gvfsd=1666
+login 9: boot 2026-09-28 22:14:06 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2039 gvfsd=1656
+login 10: boot 2026-09-28 22:18:40 session 1 unity-session 49.4: injected=0 gvfs start killed=0 org.gtk.vfs.Daemon activation timeouts=0 nemo-desktop=2062 gvfsd=1702

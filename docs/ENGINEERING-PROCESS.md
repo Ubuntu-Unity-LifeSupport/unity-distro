@@ -62,13 +62,35 @@ An investigation can close as `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`,
 `NOT_APPLICABLE`, `BLOCKED`, `REJECTED`, or `DUPLICATE`. During `VERIFYING`,
 the physical task owner completes and records the regression test, relevant
 tests, build, and live check on their assigned VM. `REVIEW` is a separate,
-ephemeral Verifier subagent reading that evidence and the diff. `PASS` advances
-to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
+ephemeral Verifier subagent reading that evidence and the diff. For a package,
+`PASS` advances to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
 `BLOCKED` with resume state `REVIEW` until the evidence is supplied. A strictly
 mechanical packaging-only change may skip independent review only under the
 `NOT_APPLICABLE` exception in section 6; that path advances from `VERIFYING`
-to `READY_TO_PUBLISH` after the release gate is complete. A non-package
-documentation or research task may move from `VERIFYING` to `DONE`. `taskctl`
+to `READY_TO_PUBLISH` after the release gate is complete.
+
+Every task has a kind, recorded as `task_kind` in its evidence; it decides the
+path to `DONE`. A task that changes several things takes the first kind that
+applies in this order:
+
+| Kind | What it changes | `READY_FOR_FIX` needs | `VERIFYING` needs | `DONE` |
+|---|---|---|---|---|
+| `package` | a source package we build or publish | the section 2 defect card | `regression_test`, `build_manifest` | only from `PUBLISHED` |
+| `tool` | code that changes behaviour and is not a package (`scripts/*.py`, hooks) | the section 2 defect card | `regression_test`, `validation_record` | only from `REVIEW`, with the Verifier's `PASS` |
+| `operation` | shared infrastructure: repositories, VMs, archive state | `scope`, `chosen_approach`, `existing_state_check` (what is already there), `authorization` {`approved_by`: May or C, `reference` to where the approval is recorded, `scope`} | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+| `documentation` | documentation and research records | `scope`, `chosen_approach` | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+
+Every kind records `architectural_task`, `design_challenger_required` and
+`correct_layer` at `READY_FOR_FIX`, and needs the Design Challenger's
+`APPROVE` when required. `READY_FOR_FIX` means "approach recorded, ready to
+implement" for every kind. Only package tasks enter `READY_TO_PUBLISH` or
+`PUBLISHED`. A legacy task whose evidence has `package_change: true` and no
+`task_kind` is a package; evidence carrying `build_manifest`, `release_gate`,
+`candidate_version` or `version_safety` is always a package. From
+`READY_FOR_FIX` on, `taskctl` refuses a transition whose kind it cannot
+resolve, and it records the kind in `<task-id>.kind` beside the evidence at
+the first transition that resolves it; later evidence must keep that kind.
+`taskctl`
 requires a machine-readable evidence JSON at
 `~/coordinator/evidence/<task-id>.json` (or an explicit `--evidence` path) for
 transitions; it validates stage-required keys before changing the board. A package
@@ -114,7 +136,8 @@ unknowns:
   - unanswered checks; use [] when none
 ```
 
-Do not enter `READY_FOR_FIX` until the issue is reproduced or the task is an
+For `package` and `tool` tasks (section 1): do not enter `READY_FOR_FIX`
+until the issue is reproduced or the task is an
 explicit build/packaging failure with a captured failing build, the
 `existing_fix_result` is `NOT_FIXED`, and `issue_search_result` is `FOUND` or
 `NOT_FOUND` with evidence. If a fix or patch already exists, verify its scope
@@ -285,18 +308,36 @@ BLOCKS_FUTURE_UPDATE
 UNKNOWN
 ```
 
-Run `scripts/version_safety.py <measured-version-record.json> --write
-<version-check.json>`; it applies `dpkg --compare-versions` to the recorded
-archive/update versions and checks the recorded apt candidate. The script does
-not discover archive facts on its own: attach the actual `rmadison`,
-`apt-cache policy`, and source identity evidence. Only `SAFE` is publishable.
-`UNKNOWN` stops publication until the missing archive/version evidence is
-obtained. The record includes the target series, candidate source version,
-versions in the target archive and update pockets, `dpkg` version-order
-comparison, and the candidate shown by `apt-cache policy` from the configured
-repositories. The candidate must be newer than every recorded target-archive
-source version. Newer-series versions are optional context and do not decide
-safety for the target series.
+Version safety is decided from a measurement, never from typed values.
+`scripts/apt_view.py` builds an isolated apt state (the host's apt
+configuration is not used) from `docs/apt/target.sources` and
+`docs/apt/preferences.d/` - the Ubuntu archive pockets and pins of the
+reference target system - and, for a full view, our repository as the gated
+aptly snapshot will publish it: the snapshot's `.deb`/`.ddeb` list becomes a
+local repository whose Release has our publication's Origin, Label, Suite and
+Codename (pass `--release` for the gate's prefix and distribution; the
+publisher passes the same, and refuses a different model identity). It records the source package's highest version per pocket
+(`Sources` indices), apt's candidate for every binary of the build manifest
+(with an empty dpkg status), the snapshot's name and package-list hash, and
+each fetched Release's hash and Date; any fetch failure refuses.
+Multi-Arch and Provides are not modelled: the target is single-arch amd64 and
+only concrete package names are checked.
+
+`scripts/version_safety.py --view <view.json> --manifest <manifest.json>`
+then decides: `SAFE` only if the candidate source version is newer than the
+highest version in resolute and -backports (otherwise `UNSAFE`), -updates and
+-security (otherwise `REPLACES_SECURITY_UPDATE`) and -proposed (otherwise
+`BLOCKS_FUTURE_UPDATE`: a pending Ubuntu version not older than ours would
+supersede ours when it migrates), and every built binary, a binNMU included,
+is apt's candidate at its own version. A source in no pocket is "not in
+archive" and passes the ordering part. Before a build, `apt_view.py
+--source-package <name>` and `version_safety.py --view <pockets.json>
+--pre-build --candidate-version <v> --source-commit <c>` check the ordering
+only; that result is never `SAFE`. Only `SAFE` is publishable; `UNKNOWN`
+stops publication until the missing measurement exists. A `SAFE` version of
+ours can still shadow a later Ubuntu update that sorts below it; watching for
+that is monitoring, not this gate. Newer-series versions are optional context
+and do not decide safety for the target series.
 
 `READY_TO_PUBLISH` requires all of the following:
 
@@ -327,29 +368,141 @@ artifact hashes. The gate and evidence manifest must be pushed before
 publication, along with the source package commit. `scripts/publish_aptly.py --gate FILE` accepts no aptly
 arguments: it reads distribution, prefix, and snapshot only from the gate,
 checks the manifest and artifact hashes, confirms the exact source and binary
-versions appear in the named snapshot, requires version evidence no older than
-four hours, and reruns a read-only local `apt-cache policy` check immediately
-before the switch. It executes the fixed `publish switch`, checks `aptly
+versions appear in the named snapshot, requires the gate-time apt view (the
+release record's `version_check`) to be no older than four hours, to measure
+the gate's snapshot and to be `SAFE`, and immediately before the switch runs
+`apt_view.py` and `version_safety.py` again. It refuses unless that
+switch-time view is `SAFE`, has the same snapshot package-list hash, no
+archive Release older than at gate time or past its Valid-Until, or
+other apt inputs (`docs/apt/`, which must be committed and clean) than at gate
+time; the switch-time view goes into the publication record. It executes the fixed `publish switch`, checks `aptly
 publish show`, and writes a write-once record at
 `~/coordinator/publish-records/<task-id>.json`. `taskctl` requires that record,
-checks its gate hash and publication details, and confirms the live Aptly
+checks its gate hash and publication details, requires its switch-time
+version check to be `SAFE` for the published snapshot, and confirms the live Aptly
 snapshot before allowing `PUBLISHED`. The target check remains separate and
 must point to an existing target-verification record. The gate and manifests are
 traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
+Aptly freeze. A freeze protects the live publication state and
+/srv/aptly.
+
+- **Lifecycle.** Only May declares and lifts a freeze. C records the fact,
+  the start and end times and the scope in the coordinator log. Agents and
+  subagents never treat a freeze as lifted and never widen its exceptions.
+- **Default.** While a freeze is in force, an agent or subagent must not
+  call `aptly publish` directly in any form, including `show` and `list`,
+  except as allowed by the exceptions below.
+- **taskctl exception.** The internal `aptly publish show` that
+  `scripts/taskctl.py` runs as part of an authorized publication workflow,
+  after the corresponding gate has passed. It covers only `taskctl.py` and
+  only `aptly publish show`, never manual or direct calls by agents or
+  subagents.
+- **Rehearsal exception.** Direct `aptly publish` commands are allowed only
+  for the rehearsal phase of a specific task that May has explicitly
+  authorized, and only on an isolated aptly state. For such a command the
+  command guard checks:
+  - every place aptly writes lies inside the authorized rehearsal root:
+    rootDir, publish endpoint roots, package pool storage, the database
+    and its dbPath;
+  - remote (S3, Swift, Azure) endpoints are absent;
+  - no link leads out of the root (UNITY-20260927-057).
+
+  The authorization takes effect only through a dated marker that C writes
+  after May's approval (task, rehearsal root, validity window, reference to
+  the approval). The guard checks it and logs every rehearsal command it
+  allows. The exception gives no right to /srv/aptly or to any other live
+  aptly state. It ends automatically when the rehearsal ends: C removes the
+  marker, or it expires.
+- **Live-phase exception.** Applies to the live phase of a task that May has
+  explicitly authorized. The first is UNITY-20260927-047 phase L, allowance
+  UNITY-20260929-008.
+  - The command guard admits only the exact command strings in the reviewed
+    list `.claude/hooks/live-commands.json`, byte for byte, each run as one
+    foreground Bash call.
+  - The guard checks that the pinned aptly config is unchanged.
+  - The exception takes effect only through C's dated marker
+    `~/coordinator/live-authorization.json`. The marker records May's GO,
+    one session, a window of at most 6 hours, the list's sha256, and a
+    reference to the task's backup and preflight record.
+  - Every admitted command is logged to `~/coordinator/live-log.jsonl`.
+  - It covers nothing else.
+  - Known limit: a shell function, or a dynamic-loader variable such as
+    `LD_PRELOAD`, in the agent's own profile or environment could stand in
+    for the binary or run code inside it. The guard refuses only when it
+    finds one in the profile files, the shell snapshots or its own
+    environment.
+  - It ends when the live phase ends: C removes the marker, and removes the
+    list at the task's DONE.
+
+Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
+every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
+rule per kind and rejects anything else:
+
+- `source` (`.dsc`): must be in the snapshot as `<source>_<version>_source`.
+- `binary` `.deb` and `.ddeb`: Package, Version and Architecture are read
+  from the file and must match the manifest record. The binary must belong
+  to this source and version by dpkg's rule, read from the file's Source
+  field (`Source: name` or `Source: name (version)`; missing parts default to
+  the binary's own), so a binNMU or a `-dbgsym` with its own version is
+  accepted. It must be in the
+  snapshot as `<Package>_<Version>_<Architecture>`.
+- `source_file`: a file the `.dsc` names (`.orig.tar.*`, `.debian.tar.*`, a
+  native `.tar.*`, `.diff.gz`), recorded with the `.dsc`'s sha256. The set must
+  be exactly the `.dsc`'s list, and the snapshot's source package (aptly keeps
+  it as one record with all its files) must consist of exactly the `.dsc` and
+  these files with these hashes, read with `aptly snapshot search -format
+  '{{index . "Checksums-Sha256"}}'`. A regenerated source with the same name
+  and version is refused.
+- `binary` `.udeb`: rejected. The publication has no debian-installer index,
+  so a udeb would reach the snapshot but not the published repository.
+- `buildinfo`, `changes`: provenance only. They are hashed with the other
+  artifacts and never expected in a snapshot.
+- Any other kind: rejected until a rule for it is added here.
+
+Extra build dependencies (UNITY-20260929-013). A package that needs a build
+dependency the target series' archive does not provide in a usable form
+(unity: the archive's nux breaks its configure step) is built with
+`build_sbuild.py --extra-package DEB` (repeatable). Each `.deb` is checked
+before sbuild starts (a readable regular `*.deb`, not a udeb, architecture
+`all` or the build architecture, valid Debian name and version fields, no
+second file of the same name, the same file twice, or a second file of the
+same package in any architecture), copied
+to `OUTPUT/build-dependencies/`, and the copy is given to sbuild. After the
+build the copies must be unchanged and each package must appear at its
+version in the `.buildinfo`'s `Installed-Build-Depends` - sbuild adds them to
+apt without a pin, so one not newer than the archive's is not used and the
+build is refused. The manifest then carries an optional
+`build_dependencies` list (file, sha256, size, package, version,
+architecture, source, the path given, the resolved path, whether the same
+bytes are in our published pool, and where). `artifacts` is unchanged.
+`create_release_gate.py` and `publish_aptly.py` check that list when it is
+present (`scripts/build_dependencies.py`): the name and version fields are
+valid Debian fields (so none can steer the pool path), each copy is in the
+manifest's `build-dependencies/` and matches its sha256, and the same bytes
+are in our published
+pool (`/srv/aptly/public/pool`, at the package's own pool location; the
+unpublished `candidate/` staging does not count). A publishable build
+depends only on extra packages we publish. Without the option nothing
+changes.
+
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
 the task to `READY_TO_PUBLISH`. The publisher also checks that board state.
 
 ```sh
-python3 scripts/version_safety.py docs/research/<task-id>-<topic>/version-input.json \
-  --write docs/research/<task-id>-<topic>/version-check.json
+python3 scripts/apt_view.py --source-package <package> --write /tmp/pockets.json
+python3 scripts/version_safety.py --view /tmp/pockets.json --pre-build \
+  --candidate-version <version> --source-commit <commit>
 tmux new-session -d -s UNITY-YYYYMMDD-NNN-build \
   "python3 scripts/build_sbuild.py --task-id UNITY-YYYYMMDD-NNN \
   --source-repo packages/<package> --target-series resolute \
   --output-dir docs/research/<task-id>-<topic>/build"
+python3 scripts/apt_view.py --manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
+  --snapshot <snapshot> --release "<prefix> <distribution>|<prefix> <distribution>|<distribution>|<distribution>" \
+  --write docs/research/<task-id>-<topic>/version-check.json
 python3 scripts/create_release_gate.py --record docs/research/<task-id>-<topic>/release-record.json \
   --build-manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
   --distribution resolute --prefix unity --snapshot <snapshot> \
@@ -425,16 +578,102 @@ repository owner's history-removal process separately.
 ## 9. Shell command guard
 
 The project `.claude/settings.json` installs a `PreToolUse` guard for Claude
-Code's `Bash` tool. It tokenizes simple shell command lists and blocks common
-forms of broad staging, force pushes (including force refspecs), `aptly
+Code's `Bash` and `Monitor` tools (both run shell text). It tokenizes shell
+command lists (newlines, `$(...)`, backticks and heredocs included) and blocks
+common forms of broad staging, force pushes (including force refspecs), `aptly
 publish`, `xwd`, pattern-based process matches, and dangerous recursive
 removal. It handles common command/env/sudo prefixes and absolute executable
-paths. Shell syntax, aliases, nested interpreters, and wrappers cannot be
-reliably secured by this hook; use `scripts/safe_git.py stage|push` for Git
-updates, `scripts/build_sbuild.py` for package builds, and
-`scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
+paths.
+
+For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
+
+- `aptly` must be called literally, with one of `repo snapshot mirror
+  package db config serve version graph` as its first command word, and
+  without the words `publish`, `task` or `api`.
+- Any other mention of aptly is allowed only when it cannot reach a command
+  that runs something. It must not be a wrapper, a remote or nested shell, an
+  interpreter, a pipe into one, or a copy of the binary.
+- Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
+  `echo`, project scripts such as `taskctl.py`) may mention aptly and
+  publish freely.
+- The live-phase exception of section 6 (UNITY-20260929-008) admits only
+  the strings of `.claude/hooks/live-commands.json`. Each starts
+  `/usr/bin/aptly -config=/home/claude/.aptly.conf publish` and runs as a
+  foreground Bash call. C's live marker must name the session and the
+  list's sha256. Each admitted command is logged to
+  `~/coordinator/live-log.jsonl`. The check runs before every other rule,
+  and only for a string that starts with that prefix.
+- Apart from that, the rehearsal exception of section 6
+  (UNITY-20260927-057) is the only allowance for `publish`. The command must start exactly
+  `/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/<path> publish`
+  (`--config=` also works), with no other flag before `publish`, as one
+  plain command with no quoting, expansion, redirection or prefix. The
+  config is strict JSON, with every place aptly writes inside
+  /var/tmp/aptly-rehearsal. The root is checked for links, hard links and
+  mounts. C's dated marker
+  `~/coordinator/rehearsal-authorization.json` must name the session, and
+  every allowed command is logged to `~/coordinator/rehearsal-log.jsonl`.
+
+In practice:
+
+- Run aptly directly, not through `timeout`, `xargs`, `bash -c` or a
+  variable.
+- Write `-architectures=amd64` rather than `-architectures amd64`.
+- Commit messages go in the heredoc form.
+- A Python heredoc that mentions aptly and starts processes is refused. Use
+  the Edit and Write tools for files.
+
+Shell syntax, aliases, interpreters that build words at run time, and files
+written earlier and run later cannot be reliably secured by this hook
+(`docs/research/UNITY-20260927-058-command-guard/`). Use `scripts/safe_git.py
+stage|push` for Git updates, `scripts/build_sbuild.py` for package builds,
+and `scripts/publish_aptly.py` for publishing. VBox MCP calls have no project hook:
 agents can use their disposable VM freely. The MCP server configuration allows
 `target-desktop`, `target-desktop-2`, and `oem-test`, and lists `builder-server`
 under `never_allowed`. For a restore or suspected shared VBoxSVC failure, use
 `docs/TWO-AGENTS.md` and the `vbox-recovery` skill; a `PreToolUse` hook cannot
 reliably diagnose or contain a host-wide VBoxSVC incident.
+
+## 10. Merging a task branch into `main`
+
+A task's repository changes live on its task branch (for example
+`a/UNITY-YYYYMMDD-NNN` or `b/UNITY-YYYYMMDD-NNN`) until they are merged into
+`main`. A task branch never pushes its changes directly into `main`; the merge
+happens only through the controlled project workflow, and `scripts/safe_git.py
+push` only pushes the current branch to its own ref.
+
+Before merging, verify that:
+
+- the task branch contains only the intended task changes (`git log` and
+  `git diff` from the merge base to the branch tip);
+- every gate required for the task's state has passed, and the verification
+  and review requirements in sections 5 and 6 are satisfied;
+- the local `main` is current with `origin/main`;
+- neither checkout has undeclared changes that the merge would include.
+
+Merge method:
+
+- **Fast-forward** when it is naturally possible, that is, when `main` has not
+  advanced since the task branch was created.
+- **`git merge --no-ff`** as the standard method when `main` has advanced. Name
+  the task ID in the merge commit message.
+- **Do not rebase an already-pushed task branch** solely to make a
+  fast-forward possible, and do not rewrite published task-branch history when
+  evidence, verification records, or other process artifacts reference its
+  commit hashes.
+
+`main` can advance legitimately while another agent is working on a task
+(for example, a shared decision record appended to the base checkout), so a
+fast-forward cannot be assumed. A rebase performed only to keep an artificial
+fast-forward invariant replaces the commits that the task's evidence cites;
+`--no-ff` keeps them. See `docs/DECISIONS.md`, 2026-09-27, "Task branches merge
+into `main` with `--no-ff` when fast-forward is not possible".
+
+If the merge conflicts, stop it (`git merge --abort`) and return the conflict
+to the normal engineering process for resolution. Do not make an ad-hoc
+technical decision merely to complete the merge.
+
+After merging, verify the resulting `main` (the expected task commits are its
+ancestors and the tree contains only the declared changes), then push `main`
+with `scripts/safe_git.py push`. The task ID, task branch, task commit(s), and
+the merge (or fast-forwarded tip) on `main` must stay traceable to one another.

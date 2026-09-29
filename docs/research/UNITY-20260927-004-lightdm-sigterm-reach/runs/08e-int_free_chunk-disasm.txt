@@ -1,0 +1,68 @@
+# _int_free_chunk in libc.so.6 2.43-2ubuntu2.4 (builder copy; sha256 equal to target's), objdump -d, around the return address 0xb23b4 seen in 08b (133663)
+   b2300:	push   %rbp
+   b2301:	mov    %rsp,%rbp
+   b2304:	push   %rbx
+   b2305:	sub    $0x28,%rsp
+   b2309:	mov    0x15fad8(%rip),%rbx        # 211de8 <_IO_wfile_jumps@@GLIBC_2.2.5+0xbc0>
+   b2310:	mov    0x8(%rsi),%rax
+   b2314:	mov    %fs:(%rbx),%ebx
+   b2317:	test   $0x2,%al
+   b2319:	jne    b2340 <__default_morecore@GLIBC_2.2.5+0x790>
+   b231b:	cmpb   $0x0,0x167d9e(%rip)        # 21a0c0 <__libc_single_threaded@@GLIBC_2.32>
+   b2322:	je     b2398 <__default_morecore@GLIBC_2.2.5+0x7e8>
+   b2324:	call   b20e0 <__default_morecore@GLIBC_2.2.5+0x530>
+   b2329:	mov    0x15fab8(%rip),%rax        # 211de8 <_IO_wfile_jumps@@GLIBC_2.2.5+0xbc0>
+   b2330:	mov    %ebx,%fs:(%rax)
+   b2333:	mov    -0x8(%rbp),%rbx
+   b2337:	leave
+   b2338:	ret
+   b2339:	nopl   0x0(%rax)
+   b2340:	mov    0x15fe8a(%rip),%edx        # 2121d0 <__nptl_nthreads@@GLIBC_PRIVATE+0x118>
+   b2346:	test   %edx,%edx
+   b2348:	je     b2368 <__default_morecore@GLIBC_2.2.5+0x7b8>
+   b234a:	mov    %rsi,%rdi
+   b234d:	call   b0990 <timer_settime@GLIBC_2.2.5+0x4a0>
+   b2352:	mov    0x15fa8f(%rip),%rax        # 211de8 <_IO_wfile_jumps@@GLIBC_2.2.5+0xbc0>
+   b2359:	mov    %ebx,%fs:(%rax)
+   b235c:	mov    -0x8(%rbp),%rbx
+   b2360:	leave
+   b2361:	ret
+   b2362:	nopw   0x0(%rax,%rax,1)
+   b2368:	cmp    %rax,0x15fe21(%rip)        # 212190 <__nptl_nthreads@@GLIBC_PRIVATE+0xd8>
+   b236f:	jae    b234a <__default_morecore@GLIBC_2.2.5+0x79a>
+   b2371:	cmp    $0x2000000,%rax
+   b2377:	ja     b234a <__default_morecore@GLIBC_2.2.5+0x79a>
+   b2379:	and    $0xfffffffffffffff8,%rax
+   b237d:	lea    (%rax,%rax,1),%rdx
+   b2381:	mov    %rax,0x15fe08(%rip)        # 212190 <__nptl_nthreads@@GLIBC_PRIVATE+0xd8>
+   b2388:	mov    %rdx,0x15fdf1(%rip)        # 212180 <__nptl_nthreads@@GLIBC_PRIVATE+0xc8>
+   b238f:	nop
+   b2390:	jmp    b234a <__default_morecore@GLIBC_2.2.5+0x79a>
+   b2392:	nopw   0x0(%rax,%rax,1)
+   b2398:	test   %ecx,%ecx
+   b239a:	jne    b2324 <__default_morecore@GLIBC_2.2.5+0x774>
+   b239c:	mov    $0x1,%r8d
+   b23a2:	mov    %ecx,%eax
+   b23a4:	lock cmpxchg %r8d,(%rdi)
+   b23a9:	jne    b23d0 <__default_morecore@GLIBC_2.2.5+0x820>
+   b23ab:	mov    %rdi,-0x18(%rbp)
+   b23af:	call   b20e0 <__default_morecore@GLIBC_2.2.5+0x530>
+   b23b4:	mov    -0x18(%rbp),%rdi
+   b23b8:	xor    %eax,%eax
+   b23ba:	xchg   %eax,(%rdi)
+   b23bc:	cmp    $0x1,%eax
+   b23bf:	jle    b2352 <__default_morecore@GLIBC_2.2.5+0x7a2>
+   b23c1:	call   a0950 <__lll_lock_wake_private@@GLIBC_PRIVATE>
+   b23c6:	jmp    b2352 <__default_morecore@GLIBC_2.2.5+0x7a2>
+   b23c8:	nopl   0x0(%rax,%rax,1)
+   b23d0:	mov    %rdx,-0x28(%rbp)
+   b23d4:	mov    %rsi,-0x20(%rbp)
+   b23d8:	mov    %rdi,-0x18(%rbp)
+   b23dc:	call   a0890 <__lll_lock_wait_private@@GLIBC_PRIVATE>
+   b23e1:	mov    -0x18(%rbp),%rdi
+   b23e5:	mov    -0x28(%rbp),%rdx
+   b23e9:	mov    -0x20(%rbp),%rsi
+   b23ed:	call   b20e0 <__default_morecore@GLIBC_2.2.5+0x530>
+   b23f2:	mov    -0x18(%rbp),%rdi
+   b23f6:	jmp    b23b8 <__default_morecore@GLIBC_2.2.5+0x808>
+   b23f8:	nopl   0x0(%rax,%rax,1)

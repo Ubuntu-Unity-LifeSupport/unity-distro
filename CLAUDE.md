@@ -32,6 +32,8 @@ and state; the agent status file gives its assigned machine/workspace state.
 
 - Stage explicit paths and push non-forced branches with `scripts/safe_git.py`;
   do not use force push.
+- Task branches reach `main` only through the merge procedure in
+  `docs/ENGINEERING-PROCESS.md` section 10.
 - Commits are atomic and in English: `pkg: short summary` for package changes,
   `docs:` / `build:` / `repo:` for this meta-repository.
 - Every patch gets an entry in `docs/PATCHES.md`: package, file name, what it

@@ -8,6 +8,9 @@ from pathlib import Path
 import re
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dependencies import manifest_error  # noqa: E402
+
 
 def digest(path):
     h = hashlib.sha256()
@@ -45,7 +48,6 @@ def main():
             parser.error(f"build manifest and record do not match for {field}")
     if manifest.get("result") != "PASS" or manifest.get("schema") != 1:
         parser.error("build manifest is not a passing supported manifest")
-    if record.get("version_safety") != "SAFE": parser.error("version_safety must be SAFE")
     verification = record.get("verification_result")
     if verification == "NOT_APPLICABLE":
         if record.get("verification_scope") != "MECHANICAL_PACKAGING_ONLY" or not record.get("verification_reason"):
@@ -82,6 +84,9 @@ def main():
         path = args.build_manifest.parent / artifact.get("file", "")
         if not path.is_file() or digest(path) != artifact.get("sha256"):
             parser.error(f"missing or changed build artifact: {path}")
+    # UNITY-20260929-013: extra build dependencies, only when the build had any.
+    dependency_error = manifest_error(manifest, args.build_manifest.parent)
+    if dependency_error: parser.error(dependency_error)
     if not args.snapshot or not args.distribution: parser.error("snapshot and distribution are required")
     evidence_paths = record.get("evidence", {})
     if not isinstance(evidence_paths, dict) or not all(isinstance(evidence_paths.get(key), str) for key in ("evidence_card", "verification_record", "patch_record")):
@@ -89,6 +94,16 @@ def main():
     evidence_paths["release_record"] = str(record_path.relative_to(root))
     evidence_paths["version_check"] = record.get("version_check")
     if not isinstance(evidence_paths["version_check"], str): parser.error("release record must include a version_check path")
+    # version_check is the apt_view.py measurement of this snapshot; compute the verdict, do not trust a typed one.
+    import subprocess as _sp
+    view_path = (root / evidence_paths["version_check"]).resolve()
+    verdict_run = _sp.run([sys.executable, str(root / "scripts/version_safety.py"), "--view", str(view_path),
+                           "--manifest", str(args.build_manifest)], check=False, capture_output=True, text=True)
+    try: verdict = json.loads(verdict_run.stdout)
+    except json.JSONDecodeError: parser.error("version_safety.py did not return valid JSON")
+    if verdict.get("result") != "SAFE": parser.error(f"version check is not SAFE: {verdict.get('reasons')}")
+    if (verdict.get("snapshot") or {}).get("name") != args.snapshot:
+        parser.error("the version check measured another snapshot than the gate names")
     if record.get("decision_required") is True and not isinstance(evidence_paths.get("decision_record"), str):
         parser.error("decision_record evidence is required when a material design decision was made")
     evidence_manifest = {"schema": 1, "task_id": record["task_id"], "package": record["package"],

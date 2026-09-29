@@ -87,8 +87,11 @@ of B's current task, so no downgrade there.
   `http://192.168.56.10:8080/.../Packages` (not `aptly repo search`, so no
   database lock), strips `+unity*` to get the Ubuntu base, and asks Launchpad
   for every resolute xorg-server publication (release, -proposed, -updates,
-  -security). Each Pending/Published upload above the base gets **one** line in
-  `~/AGENTS-LOG.md`, e.g.
+  -security). Each Pending/Published upload above the base raises **one
+  coordinator alert** (`scripts/alerts.py`, key `xorg-server:<version>@<pocket>`,
+  in `~/coordinator/ALERTS.md`; shown on every `taskctl` run until C or May
+  acknowledges it - docs/COORDINATOR.md, "Alerts from automation"; since
+  UNITY-20260927-013) and **one** line in `~/AGENTS-LOG.md`, e.g.
 
       2026-10-03 09:00Z XORG-WATCH new upload 2:21.1.22-1ubuntu1.4 in resolute-proposed (ours 2:21.1.22-1ubuntu1.3+unity1): in -proposed since 2026-10-03 07:12Z; SRU minimum 7 days -> earliest -updates 2026-10-10 (6d 21h left); rebase needed
 
@@ -104,12 +107,21 @@ of B's current task, so no downgrade there.
   an edit here takes effect on the next run.
 - **Check it**: `systemctl --user list-timers xorg-watch.timer`,
   `journalctl --user -u xorg-watch.service`. A failure to read aptly or
-  Launchpad goes to the journal, not to the log.
+  Launchpad goes to the journal; three failed runs in a row (9 h) raise the
+  alert `xorg-watch-failing:<UTC time the streak began>`, once per streak (a
+  later streak is a new alert, also on the same day); a successful run resets
+  the count. The pair is remembered in `seen` only after its alert is
+  written; a run whose alert cannot be written logs the line with "ALERT NOT
+  RAISED", exits 1 and counts as a failure, and the next run retries it.
+  Tests without network: `scripts/tests/test_alerts.py`
+  (`XORG_WATCH_LP_JSON` stands in for Launchpad).
 - **Verified**: with a fake base `1ubuntu1.2` (env overrides, temp log) it
   reported the real `1ubuntu1.3` in -proposed with "6d 22h left", and a second
   run wrote nothing; the same run under `systemd-run --user` wrote the same
   line; with the real base it writes nothing (nothing above 1.3 today).
-- **When a line appears**: tell the coordinator; the rebase is: new Ubuntu
+- **When an alert appears**: the coordinator acknowledges it and decides
+  (a rebase task, or nothing if the upload already carries our patches); the
+  rebase is: new Ubuntu
   source + `debian/patches/upstream-21.1.24/` (drop what Ubuntu now carries) +
   `…+unity1`, sbuild, target, aptly.
 

@@ -5,14 +5,41 @@ Build directory: `~/work/b`
 
 ## Now
 
-**UNITY-20260927-041** (calamares sudoers.oem mode, oem-test): BLOCKED.
-- Makefile:51 chmodded Kubuntu's copy; ours shipped 0644 and became
-  /etc/sudoers in OEM mode (measured on oem-test). visudo -c of sudo-rs and
-  sudo.ws accept only 0440 (0400 is rejected too); sudo itself runs with any.
-- `221c691` (on 021's `c03daf4e`): chmod 440 on the Ubuntu Unity copy,
-  +unity3. Preliminary sbuild ok; only that tarball entry changes; on
-  oem-test the extracted file gives 440 and visudo -c OK.
-- Blocked like 021; depends on 021's +unity2. `research/UNITY-20260927-041-calamares-oem-sudoers/`.
+**UNITY-20260929-015** (2026-09-29): tool, merged by C into main at
+55381f3.
+- taskctl PUBLISHED now also accepts a later live snapshot that carries
+  every artifact of the publish record with the recorded sha256. The check
+  is read-only `snapshot search`.
+- Design Challenger APPROVE. Verifier PASS, independently reproduced.
+- Decision (C): a newer version of the same package in the live snapshot
+  does not block PUBLISHED. See DECISIONS.
+
+**UNITY-20260927-021 DONE** (2026-09-29 17:52Z): PUBLISHED through the
+content check against `unity-resolute-20260928-019`. The branch has been
+merged with main (3ef9c23). The details below are left as written.
+Next: UNITY-20260927-041, publication of calamares +unity3.
+
+**UNITY-20260927-021** (2026-09-29): calamares-settings-ubuntu
+1:26.04.12+unity2. Target PASS; PUBLISHED waits for UNITY-20260929-015.
+- Published 16:10Z as snapshot `unity-resolute-20260927-021-r2`.
+- Target check on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from the new snapshot `OEM-ready-unity2`.
+  In both boots Calamares is on top, and the wallpaper is DESKTOP/BELOW and
+  never focused.
+- Limit: apt does not fix an OEM system that is already installed.
+  basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz`
+  and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`,
+  branch `b/UNITY-20260927-021` deb301b.
+- `oem-test` is powered off. Snapshots `OEM-ready`, `OEM-ready-fixed` and
+  `OEM-ready-unity2` are kept.
+- Why it waits: taskctl compares the live snapshot by name, and `./resolute`
+  has since moved to `unity-resolute-20260928-019`. That snapshot is a
+  superset: only 11 lightdm records were added.
+- Next: UNITY-20260929-015, taskctl accepting a live snapshot that contains
+  every artifact of the publish record.
 
 **hud** (2026-09-26, B-12): hud is B's now.
 - `+unity1` builds in resolute: CMake 4, systemd-dev and C++17 fixed, 6/6
@@ -64,6 +91,8 @@ ayatana-indicator-messages.
   archive's.
 - session-migration `+unity1` is built, not published.
 - hud `+unity1` is WIP: the googletest C++17 layer is left.
+- _Correction 2026-09-27 (UNITY-20260927-036):_ session-migration `+unity1` was published by agent A, and
+  hud `+unity1` is in aptly since B-12 (`research/hud/`).
 - unity-greeter has no owner; overlay-scrollbar is B's since B-11.
 
 **Only-on-builder commits** of B's git-ubuntu clones are exported to
@@ -135,6 +164,8 @@ libindicator FTBFS fixed as `+unity1` (built, not in aptly - equivalent to the
 archive's binary), vala-panel FTBFS left alone (not used by Unity).
 `research/rebuild-trial/`; `packages/libindicator` branch `unity/resolute`
 (git-ubuntu clone, no remote of ours); builds in `~/work/b/rebuild`.
+_Correction 2026-09-27 (UNITY-20260927-036):_ libindicator `+unity1` was published afterwards; aptly holds
+`+unity1` and `+unity2` (`research/UNITY-20260927-036-record-corrections/logs/01-facts.txt`).
 
 **gtk-nocsd global menu, upstream-ready patch** (2026-09-25, May asked):
 one commit on upstream main 6b1f70a, desktop-neutral (gtk-shell-shows-menubar),
@@ -168,6 +199,8 @@ target2 runs them. Builds in `~/work/b/indf`.
 **appmenu-gtk-module 25.04-1build1+unity1** (2026-09-25): upstream a783b01c,
 in aptly; `research/appmenu-resident/`. target2 has it (dpkg -i) and
 `xsettingsd` installed for the reproduction.
+_Correction 2026-09-27 (UNITY-20260927-036):_ that was the state on 2026-09-25; target2 has been
+rolled back to Clean-2 since, so it has neither.
 
 **nux 0ubuntu15+unity2** (2026-09-24): `fix-fbo-attachment-arrays.patch`
 (LP #2160298), branch `b/fbo` (`9793c23`), in aptly; `research/nux-fbo/`.
@@ -215,7 +248,12 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**Rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
+**Rolled back to `Clean-2` again on 2026-09-28 ~14:55Z**, after
+UNITY-20260927-024 (unity-greeter, indicator-keyboard stock/+unity3, a test
+user). Checked inside: no `~/.dirty`, no `ik024test`, archive
+indicator-keyboard 0ubuntu1, greeter back to `lightdm-greeter`.
+
+Earlier: **rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
 test; checked inside: fresh boot, no `~/.dirty`, archive gtk-nocsd
 `3+0~20260321+0b77e1b-1`, no Xfce/Plasma). Everything B had installed there
 before is gone: our aptly packages, test applications, `~/b/` scripts. The

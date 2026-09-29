@@ -1,0 +1,23 @@
+# UNITY-20260927-051 reproduction, 2026-09-27T20:57:40Z
+## calamares-settings-ubuntu 1:26.04.12+unity3 manifest (UNITY-20260927-045, build_sbuild.py at eb6553e)
+artifacts:
+  source calamares-settings-ubuntu_26.04.12+unity3.dsc
+  changes calamares-settings-ubuntu_26.04.12+unity3_amd64.changes
+  binary calamares-settings-kubuntu_26.04.12+unity3_all.deb
+  binary calamares-settings-lubuntu_26.04.12+unity3_all.deb
+  binary calamares-settings-ubuntu-common-data_26.04.12+unity3_all.deb
+  binary calamares-settings-ubuntu-common-dbgsym_26.04.12+unity3_amd64.ddeb
+  binary calamares-settings-ubuntu-common_26.04.12+unity3_amd64.deb
+  binary calamares-settings-ubuntu-unity_26.04.12+unity3_all.deb
+  buildinfo calamares-settings-ubuntu_26.04.12+unity3_amd64.buildinfo
+## its .dsc names these files (Checksums-Sha256)
+Checksums-Sha256:
+ 43ac399725f00a60abd5c2b7973ae9170ab4a0d975a783c41b345280cd389b1d 11799976 calamares-settings-ubuntu_26.04.12+unity3.tar.xz
+in the output dir: 0
+
+## how aptly stores the source package (scratch aptly, read-only queries)
+calamares-settings-ubuntu_1:26.04.12+unity3_source
+snapshot search -format '{{index . "Checksums-Sha256"}}':
+ 90e81ffd7c5e8f0331201b34ecb701edc3c154a1b12a86c22f179a74c45952c8 1770 calamares-settings-ubuntu_26.04.12+unity3.dsc
+ 43ac399725f00a60abd5c2b7973ae9170ab4a0d975a783c41b345280cd389b1d 11799976 calamares-settings-ubuntu_26.04.12+unity3.tar.xz
+

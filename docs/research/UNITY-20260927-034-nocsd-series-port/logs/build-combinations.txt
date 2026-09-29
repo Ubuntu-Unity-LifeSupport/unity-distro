@@ -1,0 +1,25 @@
+# generator + Uncrustify 0.78.1 on 6b1f70a against our committed series (research/nocsd-gaps split/patches)
+base vs 23e91cb: diff lines 0
+A vs d694107: diff lines 0
+AB vs 5597fb9: diff lines 0
+ABC vs 2cfbec6: diff lines 0
+ABCD vs a450853: diff lines 0
+
+# all 16 combinations on a57e976, make with upstream flags (gcc 15.2.0)
+base: warnings 0, errors 0, NEEDED libc.so.6 
+A: warnings 0, errors 0, NEEDED libc.so.6 
+B: warnings 0, errors 0, NEEDED libc.so.6 
+C: warnings 0, errors 0, NEEDED libc.so.6 
+AB: warnings 0, errors 0, NEEDED libc.so.6 
+AC: warnings 0, errors 0, NEEDED libc.so.6 
+BC: warnings 0, errors 0, NEEDED libc.so.6 
+ABC: warnings 0, errors 0, NEEDED libc.so.6 
+D: warnings 0, errors 0, NEEDED libc.so.6 
+AD: warnings 0, errors 0, NEEDED libc.so.6 
+BD: warnings 0, errors 0, NEEDED libc.so.6 
+CD: warnings 0, errors 0, NEEDED libc.so.6 
+ABD: warnings 0, errors 0, NEEDED libc.so.6 
+ACD: warnings 0, errors 0, NEEDED libc.so.6 
+BCD: warnings 0, errors 0, NEEDED libc.so.6 
+ABCD: warnings 0, errors 0, NEEDED libc.so.6 
+ABCD with dpkg-buildflags: warnings 0, errors 0

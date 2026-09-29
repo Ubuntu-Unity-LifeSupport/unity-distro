@@ -26,11 +26,72 @@ NEXT = {
     "READY_FOR_FIX": {"IMPLEMENTING", "BLOCKED", "DEFERRED"},
     "IMPLEMENTING": {"VERIFYING", "BLOCKED"},
     "VERIFYING": {"REVIEW", "READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED", "DONE"},
-    "REVIEW": {"READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED"},
+    "REVIEW": {"READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED", "DONE"},
     "READY_TO_PUBLISH": {"PUBLISHED", "BLOCKED"},
     "PUBLISHED": {"DONE", "BLOCKED"},
     "BLOCKED": {"CLAIMED", "INVESTIGATING", "READY_FOR_FIX", "IMPLEMENTING", "VERIFYING", "REVIEW", "READY_TO_PUBLISH", "PUBLISHED"},
 }
+
+
+# UNITY-20260928-005: what a task changes decides its path to DONE
+# (ENGINEERING-PROCESS section 1). A mixed task takes the first kind that
+# applies in this order.
+KINDS = ("package", "tool", "operation", "documentation")
+# Evidence that only a package task carries: any of these forces "package".
+PACKAGE_MARKERS = ("build_manifest", "release_gate", "candidate_version", "version_safety")
+# From READY_FOR_FIX on, every transition needs a resolved kind.
+KIND_STATES = {"READY_FOR_FIX", "IMPLEMENTING", "VERIFYING", "REVIEW", "READY_TO_PUBLISH", "PUBLISHED", "DONE"}
+
+
+def resolve_kind(data):
+    """The task's kind from its evidence, or None if it does not say.
+    package_change, when present, must be a bool that agrees with task_kind;
+    a legacy task with package_change=true and no task_kind is a package;
+    package-only evidence forces package."""
+    kind, package_change = data.get("task_kind"), data.get("package_change")
+    if kind is not None and kind not in KINDS:
+        raise ValueError(f"task_kind must be one of {', '.join(KINDS)}")
+    if package_change is not None and type(package_change) is not bool:
+        raise ValueError("package_change must be true or false")
+    markers = [key for key in PACKAGE_MARKERS if data.get(key)]
+    if markers and kind not in (None, "package"):
+        raise ValueError(f"evidence with {', '.join(markers)} belongs to a package task, not task_kind={kind}")
+    if kind is None and (package_change is True or markers):
+        kind = "package"
+    if kind is not None and package_change is not None and package_change != (kind == "package"):
+        raise ValueError(f"package_change={str(package_change).lower()} contradicts task_kind={kind}")
+    return kind
+
+
+def kind_lock_path(task_id):
+    """The kind a task is held to, recorded by taskctl beside the evidence
+    files of the board it manages."""
+    return board_path().parent / "evidence" / f"{task_id}.kind"
+
+
+def read_kind_lock(path):
+    """The locked kind, or None when there is no lock. A lock that does not
+    hold exactly one kind (empty, unknown, extra lines) is an error: it must
+    never stand in for a kind and let a task past its gates."""
+    if not path.exists():
+        return None
+    text = path.read_text(encoding="utf-8").strip()
+    if text not in KINDS:
+        raise ValueError(f"kind lock {path} holds {text!r}, not one of {', '.join(KINDS)}; repair it before any transition")
+    return text
+
+
+def write_kind_lock(path, kind):
+    """Write the lock atomically: a reader sees the old state or the whole kind."""
+    if kind not in KINDS:
+        raise ValueError(f"refusing to lock unknown kind {kind!r}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    with temporary.open("w", encoding="utf-8") as stream:
+        stream.write(kind + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
 
 
 def now():
@@ -113,9 +174,112 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def require_evidence(target, data, task_id):
+def check_switch_time_evidence(record):
+    """The publisher's switch-time version check (scripts/publish_aptly.py
+    publication_evidence) must be a SAFE verdict on a full apt view of the
+    published snapshot for this package and version."""
+    check, view = record.get("switch_time_version_check"), record.get("switch_time_apt_view")
+    if (not isinstance(check, dict) or check.get("result") != "SAFE"
+            or check.get("source_package") != record.get("package")
+            or check.get("candidate_source_version") != record.get("candidate_version")
+            or not check.get("checked_at")):
+        raise ValueError("publish record lacks a SAFE switch-time version check for this package and version")
+    if (not isinstance(view, dict) or view.get("tool") != "apt_view.py" or view.get("mode") != "full"
+            or (view.get("snapshot") or {}).get("name") != record.get("snapshot")):
+        raise ValueError("publish record lacks the switch-time apt view of the published snapshot")
+
+
+# UNITY-20260929-015: a later publication replaces the live snapshot's name;
+# the task's publication is still live if the live snapshot carries every
+# artifact of the record, byte for byte. Read-only aptly commands only.
+PUBLISH_SOURCE = re.compile(r"(?m)^\s*(\w+):\s+(\S+)\s+\[(\w+)\]\s*$")
+
+
+def run_aptly_read(args):
+    return subprocess.run(["aptly"] + args, check=False, capture_output=True, text=True)
+
+
+def confirm_live_publication(record, distribution, prefix, run=run_aptly_read):
+    """None if the record's publication is live now, else the reason it is not.
+    Live means: publish show names the record's snapshot, or it names exactly
+    one other snapshot that holds every source and binary artifact of the
+    record with the recorded version and sha256."""
+    shown = run(["publish", "show", distribution] + ([prefix] if prefix != "." else []))
+    if shown.returncode:
+        return f"aptly publish show {distribution} failed: {shown.stderr.strip()}"
+    sources = PUBLISH_SOURCE.findall(shown.stdout)
+    if (record["snapshot"], "snapshot") in [(name, kind) for _component, name, kind in sources]:
+        return None
+    if len(sources) != 1 or sources[0][2] != "snapshot":
+        return (f"live publication does not name the recorded snapshot {record['snapshot']} and is not exactly "
+                f"one snapshot: {[f'{c}: {n} [{k}]' for c, n, k in sources]}")
+    live = sources[0][1]
+    if str(Path(__file__).resolve().parent) not in sys.path:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from publish_aptly import dsc_checksums, source_package_matches, PROVENANCE_ONLY_KINDS
+
+    artifacts = record.get("artifacts") or []
+    kinds = [a.get("kind") for a in artifacts]
+    if kinds.count("source") != 1 or "source_file" not in kinds or "binary" not in kinds:
+        return "publish record must list exactly one source, its source files and at least one binary"
+    other = sorted({k for k in kinds} - {"source", "source_file", "binary"} - PROVENANCE_ONLY_KINDS, key=str)
+    if other:
+        return f"publish record has artifact kinds without a live-content rule: {other}"
+    missing, differing = [], []
+    for a in artifacts:
+        if a.get("kind") != "binary":
+            continue
+        name = f"{a.get('package')} {a.get('version')} {a.get('architecture')}"
+        found = run(["snapshot", "search", "-format", '{{index . "SHA256"}}', live,
+                     f"Name ({a.get('package')}), Version (= {a.get('version')}), Architecture ({a.get('architecture')})"])
+        lines = [line.strip() for line in found.stdout.splitlines() if line.strip()] if not found.returncode else []
+        if not lines:
+            missing.append(name)
+        elif lines != [a.get("sha256")]:
+            differing.append(name)
+    source = next(a for a in artifacts if a.get("kind") == "source")
+    query = f"Name ({source.get('package')}), $Architecture (source), Version (= {source.get('version')})"
+    keys = run(["snapshot", "search", "-format", "{{.Key}}", live, query])
+    # an aptly key is one line with spaces in it ("Psource demo 1:1.0 <hash>")
+    key_lines = [line for line in keys.stdout.splitlines() if line.strip()] if not keys.returncode else []
+    if len(key_lines) != 1:
+        missing.append(f"{source.get('package')} {source.get('version')} source"
+                       + (f" (found {len(key_lines)} source packages)" if key_lines else ""))
+    else:
+        checksums = run(["snapshot", "search", "-format", '{{index . "Checksums-Sha256"}}', live, query])
+        if checksums.returncode:
+            missing.append(f"{source.get('package')} {source.get('version')} source")
+        else:
+            error = source_package_matches(artifacts, dsc_checksums("Checksums-Sha256:\n" + checksums.stdout))
+            if error:
+                differing.append(error)
+    if missing or differing:
+        return (f"live snapshot {live} (the recorded {record['snapshot']} is no longer live) does not carry the "
+                f"record's artifacts: missing {missing}, other sha256 {differing}")
+    return None
+
+
+def require_authorization(data):
+    """An operation acts on shared infrastructure: who approved it, where
+    that approval is recorded, and what it covers."""
+    auth = data.get("authorization")
+    if not isinstance(auth, dict):
+        raise ValueError("operation tasks require authorization {approved_by, reference, scope}")
+    if auth.get("approved_by") not in {"May", "C"}:
+        raise ValueError("authorization.approved_by must be May or C")
+    non_placeholder(auth, "reference", "scope")
+
+
+def require_evidence(target, data, task_id, kind=None, state=None):
+    if kind is None:
+        kind = resolve_kind(data)
+    if target in ("READY_TO_PUBLISH", "PUBLISHED") and kind != "package":
+        raise ValueError(f"only package tasks are published; this task is {kind}")
+    defect_card = kind in (None, "package", "tool")
     required = {
-        "READY_FOR_FIX": ("reproduction", "reproduction_result", "existing_fix_result", "issue_search_result", "root_cause", "invariant", "chosen_approach"),
+        "READY_FOR_FIX": (("reproduction", "reproduction_result", "existing_fix_result", "issue_search_result", "root_cause", "invariant", "chosen_approach")
+                          if defect_card else
+                          ("scope", "chosen_approach", "existing_state_check") if kind == "operation" else ("scope", "chosen_approach")),
         "IMPLEMENTING": ("implementation_plan",),
         "REVIEW": ("verification_record",),
         "READY_TO_PUBLISH": ("release_gate", "build_manifest", "version_check", "verification_record"),
@@ -133,13 +297,26 @@ def require_evidence(target, data, task_id):
     if missing:
         raise ValueError(f"{target} requires evidence fields: {', '.join(missing)}")
     if target == "VERIFYING":
-        if data.get("package_change") is True and (not data.get("regression_test") or not data.get("build_manifest")):
+        if kind == "package" and (not data.get("regression_test") or not data.get("build_manifest")):
             raise ValueError("package verification requires regression_test and build_manifest evidence")
-        if data.get("package_change") is False and not data.get("validation_record"):
-            raise ValueError("documentation/research verification requires validation_record")
+        if kind == "tool" and (not data.get("regression_test") or not data.get("validation_record")):
+            raise ValueError("tool verification requires regression_test and validation_record evidence")
+        if kind in ("operation", "documentation") and not data.get("validation_record"):
+            raise ValueError(f"{kind} verification requires validation_record")
     if target == "BLOCKED" and data.get("resume_state") not in NEXT:
         raise ValueError("BLOCKED requires resume_state to name a resumable process state")
-    if target == "READY_FOR_FIX":
+    if target == "READY_FOR_FIX" and not defect_card:
+        if type(data.get("architectural_task")) is not bool or type(data.get("design_challenger_required")) is not bool:
+            raise ValueError("READY_FOR_FIX requires explicit boolean architectural_task and design_challenger_required fields")
+        if data.get("architectural_task") and not data.get("design_challenger_required"):
+            raise ValueError("architectural_task=true requires design_challenger_required=true")
+        if data.get("design_challenger_required") is True and data.get("design_review_result") != "APPROVE":
+            raise ValueError("this task requires design_review_result=APPROVE before READY_FOR_FIX")
+        non_placeholder(data, "scope", "chosen_approach", "correct_layer")
+        if kind == "operation":
+            non_placeholder(data, "existing_state_check")
+            require_authorization(data)
+    if target == "READY_FOR_FIX" and defect_card:
         if data.get("reproduction_result") != "PASS":
             raise ValueError("READY_FOR_FIX requires reproduction_result=PASS")
         if data.get("existing_fix_result") not in {"NOT_FIXED", "UNKNOWN"}:
@@ -228,11 +405,7 @@ def require_evidence(target, data, task_id):
                               for item in build_artifacts]
         if record.get("artifacts") != expected_artifacts:
             raise ValueError("publish record artifacts do not match the gated build manifest")
-        fresh_policy = record.get("fresh_apt_policy")
-        if (not isinstance(fresh_policy, dict) or fresh_policy.get("result") != "PASS"
-                or fresh_policy.get("candidate_version") != record.get("candidate_version")
-                or not fresh_policy.get("checked_at")):
-            raise ValueError("publish record lacks a passing fresh local apt policy check")
+        check_switch_time_evidence(record)
         try:
             published_at = datetime.fromisoformat(record["published_at"].replace("Z", "+00:00"))
         except (KeyError, AttributeError, ValueError):
@@ -246,16 +419,25 @@ def require_evidence(target, data, task_id):
             target_record = repo / target_record
         if not target_record.is_file():
             raise ValueError("target_verification_record must point to an existing verification record")
-        publication = publish.get("distribution")
-        prefix = publish.get("prefix")
-        command = ["aptly", "publish", "show", publication]
-        if prefix != ".":
-            command.append(prefix)
-        shown = subprocess.run(command, check=False, capture_output=True, text=True)
-        if shown.returncode or not re.search(rf"(?m)^\s*\w+:\s+{re.escape(record['snapshot'])}\s+\[snapshot\]", shown.stdout):
-            raise ValueError("live aptly publish show does not confirm the recorded snapshot")
-    if target == "DONE" and data.get("package_change") is True:
-        raise ValueError("package tasks reach DONE only after PUBLISHED")
+        live_error = confirm_live_publication(record, publish.get("distribution"), publish.get("prefix"))
+        if live_error:
+            raise ValueError(live_error)
+    if target == "DONE":
+        # UNITY-20260928-005: DONE by kind and by the state it comes from.
+        if kind not in KINDS:
+            raise ValueError(f"DONE requires a known task kind, not {kind!r}")
+        if kind == "package" and state != "PUBLISHED":
+            raise ValueError("package tasks reach DONE only after PUBLISHED")
+        if kind == "tool" and state != "REVIEW":
+            raise ValueError("tool tasks reach DONE only from REVIEW, after the Verifier")
+        if kind in ("operation", "documentation") and state not in ("VERIFYING", "REVIEW"):
+            raise ValueError(f"{kind} tasks reach DONE from VERIFYING or REVIEW")
+        if state == "REVIEW":
+            if data.get("verification_result") != "PASS":
+                raise ValueError("DONE from REVIEW requires verification_result=PASS")
+            if data.get("review_status") not in {"REVIEWED", "INDEPENDENTLY_REPRODUCED"}:
+                raise ValueError("DONE from REVIEW requires review_status REVIEWED or INDEPENDENTLY_REPRODUCED")
+
     if target == "READY_TO_PUBLISH":
         if data.get("version_safety") != "SAFE":
             raise ValueError("READY_TO_PUBLISH requires version_safety=SAFE")
@@ -284,6 +466,26 @@ def require_evidence(target, data, task_id):
             raise ValueError("READY_TO_PUBLISH requires verification_result=PASS or documented NOT_APPLICABLE")
 
 
+def show_open_alerts():
+    """Print alerts nobody has acknowledged yet (scripts/alerts.py) to stderr.
+
+    Automation raises alerts into ALERTS.md next to the board; they stay on
+    every taskctl run until C or May acknowledges them. Read-only and
+    best-effort: a missing or unreadable file never blocks a board operation."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import alerts
+        path = Path(os.environ.get("ALERTS_FILE", str(board_path().parent / "ALERTS.md"))).expanduser()
+        pending = alerts.open_alerts(path)
+    except Exception:
+        return
+    if pending:
+        print(f"taskctl: {len(pending)} unacknowledged alert(s) in {path}"
+              " - C or May: act on it and run scripts/alerts.py ack --actor C|May --key KEY", file=sys.stderr)
+        for line in pending:
+            print(f"  ALERT {line}", file=sys.stderr)
+
+
 def main():
     parser = argparse.ArgumentParser(prog="taskctl")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -295,6 +497,7 @@ def main():
     p = sub.add_parser("inspect"); p.add_argument("task_id")
     p = sub.add_parser("release"); p.add_argument("task_id"); p.add_argument("--actor", required=True); p.add_argument("--confirmed-idle", action="store_true")
     args = parser.parse_args()
+    show_open_alerts()
     path = board_path()
     path.parent.mkdir(parents=True, exist_ok=True)
     lockpath = path.with_suffix(path.suffix + ".lock")
@@ -349,9 +552,20 @@ def main():
                     evidence_path, data = evidence_for(args.task_id, args.evidence)
                     if state == "BLOCKED" and target != data.get("resume_state"):
                         return fail("a blocked task may resume only at its recorded resume_state")
-                    if target == "DONE" and state == "VERIFYING" and data.get("package_change") is not False:
-                        return fail("only an explicitly non-package task may move VERIFYING -> DONE")
-                    require_evidence(target, data, args.task_id)
+                    kind = resolve_kind(data)
+                    lock = kind_lock_path(args.task_id)
+                    locked = read_kind_lock(lock)
+                    if locked is not None and kind is None:
+                        kind = locked
+                    if locked is not None and kind != locked:
+                        return fail(f"task {args.task_id} is held to task_kind={locked} ({lock}); its evidence now says {kind}")
+                    if target in KIND_STATES and kind is None:
+                        return fail(f"{target} requires task_kind ({', '.join(KINDS)}) or package_change=true in the evidence")
+                    if kind is not None and data.get("package_change") is not None and data.get("package_change") != (kind == "package"):
+                        return fail(f"package_change contradicts the task's kind {kind}")
+                    require_evidence(target, data, args.task_id, kind, state)
+                    if locked is None and kind is not None and target in KIND_STATES:
+                        write_kind_lock(lock, kind)
                     cols[4], cols[7] = target, stamp()
                     cols[8] = str(evidence_path)
                     if target in CLOSED:

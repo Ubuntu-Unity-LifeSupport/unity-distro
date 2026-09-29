@@ -1,0 +1,74 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260927-004: who sends SIGTERM to lightdm's session-child processes,
+// when relative to the reaping of their child, and which branch of
+// signal_cb() (src/session-child.c) runs: kill() = pass on to the child,
+// _exit()/exit() straight after the delivery = the "no child" branch.
+// All lightdm processes have comm "lightdm" (daemon and session-children);
+// their GLib threads (gdbus, gmain, pool) do not, and a process-directed
+// signal can be delivered to any of them, so threads are matched by the
+// comm of their thread-group leader and printed with tid and thread comm.
+// Run as root; lines go to stdout (the journal when run by systemd-run).
+
+tracepoint:sched:sched_process_fork /comm == "lightdm"/
+{
+  printf("%s fork %d -> %d\n", strftime("%H:%M:%S.%f", nsecs), args.parent_pid, args.child_pid);
+}
+
+tracepoint:sched:sched_process_exec /pid > 0 && comm != "lightdm" && curtask->real_parent->comm == "lightdm"/
+{
+  printf("%s exec %d %s (parent %d)\n", strftime("%H:%M:%S.%f", nsecs), pid, str(args.filename), curtask->real_parent->tgid);
+}
+
+// Save the maps of the greeter's session-child while it is alive (it starts
+// the greeter wrapper), so that the unsymbolized stacks printed when it is
+// interrupted can be resolved afterwards (tools/symbolize.sh). Needs
+// bpftrace --unsafe.
+tracepoint:sched:sched_process_exec /str(args.filename) == "/usr/lib/lightdm/lightdm-greeter-session"/
+{
+  system("cp /proc/%d/maps /var/tmp/ldmaps.%d", curtask->real_parent->tgid, curtask->real_parent->tgid);
+}
+
+tracepoint:signal:signal_generate /args.sig == 15 && (args.comm == "lightdm" || comm == "lightdm")/
+{
+  printf("%s SIGTERM %d(%s) -> %d(%s) result %d\n", strftime("%H:%M:%S.%f", nsecs), pid, comm, args.pid, args.comm, args.result);
+}
+
+tracepoint:signal:signal_deliver /args.sig == 15 && curtask->group_leader->comm == "lightdm"/
+{
+  @dlv[pid] = 1;
+  printf("%s deliver SIGTERM to %d tid %d (%s) (reaped a child before: %s)\n", strftime("%H:%M:%S.%f", nsecs), pid, tid, comm, @reaped[pid] ? "yes" : "no");
+  if (@reaped[pid]) {
+    // where the no-child branch interrupts session-child (lightdm is
+    // stripped: its frames print as addresses, libc and PAM with symbols)
+    printf("%s\n", ustack(12));
+  }
+}
+
+tracepoint:syscalls:sys_exit_wait4 /curtask->group_leader->comm == "lightdm" && args.ret > 0/
+{
+  @reaped[pid] = 1;
+  printf("%s %d reaped %d\n", strftime("%H:%M:%S.%f", nsecs), pid, args.ret);
+}
+
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:kill /curtask->group_leader->comm == "lightdm" && @dlv[pid]/
+{
+  printf("%s %d tid %d (%s) kill(%d, %d) after SIGTERM delivery - handler passes it on\n", strftime("%H:%M:%S.%f", nsecs), pid, tid, comm, arg0, arg1);
+}
+
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:exit /curtask->group_leader->comm == "lightdm"/
+{
+  @ex[pid] = 1;
+  printf("%s %d tid %d (%s) exit(%d)%s\n", strftime("%H:%M:%S.%f", nsecs), pid, tid, comm, arg0, @dlv[pid] ? " after SIGTERM delivery" : "");
+}
+
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit /curtask->group_leader->comm == "lightdm"/
+{
+  printf("%s %d tid %d (%s) _exit(%d) %s\n", strftime("%H:%M:%S.%f", nsecs), pid, tid, comm, arg0,
+         @ex[pid] ? "at the end of exit()" : (@dlv[pid] ? "DIRECTLY AFTER SIGTERM DELIVERY (signal_cb no-child branch)" : "direct"));
+}
+
+tracepoint:sched:sched_process_exit /comm == "lightdm" && pid == tid/
+{
+  printf("%s %d gone\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  $d = delete(@dlv[pid]); $d = delete(@reaped[pid]); $d = delete(@ex[pid]);
+}

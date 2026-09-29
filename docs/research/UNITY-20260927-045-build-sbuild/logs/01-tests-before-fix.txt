@@ -1,0 +1,79 @@
+test_binaries_not_named_after_source (test_build_sbuild.BuildSbuildTest.test_binaries_not_named_after_source)
+(2) Binaries come from .changes, including .ddeb, whatever their names. ... FAIL
+test_epoch (test_build_sbuild.BuildSbuildTest.test_epoch)
+(1) An epoch in the version never appears in file names. ... FAIL
+test_full_log (test_build_sbuild.BuildSbuildTest.test_full_log)
+(3) The manifest's log is the whole sbuild output, command header first. ... FAIL
+test_partially_renamed_binaries_not_dropped (test_build_sbuild.BuildSbuildTest.test_partially_renamed_binaries_not_dropped)
+(2) xorg-server: one binary contains the source name, one does not. ... FAIL
+test_plain_version (test_build_sbuild.BuildSbuildTest.test_plain_version)
+Control: no epoch, binaries named after the source. ... ok
+test_unrelated_files_ignored (test_build_sbuild.BuildSbuildTest.test_unrelated_files_ignored)
+Files next to the source that this build's .changes does not name stay out. ... FAIL
+
+======================================================================
+FAIL: test_binaries_not_named_after_source (test_build_sbuild.BuildSbuildTest.test_binaries_not_named_after_source)
+(2) Binaries come from .changes, including .ddeb, whatever their names.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 141, in test_binaries_not_named_after_source
+    names = self.check_complete(r, m, w, o, "ubuntu-unity-meta", "0.29+unity1")
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 112, in check_complete
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : sbuild succeeded but matching source and binary artifacts were not both found
+
+
+======================================================================
+FAIL: test_epoch (test_build_sbuild.BuildSbuildTest.test_epoch)
+(1) An epoch in the version never appears in file names.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 135, in test_epoch
+    self.check_complete(r, m, w, o, "calamares-settings-ubuntu", "1:26.04.12+unity2")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 112, in check_complete
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : sbuild succeeded but matching source and binary artifacts were not both found
+
+
+======================================================================
+FAIL: test_full_log (test_build_sbuild.BuildSbuildTest.test_full_log)
+(3) The manifest's log is the whole sbuild output, command header first.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 164, in test_full_log
+    self.assertTrue(log[0].startswith("$ sbuild"), log[:3])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : ['dpkg-source: info: building overlay-scrollbar in ../overlay-scrollbar_0.2.17.1+16.04.20151117-0ubuntu5+unity1.dsc', '$ sbuild -d resolute --no-clean-source']
+
+======================================================================
+FAIL: test_partially_renamed_binaries_not_dropped (test_build_sbuild.BuildSbuildTest.test_partially_renamed_binaries_not_dropped)
+(2) xorg-server: one binary contains the source name, one does not.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 148, in test_partially_renamed_binaries_not_dropped
+    names = self.check_complete(r, m, w, o, "xorg-server", "21.1.22-1ubuntu1.3+unity2")
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 118, in check_complete
+    self.assertIn(name, names, f"{name} from .changes missing in manifest")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'xserver-xorg-core_21.1.22-1ubuntu1.3+unity2_amd64.deb' not found in {'xorg-server_21.1.22-1ubuntu1.3+unity2_amd64.buildinfo', 'xorg-server_21.1.22-1ubuntu1.3+unity2_amd64.changes', 'xorg-server_21.1.22-1ubuntu1.3+unity2.dsc', 'xorg-server-source_21.1.22-1ubuntu1.3+unity2_all.deb'} : xserver-xorg-core_21.1.22-1ubuntu1.3+unity2_amd64.deb from .changes missing in manifest
+
+======================================================================
+FAIL: test_unrelated_files_ignored (test_build_sbuild.BuildSbuildTest.test_unrelated_files_ignored)
+Files next to the source that this build's .changes does not name stay out.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 155, in test_unrelated_files_ignored
+    names = self.check_complete(r, m, w, o, "ubuntu-unity-meta", "0.29+unity1")
+  File "/home/claude/work/b/unity-distro/scripts/tests/test_build_sbuild.py", line 112, in check_complete
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : sbuild succeeded but matching source and binary artifacts were not both found
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.234s
+
+FAILED (failures=5)

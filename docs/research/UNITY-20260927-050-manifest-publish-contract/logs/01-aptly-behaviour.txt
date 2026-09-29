@@ -1,0 +1,21 @@
+# aptly 1.6.2 scratch (rootDir /tmp/claude-1000/-home-claude/fa14e5f5-9fa9-405c-8373-3873520d3c73/scratchpad/aptly050/root), 2026-09-27
+repo add of .dsc, .deb, .ddeb, .udeb and a binNMU .deb:
+Packages:
+  demo_1:1.0_source
+  demo-bin_1:1.0_amd64
+  demo-bin-dbgsym_1:1.0_amd64
+  demo-binnmu_1:1.0+b1_amd64
+  demo-udeb_1:1.0_amd64
+
+real publication ./resolute (read-only):
+Contents-amd64.gz
+binary-amd64
+dbgsym packages in binary-amd64/Packages: 7
+debian-installer index: none
+source index: none
+Prefix: .
+Distribution: resolute
+Architectures: amd64
+Sources:
+  main: unity-resolute [local]
+aptly binary contains the flag string: 1

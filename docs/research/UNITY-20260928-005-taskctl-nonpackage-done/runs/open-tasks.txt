@@ -1,0 +1,11 @@
+# 2026-09-28T10:34Z python3 tools/open-tasks.py
+UNITY-20260927-021 BLOCKED         owner=B package_change=True task_kind=-
+UNITY-20260927-023 BLOCKED         owner=B package_change=True task_kind=-
+UNITY-20260927-026 INVESTIGATING   owner=B package_change=False task_kind=-
+UNITY-20260927-037 BLOCKED         owner=B package_change=True task_kind=-
+UNITY-20260927-041 BLOCKED         owner=B package_change=True task_kind=-
+UNITY-20260927-047 BLOCKED         owner=B package_change=False task_kind=-
+UNITY-20260927-052 BLOCKED         owner=A package_change=True task_kind=-
+UNITY-20260927-057 CLAIMED         owner=B package_change=- task_kind=-
+UNITY-20260928-005 INVESTIGATING   owner=A package_change=- task_kind=-
+UNITY-20260928-007 REVIEW          owner=A package_change=False task_kind=-

@@ -40,6 +40,9 @@ branches `unity/resolute` of `packages/indicator-bluetooth` and
 `packages/indicator-printers`, cloned from git-ubuntu, no remote of ours).
 Versions `0ubuntu7+unity1` and `0ubuntu8+unity1`, in aptly.
 
+_Correction 2026-09-27 (UNITY-20260927-036):_ only the binary packages are in aptly; the
+source packages were never added (`research/UNITY-20260927-036-record-corrections/logs/01-facts.txt`).
+
 Source format 1.0: the source package is built from `git archive` next to the
 orig tarball (dpkg-source 1.0 does not skip `.git`); its diff touches the same
 files outside `debian/` as the archive's diff.

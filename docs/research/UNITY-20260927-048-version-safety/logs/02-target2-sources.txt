@@ -1,0 +1,19 @@
+# target2 (Clean-2) apt sources, 2026-09-27T20:15:25Z guest clock
+/etc/apt/preferences.d/:
+ubuntu-pro-esm-apps
+ubuntu-pro-esm-infra
+
+/etc/apt/sources.list.d/:
+ubuntu.sources
+Types: deb
+URIs: http://de.archive.ubuntu.com/ubuntu
+Suites: resolute resolute-updates resolute-backports
+Components: main universe restricted multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: resolute-security
+Components: main universe restricted multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+APT::Architecture "amd64";

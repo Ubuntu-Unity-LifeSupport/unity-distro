@@ -1,0 +1,23 @@
+{
+  "task_id": "UNITY-20260928-019",
+  "package": "lightdm",
+  "target_series": "resolute",
+  "candidate_version": "1.32.0-6ubuntu4+unity2",
+  "source_commit": "f5af23c0b9d5931aea0dfc7a2eaf424415cf8920",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20260928-019",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/README.md",
+    "verification_record": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/verification.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

@@ -1346,6 +1346,10 @@ which trusted `act_user_get_input_sources()` (transfer none, NULL while
 AccountsService has nothing cached) not to return NULL. accountsservice
 documents that NULL, so it is not a bug there.
 
+*Corrected 2026-09-28 by UNITY-20260927-024 (below): accountsservice does
+not document that NULL, and the crash is also reachable without a daemon
+restart.*
+
 Reproduced by restarting accounts-daemon under the greeter's service:
 `+unity2` crashed 3 of 3, `+unity3` survived 3 of 3. Tests pass 10 of 10,
 including a new one for NULL. Details: `research/indicator-keyboard-2166139/`.
@@ -1629,3 +1633,290 @@ over-suppress instead of preventing the ungrab.
 **Not done here.** Widening the condition to `screen->otherGrabExist(nullptr)`
 (A2) was rejected for scope only, with no evidence against it. It is now
 UNITY-20260927-040.
+
+
+## 2026-09-27 - UNITY-20260927-005: which u-s-d +unity4 change fixes #1, and the other two (agent A)
+
+**Context.** `unity-settings-daemon 0ubuntu7+unity4` carried three changes
+and a revert in one version (legacy A-L19). Record:
+`research/UNITY-20260927-005-usd-unity4/` (branch `a/UNITY-20260927-005`).
+
+**Measured on target, real evdev input.** Regression test `repro2.sh` takes
+the IdleMonitor name away from a running daemon:
+- archive 0ubuntu6 FAIL 3/3;
+- a test build of +unity4 without the launcher change (still two instances
+  at every login) PASS 3/3;
+- +unity5 PASS 3/3.
+
+Cold logins, 12 per build: the pointer was shown 12/12 on every build. The
+race is rare (2/12 on 2026-09-26, 0/12 today), so logins are not the
+regression test.
+
+**Decision.** Keep +unity4/+unity5 as published (`ALREADY_FIXED` /
+`FIXED_LOCAL`):
+- **D1, the #1 fix** - `90f5773`, idle-monitor filter kept independent of
+  the D-Bus name. Design Challenger: REVISE, then APPROVE.
+- **D2, the daemon started twice** - `85d3511`, a separate defect. It is
+  present in the archive and in 26.10. +unity5 starts one instance in 12/12.
+- **D3, libexecdir broken by our 0ubuntu7 base** - `b503ffd`, a separate
+  defect.
+  - It restores the archive's paths and so revives the archive's double
+    start, which is why D2 came with it.
+  - The only program it brought back in a Unity session is
+    `unity-fallback-mount-helper`, which the archive runs too. No journal
+    errors, and no duplicate on media insertion.
+
+Re-splitting the published version would change nothing that runs.
+
+**Found, for separate tasks:**
+- **D4.** `name_vanished_callback` frees the global `xsync` state without
+  resetting it. This is a use-after-free since 2014.
+- **Automount is inert in the Unity session.** The helper needs
+  `SessionIsActive`, which cinnamon-session lacks.
+- **A stray `.git` file in our u-s-d source packages** +unity2..+unity5.
+- **Our base 0ubuntu7 is not the resolute archive version** (0ubuntu6).
+
+
+## 2026-09-27 - Task branches merge into `main` with `--no-ff` when fast-forward is not possible
+
+**Context.** `main` advances while agents work on task branches: A's decision
+record `2a9b456` landed on `main` after `b/UNITY-20260927-045` branched from
+`1e4ef94`, so the branch could no longer be fast-forwarded. The task's
+evidence (`research/UNITY-20260927-045-build-sbuild/`) cites a commit hash on
+that branch. The branch was merged with `--no-ff` as `eb6553e`.
+
+**Decision.**
+- Fast-forward when it is naturally possible; otherwise `git merge --no-ff`
+  is the standard method.
+- An already-pushed task branch is not rebased solely to make a fast-forward
+  possible.
+
+**Why.**
+- A fast-forward cannot be assumed: `main` may legitimately advance while
+  another agent is working on a task.
+- Rebasing a published task branch replaces the commits that evidence,
+  verification records, and other process artifacts reference by hash. The
+  artificial fast-forward invariant is not worth that loss of traceability.
+- `--no-ff` keeps the task commits unchanged and records the integration as
+  one merge commit that names the task.
+
+Operational rules: `docs/ENGINEERING-PROCESS.md` section 10.
+
+
+## 2026-09-28 - Aptly freeze: no direct `aptly publish`, only taskctl's internal show
+
+**Decision (May).** While an aptly freeze is in force, agents and subagents
+must not call `aptly publish` directly in any form, including `show` and
+`list`. The one exception is the internal `aptly publish show` that
+`scripts/taskctl.py` runs as part of an authorized publication workflow,
+after the corresponding gate has passed. The exception is not extended
+beyond `taskctl.py` and `aptly publish show`. The rule is in
+`docs/ENGINEERING-PROCESS.md` section 6.
+
+**Why.** During UNITY-20260927-058 read-only publish commands ran twice.
+At 06:54:37Z a verifier subagent's test-data heredoc was closed early, and
+bash ran `aptly publish list` about 13 times, 3 of them as root. At 06:56Z
+a check of the incident added `aptly publish show`. The main-branch guard
+let both through. Nothing was published or changed. The root calls created
+`/root/.aptly.conf` and `/root/.aptly`, which were removed after checks
+(evidence of UNITY-20260927-058). A read-only command is still a live
+command against the production repository, so the freeze names `show` and
+`list` explicitly. 058 tightens `.claude/hooks/command_guard.py` so that
+these forms are refused. Its verification is recorded by part, and the
+adversarial part is NOT VERIFIED (follow-up UNITY-20260928-002).
+
+
+## 2026-09-28 - UNITY-20260927-006: xorg-server 1.3+unity2 keeps its 31 upstream commits (agent A)
+
+**Context.** Legacy A-L21: `2:21.1.22-1ubuntu1.3+unity2` carries 31 upstream
+commits for 11 CVEs, and its changelog says 29. Record:
+`research/UNITY-20260927-006-xorg-scope/` (branch `a/UNITY-20260927-006`).
+
+**Measured.** The 31 commits break down as follows:
+
+- 11 fix the 11 CVEs. CVE-2026-50257 and -50260 share one commit, and
+  CVE-2026-50264 takes the two DRI2 commits.
+- 1 must travel with the CVE-2026-56000 fix: d6fff22, which introduces that
+  CVE.
+- 1 is a likely companion of CVE-2026-55999: 0f1f4bc.
+- 11 are security-looking fixes without an advisory.
+- 7 are cleanup.
+
+Together that is upstream's 21.1.23 and 21.1.24 minus the version bumps and
+the XQuartz/GL commits, which Debian unstable and 26.10 ship in full. No
+resolute upload fixes any of the 11 CVEs.
+
+**Decision.** Keep `1.3+unity2` (`ALREADY_FIXED` / `FIXED_LOCAL`). Fix the
+changelog at the next upload, which xorg-watch triggers: "29" becomes "31",
+with the CVE-to-commit list. A CVE-only subset would be a combination nobody
+else builds; a new upload only for the wording is not worth a version.
+
+## 2026-09-28 - UNITY-20260927-024: a NULL InputSources is the consumer's to handle (agent B)
+
+**Context.** Legacy B-L17: indicator-keyboard +unity3 (LP #2166139) guards a
+NULL `act_user_get_input_sources()`, and the record said accountsservice
+documents that NULL. Record: `research/UNITY-20260927-024-ik-inputsources/`
+(branch `b/UNITY-20260927-024`).
+
+**Measured.** On target2, accountsservice 23.13.9-8ubuntu5.2:
+
+- **A nonexistent user.** libaccountsservice hands out a nonexistent user
+  as a loaded object whose getters all return NULL. Under unity-greeter,
+  moving the selection mike -> `*other` -> mike -> `*other` makes the
+  greeter's indicator-keyboard read that NULL. Stock 0ubuntu1 segfaults
+  3 of 3; +unity3 survives.
+- **A daemon restart.** The manager reports `is-loaded` 0.10-0.17 s before
+  its users have their properties back, so its handler reads NULL (3 of 3).
+  Upstream MR !58 (2020) fixed the manager half of this; the user half is
+  still open on main.
+- The getter is Ubuntu's patch 0016 and is not annotated `(nullable)`.
+
+**Decision.** The consumer owns the NULL. +unity3 stays unchanged:
+`ALREADY_FIXED` / `PATCH_ALREADY_EXISTS`. A libaccountsservice fix, best
+done on the manager side, would remove only the notification-time read. It
+would not cover the owner-gone span or nonexistent users, so we do not carry
+it. It can go upstream as a report through C and May.
+
+Follow-ups are listed in the record:
+
+- the empty source list written inside the restart window;
+- the greeter unit starting without `UNITY_GREETER_DBUS_NAME` after boot;
+- the weak `users` list;
+- libaccountsservice1 in 26.10.
+
+
+## 2026-09-28 - gtk-nocsd issue #1: second reply sent (coordinator)
+
+May replied on `Ubuntu-Unity-LifeSupport/unity-distro#1` on 2026-09-28 20:19Z
+(as NeiroNext). The reply accepts the maintainer's division of work (he
+finishes the base; we send the cleanup/proxies, the realize replacement and the
+settings part as separate patches on top) and reports measurements on his main
+`a57e976`: `research/UNITY-20260927-034-nocsd-series-port/`, facts checked in
+`research/UNITY-20260927-038-nocsd-reply2-recheck/`. It offers a Codeberg issue
+for the types bug that still reproduces on `a57e976`; opened only if he wants
+it. Nothing else was sent.
+
+
+## 2026-09-28 - UNITY-20260927-027 and UNITY-20260928-020: nux +unity3 keeps only proven changes and fixes its test races (agent B)
+
+**Context.** Legacy B-L03: nux `0ubuntu15+unity2` carried two hunks "for a double free" in `fix-missing-vidmode.patch`, found by reading, and an FBO fix proven only out of tree. Records: `research/UNITY-20260927-027-nux-vidmode-fbo/`, `research/UNITY-20260928-020-nux-gtest-segfault/`.
+
+**Measured.**
+- The fullscreen double free is real. The fullscreen branch frees the mode list and `~GraphicsDisplay` frees it again (uprobe trace, glibc malloc check, ASan). It is reachable only through the public API: neither Unity nor Nux's WindowThread asks for fullscreen.
+- The other hunk guarded a leak, not a double free, on a second `CreateOpenGLWindow` on one display. Nothing makes that call.
+- The package build's `gtest-nux-slow` crashed in most sbuilds, the published +unity2 included, from two races in nux's tests:
+  - the dummy X server reset between tests;
+  - the `TestWindowThread` watchdog thread was deleted while it still ran.
+
+  The build chroot had not changed (446 of 446 package versions identical to a passing build).
+
+**Decision.**
+- Keep the pointer reset as its own patch with an ASan death test.
+- Drop the pre-query free (section 4).
+- Move the FBO check into gtest-nuxgraphics.
+- Fix the two races in the tests: `-noreset` for the tests' Xorg, and a joined `std::thread` for the watchdog.
+- Not in nux's thread API. `NThread` detaches in its destructor and cannot be joined and then deleted; that is a latent weakness, but no session code needs it. Retrying builds was rejected.
+
+Tests fail before and pass after in the package build; three sbuilds in a row are clean. Independent verification: PASS.
+
+
+## 2026-09-29 - UNITY-20260927-029: the empty LibreOffice HUD is fixed in hud's window-stack-bridge (agent B)
+
+**Context.** Legacy B-L45: the HUD was empty in about a third to half of LibreOffice Writer starts, in the archive hud as in ours. Record: `research/UNITY-20260927-029-hud-libreoffice/`.
+
+**Measured.**
+- bamf matches Writer's window to a temporary application first, then re-matches it, and the temporary application closes. That is by design (bamf commit dd81623, "mostly the case of LibreOffice").
+- window-stack-bridge asks the parent's DesktopFile() in between. On an error it dropped the window for good.
+- Reproduced live on target2: 4 of 20 starts, and 3 of 12. Reproduced deterministically with a stand-in bamf on a private bus.
+
+**Decision.**
+- Fix it in hud's window-stack-bridge. Keep the window, with its id as application id, as the code already does for an application without a desktop file.
+- Not in bamf: Parents() and DesktopFile() are separate calls, so the race stays whatever bamf's order.
+- Not in LibreOffice.
+
+Design Challenger APPROVE after two rounds. Tests fail before and pass after. target2 16/20 -> 20/20. Verifier PASS_WITH_NOTES.
+
+Left for follow-ups:
+- following bamf's re-match: for LibreOffice the application id is now the window number most of the time, so the HUD shows no icon;
+- a rarer second mechanism (the window is known, but the HUD is empty) with a dbusmenu/bamf-restart lead.
+
+
+## 2026-09-29 - UNITY-20260927-028: hud builds with C++14 again, C++17 only for its tests (agent B)
+
+**Context.** Legacy B-L24: hud's +unity1 set `-std=c++17` for the whole project, though only resolute's googletest needed C++17. Record: `research/UNITY-20260927-028-hud-cxx17-scope/`.
+
+**Decision.** Restrict C++17 to `tests/` rather than prove equivalence. With C++17 the machine code of every C++ binary differs from C++14's, so "the same" would need behaviour tests of all of it. Returning to upstream's level for everything shipped is the narrower change (section 4).
+
+**Measured.**
+- The sbuild log: 78 hud units now compile with C++14, 47 test units with C++17.
+- Against +unity2: identical file lists in all 14 packages, and identical dynamic symbols including versions. libhud-client's C++ class is pimpl, with no ABI tags.
+- Tests 6/6. On target2: LibreOffice's window kept 10/10, HUD answered 9/10; the miss is a first-start case tracked in UNITY-20260929-002.
+
+hud +unity3 contains +unity2 (UNITY-20260927-029). Verifier: PASS.
+
+
+## 2026-09-29 - UNITY-20260928-014: the greeter's indicator-keyboard does not write input sources it has no data for (agent B)
+
+**Context.** Follow-up of UNITY-20260927-024. Under unity-greeter, a restart of accounts-daemon (for instance an accountsservice upgrade at the login screen) made +unity3 write `sources=[]` and `current=4294967295` for about 0.3 s. A stored 4294967295 survived a reboot as the last layout, and an instance started inside the reload window kept a stale list of users. Record: `research/UNITY-20260928-014-ik-greeter-sources/`.
+
+**Decision.** Fix it in the consumer, indicator-keyboard. This is the -024 conclusion again: NULL is a legitimate libaccountsservice answer.
+- Skip the pass while no counted user has data. A dead object next to users with data does not block.
+- Redo the pass on `ActUserManager::user-changed` while it is pending.
+- List users afresh on every pass. Connect the `notify::is-loaded` handler in both start branches.
+- Write only changed values, sources before current.
+
+**Rejected.**
+- Skipping when any user lacks data: the dead object of a user deleted while the daemon was down stays listed with NULL data for good, and would freeze the migration.
+- Skipping only when the result is empty: under lightdm-gtk-greeter the list degrades rather than empties.
+- A timer.
+- A library change (as in -024).
+
+Design Challenger: REVISE, REVISE, APPROVE (design A''). +unity4 is built with tests 12/12. On target2, a uprobe trace shows the skip in the window and one write of the full data, 3/3. Verifier PASS (REVIEWED).
+
+**Limits, stated.**
+- A retry that migrates on its own has not been observed; LightDM's callback recovered first.
+- A partial multi-user union was not seen.
+- A `current` of 4294967295 already stored becomes the last index once, as in stock.
+- With no accounts-daemon, nothing is written.
+
+
+## 2026-09-29 - UNITY-20260928-019: lightdm's session-child finishes its cleanup when SIGTERM comes after the session ended (agent A)
+
+**Context.** Follow-up of UNITY-20260927-004. A greeter is stopped twice: logind's `TerminateSession` stops its scope, then the daemon `kill()`s session-child 2-19 ms later. `signal_cb()` leaves the process whenever `child_pid` is 0, and `child_pid` is 0 again once `waitpid()` has reaped the greeter - during the cleanup (X authority removal, `pam_close_session`, `pam_setcred`, `pam_end`). Record: `research/UNITY-20260928-019-lightdm-greeter-pam-close/`.
+
+**Measured.**
+- The cleanup was cut in 16 of 21 traced greeter stops (stock 10/10, +unity1 6/11), and in 2/2 with a SIGTERM forced right after `waitpid()`.
+- When it was cut before the X authority removal finished, the greeter's cookie stayed in `/var/lib/lightdm/.Xauthority` and opened the user's display (same X server) as uid lightdm.
+- Nothing else lasting: logind already stops the session; the greeter's PAM modules only log on close.
+- User sessions stopped by the daemon were not affected (6/6).
+
+**Decision.** Fix it in session-child's handler, where the ambiguous `child_pid == 0` is read: a flag set right after `waitpid()` (before `child_pid = 0`, which becomes volatile) makes a later SIGTERM let the cleanup finish, and the first such SIGTERM arms `alarm(10)` so that a cleanup that blocks still ends. Before the session starts the handler still `_exit()`s (+unity1).
+
+**Rejected.**
+- Removing the daemon's second `kill()` (the handler's ambiguity stays; it changes the daemon for every session type).
+- `SIG_IGN` or blocking SIGTERM after `waitpid()` (no place for a watchdog; the disposition or mask survives `execve()` into PAM helpers).
+- The flag without a watchdog: it is -004's rejected F3 - a blocking cleanup would hold the next session until systemd's 90 s SIGKILL in every double stop, and a single late SIGTERM without a logind scope stop would never end.
+
+Design Challenger: REVISE, APPROVE. lightdm +unity2 built; on target 13/13 natural greeter stops complete, forced SIGTERM after `waitpid()` / in pam_systemd's close / at `pam_end` all complete, a SIGTERM at `fork()` still `_exit()`s, a 60 s blocked close ends by SIGALRM after 10.0 s, user sessions 6/6. Verifier: FAIL (a test signalled before the handler was installed), then PASS (REVIEWED) with no code change.
+
+**Limits, stated.** When both SIGTERMs are passed on before reaping, no alarm is armed and a blocked cleanup still waits for the 90 s SIGKILL, as before (follow-up proposed). EINTR inside PAM modules is covered only incidentally.
+
+
+## 2026-09-29 - UNITY-20260927-021: calamares-settings-ubuntu +unity2 publishes all six binaries (agent B)
+
+**Context.** +unity2 restores the archive changelog that +unity1 had wiped and carries the known issue #4 fix. The build produces six binaries. +unity1 was published with three of them (-ubuntu-unity, -common, -common-data). The gated publication (`publish_aptly.py`) requires every binary of the build manifest in the snapshot. Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/`.
+
+**Decision (May, 2026-09-29, via C, confirmed twice).** Publish all six, including calamares-settings-kubuntu, calamares-settings-lubuntu and -common-dbgsym.
+
+It is taken knowing that:
+- the patched basicwallpaper in the Kubuntu and Lubuntu packages is unmeasured (Lubuntu: openbox on X11; Kubuntu: depends on the Qt platform under kwin_wayland);
+- systems that use our repository and have those packages installed will move to ours and no longer receive 1:26.04.12ubuntuN SRUs for them.
+
+The measurement stays with UNITY-20260927-044.
+
+
+## 2026-09-29 - UNITY-20260929-015: PUBLISHED means the recorded bytes are still live, not that apt selects them (agent B, decision by C)
+
+**Context.** taskctl's PUBLISHED gate now accepts a live snapshot other than the record's when that snapshot carries every artifact of the publish record with the recorded sha256. The Design Challenger's finding 6: the live snapshot may carry those bytes and also a newer version of the same package, and apt would then install the newer one. Record: `research/UNITY-20260929-015-taskctl-live-snapshot/`.
+
+**Decision (C, 2026-09-29).** A newer version of the same package in the live snapshot is not a reason to refuse PUBLISHED. PUBLISHED means "these bytes were published and are still in the live publication". It does not mean "apt will choose them". Which version apt selects is the concern of the later task that published the newer version, and of its own version-safety and target checks.

@@ -1,0 +1,8 @@
+# real archive, calamares +unity3 scratch snapshot, TMPDIR with underscore, 2026-09-27T21:20:39Z
+  <model>_Release Sun, 27 Sep 2026 21:20:39 +0000 MODEL
+  de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease Sun, 27 Sep 2026 19:50:38 UTC 
+  de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease Sun, 27 Sep 2026 19:50:29 UTC 
+  de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease Sun, 27 Sep 2026 19:50:10 UTC 
+  de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease Thu, 23 Apr 2026 17:07:15 UTC 
+  security.ubuntu.com_ubuntu_dists_resolute-security_InRelease Sun, 27 Sep 2026 19:49:53 UTC 
+compare_views(run1, run2): OK

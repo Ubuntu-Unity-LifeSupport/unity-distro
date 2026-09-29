@@ -1,0 +1,13 @@
+## taskctl: /home/claude/work/a/unity-distro/scripts/taskctl.py (629cb20)
+## fixtures:
+  e1.json: {"task_id": "UNITY-20990101-001", "package_change": false, "verification_result": "PASS", "review_status": "INDEPENDENTLY_REPRODUCED", "verification_record": "x", "terminal_evidence": "merged"}
+  e2.json: {"task_id": "UNITY-20990101-002", "package_change": false, "implementation_plan": "create repositories", "validation_record": "git ls-remote", "terminal_evidence": "done"}
+  e3.json: {"task_id": "UNITY-20990101-003", "package_change": false, "validation_record": "unit tests", "terminal_evidence": "merged"}
+$ taskctl transition UNITY-20990101-001 DONE --evidence e1.json   [REVIEW]
+  rc=2 taskctl: DONE requires task_kind (package, tool, operation, documentation) or package_change=true in the evidence
+$ taskctl transition UNITY-20990101-002 IMPLEMENTING --evidence e2.json   [INVESTIGATING]
+  rc=2 taskctl: transition INVESTIGATING -> IMPLEMENTING is not allowed
+$ taskctl transition UNITY-20990101-002 READY_FOR_FIX --evidence e2.json   [INVESTIGATING]
+  rc=2 taskctl: READY_FOR_FIX requires task_kind (package, tool, operation, documentation) or package_change=true in the evidence
+$ taskctl transition UNITY-20990101-003 DONE --evidence e3.json   [VERIFYING]
+  rc=2 taskctl: DONE requires task_kind (package, tool, operation, documentation) or package_change=true in the evidence

@@ -1,0 +1,66 @@
+# busctl monitor --system org.freedesktop.Accounts during the first probe run (restart at 13:21:23.08Z).
+# One line per message: time (UTC), type, sender, destination, path, member. Probe = :1.95; old daemon :1.1, new :1.96.
+? ?
+13:21:15.242636 method_call Sender=:1.95 Destination=:1.1 Path=/org/freedesktop/Accounts Member=GetAll
+13:21:15.243169 method_return Sender=:1.1 Destination=:1.95 ReplyCookie=8
+13:21:15.247178 method_call Sender=:1.95 Destination=:1.1 Path=/org/freedesktop/Accounts Member=ListCachedUsers
+13:21:15.247795 method_return Sender=:1.1 Destination=:1.95 ReplyCookie=9
+13:21:15.250174 method_call Sender=:1.95 Destination=:1.1 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:15.251134 method_return Sender=:1.1 Destination=:1.95 ReplyCookie=14
+13:21:23.120188 signal Sender=org.freedesktop.DBus Destination=:1.1 Path=/org/freedesktop/DBus Member=NameLost
+13:21:23.269194 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=9
+13:21:23.271310 method_call Sender=:1.62 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.271326 method_call Sender=:1.95 Destination=:1.96 Path=/org/freedesktop/Accounts Member=GetAll
+13:21:23.271333 method_call Sender=:1.95 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.273254 method_return Sender=:1.96 Destination=:1.62 ReplyCookie=45
+13:21:23.274499 method_return Sender=:1.96 Destination=:1.95 ReplyCookie=15
+13:21:23.274519 method_return Sender=:1.96 Destination=:1.95 ReplyCookie=16
+13:21:23.277222 method_call Sender=:1.48 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.277243 method_call Sender=:1.42 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278226 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.278239 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=13
+13:21:23.278247 method_call Sender=:1.44 Destination=:1.96 Path=/org/freedesktop/Accounts Member=GetAll
+13:21:23.278253 method_call Sender=:1.44 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278260 method_call Sender=:1.44 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278266 method_call Sender=:1.44 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278277 method_call Sender=:1.44 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278284 method_call Sender=:1.44 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278290 method_call Sender=:1.52 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.278876 method_call Sender=:1.43 Destination=:1.96 Path=/org/freedesktop/Accounts Member=GetAll
+13:21:23.278891 method_call Sender=:1.43 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.279267 method_call Sender=:1.54 Destination=:1.96 Path=/org/freedesktop/Accounts Member=GetAll
+13:21:23.279274 method_call Sender=:1.54 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.279280 method_return Sender=:1.96 Destination=:1.48 ReplyCookie=24
+13:21:23.279306 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.279313 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=15
+13:21:23.280362 method_return Sender=:1.96 Destination=:1.42 ReplyCookie=21
+13:21:23.280386 method_return Sender=:1.96 Destination=:1.44 ReplyCookie=59
+13:21:23.280993 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.281004 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=18
+13:21:23.281343 method_return Sender=:1.96 Destination=:1.44 ReplyCookie=60
+13:21:23.281356 method_return Sender=:1.96 Destination=:1.44 ReplyCookie=61
+13:21:23.281684 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.281693 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=21
+13:21:23.282657 method_return Sender=:1.96 Destination=:1.44 ReplyCookie=62
+13:21:23.282689 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.282696 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=23
+13:21:23.284169 method_return Sender=:1.96 Destination=:1.44 ReplyCookie=63
+13:21:23.284190 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.284197 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=25
+13:21:23.285394 method_return Sender=:1.96 Destination=:1.44 ReplyCookie=64
+13:21:23.285427 method_return Sender=:1.96 Destination=:1.52 ReplyCookie=8
+13:21:23.285512 method_return Sender=:1.96 Destination=:1.43 ReplyCookie=42
+13:21:23.285524 method_return Sender=:1.96 Destination=:1.43 ReplyCookie=43
+13:21:23.285603 method_return Sender=:1.96 Destination=:1.54 ReplyCookie=106
+13:21:23.285615 method_return Sender=:1.96 Destination=:1.54 ReplyCookie=107
+13:21:23.520316 signal Sender=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=Changed
+13:21:23.520622 method_call Sender=:1.17 Destination=org.freedesktop.Accounts Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.522722 method_return Sender=:1.96 Destination=:1.17 ReplyCookie=32
+13:21:23.523431 method_call Sender=:1.17 Destination=org.freedesktop.Accounts Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.524201 method_call Sender=:1.96 Destination=org.freedesktop.DBus Path=/org/freedesktop/DBus Member=GetConnectionUnixUser
+13:21:23.524215 method_return Sender=org.freedesktop.DBus Destination=:1.96 ReplyCookie=34
+13:21:23.525417 method_call Sender=:1.96 Destination=:1.7 Path=/org/freedesktop/PolicyKit1/Authority Member=CheckAuthorization
+13:21:23.526176 method_call Sender=:1.43 Destination=:1.96 Path=/org/freedesktop/Accounts/User1000 Member=GetAll
+13:21:23.527188 method_return Sender=:1.96 Destination=:1.43 ReplyCookie=46
+13:21:23.528068 method_return Sender=:1.7 Destination=:1.96 ReplyCookie=35
+13:21:23.528362 method_return Sender=:1.96 Destination=:1.17 ReplyCookie=33
