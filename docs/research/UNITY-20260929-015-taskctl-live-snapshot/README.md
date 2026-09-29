@@ -168,9 +168,14 @@ design as follows:
   manifest and publish record fixture set. Its logic lives in
   `confirm_live_publication`, which the tests do drive.
 
-## Open question for C
+## Newer version in the live snapshot (decided)
 
-Design Challenger finding 6: when the live snapshot carries every artifact of
-the record and also a newer version of the same package, the bytes are live,
-but apt installs the newer one. The specification does not ask for a
-refusal, so none is implemented.
+Design Challenger finding 6: the live snapshot may carry every artifact of
+the record and also a newer version of the same package. The bytes are
+live, but apt installs the newer one.
+
+**Deliberate decision (C, 2026-09-29): not a refusal.** PUBLISHED means
+"these bytes were published and are still in the live publication". It does
+not mean "apt will choose them". Which version apt selects is for the later
+task that published the newer version to check. Also recorded in
+`docs/DECISIONS.md`.
