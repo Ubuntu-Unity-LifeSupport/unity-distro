@@ -942,3 +942,42 @@ subdirectories, devices, `..` and odd names refuse the `.deb`.
   of them flagged with maintainer scripts
   (`rehearsal/07-live-pool-control-check.txt`).
 - Suite: 277 OK (1 skipped).
+
+**Round 3** on `bba2542`: **FAIL** (FIX_PARTIAL), REVIEWED.
+
+The round-2 fix holds. The Verifier's header battery found the signer and
+dpkg agreeing, or the signer refusing, for:
+- a pax or global pax `path`;
+- a GNU `L` long name;
+- a ustar prefix;
+- a pax `size`;
+- member types 7, S, NUL, Z and V.
+
+**Finding:** Python's `tarfile` and GNU tar pick different headers for the
+name when several extended headers precede one member. Two cases hid a
+`preinst` that `dpkg-deb --control` extracts:
+- two pax `x` headers, where tarfile takes the first and GNU tar the last;
+- a GNU `L` name followed by a pax `path`.
+
+**Fix** (code `4d26be9`): the signer no longer uses
+`tarfile` for control archives. `control_tar_names` walks the raw 512-byte
+headers itself and accepts only plain ustar:
+- a valid header checksum;
+- `ustar` magic, and no POSIX name prefix;
+- typeflag `0`/NUL for a regular file, and `5` only for `./` itself, with
+  size 0;
+- plain octal sizes, and ASCII names under the top-level rule;
+- the two zero end blocks.
+
+Any pax (`x`/`g`), GNU long-name (`L`/`K`), link, device or other header
+refuses the `.deb`.
+- **Measured before the rule was set:** every control archive in the live
+  pool, 280 `.deb`s, uses only typeflags `0` (954) and `5` (280), with GNU
+  `ustar` magic.
+- **After the fix:**
+  - all 280 live `.deb`s are accepted, the same 74 flagged with scripts;
+  - every crafted `.deb` from rounds 1-3 is refused (`twox`,
+    `Lctl2_xpreinst`, `pre`, and the gz, xz and zst hide);
+  - tests cover the pax and GNU long-name headers, a broken checksum, and
+    the Verifier's crafted `.deb`s when present.
+- Suite: 278 OK (1 skipped).
