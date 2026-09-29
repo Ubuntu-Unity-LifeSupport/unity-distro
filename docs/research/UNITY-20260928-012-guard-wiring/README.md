@@ -217,3 +217,51 @@ untouched):
    never on the live handler;
 6. guard runs once per call in a session rooted in `~/unity-distro`
    (execve count of `command_guard.py`, e.g. bpftrace on builder).
+
+## Validation record
+
+Implementation: branch `b/UNITY-20260928-012`, commit 379f98f (on 9d8db2e).
+
+- Regression tests, unmodified wiring (`.claude/settings.json` at 9d8db2e):
+  `logs/01-tests-before.txt` - 9 of 25 fail: crash at import (rc 1 passes the
+  call), interpreter missing (127), hang (no inner timeout), signal, non-dict
+  payload, hostile `PYTHONPATH` (rc 0 with an allow JSON on stdout), stdout
+  JSON, and the two project-settings checks.
+- After: `logs/02-tests-after.txt` 25/25; full suite `logs/03-full-suite.txt`
+  130/130 (`python3 -m unittest discover -s scripts/tests`).
+- Installed 2026-09-29 08:09Z by `install_command_guard.py --apply` after May
+  approved the `--diff` output in session b7902aab; backup
+  `~/.claude/settings.json.bak-UNITY-20260928-012` (sha256 in
+  `logs/04-installed-state.txt`).
+- In the already running session b7902aab (hot reload; NOT the required
+  new-session proof): the probe `pgrep -f unity-guard-probe-zzz` was denied by
+  the hook ("PreToolUse:Bash hook error: [...] Pattern-based process matching
+  is blocked"); ordinary commands pass. A heredoc with backticks in one of
+  B's own commands was denied ("could not parse shell quoting") - the guard's
+  existing fail-closed parse rule, now active in this session.
+- Probe verdicts of the installed handler, fed as payloads (never executed):
+  `logs/04-installed-state.txt`. The live-form probes use a non-existent
+  binary named `aptly` (`/nonexistent/aptly ...`), so they are harmless even if
+  a hook failed; `echo`/`:` forms are allowed by design (UNITY-20260927-058:
+  mentions in reader-only commands).
+- `--check` reports NOT OK until merge only because the base checkout's
+  project settings still carry the old handler (expected; see Known limits:
+  until then a session rooted in `~/unity-distro` runs two handlers).
+
+## New-session proof (pending; May starts the session, C coordinates)
+
+After the merge to `main` (so `--check` is OK and the project handler is
+identical), in a NEW session rooted at `/home/claude`, results into
+`logs/05-new-session.txt`:
+
+1. `python3 ~/unity-distro/scripts/install_command_guard.py --check` - OK.
+2. No marker, denied: probe P1 as a real Bash call - hook denies.
+3. Live form denied: P3 and P3b (`logs/probes.json`) as real Bash calls -
+   hook denies (harmless if executed: the binary does not exist).
+4. Harmless commands pass: P4-P6.
+5. A subagent runs P1 - hook denies.
+6. Run count: in a session rooted in `~/unity-distro`, one `command_guard.py`
+   execve per Bash call (bpftrace on builder).
+7. Marker allows / exactly one rehearsal-log line: needs C's marker after
+   May's GO and runs the rehearsal command itself (-047 R territory);
+   coordinated with C separately, not run by this task on its own.
