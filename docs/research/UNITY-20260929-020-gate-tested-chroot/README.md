@@ -365,3 +365,40 @@ Tests: same version with another source tree or commit; other extra-package
 bytes; a tested manifest without source fields or with schema 0; a legacy
 tested manifest (no `chroot`) accepted; whole-word names; `..` and symlink
 paths; Binary, Architecture and duplicate entries. Suite: 232 OK (1 skipped).
+
+**Verifier round 2** on `cb0bf7b`: **PASS** (`PATCH_CORRECT`),
+INDEPENDENTLY_REPRODUCED.
+
+The Verifier reproduced the 7 failures on main and the full suite passing on
+the branch, and re-ran its probes:
+- Another source tree or commit, or other extra-package bytes at the same
+  version: refused.
+- Paths: a symlinked record, a symlinked parent or `..` is refused;
+  `./` and `//` are normalized, and the publisher recomputes the result.
+- Deb names: `xNAME` and `NAME.bak` are refused.
+- Installed-Build-Depends: duplicate entries are refused.
+- The `.buildinfo` under another kind, or a string schema, is refused.
+- A legacy tested manifest is accepted for `buildinfo_identical` and refused
+  for `same_chroot`.
+- The publisher refuses a non-normalized gate path, a dropped field or a
+  re-committed manifest.
+
+Remarks, not blocking; each needs a hand-crafted file:
+- Naming in the record is a cross-check, not proof (for example "NOT
+  installed: NAME" counts).
+- A duplicate Installed-Build-Depends entry written without a space
+  (`autoconf(= 9.9)`) slips through. dpkg always writes the space.
+- In `dependency_identity`, a non-dict entry is dropped, and None equals
+  the string "None". This only affects the committed tested manifest.
+- Removing `tested_buildinfo` from a gate is refused, but with a misleading
+  message.
+
+## Outcome
+
+`REVIEW` (tool task). The release gate and the publisher now tie what the
+target test installed to the gated build, in one of three modes, through
+recorded and re-checkable hashes. Every tested build is identified by a
+committed `build_sbuild.py` manifest. Manifests without a chroot record are
+refused as gated builds, which blocks the pre-016 package tasks until they
+are rebuilt (section 4). Branch `a/UNITY-20260929-020` is for the
+coordinator to merge; `DONE` after the merge.
