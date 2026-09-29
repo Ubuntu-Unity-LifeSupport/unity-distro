@@ -3,23 +3,18 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-09-29 18:55Z)
+## Now (2026-09-29 19:00Z)
 
-**UNITY-20260927-040** (unity: Edge::ButtonDownEvent releases compiz's grab
-during expo; A2 = any-grab guard) - PUBLISHED 2026-09-29 18:40:26Z (snapshot
-`unity-resolute-20260927-040`), target verified from the repository; DONE
-after the coordinator merges branch `a/UNITY-20260927-040` (`fa7ea4c`).
-Card: `docs/research/UNITY-20260927-040-edge-grab-guard/` (README.md,
-target-verification.md). Follow-ups UNITY-20260929-010, -011, -012.
-
-**UNITY-20260929-014** (build_dependencies hardening from -013's Verifier
-round 2) - REVIEW, Verifier PASS (INDEPENDENTLY_REPRODUCED); branch
-`a/UNITY-20260929-014` (`859e0cd`, worktree `~/work/a/unity-distro-014`)
-for the coordinator to merge; DONE after the merge.
-
-Done today: UNITY-20260928-019 (lightdm +unity2, published),
-UNITY-20260929-013 (`build_sbuild.py --extra-package`, merged),
-UNITY-20260927-047 phase L captures.
+Before the restart 2026-09-29 (VBoxSVC restart with the builder, May's
+decision): nothing in progress. UNITY-20260927-040 (unity +unity12,
+published 18:40:26Z, main 9a40c8a) and UNITY-20260929-014
+(build_dependencies hardening, main d2eeb3f) are DONE; UNITY-20260928-019
+and UNITY-20260929-013 DONE earlier today. All task branches are pushed and
+equal to origin; no tmux, sbuild, bpftrace or other background process; no
+operation on target. Continue from: after the restart, check target-desktop
+from inside the guest (published unity +unity12 and lightdm +unity2,
+workspaces 1x1, `~/.dirty`, no test files), then wait for the coordinator's
+next assignment.
 
 My other open tasks are unchanged: UNITY-20260928-022 (its handoff is on
 branch `a/UNITY-20260928-022`, not in main - the coordinator handles that),
@@ -30,9 +25,8 @@ UNITY-20260927-012, UNITY-20260927-052, UNITY-20260928-008.
 2026-09-29 18:49Z (UNITY-20260927-040): published unity `+unity12` and
 lightdm `+unity2` from our repository, workspaces 1x1, test tools and
 results removed, rebooted; the two UNITY-20260927-047 capture files stay in
-`~`; `~/.dirty` present. A VBoxSVC restart for the wedged oem-test was
-pending (the coordinator's and May's decision); check target from inside
-the guest after it. Earlier states below are history:
+`~`; `~/.dirty` present. Check it from inside the guest after the VBoxSVC
+restart. Earlier states below are history:
 
 Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
 `Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
