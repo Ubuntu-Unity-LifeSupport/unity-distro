@@ -5,6 +5,16 @@ Build directory: `~/work/b`
 
 ## Now
 
+**2026-09-29 ~23:30Z: no tasks (May: finish current work, take no new
+tasks).**
+- UNITY-20260929-023 is DONE: taskctl `published_by`, merged by C at 855ecdd.
+- UNITY-20260928-020 is DONE through `published_by`, via UNITY-20260927-027's
+  record (nux +unity3).
+- Waiting, not started: hud +unity2 (UNITY-20260927-029), then +unity3
+  (UNITY-20260927-028), as two publications.
+- BLOCKED: UNITY-20260929-018 and -003 on -019; -019 is design only, and A
+  writes the signer code.
+
 **UNITY-20260927-027 DONE** (2026-09-29 ~23:00Z). nux +unity3 was published at 22:51Z
 (snapshot unity-resolute-20260927-027) and checked on target2 through the
 repository. UNITY-20260928-020, the same package, is BLOCKED until
