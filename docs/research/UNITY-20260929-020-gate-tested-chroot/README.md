@@ -235,3 +235,11 @@ Changes to section 5:
    - `tested_changes` missing, uncommitted or changed after the gate;
    - a deb or `.buildinfo` hash missing from `Checksums-Sha256`;
    - a target test record that does not name a deb.
+
+## 7. Design review 3: APPROVE
+
+Round 3 on section 6: APPROVE. To watch in the implementation: match
+(file name, sha256) pairs, not hashes alone, and refuse a `.changes` listing
+a file name twice; in `this_build` compare only the manifest's artifacts of
+kind `binary`; if `dsc_checksums` moves, publish_aptly's source check keeps
+its behaviour (the existing publish tests show it).
