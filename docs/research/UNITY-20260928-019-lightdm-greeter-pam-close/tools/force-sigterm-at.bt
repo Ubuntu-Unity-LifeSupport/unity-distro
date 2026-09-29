@@ -1,0 +1,52 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260928-019: send one SIGTERM to the greeter's session-child at a
+// chosen point, once per greeter (tests T3-T5 of the evidence card).
+//   close   - inside pam_systemd's pam_sm_close_session (after waitpid)
+//   end     - at pam_end (after waitpid)
+//   preexec - at pam_open_session of a session-child whose PAM service is
+//             lightdm-greeter, i.e. before the greeter is forked/exec'd;
+//             one-shot for the whole run (the greeter will not start)
+// Usage: bpftrace --unsafe force-sigterm-at.bt close|end|preexec
+// Run with tools/greeter-close-trace.bt alongside.
+
+tracepoint:sched:sched_process_exec /str(args.filename) == "/usr/lib/lightdm/lightdm-greeter-session"/
+{
+  @g[curtask->real_parent->tgid] = 1;
+}
+
+tracepoint:syscalls:sys_exit_wait4 /@g[pid] && args.ret > 0/ { @reaped[pid] = 1; }
+
+uprobe:/usr/lib/x86_64-linux-gnu/security/pam_systemd.so:pam_sm_close_session
+/str($1) == "close" && @g[pid] && @reaped[pid] == 1/
+{
+  @reaped[pid] = 2;
+  printf("%s forcing SIGTERM into %d inside pam_systemd pam_sm_close_session\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  signal("SIGTERM");
+}
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_end /str($1) == "end" && @g[pid] && @reaped[pid] == 1/
+{
+  @reaped[pid] = 2;
+  printf("%s forcing SIGTERM into %d at pam_end\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  signal("SIGTERM");
+}
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_start /str($1) == "preexec" && curtask->group_leader->comm == "lightdm" && str(arg0) == "lightdm-greeter"/
+{
+  @gs[pid] = 1;
+}
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_open_session /str($1) == "preexec" && @gs[pid] && !@done/
+{
+  @done = 1;
+  printf("%s forcing SIGTERM into %d at pam_open_session, before the greeter exists\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  signal("SIGTERM");
+}
+
+tracepoint:sched:sched_process_exit /(@g[pid] || @gs[pid]) && pid == tid/
+{
+  printf("%s %d gone\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  delete(@g[pid]); delete(@reaped[pid]); delete(@gs[pid]);
+}
+
+END { clear(@g); clear(@reaped); clear(@gs); clear(@done); }

@@ -39,8 +39,17 @@ for c in $(seq 1 "$N"); do
   setpriv --reuid="$O" --regid="$O" --init-groups env DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$O")/bus \
     gdbus call --session --dest org.gnome.SessionManager --object-path /org/gnome/SessionManager \
     --method org.gnome.SessionManager.Logout 1 >/dev/null
-  # the old session must be off seat0 first, or the login check below sees it
-  i=0; while loginctl list-sessions --no-legend | awk -v u="$O" '$3==u && $4=="seat0"' | grep -q . && [ $i -lt 60 ]; do sleep 1; i=$((i+1)); done
+  # the old session must be off seat0 first, or the login check below sees it.
+  # cinnamon-session sometimes refuses Logout (NotInRunning) or hangs in it on
+  # an unresponsive at-spi inhibitor; then end the session through logind -
+  # the greeter is started and stopped the same way afterwards
+  i=0; while loginctl list-sessions --no-legend | awk -v u="$O" '$3==u && $4=="seat0"' | grep -q . && [ $i -lt 20 ]; do sleep 1; i=$((i+1)); done
+  sid=$(loginctl list-sessions --no-legend | awk -v u="$O" '$3==u && $4=="seat0" {print $1}')
+  if [ -n "$sid" ]; then
+    echo "cycle $c: Logout did not end session $sid in 20 s, loginctl terminate-session"
+    loginctl terminate-session "$sid"
+  fi
+  while loginctl list-sessions --no-legend | awk -v u="$O" '$3==u && $4=="seat0"' | grep -q . && [ $i -lt 60 ]; do sleep 1; i=$((i+1)); done
   logger -t ldcycle "cycle $c: $O off seat0 after ${i}s"
   i=0; until pgrep -x lightdm-gtk-gre >/dev/null || [ $i -ge 60 ]; do sleep 1; i=$((i+1)); done
   sleep 8

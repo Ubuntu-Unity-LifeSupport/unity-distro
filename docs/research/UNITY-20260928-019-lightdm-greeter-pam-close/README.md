@@ -118,6 +118,43 @@ SIGTERM lands in stage 1. `runs/04` (+unity1): 2 of 2 forced stops cut in
 stage 1 with `_exit()`, no `pam_close_session`, the cookie left behind and
 `xdpyinfo` as uid lightdm on `:0` succeeding.
 
+## 4. Fix and verification (+unity2)
+
+lightdm `1.32.0-6ubuntu4+unity2` = `d/p/0010-session-child-finish-the-cleanup-when-SIGTERM-arrive.patch`
+(Ubuntu-Unity-LifeSupport/lightdm `a/UNITY-20260928-019`: patch `db13faf`,
+changelog `f5af23c`, on `unity/resolute` `50a6a5d`). Clean `sbuild` for
+resolute via `scripts/build_sbuild.py`, exit 0; build manifest
+`build-unity2/UNITY-20260928-019-lightdm-build-manifest.json` (sbuild log `build-unity2/sbuild.log.xz`). The
+only compiler warnings in session-child.c are the four existing `-Waddress`
+ones in `updwtmpx()`. File lists of `lightdm` and `liblightdm-gobject-1-0`
+identical to +unity1. Installed on target (lightdm + liblightdm-gobject only,
+from the build, not aptly), rebooted; `runs/05` (first pass), `runs/06`
+(second pass: T3-T6 again, T5).
+
+| Test | What | +unity1 | +unity2 |
+|---|---|---|---|
+| T2 regression | SIGTERM forced at the first `pam_getenv` after `waitpid` | 2/2 cut, cookie left, `:0` opens as uid lightdm (`runs/04`) | 4/4 complete, no cookie (`runs/05`) |
+| T1 | natural greeter stops | 6/11 cut (`runs/02`) | 7/7 complete, no cookie after any real login (`runs/05`) |
+| T3 | SIGTERM forced inside pam_systemd's `pam_sm_close_session` | - | 5/5 complete, close returns 0 (`runs/05`, `runs/06`) |
+| T4 | SIGTERM forced at `pam_end` | - | 5/5 complete (`runs/05`, `runs/06`) |
+| T5 | SIGTERM before the greeter exists (`pam_open_session` of the `lightdm-greeter` service) | - | session-child gone 2 ms later, no greeter; lightdm fell back to the autologin session (`runs/06`) |
+| T6 | greeter close blocked 60 s (temporary pam_exec hook) + forced late SIGTERM | - | 3/3: session-child ends by SIGALRM 10.00-10.05 s after the SIGTERM ("Terminated with signal 14"), cookie already removed, user session then starts (`runs/06`) |
+
+"Complete" = `pam_close_session`, `pam_setcred` and `pam_end` returned and
+`main()` returned. Login delay unchanged: the user session was on seat0 within
+0-1 s of the greeter's stop in T1-T4. Reaping to exit now takes 9-135 ms (one
+618 ms) under the trace, the time of the cleanup that used to be cut; the
+daemon waits for it before starting the user session. T6's orphaned `sleep`
+kept the greeter's scope (logind session "closing") until it ended by itself;
+it did not delay the user session - the daemon waits only for session-child.
+
+Not a lightdm effect, recorded for the test runs: cinnamon-session refused
+`Logout` (`NotInRunning`) or hung in it on an unresponsive at-spi-registryd
+inhibitor in several cycles; those cycles have no greeter stop (and the
+snapshots taken with the greeter still up show its own live cookie - not
+counted). `greeter-cycles.sh` now falls back to `loginctl terminate-session`
+after 20 s.
+
 ## Evidence card
 
 ```yaml
@@ -178,7 +215,7 @@ existing_fix_evidence: >-
   signal changes (BTS titles only).
 design_challenger_required: true
 architectural_task: false
-design_review_result: PENDING
+design_review_result: APPROVE   # review 1: REVISE (hang bound, watchdog, store order, EINTR/fork notes, tests), review 2: APPROVE
 correct_layer: >-
   session-child owns its cleanup and its SIGTERM handler; the handler is
   where "stop the session" is turned into an action, so it is where a
@@ -202,30 +239,129 @@ candidate_approaches:
     session type."
   - "F2 from -004: self-pipe / signalfd - rejected there (no main loop while
     PAM runs)."
-chosen_approach: S1 (pending Design Challenger)
+chosen_approach: >-
+  S1 + watchdog (revised after Design Challenger review 1): session_ended
+  (volatile sig_atomic_t) set right after waitpid() and before child_pid = 0;
+  child_pid made volatile so the two stores keep their order; signal_cb():
+  if session_ended, arm alarm(10) on the first such signal and return;
+  otherwise pass on / _exit() as in +unity1.
 why_chosen: >-
   It fixes the handler's decision where the ambiguity is (child_pid == 0
-  meaning two different things), keeps the pre-fork _exit of +unity1, leaves
-  signal dispositions of anything exec'd during the cleanup at their
-  defaults, and does not depend on how many stoppers there are.
+  meaning two different things), keeps the pre-fork _exit of +unity1, and
+  does not depend on how many stoppers there are. The alarm keeps the other
+  half of what the handler is for - a stop request ends session-child in
+  bounded time - so a cleanup that blocks cannot hold the next session for
+  systemd's 90 s. Precedent: gdm-session-worker _exit()s from a raw handler
+  only before the session starts and turns SIGTERM into an orderly shutdown
+  that runs pam_close_session afterwards (session-worker-main.c,
+  gdm-session-worker.c uninitialize_pam).
 defensive_workaround_rejected: >-
-  D1 hides the symptom for one caller; S2/S3 leak the changed disposition or
-  mask into PAM helpers.
+  D1 removes the measured trigger for one caller and changes the daemon for
+  every session type; the handler's ambiguity stays. S2/S3 have no place to
+  arm a watchdog and change the stop signal of anything exec'd during the
+  cleanup (SIG_IGN and the mask survive execve, a caught handler resets to
+  SIG_DFL) - a minor point, since session-child already runs PAM with SIGHUP
+  and SIGPIPE ignored, inherited from the daemon (lightdm.c:545-558; SigIgn
+  0x1001 measured on a greeter session-child).
+f3_relation: >-
+  S1 alone is -004's rejected F3 ("ignore SIGTERM once the child is reaped"),
+  and -004's objection holds for it: the daemon waits for session-child
+  before starting the user session (session_watch_cb -> STOPPED ->
+  seat.c session_stopped_cb) and has no timeout of its own
+  (session_real_stop "FIXME: Handle timeout"). The watchdog is what answers it.
 hang_bound: >-
-  With S1 a blocking cleanup is no longer escaped by the second SIGTERM.
-  It is still bounded where the second SIGTERM exists: that case is the
-  double stop, and the first one is logind's scope stop, which systemd
-  finishes with SIGKILL after the scope's stop timeout (90 s default) - the
-  same bound as today when both SIGTERMs are used before child_pid = 0
-  (-004: 6/20). A session stopped only by the daemon's kill() gets one
-  SIGTERM, passed on while the child lives, and behaves as today.
+  Without the watchdog, S1 would widen the exposure: a blocking cleanup would
+  hold the next session in every double stop, not only in the 6/20 where
+  both SIGTERMs are used up before child_pid = 0; bounded only by the scope's
+  stop timeout - measured on target: session-cN.scope TimeoutStopUSec=1min
+  30s (DefaultTimeoutStopUSec, logind sets none on the scope), KillMode
+  control-group, FinalKillSignal 9, SendSIGHUP yes. And one path would be
+  unbounded: a single late SIGTERM with no logind scope stop behind it (no
+  login1 session, e.g. pam_systemd failed to register) - today it _exit()s,
+  S1 alone would never end. With the watchdog: the first SIGTERM after
+  reaping arms alarm(10); SIGALRM is SIG_DFL in session-child (not in SigIgn
+  or SigCgt on target), so the process ends 10 s later at the latest; no
+  path waits longer than today's worst case, the double stop waits at most
+  10 s instead of 90 s when the cleanup blocks. The measured cleanup takes
+  2-6 ms (pam_close_session), so 10 s is three orders of magnitude of
+  headroom; pam_systemd's own ReleaseSession call is bounded by sd-varlink's
+  45 s default and handles EINTR. The alarm is not inherited across fork()
+  by a PAM helper. A PAM module that uses alarm()/SIGALRM itself during the
+  close would replace the watchdog - accepted, noted. When logind itself is
+  broken, pam_systemd's IPC limits (45 s Varlink, ~25 s D-Bus fallback) are
+  longer than 10 s: the alarm then ends session-child and the rest of the
+  cleanup is skipped - no worse than today. Unchanged by the fix: when both
+  SIGTERMs are passed on before reaping (-004: 6/20), no alarm is armed and
+  a blocking cleanup still waits for the scope's 90 s SIGKILL, as today
+  (arming the alarm after waitpid() when a SIGTERM was passed on would
+  close that too - a separate defect, proposed as a follow-up).
 code_risks:
   ownership_lifetime: not_applicable - no object lifetime changes
-  callbacks_cancellation: checked - the change makes the cleanup
-    uncancellable by SIGTERM after reaping (hang_bound above); SIGKILL still ends it
-  threading_reentrancy: checked - the flag is volatile sig_atomic_t, written once on the main thread before the cleanup, read in the handler on any thread
-  ABI_API_file_list: not_applicable - static function and a static variable in one program
+  callbacks_cancellation: >-
+    checked - after reaping, SIGTERM no longer cancels the cleanup; the
+    alarm ends it after 10 s (hang_bound). A returning handler interrupts
+    non-restartable calls (poll, ppoll, nanosleep, some socket calls with
+    timeouts) inside PAM modules with EINTR; glibc signal() sets SA_RESTART,
+    so read/write/fsync/waitpid restart. Before the change those calls were
+    not interrupted but ended with the process, so an EINTR-handling bug in a
+    module can at worst fail its close - still more than was done before.
+    Tested: signal forced inside pam_systemd's close (tests below).
+  threading_reentrancy: >-
+    checked - session_ended and cleanup_alarm_set are volatile sig_atomic_t;
+    child_pid is volatile so the compiler keeps "session_ended = 1" before
+    "child_pid = 0" (both volatile accesses); the handler may run on any of
+    session-child's threads, and alarm(), kill() and _exit() are
+    async-signal-safe
+  fork_inheritance: >-
+    a helper a PAM module fork()s during the cleanup inherits the handler
+    with session_ended set, so until it execs it ignores SIGTERM (arming its
+    own alarm); before, it _exit()ed. After execve the disposition is SIG_DFL.
+  ABI_API_file_list: not_applicable - static function and static variables in one program
+remaining_windows: >-
+  unchanged by the fix, recorded: between waitpid() returning and
+  session_ended = 1 the handler kill()s the reaped PID (32964 in runs/02;
+  harmful only on PID reuse); in the parent between fork() and the store to
+  child_pid the handler _exit()s and orphans the new child; in the forked
+  child before exec the flag is 0 and the handler _exit()s (correct); if
+  fork() fails the flag is never set and a late SIGTERM still _exit()s (no
+  session ran). volatile orders the two stores for the compiler; on a
+  weakly ordered CPU (arm64) a handler on another thread could still see
+  child_pid = 0 before session_ended = 1 for nanoseconds - moot on amd64,
+  the only architecture we build; __atomic_store_n(SEQ_CST) if that changes.
+  Two threads running the handler at once may both call alarm(10), which
+  re-arms the same timer.
+cookie_file: /var/lib/lightdm/.Xauthority -rw------- lightdm:lightdm in /var/lib/lightdm drwxr-x--- lightdm:lightdm
+test_plan: >-
+  On the fixed build, under greeter-close-trace.bt: T1 natural cycles (>= 10
+  greeter stops): every cleanup complete, no leftover cookie, login delay
+  unchanged. T2 forced SIGTERM at the first pam_getenv after waitpid (stage
+  1): complete (red on +unity1: runs/04). T3 forced inside pam_systemd's
+  pam_sm_close_session (EINTR path): close completes. T4 forced inside
+  pam_end: completes. T5 one SIGTERM into a greeter session-child before its
+  greeter is exec'd: still _exit()s at once. T6 a cleanup that blocks
+  (temporary pam_exec close_session hook sleeping 60 s, greeter PAM service
+  only): session-child ends by SIGALRM about 10 s after the second SIGTERM,
+  and the user session follows. lightdm's in-tree suite
+  (tests/src/libsystem.c fakes pam_close_session) could host a
+  deterministic test; not used - debian/rules skips the suite and the knob
+  would add test-harness code to the patch.
 unknowns:
   - "Why stock cut 10/10 and +unity1 6/11 - timing of the session stack, not measured further."
   - "A greeter started for user switching reading the leftover :0 cookie is not exercised."
 ```
+
+## Design review
+
+Temporary Design Challenger, separate read-only subagent.
+
+1. **REVISE**: S1 alone is -004's rejected F3 and `hang_bound` did not answer
+   its objection (the daemon waits for session-child; one path - a single late
+   SIGTERM without a logind scope stop - would be unbounded); add a watchdog or
+   justify leaving it out; `child_pid` must be volatile with the flag written
+   first; EINTR and fork-inheritance risks missing; tests only forced stage 1.
+   Led to the `alarm()` watchdog, the measured scope timeout and signal masks,
+   and tests T3-T6.
+2. **APPROVE**: the card and the drafted 0010 match; 10 s defensible; in-tree
+   suite not blocking. Remarks folded in: T6 runs with the forced late
+   SIGTERM; the 6/20 passed-on path keeps today's 90 s bound (follow-up);
+   arm64 store ordering noted.
