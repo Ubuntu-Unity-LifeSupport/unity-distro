@@ -305,3 +305,84 @@ path is never auto-created anyway.
   - the manifest's `chroot` key.
 - A real `sbuild_chroot.py create`, then one real build of tiny013 and one
   of a real package, checking that `dist-upgrade` is a no-op ("0 upgraded").
+
+## 7. Design review 2: REVISE, changes applied
+
+The Challenger's round 2 on section 6 asked for five changes:
+
+1. **CA certificates.** The snapshot answers only over https, and the buildd
+   variant has no CA certificates, so sbuild's `apt-get update` inside the
+   chroot would fail. The fix is `--include=ca-certificates`. The
+   `--components` option only applies to bare mirror arguments, so it was
+   dropped; the components are in the deb lines.
+2. **Sources comparison.** mmdebstrap separates its `sources.list` entries
+   with blank lines, so only the non-empty lines are compared. The tarball's
+   `sources.list.d/` must be empty.
+3. **URI check.** The check applies to every apt `Get:`, `Hit:`, `Ign:` and
+   `Err:` line, not only `Get:`.
+4. **Same tarball, as a requirement.** The test build and the gated build
+   use the same tarball (a must, not a should). `--tested-with <manifest>`
+   enforces it and is recorded. `--allow-old-chroot` is sanctioned for a
+   gated build on the tested tarball.
+5. **Tests.** As listed below.
+
+It also found that nothing else in sbuild adds a non-snapshot source: only
+the `copy:`/`file:` archives of the build dependencies, and deb-src lines
+that reuse the existing URIs.
+
+## 8. Implementation and validation
+
+Code `ca84422` (branch `a/UNITY-20260929-016`):
+
+- `scripts/sbuild_chroot.py`: `create`, plus the functions `check_tarball`,
+  `check_log` and `current_tarball`.
+- `build/sbuild-config.pl`: `$unshare_mmdebstrap_auto_create = 0`.
+- `scripts/build_sbuild.py`: `--chroot-tarball`, `--allow-old-chroot` and
+  `--tested-with`. It checks the tarball before sbuild, passes
+  `--chroot-mode=unshare --chroot=<path>` with `SBUILD_CONFIG`, checks the
+  tarball and the log after sbuild, and writes the manifest's `chroot` key.
+- `docs/ENGINEERING-PROCESS.md`: the build chroot, in section 6.
+
+Tests:
+
+- `test_sbuild_chroot.py`, with fixtures in `chroot_fixtures.py`: 8 tests.
+  The tarball checks cover multiverse, -proposed, the live mirror, another
+  snapshot, a `sources.list.d` file, a missing sidecar, and a sidecar sha256,
+  series or sources mismatch, each refused. They also cover the age limit and
+  its override, a symlink, a relative path and the name. The log checks run
+  on real line forms from -040 and -041: an on-demand chroot, no unpack line,
+  a dpkg `Unpacking` line only, another tarball, a prefix match, a foreign
+  `Get:` or `Hit:` line, another snapshot, and a `.evil` suffix on the
+  snapshot path are each refused.
+- `test_build_sbuild.py`: 5 new tests. They check the manifest `chroot` key
+  and that `SBUILD_CONFIG` reaches sbuild; refusals before sbuild (missing,
+  no sidecar, live mirror, old, symlink), which run no sbuild and leave the
+  output empty; refusals after sbuild (on-demand, not unpacked, foreign
+  mirror, tarball changed); the recorded `--allow-old-chroot`; and
+  `--tested-with` with the same and with another tarball. The existing tests
+  now pass a fixture tarball.
+- On main's `build_sbuild.py` the build tests fail
+  (`runs/new-tests-on-main-21b98ed.txt`, 42 failures). Every test passes
+  `--chroot-tarball`, which main does not know. The new refusal tests assert
+  their own messages, so an argument error cannot satisfy them.
+- On the branch: full suite 213 OK (1 skipped).
+
+Real runs (`tools/run-real.sh`, `runs/run-real.log`, `runs/run-real-s4.txt`):
+
+- **S1** `sbuild_chroot.py create --snapshot 20260929T201245Z`: exit 0 in
+  about 2 minutes, a 143 MB tarball with 126 packages, including
+  `ca-certificates`. The InRelease Dates are resolute 23 Apr, -updates
+  29 Sep 19:18 and -security 29 Sep 18:35. Sidecar:
+  `runs/resolute-amd64-20260929T201245Z.json`.
+- **S2** tiny013 on it: exit 0. sbuild unpacked exactly this tarball and
+  fetched the three InRelease files over https from the snapshot. The
+  dist-upgrade shows "0 upgraded, 0 newly installed". Manifest:
+  `runs/s2-tiny013-build-manifest.json`.
+- **S3** unity `7b0eca27` with our nux from the pool, on the same tarball:
+  exit 0, `Status: successful`, "0 upgraded" in the dist-upgrade. The
+  `file:` and `copy:` archives are accepted. Manifest:
+  `runs/s3-unity-build-manifest.json`; log: `runs/s3-unity-sbuild.log.xz`.
+  Both manifests name tarball sha256 `d48b7864...` and snapshot
+  `20260929T201245Z`.
+- **S4** the old `~/.cache/sbuild/resolute-amd64.tar.zst`: refused before
+  sbuild (not a snapshot tarball); exit 2, output empty.

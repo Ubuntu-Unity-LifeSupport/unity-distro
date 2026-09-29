@@ -1,0 +1,44 @@
+FAIL: test_binaries_not_named_after_source 
+FAIL: test_chroot_log_refusals  (case='on-demand')
+FAIL: test_chroot_log_refusals  (case='not unpacked')
+FAIL: test_chroot_log_refusals  (case='foreign mirror')
+FAIL: test_chroot_log_refusals  (case='tarball changed')
+FAIL: test_chroot_recorded_and_config_passed 
+FAIL: test_chroot_refused_before_sbuild  (case='missing')
+FAIL: test_chroot_refused_before_sbuild  (case='no sidecar')
+FAIL: test_chroot_refused_before_sbuild  (case='live mirror')
+FAIL: test_chroot_refused_before_sbuild  (case='old')
+FAIL: test_chroot_refused_before_sbuild  (case='symlink')
+FAIL: test_copy_changed_during_build_refused 
+FAIL: test_epoch 
+FAIL: test_extra_package_not_used_refused  (case='older than the archive')
+FAIL: test_extra_package_not_used_refused  (case='absent')
+FAIL: test_extra_packages_recorded_and_used 
+FAIL: test_full_log 
+FAIL: test_lib_source_pool_prefix 
+FAIL: test_no_buildinfo_refused 
+FAIL: test_old_chroot_allowed_and_recorded 
+FAIL: test_orig_tarball_not_inspected 
+FAIL: test_partially_renamed_binaries_not_dropped 
+FAIL: test_plain_version 
+FAIL: test_real_dpkg_source_no_vcs_metadata  (format='1.0', checkout='clone')
+FAIL: test_real_dpkg_source_no_vcs_metadata  (format='1.0', checkout='worktree')
+FAIL: test_real_dpkg_source_no_vcs_metadata  (format='1.0 native', checkout='clone')
+FAIL: test_real_dpkg_source_no_vcs_metadata  (format='1.0 native', checkout='worktree')
+FAIL: test_real_dpkg_source_no_vcs_metadata  (format='3.0 (quilt)', checkout='clone')
+FAIL: test_real_dpkg_source_no_vcs_metadata  (format='3.0 (native)', checkout='clone')
+FAIL: test_relative_symlink_and_space_accepted 
+FAIL: test_source_files_recorded  (layout='native')
+FAIL: test_source_files_recorded  (layout='3.0 quilt')
+FAIL: test_source_files_recorded  (layout='1.0')
+FAIL: test_source_full_changes 
+FAIL: test_tested_with 
+FAIL: test_unreadable_source_file_fails_closed 
+FAIL: test_unrelated_files_ignored 
+FAIL: test_vcs_metadata_rejected  (case='.git file in a .diff.gz')
+FAIL: test_vcs_metadata_rejected  (case='.git/ directory in a native tarball')
+FAIL: test_vcs_metadata_rejected  (case='nested sub/.git in a debian.tar')
+FAIL: test_vcs_metadata_rejected  (case='.svn in a native tarball')
+FAIL: test_without_extra_packages_unchanged 
+Ran 25 tests in 11.418s
+FAILED (failures=42)
