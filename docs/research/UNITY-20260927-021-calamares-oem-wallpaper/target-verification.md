@@ -4,6 +4,13 @@ Date: 2026-09-29 (16:26Z-17:30Z). Machine: VM `oem-test`. Repository: live
 `./resolute` = snapshot `unity-resolute-20260927-021-r2`, served at
 `http://192.168.56.10:8080/` and signed with key `29A893E0...7BF3F77FC27B152C`.
 
+The only apt steps against our repository (step 2) ran 16:29-16:30Z, while
+`./resolute` was `unity-resolute-20260927-021-r2`. At 17:06:28Z
+UNITY-20260928-019 switched `./resolute` to `unity-resolute-20260928-019`.
+`aptly snapshot diff` of the two shows only 11 lightdm additions; nothing was
+removed or changed, and the calamares-settings-ubuntu +unity2 records are
+identical in both. Steps 3-5 do not use our repository.
+
 Result: **PASS**. The +unity2 fix reaches an OEM install through the normal
 path: installer medium, our repository, OEM install. On the first boot of the
 end user's setup, Calamares is on top in 2 of 2 cold boots.
