@@ -127,18 +127,20 @@ resolute via `scripts/build_sbuild.py`, exit 0; build manifest
 `build-unity2/UNITY-20260928-019-lightdm-build-manifest.json` (sbuild log `build-unity2/sbuild.log.xz`). The
 only compiler warnings in session-child.c are the four existing `-Waddress`
 ones in `updwtmpx()`. File lists of `lightdm` and `liblightdm-gobject-1-0`
-identical to +unity1. Installed on target (lightdm + liblightdm-gobject only,
+identical to +unity1 (Verifier: all seven binary packages). Installed on target (lightdm + liblightdm-gobject only,
 from the build, not aptly), rebooted; `runs/05` (first pass), `runs/06`
-(second pass: T3-T6 again, T5).
+(second pass: T3-T6 again, T5), `runs/07` (third pass after Verifier round 1:
+T1b, T5b, T7), `runs/08` (T6c).
 
 | Test | What | +unity1 | +unity2 |
 |---|---|---|---|
 | T2 regression | SIGTERM forced at the first `pam_getenv` after `waitpid` | 2/2 cut, cookie left, `:0` opens as uid lightdm (`runs/04`) | 4/4 complete, no cookie (`runs/05`) |
-| T1 | natural greeter stops | 6/11 cut (`runs/02`) | 7/7 complete, no cookie after any real login (`runs/05`) |
-| T3 | SIGTERM forced inside pam_systemd's `pam_sm_close_session` | - | 5/5 complete, close returns 0 (`runs/05`, `runs/06`) |
+| T1 | natural greeter stops | 6/11 cut (`runs/02`) | 13/13 complete (7 in `runs/05`, 6 in `runs/07`; plus 40731 at the start of T3), no cookie after any real login |
+| T3 | SIGTERM forced at the entry of pam_systemd's `pam_sm_close_session` (before any blocking call in it - not an EINTR test) | - | 5/5 complete, close returns 0 (`runs/05`, `runs/06`) |
 | T4 | SIGTERM forced at `pam_end` | - | 5/5 complete (`runs/05`, `runs/06`) |
-| T5 | SIGTERM before the greeter exists (`pam_open_session` of the `lightdm-greeter` service) | - | session-child gone 2 ms later, no greeter; lightdm fell back to the autologin session (`runs/06`) |
-| T6 | greeter close blocked 60 s (temporary pam_exec hook) + forced late SIGTERM | - | 3/3: session-child ends by SIGALRM 10.00-10.05 s after the SIGTERM ("Terminated with signal 14"), cookie already removed, user session then starts (`runs/06`) |
+| T5 | SIGTERM before the greeter exists, at `fork()` of a `lightdm-greeter` session-child (handler installed, `child_pid` 0) | - | delivered to the caught handler, `_exit(0)` 0.6 ms later, no greeter; lightdm fell back to the autologin session (`runs/07`). A first version (`runs/06`) signalled at `pam_open_session`, before `signal()` installs the handler - the default action killed the process; it tests nothing of the handler (Verifier round 1) |
+| T6 | greeter close blocked 60 s (temporary pam_exec hook) + forced late SIGTERM | - | 4/4: session-child ends 10.00-10.05 s after the first post-reap SIGTERM, lightdm.log "Sending SIGTERM" +115.49 s, "Terminated with signal 14" +125.49 s (`runs/08`; `runs/06` 3 more, their log overwritten by T7), cookie already removed, user session starts then |
+| T7 | user sessions stopped by the daemon (`systemctl restart lightdm`, runs/03 again) | 6/6 complete (`runs/03`) | 6/6 complete: "session closed" line and wtmp `DEAD_PROCESS` for `:0` each time (`runs/07`) |
 
 "Complete" = `pam_close_session`, `pam_setcred` and `pam_end` returned and
 `main()` returned. Login delay unchanged: the user session was on seat0 within
@@ -305,7 +307,7 @@ code_risks:
     so read/write/fsync/waitpid restart. Before the change those calls were
     not interrupted but ended with the process, so an EINTR-handling bug in a
     module can at worst fail its close - still more than was done before.
-    Tested: signal forced inside pam_systemd's close (tests below).
+    Not directly tested: T3 forces the signal at the entry of pam_systemd's close, before its Varlink wait; natural stops 15957, 24216, 12945 had the signal arrive during the close and it still returned 0 (incidental).
   threading_reentrancy: >-
     checked - session_ended and cleanup_alarm_set are volatile sig_atomic_t;
     child_pid is volatile so the compiler keeps "session_ended = 1" before
@@ -336,8 +338,8 @@ test_plan: >-
   greeter stops): every cleanup complete, no leftover cookie, login delay
   unchanged. T2 forced SIGTERM at the first pam_getenv after waitpid (stage
   1): complete (red on +unity1: runs/04). T3 forced inside pam_systemd's
-  pam_sm_close_session (EINTR path): close completes. T4 forced inside
-  pam_end: completes. T5 one SIGTERM into a greeter session-child before its
+  pam_sm_close_session (at its entry): close completes. T4 forced inside
+  pam_end: completes. T5 one SIGTERM into a greeter session-child at fork(), before its
   greeter is exec'd: still _exit()s at once. T6 a cleanup that blocks
   (temporary pam_exec close_session hook sleeping 60 s, greeter PAM service
   only): session-child ends by SIGALRM about 10 s after the second SIGTERM,

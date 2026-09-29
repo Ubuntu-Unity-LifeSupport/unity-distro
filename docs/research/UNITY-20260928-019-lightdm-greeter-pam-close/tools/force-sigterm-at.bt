@@ -1,12 +1,18 @@
 #!/usr/bin/env bpftrace
 // UNITY-20260928-019: send one SIGTERM to the greeter's session-child at a
 // chosen point, once per greeter (tests T3-T5 of the evidence card).
-//   close   - inside pam_systemd's pam_sm_close_session (after waitpid)
+//   close   - at the entry of pam_systemd's pam_sm_close_session (after
+//             waitpid; before any blocking call in it)
 //   end     - at pam_end (after waitpid)
-//   preexec - at pam_open_session of a session-child whose PAM service is
-//             lightdm-greeter, i.e. before the greeter is forked/exec'd;
-//             one-shot for the whole run (the greeter will not start)
-// Usage: bpftrace --unsafe force-sigterm-at.bt close|end|preexec
+//   prefork - at fork() in a session-child whose PAM service is
+//             lightdm-greeter: signal_cb() is installed by then
+//             (session-child.c: signal() right before fork()), child_pid is
+//             0 and the session has not started, so the handler must
+//             _exit(); one-shot for the whole run (the greeter will not
+//             start). An earlier "preexec" mode signalled at
+//             pam_open_session, before signal(): the default action killed
+//             the process there, which tests nothing of the handler.
+// Usage: bpftrace --unsafe force-sigterm-at.bt close|end|prefork
 // Run with tools/greeter-close-trace.bt alongside.
 
 tracepoint:sched:sched_process_exec /str(args.filename) == "/usr/lib/lightdm/lightdm-greeter-session"/
@@ -31,16 +37,26 @@ uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_end /str($1) == "end" && @g[pid] &&
   signal("SIGTERM");
 }
 
-uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_start /str($1) == "preexec" && curtask->group_leader->comm == "lightdm" && str(arg0) == "lightdm-greeter"/
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_start /str($1) == "prefork" && curtask->group_leader->comm == "lightdm" && str(arg0) == "lightdm-greeter"/
 {
   @gs[pid] = 1;
 }
 
-uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_open_session /str($1) == "preexec" && @gs[pid] && !@done/
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:fork /str($1) == "prefork" && @gs[pid] && !@done/
 {
   @done = 1;
-  printf("%s forcing SIGTERM into %d at pam_open_session, before the greeter exists\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  printf("%s forcing SIGTERM into %d at fork(), handler installed, before the greeter exists\n", strftime("%H:%M:%S.%f", nsecs), pid);
   signal("SIGTERM");
+}
+
+tracepoint:signal:signal_deliver /args.sig == 15 && @gs[pid]/
+{
+  printf("%s SIGTERM delivered to %d, sa_handler %s\n", strftime("%H:%M:%S.%f", nsecs), pid, args.sa_handler == 0 ? "SIG_DFL" : "caught");
+}
+
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit /@gs[pid]/
+{
+  printf("%s %d _exit(%d)\n", strftime("%H:%M:%S.%f", nsecs), pid, arg0);
 }
 
 tracepoint:sched:sched_process_exit /(@g[pid] || @gs[pid]) && pid == tid/
