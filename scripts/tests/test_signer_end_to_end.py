@@ -233,6 +233,18 @@ class SignerEndToEndTest(unittest.TestCase):
         with open(self.config["state"]) as state:
             self.assertNotIn("secret-not-forwarded", state.read())
 
+    def test_standin_trace_for_the_rehearsal(self):
+        trace = self.base / "trace.jsonl"
+        (self.base / "standin.json").write_text(json.dumps({"url": "http://127.0.0.1:9", "timeout": 2,
+                                                            "store": str(self.base / "switch"), "trace": str(trace)}))
+        _, tmp, _ = self.aptly_switch(self.packages(), standin_ok=False)
+        lines = [json.loads(l) for l in trace.read_text().splitlines()]
+        self.assertEqual(len(lines), 2)
+        self.assertIn("--detach-sign", lines[0]["argv"])
+        self.assertIn("***", lines[0]["argv"])
+        self.assertNotIn("secret-not-forwarded", trace.read_text())
+        self.assertIn("main_binary-amd64_Packages.gz", [entry[0] for entry in lines[0]["listing"]])
+
     def test_standin_refusals_write_nothing(self):
         raw = self.packages()
         release, tmp, results = self.aptly_switch(raw, standin_ok=False)  # not approved

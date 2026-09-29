@@ -94,12 +94,27 @@ def listed_files(release):
     return paths
 
 
+def trace(config, argv, source):
+    """For the rehearsal (config "trace": file): the argv aptly passed, the
+    passphrase value masked, and the listing of aptly's temporary directory at
+    the moment of the call, appended as one JSON line."""
+    if not config.get("trace"):
+        return
+    masked = ["***" if i and argv[i - 1] == "--passphrase" else a for i, a in enumerate(argv)]
+    tempdir = Path(source).parent
+    listing = sorted((p.name, p.lstat().st_size, p.is_symlink()) for p in tempdir.iterdir())
+    with open(os.path.expanduser(config["trace"]), "a", encoding="utf-8") as stream:
+        stream.write(json.dumps({"argv": masked, "tempdir": str(tempdir), "listing": listing}) + "\n")
+
+
 def main(argv):
     if argv == ["--version"]:
         sys.stdout.write(VERSION)
         return 0
     try:
+        config = json.loads(Path(CONFIG).read_text(encoding="utf-8"))
         mode, dest, source = parse(argv)
+        trace(config, argv, source)
         release = regular(source)
         tempdir = Path(source).parent
         files = {}
@@ -107,7 +122,6 @@ def main(argv):
             if "/" in path and (path.startswith("/") or ".." in path.split("/")):
                 raise ValueError("a listed path is not relative")
             files[path] = base64.b64encode(regular(tempdir / path.replace("/", "_"))).decode()
-        config = json.loads(Path(CONFIG).read_text(encoding="utf-8"))
     except (ValueError, OSError, UnicodeDecodeError) as exc:
         return fail(exc)
     body = json.dumps({"release": base64.b64encode(release).decode(), "files": files}).encode()
