@@ -152,3 +152,14 @@ unity 7.7.1+26.04.20260306-0ubuntu3+unity12, 2026-09-29 (UNITY-20260927-040; the
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
 | unity | `decorations: Edge ignores presses while compiz lists any grab` (`decorations/DecorationsEdge.cpp`, +unity12; widens the +unity10 guard) | `Edge::ButtonDownEvent` releases the X pointer and keyboard with raw Xlib on every border or title-bar press; +unity10 stopped that only during move and resize. In expo a title drag or border press still ungrabbed behind compiz: expo missed its button release, stayed on compiz's grab list, and frame clicks froze the pointer (5/5 title drags on +unity11). The guard is now `screen->otherGrabExist(nullptr)`; move and resize already refuse `_NET_WM_MOVERESIZE` while another grab is listed, so only the harmful ungrab is removed. On target from the gated build: 0/5 stuck, replay 0/3, border, title bar, first press after expo, keyboard resize and the UNITY-20260927-001 set unchanged; packages identical to the tested build. | LP: #1393523 (the pointer freeze half; title-bar buttons in expo stay, UNITY-20260929-010) | [`research/UNITY-20260927-040-edge-grab-guard/`](research/UNITY-20260927-040-edge-grab-guard/) | local |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3, 2026-09-29 (UNITY-20260927-041; the calamares-settings-ubuntu rows above are left as written).
+- Source commit 221c691 on `Ubuntu-Unity-LifeSupport/calamares-settings-ubuntu` `b/UNITY-20260927-041`, on +unity2 c03daf4. Native package.
+- Built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu`, with resolute-updates/-security in the chroot. `-common`'s `snap-seed-glue-emb` is therefore statically built with snapd 2.76.3+ubuntu26.04.
+- Verification: independent Verifier PASS (INDEPENDENTLY_REPRODUCED).
+- Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity3: `Makefile: chmod the Ubuntu Unity sudoers.oem, to 0440; release +unity3` (branch `b/UNITY-20260927-041`, `221c691`) | The Ubuntu Unity section of the Makefile ran chmod on Kubuntu's `sudoers.oem`, so ours shipped 0644 in `oemconfig.tar.gz` and became `/etc/sudoers` in OEM mode, with a mode that `visudo -c` of sudo-rs and sudo.ws rejects. Now 0440 root:root, the mode of the distribution's own `/etc/sudoers`. Nothing else in the tarballs changes. Kubuntu/Lubuntu stay 0400, out of scope. | none (Launchpad search: no bug; 26.10 has the same line) | [`research/UNITY-20260927-041-calamares-oem-sudoers/`](research/UNITY-20260927-041-calamares-oem-sudoers/) | local, gated publication |
