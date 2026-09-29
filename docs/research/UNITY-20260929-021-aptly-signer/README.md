@@ -488,3 +488,14 @@ Tests added:
 - the write order;
 - a symlink or an unlisted file in the temporary directory is refused by
   the stand-in.
+
+## 11. Design review 3: APPROVE
+
+R1-R6 close round 2; May's invariant unchanged. Notes taken into the
+implementation: the stand-in sends only the listed files and explicitly
+allows the signing source and its `.gpg` (aptly writes `<tmp>.gpg` into the
+same directory before ClearSign), refusing only symlinks, non-regular
+files or a missing listed file; the stored switch-time trio is checked on
+install (key = sha256 of aptly's Release, signer Release equal to aptly's
+apart from Date/Valid-Until) and deleted after a successful install or at
+the next switch; a test that a stored trio from an earlier switch fails R2.
