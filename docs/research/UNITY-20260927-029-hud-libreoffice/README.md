@@ -215,7 +215,7 @@ control and +unity2 test results, and a target2 run with +unity2.
     time;
   - mechanism 2, with the dbusmenu lead.
 
-## Verification: PASS_WITH_NOTES (REVIEWED)
+## Verification: PASS (REVIEWED), with notes
 
 The independent Verifier read the evidence, the trees and the build logs:
 - the base equals the published +unity1;
