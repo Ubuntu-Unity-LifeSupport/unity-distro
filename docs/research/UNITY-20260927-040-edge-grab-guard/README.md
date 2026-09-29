@@ -211,6 +211,38 @@ cinnamon-session crashed in `IceProcessMessages` after a compiz `SIGHUP`
 restart (`runs/u12-cinnamon-session-crash.txt`) - not the Edge path;
 follow-up proposed.
 
+## 8. Release build and its check on target
+
+**Build.** `scripts/build_sbuild.py` (main with UNITY-20260929-013) from
+`packages/unity` at `7b0eca27` (origin our GitHub), `--extra-package` our
+published `libnux-4.0-0`/`-common`/`-dev` `0ubuntu15+unity2` from
+`/srv/aptly/public/pool/main/n/nux/`: `Status: successful`, 553 s, manifest
+`build-gated/UNITY-20260927-040-unity-build-manifest.json` (result PASS,
+source tree `e204f809`, 14 artifacts, `build_dependencies`: three entries,
+each `in_our_repository_pool`, checked against the `.buildinfo`;
+`build_dependencies.manifest_error` returns none).
+
+**Compared with the test build** (`tools/compare-builds.sh`,
+`build/release-vs-test.txt`): all seven binary packages have the same file
+list, the same control Version/Depends and identical `DEBIAN/md5sums` - the
+installed content does not differ from what section 7 tested.
+
+**On target** (one boot 2026-09-29 20:38 EEST, unity, libunity-core,
+unity-schemas, -services, -uwidgets from the gated build, rebooted; no deleted
+library mapped in compiz, only memfd/SysV; workspaces 2x2;
+`tools/release-sample.sh`, `runs/rel`, summary
+`build/release-sample-summary.txt`):
+
+| Test | gated +unity12 |
+|---|---|
+| (1) title drag in expo (regression) | 0/5 stuck; each run: Edge reached, no ungrab from the decorations, expo removes its grab |
+| (1b) replay of the first stuck run | orig 0/2, noborder 0/1; no active or frozen grab |
+| (2) expo-border | 0/2 stuck, no ungrab from the decorations |
+| (3) title bar immediate, motion | moves; pointer and keyboard free |
+| (4) first border press after expo | resizes +42 px; no grab before the press |
+| (5) keyboard resize reaching the border | 0/2 stuck, no ungrab from the decorations |
+| (6) UNITY-20260927-001 #3: rmbslow, titlemovermb | 0/3 each |
+
 ## Evidence card
 
 ```yaml
@@ -389,23 +421,12 @@ Temporary Design Challenger, separate read-only subagent.
 
 ## Outcome (so far)
 
-`BLOCKED`, resume `IMPLEMENTING`: the fix (A2, unity `+unity12`, `7b0eca27`)
-is designed (Challenger APPROVE), built and verified on target from a test
-build (section 7), but `scripts/build_sbuild.py` cannot build unity - the
-archive's nux breaks the configure step and the tool cannot add our nux - so
-there is no approved build manifest, which `VERIFYING` requires. Next, once
-the build tool can take our nux (coordinator's decision): release build of
-`7b0eca27` with it, compare its artifacts with the test build, rerun the
-regression test (1) and a short sample of (2)-(6) on it, then VERIFYING, the
-independent Verifier, and the publication gate.
-
-target-desktop was returned to the published unity `+unity11` after the tests
-(`runs/restore.txt`).
+`VERIFYING`: the fix (A2, unity `+unity12`, `7b0eca27`) has an approved
+build manifest from the gated release build, which is content-identical to
+the tested build and passes the regression test and the plan sample on
+target (section 8). Next: the independent Verifier, then the publication gate.
 
 Follow-ups proposed (IDs from C): the rest of LP #1393523 (title-bar buttons
 and menus react in expo, option F); `XWindowManager::UnGrabMousePointer`
 (panel) under move/resize; cinnamon-session SEGV in `IceProcessMessages`
-after a compiz restart; `build_sbuild.py` support for extra packages or our
-repository.
-
-
+after a compiz restart.
