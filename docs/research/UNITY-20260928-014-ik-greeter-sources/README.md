@@ -178,8 +178,55 @@ connection on the users without data; `sources` before `current`; clamp;
 helper takes plain values. Open: reduce logs/06 to a reproducible sequence and
 check that the revision recovers from it.
 
-Paused 2026-09-29 ~09:53Z for UNITY-20260927-047 (C); resume at
-INVESTIGATING (design round 2).
+Paused 2026-09-29 ~09:53Z for UNITY-20260927-047 (C); resumed 10:06Z.
+
+## After the pause (2026-09-29 10:06Z on)
+
+- FACT (logs/10): kill inside the window, then, in the restarted instance,
+  useradd ik014del (xkb de) + daemon restart: the greeter settings come back
+  as `[gb, us]` **without de**, while on a clean boot (logs/08) the same step
+  gives `[gb, us, de]`. INFERENCE: the restarted instance migrates from a
+  stale `users` snapshot. `migrate_keyboard_layouts()` calls `list_users()`
+  once when the manager is already loaded at start and connects no
+  `notify::is-loaded` handler in that branch (main.vala:396-409), so new users
+  and replaced objects never enter `users`. logs/06 (`[]` for good) is the
+  same instance kind; its snapshot objects stayed without data. Overlaps
+  UNITY-20260928-016 (weak `users` list).
+- FACT (logs/11, `manager-user-changed.py`, 3 of 3): after a daemon restart,
+  `ActUserManager` emits `user-changed` 0.24-0.25 s after `is-loaded`, and a
+  fresh `list_users()` then has the data (name `mike`).
+
+## Design A' (for Design Challenger round 2)
+
+In `migrate_input_sources()`:
+
+1. Read a fresh `manager.list_users()`; if the manager is not loaded, return
+   (its `notify::is-loaded` handler migrates when it is). This drops the
+   stale snapshot as the source of the union (logs/06, 10) - needed, or the
+   skip in 2 would freeze on objects that never get data.
+2. Count listed users that are loaded and not nonexistent: with data
+   (`user_name != null`) and without. Skip the write when at least one has no
+   data and none has data (the restart window: logs/05, 11). A dead object
+   among users with data (logs/08) does not block: it contributes nothing, as
+   today. Record that a pass was skipped.
+3. Retry structurally: connect once to `ActUserManager::user-changed`; when a
+   pass was skipped, run the migration again (logs/11: emitted with data
+   0.25 s later). The existing LightDM callbacks stay.
+4. Write `sources` before `current`; `current` from a helper: 0 when there
+   are no sources, the wanted index when in range, else the last.
+5. Helpers in `lib/input-sources.vala` take plain values (counts, index,
+   size) and get unit tests in `tests/main.vala`.
+
+Narrowed invariant: the greeter's input sources are not written while every
+listed, loaded, existing user has an empty AccountsService cache; `current`
+is always `< n_sources`, or 0 when there are none. Users not yet loaded stay
+out, as today (their own `notify::is-loaded` migrates them).
+
+Known remaining: with several users, the recovery pass after the first
+`user-changed` may still see others without data and write a partial union
+for up to one debounce; it is never empty and the next `user-changed`
+completes it. A dead object alone (every real user deleted) freezes the old
+sources instead of writing `[]`.
 
 Risk to check live for A: the skip relies on the recovery pass seeing the
 data. INFERENCE from logs/02: the recovery write already contains mike's
