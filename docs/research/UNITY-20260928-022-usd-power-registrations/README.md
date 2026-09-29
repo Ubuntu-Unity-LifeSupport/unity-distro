@@ -94,6 +94,20 @@ Fix (`df68430`, changelog +unity9 `57945f5`): the Keyboard method handler
 answers "No keyboard backlight" while there is no proxy; the helpers' other
 callers already check it.
 
+## Verifier round 2 (+unity9): PASS
+
+`runs/11-verifier-2-unity9.txt`: round 1's keyboard race twice, and StepDown,
+Toggle and every method and property mixed under 25 irregular toggles - the
+"No keyboard backlight" window was hit hundreds of times per method, every
+call answered (slowest 0.089 s), no Timeout/NoReply; `power-dbus-checks.sh`,
+quick toggles (inhibitors back each time), forced finalize by unique name -
+all pass; no crash, NRestarts 0. Code review: no defect against the
+invariant; the fields used by the Screen/GetDevices/property handlers are set
+synchronously in `start()` with `session`. Two pre-existing points noted, not
+blocking: `on_bus_gotten` would not release an older connection/name id (it
+runs once per manager), and `stop()` leaves the idle watches (never
+registered on our stack - see the side finding above).
+
 ## Evidence card
 
 ```yaml
@@ -103,7 +117,10 @@ target_series: resolute
 issue: power plugin registrations outliving stop() - which fire, with what effect
 status: REPRODUCED   # D-Bus object (stopped: calls hang; finalized: SIGSEGV), async start callbacks after stop (leak); idle watches and battery paths unreachable on our stack
 issue_search_result: NOT_FOUND   # follow-up of UNITY-20260927-012; upstream master has the same code
-source_version: 15.04.1+21.10.20220802-0ubuntu7+unity7 (built, not published; waits for the aptly freeze)
+source_version: 15.04.1+21.10.20220802-0ubuntu7+unity7 (base; built, not published; waits for the aptly freeze)
+candidate_version: 15.04.1+21.10.20220802-0ubuntu7+unity9   # +unity8 superseded (Verifier round 1 FAIL), never published
+candidate_commit: Ubuntu-Unity-LifeSupport/unity-settings-daemon a/UNITY-20260928-022 57945f5 (27e75f4 + df68430)
+verifier_result: PASS   # round 2 on +unity9 (runs/11); round 1 FAIL on +unity8 (runs/09)
 binary_version: same, on target for the tests
 source_commit: Ubuntu-Unity-LifeSupport/unity-settings-daemon a/UNITY-20260927-012 b570a22
 reproduction: tools/power-after-stop.sh stopped|finalized; the quick on/off toggle (runs/03)
