@@ -111,7 +111,7 @@ Every must-deny form stays denied.
 ## Validation (2026-09-29)
 
 - logs/02: full suite, 201 tests, OK, 1 skipped.
-  `test_heredoc_text_only_when_nothing_runs_it` runs the hook on 22 forms
+  `test_heredoc_text_only_when_nothing_runs_it` runs the hook on 23 forms
   from `scripts/tests/data/command_guard_018_must_deny.json`:
   - 20 must be denied;
   - 2 `ok-` doc writes under `hooks` directories must be allowed;
