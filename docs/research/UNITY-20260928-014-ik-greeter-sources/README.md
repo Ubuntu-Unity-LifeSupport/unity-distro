@@ -365,3 +365,14 @@ ran.
 - Verifier remark, (0, 0) case: if every listed user is not yet loaded, the
   pass counts neither kind and writes the LightDM layout alone. It was not
   seen (users are loaded when the manager reports loaded, logs/05, 11).
+
+## Gated build and target evidence (2026-09-29)
+
+The gated build ran on the pinned chroot `resolute-amd64-20260929T201245Z` (UNITY-20260929-016). The tested build (`~/work/b/ik4/out2`, installed and checked on target2 in logs/20) predates that policy, so `--tested-with` cannot be used.
+
+logs/23 compares the two builds:
+
+- The .deb payload is byte-identical: all 33 entries match in mode, owner and the sha256 of every file.
+- 130 Installed-Build-Depends differ; they are -updates/-security point releases.
+
+**No repeat of the target run (C, 2026-09-29).** The shipped bytes are the ones tested on target2, and the target's runtime libraries do not depend on the build chroot. Verifier round 3 re-checked this with `dpkg-deb -R` (verification.md).
