@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 4.0.8+18.10.20180623-0ubuntu15+unity3 is newer than resolute 4.0.8+18.10.20180623-0ubuntu12",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "nux",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "candidate_source_version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+  "pockets": {
+    "resolute": "4.0.8+18.10.20180623-0ubuntu12"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T22:12:20Z",
+  "mode": "pockets",
+  "view_sha256": "da7451a6ed3e347aed04acd9be26ece07f221cafc30c04d79d3b41688cc6ed0e"
+}
