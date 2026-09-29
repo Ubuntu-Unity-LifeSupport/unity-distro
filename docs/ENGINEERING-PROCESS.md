@@ -354,6 +354,7 @@ version_safety: SAFE
 verification_result: PASS | NOT_APPLICABLE
 patch_and_decision_docs: COMPLETE
 peer_notice: ACK | COORDINATOR_CONFIRMED_NO_CONFLICT
+tested_build: this_build | same_chroot | buildinfo_identical (+ target_test)
 ```
 
 For a strictly mechanical packaging-only change, `verification_result` may be
@@ -534,13 +535,39 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
     sources and the InRelease lines.
 - **Refresh.** Create a new tarball when the current snapshot is more than
   7 days old, or when a task needs a newer archive state.
-- **Test build and gated build.** The build tested on target and the gated
-  build of one task use the same tarball: the gated build passes
-  `build_sbuild.py --tested-with <tested manifest>`, which refuses any other
-  tarball. Only when the tested build has no usable manifest (one built
-  before this policy) compare the `.buildinfo` Installed-Build-Depends
-  instead, and repeat the target test on any difference. A gated build on
-  the tested tarball may use `--allow-old-chroot`.
+- **Test build and gated build** (UNITY-20260929-020). A build that will
+  be tested on target is made with `build_sbuild.py`, and its manifest,
+  `.buildinfo`, `.changes` and the target test record are committed. The
+  release record says what the target test installed and how it is tied to
+  the gated build, and `create_release_gate.py` refuses otherwise:
+  - `target_test`: `{"record": <committed record>, "debs": {<file>:
+    <sha256>}}`. These are the debs the target test installed. The record
+    must name each one.
+  - `tested_build: "this_build"`. The debs are binaries of the gated build,
+    matched by name and sha256.
+  - `tested_build: "same_chroot"`, with `tested_manifest` (committed). The
+    debs are binaries of the tested build. The gated build was made with
+    `--tested-with` that manifest. Both builds have the same chroot sha256,
+    source commit and tree, and extra build dependencies. A gated build on
+    the tested tarball may use `--allow-old-chroot`.
+  - `tested_build: "buildinfo_identical"`, with `tested_buildinfo`
+    (committed). For a tested build on another tarball, or from before
+    UNITY-20260929-016:
+    - the debs and that `.buildinfo` must be listed together, either in the
+      committed `tested_manifest` or, without one, in the
+      `Checksums-Sha256` of the committed `tested_changes`;
+    - the gated build's `.buildinfo` must match on Source, Version and
+      Build-Architecture, with identical Installed-Build-Depends.
+
+    Any difference means a new target test.
+  - A gated manifest without `chroot` (built before UNITY-20260929-016) is
+    refused.
+
+  The gate records the mode and every hash as `tested_build`.
+  `publish_aptly.py` recomputes it from the committed files and refuses on
+  any difference. The recorded list of debs is the attestation of what was
+  tested; the tools check that it is consistent with the builds, not that
+  it is complete.
 - **Retention.** Keep every tarball named by a committed manifest; others
   may be deleted by hand. `~/.cache/sbuild/resolute-amd64.tar.zst` (release
   pocket only, 2026-09-22) is the record of the builds up to 2026-09-29.
