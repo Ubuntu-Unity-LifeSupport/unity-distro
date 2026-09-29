@@ -1,0 +1,34 @@
+# UNITY-20260929-023 tests 2026-09-29T23:18:54Z (after Verifier round 1)
+test_ancestor_commit_accepted (scripts.tests.test_taskctl_published_by.PublishedByTest.test_ancestor_commit_accepted) ... ok
+test_artifact_sets_must_match_both_ways (scripts.tests.test_taskctl_published_by.PublishedByTest.test_artifact_sets_must_match_both_ways) ... ok
+test_commit_not_ancestor (scripts.tests.test_taskctl_published_by.PublishedByTest.test_commit_not_ancestor) ... ok
+test_different_hashes_are_fine (scripts.tests.test_taskctl_published_by.PublishedByTest.test_different_hashes_are_fine)
+A different build of the same source: names match, hashes differ. ... ok
+test_evidence_task_id_must_be_this_task (scripts.tests.test_taskctl_published_by.PublishedByTest.test_evidence_task_id_must_be_this_task) ... ok
+test_malformed_published_by (scripts.tests.test_taskctl_published_by.PublishedByTest.test_malformed_published_by) ... ok
+test_manifest_missing_or_not_this_task (scripts.tests.test_taskctl_published_by.PublishedByTest.test_manifest_missing_or_not_this_task) ... ok
+test_manifest_must_be_committed_in_the_repository (scripts.tests.test_taskctl_published_by.PublishedByTest.test_manifest_must_be_committed_in_the_repository)
+Verifier round 1: an unbound manifest let a task claim any commit. ... ok
+test_no_record (scripts.tests.test_taskctl_published_by.PublishedByTest.test_no_record) ... ok
+test_own_verification_required (scripts.tests.test_taskctl_published_by.PublishedByTest.test_own_verification_required)
+Verifier round 1: the gate read is the publishing task's, so this task's own review is checked. ... ok
+test_package_or_version_mismatch (scripts.tests.test_taskctl_published_by.PublishedByTest.test_package_or_version_mismatch) ... ok
+test_published_commit_missing_from_repo (scripts.tests.test_taskctl_published_by.PublishedByTest.test_published_commit_missing_from_repo) ... ok
+test_record_of_another_task (scripts.tests.test_taskctl_published_by.PublishedByTest.test_record_of_another_task) ... ok
+test_same_commit_accepted (scripts.tests.test_taskctl_published_by.PublishedByTest.test_same_commit_accepted) ... ok
+test_self_reference (scripts.tests.test_taskctl_published_by.PublishedByTest.test_self_reference) ... ok
+test_sha256_mismatch (scripts.tests.test_taskctl_published_by.PublishedByTest.test_sha256_mismatch) ... ok
+test_short_or_text_commit (scripts.tests.test_taskctl_published_by.PublishedByTest.test_short_or_text_commit) ... ok
+test_source_repo_not_git (scripts.tests.test_taskctl_published_by.PublishedByTest.test_source_repo_not_git) ... ok
+test_symlink_record (scripts.tests.test_taskctl_published_by.PublishedByTest.test_symlink_record) ... ok
+test_unhashable_artifact_field_is_a_refusal_not_a_crash (scripts.tests.test_taskctl_published_by.PublishedByTest.test_unhashable_artifact_field_is_a_refusal_not_a_crash) ... ok
+test_writable_record (scripts.tests.test_taskctl_published_by.PublishedByTest.test_writable_record) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 2.745s
+
+OK
+## full suite
+Ran 253 tests in 96.115s
+
+OK (skipped=1)

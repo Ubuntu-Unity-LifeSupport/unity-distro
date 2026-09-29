@@ -1,0 +1,3 @@
+record of UNITY-20260927-027: nux 4.0.8+18.10.20180623-0ubuntu15+unity3 0274bc5ae114 sha256 fedfb16142852aa3
+check_own_build: PASS (-020's manifest commit, artifacts by name, in the published record)
+wrong sha256 refused: publish record /home/claude/coordinator/publish-records/UNITY-20260927-027.json does not have the sha256 named in published_by
