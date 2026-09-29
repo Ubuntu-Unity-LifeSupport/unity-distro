@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-019",
+  "package": "lightdm",
+  "target_series": "resolute",
+  "candidate_version": "1.32.0-6ubuntu4+unity2",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-019/packages/lightdm",
+  "source_remote_ref": "origin/a/UNITY-20260928-019",
+  "source_commit": "f5af23c0b9d5931aea0dfc7a2eaf424415cf8920",
+  "source_tree_hash": "aebb2b51b2388bd2961eec336f6d3fe8e5e7a957",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260928-019"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/build-gated/UNITY-20260928-019-lightdm-build-manifest.json",
+    "sha256": "fe83e3517d1e5546599034574ffafa3d2960f7f47a06e1d51bcb2e3796b1467c"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/gate/evidence-manifest.json",
+    "sha256": "9bd7d7d9dd21dac83a7fbc3957e206b2a37a5cc604c6b3f9c9d8ed46fda7770a"
+  }
+}
