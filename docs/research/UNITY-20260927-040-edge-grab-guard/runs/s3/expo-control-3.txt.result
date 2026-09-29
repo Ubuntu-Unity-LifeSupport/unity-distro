@@ -1,0 +1,1 @@
+expo-control vp=1280,0 border@901,377 xterm 400x290+500+232 -> 400x290+-780+232 | pointer before click: x:981 y:377 | during: pointer=free keyboard=free | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free

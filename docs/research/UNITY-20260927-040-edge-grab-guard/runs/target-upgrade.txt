@@ -1,0 +1,26 @@
+apt-get update: no E/W
+Date: Tue, 29 Sep 2026 18:40:25 UTC
+unity:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity12 500
+libunity-core-6.0-9:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity12 500
+Пол:1 http://192.168.56.10:8080 resolute/main amd64 unity-schemas all 7.7.1+26.04.20260306-0ubuntu3+unity12 [11,2 kB]
+Пол:2 http://192.168.56.10:8080 resolute/main amd64 libunity-core-6.0-9 amd64 7.7.1+26.04.20260306-0ubuntu3+unity12 [461 kB]
+Пол:3 http://192.168.56.10:8080 resolute/main amd64 unity amd64 7.7.1+26.04.20260306-0ubuntu3+unity12 [1 863 kB]
+Пол:4 http://192.168.56.10:8080 resolute/main amd64 unity-services amd64 7.7.1+26.04.20260306-0ubuntu3+unity12 [33,6 kB]
+Пол:5 http://192.168.56.10:8080 resolute/main amd64 unity-uwidgets all 7.7.1+26.04.20260306-0ubuntu3+unity12 [52,7 kB]
+Получено 2 421 kB за 0с (26,6 MB/s)
+Настраивается пакет unity-uwidgets (7.7.1+26.04.20260306-0ubuntu3+unity12) …
+Настраивается пакет unity-services (7.7.1+26.04.20260306-0ubuntu3+unity12) …
+Обрабатываются триггеры для libgdk-pixbuf-2.0-0:amd64 (2.44.5+dfsg-4ubuntu1) …
+libunity-core-6.0-9:amd64	7.7.1+26.04.20260306-0ubuntu3+unity12
+unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+unity-schemas	7.7.1+26.04.20260306-0ubuntu3+unity12
+unity-services	7.7.1+26.04.20260306-0ubuntu3+unity12
+unity-uwidgets	7.7.1+26.04.20260306-0ubuntu3+unity12
+9266969d28fd8bc2db35b2e88ec28ad8cf4166d52af2627f0a431dd82c271764  /usr/lib/x86_64-linux-gnu/compiz/libunityshell.so
+0d8fdf1477b9611f3e83f78760456e9c9d7d60c67a1383d9ec6889cea0333894  /usr/lib/x86_64-linux-gnu/libunity-core-6.0.so.9
+boot 2026-09-29 21:42:33
+deleted .so in compiz: 0
+SUMMARY expo-title stuck 0/5
+run 1 orig active grabs: 0 frozen: 0

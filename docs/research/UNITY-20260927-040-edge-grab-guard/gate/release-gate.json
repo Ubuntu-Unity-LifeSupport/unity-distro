@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-040",
+  "package": "unity",
+  "target_series": "resolute",
+  "candidate_version": "7.7.1+26.04.20260306-0ubuntu3+unity12",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-040/packages/unity",
+  "source_remote_ref": "origin/a/UNITY-20260927-040",
+  "source_commit": "7b0eca27917d60d9bfb55957e68171cd5c39db14",
+  "source_tree_hash": "e204f809a48ed7e89ce87751e8a8853c8334e8fa",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-040"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-040-edge-grab-guard/build-gated/UNITY-20260927-040-unity-build-manifest.json",
+    "sha256": "1ffc82866a89afd10ece4675d3d531735a6ebed2c8f42f64de86a6e3f9df4c9f"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-040-edge-grab-guard/gate/evidence-manifest.json",
+    "sha256": "9d5d9011e26c3b3bdb57c23947a6f2fd8702edb872a88c7110176fb7daef4b7e"
+  }
+}
