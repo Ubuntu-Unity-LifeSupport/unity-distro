@@ -174,3 +174,10 @@ calamares-settings-ubuntu 1:26.04.12+unity3 published 2026-09-29 18:15:21Z (UNIT
   - `snap-seed-glue-emb`, statically built with snapd 2.76.3, was exercised;
   - a cold first boot from snapshot `OEM-ready-unity3` shows Calamares on top.
 - Record: `research/UNITY-20260927-041-calamares-oem-sudoers/target-verification.md`.
+
+
+indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1+unity4 published 2026-09-29 21:51:54Z (UNITY-20260928-014; the "Not in aptly (freeze #1)" note in the row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260928-014` (-040 plus 3 records).
+- Build: `scripts/build_sbuild.py` from `packages/indicator-keyboard` at 5d6a8c5 (`Ubuntu-Unity-LifeSupport/indicator-keyboard` `b/UNITY-20260928-014`), on the pinned chroot 20260929T201245Z. The payload is byte-identical to the build tested on target2.
+- Verifier round 3 on the gated build: PASS (INDEPENDENTLY_REPRODUCED).
+- target2, normal upgrade path: candidate +unity4 from our repository; the running binary after a reboot is the gated one.

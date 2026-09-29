@@ -5,6 +5,12 @@ Build directory: `~/work/b`
 
 ## Now
 
+**UNITY-20260928-014 DONE** (2026-09-29 ~22:00Z). indicator-keyboard +unity4 was
+published at 21:51Z (snapshot unity-resolute-20260928-014) and upgraded on
+target2 from our repository. target2 is being rolled back to Clean-2.
+UNITY-20260929-019 is BLOCKED; it is the design only, and A writes the
+signer code.
+
 **2026-09-29 ~20:40Z**
 - **UNITY-20260927-041 DONE.** calamares-settings-ubuntu 1:26.04.12+unity3 was
   published at 18:15Z and is live through -040.
