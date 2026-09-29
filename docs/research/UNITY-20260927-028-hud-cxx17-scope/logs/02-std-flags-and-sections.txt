@@ -1,0 +1,12 @@
+# The last -std= of every C++ compile command in the sbuild logs (hud = everything outside tests/)
+== +unity2 (0e99dca)
+('hud', 'c++17') 82
+('tests', 'c++17') 47
+== +unity3 (2f2fa89)
+('hud', 'c++14') 82
+('tests', 'c++17') 47
+
+# ELF sections, +unity2 vs +unity3 (objcopy --only-section | sha256)
+libhud.so.2.0.0 (C): .text .rodata .data.rel.ro .dynsym .dynstr same; .note.gnu.build-id differs
+libhud-client.so.2.0.0 (has C++): .text and .dynsym (bytes) differ; exported names identical (logs/01)
+hud-service: .text .rodata .data.rel.ro differ; window-stack-bridge: .text differs

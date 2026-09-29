@@ -1,0 +1,50 @@
+# abicompare.py ~/work/b/hud029/out-unity2 ~/work/b/hud029/out-unity3 (2026-09-29): hud +unity2 (C++17 everywhere) against +unity3 (C++14, tests C++17)
+gir1.2-hud-2: 3 files, file list identical, contents differ in 1
+   changed: usr/share/doc/gir1.2-hud-2/changelog.Debian.gz
+gir1.2-hud-client-2: 3 files, file list identical, contents differ in 1
+   changed: usr/share/doc/gir1.2-hud-client-2/changelog.Debian.gz
+hud: 14 files, file list identical, contents differ in 3
+   ELF usr/lib/x86_64-linux-gnu/hud/hud-service (0 symbols, identical)
+   ELF usr/lib/x86_64-linux-gnu/hud/window-stack-bridge (0 symbols, identical)
+   changed: usr/lib/x86_64-linux-gnu/hud/hud-service
+   changed: usr/lib/x86_64-linux-gnu/hud/window-stack-bridge
+   changed: usr/share/doc/hud/changelog.Debian.gz
+hud-doc: 2 files, file list identical, contents differ in 1
+   changed: usr/share/doc/hud-doc/changelog.Debian.gz
+hud-tools: 9 files, file list identical, contents differ in 6
+   ELF usr/bin/hud-cli (0 symbols, identical)
+   ELF usr/bin/hud-cli-appstack (0 symbols, identical)
+   ELF usr/bin/hud-cli-param (0 symbols, identical)
+   ELF usr/bin/hud-cli-toolbar (0 symbols, identical)
+   ELF usr/bin/hud-gtk (0 symbols, identical)
+   changed: usr/bin/hud-cli
+   changed: usr/bin/hud-cli-appstack
+   changed: usr/bin/hud-cli-param
+   changed: usr/bin/hud-cli-toolbar
+   changed: usr/bin/hud-gtk
+   changed: usr/share/doc/hud-tools/changelog.Debian.gz
+libhud-client2: 4 files, file list identical, contents differ in 2
+   ELF usr/lib/x86_64-linux-gnu/libhud-client.so.2.0.0 (67 symbols, identical)
+   changed: usr/lib/x86_64-linux-gnu/libhud-client.so.2.0.0
+   changed: usr/share/doc/libhud-client2/changelog.Debian.gz
+libhud-client2-dev: 15 files, file list identical, contents differ in 1
+   changed: usr/share/doc/libhud-client2-dev/changelog.Debian.gz
+libhud-client2-doc: 2 files, file list identical, contents differ in 1
+   changed: usr/share/doc/libhud-client2-doc/changelog.Debian.gz
+libhud-gtk1: 4 files, file list identical, contents differ in 2
+   ELF usr/lib/x86_64-linux-gnu/libhud-gtk.so.1.0.0 (3 symbols, identical)
+   changed: usr/lib/x86_64-linux-gnu/libhud-gtk.so.1.0.0
+   changed: usr/share/doc/libhud-gtk1/changelog.Debian.gz
+libhud-gtk1-dev: 6 files, file list identical, contents differ in 1
+   changed: usr/share/doc/libhud-gtk1-dev/changelog.Debian.gz
+libhud-gtk1-doc: 2 files, file list identical, contents differ in 1
+   changed: usr/share/doc/libhud-gtk1-doc/changelog.Debian.gz
+libhud2: 4 files, file list identical, contents differ in 2
+   ELF usr/lib/x86_64-linux-gnu/libhud.so.2.0.0 (25 symbols, identical)
+   changed: usr/lib/x86_64-linux-gnu/libhud.so.2.0.0
+   changed: usr/share/doc/libhud2/changelog.Debian.gz
+libhud2-dev: 9 files, file list identical, contents differ in 1
+   changed: usr/share/doc/libhud2-dev/changelog.Debian.gz
+libhud2-doc: 2 files, file list identical, contents differ in 1
+   changed: usr/share/doc/libhud2-doc/changelog.Debian.gz
+TOTAL dynamic-symbol differences: 0
