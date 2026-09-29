@@ -17,7 +17,7 @@ echo "# $(date -u +%FT%TZ) indicator-keyboard=$(dpkg-query -W -f='${Version}' in
 pid0=$(svc_pid)
 echo "$(stamp) service pid $pid0; before: $(state)"
 ( sleep 1; echo "$(stamp) ACTION restart accounts-daemon"; sudo -n systemctl restart accounts-daemon ) &
-as_lightdm gsettings monitor org.gnome.desktop.input-sources 2>&1 | while IFS= read -r line; do
+as_lightdm timeout 15 gsettings monitor org.gnome.desktop.input-sources 2>&1 | while IFS= read -r line; do
     echo "$(stamp) $line"
     case "$line" in
         "sources: @a(ss) []")

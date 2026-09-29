@@ -141,6 +141,46 @@ E. Delay the migration with a timer. Rejected: timing-based; the daemon's
 
 Version: `0.0.0+19.10.20240924-0ubuntu1+unity4`.
 
+## Design Challenger round 1: REVISE (2026-09-29) and what was measured after
+
+DC points: (1) the recovery trigger is inferred, make the retry structural
+(Act.User `changed`); (2) a user deleted while the daemon is down may stay
+listed with NULL data and freeze A; (3) narrow the invariant (users not yet
+loaded converge through their own `notify::is-loaded`); (5) write `sources`
+before `current`; keep the helper free of Act.User. Points 4, 6, 7 agreed.
+
+Measured after (target2, +unity3):
+
+- FACT (logs/08, clean boot): user ik014del (xkb de) deleted while the daemon
+  was stopped. After `start`: the usual window, then `[gb, us]` - the dead
+  user contributes nothing. `list-users-probe.py` (as mike): the object
+  `/org/freedesktop/Accounts/User1001` stays listed for 23 s and more as
+  `loaded=True nonexistent=False name=None uid=0`. So DC point 2 is real: A's
+  condition as written would skip every later migration.
+- FACT (logs/06, 07): in the service instance systemd restarted after the
+  SIGKILL of logs/04, a later useradd plus daemon restart left the greeter at
+  `sources=[] current=4294967295` for good (no recovery write; journal:
+  `ActUserManager: user (null) has no username (object path
+  /org/freedesktop/Accounts/User1001, uid: 0)`). After a reboot the stored
+  `current 4294967295` came back as `current 1` (`lightdm_current >= size`,
+  so `size - 1`): the greeter's current layout index moved from gb to us
+  across the reboot. A lasting effect, contrary to the first reading of
+  logs/04.
+- FACT (logs/09, 3 runs): a kill inside the window and the restarted instance
+  then serving two more daemon restarts recovered each time. So the stuck
+  state of logs/06 needs more than that sequence (a new user plus a restart
+  in that instance); not reduced further yet.
+
+Revision direction (not yet reviewed): skip the write only when no listed,
+loaded, existing user has data (all have a NULL name) - a dead object among
+users with data then no longer blocks; retry with a one-shot `changed`
+connection on the users without data; `sources` before `current`; clamp;
+helper takes plain values. Open: reduce logs/06 to a reproducible sequence and
+check that the revision recovers from it.
+
+Paused 2026-09-29 ~09:53Z for UNITY-20260927-047 (C); resume at
+INVESTIGATING (design round 2).
+
 Risk to check live for A: the skip relies on the recovery pass seeing the
 data. INFERENCE from logs/02: the recovery write already contains mike's
 `[gb, us]` with no `DISPLAY` and a NULL-name fallback unavailable, so the
