@@ -6,9 +6,10 @@ publish …` with a scratchpad config. That form got past the command guard
 only because of the bypass B had itself reported (UNITY-20260927-058), so the
 list asked for permission to use a bypass. It was never run. The guard now
 has the narrow rehearsal allowance of UNITY-20260927-057 and section 6 of
-ENGINEERING-PROCESS, and phase R uses that allowance. Phase L is not
-authorized (May, 2026-09-28) and is not listed here any more; its earlier
-form stays in git history.
+ENGINEERING-PROCESS, and phase R uses that allowance. Phase L was not
+authorized on 2026-09-28; on 2026-09-29 May gave its GO, and it now runs
+through the live-phase allowance of UNITY-20260929-008 (section "Phase L"
+below).
 
 ## Setup (done 2026-09-28, `prepare-rehearsal.py`, `logs/20-rehearsal-root.txt`)
 
@@ -96,85 +97,148 @@ Every `publish` command above is allowed only while C's marker
 The other aptly commands (repo, snapshot) work on the rehearsal config under
 the 058 rules.
 
-## Phase L (live) - prepared 2026-09-29; GO from May relayed by C, not executed
+## Phase L (live) - plan v2, 2026-09-29: B runs every command (UNITY-20260929-008)
 
-Live aptly: `~/.aptly.conf` of user `claude` on builder, `rootDir` /srv/aptly,
-no publish endpoints; signing key 7BF3F77FC27B152C (fingerprint
-29A893E03970066F2DD287D47BF3F77FC27B152C) in claude's keyring. Commands use
-that default config: no `-config`, plain words, one per line, no quoting.
-Origin/Label are aptly's defaults (`. resolute`), which R2/R6 showed equal
-live, so no `-origin`/`-label` (the 2026-09-27 draft had them).
+Not executed. It needs May's GO for the run and his window, the L0 record,
+and then C's live marker. Before the window, no live command, no backup,
+and nothing that opens the live database: in the 2026-09-28 13:09Z event,
+opening it rewrote leveldb files.
 
-**Who runs what.** The guard denies every live `publish` in an agent session;
-its allowance covers only the rehearsal root, and it is not changed or worked
-around. So:
+**Actors.**
 
-- **May** runs, in his own terminal on builder as user `claude` (outside
-  Claude Code), every live write through aptly: L1, L2, L3, L6 and the L5a
-  rollback, plus the `publish show` / `publish list` reads.
-- **B** runs the rest: preflight, backup, file comparisons, the target2
-  captures, the L5b restore (mv/cp, no aptly process) and the non-publish
-  aptly reads that the guard allows (`repo show`, `snapshot show`, `snapshot
-  list`).
-- **A** (or B with A's permission) captures target before/after.
+- **B**: L0, every aptly command below and every check, and the L5b restore.
+- **A**: the before/after captures on target (C asks A).
+- **C**: declares the freeze, writes the live marker after the L0 record,
+  and removes it afterwards.
+- **May**: gives the GO and the window.
 
-B waits between steps for May's pasted output.
+**Guard.** The eight live `publish` strings are admitted by
+UNITY-20260929-008 only exactly as in
+`/home/claude/unity-distro/.claude/hooks/live-commands.json` (list sha256
+`4e9dde5a5b862f58a27f47bfaea80942fab73c46ac0b9434a0c0d6e70f42294a`). Each
+must be one foreground Bash call; no batching, no background. Every
+admission adds one line to `~/coordinator/live-log.jsonl`. The
+non-publish commands (repo/snapshot) pass under the 058 rules. They are
+written with the same `-config`, and they open the live database, so they
+run only inside the window.
+
+The eight strings, numbered as below:
+
+```
+P1  /usr/bin/aptly -config=/home/claude/.aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate
+P2  /usr/bin/aptly -config=/home/claude/.aptly.conf publish show resolute candidate
+P3  /usr/bin/aptly -config=/home/claude/.aptly.conf publish drop resolute
+P4  /usr/bin/aptly -config=/home/claude/.aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047
+P5  /usr/bin/aptly -config=/home/claude/.aptly.conf publish show resolute
+P6  /usr/bin/aptly -config=/home/claude/.aptly.conf publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute
+P7  /usr/bin/aptly -config=/home/claude/.aptly.conf publish list
+P8  /usr/bin/aptly -config=/home/claude/.aptly.conf publish drop resolute candidate
+```
+
+### L0 - preflight and backup (B), after the GO, before the marker
+
+Each item goes into the L0 record `logs/44-phase-L-L0.txt`, which the marker
+cites:
+
+1. C has declared the freeze in the coordinator log: no aptly and no
+   `publish_aptly.py` by anyone from the backup to DONE. A is informed.
+2. Builder: no `aptly`, `apt`, `apt-get`, `dpkg` or `unattended-upgrade`
+   process (`pidof`).
+3. Guard:
+   - `install_command_guard.py --check` is OK;
+   - the `pgrep -f` probe is denied;
+   - the list sha256 is `4e9dde5a...`;
+   - `live-proof.py <B session>` with no marker gives 8x "no live
+     authorization" (payloads only).
+4. Pinned config and binary:
+   - `~/.aptly.conf` is mode 644, owned by claude, with sha256
+     `ece05ab8ad8469cdeaa39487013830d7a9304cc09cf9989a18543193d8831b25`;
+   - `/usr/bin/aptly` is root-owned;
+   - secret key `7BF3F77FC27B152C` is present (`gpg --list-secret-keys`).
+5. target2 (B):
+   - `touch ~/.dirty`;
+   - add our source (`/etc/apt/sources.list.d/unity-distro.sources`: URIs
+     `http://192.168.56.10:8080/`, Suites resolute, Components main,
+     Architectures amd64, Signed-By `/etc/apt/keyrings/unity-distro.asc`
+     from `http://192.168.56.10:8080/unity-distro-archive.asc`);
+   - `client-capture.sh before-L our-binary-names.txt` into
+     `logs/45-target2-before-L.txt`;
+   - then stop `apt-daily.timer` and `apt-daily-upgrade.timer` for the
+     window.
+6. target (A): `client-capture.sh before-L` on A's machine, and the timers
+   not within 30 minutes of the window. C asks A and puts the file name in
+   the record.
+7. Backup (B, no aptly process; file copies do not open the database):
+   - `cp -a /srv/aptly/db /srv/aptly/public` into
+     `~/backups/aptly-047-L-<UTC>/`;
+   - a sha256 list of both copies, plus that list's sha256;
+   - `live-list.py` over all of /srv/aptly (list and sha256) as the
+     baseline.
+8. The record ends with its own UTC time and the commit that holds it. C
+   writes `~/coordinator/live-authorization.json` with:
+   - kind `live-publish`;
+   - session_id of B;
+   - a window of at most 6 hours;
+   - `commands_sha256` `4e9dde5a...`;
+   - a reference naming May's GO and this record.
+
+### In the window (B), one command per call, in this order
 
 ```sh
-# L0 - preflight (B), immediately before L1; C has declared the write freeze
-#   (no aptly and no publish_aptly.py by anyone from the backup to DONE)
-#   - no aptly/apt/dpkg process on builder; none on target/target2
-#   - not within 30 min of an apt timer on target (A) or target2; target2's
-#     apt-daily*.timer stopped for the window (B's machine)
-#   - target2: our source (http://192.168.56.10:8080/, Signed-By the
-#     published key) added, then client-capture.sh before-L
-#   - target: client-capture.sh before-L (A)
-#   - backup: cp -a /srv/aptly/db and /srv/aptly/public into
-#     ~/backups/aptly-047-L-<UTC>/ plus a sha256 list of both;
-#     live-list.py baseline (all of /srv/aptly)
-aptly repo show unity-resolute                       # B: 285 packages
-aptly snapshot list -raw                             # B: no unity-resolute-20260927-047 yet
+# L1 - the snapshot (058 rules, not in the live list)
+aptly -config=/home/claude/.aptly.conf repo show unity-resolute                       # 285 packages
+aptly -config=/home/claude/.aptly.conf snapshot list -raw                             # no unity-resolute-20260927-047
+aptly -config=/home/claude/.aptly.conf snapshot create unity-resolute-20260927-047 from repo unity-resolute
+aptly -config=/home/claude/.aptly.conf snapshot show unity-resolute-20260927-047      # 285 packages
 
-# L1 - the snapshot (May: a live db write)
-aptly snapshot create unity-resolute-20260927-047 from repo unity-resolute
-aptly snapshot show unity-resolute-20260927-047      # B: 285 packages = repo
+# L2 - candidate
+P1
+P2                                   # Prefix candidate / unity-resolute-20260927-047 [snapshot]
+# check: public/candidate/dists/resolute vs public/dists/resolute - no
+#   file-set or index difference; Release differs only in Date/Label/Origin
+#   (and the checksums through binary-amd64/Release); signer 29A893E0...C27B152C
 
-# L2 - publish the snapshot at prefix candidate (May)
-aptly publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate
-aptly publish show resolute candidate                # May
-# check (B): public/candidate vs public - no file-set/index difference;
-#   Release differs only in Date/Label/Origin (+ checksums through
-#   binary-amd64/Release), signed by 29A893E0...C27B152C
-
-# L3 - switch . from the repo to the snapshot: drop, then at once republish (May)
-#   (B records the UTC time right before; gap = new InRelease mtime - that;
-#   rehearsal R6: <= 1.16 s)
-aptly publish drop resolute
-aptly publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047
+# L3 - switch . to the snapshot (record UTC just before P3; gap = new InRelease mtime - that; R6 <= 1.16 s)
+P3
+P4
 
 # L4 - checks
-aptly publish show resolute                          # May: main: unity-resolute-20260927-047 [snapshot]
-# B: public/dists/resolute vs the backup's - only Date, InRelease,
-#   Release.gpg differ; pool 258/258; isolated apt client on
-#   file:/srv/aptly/public (Signed-By the key): update with no E/W,
-#   same candidates; target2 client-capture.sh after-L, diff with before-L
-# A: target after-L, diff with before-L
+P5                                   # main: unity-resolute-20260927-047 [snapshot]
+# public/dists/resolute vs the backup's: only Date, InRelease, Release.gpg
+#   differ; signer 29A893E0...C27B152C; pool 258/258 names
+# isolated apt client on file:/srv/aptly/public, Signed-By the key: update with no E/W
+# target2: client-capture.sh after-L -> logs/46, diff with logs/45 (only our Release Date)
+# target (A): after-L, diff with before-L
 
-# L5 - rollback, only if an L4 check fails
-# L5b (preferred; the only path if L3's republish itself failed) - B, no
-#   aptly process: mv /srv/aptly/db and /srv/aptly/public aside into
-#   ~/backups/aptly-047-L-<UTC>/aside/, cp -a the backup back, compare the
-#   sha256 list before any aptly command; then:
-aptly repo show unity-resolute                       # B
-aptly publish list                                   # May: ./resolute publishes {main: [unity-resolute]}
-# L5a (only if L3 succeeded and L5b is not wanted) - May:
-aptly publish drop resolute
-aptly publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute
-
-# L6 - after L4 passes: drop candidate (May)
-aptly publish drop resolute candidate
-aptly publish list                                   # May: only ./resolute, the snapshot
-# B: live-list.py after; only db/ and public/ may differ from the baseline,
-#   pool/ unchanged; tell UNITY-20260927-035 the live snapshot is
-#   unity-resolute-20260927-047
+# L6 - after L4 passes
+P8
+P7                                   # only ./resolute publishes {main: [unity-resolute-20260927-047]}
+# live-list.py after: vs the baseline only db/ and public/ may differ, pool/ unchanged
+# live-log.jsonl: one line per P command run, session B, marker sha
 ```
+
+### L5 - rollback, only if an L4 check fails
+
+- **L5b** (preferred; the only path if P4 itself failed). B checks that no
+  aptly process is running, then:
+  1. `mv /srv/aptly/db` and `/srv/aptly/public` aside into
+     `~/backups/aptly-047-L-<UTC>/aside/` (kept, not deleted);
+  2. `cp -a` the backup copies back;
+  3. compare with the backup's sha256 list before any aptly command;
+  4. then P7 (`./resolute publishes {main: [unity-resolute]}`) and
+     `aptly -config=/home/claude/.aptly.conf repo show unity-resolute`.
+- **L5a** (only if P4 succeeded and L5b is not wanted): P3, then P6, then P5.
+
+After a rollback, P8 still removes `candidate` when it exists, then P7.
+
+### After the window
+
+- B reports all steps, the live-log lines and the live-list before/after to C.
+- C removes the marker and records the end of the freeze.
+- At -047's DONE: C removes the list from main (a separate commit), and
+  UNITY-20260927-035 is told that the live snapshot is
+  `unity-resolute-20260927-047`.
+- B rolls target2 back to Clean-2, which also brings back its timers.
+
+The 2026-09-29 version with May running commands in his terminal (a260d8d) is
+superseded by this one.
