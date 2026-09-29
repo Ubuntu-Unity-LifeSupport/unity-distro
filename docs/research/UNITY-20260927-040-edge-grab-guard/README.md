@@ -150,6 +150,67 @@ measurable here), `ezoom` (zoom box, no default binding), `scale` (already
 filtered in `HandleFrameEvent`). None is held permanently; each ends through
 `removeGrab`.
 
+## 6. A simpler reproduction: a title drag in expo
+
+Found while taking the +unity11 baselines of the test plan (`runs/b11`,
+`runs/b11s`): in expo, press on the xterm's title bar at its real position
+and move - `GrabEdge` passes it to `Edge::ButtonDownEvent` (motion path),
+which ungrabs; compiz then sees the press but no release, expo never ends,
+and the next click freezes on a frame. **+unity11: 5/5 stuck**, X grab list
+"device frozen" 5/5, no expo `REMOVE-GRAB`. This is LP #1393523's "when
+dragging a window, the drag fails midway and then clicking anywhere on the
+screen does nothing". It needs no special state, so it is the regression test.
+
+## 7. Fix: unity +unity12 (A2) - test build, verified on target
+
+Ubuntu-Unity-LifeSupport/unity branch `a/UNITY-20260927-040`: `78153782`
+(`decorations/DecorationsEdge.cpp`, the condition `screen->grabExist("resize")
+|| screen->grabExist("move")` replaced by `screen->otherGrabExist(nullptr)`,
+comment rewritten; 10+/8-) and changelog `7b0eca27`
+(`7.7.1+26.04.20260306-0ubuntu3+unity12`), on `unity/resolute` `2040279d`.
+
+**Build.** `scripts/build_sbuild.py` fails for unity (`build/build_sbuild-failed-nux.log.xz`:
+`nux-4.0` not found - the archive's nux 0ubuntu12 `.pc` requires `libpcre`,
+known since 2026-09-22, DECISIONS "nux -0ubuntu13"), and the tool has no way
+to add our nux. Test build: plain `sbuild -d resolute --extra-package` with
+our published `libnux-4.0-0`/`-common`/`-dev` `0ubuntu15+unity2` (what target
+runs): `Status: successful`, 503 s, no warning in `DecorationsEdge.cpp`
+(`build/test-build-extra-package-nux.log.xz`, artifact hashes in
+`build/test-build-sha256.txt`, debs in `~/work/a/040-build/test/`; pre-build
+version order `build/version-prebuild.json`). **No approved build manifest
+exists** - the task stops here for that (Outcome).
+
+**On target** (one boot 2026-09-29 16:55 EEST, unity/libunity-core
+`+unity12` from that build, compiz restarted, no deleted library mapped;
+`runs/u12` first part, `runs/u12r` after the pause for UNITY-20260927-047
+phase L, same boot, `runs/u12r2`):
+
+| Test | +unity11 | +unity12 |
+|---|---|---|
+| (1) title drag in expo (regression) | 5/5 stuck (`b11s`) | 0/5: Edge reached, no ungrab from the decorations, release reaches expo, expo removes its grab, the sensor click arrives |
+| (1b) replay of the first stuck run | 4/4 stuck (`s6`, `s8`) | orig 0/3 (Edge reached, expo removes its grab, no frozen grab), noborder 0/1 |
+| (2) expo-border, expo-altf8-border, expo-dnd-border | ungrab 20/20 (harmless) | 0/9 stuck, 0 ungrabs, expo ends on the click (`u12/expo`) |
+| (2) expo-control | 0 ungrabs | 0/3 (`u12r/expo`) |
+| (3) title bar: immediate (fixedwin, not maximizable), hold (timer), motion; double-click | moves / maximizes (`b11`) | 2/2 each: moves by the drag, double-click maximizes and restores (`u12r`) |
+| (4) first border press after a wall slide / after expo closed | resizes (`b11`) | after-expo 3/3, after-wall 5/6 resize +42 px (`u12r2`) |
+| (5) keyboard move/resize (kbdresize, kbdmove, -drag) | 0/25 stuck (`s9`) | 0/12 stuck, 0 ungrabs (`u12r/kbd`) |
+| (6) UNITY-20260927-001 #3 set: rmbslow, rmb, rmb2, wheel, mid, plain, 7 title variants | fixed since +unity10 | 0/65 stuck, resize/move working (`u12r/rg-*.log`) |
+
+Notes on the runs: the first two after-wall/after-expo runs in `u12r` are
+invalid (the xterm had been moved onto the viewport being left, the press hit
+nothing; the script now waits for viewport (0,0) - `u12r2`). after-wall run 1
+of `u12r2`: a move was already in progress when the press came (MoveScreen
+ended it on the press; the preceding manual `titlemovermb2` trace had left the
+xterm iconified and the script re-activated it) - not the border path.
+`titlermb2`/`titlemovermb2` in `u12r` ended at x=1040, where -001's +unity10
+logs had 595,276 Iconic; a traced single run on +unity12 (`u12r2/tm2-u12.*`)
+gives 595,275 Iconic - right press during a title move goes to `GrabEdge`
+button 3 -> `PerformWMAction`, not to Edge; A2 does not change it. The
+aborted first test pass on this build ended the session once:
+cinnamon-session crashed in `IceProcessMessages` after a compiz `SIGHUP`
+restart (`runs/u12-cinnamon-session-crash.txt`) - not the Edge path;
+follow-up proposed.
+
 ## Evidence card
 
 ```yaml
@@ -179,8 +240,10 @@ expected: >-
   A press on a decoration border while a compiz grab runs leaves that grab
   and its X grab alone; the grab ends on its own terms, clicks keep working.
 reproduction: >-
-  tools/replay-stuck1.sh OUTDIR N orig (deterministic, 4/4 stuck on +unity11)
-  and ... noborder (control, 0/4); series: tools/grab-series.sh VARIANT N
+  SCEN=after-tests.sh tools/grab-series.sh expo-title N (title drag in expo:
+  5/5 stuck on +unity11, section 6 - the regression test);
+  tools/replay-stuck1.sh OUTDIR N orig (4/4 stuck on +unity11) and ...
+  noborder (control, 0/4); series: tools/grab-series.sh VARIANT N
 evidence: runs/s1-s11, runs/t-*, runs/stuck1-xorg-grabinfo.txt
 root_cause: >-
   decorations/DecorationsEdge.cpp Edge::ButtonDownEvent releases the X
@@ -323,4 +386,26 @@ Temporary Design Challenger, separate read-only subagent.
    criteria, title bar paths, first press after a grab ends, one boot) was
    missing. Led to `runs/s11` and the card fields above.
 2. **APPROVE**.
+
+## Outcome (so far)
+
+`BLOCKED`, resume `IMPLEMENTING`: the fix (A2, unity `+unity12`, `7b0eca27`)
+is designed (Challenger APPROVE), built and verified on target from a test
+build (section 7), but `scripts/build_sbuild.py` cannot build unity - the
+archive's nux breaks the configure step and the tool cannot add our nux - so
+there is no approved build manifest, which `VERIFYING` requires. Next, once
+the build tool can take our nux (coordinator's decision): release build of
+`7b0eca27` with it, compare its artifacts with the test build, rerun the
+regression test (1) and a short sample of (2)-(6) on it, then VERIFYING, the
+independent Verifier, and the publication gate.
+
+target-desktop was returned to the published unity `+unity11` after the tests
+(`runs/restore.txt`).
+
+Follow-ups proposed (IDs from C): the rest of LP #1393523 (title-bar buttons
+and menus react in expo, option F); `XWindowManager::UnGrabMousePointer`
+(panel) under move/resize; cinnamon-session SEGV in `IceProcessMessages`
+after a compiz restart; `build_sbuild.py` support for extra packages or our
+repository.
+
 

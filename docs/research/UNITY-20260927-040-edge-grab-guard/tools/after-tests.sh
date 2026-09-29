@@ -13,7 +13,10 @@
 #                    plain border drag (+40 px)
 #   after-expo       expo in and out (Escape), wait, then a plain border drag
 . ~/envt.sh; V=$1
-xdotool set_desktop_viewport 0 0; sleep 0.8
+# wait until the viewport really is (0,0) and wall's slide is over, or the
+# xterm is moved onto the viewport being left (first after-* runs: xterm at 1780)
+xdotool set_desktop_viewport 0 0
+for i in $(seq 1 20); do [ "$(xdotool get_desktop_viewport)" = "0 0" ] && break; sleep 0.3; done; sleep 0.8
 node() { grep -l "$1" /sys/class/input/event*/device/name | head -1 | cut -d/ -f5; }
 T=/dev/input/$(node "USB Tablet"); M=/dev/input/$(node "ImExPS/2"); K=/dev/input/$(node "AT Translated")
 W=$(xdotool search --onlyvisible --class '^XTerm$' | head -1)
@@ -64,7 +67,9 @@ case $V in
     else
       sudo ~/evkeys.py $K 'down LEFTMETA' 'sleep 0.3' 'tap S' 'sleep 0.3' 'up LEFTMETA' 'sleep 1.5' 'tap ESC' 'sleep 1'
     fi
-    xdotool set_desktop_viewport 0 0; sleep 0.8
+    xdotool set_desktop_viewport 0 0
+    for i in $(seq 1 20); do [ "$(xdotool get_desktop_viewport)" = "0 0" ] && break; sleep 0.3; done; sleep 0.8
+    xdotool windowmove $W 500 200; sleep 0.5; eval $(xdotool getwindowgeometry --shell $W); bx=$((X + WIDTH + ${RGT:-0} / 2 + 1)); by=$((Y + HEIGHT / 2))
     extra="grabs before the press: $(~/grab-probe)"
     before=$(geo $W); sudo ~/evclick.py $T $bx $by none; sleep 0.3
     sudo ~/evseq.py $M 'down left' 'move 40 0 4' 'sleep 0.2' 'up left' 'sleep 0.8' ;;
