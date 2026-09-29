@@ -256,6 +256,7 @@ class LiveAllowanceTest(unittest.TestCase):
             message = self.allowed(command)
             self.assertIsNotNone(message, command)
             self.assertIn("aptly live command not allowed", message)
+            self.assertIn(str(self.list), message)  # the reason is the missing list
         self.assertEqual(self.log_lines(), [])
 
     def test_list_must_not_be_a_link(self):

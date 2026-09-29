@@ -143,8 +143,11 @@ Phase L - live, only if Phase R passes and May allows the commands:
    (not blocked by the guard); keys = repo keys.
 2. `publish snapshot` at prefix `candidate` (default Origin/Label): proves
    signed snapshot publishing in the live db; compare all but Origin/Label.
-3. `publish drop resolute`, then at once `publish snapshot` at `.` exactly as
-   in R6.
+3. `publish drop resolute`, then at once `publish snapshot` at `.` as in R6.
+   Without `-origin`/`-label`: aptly's defaults are `. resolute`, which
+   R2/R6 showed equal live, and the live Release after L confirms it. The
+   step text of the 2026-09-27 plan still carries the flags; the executed
+   strings are those of blocked-commands.md, Phase L plan v2.
 4. Checks: every file against the backup (only Date, InRelease, Release.gpg
    differ); target2 and target (A) `after` capture, `diff` against `before`;
    `aptly publish show resolute` names the snapshot.
