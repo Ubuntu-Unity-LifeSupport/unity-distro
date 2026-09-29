@@ -281,11 +281,62 @@ Third Design Challenger: **APPROVE** - the restore procedure and all
 conditions addressed; the two missing Phase R commands (`publish show
 resolute candidate`, `publish list`) added to blocked-commands.md.
 
+## Repeating phase R: what a new session needs (2026-09-29)
+
+Written for a new agent B session; it does not rely on this session's chat.
+
+**Preconditions, all of them, before any command:**
+
+1. **UNITY-20260928-012 done.** The command guard (`.claude/hooks/command_guard.py`)
+   is active in B's own session. The earlier session ran with project
+   /home/claude, where no hook was configured, so run 1 is preliminary.
+   In the new real session, prove four things **without a real
+   `aptly publish`**, feeding the hook JSON and never running the
+   commands (rules: `docs/ENGINEERING-PROCESS.md` section 9, and never
+   build test commands in a heredoc):
+   - a forbidden command without a marker is denied;
+   - the rehearsal command with a valid marker is allowed;
+   - an ordinary command against /srv/aptly is denied;
+   - the allowance's log line is written
+     (`~/coordinator/rehearsal-log.jsonl`).
+2. **May's GO for the repeat, and C's marker.** C writes
+   `~/coordinator/rehearsal-authorization.json`. Its fields: schema 1,
+   task_id UNITY-20260927-047, root /var/tmp/aptly-rehearsal, authorized_by
+   May, recorded_by C, not_before and not_after in UTC with at most 24 h
+   between them, reference, and the **new** session's session_id. On
+   2026-09-29 there is no marker.
+3. `~/coordinator` stays 0755. The guard refuses a group-writable
+   directory (logs/21).
+4. **Freeze no. 1 stays in force.** It allows no `aptly publish` on
+   /srv/aptly (not even show or list) and no phase L.
+
+**The rehearsal root, as left on 2026-09-29.** /var/tmp/aptly-rehearsal, 0700,
+owner claude. **Do not delete it; May needs it.**
+
+- `aptly.conf` and `incoming/` (285 package records): the prepared state
+  from `prepare-rehearsal.py` (logs/20). Keep both.
+- `state/`, `backup-r4/`, `backup-r4.sha256` and `aside-r8b/`: left by run
+  1 (logs/31).
+
+**Reset, only after preconditions 1-3.** Move the four run-1 entries aside
+(for example into `/var/tmp/aptly-rehearsal/run1/`), not delete them, so
+that the root holds only `aptly.conf` and `incoming/` again. Before that:
+
+- check that /srv/aptly has not changed since the preparation: compare a
+  fresh sha256 list with the "after" list of logs/20, reading files only;
+- if it has changed, run `prepare-rehearsal.py` again into a new root
+  instead.
+
+**Then** repeat all of R in the order of `blocked-commands.md` (R9 before
+R8b), chmod `go-w` after every aptly command (umask 0002). Stop and report
+to C. Phase L needs a separate GO.
+
 ## Status
 
-BLOCKED before Phase R: every command in blocked-commands.md starts with
-`aptly publish` (or `aptly -config=... publish`, which the guard does not
-catch but which is the same operation); May's one-time permission is
-requested through the coordinator. Nothing in `/srv/aptly` has been changed.
-target2 holds our repository source for the before/after capture (`.dirty`
-set).
+BLOCKED (resume at IMPLEMENTING): waiting for UNITY-20260928-012 and the
+repeat of R as above.
+
+- Run 1 (logs/30, logs/31) is preliminary.
+- Nothing in /srv/aptly has been changed.
+- target2 is at `Clean-2`: it no longer holds our repository source or
+  `.dirty`; the before/after capture is redone in the repeat.
