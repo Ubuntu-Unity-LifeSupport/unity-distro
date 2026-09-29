@@ -210,7 +210,9 @@ It must print `command_guard wiring: OK`. Then run the probe
 fails, stop and tell C; do not work around a missing guard. The handler lives
 in `~/.claude/settings.json` (every session of user `claude`, any cwd) and,
 byte-identical, in `.claude/settings.json` here; only May approves a change to
-the user file (`--diff` shows it, `--apply` writes it).
+the user file (`--diff` shows it, `--apply` writes it). The handler always
+runs the guard of this base checkout, so a guard change on a task branch takes
+effect only after it is merged to `main` and the base is pulled.
 
 ### Inbox acknowledgement
 

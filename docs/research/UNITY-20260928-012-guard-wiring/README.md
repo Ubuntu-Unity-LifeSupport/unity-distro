@@ -183,6 +183,8 @@ Rejected alternatives:
   a legitimate rehearsal approaches 20 s, raise the inner timeout, keeping it
   below the hook timeout.
 - `--check`'s "behind origin/main" count reflects the last fetch only.
+- `--check` does not read `settings.local.json`, managed settings or a
+  project-level `disableAllHooks` (Verifier round 1 remark).
 - The guard remains a pattern safety net, not a security boundary.
 
 ## Validation plan
@@ -227,8 +229,8 @@ Implementation: branch `b/UNITY-20260928-012`, commit 379f98f (on 9d8db2e).
   call), interpreter missing (127), hang (no inner timeout), signal, non-dict
   payload, hostile `PYTHONPATH` (rc 0 with an allow JSON on stdout), stdout
   JSON, and the two project-settings checks.
-- After: `logs/02-tests-after.txt` 25/25; full suite `logs/03-full-suite.txt`
-  130/130 (`python3 -m unittest discover -s scripts/tests`).
+- After: `logs/02-tests-after.txt` 29/29 (25 at 379f98f, 4 added after
+  Verifier round 1 remarks); full suite `logs/03-full-suite.txt` 134/134 (`python3 -m unittest discover -s scripts/tests`).
 - Installed 2026-09-29 08:09Z by `install_command_guard.py --apply` after May
   approved the `--diff` output in session b7902aab; backup
   `~/.claude/settings.json.bak-UNITY-20260928-012` (sha256 in

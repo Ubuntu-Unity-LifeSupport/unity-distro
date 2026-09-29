@@ -241,6 +241,38 @@ class InstallerTests(unittest.TestCase):
         self.settings.write_text(json.dumps(data))
         self.assert_check_fails("another PreToolUse hook also matches Bash")
 
+    def test_check_detects_catch_all_hook(self):
+        self.installer("--apply")
+        for matcher in ("*", ".*", ""):
+            data = self.data()
+            data["hooks"]["PreToolUse"] = data["hooks"]["PreToolUse"][:1] + [
+                {"matcher": matcher, "hooks": [{"type": "command", "command": "true"}]}]
+            self.settings.write_text(json.dumps(data))
+            self.assert_check_fails("another PreToolUse hook also matches Bash")
+
+    def test_apply_refuses_hooks_not_an_object(self):
+        self.settings.write_text(json.dumps({"hooks": []}))
+        result = self.installer("--apply")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("nothing written", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_backup_keeps_the_first_state(self):
+        first = self.settings.read_text()
+        self.installer("--apply")
+        data = dict(self.data(), theme="light")
+        self.settings.write_text(json.dumps(data))
+        self.installer("--apply")
+        self.assertEqual(self.settings.with_name("settings.json" + icg.BACKUP_SUFFIX).read_text(), first)
+
+    def test_apply_refuses_symlink(self):
+        real = self.tmp / "real.json"
+        real.write_text(self.settings.read_text())
+        self.settings.unlink()
+        self.settings.symlink_to(real)
+        self.assertEqual(self.installer("--apply").returncode, 1)
+        self.assertTrue(self.settings.is_symlink())
+
     def test_check_detects_project_mismatch(self):
         self.installer("--apply")
         (self.base / ".claude" / "settings.json").write_text(json.dumps({"hooks": {}}))

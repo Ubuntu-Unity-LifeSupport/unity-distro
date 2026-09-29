@@ -19,6 +19,7 @@ import argparse
 import difflib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -65,7 +66,10 @@ def dump(data: dict) -> str:
 
 
 def pre_tool_use(data: dict) -> list:
-    groups = data.get("hooks", {}).get("PreToolUse", [])
+    hooks = data.get("hooks", {})
+    if not isinstance(hooks, dict):
+        raise ValueError("hooks is not an object")
+    groups = hooks.get("PreToolUse", [])
     if not isinstance(groups, list):
         raise ValueError("hooks.PreToolUse is not a list")
     return groups
@@ -88,6 +92,16 @@ def installed(data: dict, base: Path) -> dict:
     return data
 
 
+def matches_bash(matcher) -> bool:
+    """Claude Code matchers: empty or "*" match every tool, otherwise a regex."""
+    if not matcher or matcher == "*":
+        return True
+    try:
+        return re.fullmatch(str(matcher), "Bash") is not None
+    except re.error:
+        return True
+
+
 def settings_problems(data: dict, base: Path, label: str) -> list:
     problems = []
     if data.get("disableAllHooks"):
@@ -99,7 +113,7 @@ def settings_problems(data: dict, base: Path, label: str) -> list:
         for entry in group.get("hooks", []) if isinstance(group.get("hooks"), list) else []:
             if is_guard_handler(entry):
                 found.append((group.get("matcher"), entry))
-            elif "Bash" in str(group.get("matcher", "")) or not group.get("matcher"):
+            elif matches_bash(group.get("matcher")):
                 problems.append(f"{label}: another PreToolUse hook also matches Bash: {entry!r}")
     if not found:
         problems.append(f"{label}: no command_guard handler")
@@ -192,6 +206,9 @@ def main() -> int:
     args = parser.parse_args()
     if args.check:
         return check(args.settings, args.base)
+    if args.apply and args.settings.is_symlink():
+        print(f"{args.settings} is a symlink; nothing written", file=sys.stderr)
+        return 1
     try:
         current = load(args.settings)
         new = installed(current, args.base)
@@ -207,8 +224,9 @@ def main() -> int:
     if old_text == new_text:
         print(f"{args.settings}: already up to date")
         return 0
-    if old_text:
-        write_atomic(args.settings.with_name(args.settings.name + BACKUP_SUFFIX), old_text)
+    backup = args.settings.with_name(args.settings.name + BACKUP_SUFFIX)
+    if old_text and not backup.exists():  # keep the first, pre-guard state
+        write_atomic(backup, old_text)
     write_atomic(args.settings, new_text)
     print(f"{args.settings}: command_guard handler installed")
     return 0
