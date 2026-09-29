@@ -201,3 +201,13 @@ tests of this task are OK in each. The exported symbols still equal
 Remark: the key run shows the fix against the archive build, not against +unity2. +unity2's `fix-missing-vidmode.patch` already cleared the pointer, and +unity3 moves that line into its own patch. The FBO fix and the two test-only patches are covered by the build-time tests.
 
 **This publication closes both tasks.** The one package, nux 4.0.8+18.10.20180623-0ubuntu15+unity3, carries UNITY-20260927-027 (vidmode double-free, FBO arrays) and UNITY-20260928-020 (the two test-only patches, card `research/UNITY-20260928-020-nux-gtest-segfault/`). The release gate and the publish record are those of -027. After -027 reaches PUBLISHED, -020 stays BLOCKED, with the reason "published as part of UNITY-20260927-027", until taskctl can close a task from another task's publish record (UNITY-20260929-023).
+
+## Target verification of the publication (2026-09-29)
+
+Result: **PASS** (logs/12). This used the normal upgrade path from Clean-2 (rolled back and checked inside) with our repository.
+
+- The candidate for libnux-4.0-0 is +unity3 from 8080, and the full-upgrade installs nux +unity3 and unity +unity12.
+- `dpkg -V` is clean.
+- After a reboot, compiz maps the published libnux (sha256 equal to the gated build), and Unity draws its panel and launcher.
+
+The key run (fullscreen-direct) is in logs/10, on the same bytes.
