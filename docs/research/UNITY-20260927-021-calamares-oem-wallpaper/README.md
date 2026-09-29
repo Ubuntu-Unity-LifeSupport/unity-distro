@@ -207,3 +207,11 @@ clone is `~/work/b/021-push`. The branch was merged with main (78933b4).
   versions to ours and shadow later 1:26.04.12ubuntuN updates. Decision
   pending (May, via C): leave them out of the publication, or measure the
   Lubuntu/Kubuntu OEM sessions first.
+- **Decision: May, 2026-09-29, coordinator chat: publish all 6 binaries**
+  (the Verifier's option (c)). It was taken knowing that:
+  - the patched basicwallpaper in calamares-settings-lubuntu/-kubuntu
+    +unity2 is unmeasured;
+  - systems with our repository and kubuntu/lubuntu installed will move to
+    our packages and stop receiving 1:26.04.12ubuntuN SRUs for them.
+
+  The Lubuntu measurement stays with UNITY-20260927-044; no new task.
