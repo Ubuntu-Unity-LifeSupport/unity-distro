@@ -499,3 +499,143 @@ files or a missing listed file; the stored switch-time trio is checked on
 install (key = sha256 of aptly's Release, signer Release equal to aptly's
 apart from Date/Valid-Until) and deleted after a successful install or at
 the next switch; a test that a stored trio from an earlier switch fails R2.
+
+## 12. Implementation (before the rehearsal)
+
+Code on branch `a/UNITY-20260929-021`:
+
+- `signer/signer_core.py`: pure logic, as in sections 2 and 9-11.
+  - It checks the index set: allowed paths, variants equal once
+    decompressed, component Releases exactly the template's, size limits,
+    no Contents.
+  - It validates entries: Debian grammar, hex sha256, digit sizes,
+    normalised `Filename`, duplicates refused.
+  - It builds the Release from the template, and compares it with aptly's,
+    naming the field or checksum file that differs.
+  - It computes the signer-side diff shown on the console, where other
+    fields appear by name and hash only.
+  - The state machine: an approval bound to its base and used once; the
+    two calls, where the same bytes return the stored pair and other bytes
+    are refused; `/live` only for the InRelease of a signed, unconsumed
+    approval on the current base; a re-sign of last-live only, from its
+    stored files; Dates strictly increasing.
+- **`Date` is backdated.** The coordinator reported that target2's clock
+  was about 4.5 minutes behind, so apt refused a fresh InRelease as "not
+  yet valid". The signer therefore backdates `Date` by the template's
+  `date_backdate_seconds`, 300 seconds, and `Valid-Until` is
+  `Date` + 3 days. Clock sync on the targets is UNITY-20260929-022.
+- `signer/release-template.json`: the fields and order of aptly 1.6.2's
+  Release and component Release, taken from the live
+  `/srv/aptly/public/dists/resolute/`. It adds `Valid-Until`, and sets
+  `valid_days` 3 and the backdate.
+- `signer/aptly_signer.py`: the service.
+  - One JSON state file, with `flock` across processes and atomic writes.
+    Missing or corrupt state refuses everything, and `init` refuses to
+    overwrite existing state.
+  - `GpgBackend`: `--homedir`, `--local-user <fpr>!`, and every output
+    checked with `gpgv` against a keyring holding only the pinned key.
+  - The maintainer-script flag: the `.deb` is fetched from the repository
+    (no redirects, a normalised `Filename`, capped at `Size`), its sha256
+    and size checked, and its ar and control archive (tar, gz, xz, zst)
+    read. Any failure refuses the proposal.
+  - HTTP: `Content-Length` required and capped, no chunked bodies, socket
+    timeouts, JSON only, and errors reduced to printable text.
+  - The console (`init`, `template-hash`, `list`, `show`, `approve`, which
+    needs "approve" typed, `reject`, `log`) and `resign`.
+- `scripts/gpg_standin.py`:
+  - It implements aptly 1.6.2's calls (`--version`, detached and
+    clearsign) and refuses unknown options, a positional count other than
+    one, a symlink and a missing listed file.
+  - It never sends `--passphrase`.
+  - It reads the listed index files from aptly's temporary directory
+    (`/` becomes `_`), writes its destination through a temporary file
+    and a rename, and stores the trio 0600 under the sha256 of aptly's
+    Release.
+- `scripts/signer_client.py`:
+  - `propose`: the rehearsal index set.
+  - `refresh --switch`: the stored switch-time trio. `refresh --current`:
+    the signer's latest re-signed trio.
+  - Both run the R2 check before writing: the trio's Release lists exactly
+    the served files and checksums, InRelease and Release.gpg verify with
+    the pinned key over it, and, for `--switch`, it equals aptly's served
+    Release apart from Date and Valid-Until. Then the write order of R5,
+    and the stored trio is deleted. A failure writes the marker and the
+    log line.
+  - `live`.
+
+Tests:
+
+- `scripts/tests/test_signer_core.py`, 21 tests with a fake signing
+  backend. They cover every refusal case in -019's list and in design
+  reviews 3 and 4, plus the plan reviews' additions:
+  - Release fields changed, added or removed, including Valid-Until,
+    NotAutomatic, ButAutomaticUpgrades, Acquire-By-Hash and Signed-By;
+  - checksum lines in all four sections: size, hash, a file added, a file
+    removed;
+  - compressed variants differing;
+  - Packages entries: version, arch, sha256, size, filename, another field,
+    an entry added or removed;
+  - distribution, codename, prefix (Origin and Label) and component;
+  - component Release fields;
+  - paths, Contents, by-hash and i18n;
+  - duplicates and malformed entries, including control characters;
+  - decompression limits;
+  - an approval used twice, with the two-call pair returned without
+    signing again;
+  - an approval after last-live moved;
+  - a stale proposal;
+  - `/live` refusals: foreign, extra data after the signature, Release.gpg
+    instead, and an older signed Release, which cannot roll back;
+  - content that was not approved;
+  - strictly increasing Dates;
+  - InRelease and Release.gpg over different bytes;
+  - a re-sign of last-live only, from stored files that must still match;
+  - corrupt state;
+  - the console showing only validated text;
+  - a `.deb` check failure refusing the proposal.
+
+  The positive case checks the backdated `Date` and `Valid-Until`
+  = `Date` + 3 days.
+- `scripts/tests/test_signer_end_to_end.py`, 10 tests. They use the real
+  service with a throwaway gpg key under the coordinator's conditions,
+  the real stand-in called with aptly's exact argv as a subprocess, the
+  real client, and a fake `:8080` with real `.deb`s, one of them with a
+  postinst.
+  - The full cycle:
+    - propose;
+    - the console shows "scripts: postinst" and the claimed task;
+    - approve;
+    - the switch, with live gzip bytes different from the rehearsal's;
+    - InRelease valid with Valid-Until while the detached pair fails
+      closed;
+    - `refresh --switch` closes the window and deletes the stored trio;
+    - `/live`;
+    - `resign`, then `refresh --current`, with the Date increasing.
+  - The passphrase never reaches the signer or its state, and `--version`
+    matches aptly's regex.
+  - Stand-in refusals write nothing: not approved, an unknown option, two
+    files, a missing listed file, a symlink, and the signer unreachable.
+  - A failed refresh writes nothing and leaves the marker and the
+    `REFRESH-FAILED` line.
+  - A cadence refresh before `/live` is refused by R2, and a stale stored
+    trio is refused.
+  - The pinned fingerprint refuses another key.
+  - HTTP limits and corrupt state.
+  - `.deb` problems: a 404, a sha256 mismatch, a malformed control
+    archive.
+  - `~/.gnupg` is untouched (file list and mtimes before and after).
+- Full suite: 263 OK (1 skipped).
+
+**Still open, in the rehearsal** (May's GO and C's marker, sections 7 and
+9):
+- signing before the rename;
+- a refusal leaving the old files live;
+- the index temporary files present when gpg is called, with the
+  directory listing recorded;
+- the argv aptly actually passes, recorded, with the tests adjusted to it;
+- the SkipContents setting.
+
+**Not in this task:**
+- the `publish_aptly.py` integration (follow-up);
+- installation on the signer, the key, and the cut-over (May, steps 3
+  and 4).
