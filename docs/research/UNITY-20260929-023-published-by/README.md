@@ -124,3 +124,19 @@ publication writes one record.
 - logs/02: `test_taskctl_published_by.py`, 17 tests OK. They cover both accepted cases and every refusal. The full suite runs 249 tests, OK, 1 skipped.
 - logs/01 (`real-020.py`, read-only): the real UNITY-20260928-020 evidence with `published_by` = UNITY-20260927-027's record (sha256 fedfb161…). `covering_record` and `check_own_build` pass, and a wrong sha256 is refused.
 - Not covered by a test: the full `taskctl transition` run of PUBLISHED. It needs a live publication; the call site is three branches read by review.
+
+## Verification round 1: FAIL, and the changes
+
+The Verifier (INDEPENDENTLY_REPRODUCED, finding FIX_PARTIAL) found two holes:
+
+- A covered task could reach PUBLISHED without its own Verifier PASS. The gate the check reads belongs to T, and nothing looked at the covered task's `verification_result` or `review_status`.
+- The task's `build_manifest` was not bound: it could sit anywhere, writable, and claim any commit. The evidence `task_id` was not checked either.
+
+Changes, all in `check_own_build`:
+
+- The evidence `task_id` must be this task.
+- `verification_result` must be PASS, and `review_status` REVIEWED or INDEPENDENTLY_REPRODUCED.
+- The manifest must be a repository-relative file, tracked, committed and unmodified in the repository taskctl runs from (`tested_build.committed`, which also refuses symlinks and `..`).
+- The artifact keys are JSON-encoded, so an odd field type is a refusal, not a crash.
+
+Tests: 4 new ones cover the manifest binding (untracked, outside, `..`, modified), the own verification, the evidence `task_id` and the unhashable field. That makes 21 in all, and the full suite runs 253, OK, 1 skipped (logs/02). The real -020 check passes (logs/01).

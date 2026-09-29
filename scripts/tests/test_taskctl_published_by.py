@@ -63,6 +63,13 @@ class PublishedByTest(unittest.TestCase):
         self.side = git("rev-parse", "HEAD")
         self.records = self.t / "records"
         self.records.mkdir()
+        # the repository taskctl lives in: manifests must be committed there
+        self.meta = self.t / "meta"
+        self.meta.mkdir()
+        self.mgit = lambda *a: subprocess.run(["git", "-C", str(self.meta), *a], check=True, capture_output=True, text=True)
+        self.mgit("init", "-q")
+        self.mgit("config", "user.email", "t@example.invalid")
+        self.mgit("config", "user.name", "t")
 
     def tearDown(self):
         for path in self.records.glob("*"):
@@ -84,14 +91,20 @@ class PublishedByTest(unittest.TestCase):
     def manifest(self, **overrides):
         m = {"task_id": TASK, "package": "demo", "candidate_version": VERSION, "source_commit": self.second,
              "source_repo": str(self.src), "artifacts": artifacts()}
+        commit = overrides.pop("_commit", True)
         m.update(overrides)
         self.count = getattr(self, "count", 0) + 1
-        path = self.t / f"manifest-{self.count}.json"
-        path.write_text(json.dumps(m))
-        return str(path)
+        rel = f"docs/manifest-{self.count}.json"
+        (self.meta / "docs").mkdir(exist_ok=True)
+        (self.meta / rel).write_text(json.dumps(m))
+        if commit:
+            self.mgit("add", rel)
+            self.mgit("commit", "-q", "-m", rel)
+        return rel
 
     def evidence(self, digest, **overrides):
-        data = {"package": "demo", "candidate_version": VERSION,
+        data = {"task_id": TASK, "package": "demo", "candidate_version": VERSION,
+                "verification_result": "PASS", "review_status": "REVIEWED",
                 "source_commit": "0274bc5 (free text, not used)",
                 "published_by": {"task_id": OTHER, "record_sha256": digest}}
         data.update(overrides)
@@ -101,7 +114,7 @@ class PublishedByTest(unittest.TestCase):
 
     def check(self, data):
         record, other = taskctl.covering_record(data, TASK, self.records)
-        taskctl.check_own_build(data, TASK, record, self.t)
+        taskctl.check_own_build(data, TASK, record, self.meta)
         return record, other
 
     def refused(self, data, fragment):
@@ -172,8 +185,37 @@ class PublishedByTest(unittest.TestCase):
         data = self.evidence(digest)
         del data["build_manifest"]
         self.refused(data, "requires the task's own build_manifest")
-        self.refused(self.evidence(digest, build_manifest=str(self.t / "nope.json")), "cannot read")
+        self.refused(self.evidence(digest, build_manifest="docs/nope.json"), "does not exist")
         self.refused(self.evidence(digest, build_manifest=self.manifest(task_id=OTHER)), "not this task's build")
+
+    def test_manifest_must_be_committed_in_the_repository(self):
+        """Verifier round 1: an unbound manifest let a task claim any commit."""
+        digest = self.write_record()
+        self.refused(self.evidence(digest, build_manifest=self.manifest(_commit=False)), "must be tracked")
+        outside = self.t / "outside.json"
+        outside.write_text("{}")
+        self.refused(self.evidence(digest, build_manifest=str(outside)), "repository-relative")
+        self.refused(self.evidence(digest, build_manifest="../outside.json"), "repository-relative")
+        committed = self.manifest()
+        (self.meta / committed).write_text((self.meta / committed).read_text() + " ")
+        self.refused(self.evidence(digest, build_manifest=committed), "must be tracked")
+
+    def test_own_verification_required(self):
+        """Verifier round 1: the gate read is the publishing task's, so this task's own review is checked."""
+        digest = self.write_record()
+        for overrides in ({"verification_result": "FAIL"}, {"verification_result": None},
+                          {"review_status": None}, {"review_status": "PENDING"}):
+            with self.subTest(overrides=overrides):
+                self.refused(self.evidence(digest, **overrides), "verification_result PASS and review_status")
+
+    def test_evidence_task_id_must_be_this_task(self):
+        digest = self.write_record()
+        self.refused(self.evidence(digest, task_id=OTHER), "task_id must be this task")
+
+    def test_unhashable_artifact_field_is_a_refusal_not_a_crash(self):
+        odd = artifacts()
+        odd[2] = dict(odd[2], architecture=["amd64"])
+        self.refused(self.evidence(self.write_record(), build_manifest=self.manifest(artifacts=odd)), "differ")
 
     def test_commit_not_ancestor(self):
         digest = self.write_record()
@@ -199,10 +241,10 @@ class PublishedByTest(unittest.TestCase):
         extra = {"file": "demo-extra_1.0+unity3_amd64.deb", "sha256": "e" * 64, "kind": "binary",
                  "package": "demo-extra", "version": VERSION, "architecture": "amd64"}
         digest = self.write_record(artifacts=artifacts(extra=[extra]))
-        self.refused(self.evidence(digest), "extra [('demo-extra")
+        self.refused(self.evidence(digest), "missing [], extra [('\"demo-extra")
         digest = self.write_record()
         self.refused(self.evidence(digest, build_manifest=self.manifest(artifacts=artifacts(extra=[extra]))),
-                     "missing [('demo-extra")
+                     "missing [('\"demo-extra")
 
     def test_different_hashes_are_fine(self):
         """A different build of the same source: names match, hashes differ."""

@@ -312,12 +312,22 @@ def check_own_build(data, task_id, record, repo):
     """The task's own gated build proves its change is in the published source:
     same package version, its commit equal to or an ancestor of the record's,
     and the same source and binary artifacts by name."""
+    # Verifier round 1: the covered task's own review and build are bound here,
+    # because the gate the PUBLISHED check reads is the publishing task's.
+    if data.get("task_id") != task_id:
+        raise ValueError("the evidence's task_id must be this task")
+    if data.get("verification_result") != "PASS" or \
+            data.get("review_status") not in {"REVIEWED", "INDEPENDENTLY_REPRODUCED"}:
+        raise ValueError("published_by requires this task's own verification_result PASS and review_status")
     ref = data.get("build_manifest")
     if not isinstance(ref, str) or not ref:
         raise ValueError("published_by requires the task's own build_manifest")
-    path = Path(ref).expanduser()
-    if not path.is_absolute():
-        path = Path(repo) / path
+    if str(Path(__file__).resolve().parent) not in sys.path:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from tested_build import committed
+    path, _rel, _digest, error = committed(repo, ref, "the task's build_manifest")
+    if error:
+        raise ValueError(error)
     try:
         manifest = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -344,7 +354,7 @@ def check_own_build(data, task_id, record, repo):
             raise ValueError(f"this task's commit {own} is not in the published source {published}")
         if ancestor:
             raise ValueError(f"cannot compare {own} with {published} in {source}")
-    key = lambda a: (a.get("file"), a.get("package"), a.get("version"), a.get("architecture"))
+    key = lambda a: tuple(json.dumps(a.get(k), sort_keys=True) for k in ("file", "package", "version", "architecture"))
     wanted = {key(a) for a in manifest.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")}
     shipped = {key(a) for a in record.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")}
     if not wanted or wanted != shipped:
