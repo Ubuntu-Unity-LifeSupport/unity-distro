@@ -665,3 +665,112 @@ coordinator's go-ahead in the same window (`rehearsal/00-symlink.txt`):
    reach the signer's signing. Suite: 265 OK (2 skipped; the second is the
    guard test "denied without marker", skipped while a rehearsal
    authorization is active).
+
+Further deviations, each handled the same way: symlink removed, stop,
+report, and resumed with the coordinator's go-ahead.
+
+3. **Directory permissions.** The guard refused the first publish because
+   the rehearsal trees were group-writable (mkdir and aptly create 775).
+   The fix is the same as in UNITY-20260927-047: `chmod -R go-w` on
+   `021/` and `021p/` after every aptly command.
+4. **Design gap: the `.deb` is not on `:8080` before the switch.**
+   `/propose` was refused because the signer fetches each added `.deb`
+   from the live repository, but aptly links pool files into `public/` only
+   when it publishes. The same failure would happen in production for every
+   new package.
+   - The coordinator decided a temporary, rehearsal-only setting: the local
+     repository server serves `021/state/public` first and the proposal
+     root `021p/state/public` second, on 127.0.0.1 only. It is not part of
+     the product.
+   - The product fix is amendment (b), in section 15.
+5. **aptly's initialisation probe and the config path.** aptly's
+   `GpgSigner.Init()` runs `gpg --list-keys --dry-run --no-auto-check-trustdb`
+   and refuses empty output (from its source). Also, the aptly command can
+   carry no environment prefix, so the stand-in reads its config only from
+   its default path.
+   - Fix: the stand-in answers exactly that probe with a fixed line
+     carrying `key_id` from its config, with exit 0 and without contacting
+     the signer. Any other unknown call is still refused.
+   - For the window, the config was placed at
+     `~/.config/aptly-signer/standin.json` and deleted afterwards.
+6. **Code bug: several versions of one package.** The proposal for B was
+   refused as "listed twice": entries were keyed by (package, arch), but a
+   repository lists several versions; the live one has nine unity
+   versions.
+   - Fix: the key is (index, package, version, arch), and a duplicate is
+     only a full match.
+   - The diff works per version, with the other versions shown.
+   - Tests: several versions, and the live fragment with nine unity
+     entries (`scripts/tests/fixtures/live-packages-unity.txt`).
+   - The signer was restarted with a fresh rehearsal state; A's proofs
+     were already recorded.
+
+**Results on aptly 1.6.2** (`rehearsal/`, stand-in trace in
+`rehearsal/standin-trace.jsonl`):
+
+1. **argv.** The detached call is
+   `-o <tmp>/Release.gpg --digest-algo SHA256 --armor --yes --detach-sign <tmp>/Release`,
+   then the clearsign call is
+   `-o <tmp>/InRelease --digest-algo SHA256 --yes --clearsign <tmp>/Release`.
+   At initialisation aptly runs `--list-keys --dry-run --no-auto-check-trustdb`.
+   Without `-keyring` or `-gpg-key`, no keyring or `-u` options are passed.
+   The tests use this argv plus the optional options.
+2. **The temporary directory** at the moment gpg is called holds
+   `Release` and every listed index (`main_binary-amd64_Packages`, `.gz`,
+   `.bz2`, `_Release`). At the second call it also holds `Release.gpg`.
+   A1 is confirmed.
+3. **The window.** After the signed publish of A (`03-*.txt`) and the
+   switch to B (`04-switch-B.txt`), `InRelease` verifies with the signer's
+   key and carries `Date`, backdated by 5 minutes, and `Valid-Until` =
+   `Date` + 3 days. aptly's published `Release` has no `Valid-Until`, and
+   `Release.gpg` over it is BAD, so the window fails closed.
+   `refresh --switch` makes the pair good and deletes the stored trio.
+   `/live` moves last-live.
+4. **Signing before the rename** (`05-refusal-C.txt`). At the switch to
+   C, which was never approved:
+   - the stand-in was refused ("this content was not approved on the signer
+     console");
+   - aptly aborted with "unable to detached sign file";
+   - `Release.tmp` and `Packages.tmp*` are in storage, put there before
+     signing and never renamed.
+5. **A refusal leaves the old files live.** `Release`, `Release.gpg`,
+   `InRelease` and `Packages` are byte-identical to B's and still verify.
+   Observation: after a refusal aptly leaves `*.tmp` files in storage,
+   which the next switch overwrites. The `publish_aptly.py` follow-up
+   should know this.
+
+Teardown at 22:47:47Z (`06-teardown.txt`):
+- the symlink removed, with `command -v gpg` = `/usr/bin/gpg`;
+- the window config deleted;
+- the signer and both servers stopped;
+- the temporary GnuPG home removed, with `~/.gnupg` unchanged.
+
+The rehearsal log has 21 lines, 6 of them from this task. The roots `021/`
+and `021p/` are kept for the Verifier.
+
+## 15. Design amendments after the rehearsal (for the Design Challenger)
+
+**(b) The added `.deb`s travel in `/propose`.** This is the coordinator's
+decision; deviation 4 refuted -019 round 2 item 5, "the signer fetches it
+from :8080", before the switch.
+- `signer_client.py propose` reads each added `.deb` from the proposal
+  (rehearsal) publication's pool, at the `Filename` its Packages gives,
+  and sends it in the request.
+- The signer:
+  - accepts only `.deb`s whose `Filename` it validated in the Packages it
+    checked itself;
+  - requires the bytes to match that entry's `SHA256` and `Size`;
+  - reads the control archive from those bytes.
+
+  A missing, extra or mismatched `.deb` refuses the proposal.
+- Integrity does not depend on where the bytes come from: the signer
+  checks them against its own validated Packages.
+- `max_body` bounds the request.
+- The `:8080` fetch is dropped for proposals. It stays only for `/live`,
+  which fetches `InRelease`.
+
+**The stand-in's default config path is a product decision for the
+cut-over.** The aptly command can carry no environment prefix, so the
+stand-in reads `~/.config/aptly-signer/standin.json` of the user who runs
+aptly. That file is 0600 and holds the signer's URL, the timeout, the
+store and `key_id`. `APTLY_SIGNER_STANDIN_CONFIG` remains for tests only.

@@ -87,3 +87,8 @@ pub   F4519D46D8548C4632A632B53527F3A17DEA9C06 (held by the aptly-signer; gpg st
 == deviation 6 at 2026-09-29T22:43:43Z: /propose of B refused - signer_core.entries() keys entries by (index, package, arch) and refuses 'signer-demo all is listed twice'; a repository legitimately lists several versions of one package (the live one has unity +unity1..+unity12). Code bug. Symlink removed; the local signer stays up (127.0.0.1).
 /usr/bin/gpg
 9
+== restart after deviation 6 (fixed code, fresh signer state; the A proofs are recorded in 03-*.txt); step 0, seventh time
+2026-09-29T22:46:46Z
+lrwxrwxrwx 1 claude claude 59 Sep 29 22:46 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/home/claude/.local/bin/gpg
+pub   1293ABA0A454CDD7D8F5D916032DC322DF77301F (held by the aptly-signer; gpg stand-in)
