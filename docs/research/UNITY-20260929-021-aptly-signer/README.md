@@ -981,3 +981,65 @@ refuses the `.deb`.
   - tests cover the pax and GNU long-name headers, a broken checksum, and
     the Verifier's crafted `.deb`s when present.
 - Suite: 278 OK (1 skipped).
+
+**Round 4** on `4d26be9`: **PASS** (`PATCH_CORRECT`), REVIEWED.
+
+The Verifier ran the two signer suites and every crafted `.deb` against
+`dpkg-deb --control`, the call `dpkg --unpack` makes:
+- the rounds 1-3 `.deb`s are refused;
+- its header batteries, including the round-4 cases, show no case where
+  dpkg extracts a script that the signer does not flag.
+
+The cases it tried:
+- content after the first NUL in the name field;
+- the old-GNU atime, ctime and prefix area;
+- sparse bytes;
+- a 100-byte name with no NUL;
+- a fake header inside a member's data;
+- the star marker;
+- size fields that are unterminated or space-padded;
+- type 0 with a linkname;
+- a base-256 size;
+- a lone zero block;
+- a `./` directory with a size;
+- a checksum summed over signed bytes.
+
+The only remaining disagreements are cases the signer refuses and dpkg
+would accept, which fails closed. At the ar layer, dpkg and the signer take
+the same control member, or dpkg refuses the `.deb`.
+
+Remarks, not blocking:
+- The batteries were run only against dpkg 1.23.7 and GNU tar on builder.
+  They are in the Verifier's scratchpad (`r2t/battery.py`, `hdr.py`,
+  `r4.py`) and could become tests.
+- The rule is stricter than needed: only the unsigned checksum and octal
+  sizes are accepted. The live pool shows no `.deb` affected today.
+- Still open by decision: the per-read HTTP timeout and the design's 3-day
+  window.
+- The ar terminator is unchecked, which is harmless because dpkg refuses a
+  bad one.
+
+## Outcome
+
+`REVIEW` (tool task, SECURITY). This is step 2 of UNITY-20260929-019, with
+the -021 amendments:
+- the signer core, service and template;
+- the gpg stand-in and the client;
+- refusal tests for every field;
+- an end-to-end test with a throwaway key;
+- a rehearsal on aptly 1.6.2 under May's GO.
+
+It went through four Design Challenger rounds on the plan and the
+amendments, and four Verifier rounds; the last passed.
+
+Branch `a/UNITY-20260929-021` is for the coordinator to merge; `DONE`
+after the merge.
+
+Not started, and waiting for May:
+- installing the service and generating the key on the signer (step 3);
+- the cut-over (step 4). The PATH for aptly goes through
+  `publish_aptly.py`'s own `env`, and the default config path is a
+  fallback.
+- the `publish_aptly.py` integration (follow-up): the proposal step, the
+  switch, the refresh, "repository expired", reporting of leftover
+  `*.tmp`, and `go-w` on its trees.
