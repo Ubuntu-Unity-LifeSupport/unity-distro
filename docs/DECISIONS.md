@@ -1913,3 +1913,10 @@ It is taken knowing that:
 - systems that use our repository and have those packages installed will move to ours and no longer receive 1:26.04.12ubuntuN SRUs for them.
 
 The measurement stays with UNITY-20260927-044.
+
+
+## 2026-09-29 - UNITY-20260929-015: PUBLISHED means the recorded bytes are still live, not that apt selects them (agent B, decision by C)
+
+**Context.** taskctl's PUBLISHED gate now accepts a live snapshot other than the record's when that snapshot carries every artifact of the publish record with the recorded sha256. The Design Challenger's finding 6: the live snapshot may carry those bytes and also a newer version of the same package, and apt would then install the newer one. Record: `research/UNITY-20260929-015-taskctl-live-snapshot/`.
+
+**Decision (C, 2026-09-29).** A newer version of the same package in the live snapshot is not a reason to refuse PUBLISHED. PUBLISHED means "these bytes were published and are still in the live publication". It does not mean "apt will choose them". Which version apt selects is the concern of the later task that published the newer version, and of its own version-safety and target checks.

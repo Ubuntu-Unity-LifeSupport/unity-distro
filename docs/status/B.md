@@ -5,6 +5,20 @@ Build directory: `~/work/b`
 
 ## Now
 
+**UNITY-20260929-015** (2026-09-29): tool, merged by C into main at
+55381f3.
+- taskctl PUBLISHED now also accepts a later live snapshot that carries
+  every artifact of the publish record with the recorded sha256. The check
+  is read-only `snapshot search`.
+- Design Challenger APPROVE. Verifier PASS, independently reproduced.
+- Decision (C): a newer version of the same package in the live snapshot
+  does not block PUBLISHED. See DECISIONS.
+
+**UNITY-20260927-021 DONE** (2026-09-29 17:52Z): PUBLISHED through the
+content check against `unity-resolute-20260928-019`. The branch has been
+merged with main (3ef9c23). The details below are left as written.
+Next: UNITY-20260927-041, publication of calamares +unity3.
+
 **UNITY-20260927-021** (2026-09-29): calamares-settings-ubuntu
 1:26.04.12+unity2. Target PASS; PUBLISHED waits for UNITY-20260929-015.
 - Published 16:10Z as snapshot `unity-resolute-20260927-021-r2`.

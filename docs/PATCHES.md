@@ -134,3 +134,14 @@ lightdm 1.32.0-6ubuntu4+unity2, 2026-09-29 (UNITY-20260928-019; the lightdm row 
 
 
 lightdm 1.32.0-6ubuntu4+unity2 published 2026-09-29 17:06:28Z (UNITY-20260928-019; the "Not yet published" line above is left as written): live `./resolute` = snapshot `unity-resolute-20260928-019`, built by `scripts/build_sbuild.py` from `packages/lightdm` at f5af23c (payload identical to the verified build), gate on `a/UNITY-20260928-019` fdab8e3, Verifier short round on the gated build PASS (REVIEWED); target-desktop upgraded from the repository.
+
+
+calamares-settings-ubuntu 1:26.04.12+unity2 published 2026-09-29 16:10:23Z (UNITY-20260927-021; the calamares-settings-ubuntu +unity2 row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-021-r2`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at c03daf4 (build-r2). The gate is on `b/UNITY-20260927-021`.
+- 17:06:28Z: `./resolute` moved to `unity-resolute-20260928-019` (UNITY-20260928-019). That snapshot carries every -021 artifact byte for byte; `taskctl` confirmed this by content (UNITY-20260929-015).
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from snapshot `OEM-ready-unity2`: Calamares is on top, and the wallpaper is DESKTOP/BELOW and never focused.
+- Limit: apt does not deliver the fix to an OEM system that is already installed. basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz` and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`.
