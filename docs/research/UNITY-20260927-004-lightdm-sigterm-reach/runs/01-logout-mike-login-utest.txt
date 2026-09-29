@@ -1,0 +1,60 @@
+Started ldtrace.service - [systemd-run] /usr/bin/bpftrace /home/mike/ld-sigterm-trace.bt.
+Attached 9 probes
+16:58:49.184274 1395 reaped 1416
+16:58:49.203823 1395 exit(0)
+16:58:49.207365 1395 _exit(0) at the end of exit()
+16:58:49.207781 1395 gone
+16:58:49.215561 SIGTERM 1138(lightdm) -> 1277(Xorg) result 0
+16:58:50.083415 fork 1138 -> 4858
+16:58:50.085277 exec 4858 /usr/bin/X (parent 1138)
+16:58:50.089476 exec 4858 /usr/lib/xorg/Xorg.wrap (parent 1138)
+16:58:50.098368 exec 4858 /usr/lib/xorg/Xorg (parent 1138)
+16:58:52.152564 fork 1138 -> 4873
+16:58:52.155535 4873 _exit(1) direct
+16:58:52.155664 4873 gone
+16:58:52.156088 1138 reaped 4873
+16:58:52.156349 fork 1138 -> 4874
+16:58:52.176223 fork 4874 -> 4875
+16:58:52.176467 fork 4874 -> 4876
+16:58:52.188452 fork 4874 -> 4878
+16:58:54.670153 fork 4874 -> 4937
+16:58:54.768365 exec 4937 /usr/lib/lightdm/lightdm-greeter-session (parent 4874)
+16:58:59.399312 fork 1138 -> 5083
+16:59:15.594269 SIGTERM 1138(lightdm) -> 5083(lightdm) result 0
+16:59:15.595170 fork 1138 -> 5256
+16:59:15.595264 5083 gone
+16:59:15.608450 fork 5256 -> 5258
+16:59:15.611388 exec 5258 /usr/sbin/unix_chkpwd (parent 5256)
+16:59:15.686297 5256 reaped 5258
+16:59:16.605110 fork 5256 -> 5261
+16:59:16.605692 exec 5261 /usr/sbin/unix_chkpwd (parent 5256)
+16:59:16.691075 5256 reaped 5261
+16:59:16.693448 fork 5256 -> 5265
+16:59:16.694319 exec 5265 /usr/sbin/unix_chkpwd (parent 5256)
+16:59:16.698231 5256 reaped 5265
+16:59:16.698513 fork 5256 -> 5266
+16:59:16.698546 fork 5256 -> 5267
+16:59:16.703668 fork 5256 -> 5268
+16:59:17.338130 SIGTERM 1(systemd) -> 4874(lightdm) result 0
+16:59:17.338185 deliver SIGTERM to 4874 (reaped its child: no)
+16:59:17.338196 4874 kill(4937, 15) after SIGTERM delivery - handler passes it on
+16:59:17.338272 SIGTERM 4874(lightdm) -> 4937(lightdm-greeter) result 0
+16:59:17.339536 4874 reaped 4937
+16:59:17.341770 SIGTERM 1138(lightdm) -> 4874(lightdm) result 0
+16:59:17.356535 deliver SIGTERM to 4874 (reaped its child: yes)
+16:59:17.357345 4874 _exit(0) DIRECTLY AFTER SIGTERM DELIVERY (signal_cb no-child branch)
+16:59:17.364077 4874 gone
+16:59:17.371955 fork 1138 -> 5328
+16:59:17.376589 5328 _exit(1) direct
+16:59:17.377047 5328 gone
+16:59:17.378755 1138 reaped 5328
+16:59:18.127449 fork 5256 -> 5381
+16:59:18.282676 5381 exit(0)
+16:59:18.284554 5381 _exit(0) at the end of exit()
+16:59:18.284676 5381 gone
+16:59:18.287182 5256 reaped 5381
+16:59:18.315585 fork 5256 -> 5389
+16:59:18.318640 exec 5389 /usr/sbin/lightdm-session (parent 5256)
+16:59:19.712185 exec 5389 /usr/bin/im-launch (parent 5256)
+16:59:20.559528 exec 5389 /usr/bin/env (parent 5256)
+16:59:20.568464 exec 5389 /usr/bin/unity-session (parent 5256)

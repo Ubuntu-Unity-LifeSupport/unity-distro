@@ -1,0 +1,202 @@
+578ea32b3000-578ea32ba000 r--p 00000000 08:01 139838                     /usr/sbin/lightdm
+578ea32ba000-578ea32e4000 r-xp 00007000 08:01 139838                     /usr/sbin/lightdm
+578ea32e4000-578ea32f1000 r--p 00031000 08:01 139838                     /usr/sbin/lightdm
+578ea32f1000-578ea32f3000 r--p 0003d000 08:01 139838                     /usr/sbin/lightdm
+578ea32f3000-578ea32f4000 rw-p 0003f000 08:01 139838                     /usr/sbin/lightdm
+578ea9b8d000-578ea9c05000 rw-p 00000000 00:00 0                          [heap]
+76abb0000000-76abb0021000 rw-p 00000000 00:00 0 
+76abb0021000-76abb4000000 ---p 00000000 00:00 0 
+76abb8000000-76abb8021000 rw-p 00000000 00:00 0 
+76abb8021000-76abbc000000 ---p 00000000 00:00 0 
+76abbe9ca000-76abbe9d4000 r--p 00000000 08:01 132265                     /usr/lib/x86_64-linux-gnu/libnss_systemd.so.2
+76abbe9d4000-76abbea1c000 r-xp 0000a000 08:01 132265                     /usr/lib/x86_64-linux-gnu/libnss_systemd.so.2
+76abbea1c000-76abbea2f000 r--p 00052000 08:01 132265                     /usr/lib/x86_64-linux-gnu/libnss_systemd.so.2
+76abbea2f000-76abbea35000 r--p 00065000 08:01 132265                     /usr/lib/x86_64-linux-gnu/libnss_systemd.so.2
+76abbea35000-76abbea36000 rw-p 0006b000 08:01 132265                     /usr/lib/x86_64-linux-gnu/libnss_systemd.so.2
+76abbea4d000-76abbf24e000 rw-p 00000000 00:00 0 
+76abbf24e000-76abbf255000 r--s 00000000 08:01 282445                     /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+76abbf255000-76abc0257000 rw-p 00000000 00:00 0 
+76abc0257000-76abc0259000 r--p 00000000 08:01 286749                     /usr/lib/x86_64-linux-gnu/security/pam_gnome_keyring.so
+76abc0259000-76abc025c000 r-xp 00002000 08:01 286749                     /usr/lib/x86_64-linux-gnu/security/pam_gnome_keyring.so
+76abc025c000-76abc025e000 r--p 00005000 08:01 286749                     /usr/lib/x86_64-linux-gnu/security/pam_gnome_keyring.so
+76abc025e000-76abc025f000 r--p 00006000 08:01 286749                     /usr/lib/x86_64-linux-gnu/security/pam_gnome_keyring.so
+76abc025f000-76abc0260000 rw-p 00007000 08:01 286749                     /usr/lib/x86_64-linux-gnu/security/pam_gnome_keyring.so
+76abc0260000-76abc0262000 r--p 00000000 08:01 132718                     /usr/lib/x86_64-linux-gnu/libpam_misc.so.0.82.1
+76abc0262000-76abc0264000 r-xp 00002000 08:01 132718                     /usr/lib/x86_64-linux-gnu/libpam_misc.so.0.82.1
+76abc0264000-76abc0265000 r--p 00004000 08:01 132718                     /usr/lib/x86_64-linux-gnu/libpam_misc.so.0.82.1
+76abc0265000-76abc0266000 r--p 00004000 08:01 132718                     /usr/lib/x86_64-linux-gnu/libpam_misc.so.0.82.1
+76abc0266000-76abc0267000 rw-p 00005000 08:01 132718                     /usr/lib/x86_64-linux-gnu/libpam_misc.so.0.82.1
+76abc0267000-76abc0273000 r--p 00000000 08:01 279972                     /usr/lib/x86_64-linux-gnu/security/pam_systemd.so
+76abc0273000-76abc02dc000 r-xp 0000c000 08:01 279972                     /usr/lib/x86_64-linux-gnu/security/pam_systemd.so
+76abc02dc000-76abc02f9000 r--p 00075000 08:01 279972                     /usr/lib/x86_64-linux-gnu/security/pam_systemd.so
+76abc02f9000-76abc0300000 r--p 00091000 08:01 279972                     /usr/lib/x86_64-linux-gnu/security/pam_systemd.so
+76abc0300000-76abc0301000 rw-p 00098000 08:01 279972                     /usr/lib/x86_64-linux-gnu/security/pam_systemd.so
+76abc0301000-76abc0302000 rw-p 00000000 00:00 0 
+76abc0302000-76abc0304000 r--p 00000000 08:01 148483                     /usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0
+76abc0304000-76abc031c000 r-xp 00002000 08:01 148483                     /usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0
+76abc031c000-76abc0335000 r--p 0001a000 08:01 148483                     /usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0
+76abc0335000-76abc0336000 r--p 00033000 08:01 148483                     /usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0
+76abc0336000-76abc0337000 rw-p 00034000 08:01 148483                     /usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0
+76abc0337000-76abc033f000 rw-p 00000000 00:00 0 
+76abc0342000-76abc0343000 rw-p 00000000 00:00 0 
+76abc0343000-76abc0346000 r--p 00000000 08:01 148452                     /usr/lib/x86_64-linux-gnu/libcap.so.2.75
+76abc0346000-76abc034c000 r-xp 00003000 08:01 148452                     /usr/lib/x86_64-linux-gnu/libcap.so.2.75
+76abc034c000-76abc034e000 r--p 00009000 08:01 148452                     /usr/lib/x86_64-linux-gnu/libcap.so.2.75
+76abc034e000-76abc034f000 r--p 0000b000 08:01 148452                     /usr/lib/x86_64-linux-gnu/libcap.so.2.75
+76abc034f000-76abc0350000 rw-p 0000c000 08:01 148452                     /usr/lib/x86_64-linux-gnu/libcap.so.2.75
+76abc0350000-76abc0351000 r--p 00000000 08:01 286737                     /usr/lib/x86_64-linux-gnu/security/pam_cap.so
+76abc0351000-76abc0353000 r-xp 00001000 08:01 286737                     /usr/lib/x86_64-linux-gnu/security/pam_cap.so
+76abc0353000-76abc0354000 r--p 00003000 08:01 286737                     /usr/lib/x86_64-linux-gnu/security/pam_cap.so
+76abc0354000-76abc0355000 r--p 00003000 08:01 286737                     /usr/lib/x86_64-linux-gnu/security/pam_cap.so
+76abc0355000-76abc0356000 rw-p 00004000 08:01 286737                     /usr/lib/x86_64-linux-gnu/security/pam_cap.so
+76abc0356000-76abc0359000 r--p 00000000 08:01 280081                     /usr/lib/x86_64-linux-gnu/security/pam_unix.so
+76abc0359000-76abc0361000 r-xp 00003000 08:01 280081                     /usr/lib/x86_64-linux-gnu/security/pam_unix.so
+76abc0361000-76abc0363000 r--p 0000b000 08:01 280081                     /usr/lib/x86_64-linux-gnu/security/pam_unix.so
+76abc0363000-76abc0364000 r--p 0000d000 08:01 280081                     /usr/lib/x86_64-linux-gnu/security/pam_unix.so
+76abc0364000-76abc0365000 rw-p 0000e000 08:01 280081                     /usr/lib/x86_64-linux-gnu/security/pam_unix.so
+76abc0365000-76abc0369000 rw-p 00000000 00:00 0 
+76abc0369000-76abc0370000 r--p 00000000 08:01 131830                     /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+76abc0370000-76abc0395000 r-xp 00007000 08:01 131830                     /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+76abc0395000-76abc039e000 r--p 0002c000 08:01 131830                     /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+76abc039e000-76abc03a4000 r--p 00034000 08:01 131830                     /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+76abc03a4000-76abc03a5000 rw-p 0003a000 08:01 131830                     /usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0
+76abc03a5000-76abc03aa000 r--p 00000000 08:01 148694                     /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.41.1
+76abc03aa000-76abc03c5000 r-xp 00005000 08:01 148694                     /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.41.1
+76abc03c5000-76abc03cf000 r--p 00020000 08:01 148694                     /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.41.1
+76abc03cf000-76abc03d0000 r--p 0002a000 08:01 148694                     /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.41.1
+76abc03d0000-76abc03d1000 rw-p 0002b000 08:01 148694                     /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.41.1
+76abc03d1000-76abc03d3000 r--p 00000000 08:01 148451                     /usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0
+76abc03d3000-76abc03d6000 r-xp 00002000 08:01 148451                     /usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0
+76abc03d6000-76abc03d7000 r--p 00005000 08:01 148451                     /usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0
+76abc03d7000-76abc03d8000 r--p 00005000 08:01 148451                     /usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0
+76abc03d8000-76abc03d9000 rw-p 00006000 08:01 148451                     /usr/lib/x86_64-linux-gnu/libcap-ng.so.0.0.0
+76abc03d9000-76abc03da000 r--p 00000000 08:01 148213                     /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+76abc03da000-76abc03dc000 r-xp 00001000 08:01 148213                     /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+76abc03dc000-76abc03dd000 r--p 00003000 08:01 148213                     /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+76abc03dd000-76abc03de000 r--p 00003000 08:01 148213                     /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+76abc03de000-76abc03df000 rw-p 00004000 08:01 148213                     /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+76abc03df000-76abc03e2000 r--p 00000000 08:01 149049                     /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+76abc03e2000-76abc045e000 r-xp 00003000 08:01 149049                     /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+76abc045e000-76abc0489000 r--p 0007f000 08:01 149049                     /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+76abc0489000-76abc048a000 r--p 000a9000 08:01 149049                     /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+76abc048a000-76abc048b000 rw-p 000aa000 08:01 149049                     /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.14.0
+76abc048b000-76abc049d000 r--p 00000000 08:01 133011                     /usr/lib/x86_64-linux-gnu/libm.so.6
+76abc049d000-76abc053d000 r-xp 00012000 08:01 133011                     /usr/lib/x86_64-linux-gnu/libm.so.6
+76abc053d000-76abc05af000 r--p 000b2000 08:01 133011                     /usr/lib/x86_64-linux-gnu/libm.so.6
+76abc05af000-76abc05b0000 r--p 00123000 08:01 133011                     /usr/lib/x86_64-linux-gnu/libm.so.6
+76abc05b0000-76abc05b1000 rw-p 00124000 08:01 133011                     /usr/lib/x86_64-linux-gnu/libm.so.6
+76abc05b1000-76abc05b3000 r--p 00000000 08:01 148368                     /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+76abc05b3000-76abc05b7000 r-xp 00002000 08:01 148368                     /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+76abc05b7000-76abc05b9000 r--p 00006000 08:01 148368                     /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+76abc05b9000-76abc05ba000 r--p 00007000 08:01 148368                     /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+76abc05ba000-76abc05bb000 rw-p 00008000 08:01 148368                     /usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0
+76abc05bb000-76abc05bc000 rw-p 00000000 00:00 0 
+76abc05bc000-76abc05be000 r--p 00000000 08:01 148590                     /usr/lib/x86_64-linux-gnu/libffi.so.8.2.0
+76abc05be000-76abc05c9000 r-xp 00002000 08:01 148590                     /usr/lib/x86_64-linux-gnu/libffi.so.8.2.0
+76abc05c9000-76abc05cb000 r--p 0000d000 08:01 148590                     /usr/lib/x86_64-linux-gnu/libffi.so.8.2.0
+76abc05cb000-76abc05cc000 r--p 0000e000 08:01 148590                     /usr/lib/x86_64-linux-gnu/libffi.so.8.2.0
+76abc05cc000-76abc05cd000 rw-p 0000f000 08:01 148590                     /usr/lib/x86_64-linux-gnu/libffi.so.8.2.0
+76abc05cd000-76abc05d4000 r--p 00000000 08:01 149148                     /usr/lib/x86_64-linux-gnu/libselinux.so.1
+76abc05d4000-76abc05f5000 r-xp 00007000 08:01 149148                     /usr/lib/x86_64-linux-gnu/libselinux.so.1
+76abc05f5000-76abc05fc000 r--p 00028000 08:01 149148                     /usr/lib/x86_64-linux-gnu/libselinux.so.1
+76abc05fc000-76abc05fd000 r--p 0002f000 08:01 149148                     /usr/lib/x86_64-linux-gnu/libselinux.so.1
+76abc05fd000-76abc05fe000 rw-p 00030000 08:01 149148                     /usr/lib/x86_64-linux-gnu/libselinux.so.1
+76abc05fe000-76abc0600000 rw-p 00000000 00:00 0 
+76abc0600000-76abc0628000 r--p 00000000 08:01 133006                     /usr/lib/x86_64-linux-gnu/libc.so.6
+76abc0628000-76abc07c0000 r-xp 00028000 08:01 133006                     /usr/lib/x86_64-linux-gnu/libc.so.6
+76abc07c0000-76abc080e000 r--p 001c0000 08:01 133006                     /usr/lib/x86_64-linux-gnu/libc.so.6
+76abc080e000-76abc0812000 r--p 0020e000 08:01 133006                     /usr/lib/x86_64-linux-gnu/libc.so.6
+76abc0812000-76abc0814000 rw-p 00212000 08:01 133006                     /usr/lib/x86_64-linux-gnu/libc.so.6
+76abc0814000-76abc0825000 rw-p 00000000 00:00 0 
+76abc0825000-76abc082f000 r--p 00000000 08:01 134928                     /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+76abc082f000-76abc0867000 r-xp 0000a000 08:01 134928                     /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+76abc0867000-76abc0875000 r--p 00042000 08:01 134928                     /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+76abc0875000-76abc0877000 r--p 00050000 08:01 134928                     /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+76abc0877000-76abc0878000 rw-p 00052000 08:01 134928                     /usr/lib/x86_64-linux-gnu/libmount.so.1.1.0
+76abc0878000-76abc087a000 rw-p 00000000 00:00 0 
+76abc087a000-76abc087d000 r--p 00000000 08:01 131687                     /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+76abc087d000-76abc0890000 r-xp 00003000 08:01 131687                     /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+76abc0890000-76abc0896000 r--p 00016000 08:01 131687                     /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+76abc0896000-76abc0897000 r--p 0001c000 08:01 131687                     /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+76abc0897000-76abc0898000 rw-p 0001d000 08:01 131687                     /usr/lib/x86_64-linux-gnu/libz.so.1.3.1
+76abc0898000-76abc089a000 r--p 00000000 08:01 131919                     /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8800.0
+76abc089a000-76abc089c000 r-xp 00002000 08:01 131919                     /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8800.0
+76abc089c000-76abc089d000 r--p 00004000 08:01 131919                     /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8800.0
+76abc089d000-76abc089e000 r--p 00004000 08:01 131919                     /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8800.0
+76abc089e000-76abc089f000 rw-p 00005000 08:01 131919                     /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.8800.0
+76abc089f000-76abc08a2000 r--p 00000000 08:01 132717                     /usr/lib/x86_64-linux-gnu/libpam.so.0.85.1
+76abc08a2000-76abc08ac000 r-xp 00003000 08:01 132717                     /usr/lib/x86_64-linux-gnu/libpam.so.0.85.1
+76abc08ac000-76abc08af000 r--p 0000d000 08:01 132717                     /usr/lib/x86_64-linux-gnu/libpam.so.0.85.1
+76abc08af000-76abc08b0000 r--p 00010000 08:01 132717                     /usr/lib/x86_64-linux-gnu/libpam.so.0.85.1
+76abc08b0000-76abc08b1000 rw-p 00011000 08:01 132717                     /usr/lib/x86_64-linux-gnu/libpam.so.0.85.1
+76abc08b1000-76abc08c1000 r--p 00000000 08:01 131682                     /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.7.0
+76abc08c1000-76abc0a0f000 r-xp 00010000 08:01 131682                     /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.7.0
+76abc0a0f000-76abc0a5d000 r--p 0015e000 08:01 131682                     /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.7.0
+76abc0a5d000-76abc0a62000 r--p 001ac000 08:01 131682                     /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.7.0
+76abc0a62000-76abc0a68000 rw-p 001b1000 08:01 131682                     /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.7.0
+76abc0a68000-76abc0a6b000 r--p 00000000 08:01 131648                     /usr/lib/x86_64-linux-gnu/libaudit.so.1.0.0
+76abc0a6b000-76abc0a78000 r-xp 00003000 08:01 131648                     /usr/lib/x86_64-linux-gnu/libaudit.so.1.0.0
+76abc0a78000-76abc0a92000 r--p 00010000 08:01 131648                     /usr/lib/x86_64-linux-gnu/libaudit.so.1.0.0
+76abc0a92000-76abc0a93000 r--p 0002a000 08:01 131648                     /usr/lib/x86_64-linux-gnu/libaudit.so.1.0.0
+76abc0a93000-76abc0a94000 rw-p 0002b000 08:01 131648                     /usr/lib/x86_64-linux-gnu/libaudit.so.1.0.0
+76abc0a94000-76abc0aa2000 rw-p 00000000 00:00 0 
+76abc0aa2000-76abc0aa4000 r--p 00000000 08:01 148219                     /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+76abc0aa4000-76abc0aa6000 r-xp 00002000 08:01 148219                     /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+76abc0aa6000-76abc0aa8000 r--p 00004000 08:01 148219                     /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+76abc0aa8000-76abc0aa9000 r--p 00005000 08:01 148219                     /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+76abc0aa9000-76abc0aaa000 rw-p 00006000 08:01 148219                     /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+76abc0aaa000-76abc0ab6000 r--p 00000000 08:01 149367                     /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+76abc0ab6000-76abc0aca000 r-xp 0000c000 08:01 149367                     /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+76abc0aca000-76abc0ad3000 r--p 00020000 08:01 149367                     /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+76abc0ad3000-76abc0ad4000 r--p 00028000 08:01 149367                     /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+76abc0ad4000-76abc0ad5000 rw-p 00029000 08:01 149367                     /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+76abc0ad5000-76abc0af4000 r--p 00000000 08:01 131223                     /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0
+76abc0af4000-76abc0b9a000 r-xp 0001f000 08:01 131223                     /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0
+76abc0b9a000-76abc0c2a000 r--p 000c5000 08:01 131223                     /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0
+76abc0c2a000-76abc0c2b000 r--p 00155000 08:01 131223                     /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0
+76abc0c2b000-76abc0c2c000 rw-p 00156000 08:01 131223                     /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0
+76abc0c2c000-76abc0c2d000 rw-p 00000000 00:00 0 
+76abc0c2d000-76abc0c3d000 r--p 00000000 08:01 131927                     /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8800.0
+76abc0c3d000-76abc0c74000 r-xp 00010000 08:01 131927                     /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8800.0
+76abc0c74000-76abc0c8d000 r--p 00047000 08:01 131927                     /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8800.0
+76abc0c8d000-76abc0c90000 r--p 0005f000 08:01 131927                     /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8800.0
+76abc0c90000-76abc0c91000 rw-p 00062000 08:01 131927                     /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.8800.0
+76abc0c91000-76abc0cce000 r--p 00000000 08:01 131222                     /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0
+76abc0cce000-76abc0dec000 r-xp 0003d000 08:01 131222                     /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0
+76abc0dec000-76abc0e62000 r--p 0015b000 08:01 131222                     /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0
+76abc0e62000-76abc0e6b000 r--p 001d0000 08:01 131222                     /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0
+76abc0e6b000-76abc0e6c000 rw-p 001d9000 08:01 131222                     /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0
+76abc0e6c000-76abc0e6e000 rw-p 00000000 00:00 0 
+76abc0e6e000-76abc0e6f000 rw-p 00000000 00:00 0 
+76abc0e6f000-76abc0e70000 r--p 00000000 08:01 280080                     /usr/lib/x86_64-linux-gnu/security/pam_umask.so
+76abc0e70000-76abc0e71000 r-xp 00001000 08:01 280080                     /usr/lib/x86_64-linux-gnu/security/pam_umask.so
+76abc0e71000-76abc0e72000 r--p 00002000 08:01 280080                     /usr/lib/x86_64-linux-gnu/security/pam_umask.so
+76abc0e72000-76abc0e73000 r--p 00002000 08:01 280080                     /usr/lib/x86_64-linux-gnu/security/pam_umask.so
+76abc0e73000-76abc0e74000 rw-p 00003000 08:01 280080                     /usr/lib/x86_64-linux-gnu/security/pam_umask.so
+76abc0e74000-76abc0e75000 r--p 00000000 08:01 279982                     /usr/lib/x86_64-linux-gnu/security/pam_deny.so
+76abc0e75000-76abc0e76000 r-xp 00001000 08:01 279982                     /usr/lib/x86_64-linux-gnu/security/pam_deny.so
+76abc0e76000-76abc0e77000 r--p 00002000 08:01 279982                     /usr/lib/x86_64-linux-gnu/security/pam_deny.so
+76abc0e77000-76abc0e78000 r--p 00002000 08:01 279982                     /usr/lib/x86_64-linux-gnu/security/pam_deny.so
+76abc0e78000-76abc0e79000 rw-p 00003000 08:01 279982                     /usr/lib/x86_64-linux-gnu/security/pam_deny.so
+76abc0e79000-76abc0e7a000 r--p 00000000 08:01 280036                     /usr/lib/x86_64-linux-gnu/security/pam_permit.so
+76abc0e7a000-76abc0e7b000 r-xp 00001000 08:01 280036                     /usr/lib/x86_64-linux-gnu/security/pam_permit.so
+76abc0e7b000-76abc0e7c000 r--p 00002000 08:01 280036                     /usr/lib/x86_64-linux-gnu/security/pam_permit.so
+76abc0e7c000-76abc0e7d000 r--p 00002000 08:01 280036                     /usr/lib/x86_64-linux-gnu/security/pam_permit.so
+76abc0e7d000-76abc0e7e000 rw-p 00003000 08:01 280036                     /usr/lib/x86_64-linux-gnu/security/pam_permit.so
+76abc0e7e000-76abc0e7f000 r--p 00000000 08:01 279984                     /usr/lib/x86_64-linux-gnu/security/pam_env.so
+76abc0e7f000-76abc0e82000 r-xp 00001000 08:01 279984                     /usr/lib/x86_64-linux-gnu/security/pam_env.so
+76abc0e82000-76abc0e83000 r--p 00004000 08:01 279984                     /usr/lib/x86_64-linux-gnu/security/pam_env.so
+76abc0e83000-76abc0e84000 r--p 00004000 08:01 279984                     /usr/lib/x86_64-linux-gnu/security/pam_env.so
+76abc0e84000-76abc0e85000 rw-p 00005000 08:01 279984                     /usr/lib/x86_64-linux-gnu/security/pam_env.so
+76abc0e85000-76abc0e87000 rw-p 00000000 00:00 0 
+76abc0e87000-76abc0e8b000 r--p 00000000 00:00 0                          [vvar]
+76abc0e8b000-76abc0e8d000 r--p 00000000 00:00 0                          [vvar_vclock]
+76abc0e8d000-76abc0e8f000 r-xp 00000000 00:00 0                          [vdso]
+76abc0e8f000-76abc0e90000 r--p 00000000 08:01 133003                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+76abc0e90000-76abc0ebf000 r-xp 00001000 08:01 133003                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+76abc0ebf000-76abc0eca000 r--p 00030000 08:01 133003                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+76abc0eca000-76abc0ecc000 r--p 0003b000 08:01 133003                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+76abc0ecc000-76abc0ecd000 rw-p 0003d000 08:01 133003                     /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+76abc0ecd000-76abc0ece000 rw-p 00000000 00:00 0 
+7ffc4b0d5000-7ffc4b0f6000 rw-p 00000000 00:00 0                          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]

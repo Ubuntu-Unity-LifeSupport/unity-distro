@@ -1,0 +1,4 @@
+# after the fix ( 1 file changed, 12 insertions(+), 5 deletions(-)), 2026-09-27T21:13:31Z
+TMPDIR=with_underscore: pass 20, fail 0 (of 20)
+TMPDIR=plain: pass 20, fail 0 (of 20)
+full discover: 7 of 10 OK (Ran 36 tests in 7.506s)

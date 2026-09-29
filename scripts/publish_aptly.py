@@ -52,15 +52,58 @@ def parse_timestamp(value):
     return parsed.astimezone(timezone.utc)
 
 
-def apt_candidate(package):
-    result = subprocess.run(["apt-cache", "policy", package], check=False, capture_output=True, text=True)
-    if result.returncode:
-        raise ValueError(f"apt-cache policy failed: {result.stderr.strip()}")
-    match = re.search(r"(?m)^\s*Candidate:\s*(\S+)\s*$", result.stdout)
-    if not match:
-        raise ValueError("apt-cache policy returned no Candidate version")
-    return match.group(1), result.stdout
+def release_date(value):
+    from email.utils import parsedate_to_datetime
+    return parsedate_to_datetime(value)
 
+
+def compare_views(gate_view, fresh_view, now):
+    """Refuse a switch-time apt view that does not continue the gate-time one:
+    another snapshot content, an archive Release that went backwards, one that
+    disappeared, or a Valid-Until that has passed. Returns an error or None."""
+    gate_snap, fresh_snap = gate_view.get("snapshot") or {}, fresh_view.get("snapshot") or {}
+    if not gate_snap.get("list_sha256") or gate_snap.get("name") != fresh_snap.get("name") \
+            or gate_snap.get("list_sha256") != fresh_snap.get("list_sha256"):
+        return "the snapshot's package list differs from the one measured at gate time"
+    if gate_snap.get("model_release") != fresh_snap.get("model_release"):
+        return "the model repository's Release identity differs from the gate-time view"
+    for key in ("sources_sha256", "preferences"):
+        if not gate_view.get(key) and key == "sources_sha256":
+            return "the gate-time view does not record its sources"
+        if gate_view.get(key) != fresh_view.get(key):
+            return f"the apt view inputs ({key}) differ from the gate-time view"
+    fresh_releases = {r["file"]: r for r in fresh_view.get("releases", []) if not r.get("model")}
+    for old in (r for r in gate_view.get("releases", []) if not r.get("model")):
+        new = fresh_releases.get(old["file"])
+        if new is None:
+            return f"archive Release {old['file']} is missing from the fresh view"
+        try:
+            if old.get("Date") and release_date(new.get("Date", "")) < release_date(old["Date"]):
+                return f"archive Release {old['file']} went backwards ({new.get('Date')} < {old['Date']})"
+        except (TypeError, ValueError):
+            return f"archive Release {old['file']} has an unreadable Date"
+    for new in fresh_releases.values():
+        if new.get("Valid-Until"):
+            try:
+                if release_date(new["Valid-Until"]) < now:
+                    return f"archive Release {new['file']} expired ({new['Valid-Until']})"
+            except (TypeError, ValueError):
+                return f"archive Release {new['file']} has an unreadable Valid-Until"
+    return None
+
+
+def publication_evidence(fresh_result, fresh_view):
+    """The switch-time part of the publication record; taskctl.py checks it."""
+    return {"switch_time_version_check": fresh_result, "switch_time_apt_view": fresh_view}
+
+
+def version_verdict(root, view_path, manifest_path):
+    result = subprocess.run([sys.executable, str(root / "scripts/version_safety.py"), "--view", str(view_path),
+                             "--manifest", str(manifest_path)], check=False, capture_output=True, text=True)
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return {"result": "UNKNOWN", "reasons": ["version_safety.py did not return valid JSON"]}
 
 def write_once_record(path, record):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -92,6 +135,107 @@ def log_event(event, package, version, task_id):
         fcntl.flock(stream, fcntl.LOCK_EX)
         stream.write(f"{stamp} {event} aptly publish {package} {version} ({task_id})\n")
         stream.flush()
+
+
+# Contract between build_sbuild.py manifests and the gated snapshot
+# (docs/ENGINEERING-PROCESS.md section 6, "Build manifest artifacts"):
+#   source           the .dsc; must be in the snapshot as <source>_<version>_source
+#   binary .deb/.ddeb must be in the snapshot as <Package>_<Version>_<Architecture>,
+#                    fields read from the file itself; the binary must belong to
+#                    this source and version by its control Source field
+#   binary .udeb     rejected: the publication has no debian-installer index
+#   buildinfo/changes provenance only: hashed, never expected in a snapshot
+#   anything else    rejected
+#   source_file      a file the .dsc names (orig/debian tarball, native tarball,
+#                    diff.gz); the set must be exactly the .dsc's list, and the
+#                    snapshot's source package must hold these files with these
+#                    sha256 (source_package_matches)
+PROVENANCE_ONLY_KINDS = {"buildinfo", "changes"}
+
+
+def dsc_checksums(text):
+    """{name: sha256} of a Checksums-Sha256 field (a .dsc, or aptly's view of it)."""
+    found, section = {}, None
+    for line in text.splitlines():
+        if line and not line[0].isspace():
+            section = line.split(":", 1)[0]
+        elif section == "Checksums-Sha256" and line.strip():
+            digest, _size, name = line.split()
+            found[name] = digest
+    return found
+
+
+def source_package_matches(artifacts, snapshot_checksums):
+    """Compare the snapshot's source package files ({name: sha256}) with the
+    manifest's .dsc and source files. Returns an error or None."""
+    expected = {a["file"]: a["sha256"] for a in artifacts if a.get("kind") in {"source", "source_file"}}
+    if snapshot_checksums != expected:
+        missing = sorted(set(expected) - set(snapshot_checksums))
+        other = sorted(n for n in expected if n in snapshot_checksums and snapshot_checksums[n] != expected[n])
+        extra = sorted(set(snapshot_checksums) - set(expected))
+        return f"the snapshot's source package differs from the build: missing {missing}, other hash {other}, extra {extra}"
+    return None
+
+
+def control_fields(path):
+    result = subprocess.run(["dpkg-deb", "-f", str(path), "Package", "Version", "Architecture", "Source", "Package-Type"],
+                            check=False, capture_output=True, text=True)
+    if result.returncode:
+        raise ValueError(f"dpkg-deb cannot read {path.name}: {result.stderr.strip()}")
+    fields = {}
+    for line in result.stdout.splitlines():
+        key, _, value = line.partition(":")
+        fields[key.strip()] = value.strip()
+    return fields
+
+
+def binary_source(fields):
+    """The source package and version a binary was built from, as dpkg records it:
+    Source is "name" or "name (version)"; missing parts default to the binary's own."""
+    match = re.fullmatch(r"(\S+)(?:\s+\((\S+)\))?", fields.get("Source", "")) if fields.get("Source") else None
+    name = match.group(1) if match else fields.get("Package")
+    source_version = match.group(2) if match and match.group(2) else fields.get("Version")
+    return name, source_version
+
+
+def snapshot_expectations(artifacts, manifest_dir, package, version):
+    """Return (expected snapshot entries, error) for a manifest's artifacts."""
+    names, source_ok, binary_ok = [], False, False
+    for artifact in artifacts:
+        kind, path = artifact.get("kind"), manifest_dir / artifact["file"]
+        if kind == "source":
+            if artifact.get("package") != package or artifact.get("version") != version:
+                return None, f"source artifact {artifact['file']} is not {package} {version}"
+            source_ok = True
+            names.append(f"{package}_{version}_source")
+        elif kind == "binary":
+            try: fields = control_fields(path)
+            except ValueError as exc: return None, str(exc)
+            if path.suffix == ".udeb" or fields.get("Package-Type") == "udeb":
+                return None, f"{artifact['file']}: udeb artifacts are not published (no debian-installer index)"
+            if path.suffix not in {".deb", ".ddeb"}:
+                return None, f"{artifact['file']}: unsupported binary artifact type"
+            for key, field in (("package", "Package"), ("version", "Version"), ("architecture", "Architecture")):
+                if artifact.get(key) != fields.get(field):
+                    return None, f"{artifact['file']}: manifest {key} does not match the file's {field}"
+            if binary_source(fields) != (package, version):
+                return None, f"{artifact['file']}: built from {binary_source(fields)}, not {package} {version}"
+            binary_ok = True
+            names.append(f"{fields['Package']}_{fields['Version']}_{fields['Architecture']}")
+        elif kind == "source_file":
+            if artifact.get("package") != package or artifact.get("version") != version:
+                return None, f"source file {artifact['file']} is not {package} {version}"
+        elif kind not in PROVENANCE_ONLY_KINDS:
+            return None, f"{artifact['file']}: artifact kind {kind!r} has no publication rule"
+    if not source_ok or not binary_ok:
+        return None, "manifest must include the matching source and binary artifacts"
+    dsc = next(a for a in artifacts if a.get("kind") == "source")
+    try: listed = dsc_checksums((manifest_dir / dsc["file"]).read_text(encoding="utf-8"))
+    except OSError as exc: return None, f"cannot read {dsc['file']}: {exc}"
+    recorded = {a["file"]: a["sha256"] for a in artifacts if a.get("kind") == "source_file"}
+    if recorded != listed:
+        return None, f"source files in the manifest are not exactly the files {dsc['file']} names with their sha256"
+    return names, None
 
 
 def main():
@@ -225,22 +369,14 @@ def main():
     artifacts = manifest.get("artifacts")
     if not isinstance(artifacts, list) or not artifacts:
         return fail("build manifest contains no artifacts")
-    source_ok = binary_ok = False
-    expected_snapshot_names = []
     for artifact in artifacts:
         if not isinstance(artifact, dict) or not isinstance(artifact.get("file"), str):
             return fail("invalid artifact record")
         artifact_path = manifest_path.parent / artifact["file"]
         if not artifact_path.is_file() or sha256(artifact_path) != artifact.get("sha256"):
             return fail(f"artifact hash mismatch: {artifact_path}")
-        if artifact.get("kind") == "source":
-            source_ok |= artifact.get("package") == package and artifact.get("version") == version
-            expected_snapshot_names.append(f"{package}_{version}_source")
-        elif artifact.get("kind") == "binary":
-            if artifact.get("version") != version: return fail("binary artifact version differs from candidate")
-            binary_ok = True
-            expected_snapshot_names.append(f"{artifact.get('package')}_{version}_{artifact.get('architecture')}")
-    if not source_ok or not binary_ok: return fail("manifest must include the matching source and binary artifacts")
+    expected_snapshot_names, contract_error = snapshot_expectations(artifacts, manifest_path.parent, package, version)
+    if contract_error: return fail(contract_error)
 
     evidence_ref = gate.get("evidence_manifest")
     if not isinstance(evidence_ref, dict) or not isinstance(evidence_ref.get("file"), str):
@@ -269,23 +405,18 @@ def main():
         if not path.is_file() or sha256(path) != item.get("sha256") or not tracked_clean(root, path):
             return fail(f"evidence.{key} must match its hash and be tracked, committed, and clean")
         evidence_files[key] = path
-    version_check = subprocess.run([sys.executable, str(root / "scripts/version_safety.py"), str(evidence_files["version_check"])],
-                                   check=False, capture_output=True, text=True)
-    try: version_result = json.loads(version_check.stdout)
-    except json.JSONDecodeError: return fail("version-safety executable did not return valid JSON")
-    if version_check.returncode != 0 or version_result.get("result") != "SAFE":
-        return fail("immediate version-safety recheck is not SAFE")
+    # version_check is the gate-time apt_view.py measurement; recompute its verdict.
+    version_result = version_verdict(root, evidence_files["version_check"], manifest_path)
+    if version_result.get("result") != "SAFE":
+        return fail(f"gate-time version check is not SAFE: {version_result.get('reasons')}")
     if version_result.get("source_package") != package or version_result.get("candidate_source_version") != version:
         return fail("version-safety evidence does not match the package and candidate version")
     if version_result.get("source_commit") != gate.get("source_commit"):
         return fail("version-safety evidence source commit does not match the build")
     if version_result.get("target_series") != gate.get("target_series"):
         return fail("version-safety evidence target series does not match the gate")
-    if version_result.get("candidate_binary_version") != version:
-        return fail("version-safety binary candidate version does not match the built version")
-    built_binary_names = {item.get("package") for item in artifacts if item.get("kind") == "binary"}
-    if version_result.get("candidate_binary_package") not in built_binary_names:
-        return fail("version-safety apt candidate is not among the built binary artifacts")
+    try: gate_view = json.loads(evidence_files["version_check"].read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc: return fail(f"cannot read the gate-time apt view: {exc}")
     try:
         checked_at = parse_timestamp(version_result.get("checked_at"))
     except (TypeError, ValueError) as exc:
@@ -303,19 +434,38 @@ def main():
     if ".." in prefix or prefix in {"dists", "pool"}:
         return fail("unsafe aptly prefix")
 
+    if (gate_view.get("snapshot") or {}).get("name") != snapshot:
+        return fail("the gate-time version check measured another snapshot")
     shown = run_aptly(["snapshot", "show", "-with-packages", snapshot])
     if shown.returncode: return fail(f"aptly cannot inspect snapshot {snapshot}: {shown.stderr.strip()}")
     for name in expected_snapshot_names:
         if not re.search(rf"(?m)^\s*{re.escape(name)}\s*$", shown.stdout):
             return fail(f"aptly snapshot {snapshot} does not contain expected artifact {name}")
+    source_query = run_aptly(["snapshot", "search", "-format", '{{index . "Checksums-Sha256"}}', snapshot,
+                              f"Name ({package}), $Architecture (source), Version (= {version})"])
+    if source_query.returncode: return fail(f"aptly cannot read the snapshot's source package: {source_query.stderr.strip()}")
+    source_error = source_package_matches(artifacts, dsc_checksums("Checksums-Sha256:\n" + source_query.stdout))
+    if source_error: return fail(source_error)
 
-    fresh_policy_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-    try:
-        fresh_candidate, fresh_policy_output = apt_candidate(version_result["candidate_binary_package"])
-    except (OSError, ValueError) as exc:
-        return fail(f"fresh local apt-cache policy check failed: {exc}")
-    if fresh_candidate != version_result.get("candidate_binary_version"):
-        return fail("fresh local apt-cache policy candidate differs from the release candidate")
+    # Measure the target apt view again right before the switch; it is authoritative.
+    apt_inputs = [root / "docs/apt/target.sources"] + sorted((root / "docs/apt/preferences.d").glob("*"))
+    if not all(path.is_file() and tracked_clean(root, path) for path in apt_inputs):
+        return fail("docs/apt/target.sources and docs/apt/preferences.d must be tracked, committed, and clean")
+    origin = f"{prefix} {distribution}"
+    fresh_path = record_path.with_name(record_path.stem + "-apt-view.json")
+    fresh_run = subprocess.run([sys.executable, str(root / "scripts/apt_view.py"), "--manifest", str(manifest_path),
+                                "--snapshot", snapshot, "--release", f"{origin}|{origin}|{distribution}|{distribution}",
+                                "--write", str(fresh_path)], check=False, capture_output=True, text=True)
+    if fresh_run.returncode:
+        return fail(f"switch-time apt view failed: {fresh_run.stderr.strip()}")
+    try: fresh_view = json.loads(fresh_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc: return fail(f"cannot read the switch-time apt view: {exc}")
+    fresh_result = version_verdict(root, fresh_path, manifest_path)
+    if fresh_result.get("result") != "SAFE":
+        return fail(f"switch-time version check is not SAFE: {fresh_result.get('reasons')}")
+    view_error = compare_views(gate_view, fresh_view, datetime.now(timezone.utc))
+    if view_error:
+        return fail(view_error)
 
     try: log_event("START", package, version, task_id)
     except OSError as exc: return fail(f"cannot append publication START event: {exc}")
@@ -351,13 +501,7 @@ def main():
         "aptly_result": "PASS",
         "post_publish_check": "PASS",
         "version_evidence_checked_at": version_result.get("checked_at"),
-        "fresh_apt_policy": {
-            "checked_at": fresh_policy_at,
-            "package": version_result["candidate_binary_package"],
-            "candidate_version": fresh_candidate,
-            "result": "PASS",
-            "policy_output": fresh_policy_output,
-        },
+        **publication_evidence(fresh_result, fresh_view),
         "artifacts": [{"file": item["file"], "sha256": item["sha256"], "kind": item["kind"],
                        "package": item.get("package"), "version": item.get("version"),
                        "architecture": item.get("architecture")} for item in artifacts],

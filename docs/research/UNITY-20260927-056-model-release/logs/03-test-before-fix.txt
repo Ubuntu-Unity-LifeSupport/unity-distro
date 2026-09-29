@@ -1,0 +1,6 @@
+FAIL: test_model_release_recognised_whatever_the_temp_path (scripts.tests.test_version_safety.AptViewIntegrationTest.test_model_release_recognised_whatever_the_temp_path) (tmpdir='tmp_with_underscore')
+AssertionError: Lists differ: [] != ['<model>_Release']
+FAIL: test_model_release_recognised_whatever_the_temp_path (scripts.tests.test_version_safety.AptViewIntegrationTest.test_model_release_recognised_whatever_the_temp_path) (tmpdir='tmp~tilde=equals@at')
+AssertionError: Lists differ: [] != ['<model>_Release']
+Ran 1 test in 1.167s
+FAILED (failures=2)

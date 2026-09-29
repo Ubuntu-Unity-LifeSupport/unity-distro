@@ -1,0 +1,11 @@
+# model repo at .../a_b/model/ (underscore in the path)
+## list files apt wrote
+<S>_a%5fb_model_._Packages
+<S>_a%5fb_model_._Release
+auxfiles
+lock
+partial
+## what apt_view.py (e9f3dfc) compared them with
+<S>_a_b_model
+## apt-get indextargets for that repository
+file:<S>/a_b/model/ | deb | <S>/state/lists/_tmp_claude-1000_-home-claude_fa14e5f5-9fa9-405c-8373-3873520d3c73_scratchpad_t056_demo_a%5fb_model_._Packages

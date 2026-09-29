@@ -8,3 +8,7 @@
 *.buildinfo
 *.changes
 *.build
+# Source package files copied next to build manifests (build_sbuild.py); large,
+# identified by their hashes in the manifest, kept out of git like the .debs.
+docs/research/*/build/*.tar.*
+docs/research/*/build/*.diff.gz

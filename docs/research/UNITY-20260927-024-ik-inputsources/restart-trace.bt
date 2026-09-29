@@ -1,0 +1,28 @@
+// restart-trace.bt - UNITY-20260927-024: which consumer path reads the user
+// during an accounts-daemon restart. Run with -p PID of the greeter's
+// indicator-keyboard-service. Times are ms since the trace started.
+BEGIN { @t0 = nsecs; }
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_manager_list_users
+{
+	printf("%6d list_users (manager notify::is-loaded handler)\n", (nsecs - @t0) / 1000000);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_get_input_sources
+{
+	@s[tid] = arg0;
+}
+uretprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_get_input_sources
+{
+	printf("%6d   input_sources(%p) = %p\n", (nsecs - @t0) / 1000000, @s[tid], retval);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/liblightdm-gobject-1.so.0:lightdm_user_list_get_user_by_name
+{
+	printf("%6d   lightdm get_user_by_name(%p)\n", (nsecs - @t0) / 1000000, arg1);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/liblightdm-gobject-1.so.0:lightdm_get_layout
+{
+	printf("%6d   lightdm_get_layout\n", (nsecs - @t0) / 1000000);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/libaccountsservice.so.0:act_user_manager_get_user
+{
+	printf("%6d get_user(%s)\n", (nsecs - @t0) / 1000000, str(arg1));
+}

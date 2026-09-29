@@ -1,0 +1,3 @@
+snapshot_expectations: ['unity-gtk4-menu_0.9_source', 'libunity-gtk4-menu0-dbgsym_0.9_amd64', 'libunity-gtk4-menu0_0.9_amd64']
+A (built source): snapshot source files ['unity-gtk4-menu_0.9.dsc', 'unity-gtk4-menu_0.9.tar.xz'] -> MATCH
+B (regenerated source, same version, README.md changed): -> the snapshot's source package differs from the build: missing [], other hash ['unity-gtk4-menu_0.9.dsc', 'unity-gtk4-menu_0.9.tar.xz'], extra []

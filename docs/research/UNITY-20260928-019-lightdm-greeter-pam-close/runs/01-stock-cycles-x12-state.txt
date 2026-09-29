@@ -1,0 +1,217 @@
+Started ld019c2.service - [systemd-run] /bin/sh /home/mike/greeter-cycles.sh 12 utest Utest-019pw.
+cycle 1: logout utest
+cycle 1: greeter up after 3s, logging in
+cycle 1: utest session on seat0, greeter gone after 1s
+cycle 1: utest session on seat0, greeter gone after 1s
+--- state after cycle 1 (08:02:38.219Z)
+sessions: 23 1001 utest seat0 8042 user    - no -
+sessions: 24 1001 utest -     8215 manager - no -
+sessions: 26 1000 mike  -     8884 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=23 Name=utest Scope=session-23.scope Leader=8042 Class=user State=active
+session: Id=24 Name=utest Scope= Leader=8215 Class=manager State=active
+session: Id=26 Name=mike Scope= Leader=8884 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-23.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 2: logout utest
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+cycle 2: greeter up after 60s, logging in
+cycle 2: utest session on seat0, greeter gone after 0s
+cycle 2: utest session on seat0, greeter gone after 0s
+--- state after cycle 2 (08:04:09.217Z)
+sessions: 23 1001 utest seat0 8042 user    - no -
+sessions: 24 1001 utest -     8215 manager - no -
+users: 1001 utest no active
+session: Id=23 Name=utest Scope=session-23.scope Leader=8042 Class=user State=active
+session: Id=24 Name=utest Scope= Leader=8215 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-23.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 0
+cycle 3: logout utest
+cycle 3: greeter up after 3s, logging in
+cycle 3: utest session on seat0, greeter gone after 1s
+cycle 3: utest session on seat0, greeter gone after 1s
+--- state after cycle 3 (08:04:42.461Z)
+sessions: 40 1001 utest seat0 11710 user    - no -
+sessions: 41 1001 utest -     11817 manager - no -
+users: 1001 utest no active
+session: Id=40 Name=utest Scope=session-40.scope Leader=11710 Class=user State=active
+session: Id=41 Name=utest Scope= Leader=11817 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-40.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 4: logout utest
+cycle 4: greeter up after 3s, logging in
+cycle 4: utest session on seat0, greeter gone after 1s
+cycle 4: utest session on seat0, greeter gone after 1s
+--- state after cycle 4 (08:05:15.749Z)
+sessions: 47 1001 utest seat0 14609 user    - no -
+sessions: 48 1001 utest -     14752 manager - no -
+users: 1001 utest no active
+session: Id=47 Name=utest Scope=session-47.scope Leader=14609 Class=user State=active
+session: Id=48 Name=utest Scope= Leader=14752 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-47.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 1
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 5: logout utest
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+cycle 5: utest session on seat0, greeter gone after 0s
+cycle 5: utest session on seat0, greeter gone after 0s
+--- state after cycle 5 (08:06:47.210Z)
+sessions: 47 1001 utest seat0 14609 user    - no -
+sessions: 48 1001 utest -     14752 manager - no -
+sessions: 62 1000 mike  -     17236 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=47 Name=utest Scope=session-47.scope Leader=14609 Class=user State=active
+session: Id=48 Name=utest Scope= Leader=14752 Class=manager State=active
+session: Id=62 Name=mike Scope= Leader=17236 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-47.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 0
+cycle 6: logout utest
+cycle 6: utest session on seat0, greeter gone after 1s
+cycle 6: utest session on seat0, greeter gone after 1s
+--- state after cycle 6 (08:07:20.539Z)
+sessions: 66 1001 utest seat0 18742 user    - no -
+sessions: 67 1001 utest -     18903 manager - no -
+sessions: 69 1000 mike  -     19873 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=66 Name=utest Scope=session-66.scope Leader=18742 Class=user State=active
+session: Id=67 Name=utest Scope= Leader=18903 Class=manager State=active
+session: Id=69 Name=mike Scope= Leader=19873 Class=manager State=closing
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-66.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 7: logout utest
+cycle 7: greeter up after 9s, logging in
+cycle 7: utest session on seat0, greeter gone after 1s
+cycle 7: utest session on seat0, greeter gone after 1s
+--- state after cycle 7 (08:08:00.042Z)
+sessions: 73 1001 utest seat0 21776 user    - no -
+sessions: 74 1001 utest -     21867 manager - no -
+sessions: 78 1000 mike  -     22646 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=73 Name=utest Scope=session-73.scope Leader=21776 Class=user State=active
+session: Id=74 Name=utest Scope= Leader=21867 Class=manager State=active
+session: Id=78 Name=mike Scope= Leader=22646 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-73.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 8: logout utest
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+cycle 8: greeter up after 60s, logging in
+cycle 8: utest session on seat0, greeter gone after 0s
+cycle 8: utest session on seat0, greeter gone after 0s
+--- state after cycle 8 (08:09:30.862Z)
+sessions: 73 1001 utest seat0 21776 user    - no -
+sessions: 74 1001 utest -     21867 manager - no -
+users: 1001 utest no active
+session: Id=73 Name=utest Scope=session-73.scope Leader=21776 Class=user State=active
+session: Id=74 Name=utest Scope= Leader=21867 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-73.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 0
+cycle 9: logout utest
+cycle 9: greeter up after 6s, logging in
+cycle 9: utest session on seat0, greeter gone after 1s
+cycle 9: utest session on seat0, greeter gone after 1s
+--- state after cycle 9 (08:10:07.519Z)
+sessions: 92 1001 utest seat0 25965 user    - no -
+sessions: 93 1001 utest -     26059 manager - no -
+sessions: 96 1000 mike  -     28298 user    - no -
+sessions: 97 1000 mike  -     28304 manager - no -
+users: 1000 mike  no active
+users: 1001 utest no active
+session: Id=92 Name=utest Scope=session-92.scope Leader=25965 Class=user State=active
+session: Id=93 Name=utest Scope= Leader=26059 Class=manager State=active
+session: Id=96 Name=mike Scope=session-96.scope Leader=28298 Class=user State=active
+session: Id=97 Name=mike Scope= Leader=28304 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-92.scope active running,session-96.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 10: logout utest
+cycle 10: greeter up after 11s, logging in
+cycle 10: utest session on seat0, greeter gone after 1s
+cycle 10: utest session on seat0, greeter gone after 1s
+--- state after cycle 10 (08:10:49.383Z)
+sessions: 101 1001 utest seat0 28896 user    - no -
+sessions: 102 1001 utest -     29057 manager - no -
+sessions: 104 1000 mike  -     30251 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=101 Name=utest Scope=session-101.scope Leader=28896 Class=user State=active
+session: Id=102 Name=utest Scope= Leader=29057 Class=manager State=active
+session: Id=104 Name=mike Scope= Leader=30251 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-101.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 11: logout utest
+cycle 11: greeter up after 4s, logging in
+cycle 11: utest session on seat0, greeter gone after 1s
+cycle 11: utest session on seat0, greeter gone after 1s
+--- state after cycle 11 (08:11:23.826Z)
+sessions: 108 1001 utest seat0 31868 user    - no -
+sessions: 109 1001 utest -     32109 manager - no -
+sessions: 111 1000 mike  -     33218 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=108 Name=utest Scope=session-108.scope Leader=31868 Class=user State=active
+session: Id=109 Name=utest Scope= Leader=32109 Class=manager State=active
+session: Id=111 Name=mike Scope= Leader=33218 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-108.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 12: utest session on seat0, greeter gone after 1s
+cycle 12: utest session on seat0, greeter gone after 1s
+--- state after cycle 12 (08:11:58.157Z)
+sessions: 109 1001 utest -     32109 manager - no -
+sessions: 115 1001 utest seat0 34863 user    - no -
+users: 1001 utest no active
+session: Id=109 Name=utest Scope= Leader=32109 Class=manager State=active
+session: Id=115 Name=utest Scope=session-115.scope Leader=34863 Class=user State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-115.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+journal 'session closed for user lightdm' since cycle start: 1
+journal 'session opened for user lightdm' since cycle start: 2
+ld019c2.service: Deactivated successfully.
+ld019c2.service: Consumed 12.214s CPU time over 9min 53.193s wall clock time, 4.9M memory peak.

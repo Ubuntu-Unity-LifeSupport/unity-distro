@@ -1,0 +1,51 @@
+# facts for UNITY-20260927-036, 2026-09-27T21:39:14Z (read-only)
+## aptly repo search unity-resolute 'Name (% libindicator3-7*)'
+libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity2_amd64
+libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity1_amd64
+## aptly repo search unity-resolute 'Name (% indicator-bluetooth*)'
+indicator-bluetooth_0.0.6+17.10.20170605-0ubuntu7+unity1_amd64
+## aptly repo search unity-resolute 'Name (% indicator-printers*)'
+indicator-printers_0.1.7+17.10.20171101-0ubuntu8+unity1_amd64
+## aptly repo search unity-resolute 'Name (session-migration)'
+session-migration_0.3.9build2+unity1_amd64
+## aptly repo search unity-resolute '$Source (session-migration)'
+session-migration_0.3.9build2+unity1_amd64
+## aptly repo search unity-resolute 'Name (% unity-lens-files*)'
+unity-lens-files_7.1.0+17.10.20170605-0ubuntu6+unity1_amd64
+unity-lens-files_7.1.0+17.10.20170605-0ubuntu6+unity1_source
+## aptly repo search unity-resolute '$Source (unity-lens-files)'
+unity-lens-files_7.1.0+17.10.20170605-0ubuntu6+unity1_amd64
+## aptly repo search unity-resolute 'Name (% hud*)'
+hud_14.10+17.10.20170619-0ubuntu6+unity1_amd64
+hud_14.10+17.10.20170619-0ubuntu6+unity1_source
+hud-dbgsym_14.10+17.10.20170619-0ubuntu6+unity1_amd64
+hud-doc_14.10+17.10.20170619-0ubuntu6+unity1_all
+hud-tools_14.10+17.10.20170619-0ubuntu6+unity1_amd64
+hud-tools-dbgsym_14.10+17.10.20170619-0ubuntu6+unity1_amd64
+## aptly repo search unity-resolute 'Name (overlay-scrollbar)'
+overlay-scrollbar_0.2.17.1+16.04.20151117-0ubuntu5+unity1_all
+overlay-scrollbar_0.2.17.1+16.04.20151117-0ubuntu5+unity1_source
+## rmadison overlay-scrollbar
+ overlay-scrollbar | 0.2.17.1+16.04.20151117-0ubuntu5 | resolute/universe | source, all
+ overlay-scrollbar | 0.2.17.1+16.04.20151117-0ubuntu5 | stonking/universe | source, all
+## calamares / indicator-messages package branches
+86fbc0d Backport 0ubuntu8 from 26.10 as 0ubuntu8~26.04.1 (LP: #2166912)
+78d9113d9ab7362111876c31b636a852aaf94b09
+b6b546b basicwallpaper: desktop window on X11, so it cannot cover Calamares
+research/calamares-oem/0001-basicwallpaper-desktop-window-on-X11-so-it-cannot-co.patch
+
+package-patches-b/:
+README.md
+appmenu-gtk-module
+debdiff
+indicator-bluetooth
+indicator-datetime
+indicator-keyboard
+indicator-messages
+indicator-power
+indicator-printers
+indicator-session
+indicator-sound
+libindicator
+libunity
+nux

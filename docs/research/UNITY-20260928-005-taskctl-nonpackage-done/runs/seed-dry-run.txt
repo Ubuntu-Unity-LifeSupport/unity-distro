@@ -1,0 +1,10 @@
+UNITY-20260927-021 BLOCKED: would lock package
+UNITY-20260927-023 BLOCKED: would lock package
+UNITY-20260927-026 INVESTIGATING: no kind yet - lock at READY_FOR_FIX
+UNITY-20260927-037 BLOCKED: would lock package
+UNITY-20260927-041 BLOCKED: would lock package
+UNITY-20260927-047 BLOCKED: would lock operation
+UNITY-20260927-052 BLOCKED: would lock package
+UNITY-20260927-057 CLAIMED: no kind yet - lock at READY_FOR_FIX
+UNITY-20260928-005 IMPLEMENTING: would lock tool
+UNITY-20260928-007 REVIEW: would lock tool

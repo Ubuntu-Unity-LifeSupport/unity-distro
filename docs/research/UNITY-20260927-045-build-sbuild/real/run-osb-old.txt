@@ -1,0 +1,1 @@
+sbuild failed (1); see /home/claude/work/b/t045/out-osb-old/UNITY-20260927-045-overlay-scrollbar-0.2.17.1+16.04.20151117-0ubuntu5+unity1-sbuild.log

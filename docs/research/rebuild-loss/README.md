@@ -34,6 +34,13 @@ This survey looks for more.
 | **unity-greeter** | unsatisfiable: `liblightdm-gobject-1-dev` was split (lightdm-vala), as for indicator-keyboard | - | not built; nobody owns it |
 | **overlay-scrollbar** | FTBFS: needs Ubuntu's old GTK patch (`ubuntu_gtk_*_use_overlay_scrollbar`) | - | dead. 26.10 has only a no-change rebuild in -proposed, deleted from resolute. List only |
 
+_Correction 2026-09-27 (UNITY-20260927-036):_
+- session-migration: `+unity1` was published by agent A and is owned
+  (DECISIONS 2026-09-26, A-6).
+- overlay-scrollbar: "deleted from resolute" was wrong - `rmadison` shows
+  0ubuntu5 in resolute and stonking; B-11 replaced the dead module with a
+  stub `+unity1`, in aptly (`research/messaging-menu/`, B-11).
+
 Apart from the systemd trap, none of the builds that succeeded lost a file.
 Two sources carry it: indicator-messages (26.10 already fixed it) and hud.
 

@@ -55,6 +55,8 @@ ayatana-indicator-messages.
   archive's.
 - session-migration `+unity1` is built, not published.
 - hud `+unity1` is WIP: the googletest C++17 layer is left.
+- _Correction 2026-09-27 (UNITY-20260927-036):_ session-migration `+unity1` was published by agent A, and
+  hud `+unity1` is in aptly since B-12 (`research/hud/`).
 - unity-greeter has no owner; overlay-scrollbar is B's since B-11.
 
 **Only-on-builder commits** of B's git-ubuntu clones are exported to
@@ -126,6 +128,8 @@ libindicator FTBFS fixed as `+unity1` (built, not in aptly - equivalent to the
 archive's binary), vala-panel FTBFS left alone (not used by Unity).
 `research/rebuild-trial/`; `packages/libindicator` branch `unity/resolute`
 (git-ubuntu clone, no remote of ours); builds in `~/work/b/rebuild`.
+_Correction 2026-09-27 (UNITY-20260927-036):_ libindicator `+unity1` was published afterwards; aptly holds
+`+unity1` and `+unity2` (`research/UNITY-20260927-036-record-corrections/logs/01-facts.txt`).
 
 **gtk-nocsd global menu, upstream-ready patch** (2026-09-25, May asked):
 one commit on upstream main 6b1f70a, desktop-neutral (gtk-shell-shows-menubar),
@@ -159,6 +163,8 @@ target2 runs them. Builds in `~/work/b/indf`.
 **appmenu-gtk-module 25.04-1build1+unity1** (2026-09-25): upstream a783b01c,
 in aptly; `research/appmenu-resident/`. target2 has it (dpkg -i) and
 `xsettingsd` installed for the reproduction.
+_Correction 2026-09-27 (UNITY-20260927-036):_ that was the state on 2026-09-25; target2 has been
+rolled back to Clean-2 since, so it has neither.
 
 **nux 0ubuntu15+unity2** (2026-09-24): `fix-fbo-attachment-arrays.patch`
 (LP #2160298), branch `b/fbo` (`9793c23`), in aptly; `research/nux-fbo/`.
@@ -206,7 +212,12 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**Rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
+**Rolled back to `Clean-2` again on 2026-09-28 ~14:55Z**, after
+UNITY-20260927-024 (unity-greeter, indicator-keyboard stock/+unity3, a test
+user). Checked inside: no `~/.dirty`, no `ik024test`, archive
+indicator-keyboard 0ubuntu1, greeter back to `lightdm-greeter`.
+
+Earlier: **rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
 test; checked inside: fresh boot, no `~/.dirty`, archive gtk-nocsd
 `3+0~20260321+0b77e1b-1`, no Xfce/Plasma). Everything B had installed there
 before is gone: our aptly packages, test applications, `~/b/` scripts. The

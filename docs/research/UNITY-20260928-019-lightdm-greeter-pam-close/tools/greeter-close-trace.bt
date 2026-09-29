@@ -1,0 +1,91 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260928-019: for every stop of the greeter, does its session-child
+// (src/session-child.c) run the cleanup after waitpid() - pam_close_session,
+// pam_setcred(PAM_DELETE_CRED), pam_end - or does signal_cb()'s no-child
+// branch end the process first? One SUMMARY line per greeter session-child.
+// Extends UNITY-20260927-004 tools/ld-sigterm-trace.bt with libpam probes.
+// Threads are matched by the comm of their thread-group leader ("lightdm").
+// Run as root; lines go to stdout.
+
+tracepoint:sched:sched_process_exec /str(args.filename) == "/usr/lib/lightdm/lightdm-greeter-session"/
+{
+  $sc = curtask->real_parent->tgid;
+  @g[$sc] = 1;
+  @t0[$sc] = nsecs;
+  printf("%s greeter session-child %d started the greeter %d\n", strftime("%H:%M:%S.%f", nsecs), $sc, pid);
+}
+
+tracepoint:signal:signal_generate /args.sig == 15 && @g[args.pid]/
+{
+  printf("%s SIGTERM %d(%s) -> %d result %d\n", strftime("%H:%M:%S.%f", nsecs), pid, comm, args.pid, args.result);
+}
+
+tracepoint:signal:signal_deliver /args.sig == 15 && @g[pid]/
+{
+  @dlv[pid] = @dlv[pid] + 1;
+  if (@reaped[pid]) {
+    @nochild[pid] = 1;
+    // where the cleanup was: 1 = after waitpid, 2 = in pam_close_session,
+    // 3 = after it returned, 4 = in pam_setcred, 5 = in pam_end
+    @nochild_stage[pid] = @stage[pid];
+  }
+  printf("%s deliver SIGTERM to %d tid %d (%s) reaped=%d stage=%d\n", strftime("%H:%M:%S.%f", nsecs), pid, tid, comm, @reaped[pid], @stage[pid]);
+}
+
+tracepoint:syscalls:sys_exit_wait4 /@g[pid] && args.ret > 0/
+{
+  @reaped[pid] = 1;
+  @stage[pid] = 1;
+  @treap[pid] = nsecs;
+  printf("%s %d reaped %d\n", strftime("%H:%M:%S.%f", nsecs), pid, args.ret);
+}
+
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:kill /@g[pid] && @dlv[pid]/
+{
+  @passed[pid] = @passed[pid] + 1;
+  printf("%s %d kill(%d, %d) - handler passes SIGTERM on\n", strftime("%H:%M:%S.%f", nsecs), pid, arg0, arg1);
+}
+
+// pam_open_session runs before the greeter is exec'd, so record it for every
+// lightdm process and keep it only for the ones that turn out to be greeters
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_open_session /curtask->group_leader->comm == "lightdm"/ { @open[pid] = 1; }
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_close_session /@g[pid]/
+{
+  @close[pid] = 1; @stage[pid] = 2; @tclose[pid] = nsecs;
+  printf("%s %d pam_close_session enter\n", strftime("%H:%M:%S.%f", nsecs), pid);
+}
+
+uretprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_close_session /@g[pid]/
+{
+  @closed[pid] = 1; @stage[pid] = 3;
+  printf("%s %d pam_close_session returned %d after %d us\n", strftime("%H:%M:%S.%f", nsecs), pid, retval, (nsecs - @tclose[pid]) / 1000);
+}
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_setcred /@g[pid] && @reaped[pid]/ { @setcred[pid] = 1; @stage[pid] = 4; }
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_end /@g[pid] && @reaped[pid]/ { @end[pid] = 1; @stage[pid] = 5; }
+
+uretprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_end /@g[pid] && @reaped[pid]/ { @endret[pid] = 1; @stage[pid] = 6; }
+
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:exit /@g[pid]/ { @ex[pid] = @dlv[pid] ? 2 : 1; }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit /@g[pid] && !@ex[pid]/ { @ex[pid] = @dlv[pid] ? 4 : 3; }
+
+tracepoint:sched:sched_process_exit /!@g[pid] && pid == tid && @open[pid]/ { delete(@open[pid]); }
+
+tracepoint:sched:sched_process_exit /@g[pid] && pid == tid/
+{
+  // exit: 1 exit() not after a delivery (end of main), 2 exit() after a
+  // delivery, 3 _exit() direct, 4 _exit() after a delivery
+  printf("%s SUMMARY greeter-sc %d open=%d reaped=%d deliveries=%d passed_on=%d nochild=%d nochild_stage=%d close_enter=%d close_ret=%d setcred=%d pam_end=%d pam_end_ret=%d exit=%d reap_to_gone_us=%d\n",
+         strftime("%H:%M:%S.%f", nsecs), pid, @open[pid], @reaped[pid], @dlv[pid], @passed[pid], @nochild[pid], @nochild_stage[pid],
+         @close[pid], @closed[pid], @setcred[pid], @end[pid], @endret[pid], @ex[pid], @reaped[pid] ? (nsecs - @treap[pid]) / 1000 : 0);
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+}
+
+END { clear(@g); clear(@t0); clear(@dlv); clear(@reaped); clear(@stage); clear(@treap); clear(@passed); clear(@open);
+      clear(@close); clear(@tclose); clear(@closed); clear(@setcred); clear(@end); clear(@endret); clear(@ex);
+      clear(@nochild); clear(@nochild_stage); }

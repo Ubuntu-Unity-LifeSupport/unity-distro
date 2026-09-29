@@ -1,0 +1,19 @@
+Started ldalloc.service - [systemd-run] /usr/bin/bpftrace /home/mike/ld-exit-alloc.bt.
+Attached 6 probes
+71265 first allocator call in exit(): uprobe:/lib/x86_64-linux-gnu/libc.so.6:free
+        0x7da6718b5360
+        0x7da6720e50d2
+        0x7da6720e96f0
+        0x7da6718485e1
+        0x7da6718486be
+        0x7da67154f429
+        0x7da671550256
+        0x7da67155098b
+        0x7da671afcb2f
+        0x5f6e4247843b
+17:28:56.014736 71265 exit() -> _exit after 16535 us; allocator calls:
+@calls[71265, uprobe:/lib/x86_64-linux-gnu/libc.so.6:free]: 35
+Stopping ldalloc.service - [systemd-run] /usr/bin/bpftrace /home/mike/ld-exit-alloc.bt...
+ldalloc.service: Deactivated successfully.
+Stopped ldalloc.service - [systemd-run] /usr/bin/bpftrace /home/mike/ld-exit-alloc.bt.
+ldalloc.service: Consumed 7.649s CPU time over 6min 15.295s wall clock time, 62.4M memory peak.

@@ -1,0 +1,5 @@
+ubuntu-unity-meta 0.29+unity1: changes lists 2, manifest 4 artifacts, binaries 1, log 1831 lines, header first: True, result PASS
+calamares-settings-ubuntu 1:26.04.12+unity3: changes lists 7, manifest 9 artifacts, binaries 6, log 4463 lines, header first: True, result PASS
+unity-gtk4-menu 0.9: changes lists 3, manifest 5 artifacts, binaries 2, log 3458 lines, header first: True, result PASS
+MISSING/MISMATCH libunity-gtk4-menu0-dbgsym_0.9_amd64.ddeb
+unity-gtk4-menu 0.9: changes lists 3, manifest 4 artifacts, binaries 1, log 4 lines, header first: False, result FAIL
