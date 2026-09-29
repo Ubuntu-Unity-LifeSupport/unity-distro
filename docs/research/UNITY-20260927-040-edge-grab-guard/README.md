@@ -221,6 +221,7 @@ published `libnux-4.0-0`/`-common`/`-dev` `0ubuntu15+unity2` from
 source tree `e204f809`, 14 artifacts, `build_dependencies`: three entries,
 each `in_our_repository_pool`, checked against the `.buildinfo`;
 `build_dependencies.manifest_error` returns none).
+Chroot: the cached `~/.cache/sbuild/resolute-amd64.tar.zst` (build 17:19-17:36Z, before its 7-day limit ran out at 17:46Z; no "too old" line), sources `de.archive.ubuntu.com resolute` only (log lines 22, 40-44) - the same chroot as the test build.
 
 **Compared with the test build** (`tools/compare-builds.sh`,
 `build/release-vs-test.txt`): all seven binary packages have the same file
