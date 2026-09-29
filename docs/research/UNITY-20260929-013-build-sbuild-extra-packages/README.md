@@ -218,3 +218,43 @@ test_plan: >-
   pool directory; a .deb only in candidate/ refused; a manifest whose
   pool_path points outside the pool root refused by the consumers.
 ```
+
+## 5. Implementation and validation
+
+Commit `7939c8f` on `a/UNITY-20260929-013` (7 files, +611/-9):
+`scripts/build_dependencies.py` (new: POOL_ROOT, source name, pool path,
+content check, `.buildinfo` parser, `check_entries`, `manifest_error`);
+`scripts/build_sbuild.py` (`--extra-package`: validation before anything is
+copied or built, copies in `OUTPUT/build-dependencies/`, sbuild gets the
+copies, re-hash and `.buildinfo` check after the build, optional
+`build_dependencies` in the manifest, log header with `shlex.join`);
+`create_release_gate.py` and `publish_aptly.py` (one call to
+`manifest_error` after their artifact hash check); tests; ENGINEERING-PROCESS
+section 6 (a paragraph on extra build dependencies).
+
+**Tests** (`real-runs/suite-branch.txt`): the whole suite 175 OK, 1 skipped
+(main: 158 OK, 1 skipped - the 17 new tests are the difference).
+`test_build_sbuild.py` 20 tests (12 existing unchanged, 8 new);
+`test_build_dependencies.py` 9 new. Against main's build_sbuild.py
+(`BUILD_SBUILD=`, `real-runs/new-tests-on-main-build_sbuild.txt`): 7 of the
+new tests fail - recorded/used, lib* prefix, not used (2 cases), no
+.buildinfo, copy changed, relative/symlink/space; the no-option test passes
+on both (unchanged behaviour), and the refusal test passes on main only
+because main's argparse rejects the unknown option (exit 2 before sbuild).
+
+**Real sbuild runs** with the new tool (`real-runs/run-real.log`):
+
+| Run | Input | Result |
+|---|---|---|
+| R1 | tiny013 (Build-Depends: libnux-4.0-common) + libnux-4.0-common repacked as `0ubuntu11`, older than the archive's `0ubuntu12` | exit 2, "was not used by the build (Installed-Build-Depends: ...0ubuntu12)", no manifest - sbuild's unpinned apt took the archive's, and the tool refused |
+| R2 | tiny013 + libnux-4.0-common `0ubuntu15+unity2` from the pool | exit 0; `build_dependencies` 1 entry, `in_our_repository_pool: true`, `pool_path` `.../pool/main/n/nux/...`; `manifest_error` with the real pool: none (`real-runs/r2-tiny013-build-manifest.json`) |
+| R3 | unity `7b0eca27` (UNITY-20260927-040) + libnux-4.0-0/-common/-dev `0ubuntu15+unity2` from the pool | exit 0, 14 artifacts; all three in `build_dependencies`, in the pool; `.buildinfo` lists the three at `0ubuntu15+unity2` (`real-runs/r3-buildinfo-nux.txt`); `manifest_error` with the real pool: none; manifest keys = today's + `build_dependencies` (`real-runs/r3-unity-build-manifest.json`, log `real-runs/r3-unity-sbuild.log.xz`) |
+
+Not exercised end to end: `create_release_gate.py` and `publish_aptly.py`
+as whole programs on R3 (the gate needs a task in REVIEW, a pushed source in
+`packages/`, a version check against a snapshot; the publisher a gate) - their
+new line is one call to `manifest_error`, tested directly and checked by
+`test_build_dependencies.ConsumerTest`. taskctl's publish-record comparison
+reads only `artifacts` (taskctl.py ~l.331); it has no fixture test with a
+manifest file, so this is from the code.
+

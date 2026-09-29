@@ -1,0 +1,85 @@
+.F.FFF.FF.....F......
+======================================================================
+FAIL: test_copy_changed_during_build_refused (test_build_sbuild.BuildSbuildTest.test_copy_changed_during_build_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 474, in test_copy_changed_during_build_refused
+    self.assertIn("changed during the build", r.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'changed during the build' not found in 'usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO\n                            --target-series TARGET_SERIES\n                            --output-dir OUTPUT_DIR\nbuild_sbuild-main.py: error: unrecognized arguments: --extra-package /tmp/tmp68r_n65w/in/libnux-4.0-dev_4.0.8-0ubuntu15+unity2_amd64.deb\n'
+
+======================================================================
+FAIL: test_extra_package_not_used_refused (test_build_sbuild.BuildSbuildTest.test_extra_package_not_used_refused) (case='older than the archive')
+Installed at another version, or not at all: exit 2, no manifest.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 458, in test_extra_package_not_used_refused
+    self.assertIn("was not used by the build", r.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'was not used by the build' not found in 'usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO\n                            --target-series TARGET_SERIES\n                            --output-dir OUTPUT_DIR\nbuild_sbuild-main.py: error: unrecognized arguments: --extra-package /tmp/tmpa_unorql/in/libnux-4.0-dev_4.0.8-0ubuntu11_amd64.deb\n'
+
+======================================================================
+FAIL: test_extra_package_not_used_refused (test_build_sbuild.BuildSbuildTest.test_extra_package_not_used_refused) (case='absent')
+Installed at another version, or not at all: exit 2, no manifest.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 458, in test_extra_package_not_used_refused
+    self.assertIn("was not used by the build", r.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'was not used by the build' not found in 'usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO\n                            --target-series TARGET_SERIES\n                            --output-dir OUTPUT_DIR\nbuild_sbuild-main.py: error: unrecognized arguments: --extra-package /tmp/tmpa_unorql/in/libnux-4.0-dev_4.0.8-0ubuntu11_amd64.deb\n'
+
+======================================================================
+FAIL: test_extra_packages_recorded_and_used (test_build_sbuild.BuildSbuildTest.test_extra_packages_recorded_and_used)
+Copies go to sbuild in order, the manifest records them, pool by content.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 416, in test_extra_packages_recorded_and_used
+    self.assertEqual(r.returncode, 0, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO
+                            --target-series TARGET_SERIES
+                            --output-dir OUTPUT_DIR
+build_sbuild-main.py: error: unrecognized arguments: --extra-package /tmp/tmpu2yjd9qb/in/libnux-4.0-dev_4.0.8-0ubuntu15+unity2_amd64.deb --extra-package /tmp/tmpu2yjd9qb/in/libnux-4.0-common_4.0.8-0ubuntu15+unity2_all.deb
+
+
+======================================================================
+FAIL: test_lib_source_pool_prefix (test_build_sbuild.BuildSbuildTest.test_lib_source_pool_prefix)
+A lib* source lives under pool/main/libX/<source>/.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 442, in test_lib_source_pool_prefix
+    self.assertEqual(r.returncode, 0, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO
+                            --target-series TARGET_SERIES
+                            --output-dir OUTPUT_DIR
+build_sbuild-main.py: error: unrecognized arguments: --extra-package /tmp/tmpyuaoae6s/in/libunity-dev_7.1.4-6+unity1_amd64.deb
+
+
+======================================================================
+FAIL: test_no_buildinfo_refused (test_build_sbuild.BuildSbuildTest.test_no_buildinfo_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 466, in test_no_buildinfo_refused
+    self.assertIn(".buildinfo", r.stderr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '.buildinfo' not found in 'usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO\n                            --target-series TARGET_SERIES\n                            --output-dir OUTPUT_DIR\nbuild_sbuild-main.py: error: unrecognized arguments: --extra-package /tmp/tmpympg7b5o/in/libnux-4.0-dev_4.0.8-0ubuntu15+unity2_amd64.deb\n'
+
+======================================================================
+FAIL: test_relative_symlink_and_space_accepted (test_build_sbuild.BuildSbuildTest.test_relative_symlink_and_space_accepted)
+A relative path (against the caller's cwd), a symlink and a space in the path.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-013/scripts/tests/test_build_sbuild.py", line 509, in test_relative_symlink_and_space_accepted
+    self.assertEqual(r.returncode, 0, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : usage: build_sbuild-main.py [-h] --task-id TASK_ID --source-repo SOURCE_REPO
+                            --target-series TARGET_SERIES
+                            --output-dir OUTPUT_DIR
+build_sbuild-main.py: error: unrecognized arguments: --extra-package linked.deb
+
+
+----------------------------------------------------------------------
+Ran 20 tests in 25.386s
+
+FAILED (failures=7)

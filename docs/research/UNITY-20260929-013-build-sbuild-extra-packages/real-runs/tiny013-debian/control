@@ -1,0 +1,11 @@
+Source: tiny013
+Section: misc
+Priority: optional
+Maintainer: t <t@example.com>
+Build-Depends: debhelper-compat (= 13), libnux-4.0-common
+Standards-Version: 4.7.0
+
+Package: tiny013
+Architecture: all
+Description: UNITY-20260929-013 test package
+ Build-depends on libnux-4.0-common only, to test --extra-package use.
