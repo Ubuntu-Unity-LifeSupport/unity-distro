@@ -243,3 +243,68 @@ Round 3 on section 6: APPROVE. To watch in the implementation: match
 a file name twice; in `this_build` compare only the manifest's artifacts of
 kind `binary`; if `dsc_checksums` moves, publish_aptly's source check keeps
 its behaviour (the existing publish tests show it).
+
+## 8. Implementation and validation
+
+Code `aed9ec3` (branch `a/UNITY-20260929-020`, on main `e9f83de`):
+
+- `scripts/tested_build.py`:
+  - `check(fields, manifest, manifest_dir, root)` implements sections 5-6
+    and returns the object the gate records. Files are repository-relative
+    and must be tracked, committed and unmodified. (file name, sha256)
+    pairs are matched together.
+  - `this_build` compares only artifacts of kind `binary`.
+  - `checksum_pairs` refuses a malformed line or a name listed twice.
+  - `fields_from_gate` and `publish_error` let the publisher recompute and
+    compare.
+  - `publish_aptly.py`'s `dsc_checksums` is left unchanged: it returns a
+    dict, where a duplicated name silently overwrites, and `taskctl.py` uses
+    it too. The pair-based parser is separate instead of moved, so the
+    source check keeps its behaviour.
+- `create_release_gate.py` calls `check` after the build-dependency check,
+  refuses on error, and writes `tested_build` into `release-gate.json`.
+- `publish_aptly.py` calls `publish_error` after the build-dependency check.
+- `docs/ENGINEERING-PROCESS.md` section 6 describes the three modes and the
+  refusal of manifests without `chroot`. `docs/RELEASE-RECORD-TEMPLATE.json`
+  has the fields.
+
+Tests:
+
+- `test_tested_build.py` (11 tests):
+  - each mode is accepted, and the publisher recomputes the same object;
+  - in every mode, a missing chroot, an unknown mode, no or empty
+    target_test, a deb hash mismatch, a deb that is not built, or a missing
+    or outside record is refused;
+  - a record that does not name a deb, or is uncommitted, is refused;
+  - `this_build` accepts binary artifacts only;
+  - `same_chroot` refuses: not `--tested-with` this manifest, no
+    tested_with, another chroot, another source commit or tree, another or
+    dropped extra package, and a tested manifest modified or re-committed;
+  - `buildinfo_identical` refuses an Installed-Build-Depends differing by a
+    version, an entry more or less, or the arch qualifier, and a Source,
+    Version or Build-Architecture mismatch;
+  - the `.changes` link is refused with a deb or the `.buildinfo` missing,
+    a hash under another name, a name listed twice, or neither link;
+  - the publisher refuses in every mode after a committed file changed, and
+    refuses an altered gate record: mode changed, a hash changed, an extra
+    key.
+- `test_build_dependencies_consumers.py`, with the real scripts, a fake
+  aptly first on PATH and a fake HOME:
+  - the gate refuses no tested_build, a deb not of this build, and a
+    manifest without chroot, and passes a good record;
+  - the publisher refuses a gate without tested_build, a record changed
+    after the gate, and a mode altered in the gate. Each stops before any
+    aptly call.
+  - The -014 test's "next step" is now the chroot refusal (its fixture has
+    no chroot).
+- On main `e9f83de` scripts, with the branch's `tested_build.py` next to
+  them, the end-to-end tests fail 7 times: every tested-build case, since
+  main's gate and publisher do not call it
+  (`runs/new-tests-on-main-e9f83de.txt`). On the branch: full suite 229 OK
+  (1 skipped).
+
+Limit, stated: the recorded list of debs is the attestation of what was
+tested. The tools check that it is consistent with the builds and with the
+record's text, not that it is complete. A gate naming fewer debs is a
+smaller claim, not a forgery, so the publisher accepts it when it is
+consistent.
