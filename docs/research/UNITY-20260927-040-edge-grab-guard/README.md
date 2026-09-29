@@ -383,7 +383,7 @@ unknowns:
   - "Where exactly the release goes after Edge's ungrab in the replayed state (which window) - not traced; the fix removes the dependency."
   - "wall, ezoom: not measured."
   - "Title-bar buttons and menus still react in expo (rest of LP #1393523; option F) - out of scope, follow-up UNITY-20260929-010."
-  - "unity-shared XWindowManager::UnGrabMousePointer (raw ungrab; PanelIndicatorEntryView.cpp:151, PanelMenuView.cpp:1478, StartMove): nux gets events only when no grab other than deco/move/switcher/resize is listed (unityshell.cpp:2119), so not during expo/wall/ezoom, but possibly during move/resize - unmeasured, follow-up proposed (ID from C)."
+  - "unity-shared XWindowManager::UnGrabMousePointer (raw ungrab; PanelIndicatorEntryView.cpp:151, PanelMenuView.cpp:1478, StartMove): nux gets events only when no grab other than deco/move/switcher/resize is listed (unityshell.cpp:2119), so not during expo/wall/ezoom, but possibly during move/resize - unmeasured, follow-up UNITY-20260929-011."
   - "Real hardware not tested."
 test_plan: >-
   One boot; compiz restarted after installing the build and checked for no
