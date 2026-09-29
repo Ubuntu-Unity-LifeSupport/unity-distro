@@ -35,7 +35,7 @@ it.
 None: the gate scripts do not look at `chroot`, and nothing else checks the
 link between the tested and gated builds. `NOT_FIXED`.
 
-## 3. Proposal (for the Design Challenger)
+## 3. First proposal (superseded by section 5)
 
 P1. **A gated manifest must come from the -016 policy.**
 `create_release_gate.py` refuses a manifest without `chroot`, and says to
@@ -90,3 +90,113 @@ Tests: unit tests of the shared module; create_release_gate and
 publish_aptly refusals and acceptances per mode, in the end-to-end fixture
 of UNITY-20260929-014 (`test_build_dependencies_consumers.py`, fake aptly
 first on PATH).
+
+## 4. Design review 1: REVISE
+
+The Challenger found the layer and the mode structure right. What the modes
+check was not:
+
+- They tied chroots together, but not what ENGINEERING-PROCESS section 6
+  protects: the artifacts tested on target are the gated build, or are
+  equivalent to it.
+- `this_build` was a free-form bypass.
+- `same_chroot` trusted a tested manifest that may not be in the
+  repository. It also ignored `--extra-package`, which changes
+  Installed-Build-Depends while the chroot stays the same.
+- P1 was wrong to say no pending publication is affected. About 12 package
+  tasks sit in REVIEW behind aptly freeze #1, all built before -016:
+  UNITY-20260927-012, -023, -026 to -029, -037 and -052, and
+  UNITY-20260928-014, -019, -020 and -022. P1 blocks all of them. That is
+  intended, but it has to be stated, with their way forward.
+- P3 re-checked less than the gate.
+- The shared code belongs in a new module. sbuild_chroot.py is the builder
+  tool, with network fetch and tarball creation, and the gate and the
+  publisher should not import it.
+
+## 5. Proposal, revised
+
+**R1. Manifests from before -016 are refused.** `create_release_gate.py`
+refuses a gated manifest without `chroot`. This blocks the pending tasks
+listed in section 4. Each of them needs a new gated build under -016, then
+one of these:
+- `buildinfo_identical` against its old tested build's `.buildinfo`, if the
+  target test installed artifacts of a build whose `.buildinfo` is on
+  record;
+- or a new target test, with `this_build` or `same_chroot`.
+
+The freeze already stops these tasks; nothing is lost now.
+
+**R2. Every mode names what the target test installed.** The release record
+gets:
+- `target_test`: `{"record": <repo path of the target test record>,
+  "debs": {<file name>: <sha256>, ...}}`, the packages the target test
+  installed;
+- `tested_build`: one of three modes.
+
+The gate checks the mode as follows.
+
+- **`this_build`**: every `target_test.debs` entry is an artifact of the
+  gated manifest, with the same sha256.
+- **`same_chroot`**: the record names `tested_manifest`, which must be a
+  file committed in the repository.
+  - Every `target_test.debs` entry is one of its artifacts, with the same
+    sha256.
+  - The gated manifest's `chroot.tested_with.manifest_sha256` equals the
+    committed file's sha256. The re-hash is mandatory.
+  - The two manifests have equal `chroot.sha256`, `source_commit`,
+    `source_tree_hash` and `build_dependencies` (or both have none).
+- **`buildinfo_identical`**: the record names `tested_buildinfo`, a
+  committed file.
+  - Every `target_test.debs` entry must come from the build of that
+    `.buildinfo`: either `tested_manifest` is also given and lists both
+    the debs and the `.buildinfo` with their sha256s, or, for a tested
+    build without a manifest (before -016), the target test record lists
+    them.
+  - The gated build's `.buildinfo` (from its manifest's artifacts) must
+    match on `Source`, `Version` and `Build-Architecture`, and its
+    Installed-Build-Depends must be identical, with no exceptions. A
+    difference in an extra package or in Build-Depends is real and means a
+    new target test.
+  - This mode also covers a tested build that has a `chroot` with another
+    sha, for example after the tarball rotated.
+
+Any other value, or a missing field, is refused. The gate writes the mode
+and all checked hashes into `release-gate.json` as `tested_build`.
+
+**R3. One function, in both scripts.** A new `scripts/tested_build.py`
+reuses `build_dependencies.installed_build_depends`.
+`tested_build_error(record_or_gate, manifest, root)` checks everything in R2
+and returns the recomputed `tested_build` object.
+- `create_release_gate.py` calls it with the record.
+- `publish_aptly.py` calls it with the gate's recorded values and the
+  committed files. It refuses if anything fails, if a named file is
+  untracked, dirty or has changed since the gate, or if the recomputed
+  object differs from the gate's `tested_build`.
+
+**R4. Test builds are recorded too.** ENGINEERING-PROCESS section 6 says
+a build that will be tested on target is made with `build_sbuild.py`, and
+its manifest, `.buildinfo` and the target test record are committed. The
+gated build then uses `--tested-with` and the `same_chroot` mode, or the
+gated build is itself tested (`this_build`). The release-record fields get
+the three modes.
+
+**Tests.**
+- Unit tests of `tested_build.py`:
+  - each mode is accepted;
+  - Installed-Build-Depends differing by one version, one extra entry, one
+    missing entry, or the architecture qualifier is refused;
+  - a `Source` or `Version` mismatch is refused;
+  - a tested manifest that is missing, uncommitted or has the wrong hash is
+    refused;
+  - under the same chroot, a different source tree or different
+    `build_dependencies` is refused;
+  - a target-test deb hash mismatch is refused in each mode;
+  - an unknown mode, or the field absent, is refused.
+- In `test_build_dependencies_consumers.py` (fake aptly first on PATH):
+  - the gate refuses a manifest without `chroot`;
+  - the gate accepts each mode and writes `tested_build`;
+  - publish refuses a gate without `tested_build`;
+  - publish refuses when a committed tested `.buildinfo` or manifest
+    changed after the gate;
+  - publish refuses when the recorded `tested_build` differs from the
+    recomputed one.
