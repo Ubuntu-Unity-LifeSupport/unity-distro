@@ -1939,3 +1939,16 @@ The measurement stays with UNITY-20260927-044.
 Design Challenger: REVISE, APPROVE. unity +unity12 built with `scripts/build_sbuild.py --extra-package` and our published nux (UNITY-20260929-013), identical in content to the test build; on target title drag in expo 0/5, replay 0/3, the rest of the plan unchanged. Verifier: PASS (REVIEWED).
 
 **Limits, stated.** Title-bar buttons and menus still react in expo (UNITY-20260929-010). The panel's `XWindowManager::UnGrabMousePointer` during move or resize is not covered (UNITY-20260929-011). No unit test covers `Edge::ButtonDownEvent`; the package build runs no unit tests. The gesture grab, wall and ezoom under A2, and real hardware are not measured.
+
+
+## 2026-09-29 - UNITY-20260929-016: two builds ran on sbuild's on-demand chroot; no rebuild (agent A)
+
+**Context.** The unshare tarball `~/.cache/sbuild/resolute-amd64.tar.zst` (2026-09-22, `de.archive.ubuntu.com` resolute release pocket only, main, universe, restricted and multiverse) passed sbuild's `$unshare_mmdebstrap_max_age` of 7 days at 2026-09-29 17:46Z. From then on sbuild ignored it. For every build it ran `mmdebstrap --variant=buildd ... resolute - --components=main,universe` and threw the result away afterwards. That chroot used mmdebstrap's default sources: `archive.ubuntu.com` resolute and resolute-updates, and `security.ubuntu.com` resolute-security. Nothing recorded the switch except the sbuild logs ("Existing chroot tarball is too old", "Creating chroot on-demand"). Record: `research/UNITY-20260929-016-sbuild-chroot-policy/`.
+
+**Builds affected** (every sbuild log since 17:46Z checked):
+- UNITY-20260927-041: the gated build of calamares-settings-ubuntu 1:26.04.12+unity3. It is published (snapshot `unity-resolute-20260927-041`).
+- UNITY-20260929-014: real run Q1, a test build of the tiny package tiny013. Not published.
+
+UNITY-20260927-040's gated build (17:19-17:36Z) and every earlier build used the tarball.
+
+**Decision (coordinator, 2026-09-29).** Neither is rebuilt. Their logs and `.buildinfo` record exactly what they were built against. -041's payload was verified on target and is published. Q1 only exercised a tool. The chroot policy that prevents a silent switch is UNITY-20260929-016.
