@@ -3,25 +3,23 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-09-29 18:00Z)
+## Now (2026-09-29 18:55Z)
 
 **UNITY-20260927-040** (unity: Edge::ButtonDownEvent releases compiz's grab
-during expo; A2 = any-grab guard) - REVIEW, waiting for the coordinator
-(publication gate to be discussed). Fix `+unity12` =
-Ubuntu-Unity-LifeSupport/unity branch `a/UNITY-20260927-040` `7b0eca27`
-(checkout `~/work/a/unity-distro-040/packages/unity`). Gated build with
-`build_sbuild.py --extra-package` (our nux `0ubuntu15+unity2` from the pool):
-PASS, content-identical to the test build; regression 0/5 and plan sample
-green on target; Verifier round 1 PASS (REVIEWED). Card (task branch, not
-merged): `docs/research/UNITY-20260927-040-edge-grab-guard/README.md`
-(worktree `~/work/a/unity-distro-040`). Evidence
-`~/coordinator/evidence/UNITY-20260927-040.json`.
+during expo; A2 = any-grab guard) - PUBLISHED 2026-09-29 18:40:26Z (snapshot
+`unity-resolute-20260927-040`), target verified from the repository; DONE
+after the coordinator merges branch `a/UNITY-20260927-040` (`fa7ea4c`).
+Card: `docs/research/UNITY-20260927-040-edge-grab-guard/` (README.md,
+target-verification.md). Follow-ups UNITY-20260929-010, -011, -012.
 
-**UNITY-20260928-019** (lightdm `+unity2`) - DONE: published
-2026-09-29T17:06:28Z, target verification on branch `a/UNITY-20260928-019`.
-**UNITY-20260929-013** (`build_sbuild.py --extra-package`) - DONE, merged by
-the coordinator (`2de93ad`). **UNITY-20260927-047** phase L captures done
-(`~/work/a/047-capture/`).
+**UNITY-20260929-014** (build_dependencies hardening from -013's Verifier
+round 2) - REVIEW, Verifier PASS (INDEPENDENTLY_REPRODUCED); branch
+`a/UNITY-20260929-014` (`859e0cd`, worktree `~/work/a/unity-distro-014`)
+for the coordinator to merge; DONE after the merge.
+
+Done today: UNITY-20260928-019 (lightdm +unity2, published),
+UNITY-20260929-013 (`build_sbuild.py --extra-package`, merged),
+UNITY-20260927-047 phase L captures.
 
 My other open tasks are unchanged: UNITY-20260928-022 (its handoff is on
 branch `a/UNITY-20260928-022`, not in main - the coordinator handles that),
@@ -29,12 +27,12 @@ UNITY-20260927-012, UNITY-20260927-052, UNITY-20260928-008.
 
 ## State of `target`
 
-2026-09-29 18:00Z (UNITY-20260927-040): the gated unity `+unity12` build
-installed (unity, libunity-core-6.0-9, unity-schemas, -services, -uwidgets;
-debs in `~/u12g`), lightdm `+unity2` from our repository, workspaces 2x2,
-test tools and `~/rel` in `~mike`, `~/.dirty` present. To go back to the
-published `+unity11`, 1x1 and no test files once the publication decision is
-made. Earlier states below are history:
+2026-09-29 18:49Z (UNITY-20260927-040): published unity `+unity12` and
+lightdm `+unity2` from our repository, workspaces 1x1, test tools and
+results removed, rebooted; the two UNITY-20260927-047 capture files stay in
+`~`; `~/.dirty` present. A VBoxSVC restart for the wedged oem-test was
+pending (the coordinator's and May's decision); check target from inside
+the guest after it. Earlier states below are history:
 
 Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
 `Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
