@@ -396,3 +396,59 @@ requires it (follow-up proposed); the ENGINEERING-PROCESS wording on the
 `.buildinfo` fallback was clarified; `.sbuildrc` is UNITY-20260929-017.
 The implementation and real runs came after review 2 (REVISE) and before
 this APPROVE; the task was still in INVESTIGATING then.
+
+## 10. Verification
+
+**Round 1** on `ca84422`: **FAIL** (FIX_PARTIAL), INDEPENDENTLY_REPRODUCED.
+
+The Verifier reproduced 42 failures on main and 213 OK on the branch, and
+found the real runs consistent. Its finding: `check_log` skipped every
+`file:` and `copy:` URI. sbuild reads the user's `~/.config/sbuild/config.pl`
+before `SBUILD_CONFIG`, and `build/sbuild-config.pl` reset only
+`auto_create`. So a local repository (`$extra_repositories`, reachable
+through the bind-mounted HOME) or chroot-setup commands
+(`$external_commands`) in the user's config would have passed unrefused.
+ENGINEERING-PROCESS also said "any fetch from outside the snapshot".
+
+Remarks: a `<T>` in the future was accepted; nothing checked that the
+snapshot InRelease lines appear at all (e.g. with `$apt_update = 0`); and
+`SBUILD_CONFIG` was not in the manifest.
+
+**Fix** (both of the Verifier's options, plus its remarks):
+
+- `build/sbuild-config.pl` resets these settings, whatever the user's
+  config says:
+  - `$extra_repositories` and `$extra_repository_keys`;
+  - `$apt_allow_unauthenticated`;
+  - `$chroot_setup_script`, which sbuild pushes into
+    `chroot-user-setup-commands`;
+  - every `$external_commands` hook.
+
+  It also keeps `$apt_update` and `$apt_distupgrade` on.
+- `check_log` accepts `file:` and `copy:` only as
+  `/build/reproducible-path/resolver-<id>/apt_archive`, the archives sbuild
+  makes itself. It also requires the InRelease of each of the three pockets
+  from the snapshot.
+- `check_tarball` and `create` refuse a snapshot more than 5 minutes in the
+  future.
+- The manifest's `chroot` key records `sbuild_config` (path and sha256).
+- ENGINEERING-PROCESS states exactly what is reset and what is refused.
+
+Tests: the four new local-repository cases, a missing pocket, no snapshot
+fetch at all, a future snapshot, a local repository in a build log, and the
+config content. Suite: 214 OK (1 skipped).
+
+**Real proof that the override works** (`tools/hostile-config.sh`,
+`runs/hostile-config.log`): a user config under `XDG_CONFIG_HOME` adds a
+`file:` repository and an `echo HOSTILE-SETUP-MARKER` chroot-setup command.
+
+- **H1 (control):** plain `sbuild --chroot=<tarball>` with that config. The
+  command ran, and apt fetched the local repository (exit 3, the repository
+  is empty). This shows the config really is read.
+- **H2:** `build_sbuild.py` with the same config. Exit 0, no line naming
+  the repository or the marker, the three InRelease files from the snapshot,
+  "0 upgraded".
+
+The new `check_log` on the real logs (`runs/check-log-real.txt`): S2, S3
+(with the `file:`/`copy:` resolver archives of our nux) and H2 are accepted;
+H1 is refused.
