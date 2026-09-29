@@ -275,3 +275,160 @@ task.
   rehearsal within -021, before merge. If it refutes an assumption, the
   design returns to the Design Challenger.
 - **aptly's source** may be read on GitHub (section 5).
+
+## 8. Design amendment (coordinator's decision, 2026-09-29): option (a)
+
+This amends UNITY-20260929-019 round 2 item 2, "the stand-in writes all
+three over aptly's temporary files before aptly renames them into place",
+which aptly 1.6.2 refutes (section 5). The -019 design task stays with B,
+in BLOCKED, and is not changed; the amendment lives here.
+
+- **At the switch.** aptly has already put its own Release into storage.
+  When aptly calls gpg, the stand-in:
+  - sends that Release, and the live index files (A1 below), to the
+    signer;
+  - receives the signer's Release, `InRelease` and `Release.gpg`;
+  - writes aptly's destinations: `InRelease` (the signer's clearsigned
+    Release, carrying `Valid-Until`) and `Release.gpg` (the signer's
+    detached signature over the signer's Release).
+- **Right after the switch, in the same `publish_aptly.py` run,** a refresh
+  installs the signer's trio into `dists/resolute/`. The window in which the
+  published `Release` (aptly's) does not match `Release.gpg` is therefore
+  bounded by one call. `InRelease`, which apt reads first, is valid from
+  the moment of the switch.
+- **If the refresh fails:**
+  - the publication is marked: the publish record gets
+    `refresh: FAILED`, and a marker file
+    `~/coordinator/publish-records/<task>.refresh-failed` is written;
+  - C gets a signal: a `REFRESH-FAILED <task>` line in `~/AGENTS-LOG.md`,
+    and a non-zero exit with the reason;
+  - `InRelease` stays valid until `Valid-Until`, and the next cadence
+    refresh repairs it.
+- **Rejected:**
+  - (b) overwriting `Release.tmp` in storage: it depends on aptly
+    internals;
+  - (c) publishing unsigned and installing afterwards: it opens a window in
+    which apt refuses the repository.
+
+## 9. Revised plan (the plan review's blocking points)
+
+A1. **Checksums of the compressed variants: `/sign` receives the live index
+files.** aptly writes its index temporary files in the same temporary
+directory as the Release it asks gpg to sign. The file names are the
+relative path with `/` replaced by `_` (`BufWriter` in
+`deb/index_files.go`). The stand-in sends every file the Release lists,
+read from that directory. The rehearsal must confirm that they are there
+when gpg is called. The signer:
+- checks that each file decompresses to the approved content;
+- refuses any listed file it did not receive, and any unlisted file;
+- builds its Release from those exact bytes and the template.
+
+So the signed checksums are those of bytes the signer checked.
+
+A2. **Per-component Release files** (`main/binary-*/Release`,
+`main/source/Release`). The signer builds them from its template (Archive,
+Component, Origin, Label, Architecture, and the other template fields) and
+requires the received bytes to equal them exactly. Refusal tests cover each
+of their fields.
+
+A3. **`/sign` and `/live` take only an unconsumed approval whose base is
+still last-live**, checked at both.
+- `/live` moves last-live only when the `InRelease` served on :8080 is
+  byte-identical to the one the signer produced for that approval.
+- A valid signature from the signer's own history, over an older Release,
+  is refused. Otherwise it would be a rollback without May.
+
+A4. **No builder text reaches the console unvalidated.**
+- Package name, version and arch are checked against Debian grammar,
+  sha256 must be hex, and size must be digits; a set that fails is
+  refused.
+- For any other changed control field, the console shows only the field
+  name and the old and new hashes.
+- The task ID is shown only if it matches `^UNITY-\d{8}-\d{3}$`, labelled
+  "claimed by builder". Otherwise it is not shown.
+- Logs apply the same rule. No control characters are printed.
+
+**The review's other required points, all taken:**
+- **Two calls.** The first `/sign` signs once and stores the detached and
+  clearsigned pair over the same bytes. The second call must present
+  exactly those bytes (aptly's Release with the same index files), in
+  either order, and receives the stored pair: no new signing and no new
+  Date. Each new Date is strictly greater than the last one signed.
+- **Stand-in.**
+  - It refuses unknown options and any positional count other than one.
+  - It never forwards or logs `--passphrase`.
+  - `--version` prints `gpg (GnuPG) 2.4.8`, which matches aptly's regex.
+  - The argv seen in the rehearsal is recorded, and the tests use it.
+  - aptly operations in this project that call gpg are listed. The
+    provider is global, and only publish signs.
+- **SkipContents.** The step-4 precondition states how the live
+  publication and the rehearsal are set to skip Contents (aptly's
+  `SkipContents`), since `publish switch` keeps the existing setting.
+  The signer refuses any `Contents-*`.
+- **Template.** It is committed at `signer/release-template.json` and
+  reviewed. The console shows its sha256 when May installs it. It is
+  never taken from builder.
+- **State.**
+  - One JSON state file on the signer, guarded by `flock` across the
+    `serve`, `console` and `resign` processes.
+  - Atomic writes: a temporary file, fsync, `os.replace`, then fsync of the
+    directory.
+  - Missing or corrupt state refuses everything and never reinitialises.
+    First initialisation is an explicit console command.
+- **HTTP.**
+  - It binds only to the configured host-only address.
+  - `Content-Length` is capped, and chunked bodies are refused.
+  - Every socket has a timeout.
+  - Pending proposals are capped in number and in total size.
+  - Decompressed sizes are capped.
+- **The :8080 fetch.**
+  - No redirects, and a fixed base URL.
+  - `Filename` is normalised, with no `..`, absolute paths or
+    percent-encoding.
+  - The download is capped at the Packages `Size`.
+  - A 404, a sha256 mismatch, or a malformed ar or control archive (gz, xz
+    or zst) refuses the proposal. It is never shown as "no scripts".
+- **Signing.**
+  - `gpg --homedir <configured> --batch --local-user <fpr>!`.
+  - Each output is checked with `gpgv` against the pinned public key
+    before it is returned.
+  - The pinned fingerprint refuses any other key, the test key included,
+    in production configuration.
+- **Scope.** The `publish_aptly.py` integration is a follow-up: the
+  proposal step, the switch, the refresh right after it, and round 3's
+  "repository has expired" reporting. In this task, `signer_client.py
+  refresh` implements the refresh with the marking and signal above, and
+  `publish_aptly.py` will call it.
+
+**Tests** (standard library; the throwaway key per section 7): everything
+in section 2 P5, plus:
+- per-component Release fields;
+- `/live` refusals: a foreign key, an older signed Release, a set that is
+  not approved, extra data after the signature;
+- `.deb` failures, each of which refuses the proposal;
+- index paths with `..`, an absolute path or percent-encoding;
+- decompression limits;
+- duplicate fields or entries;
+- aptly's Release already carrying a `Valid-Until`;
+- a Date equal to the last one;
+- a stand-in timeout or refusal, with nothing written;
+- approving a proposal whose base is stale.
+
+For the amendment:
+- after the simulated switch, `InRelease` is valid over the signer's
+  Release;
+- the refresh closes the window: `Release` and `Release.gpg` match;
+- a failed refresh leaves the marker and the log line and exits non-zero.
+
+**Rehearsal: the coordinator's answer to the review.** The rehearsal
+allowance exists so that the agent in a named session runs aptly publish
+on the rehearsal root under C's marker, after May's GO. See
+ENGINEERING-PROCESS section 6 and UNITY-20260927-057; B did the same for
+UNITY-20260927-047 R. The procedure in section 7 stands: code and tests
+first, then the rehearsal within -021, before merge, and back to the Design
+Challenger if an assumption fails. The rehearsal proves:
+- signing before the rename;
+- a refusal leaving the old files live;
+- the index temporary files present in aptly's temporary directory when gpg
+  is called (A1);
+- the argv aptly passes.
