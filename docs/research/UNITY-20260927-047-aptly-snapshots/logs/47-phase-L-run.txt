@@ -33,9 +33,36 @@ InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970
 isolated apt client on file:/srv/aptly/public (Signed-By the live key): apt-get update rc=0; E/W lines: 0;
   candidates unity 7.7.1+26.04.20260306-0ubuntu3+unity11, libunity-gtk4-menu0 0.9
 target2 after-L (logs/46) vs before-L (logs/45): only the capture header and our Release Date (Sat 26 Sep 20:53:52 -> Tue 29 Sep 14:23:59); all policy lines identical
-target (A): after-L requested by C (pending)
+target (A): after-L clean (below)
 
 ## guard note
 One helper command (sed building the apt-client script) was refused: "aptly may only be run directly, or named in a
 command made of plain readers" - only the path /srv/aptly in its data. Not rephrased; the script was written with the
 Write tool like the other helpers. C counts it as a false positive of the UNITY-20260929-003 kind. No P command refused.
+
+## target (A) after-L: ~/work/a/047-capture/047-after-L-target-desktop.txt, 1394 lines, sha256 a978e1f3c6885e65aabb0f98a0bb7a9eef795076b9cf156c632bbb614616a605 (checked by B), same boot_id; diff with before-L: only the header line and our Release Date (Sat 26 Sep 20:53:52 -> Tue 29 Sep 14:23:59); apt-get update rc=0 no E/W
+
+## L6 (14:26:16-14:26:20Z)
+P8 publish drop resolute candidate -> Removing /srv/aptly/public/candidate/dists... /candidate/pool... removed (empty candidate/ left, as R9)
+P7 publish list -> ./resolute [amd64] publishes {main: [unity-resolute-20260927-047]: Snapshot from local repo [unity-resolute]}
+
+## live-list after (live-list.py, logs/48b) vs L0 baseline (logs/44b)
+# files 635, entries 1240
+# list sha256 (sha256sum format, sorted by path): df8d531283386250cf492054a59a395dcf98374c1403e67aba23733de3317ead
+before 633 files, after 635 files
+  db/: 5 added
+  db/: 3 changed
+  db/: 3 removed
+  public/: 3 changed
+pool/ unchanged: True
+public/ changed: dists/resolute/InRelease, Release, Release.gpg (nothing else)
+
+## live-log.jsonl
+live-log lines: 7
+2026-09-29T14:23:30Z admitted b7902aab Bash 61d806ab 4e9dde5a snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate
+2026-09-29T14:23:35Z admitted b7902aab Bash 61d806ab 4e9dde5a show resolute candidate
+2026-09-29T14:23:53Z admitted b7902aab Bash 61d806ab 4e9dde5a drop resolute
+2026-09-29T14:23:59Z admitted b7902aab Bash 61d806ab 4e9dde5a snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047
+2026-09-29T14:24:15Z admitted b7902aab Bash 61d806ab 4e9dde5a show resolute
+2026-09-29T14:26:16Z admitted b7902aab Bash 61d806ab 4e9dde5a drop resolute candidate
+2026-09-29T14:26:20Z admitted b7902aab Bash 61d806ab 4e9dde5a list

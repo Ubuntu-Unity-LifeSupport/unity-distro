@@ -333,7 +333,35 @@ to C. Phase L needs a separate GO.
 
 ## Status
 
-BLOCKED (resume at IMPLEMENTING): waiting for May's separate GO for phase L.
+**Phase L done, 2026-09-29 14:23-14:26Z** (logs/44 L0, logs/47 the run).
+Live `./resolute` is now the snapshot `unity-resolute-20260927-047` (285
+packages = repo `unity-resolute`), signed by
+29A893E03970066F2DD287D47BF3F77FC27B152C.
+
+- All eight L strings ran through the UNITY-20260929-008 allowance; seven
+  of them were needed (no rollback). live-log.jsonl has 7 lines, all
+  session b7902aab and marker 61d806ab.
+- Checks:
+  - live `.` vs the L0 backup: only Date;
+  - isolated apt client: no E/W;
+  - target2 and target (A) after-L vs before-L: only our Release Date, all
+    127 policies identical;
+  - /srv/aptly: pool/ unchanged; public/ changed only in
+    InRelease/Release/Release.gpg; db/ changed (the snapshot).
+- Outage (P3 -> P4 InRelease) at most 6.67 s, measured. The two separate
+  foreground calls add one tool round trip compared with the rehearsal's
+  1.16 s.
+- UNITY-20260927-035: the live publication is the snapshot
+  `unity-resolute-20260927-047`. `publish_aptly.py` switches from it.
+- Left for C:
+  - remove the live marker;
+  - end the freeze;
+  - at -047's DONE, remove `.claude/hooks/live-commands.json` from main.
+- target2 goes back to Clean-2.
+- Backup kept: ~/backups/aptly-047-L-20260929T142117Z.
+
+Previous state: BLOCKED (resume at IMPLEMENTING), waiting for May's
+separate GO for phase L.
 Freeze no. 1 stays in force. /var/tmp/aptly-rehearsal is kept as left after
 the repeat.
 
