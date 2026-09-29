@@ -1,0 +1,36 @@
+### run 1
+# 2026-09-29T09:34:29Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+service pid before: 1565
+service env: 
+09:34:30.052 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:34:32.184 ACTION restart accounts-daemon
+09:34:32.659 current: uint32 4294967295
+09:34:32.688 sources: @a(ss) []
+09:34:32.977 current: uint32 0
+09:34:33.019 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:34:42.691 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 1565 (same)
+### run 2
+# 2026-09-29T09:34:47Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+service pid before: 1565
+service env: 
+09:34:48.129 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:34:50.427 ACTION restart accounts-daemon
+09:34:51.405 current: uint32 4294967295
+09:34:51.615 sources: @a(ss) []
+09:34:51.938 current: uint32 0
+09:34:51.964 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:35:01.817 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 1565 (same)
+### run 3
+# 2026-09-29T09:35:07Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+service pid before: 1565
+service env: 
+09:35:08.080 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:35:10.490 ACTION restart accounts-daemon
+09:35:12.045 current: uint32 4294967295
+09:35:12.355 sources: @a(ss) []
+09:35:12.604 current: uint32 0
+09:35:12.958 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:35:22.301 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 1565 (same)
