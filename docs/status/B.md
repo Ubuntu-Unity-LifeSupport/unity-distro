@@ -5,6 +5,76 @@ Build directory: `~/work/b`
 
 ## Now
 
+**2026-09-29 ~20:40Z**
+- **UNITY-20260927-041 DONE.** calamares-settings-ubuntu 1:26.04.12+unity3 was
+  published at 18:15Z and is live through -040.
+  - Target PASS: `/etc/sudoers` in OEM mode is 0440 and `visudo -c` passes;
+    a cold first boot from `OEM-ready-unity3` shows Calamares on top.
+  - `oem-test` is powered off. Snapshots OEM-ready, -fixed, -unity2 and
+    -unity3 are kept.
+- **UNITY-20260929-018** (SECURITY) was merged by C at 609f731 as a partial
+  tightening; the Verifier's verdict is FAIL, FIX_PARTIAL, and May decided to
+  merge it anyway. It is BLOCKED (resume REVIEW) until UNITY-20260929-019
+  (OS permissions) is done.
+- Next: UNITY-20260929-003 (guard false positives).
+
+**Before the restart 2026-09-29 (~19:00Z; VBoxSVC and builder are
+restarted, May's decision).**
+- UNITY-20260927-041 (calamares-settings-ubuntu 1:26.04.12+unity3):
+  - Switched 18:15Z (snapshot unity-resolute-20260927-041). ./resolute is
+    now A's -040, which carries it.
+  - Target check steps 1-3 PASS, logs 11-14 on `b/UNITY-20260927-041`
+    cbb51c0:
+    - OEM mode `/etc/sudoers` is 0440, and `visudo -c` passes for sudo-rs
+      and sudo.ws;
+    - snap-seed-glue-emb (snapd 2.76.3) was exercised.
+  - Left to do:
+    - snapshot OEM-ready-unity3, taken on the powered-off oem-test after
+      diagnose_vm (it was WEDGED in 'snapshotting' after take_snapshot
+      E_ACCESSDENIED);
+    - one cold first boot;
+    - target verification record, then PUBLISHED and DONE.
+  - The disk holds the finished OEM preparation. oem password: `oem041test`.
+- UNITY-20260929-003: BLOCKED (resume at CLAIMED).
+- No tmux, http or sbuild processes are running. Branches -021, -015, -041
+  and the package branch 221c691 are pushed.
+
+**UNITY-20260929-015** (2026-09-29): tool, merged by C into main at
+55381f3.
+- taskctl PUBLISHED now also accepts a later live snapshot that carries
+  every artifact of the publish record with the recorded sha256. The check
+  is read-only `snapshot search`.
+- Design Challenger APPROVE. Verifier PASS, independently reproduced.
+- Decision (C): a newer version of the same package in the live snapshot
+  does not block PUBLISHED. See DECISIONS.
+
+**UNITY-20260927-021 DONE** (2026-09-29 17:52Z): PUBLISHED through the
+content check against `unity-resolute-20260928-019`. The branch has been
+merged with main (3ef9c23). The details below are left as written.
+Next: UNITY-20260927-041, publication of calamares +unity3.
+
+**UNITY-20260927-021** (2026-09-29): calamares-settings-ubuntu
+1:26.04.12+unity2. Target PASS; PUBLISHED waits for UNITY-20260929-015.
+- Published 16:10Z as snapshot `unity-resolute-20260927-021-r2`.
+- Target check on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from the new snapshot `OEM-ready-unity2`.
+  In both boots Calamares is on top, and the wallpaper is DESKTOP/BELOW and
+  never focused.
+- Limit: apt does not fix an OEM system that is already installed.
+  basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz`
+  and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`,
+  branch `b/UNITY-20260927-021` deb301b.
+- `oem-test` is powered off. Snapshots `OEM-ready`, `OEM-ready-fixed` and
+  `OEM-ready-unity2` are kept.
+- Why it waits: taskctl compares the live snapshot by name, and `./resolute`
+  has since moved to `unity-resolute-20260928-019`. That snapshot is a
+  superset: only 11 lightdm records were added.
+- Next: UNITY-20260929-015, taskctl accepting a live snapshot that contains
+  every artifact of the publish record.
+
 **hud** (2026-09-26, B-12): hud is B's now.
 - `+unity1` builds in resolute: CMake 4, systemd-dev and C++17 fixed, 6/6
   test suites pass.

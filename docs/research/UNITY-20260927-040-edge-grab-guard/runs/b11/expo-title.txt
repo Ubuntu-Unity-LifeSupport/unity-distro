@@ -1,0 +1,41 @@
+Attached 14 probes
+READY
+2382 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7ca279b08c1b
+
+2740 PUSH-GRAB expo
+2742 XGRABPOINTER
+        XGrabPointer+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+2746 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+5221 UNITY-SEES ButtonPress window=0x300039c button=1
+5222 GRABEDGE-DOWN button=1
+5222 EXPO-SEES ButtonPress window=0x300039c button=1
+5272 EDGE-DOWN button=1
+5272 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+343
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+5272 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+343
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+10478 UNITY-SEES ButtonPress window=0x300001a button=1
+10479 EXPO-SEES ButtonPress window=0x300001a button=1
+
+

@@ -189,6 +189,76 @@ def check_switch_time_evidence(record):
         raise ValueError("publish record lacks the switch-time apt view of the published snapshot")
 
 
+# UNITY-20260929-015: a later publication replaces the live snapshot's name;
+# the task's publication is still live if the live snapshot carries every
+# artifact of the record, byte for byte. Read-only aptly commands only.
+PUBLISH_SOURCE = re.compile(r"(?m)^\s*(\w+):\s+(\S+)\s+\[(\w+)\]\s*$")
+
+
+def run_aptly_read(args):
+    return subprocess.run(["aptly"] + args, check=False, capture_output=True, text=True)
+
+
+def confirm_live_publication(record, distribution, prefix, run=run_aptly_read):
+    """None if the record's publication is live now, else the reason it is not.
+    Live means: publish show names the record's snapshot, or it names exactly
+    one other snapshot that holds every source and binary artifact of the
+    record with the recorded version and sha256."""
+    shown = run(["publish", "show", distribution] + ([prefix] if prefix != "." else []))
+    if shown.returncode:
+        return f"aptly publish show {distribution} failed: {shown.stderr.strip()}"
+    sources = PUBLISH_SOURCE.findall(shown.stdout)
+    if (record["snapshot"], "snapshot") in [(name, kind) for _component, name, kind in sources]:
+        return None
+    if len(sources) != 1 or sources[0][2] != "snapshot":
+        return (f"live publication does not name the recorded snapshot {record['snapshot']} and is not exactly "
+                f"one snapshot: {[f'{c}: {n} [{k}]' for c, n, k in sources]}")
+    live = sources[0][1]
+    if str(Path(__file__).resolve().parent) not in sys.path:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from publish_aptly import dsc_checksums, source_package_matches, PROVENANCE_ONLY_KINDS
+
+    artifacts = record.get("artifacts") or []
+    kinds = [a.get("kind") for a in artifacts]
+    if kinds.count("source") != 1 or "source_file" not in kinds or "binary" not in kinds:
+        return "publish record must list exactly one source, its source files and at least one binary"
+    other = sorted({k for k in kinds} - {"source", "source_file", "binary"} - PROVENANCE_ONLY_KINDS, key=str)
+    if other:
+        return f"publish record has artifact kinds without a live-content rule: {other}"
+    missing, differing = [], []
+    for a in artifacts:
+        if a.get("kind") != "binary":
+            continue
+        name = f"{a.get('package')} {a.get('version')} {a.get('architecture')}"
+        found = run(["snapshot", "search", "-format", '{{index . "SHA256"}}', live,
+                     f"Name ({a.get('package')}), Version (= {a.get('version')}), Architecture ({a.get('architecture')})"])
+        lines = [line.strip() for line in found.stdout.splitlines() if line.strip()] if not found.returncode else []
+        if not lines:
+            missing.append(name)
+        elif lines != [a.get("sha256")]:
+            differing.append(name)
+    source = next(a for a in artifacts if a.get("kind") == "source")
+    query = f"Name ({source.get('package')}), $Architecture (source), Version (= {source.get('version')})"
+    keys = run(["snapshot", "search", "-format", "{{.Key}}", live, query])
+    # an aptly key is one line with spaces in it ("Psource demo 1:1.0 <hash>")
+    key_lines = [line for line in keys.stdout.splitlines() if line.strip()] if not keys.returncode else []
+    if len(key_lines) != 1:
+        missing.append(f"{source.get('package')} {source.get('version')} source"
+                       + (f" (found {len(key_lines)} source packages)" if key_lines else ""))
+    else:
+        checksums = run(["snapshot", "search", "-format", '{{index . "Checksums-Sha256"}}', live, query])
+        if checksums.returncode:
+            missing.append(f"{source.get('package')} {source.get('version')} source")
+        else:
+            error = source_package_matches(artifacts, dsc_checksums("Checksums-Sha256:\n" + checksums.stdout))
+            if error:
+                differing.append(error)
+    if missing or differing:
+        return (f"live snapshot {live} (the recorded {record['snapshot']} is no longer live) does not carry the "
+                f"record's artifacts: missing {missing}, other sha256 {differing}")
+    return None
+
+
 def require_authorization(data):
     """An operation acts on shared infrastructure: who approved it, where
     that approval is recorded, and what it covers."""
@@ -349,14 +419,9 @@ def require_evidence(target, data, task_id, kind=None, state=None):
             target_record = repo / target_record
         if not target_record.is_file():
             raise ValueError("target_verification_record must point to an existing verification record")
-        publication = publish.get("distribution")
-        prefix = publish.get("prefix")
-        command = ["aptly", "publish", "show", publication]
-        if prefix != ".":
-            command.append(prefix)
-        shown = subprocess.run(command, check=False, capture_output=True, text=True)
-        if shown.returncode or not re.search(rf"(?m)^\s*\w+:\s+{re.escape(record['snapshot'])}\s+\[snapshot\]", shown.stdout):
-            raise ValueError("live aptly publish show does not confirm the recorded snapshot")
+        live_error = confirm_live_publication(record, publish.get("distribution"), publish.get("prefix"))
+        if live_error:
+            raise ValueError(live_error)
     if target == "DONE":
         # UNITY-20260928-005: DONE by kind and by the state it comes from.
         if kind not in KINDS:

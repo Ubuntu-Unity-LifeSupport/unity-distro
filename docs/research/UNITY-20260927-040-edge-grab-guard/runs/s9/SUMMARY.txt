@@ -1,0 +1,33 @@
+pointer=free keyboard=free
+SUMMARY kbdresize stuck 0/5
+  kbdresize-1: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-2: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-3: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-4: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-5: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+SUMMARY kbdresize-esc stuck 0/5
+  kbdresize-esc-1: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-esc-2: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-esc-3: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-esc-4: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-esc-5: PUSH-GRABresize RESIZE-TERMINATEstate=8 REMOVE-GRAB
+SUMMARY kbdmove stuck 0/5
+  kbdmove-1: PUSH-GRABmove REMOVE-GRAB
+  kbdmove-2: PUSH-GRABmove REMOVE-GRAB
+  kbdmove-3: PUSH-GRABmove REMOVE-GRAB
+  kbdmove-4: PUSH-GRABmove REMOVE-GRAB
+  kbdmove-5: PUSH-GRABmove REMOVE-GRAB
+SUMMARY kbdresize-drag stuck 0/5
+  kbdresize-drag-1: PUSH-GRABresize EDGE-DOWNbutton=1 RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-drag-2: PUSH-GRABresize EDGE-DOWNbutton=1 RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-drag-3: PUSH-GRABresize EDGE-DOWNbutton=1 RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-drag-4: PUSH-GRABresize EDGE-DOWNbutton=1 RESIZE-TERMINATEstate=8 REMOVE-GRAB
+  kbdresize-drag-5: PUSH-GRABresize EDGE-DOWNbutton=1 RESIZE-TERMINATEstate=8 REMOVE-GRAB
+SUMMARY kbdmove-drag stuck 0/5
+  kbdmove-drag-1: PUSH-GRABmove EDGE-DOWNbutton=1 REMOVE-GRAB
+  kbdmove-drag-2: PUSH-GRABmove REMOVE-GRAB
+  kbdmove-drag-3: PUSH-GRABmove REMOVE-GRAB
+  kbdmove-drag-4: PUSH-GRABmove EDGE-DOWNbutton=1 REMOVE-GRAB
+  kbdmove-drag-5: PUSH-GRABmove EDGE-DOWNbutton=1 REMOVE-GRAB
+
+[exited with code 0]

@@ -3,32 +3,47 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now
+## Now (2026-09-29 19:00Z)
 
-Nothing in flight; waiting (autonomous mode stopped by May). Last (2026-09-26): A-7 every u-c-c panel run and a setting applied through each (`research/ucc-panels/`), u-c-c +unity2 in aptly. A-6 session-migration +unity1, unity +unity11, u-s-d +unity5, u-c-c +unity1 in aptly. A-5 unity-greeter `+unity1` rebuildable again, in aptly (`research/unity-greeter-rebuild/`). Before: A-4 cinnamon-session #202 - not reachable in our session, nothing to
-change (`research/cinnamon-session-214-202/`); A-3 xorg-server
-`1.3+unity2`; A-2 no change needed; A-1 six known issues re-checked from a
-clean snapshot (`research/recheck-2026-09-26/`). target = aptly (restored from
-`Clean-updated-2026-09-23`, our aptly added, full-upgrade), plus test tools
-(xdotool, gdb, x11-utils, gnome-text-editor, gnome-characters) and the test
-scripts in `~`. The `xorg-watch` systemd user timer on builder stays enabled
-(monitoring, not a test).
+Before the restart 2026-09-29 (VBoxSVC restart with the builder, May's
+decision): nothing in progress. UNITY-20260927-040 (unity +unity12,
+published 18:40:26Z, main 9a40c8a) and UNITY-20260929-014
+(build_dependencies hardening, main d2eeb3f) are DONE; UNITY-20260928-019
+and UNITY-20260929-013 DONE earlier today. All task branches are pushed and
+equal to origin; no tmux, sbuild, bpftrace or other background process; no
+operation on target. Continue from: after the restart, check target-desktop
+from inside the guest (published unity +unity12 and lightdm +unity2,
+workspaces 1x1, `~/.dirty`, no test files), then wait for the coordinator's
+next assignment.
+
+My other open tasks are unchanged: UNITY-20260928-022 (its handoff is on
+branch `a/UNITY-20260928-022`, not in main - the coordinator handles that),
+UNITY-20260927-012, UNITY-20260927-052, UNITY-20260928-008.
 
 ## State of `target`
 
-Since 2026-09-24 13:11 boot (full upgrade from our aptly), plus by `dpkg -i`
-then matched by aptly: unity `+unity10` (2026-09-26), compiz `+unity2`, gtk-nocsd `4.8-1+unity1`
-(dbgsyms for them installed too); xorg-server `2:21.1.22-1ubuntu1.3+unity1` (matched by aptly); unity-settings-daemon `0ubuntu7+unity4` (dpkg -i, matched by aptly; dbgsym removed, test divert removed); `~/evinject.py`, `~/evabs.py`, `~/steal-idle.py`, `~/repro1.sh`, `~/cursor-loop.sh` and results in `~/cur/`, rebooted 2026-09-25 ~20:30Z; see `research/xorg-versioning/`. Workspaces 2x2, six terminals spread over
-them. Also installed: libxpathselect1.4v5 (Unity introspection),
-libunity-gtk4-menu0 0.8, gnome-characters, gnome-text-editor,
-gnome-sound-recorder, google-chrome-stable 154 (adds `google-chrome.sources`); xdotool, gdb,
-test scripts in `~`; unity-session `49.4+unity1`. Clock was 1 h 07 min behind, set from builder at 17:26Z
-- not synchronised, check after a host sleep. `~/.dirty` present.
+2026-09-29 18:49Z (UNITY-20260927-040): published unity `+unity12` and
+lightdm `+unity2` from our repository, workspaces 1x1, test tools and
+results removed, rebooted; the two UNITY-20260927-047 capture files stay in
+`~`; `~/.dirty` present. Check it from inside the guest after the VBoxSVC
+restart. Earlier states below are history:
 
-Correction 2026-09-27 (UNITY-20260927-036): `libunity-gtk4-menu0 0.8` in the
-list above is no longer installed on target -
-`ssh target dpkg-query -W libunity-gtk4-menu0` on 2026-09-27 reports no such
-package (checked again today). The line above is kept as written.
+Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
+`Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
+`full-upgrade`; xdotool, x11-utils, xterm, python3-evdev installed. After the
+tests: unity back to the published `+unity11`, workspaces 1x1 again, test
+files removed, rebooted; the two 047 capture files stay in `~`. `~/.dirty`
+present. The earlier restore of the same day (below) is superseded:
+
+Restored 2026-09-29 07:55Z from `Clean-updated-2026-09-23` (confirmed from
+the guest: fresh boot, no `~/.dirty`), then: our aptly added
+(`/etc/apt/sources.list.d/unity-distro.list`, key
+`/usr/share/keyrings/unity-distro.gpg`), `full-upgrade` to our stack;
+xdotool, xauth, x11-utils installed. lightdm back to aptly `+unity1` after
+the +unity2 tests; the test user `utest`, the pam_exec test hook and the test
+scripts removed. `~/.dirty` present. Everything older in this file's history
+(the pre-2026-09-29 target state) no longer applies - the snapshot restore
+discarded it.
 
 ## Mine in `packages/`
 
@@ -37,12 +52,13 @@ package (checked again today). The line above is kept as written.
   `exp/option-b-request-shutdown` (rejected experiment).
 - `packages/cinnamon-session` - gbp repository, branch `unity/resolute`
   (`6.4.2-1+unity3`), https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.
+- `packages/unity` - task branch `a/UNITY-20260927-040` (`+unity12`, not in our repository yet; checkout `~/work/a/040-unity`).
 - `packages/unity` branch `wip/confirm-inhibitors` (worktree `~/work/a/unity`),
   `+unity3` (not published) and `+unity4`.
 - `packages/compiz` - branch `unity/resolute` (`+unity2`), https://github.com/Ubuntu-Unity-LifeSupport/compiz.
 - `packages/unity` - `unity/resolute` at `+unity8` (tag), built from worktree
   `~/work/a/unity` branch `fix/compiz-teardown` (merged).
-- `packages/lightdm` - gbp, branch `unity/resolute` (`1.32.0-6ubuntu4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/lightdm.
+- `packages/lightdm` - gbp, branch `unity/resolute` (`1.32.0-6ubuntu4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/lightdm; branch `a/UNITY-20260928-019` (`+unity2`, not published; checkout `~/work/a/019-lightdm`).
 - `packages/unity-session` - branch `unity/resolute` (`49.4+unity1`), https://github.com/Ubuntu-Unity-LifeSupport/unity-session.
 - (`packages/gtk-nocsd` handed to agent B, 2026-09-26.)
 - `packages/unity-settings-daemon` - branch `unity/resolute` (`0ubuntu7+unity4`, worktree `~/work/a/usd`, based on the unreleased git head 216f054), https://github.com/Ubuntu-Unity-LifeSupport/unity-settings-daemon.

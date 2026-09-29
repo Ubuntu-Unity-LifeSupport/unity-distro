@@ -1853,3 +1853,134 @@ Left for follow-ups:
 - Tests 6/6. On target2: LibreOffice's window kept 10/10, HUD answered 9/10; the miss is a first-start case tracked in UNITY-20260929-002.
 
 hud +unity3 contains +unity2 (UNITY-20260927-029). Verifier: PASS.
+
+
+## 2026-09-29 - UNITY-20260928-014: the greeter's indicator-keyboard does not write input sources it has no data for (agent B)
+
+**Context.** Follow-up of UNITY-20260927-024. Under unity-greeter, a restart of accounts-daemon (for instance an accountsservice upgrade at the login screen) made +unity3 write `sources=[]` and `current=4294967295` for about 0.3 s. A stored 4294967295 survived a reboot as the last layout, and an instance started inside the reload window kept a stale list of users. Record: `research/UNITY-20260928-014-ik-greeter-sources/`.
+
+**Decision.** Fix it in the consumer, indicator-keyboard. This is the -024 conclusion again: NULL is a legitimate libaccountsservice answer.
+- Skip the pass while no counted user has data. A dead object next to users with data does not block.
+- Redo the pass on `ActUserManager::user-changed` while it is pending.
+- List users afresh on every pass. Connect the `notify::is-loaded` handler in both start branches.
+- Write only changed values, sources before current.
+
+**Rejected.**
+- Skipping when any user lacks data: the dead object of a user deleted while the daemon was down stays listed with NULL data for good, and would freeze the migration.
+- Skipping only when the result is empty: under lightdm-gtk-greeter the list degrades rather than empties.
+- A timer.
+- A library change (as in -024).
+
+Design Challenger: REVISE, REVISE, APPROVE (design A''). +unity4 is built with tests 12/12. On target2, a uprobe trace shows the skip in the window and one write of the full data, 3/3. Verifier PASS (REVIEWED).
+
+**Limits, stated.**
+- A retry that migrates on its own has not been observed; LightDM's callback recovered first.
+- A partial multi-user union was not seen.
+- A `current` of 4294967295 already stored becomes the last index once, as in stock.
+- With no accounts-daemon, nothing is written.
+
+
+## 2026-09-29 - UNITY-20260928-019: lightdm's session-child finishes its cleanup when SIGTERM comes after the session ended (agent A)
+
+**Context.** Follow-up of UNITY-20260927-004. A greeter is stopped twice: logind's `TerminateSession` stops its scope, then the daemon `kill()`s session-child 2-19 ms later. `signal_cb()` leaves the process whenever `child_pid` is 0, and `child_pid` is 0 again once `waitpid()` has reaped the greeter - during the cleanup (X authority removal, `pam_close_session`, `pam_setcred`, `pam_end`). Record: `research/UNITY-20260928-019-lightdm-greeter-pam-close/`.
+
+**Measured.**
+- The cleanup was cut in 16 of 21 traced greeter stops (stock 10/10, +unity1 6/11), and in 2/2 with a SIGTERM forced right after `waitpid()`.
+- When it was cut before the X authority removal finished, the greeter's cookie stayed in `/var/lib/lightdm/.Xauthority` and opened the user's display (same X server) as uid lightdm.
+- Nothing else lasting: logind already stops the session; the greeter's PAM modules only log on close.
+- User sessions stopped by the daemon were not affected (6/6).
+
+**Decision.** Fix it in session-child's handler, where the ambiguous `child_pid == 0` is read: a flag set right after `waitpid()` (before `child_pid = 0`, which becomes volatile) makes a later SIGTERM let the cleanup finish, and the first such SIGTERM arms `alarm(10)` so that a cleanup that blocks still ends. Before the session starts the handler still `_exit()`s (+unity1).
+
+**Rejected.**
+- Removing the daemon's second `kill()` (the handler's ambiguity stays; it changes the daemon for every session type).
+- `SIG_IGN` or blocking SIGTERM after `waitpid()` (no place for a watchdog; the disposition or mask survives `execve()` into PAM helpers).
+- The flag without a watchdog: it is -004's rejected F3 - a blocking cleanup would hold the next session until systemd's 90 s SIGKILL in every double stop, and a single late SIGTERM without a logind scope stop would never end.
+
+Design Challenger: REVISE, APPROVE. lightdm +unity2 built; on target 13/13 natural greeter stops complete, forced SIGTERM after `waitpid()` / in pam_systemd's close / at `pam_end` all complete, a SIGTERM at `fork()` still `_exit()`s, a 60 s blocked close ends by SIGALRM after 10.0 s, user sessions 6/6. Verifier: FAIL (a test signalled before the handler was installed), then PASS (REVIEWED) with no code change.
+
+**Limits, stated.** When both SIGTERMs are passed on before reaping, no alarm is armed and a blocked cleanup still waits for the 90 s SIGKILL, as before (follow-up proposed). EINTR inside PAM modules is covered only incidentally.
+
+
+## 2026-09-29 - UNITY-20260927-021: calamares-settings-ubuntu +unity2 publishes all six binaries (agent B)
+
+**Context.** +unity2 restores the archive changelog that +unity1 had wiped and carries the known issue #4 fix. The build produces six binaries. +unity1 was published with three of them (-ubuntu-unity, -common, -common-data). The gated publication (`publish_aptly.py`) requires every binary of the build manifest in the snapshot. Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/`.
+
+**Decision (May, 2026-09-29, via C, confirmed twice).** Publish all six, including calamares-settings-kubuntu, calamares-settings-lubuntu and -common-dbgsym.
+
+It is taken knowing that:
+- the patched basicwallpaper in the Kubuntu and Lubuntu packages is unmeasured (Lubuntu: openbox on X11; Kubuntu: depends on the Qt platform under kwin_wayland);
+- systems that use our repository and have those packages installed will move to ours and no longer receive 1:26.04.12ubuntuN SRUs for them.
+
+The measurement stays with UNITY-20260927-044.
+
+
+## 2026-09-29 - UNITY-20260929-015: PUBLISHED means the recorded bytes are still live, not that apt selects them (agent B, decision by C)
+
+**Context.** taskctl's PUBLISHED gate now accepts a live snapshot other than the record's when that snapshot carries every artifact of the publish record with the recorded sha256. The Design Challenger's finding 6: the live snapshot may carry those bytes and also a newer version of the same package, and apt would then install the newer one. Record: `research/UNITY-20260929-015-taskctl-live-snapshot/`.
+
+**Decision (C, 2026-09-29).** A newer version of the same package in the live snapshot is not a reason to refuse PUBLISHED. PUBLISHED means "these bytes were published and are still in the live publication". It does not mean "apt will choose them". Which version apt selects is the concern of the later task that published the newer version, and of its own version-safety and target checks.
+
+
+## 2026-09-29 - UNITY-20260927-040: unity's decoration Edge ignores presses while compiz lists any grab (agent A)
+
+**Context.** Follow-up of UNITY-20260927-001, whose +unity10 guard stops `Edge::ButtonDownEvent` from ungrabbing only while compiz lists a `resize` or `move` grab. Record: `research/UNITY-20260927-040-edge-grab-guard/`.
+
+**Measured.**
+- In expo a press on a window border or title reaches `Edge::ButtonDownEvent`, which calls `XUngrabPointer`/`XUngrabKeyboard` behind compiz. The button release then reaches neither unity nor expo, expo stays on compiz's grab list, and the next frame click leaves the pointer frozen: title drag in expo 5/5 on +unity11, replay of the first case 4/4 (LP: #1393523).
+- Keyboard move and resize were already covered by +unity10 (0/25). The `unity` gesture grab cannot be driven here.
+
+**Decision.** A2: the guard becomes `screen->otherGrabExist(nullptr)`, so no in-process component releases an X grab while compiz lists any grab. While a grab is listed, move and resize refuse Edge's `_NET_WM_MOVERESIZE` anyway, so the ungrab was the only effect left. The first press with no grab listed is unchanged. The title bar's drag goes through the same function (`GrabEdge`) and is covered too. Wall, unity-switcher, the `unity` gesture grab and ezoom are covered by construction, not measured.
+
+**Rejected.**
+- F, ignoring decoration input in `HandleFrameEvent` during expo: it filters by one plugin's state, stops title-bar buttons and menus as well (the other half of LP: #1393523, a behaviour change of its own, UNITY-20260929-010), and covers expo only.
+- B, dropping Edge's raw ungrab, and D, compiz thawing frames' passive grabs regardless of its grab list: both rejected in UNITY-20260927-001 for the same reasons (every first press changed, unmeasured; leaked grabs hidden).
+
+Design Challenger: REVISE, APPROVE. unity +unity12 built with `scripts/build_sbuild.py --extra-package` and our published nux (UNITY-20260929-013), identical in content to the test build; on target title drag in expo 0/5, replay 0/3, the rest of the plan unchanged. Verifier: PASS (REVIEWED).
+
+**Limits, stated.** Title-bar buttons and menus still react in expo (UNITY-20260929-010). The panel's `XWindowManager::UnGrabMousePointer` during move or resize is not covered (UNITY-20260929-011). No unit test covers `Edge::ButtonDownEvent`; the package build runs no unit tests. The gesture grab, wall and ezoom under A2, and real hardware are not measured.
+
+
+## 2026-09-29 - UNITY-20260929-016: two builds ran on sbuild's on-demand chroot; no rebuild (agent A)
+
+**Context.** The unshare tarball `~/.cache/sbuild/resolute-amd64.tar.zst` (2026-09-22, `de.archive.ubuntu.com` resolute release pocket only, main, universe, restricted and multiverse) passed sbuild's `$unshare_mmdebstrap_max_age` of 7 days at 2026-09-29 17:46Z. From then on sbuild ignored it. For every build it ran `mmdebstrap --variant=buildd ... resolute - --components=main,universe` and threw the result away afterwards. That chroot used mmdebstrap's default sources: `archive.ubuntu.com` resolute and resolute-updates, and `security.ubuntu.com` resolute-security. Nothing recorded the switch except the sbuild logs ("Existing chroot tarball is too old", "Creating chroot on-demand"). Record: `research/UNITY-20260929-016-sbuild-chroot-policy/`.
+
+**Builds affected** (every sbuild log since 17:46Z checked):
+- UNITY-20260927-041: the gated build of calamares-settings-ubuntu 1:26.04.12+unity3. It is published (snapshot `unity-resolute-20260927-041`).
+- UNITY-20260929-014: real run Q1, a test build of the tiny package tiny013. Not published.
+
+UNITY-20260927-040's gated build (17:19-17:36Z) and every earlier build used the tarball.
+
+**Decision (coordinator, 2026-09-29).** Neither is rebuilt. Their logs and `.buildinfo` record exactly what they were built against. -041's payload was verified on target and is published. Q1 only exercised a tool. The chroot policy that prevents a silent switch is UNITY-20260929-016.
+
+
+## 2026-09-29 - UNITY-20260929-016: builds run in a chroot from a pinned archive snapshot (agent A)
+
+**Context.** The sbuild unshare tarball of 2026-09-22 (entry "sbuild runs in unshare mode") had only the resolute release pocket, and nothing recorded which chroot a build used. When it passed sbuild's 7-day `max_age`, sbuild silently switched to an unrecorded chroot built on demand for each build (entry "two builds ran on sbuild's on-demand chroot"). sbuild also runs `apt-get update` and `dist-upgrade` in the chroot on every build by default. So a fixed tarball alone does not fix what a build is compiled against once -updates and -security are among its sources. Record: `research/UNITY-20260929-016-sbuild-chroot-policy/`.
+
+**Decision (May, 2026-09-29, via C).**
+- **Snapshot.** Tarball and build both use `https://snapshot.ubuntu.com/ubuntu/<T>`, and `<T>` is recorded at each refresh.
+- **Pockets.** Release, -updates and -security.
+- **Components.** main, universe and restricted; no multiverse.
+
+**Implementation.**
+- **`scripts/sbuild_chroot.py create`** builds `~/.cache/sbuild/chroots/<series>-<arch>-<T>.tar.zst` with mmdebstrap (buildd variant, plus `ca-certificates`, since the snapshot answers only over https). It writes a sidecar: sources, InRelease Dates, argv, package list and sha256.
+- **`build_sbuild.py` before sbuild.** It checks the tarball: sidecar, exact sources, and snapshot age of at most 7 days (`--allow-old-chroot` overrides this and is recorded).
+- **`build_sbuild.py` running sbuild.** It passes `--chroot-mode=unshare --chroot=<path>` with `SBUILD_CONFIG=build/sbuild-config.pl` (`auto_create = 0`).
+- **`build_sbuild.py` after sbuild.** It refuses, with no manifest:
+  - a changed tarball;
+  - a log without `I: Unpacking <path> to`;
+  - an on-demand chroot;
+  - any fetch from outside the snapshot.
+- **The manifest** records the chroot.
+- **Tested and gated builds.** They use the same tarball; `--tested-with` checks this.
+
+On a real snapshot tarball, tiny013 and unity each show "0 upgraded" in the build's dist-upgrade.
+
+**Rejected.**
+- The release pocket only. Our packages run against -updates and -security.
+- The live mirror with the `.buildinfo` as the record. A byte-for-byte rebuild of an old release is impossible.
+- `$unshare_mmdebstrap_keep_tarball`. sbuild refreshes on its own schedule, with main and universe only, and does so silently.
+- multiverse. Launchpad builds a universe source without it.
+
+Design Challenger: REVISE, REVISE, APPROVE.

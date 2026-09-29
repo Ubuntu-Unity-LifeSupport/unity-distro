@@ -1,0 +1,73 @@
+# UNITY-20260927-047 phase R run, 2026-09-28 11:20-11:24Z, B's session fa14e5f5, /var/tmp/aptly-rehearsal; marker 18c2e71f...56f2 (11:19:17Z-13:19:17Z)
+
+## pre-run: logs/30-pre-run-checks.txt (root/tree/config/marker OK; /srv/aptly 633 files 80f8df5c...; incoming = logs/20 manifest)
+
+## R1 11:20:13-11:20:26Z repo create + repo add: 285 records = 258 binaries (equal to live Packages by name|version|arch|sha256) + 27 Psource
+## R2 11:20:58Z publish repo; publish show -> Prefix . / unity-resolute [local]
+== R2 scratch vs live: /var/tmp/aptly-rehearsal/state/public/dists/resolute vs /srv/aptly/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: {'Date': ('Mon, 28 Sep 2026 11:20:58 UTC', 'Sat, 26 Sep 2026 20:53:52 UTC')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+## snapshot create unity-resolute-20260927-047 11:21:24Z
+## R3 publish switch resolute 047 -> 'ERROR: unable to switch: not a published snapshot repository' (expected)
+## R4 11:21:35Z backup state/public+db -> backup-r4 (283 files, sha256 equal)
+## R5 11:21:41Z publish snapshot ... candidate; show -> Prefix candidate / 047 [snapshot]
+== R5 candidate vs R2 (.): /var/tmp/aptly-rehearsal/state/public/candidate/dists/resolute vs /var/tmp/aptly-rehearsal/state/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: {'Date': ('Mon, 28 Sep 2026 11:21:41 UTC', 'Mon, 28 Sep 2026 11:20:58 UTC'), 'Label': ('candidate resolute', '. resolute'), 'MD5Sum': ('\n eab7ca619890f1a81249438280490c65   273846 Contents-amd64\n ', '\n eab7ca619890f1a81249438280490c65   273846 Contents-amd64\n '), 'Origin': ('candidate resolute', '. resolute'), 'SHA1': ('\n 94d156ad5d02ab37f9fe36a0191f273e93ec751c   273846 Contents', '\n 94d156ad5d02ab37f9fe36a0191f273e93ec751c   273846 Contents'), 'SHA256': ('\n d1d41fdc3da1d88a2ce6d952cf240be2626ec04e6fceb4e507ee25d622', '\n d1d41fdc3da1d88a2ce6d952cf240be2626ec04e6fceb4e507ee25d622'), 'SHA512': ('\n de3adbb2eb6fa4e43b344c0104a2e17b1c10a07e13b336015789ab07a6', '\n de3adbb2eb6fa4e43b344c0104a2e17b1c10a07e13b336015789ab07a6')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+(Checksum fields differ only through main/binary-amd64/Release, which carries Origin/Label; the top-level SHA256 list equals live for '.')
+## R6 drop resolute + publish snapshot 047 at .
+R6 gap upper bound (date before drop -> new InRelease mtime): 0.8 s; 2026-09-28T11:22:04.962441163Z -> 2026-09-28 11:22:05.753010969 +0000
+== R6 snapshot at . vs R2 (backup-r4): /var/tmp/aptly-rehearsal/state/public/dists/resolute vs /var/tmp/aptly-rehearsal/backup-r4/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: {'Date': ('Mon, 28 Sep 2026 11:22:05 UTC', 'Mon, 28 Sep 2026 11:20:58 UTC')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+== R6 snapshot at . vs live: /var/tmp/aptly-rehearsal/state/public/dists/resolute vs /srv/aptly/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: {'Date': ('Mon, 28 Sep 2026 11:22:05 UTC', 'Sat, 26 Sep 2026 20:53:52 UTC')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+isolated apt client on file:state/public (Signed-By the live key): update with 0 E/W lines; candidates from it (unity 7.7.1+...+unity11, libunity-gtk4-menu0 0.9); component Release identical to R2
+## snapshot create 047b 11:22:42Z; R7 publish switch resolute 047b (no -gpg-key) -> switched; show -> 047b [snapshot]
+== R7 switched to 047b vs R2 (backup-r4): /var/tmp/aptly-rehearsal/state/public/dists/resolute vs /var/tmp/aptly-rehearsal/backup-r4/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: {'Date': ('Mon, 28 Sep 2026 11:22:43 UTC', 'Mon, 28 Sep 2026 11:20:58 UTC')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+## R8a drop + publish repo
+== R8a repo republished vs R2 (backup-r4): /var/tmp/aptly-rehearsal/state/public/dists/resolute vs /var/tmp/aptly-rehearsal/backup-r4/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: {'Date': ('Mon, 28 Sep 2026 11:22:52 UTC', 'Mon, 28 Sep 2026 11:20:58 UTC')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+## R9 (run before R8b: after restoring the R4 backup there is no candidate to drop - plan order corrected, same commands) publish drop resolute candidate: candidate/dists and candidate/pool removed, empty candidate/ directory left, 267 other files unchanged; publish list -> ./resolute unity-resolute
+## R8b restore R4 backup: no aptly process; state/public+db moved to aside-r8b; cp -a backup; 283 files byte-identical before any aptly command; publish list -> ./resolute unity-resolute
+== R8b restored vs R2 (backup-r4): /var/tmp/aptly-rehearsal/state/public/dists/resolute vs /var/tmp/aptly-rehearsal/backup-r4/public/dists/resolute
+only in A: none
+only in B: none
+index files with different bytes: none
+Release fields that differ: none
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C
+public pool files: A 258 B 258 same names: True
+InRelease byte-identical to R2 (original Date and signature); repo 285 packages; snapshots: 047 only (047b postdates R4)
+
+## /srv/aptly after R: 633 files, tree sha256 80f8df5cc497a8e5321aa2b8693651f1be8b7e0fb82d14c9636efdb84b565eb2 = baseline (unchanged)
+
+## UNEXPECTED: rehearsal-log.jsonl has 1 line (C's inspect() check 11:19:17Z); none of B's 14 publish commands is logged.
+Cause: B's session has no command guard at all. /home/claude/.claude/settings.json is {} and CLAUDE_PROJECT_DIR is unset; the guard is configured only in /home/claude/unity-distro/.claude/settings.json, and B's session runs with project /home/claude. Probe (11:24Z): 'pgrep -f zzz_no_such_process_047_probe' ran (it matched itself), which the guard would deny. So the 14 commands ran unguarded, not through the 057 allowance. The 057 checks passed only in the pre-run check (logs/30) and the dry runs (logs/21, 22), which call the guard directly.

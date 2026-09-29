@@ -1,0 +1,5 @@
+titlermb2#1 ok | titlermb2 border@740,216 -> xterm 400x290+1040+241 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb2#2 ok | titlermb2 border@740,216 -> xterm 400x290+574+263 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb2#3 ok | titlermb2 border@740,216 -> xterm 400x290+1040+241 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb2#4 ok | titlermb2 border@740,216 -> xterm 400x290+574+263 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlermb2#5 ok | titlermb2 border@740,216 -> xterm 400x290+1040+241 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free

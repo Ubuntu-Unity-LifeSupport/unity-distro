@@ -1,0 +1,90 @@
+Attached 14 probes
+READY
+1928 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x72c999508c1b
+
+2279 PUSH-GRAB expo
+2280 XGRABPOINTER
+        XGrabPointer+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+2284 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+4405 UNITY-SEES ButtonPress window=0x300010c button=1
+4405 EDGE-DOWN button=1
+4405 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+4405 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+4407 EXPO-SEES ButtonPress window=0x300010c button=1
+4409 RESIZE-INITIATE state=4
+4490 UNITY-SEES ButtonRelease window=0x300010c button=1
+4491 EXPO-SEES ButtonRelease window=0x300010c button=1
+4796 REMOVE-GRAB
+4797 XUNGRABPOINTER
+        XUngrabPointer+0
+        ExpoScreen::donePaint()+684
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+4797 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+5558 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x72c999508c1b
+
+5906 PUSH-GRAB expo
+5906 XGRABPOINTER
+        XGrabPointer+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+5908 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ExpoScreen::doExpo(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+558
+        unity::MultiActionList::Initiate(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<CompOption, std::allocator<CompOption> > const&, int) const+420
+        unity::MultiActionList::InitiateAll(std::vector<CompOption, std::allocator<CompOption> > const&, int) const+162
+
+8456 UNITY-SEES ButtonPress window=0x3000005 button=1
+8456 EXPO-SEES ButtonPress window=0x3000005 button=1
+8538 UNITY-SEES ButtonRelease window=0x3000005 button=1
+8538 EXPO-SEES ButtonRelease window=0x3000005 button=1
+8854 REMOVE-GRAB
+8854 XUNGRABPOINTER
+        XUngrabPointer+0
+        ExpoScreen::donePaint()+684
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+8854 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+
+

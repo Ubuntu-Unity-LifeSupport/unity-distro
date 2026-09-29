@@ -1,0 +1,14 @@
+# 047 phase R pre-run checks, 2026-09-28T11:20:01Z - guard functions from main (7e5015f), no inspect() call, nothing written to the rehearsal log
+root, tree, mounts: OK ( /var/tmp/aptly-rehearsal )
+config schema: OK {"rootDir": "/var/tmp/aptly-rehearsal/state", "downloadConcurrency": 4, "architectures": ["amd64"], "gpgDisableSign": false, "gpgDisableVerify": false, "FileSystemPublishEndpoints": {}}
+writable target rootDir: /var/tmp/aptly-rehearsal/state inside rehearsal root=True under /srv/aptly=False
+writable target db (default rootDir/db): /var/tmp/aptly-rehearsal/state/db inside rehearsal root=True under /srv/aptly=False
+writable target pool (default rootDir/pool): /var/tmp/aptly-rehearsal/state/pool inside rehearsal root=True under /srv/aptly=False
+writable target public (default rootDir/public): /var/tmp/aptly-rehearsal/state/public inside rehearsal root=True under /srv/aptly=False
+remote endpoints (S3/Swift/Azure), databaseBackend, packagePoolStorage in config: none
+marker: OK {'task_id': 'UNITY-20260927-047', 'root': '/var/tmp/aptly-rehearsal', 'authorized_by': 'May', 'recorded_by': 'C', 'not_before': '2026-09-28T11:19:17Z', 'not_after': '2026-09-28T13:19:17Z', 'session_id': 'fa14e5f5-9fa9-405c-8373-3873520d3c73', 'reference': 'May, coordinator chat 2026-09-28: GO for phase R of UNITY-20260927-047 (rehearsal only; freeze #1 stays; no phase L)'} sha256 18c2e71f131800977fa58068658cab408119216c6e28be1b9d16a7eb5b7456f2
+rehearsal log lines before R: 1
+/srv/aptly baseline: files 633 tree sha256 80f8df5cc497a8e5321aa2b8693651f1be8b7e0fb82d14c9636efdb84b565eb2
+incoming: files 333 manifest sha256 066ecd284258c4a8bb912186d885186d4d939796b84620d3b5c87d19c5130b52
+incoming equals the prepared manifest (logs/20): True
+state/ exists before R: False

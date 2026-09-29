@@ -393,7 +393,8 @@ Aptly freeze. A freeze protects the live publication state and
   the start and end times and the scope in the coordinator log. Agents and
   subagents never treat a freeze as lifted and never widen its exceptions.
 - **Default.** While a freeze is in force, an agent or subagent must not
-  call `aptly publish` directly in any form, including `show` and `list`.
+  call `aptly publish` directly in any form, including `show` and `list`,
+  except as allowed by the exceptions below.
 - **taskctl exception.** The internal `aptly publish show` that
   `scripts/taskctl.py` runs as part of an authorized publication workflow,
   after the corresponding gate has passed. It covers only `taskctl.py` and
@@ -415,6 +416,26 @@ Aptly freeze. A freeze protects the live publication state and
   allows. The exception gives no right to /srv/aptly or to any other live
   aptly state. It ends automatically when the rehearsal ends: C removes the
   marker, or it expires.
+- **Live-phase exception.** Applies to the live phase of a task that May has
+  explicitly authorized. The first is UNITY-20260927-047 phase L, allowance
+  UNITY-20260929-008.
+  - The command guard admits only the exact command strings in the reviewed
+    list `.claude/hooks/live-commands.json`, byte for byte, each run as one
+    foreground Bash call.
+  - The guard checks that the pinned aptly config is unchanged.
+  - The exception takes effect only through C's dated marker
+    `~/coordinator/live-authorization.json`. The marker records May's GO,
+    one session, a window of at most 6 hours, the list's sha256, and a
+    reference to the task's backup and preflight record.
+  - Every admitted command is logged to `~/coordinator/live-log.jsonl`.
+  - It covers nothing else.
+  - Known limit: a shell function, or a dynamic-loader variable such as
+    `LD_PRELOAD`, in the agent's own profile or environment could stand in
+    for the binary or run code inside it. The guard refuses only when it
+    finds one in the profile files, the shell snapshots or its own
+    environment.
+  - It ends when the live phase ends: C removes the marker, and removes the
+    list at the task's DONE.
 
 Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
 every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
@@ -440,6 +461,89 @@ rule per kind and rejects anything else:
 - `buildinfo`, `changes`: provenance only. They are hashed with the other
   artifacts and never expected in a snapshot.
 - Any other kind: rejected until a rule for it is added here.
+
+Extra build dependencies (UNITY-20260929-013). A package that needs a build
+dependency the target series' archive does not provide in a usable form
+(unity: the archive's nux breaks its configure step) is built with
+`build_sbuild.py --extra-package DEB` (repeatable). Each `.deb` is checked
+before sbuild starts (a readable regular `*.deb`, not a udeb, architecture
+`all` or the build architecture, valid Debian name and version fields, no
+second file of the same name, the same file twice, or a second file of the
+same package in any architecture), copied
+to `OUTPUT/build-dependencies/`, and the copy is given to sbuild. After the
+build the copies must be unchanged and each package must appear at its
+version in the `.buildinfo`'s `Installed-Build-Depends` - sbuild adds them to
+apt without a pin, so one not newer than the archive's is not used and the
+build is refused. The manifest then carries an optional
+`build_dependencies` list (file, sha256, size, package, version,
+architecture, source, the path given, the resolved path, whether the same
+bytes are in our published pool, and where). `artifacts` is unchanged.
+`create_release_gate.py` and `publish_aptly.py` check that list when it is
+present (`scripts/build_dependencies.py`): the name and version fields are
+valid Debian fields (so none can steer the pool path), each copy is in the
+manifest's `build-dependencies/` and matches its sha256, and the same bytes
+are in our published
+pool (`/srv/aptly/public/pool`, at the package's own pool location; the
+unpublished `candidate/` staging does not count). A publishable build
+depends only on extra packages we publish. Without the option nothing
+changes.
+
+The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
+
+- **What the builds use.** Every build runs in a chroot tarball made from a
+  pinned snapshot of the Ubuntu archive:
+  `https://snapshot.ubuntu.com/ubuntu/<T>`, with the target series' release,
+  `-updates` and `-security` pockets and the components main, universe and
+  restricted (no multiverse, no -backports, no -proposed).
+- **Why the snapshot.** The tarball's `/etc/apt/sources.list` keeps exactly
+  those three lines. sbuild's `apt-get update`/`dist-upgrade` in each build
+  therefore sees the same archive state as the tarball ("0 upgraded"). The
+  same tarball gives the same build dependencies, now and later.
+- **Creating a tarball.** `python3 scripts/sbuild_chroot.py create
+  [--snapshot <T>]`, where `<T>` defaults to now. It writes
+  `~/.cache/sbuild/chroots/<series>-<arch>-<T>.tar.zst` and a sidecar
+  `.json`: the sources, each pocket's InRelease Date, the mmdebstrap argv,
+  the package list and the sha256. It never overwrites.
+- **What `build_sbuild.py` does.**
+  - It takes `--chroot-tarball PATH`; the default is the newest tarball
+    with a sidecar.
+  - Before sbuild it refuses a symlink, a tarball without a matching
+    sidecar, one whose sources are not exactly the snapshot pockets, and a
+    snapshot more than 7 days old. `--allow-old-chroot` overrides the age
+    limit, and the manifest records it.
+  - It passes `--chroot-mode=unshare --chroot=<path>` and
+    `SBUILD_CONFIG=build/sbuild-config.pl`. That file is read after the
+    user's own sbuild config and resets what could add apt sources, packages
+    or change the chroot: extra repositories and keys, extra packages (only
+    the command line's `--extra-package` copies remain), external and setup
+    commands, unauthenticated packages, the apt-get command, the build
+    environment command and bind mounts; it keeps apt update and
+    dist-upgrade on.
+  - After sbuild it refuses, with no manifest, a tarball that changed, a
+    log without `I: Unpacking <path> to`, a chroot sbuild built on its own
+    ("Creating chroot on-demand"), a log without the InRelease of each of
+    the three pockets from the snapshot, and any apt fetch from elsewhere -
+    another mirror, another snapshot, or a local repository other than
+    sbuild's own resolver archives
+    (`file:`/`copy:/build/reproducible-path/resolver-*/apt_archive`), and any
+    package sbuild copies into that archive other than this build's
+    `build-dependencies/` copies. This guards against ordinary settings in
+    the user's sbuild config; the config is executable Perl, and a
+    deliberately hostile one is out of scope.
+  - The manifest's `chroot` key records the tarball, its sha256, `<T>`, the
+    sources and the InRelease lines.
+- **Refresh.** Create a new tarball when the current snapshot is more than
+  7 days old, or when a task needs a newer archive state.
+- **Test build and gated build.** The build tested on target and the gated
+  build of one task use the same tarball: the gated build passes
+  `build_sbuild.py --tested-with <tested manifest>`, which refuses any other
+  tarball. Only when the tested build has no usable manifest (one built
+  before this policy) compare the `.buildinfo` Installed-Build-Depends
+  instead, and repeat the target test on any difference. A gated build on
+  the tested tarball may use `--allow-old-chroot`.
+- **Retention.** Keep every tarball named by a committed manifest; others
+  may be deleted by hand. `~/.cache/sbuild/resolute-amd64.tar.zst` (release
+  pocket only, 2026-09-22) is the record of the builds up to 2026-09-29.
 
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
@@ -549,8 +653,15 @@ For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
 - Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
   `echo`, project scripts such as `taskctl.py`) may mention aptly and
   publish freely.
-- The rehearsal exception of section 6 (UNITY-20260927-057) is the only
-  allowance for `publish`. The command must start exactly
+- The live-phase exception of section 6 (UNITY-20260929-008) admits only
+  the strings of `.claude/hooks/live-commands.json`. Each starts
+  `/usr/bin/aptly -config=/home/claude/.aptly.conf publish` and runs as a
+  foreground Bash call. C's live marker must name the session and the
+  list's sha256. Each admitted command is logged to
+  `~/coordinator/live-log.jsonl`. The check runs before every other rule,
+  and only for a string that starts with that prefix.
+- Apart from that, the rehearsal exception of section 6
+  (UNITY-20260927-057) is the only allowance for `publish`. The command must start exactly
   `/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/<path> publish`
   (`--config=` also works), with no other flag before `publish`, as one
   plain command with no quoting, expansion, redirection or prefix. The

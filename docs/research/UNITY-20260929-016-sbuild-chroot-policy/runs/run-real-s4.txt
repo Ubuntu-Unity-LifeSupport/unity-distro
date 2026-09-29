@@ -1,0 +1,3 @@
+== S4 the old tarball ~/.cache/sbuild/resolute-amd64.tar.zst: refused before sbuild
+chroot tarball resolute-amd64.tar.zst is not named resolute-amd64-<YYYYMMDDTHHMMSSZ>.tar.zst
+S4 exit=2 output: []
