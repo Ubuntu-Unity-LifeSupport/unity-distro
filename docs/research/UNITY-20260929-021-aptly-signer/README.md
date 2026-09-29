@@ -639,3 +639,29 @@ Tests:
 - the `publish_aptly.py` integration (follow-up);
 - installation on the signer, the key, and the cut-over (May, steps 3
   and 4).
+
+## 13. Rehearsal (window 2026-09-29 22:29-00:29Z, May's GO, C's marker)
+
+Deviations at step 0, before any aptly command, each handled by the
+coordinator's rule (remove the symlink, stop, report) and resumed with the
+coordinator's go-ahead in the same window (`rehearsal/00-symlink.txt`):
+
+1. **The stand-in was not executable.** At 22:29:08Z the symlink
+   `~/.local/bin/gpg` pointed to `scripts/gpg_standin.py`, which was mode
+   644 from git, so `command -v gpg` still gave `/usr/bin/gpg`. The symlink
+   was removed at 22:29:20Z. Fix: the stand-in is mode 755, committed.
+2. **The signer called gpg by name.** After step 0 succeeded (22:29:49Z:
+   `command -v gpg` gave `~/.local/bin/gpg`, `--version` from the stand-in),
+   the local signer's `GpgBackend` called `gpg` by name, which would have
+   resolved to the stand-in. The symlink was removed and the signer stopped
+   at 22:30:13Z. The temporary GnuPG home was removed and `~/.gnupg`
+   unchanged.
+
+   Fix: the service calls gpg and gpgv only by absolute path, from its
+   configuration (`gpg`, `gpgv`, defaulting to `/usr/bin/gpg` and
+   `/usr/bin/gpgv`), and refuses a relative path. The client's gpgv call and
+   the rehearsal helper's gpgconf call are absolute too. The stand-in calls
+   no program. A test checks that a `gpg` placed first on PATH does not
+   reach the signer's signing. Suite: 265 OK (2 skipped; the second is the
+   guard test "denied without marker", skipped while a rehearsal
+   authorization is active).

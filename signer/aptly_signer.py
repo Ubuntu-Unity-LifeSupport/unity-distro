@@ -43,7 +43,7 @@ except ImportError:  # pragma: no cover
     zstd = None
 
 DEFAULTS = {"port": 8580, "max_body": 96 * 1024 * 1024, "timeout": 30, "max_deb": 512 * 1024 * 1024,
-            "distribution": "resolute"}
+            "distribution": "resolute", "gpg": "/usr/bin/gpg", "gpgv": "/usr/bin/gpgv"}
 SCRIPTS = ("preinst", "postinst", "prerm", "postrm", "config")
 
 
@@ -53,6 +53,9 @@ def load_config(path):
     for key in ("bind", "state", "template", "gnupghome", "fingerprint", "keyring", "repo_base"):
         if not config.get(key):
             raise SystemExit(f"config: {key} is required")
+    for key in ("gpg", "gpgv"):
+        if not Path(config[key]).is_absolute():
+            raise SystemExit(f"config: {key} must be an absolute path")
     return config
 
 
@@ -98,14 +101,19 @@ class Store:
 # ---- signing -----------------------------------------------------------------
 
 class GpgBackend:
-    """gpg with the pinned key; gpgv against a keyring holding only that key."""
+    """gpg with the pinned key; gpgv against a keyring holding only that key.
+    Both by absolute path, never looked up on PATH (the rehearsal put a gpg
+    stand-in first on PATH; the signer must never call it)."""
 
-    def __init__(self, homedir, fingerprint, keyring):
+    def __init__(self, homedir, fingerprint, keyring, gpg="/usr/bin/gpg", gpgv="/usr/bin/gpgv"):
+        if not (Path(gpg).is_absolute() and Path(gpgv).is_absolute()):
+            raise core.Refused("gpg and gpgv must be absolute paths")
         self.homedir, self.fpr, self.keyring = str(homedir), fingerprint, str(keyring)
+        self.gpg, self.gpgv = str(gpg), str(gpgv)
 
     def _gpg(self, args, data):
         env = dict(os.environ, GNUPGHOME=self.homedir)
-        run = subprocess.run(["gpg", "--homedir", self.homedir, "--batch", "--no-tty", "--yes",
+        run = subprocess.run([self.gpg, "--homedir", self.homedir, "--batch", "--no-tty", "--yes",
                               "--local-user", self.fpr + "!", "--digest-algo", "SHA256", *args, "--output", "-"],
                              input=data, capture_output=True, env=env, timeout=60)
         if run.returncode:
@@ -119,7 +127,7 @@ class GpgBackend:
         return self._gpg(["--clearsign"], data)
 
     def _gpgv(self, args):
-        return subprocess.run(["gpgv", "--keyring", self.keyring, *args], capture_output=True, timeout=60)
+        return subprocess.run([self.gpgv, "--keyring", self.keyring, *args], capture_output=True, timeout=60)
 
     def verify_detached(self, signature, data):
         with tempfile.TemporaryDirectory() as tmp:
@@ -298,7 +306,8 @@ def make_handler(config, store, template, backend):
 
 def make_server(config, backend=None):
     template = core.check_template(json.loads(Path(config["template"]).read_text(encoding="utf-8")))
-    backend = backend or GpgBackend(config["gnupghome"], config["fingerprint"], config["keyring"])
+    backend = backend or GpgBackend(config["gnupghome"], config["fingerprint"], config["keyring"],
+                                    config.get("gpg", "/usr/bin/gpg"), config.get("gpgv", "/usr/bin/gpgv"))
     server = http.server.HTTPServer((config["bind"], int(config["port"])),
                                     make_handler(config, Store(config["state"]), template, backend))
     server.timeout = config["timeout"]
@@ -351,7 +360,8 @@ def console(config, argv, out=sys.stdout, confirm=input):
 
 def resign_command(config, backend=None, now=None):
     template = core.check_template(json.loads(Path(config["template"]).read_text(encoding="utf-8")))
-    backend = backend or GpgBackend(config["gnupghome"], config["fingerprint"], config["keyring"])
+    backend = backend or GpgBackend(config["gnupghome"], config["fingerprint"], config["keyring"],
+                                    config.get("gpg", "/usr/bin/gpg"), config.get("gpgv", "/usr/bin/gpgv"))
     with Store(config["state"]).locked() as state:
         core.resign(state, template, backend, now or datetime.now(timezone.utc))
     return 0

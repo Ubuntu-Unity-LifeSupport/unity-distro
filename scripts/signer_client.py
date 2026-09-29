@@ -93,7 +93,9 @@ def propose(config, public_dir, task):
 
 
 def gpgv(keyring, args):
-    return subprocess.run(["gpgv", "--keyring", keyring, *args], capture_output=True, timeout=60).returncode == 0
+    # by absolute path: a gpg stand-in may be first on PATH on builder
+    return subprocess.run(["/usr/bin/gpgv", "--keyring", keyring, *args], capture_output=True,
+                          timeout=60).returncode == 0
 
 
 def check_trio(config, trio, dist_dir, aptly_release=None):

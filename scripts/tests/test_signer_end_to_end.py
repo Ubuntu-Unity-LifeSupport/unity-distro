@@ -308,6 +308,24 @@ class SignerEndToEndTest(unittest.TestCase):
         with self.assertRaises(core.Refused):
             signer_client.refresh(self.client, TASK, switch=True)
 
+    def test_gpg_by_absolute_path_only(self):
+        with self.assertRaises(core.Refused):
+            aptly_signer.GpgBackend(self.home, self.fpr, self.keyring, gpg="gpg")
+        with self.assertRaises(core.Refused):
+            aptly_signer.GpgBackend(self.home, self.fpr, self.keyring, gpgv="gpgv")
+        # a stand-in first on PATH does not reach the signer's signing
+        fake = self.base / "bin"
+        fake.mkdir()
+        (fake / "gpg").write_text("#!/bin/sh\nexit 99\n")
+        os.chmod(fake / "gpg", 0o755)
+        saved = os.environ["PATH"]
+        os.environ["PATH"] = f"{fake}:{saved}"
+        try:
+            backend = aptly_signer.GpgBackend(self.home, self.fpr, self.keyring)
+            self.assertTrue(backend.verify_detached(backend.sign_detached(b"x"), b"x"))
+        finally:
+            os.environ["PATH"] = saved
+
     def test_pinned_fingerprint_refuses_another_key(self):
         other = aptly_signer.GpgBackend(self.home, "0" * 40, self.keyring)
         with self.assertRaises(core.Refused):

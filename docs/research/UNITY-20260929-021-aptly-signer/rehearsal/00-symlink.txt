@@ -1,0 +1,21 @@
+2026-09-29T22:29:08Z
+lrwxrwxrwx 1 claude claude 59 Sep 29 22:29 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/usr/bin/gpg
+gpg (GnuPG) 2.4.8
+-rw-rw-r-- 1 claude claude 6670 Sep 29 22:19 /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+deviation: stand-in not executable, symlink removed at 2026-09-29T22:29:20Z
+ls: cannot access '/home/claude/.local/bin/gpg': No such file or directory
+/usr/bin/gpg
+== step 0, retry after chmod 755 (coordinator's go-ahead)
+2026-09-29T22:29:49Z
+lrwxrwxrwx 1 claude claude   59 Sep 29 22:29 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+-rwxr-xr-x 1 claude claude 6670 Sep 29 22:19 /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/home/claude/.local/bin/gpg
+gpg (GnuPG) 2.4.8
+libgcrypt 1.11.0
+== deviation 2 at 2026-09-29T22:30:13Z: the signer service's GpgBackend calls 'gpg' by name, which with the symlink resolves to the stand-in; symlink removed, local signer stopped before any aptly command
+/usr/bin/gpg
+ls: cannot access '/home/claude/.local/bin/gpg': No such file or directory
+signer http://127.0.0.1:44745  repo http://127.0.0.1:39891  key C03BBF37C53CB569A933F8D155C61A9DE15A1EA7
+cleanup: temp gnupg home removed: True; ~/.gnupg unchanged: True
+ls: cannot access '/tmp/signer-rehearsal-gnupg-*': No such file or directory
