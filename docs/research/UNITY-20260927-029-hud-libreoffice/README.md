@@ -37,7 +37,9 @@ observed: >
   FACT (source, bamf 0.5.6): the re-match is on_raw_window_class_changed
   (bamf-matcher.c:2117-2160). When the temporary application loses its last
   child it closes itself (bamf-application.c:1122-1127) and is unregistered.
-  So the object can disappear between window-stack-bridge's Parents() and
+  (Observed in run 14, though, is an object that still existed without its
+  application interface, not a missing object: the exact state is bamf's;
+  see unknowns.) So the object can disappear between window-stack-bridge's Parents() and
   DesktopFile() calls (BamfWindowStack.cpp:45, :60) even with bamf working
   as designed. bamf offers ChildAdded/ChildRemoved and
   WindowAdded/WindowRemoved for following it.
@@ -60,7 +62,8 @@ root_cause: >
 root_cause_mechanism: >
   LibreOffice's Writer window is matched by bamf to a temporary application
   first and re-matched a moment later (on_raw_window_class_changed in
-  bamf-matcher.c: LibreOffice sets the window class after mapping).
+  bamf-matcher.c; that LibreOffice sets the window class after mapping is
+  inferred from bamf's re-match and TDF #119202, not observed).
   window-stack-bridge reads the parent in that window and treats the
   resulting error as permanent.
 invariant: >
@@ -69,7 +72,7 @@ invariant: >
   disappears or answers badly does not lose the window.
 existing_fix_result: NOT_FIXED  # see "Search"
 design_challenger_required: true
-design_review_result: REVISE (round 1: design approved, card and tests to fix) - round 2 pending
+design_review_result: APPROVE  # round 1 REVISE (card and tests), round 2 APPROVE
 architectural_task: false
 correct_layer: >
   hud's window-stack-bridge (BamfWindow constructor): it is the component
@@ -87,7 +90,12 @@ unknowns:
     failures of mechanism 1 only. That one run (lo4 run 1, the first of the
     session) is also the only one with xid 56623243 and recorded no app id,
     so it is not shown that the measured window was the Writer window and
-    not a first-start dialog (Tip of the Day). Cause unknown
+    not a first-start dialog (Tip of the Day). A second sighting with
+    +unity2 (logs/06, cold boot 4, where the changed branch was not taken):
+    the HUD answered, and 5 s later did not. At that moment hud-service
+    logged DBusMenuImporter "no interface com.canonical.dbusmenu on object
+    /org/ayatana/bamf/window…": its dbusmenu collector was pointed at a bamf
+    window object. That is a lead, not a cause; a separate task
   - side effects of the window-id fallback (present upstream already for an
     empty desktop file, BamfWindowStack.cpp:75-77): the HUD shows no icon
     (it looks for "<xid>.desktop", ApplicationImpl.cpp:86-103), and usage
@@ -95,9 +103,11 @@ unknowns:
     SqliteUsageTracker.cpp:117), which repeats across starts (58720292 in
     most runs)
   - the application id stays the window number when the first parent was
-    the temporary one (3 of 5 first starts); the HUD still answered in all
-    of them, and what the id changes (the HUD's usage history is kept per
-    application) is not measured
+    the temporary one. With +unity2 that is 19 of 20 Writer starts (logs/05)
+    and 4 of 5 first starts (logs/06), so for LibreOffice it is the usual
+    case, not the exception. The HUD still answers; it shows no icon, and
+    the usage history is kept under the window number. Following bamf's
+    re-match would fix it (follow-up task)
   - bamf's temporary application lacking its application interface for a
     moment is bamf's own; not traced further
 ```
@@ -127,7 +137,7 @@ Launchpad's API.
   - LP #1243654 and #1238338, #1242032, #1242339 (2013, Fix Released):
     window-stack-bridge crashes, not this silent drop.
   - None mentions "Could not get desktop file".
-- **bamf:** the re-match is deliberate. Commit dd81623 (2013, "If a Window
+- **bamf** (from the delegated search, not re-checked by the owner): the re-match is deliberate. Commit dd81623 (2013, "If a Window
   has changed its class, then we try to rematch it", "mostly the case of
   LibreOffice") says the old application "may eventually be closed".
   libbamf itself had to handle re-matched views (453e2d0, LP #1238064).
@@ -152,6 +162,46 @@ Launchpad's API.
 - Tests: both entry paths (startup WindowPaths and ViewOpened) with
   WindowCreated(id, "<id>"), and WindowDestroyed with the same fallback id.
 
+## Design review, round 2: APPROVE
+
+The design, the code (hud af43552) and the three tests are approved. The
+reviewer's wording notes are applied: the WM_CLASS change is inferred; the
+observed "no interface on object" state is kept apart from "object gone";
+the search references are marked as not re-checked. Before DONE: the
+control and +unity2 test results, and a target2 run with +unity2.
+
+## Result
+
+- **Package:** hud `14.10+17.10.20170619-0ubuntu6+unity2`, local git tree
+  `packages/hud`:
+  - 0a94d01 archive 0ubuntu6;
+  - 621d1fc +unity1 from its debdiff (identical to the published +unity1
+    source);
+  - **af43552** the fix and three tests;
+  - 0e99dca changelog.
+
+  Source format 1.0 as before: the change is in the tree, not a quilt
+  patch.
+- **Tests** (logs/04): the control (the tests without the fix) fails
+  exactly the three new tests. +unity2 passes all 6 test suites; sbuild
+  successful (`build/`).
+- **target2 with +unity2:**
+
+  | run | before (archive hud) | +unity2 |
+  |---|---|---|
+  | lo7 Writer starts: window in the stack | 16 of 20 | 20 of 20 (logs/05) |
+  | lo7 Writer starts: HUD answered | 16 of 20 | 20 of 20 |
+  | first start after a reboot: window kept | 4 of 5 | 5 of 5 (logs/06) |
+
+  "Could not get desktop file" still appears (5 of 20). Now the window is
+  kept each time. In one of the 5 cold starts the HUD went empty 5 s later
+  without that branch being taken: mechanism 2, see unknowns.
+- **Follow-ups for C:**
+  - follow bamf's re-match in window-stack-bridge, to get the right
+    application id; for LibreOffice it is the window number most of the
+    time;
+  - mechanism 2, with the dbusmenu lead.
+
 ## Status
 
-READY_FOR_FIX after the existing-fix search.
+VERIFYING: independent verification next.
