@@ -165,3 +165,113 @@ It is proposed as a follow-up once they pass.
 
 The proofs, the Design Challenger's gate from -019 round 3: if either fails,
 the design goes back to the Challenger.
+
+## 5. aptly 1.6.2 source: one design assumption is refuted
+
+The coordinator allowed reading aptly's source for the installed version on
+GitHub (aptly-dev/aptly, tag v1.6.2) with WebFetch. It is read code, not an
+aptly call.
+
+- **`pgp/gnupg.go`** confirms the argument order in section 1.
+  - `DetachedSign`: `-o <dest> --digest-algo SHA256 --armor --yes`, then
+    `gpgArgs()`, then `--detach-sign <src>`.
+  - `ClearSign`: the same without `--armor`, ending `--clearsign <src>`.
+  - `gpgArgs()` gives, in order: keyring options, `-u`, passphrase options,
+    and `--no-tty --batch`, plus `--pinentry-mode loopback` for gpg 2.1 and
+    later.
+- **`pgp/gnupg_finder.go`**: the binary is looked up on PATH as `gpg` or
+  `gpg1` for gpg 1, then `gpg` or `gpg2`. The version comes from
+  `<bin> --version`, matched against the regex `\(GnuPG.*\) (2).(\d)`.
+- **`deb/publish.go`**: aptly writes no `Valid-Until`, and it has a
+  `SkipContents` option. On re-publishing, a switch included, the file
+  suffix is `.tmp`, and `indexes.RenameFiles()` runs at the end.
+- **`deb/index_files.go`, `indexFile.Finalize`**, for the Release: it runs
+  in this order.
+  1. First, a loop runs `publishedStorage.PutFile(<basePath>/Release<suffix><ext>, tempFilename<ext>)`.
+     **The plain Release is already in the published storage.**
+  2. Then `signer.DetachedSign(tempFilename, tempFilename+".gpg")` and
+     `PutFile(... Release<suffix>.gpg)`.
+  3. Then `signer.ClearSign(tempFilename, <dir>/InRelease)` and
+     `PutFile(... InRelease<suffix>)`.
+  4. A signing error returns at once, before `RenameFiles`.
+
+**Consequence.** Round 2 item 2 of the design assumed that the stand-in
+writes the signer's rewritten Release (the new Date and Valid-Until) over
+aptly's temporary file before aptly publishes it. In aptly 1.6.2 the Release
+is put into storage *before* gpg is called. The stand-in can still write
+`InRelease` and `Release.gpg`, which are put into storage after signing,
+but not the published Release.
+
+The other assumption holds from the source, still to be confirmed in
+rehearsal: signing happens before the rename, and a signing failure aborts
+before any rename.
+
+Per -019 round 3 ("if a rehearsal proof fails, the design goes back to the
+Design Challenger instead of being patched during implementation"), this
+goes back to the design. No code is written.
+
+Options for the design, not decided here:
+
+- **(a) Leave aptly's published Release as it is, and sign the signer's
+  Release.** At the switch, the stand-in writes the signer's `InRelease`
+  (with Valid-Until inside) and `Release.gpg` over the signer's Release. A
+  refresh step right after the switch (the same `/current` path the
+  cadence uses) replaces `Release`, `InRelease` and `Release.gpg` with the
+  signer's trio.
+  - Between the switch and the refresh, the published `Release` (aptly's,
+    without Valid-Until) does not match `Release.gpg`. `InRelease` is
+    valid and carries Valid-Until. apt reads `InRelease` first.
+  - This costs a short window where the detached pair does not verify.
+- **(b) The stand-in also overwrites the storage copy.** It writes
+  `public/dists/resolute/Release.tmp`, which aptly has just put there on a
+  switch, before signing. This depends on local storage, the suffix and
+  the path, which are internals, and a rehearsal would have to prove it.
+- **(c) aptly publishes no signature at all** (signing off), and builder
+  installs the signer's trio after the switch. There is then a window with
+  a new unsigned Release and the old signatures, so apt refuses the
+  repository until the install.
+
+## 6. Design review of the implementation plan: REVISE
+
+Blocking:
+
+1. **Checksum matching.** The rehearsal's compressed bytes need not equal
+   the live ones, yet the Release lists them. Either `/sign` also receives
+   the live index files, and the signer checks and uses their bytes, or a
+   proof shows that rehearsal and live compression are byte-identical.
+2. **Per-component Release files** (`main/binary-*/Release`,
+   `main/source/Release`). They must be built by the signer from its
+   template, and checked byte for byte.
+3. **`/live` and `/sign`.** They accept only an unconsumed approval whose
+   base is still last-live. A valid old signature must not move last-live,
+   which would be a rollback without May.
+4. **Builder text on the console.**
+   - Package fields are validated against Debian grammar.
+   - For other control fields, only the field name and hashes are shown.
+   - The task ID is shown only if it matches `^UNITY-\d{8}-\d{3}$`,
+     labelled "claimed by builder".
+   - The logs are sanitised.
+
+Required: the rest of the review's list, including the rules for the
+two-call flow, the stand-in, the template committed and hashed, flock and
+atomic state, HTTP limits, the :8080 fetch hardening, `--local-user <fpr>!`
+and a gpgv check. It also said the rehearsal is an aptly publish that
+agent A must not run, and belongs to C or May. The coordinator's answer
+(below) sets the rehearsal procedure: May's GO and C's marker, within this
+task.
+
+## 7. Coordinator's answers (2026-09-29)
+
+- **The throwaway test key is allowed:**
+  - `GNUPGHOME` via `mktemp -d`, mode 0700;
+  - an explicit `--homedir` for gpg and for gpgconf;
+  - in teardown, `gpgconf --homedir X --kill all`, then remove the
+    directory with `${X:?}`;
+  - the test checks that `~/.gnupg` and its agent are untouched (mtime and
+    the key list, before and after).
+- **Rehearsal on the rehearsal root.** It is an aptly publish under the
+  rehearsal allowance, and needs May's GO and C's marker (section 6 of
+  ENGINEERING-PROCESS). The order is code and tests first, then the
+  rehearsal within -021, before merge. If it refutes an assumption, the
+  design returns to the Design Challenger.
+- **aptly's source** may be read on GitHub (section 5).
