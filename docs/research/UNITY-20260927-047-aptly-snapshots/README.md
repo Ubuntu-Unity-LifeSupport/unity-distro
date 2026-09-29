@@ -333,9 +333,20 @@ to C. Phase L needs a separate GO.
 
 ## Status
 
-BLOCKED (resume at IMPLEMENTING): waiting for UNITY-20260928-012 and the
-repeat of R as above.
+IMPLEMENTING. Phase R was repeated on 2026-09-29 and passed (logs/42).
+Phase L needs a separate GO from May; freeze no. 1 stays in force.
 
+- Repeat of R, 2026-09-29 10:00-10:04Z, B session b7902aab with the guard:
+  - Option (a) check: R2a, the first command that needs the marker, was
+    allowed, and exactly one new log line appeared with B's session_id.
+  - All 14 publish commands went through the 057 allowance, and each was
+    logged once (rehearsal log went from 1 to 15 lines).
+  - Every step gave the same result as run 1.
+  - R6 gap: at most 1.16 s.
+  - /srv/aptly is unchanged across R: live-list.py lists `e09a4db7...` are
+    byte-identical.
+  - Helper scripts: `guard-verdicts.py`, `compare-cases.py`,
+    `apt-client-check.sh`, `r4-r8b.py`, `r9-check.py`.
 - Run 1 (logs/30, logs/31) is preliminary.
 - Nothing in /srv/aptly has been changed.
 - target2 is at `Clean-2`: it no longer holds our repository source or
