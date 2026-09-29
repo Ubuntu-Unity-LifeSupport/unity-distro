@@ -289,6 +289,52 @@ Non-blocking findings, taken:
   `publish_aptly.py` and taskctl's PUBLISHED gate report this as "the
   repository has expired (Valid-Until passed)", not as a generic failure.
 
+### May's confirmation (via C, 2026-09-29) and the signer's invariant
+
+May confirmed the design with one condition. Scheduled automatic
+re-signing, to refresh Valid-Until, is allowed without him, but only for
+exactly the content he already approved. Any other change needs his
+explicit confirmation on the console again.
+
+**Invariant.** The signer signs a Release only if it is identical to the
+approved one in every field and file except `Date` and `Valid-Until`. On
+any difference it refuses and logs the field. That covers:
+
+- a Release field (`Origin`, `Label`, `Suite`, `Codename`,
+  `Architectures`, `Components`, `Description`, `Acquire-By-Hash`,
+  `NotAutomatic`/`ButAutomaticUpgrades`, `Signed-By`, and any field that
+  is added or removed);
+- the list of index files and their sizes and checksums in every
+  checksum section (`MD5Sum`, `SHA1`, `SHA256`, `SHA512`);
+- the decompressed content of any index;
+- any package entry: name, version, architecture, sha256, size,
+  filename, any control field;
+- the distribution, component or prefix of the publication.
+
+Dropping a field, or reordering it in a way that changes meaning, is a
+difference too. For the scheduled re-sign, the signer builds the new
+Release itself from the approved one: it copies every line and replaces
+only the `Date` and `Valid-Until` values. So nothing builder sends can
+enter a re-signed Release.
+
+**Refusal tests**, in the signer's test suite. Each one starts from an
+approved Release and index set and changes exactly one thing; the signer
+must refuse:
+
+- each Release field above: changed, added, or removed;
+- one checksum line in each checksum section: size or hash changed, a file
+  added, a file removed;
+- each compressed variant whose content differs from the approved
+  decompressed content;
+- in a Packages or Sources entry, each of: version, architecture, sha256,
+  size, filename, another control field; also an entry added and an entry
+  removed;
+- distribution, component and prefix;
+- a `Valid-Until` earlier than `Date`, or beyond the allowed window.
+
+And the positive case: only `Date` and `Valid-Until` change, and the
+signer signs.
+
 ### What changes for existing tools
 
 | Tool or operation | Effect |
