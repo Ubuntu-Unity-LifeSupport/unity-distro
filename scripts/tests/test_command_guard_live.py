@@ -143,6 +143,7 @@ class LiveAllowanceTest(unittest.TestCase):
             self.assertEqual(entry["commands_sha256"], sha(self.list))
             self.assertEqual(entry["marker_sha256"], sha(self.hook.LIVE_MARKER))
 
+    @unittest.skipUnless(REAL_LIST.exists(), "no live command list in main (removed at the task's DONE)")
     def test_real_list_is_valid_and_matches_the_phase_l_plan(self):
         listing = json.loads(REAL_LIST.read_text())
         self.assertEqual(listing["task_id"], "UNITY-20260927-047")
@@ -247,6 +248,15 @@ class LiveAllowanceTest(unittest.TestCase):
                 self.write_list(**over)
                 self.write_marker()
                 self.assert_denied(self.commands[2], "live command list")
+
+    def test_no_list_denies_every_live_string(self):
+        # after the task's DONE the list is removed from main (section 6)
+        os.unlink(self.list)
+        for command in self.commands:
+            message = self.allowed(command)
+            self.assertIsNotNone(message, command)
+            self.assertIn("aptly live command not allowed", message)
+        self.assertEqual(self.log_lines(), [])
 
     def test_list_must_not_be_a_link(self):
         target = Path(self.tmp.name) / "list-elsewhere.json"
