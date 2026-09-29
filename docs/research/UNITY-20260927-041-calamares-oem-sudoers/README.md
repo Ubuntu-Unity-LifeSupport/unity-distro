@@ -189,9 +189,15 @@ Results:
     cold boots again.
 - **The build environment changed** (found by the Verifier; corrects the
   claim that basicwallpaper is the only binary that differs).
-  - Since main's UNITY-20260929-013 changes to `build_sbuild.py`, the
-    chroot also takes resolute-updates and resolute-security. The +unity2
-    build-r2 took the release pocket only.
+  - Cause: sbuild's age limit, not UNITY-20260929-013. The sbuild command
+    line is the same for both builds.
+    - For this build, sbuild 0.91 in unshare mode reported "Existing chroot
+      tarball is too old (7.01 >= 7.00 days)". It skipped
+      `~/.cache/sbuild/resolute-amd64.tar.zst` (2026-09-22 17:46Z) and
+      created a fresh chroot with its default sources: archive.ubuntu.com
+      resolute plus -updates and -security.
+    - The +unity2 build-r2 (15:54Z) was still inside the 7 days and used
+      the tarball: de.archive.ubuntu.com, release pocket only.
   - `-common`'s statically linked `snap-seed-glue-emb` was therefore built
     against a newer snapd: `Static-Built-Using: snapd (= 2.74.1+ubuntu26.04.4)`
     became `(= 2.76.3+ubuntu26.04)`, and the binary grew from 12035328 to
