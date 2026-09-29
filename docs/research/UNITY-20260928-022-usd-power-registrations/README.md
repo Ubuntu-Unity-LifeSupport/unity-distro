@@ -74,6 +74,26 @@ with its dbgsym and the perturb drop-in; +unity7 for comparison (`runs/05`):
 | forced finalize, then `Screen.GetPercentage` by the well-known name | SIGSEGV in `handle_method_call` (`runs/02`) | ServiceUnknown, no crash (`runs/07`) |
 | forced finalize, then method and property Get **by u-s-d's unique name** (reaching the connection) | - | "object /org/gnome/SettingsDaemon/Power does not exist" for both, no crash (`runs/08`) |
 
+## Verifier round 1 (+unity8): FAIL - keyboard calls before the proxy is back
+
+The independent Verifier confirmed every row above and found a new crash
+(`runs/09-verifier-1-unity8.txt`, `tools/kbdrace.py`,
+`tools/keyboard-toggle-race.sh`, both written by the Verifier): with 20
+`Keyboard.StepUp` calls kept in flight while the plugin was switched off and
+on 15 times, u-s-d died with SIGSEGV, 2 of 2 (`libpower.so+0x90a8`,
+`upower_kbd_get_brightness`, gsd-power-manager.c:1920, `error->domain` with
+`error == NULL`; journal: `g_dbus_proxy_call_sync_internal: assertion
+'G_IS_DBUS_PROXY (proxy)' failed`). +unity8's `stop()` clears
+`upower_kdb_proxy`, and `start()` creates it again asynchronously: between
+the two the plugin is running with a NULL proxy, and the Keyboard handler
+called the helpers without checking it. In +unity7 the same path exists only
+at the first start or when the proxy could not be created (code, not run).
+The same race with `Screen.GetPercentage` (11,806 calls) answered every call.
+
+Fix (`df68430`, changelog +unity9 `57945f5`): the Keyboard method handler
+answers "No keyboard backlight" while there is no proxy; the helpers' other
+callers already check it.
+
 ## Evidence card
 
 ```yaml

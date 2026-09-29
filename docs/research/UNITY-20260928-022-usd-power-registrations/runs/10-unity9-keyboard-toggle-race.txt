@@ -1,0 +1,21 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2137; replaced files mapped: 0; crash files: -rw-r----- 1 mike whoopsie 3487386 03:38:25 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+## start 2026-09-29 04:08:57 pid 2137
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'UnknownMethod': 4613, 'not running': 22993, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 391}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 46551, 'not running': 24286}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== journal since 2026-09-29 04:08:57
+  crash files: 1
+  active: true
+## start 2026-09-29 04:09:42 pid 2137
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'UnknownMethod': 5735, 'not running': 22568, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 361}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 42176, 'not running': 24830}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== journal since 2026-09-29 04:09:42
+  crash files: 1
+  active: true
