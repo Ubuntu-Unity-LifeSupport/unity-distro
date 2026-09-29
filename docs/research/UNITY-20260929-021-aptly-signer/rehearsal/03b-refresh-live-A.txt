@@ -1,0 +1,8 @@
+== step 3b: refresh --switch, then live, at 2026-09-29T22:43:13Z
+refresh exit 0
+-- Release.gpg over the published Release now:
+gpgv: Good signature from "aptly-signer rehearsal <rehearsal@example.invalid>"
+-- Release has Valid-Until: Valid-Until: Fri, 02 Oct 2026 22:37:51 UTC
+-- stored trio after install: 0 files
+23e272c699467e950b550ec84180537b0b6d5cb3412fd335e99fd78cc22cfc82
+live exit 0
