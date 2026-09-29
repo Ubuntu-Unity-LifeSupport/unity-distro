@@ -485,7 +485,9 @@ class BuildSbuildTest(unittest.TestCase):
                 "udeb": [self.make_deb(d, "libfoo-udeb", "1.0", package_type="udeb")],
                 "foreign architecture": [self.make_deb(d, "libfoo-arm", "1.0", arch="arm64")],
                 "same basename twice": [ok, same_name], "same file twice": [ok, ok],
-                "same package twice": [ok, same_pkg]}
+                "same package twice": [ok, same_pkg],
+                "same package, other architecture": [ok, self.make_deb(d / "e", "libfoo", "1.0", arch="all")],
+                "Source field with a path": [self.make_deb(d / "f", "libevil", "1.0", source="../../../etc")]}
 
     def test_refusals_before_sbuild(self):
         """Each is refused before sbuild runs (the stub never starts), no manifest."""

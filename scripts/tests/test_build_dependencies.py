@@ -131,6 +131,60 @@ class CheckTest(unittest.TestCase):
         (self.pool / "main/n/nux" / other.name).write_bytes(pool_other.read_bytes())
         self.assertIn("not in our published pool", self.check([entry]))
 
+    def test_name_fields_cannot_steer_the_pool_path(self):
+        """Verifier round 1: '..' in source/package/version/architecture pointed
+        the pool lookup at candidate/ or at the manifest's own copy."""
+        other = make_deb(self.candidate / "pool/main/n/nux/libnux-4.0-common_4.0.8-0ubuntu15+unity2_all.deb",
+                         "libnux-4.0-common", "4.0.8-0ubuntu15+unity2", arch="all", source="nux")
+        copy = self.out / "build-dependencies" / other.name
+        copy.write_bytes(other.read_bytes())
+        entry = dict(self.entry, file=f"build-dependencies/{other.name}", package="libnux-4.0-common",
+                     architecture="all", sha256=hashlib.sha256(other.read_bytes()).hexdigest())
+        entry.pop("pool_path")
+        rel_to_copy = Path("..") / ".." / ".." / ".." / ".." / "out" / "build-dependencies"
+        cases = {"source into candidate/": dict(entry, source="nux/../../../../candidate/pool/main/n/nux"),
+                 "source onto the manifest's own copy": dict(entry, source=f"nux/{rel_to_copy}"),
+                 "package with a slash": dict(entry, package="../libnux-4.0-common"),
+                 "version with a slash": dict(entry, version="4.0/../../x"),
+                 "architecture with a slash": dict(entry, architecture="all/.."),
+                 "plus an in-root pool_path": dict(entry, source="nux/../../../../candidate/pool/main/n/nux",
+                                                   pool_path=str(self.pool / "main/n/nux/x.deb"))}
+        for label, bad in cases.items():
+            with self.subTest(case=label):
+                error = self.check([bad])
+                self.assertIsNotNone(error)
+                self.assertIsNotNone(bd.manifest_error({"build_dependencies": [bad]}, self.out, self.pool))
+
+    def test_non_string_fields_refused_cleanly(self):
+        for label, bad in {"version int": dict(self.entry, version=4), "source int": dict(self.entry, source=1),
+                           "size str": dict(self.entry, size="12"), "pool_path int": dict(self.entry, pool_path=3)}.items():
+            with self.subTest(case=label):
+                self.assertIsInstance(self.check([bad]), str)
+
+    def test_file_must_be_in_build_dependencies(self):
+        (self.out / self.copy.name).write_bytes(self.copy.read_bytes())
+        self.assertIn("build-dependencies/", self.check([dict(self.entry, file=self.copy.name)]))
+
+    def test_pool_symlink_outside_root(self):
+        """A pool entry that is a symlink to a file outside the root does not count."""
+        outside = self.base / "outside.deb"
+        outside.write_bytes(self.copy.read_bytes())
+        pooled = self.pool / "main/n/nux" / self.copy.name
+        pooled.unlink()
+        pooled.symlink_to(outside)
+        entry = {k: v for k, v in self.entry.items() if k != "pool_path"}  # the computed path alone
+        self.assertIn("not in our published pool", self.check([entry]))
+        self.assertIn("outside", self.check([self.entry]))  # and the recorded one resolves outside too
+
+    def test_field_error(self):
+        self.assertIsNone(bd.field_error("libnux-4.0-dev", "4.0.8+18.10-0ubuntu15+unity2", "amd64", "nux"))
+        self.assertIsNone(bd.field_error("calamares-settings-ubuntu-common", "1:26.04.12+unity2", "all",
+                                         "calamares-settings-ubuntu"))
+        for args in (("../x", "1", "all", "x"), ("x", "1/2", "all", "x"), ("x", "1", "all/..", "x"),
+                     ("x", "1", "all", "x/../y"), ("X", "1", "all", "x"), ("x", "", "all", "x"), ("x", "1", "all", None)):
+            with self.subTest(args=args):
+                self.assertIsNotNone(bd.field_error(*args))
+
     def test_recorded_pool_path_not_trusted(self):
         """A recorded pool_path inside the root that is not the package's own
         pool location does not make it pass: the path is recomputed."""

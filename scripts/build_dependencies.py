@@ -36,6 +36,23 @@ def source_name(source_field, package):
     return package
 
 
+# Debian policy 5.6.1 (package names), 5.6.12 (versions: digits, letters,
+# . + ~ - and an epoch colon), architecture names. None allows '/', so a
+# name field cannot steer the pool path (Verifier round 1).
+NAME_RE = re.compile(r"[a-z0-9][a-z0-9+.-]+")
+VERSION_RE = re.compile(r"(?:[0-9]+:)?[0-9][A-Za-z0-9.+~-]*")
+ARCH_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
+
+
+def field_error(package, version, architecture, source):
+    """An error message when a field is not a valid Debian name/version, else None."""
+    for label, value, pattern in (("package", package, NAME_RE), ("source", source, NAME_RE),
+                                  ("version", version, VERSION_RE), ("architecture", architecture, ARCH_RE)):
+        if not isinstance(value, str) or not pattern.fullmatch(value):
+            return f"{label} {value!r} is not a valid Debian {label}"
+    return None
+
+
 def pool_path(root, package, version, architecture, source):
     """Where Debian's pool layout puts this .deb: pool/main/<prefix>/<source>/
     with prefix = 'libX' for lib* sources, else the first letter, and the
@@ -46,11 +63,16 @@ def pool_path(root, package, version, architecture, source):
 
 
 def in_pool(root, package, version, architecture, source, digest):
-    """(True, path) when the pool holds this package with exactly these bytes."""
+    """(True, path) when the pool holds this package with exactly these bytes.
+    Invalid name fields, or a path that resolves outside the root (a symlink
+    in the pool), never count as in the pool."""
     path = pool_path(root, package, version, architecture, source)
+    if field_error(package, version, architecture, source):
+        return False, path
     try:
+        path.resolve().relative_to(Path(root).resolve())
         return path.is_file() and sha256(path) == digest, path
-    except OSError:
+    except (OSError, ValueError):
         return False, path
 
 
@@ -102,22 +124,29 @@ def check_entries(entries, manifest_dir, pool_root=None):
     base = Path(manifest_dir).resolve()
     if not isinstance(entries, list) or not entries:
         return "build_dependencies must be a non-empty list"
+    depdir = (base / "build-dependencies").resolve()
     for entry in entries:
-        if not isinstance(entry, dict) or not all(isinstance(entry.get(k), (str, int)) and entry.get(k) != ""
-                                                  for k in REQUIRED_FIELDS):
+        if not isinstance(entry, dict) or not all(isinstance(entry.get(k), str) and entry.get(k)
+                                                  for k in REQUIRED_FIELDS if k != "size") \
+                or not isinstance(entry.get("size"), int):
             return f"build dependency record lacks one of {', '.join(REQUIRED_FIELDS)}: {entry!r}"
+        error = field_error(entry["package"], entry["version"], entry["architecture"], entry["source"])
+        if error:
+            return f"build dependency {entry['file']!r}: {error}"
         name = entry["file"]
-        if not isinstance(name, str) or Path(name).is_absolute() or ".." in Path(name).parts:
+        if Path(name).is_absolute() or ".." in Path(name).parts:
             return f"build dependency file must be a relative path inside the manifest's directory: {name!r}"
         path = (base / name).resolve()
         try:
-            path.relative_to(base)
+            path.relative_to(depdir)
         except ValueError:
-            return f"build dependency file resolves outside the manifest's directory: {name!r}"
+            return f"build dependency file must be in the manifest's build-dependencies/: {name!r}"
         if not path.is_file() or sha256(path) != entry["sha256"]:
             return f"build dependency {name} is missing or does not match its sha256"
         recorded = entry.get("pool_path")
         if recorded is not None:
+            if not isinstance(recorded, str):
+                return f"build dependency {name}: pool_path must be a path, not {recorded!r}"
             try:
                 Path(recorded).resolve().relative_to(root.resolve())
             except ValueError:

@@ -15,7 +15,7 @@ import sys
 import tarfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build_dependencies import POOL_ROOT, in_pool, installed_build_depends, source_name  # noqa: E402
+from build_dependencies import POOL_ROOT, field_error, in_pool, installed_build_depends, source_name  # noqa: E402
 
 
 def run(args, cwd=None, check=True, capture=True):
@@ -60,11 +60,13 @@ def vcs_entries(dsc_dir, names):
     return found
 
 
-def extra_packages(paths, build_arch):
-    """UNITY-20260929-013: validate every --extra-package before anything is
-    copied or built. Returns (records, error). sbuild itself would skip a
-    missing path or a second file of the same name, read every .deb of a
-    directory, and only warn about a foreign architecture - all refused here."""
+def extra_packages(paths, build_arch, depdir):
+    """UNITY-20260929-013: check every --extra-package, copy it into depdir,
+    and read its fields from the copy - the bytes sbuild gets and the manifest
+    hashes. Returns (records, error); on error sbuild is not started. sbuild
+    itself would skip a missing path or a second file of the same name, read
+    every .deb of a directory, and only warn about a foreign architecture -
+    all refused here, before or right after the copy."""
     records, names, files, packages = [], set(), set(), set()
     for given in paths:
         candidate = Path(given).expanduser()
@@ -80,25 +82,35 @@ def extra_packages(paths, build_arch):
             return None, f"--extra-package {given}: only .deb files are accepted"
         if not os.access(resolved, os.R_OK):
             return None, f"--extra-package {given}: not readable"
-        info = run(["dpkg-deb", "-f", str(resolved), "Package", "Version", "Architecture", "Source", "Package-Type"],
+        if resolved.name in names:
+            return None, f"--extra-package {given}: a file named {resolved.name} is already given (sbuild would drop one)"
+        if resolved in files:
+            return None, f"--extra-package {given}: the same file is given twice"
+        names.add(resolved.name); files.add(resolved)
+        depdir.mkdir(exist_ok=True)
+        copy = depdir / resolved.name
+        shutil.copyfile(resolved, copy)
+        info = run(["dpkg-deb", "-f", str(copy), "Package", "Version", "Architecture", "Source", "Package-Type"],
                    check=False)
         fields = dict(line.split(": ", 1) for line in info.stdout.splitlines() if ": " in line) if not info.returncode else {}
         package, version, arch = fields.get("Package"), fields.get("Version"), fields.get("Architecture")
         if info.returncode or not (package and version and arch):
             return None, f"--extra-package {given}: dpkg-deb cannot read Package, Version and Architecture"
+        source = source_name(fields.get("Source"), package)
+        error = field_error(package, version, arch, source)
+        if error:
+            return None, f"--extra-package {given}: {error}"
         if fields.get("Package-Type") == "udeb":
             return None, f"--extra-package {given}: udeb packages are not accepted"
         if arch not in ("all", build_arch):
             return None, f"--extra-package {given}: architecture {arch} is neither all nor {build_arch}"
-        if resolved.name in names:
-            return None, f"--extra-package {given}: a file named {resolved.name} is already given (sbuild would drop one)"
-        if resolved in files:
-            return None, f"--extra-package {given}: the same file is given twice"
-        if (package, arch) in packages:
-            return None, f"--extra-package {given}: {package}:{arch} is already given"
-        names.add(resolved.name); files.add(resolved); packages.add((package, arch))
-        records.append({"given": given, "resolved": resolved, "package": package, "version": version,
-                        "architecture": arch, "source": source_name(fields.get("Source"), package)})
+        # apt installs one version of a package: two files of it (e.g. all and
+        # amd64) would both read as used from one Installed-Build-Depends line
+        if package in packages:
+            return None, f"--extra-package {given}: package {package} is already given"
+        packages.add(package)
+        records.append({"given": given, "resolved": resolved, "copy": copy, "package": package,
+                        "version": version, "architecture": arch, "source": source})
     return records, None
 
 
@@ -133,7 +145,7 @@ def main():
     dependencies = []
     if args.extra_package:
         build_arch = run(["dpkg", "--print-architecture"]).stdout.strip()
-        records, error = extra_packages(args.extra_package, build_arch)
+        records, error = extra_packages(args.extra_package, build_arch, output / "build-dependencies")
         if error:
             print(error, file=sys.stderr)
             return 2
@@ -141,11 +153,8 @@ def main():
         # root can be redirected for the tests only; the gate and the
         # publisher check against POOL_ROOT themselves.
         pool_root = Path(os.environ.get("BUILD_SBUILD_POOL_ROOT", POOL_ROOT))
-        depdir = output / "build-dependencies"
-        depdir.mkdir()
         for record in records:
-            copy = depdir / record["resolved"].name
-            shutil.copyfile(record["resolved"], copy)
+            copy = record["copy"]
             digest = sha256(copy)
             found, where = in_pool(pool_root, record["package"], record["version"], record["architecture"],
                                    record["source"], digest)
