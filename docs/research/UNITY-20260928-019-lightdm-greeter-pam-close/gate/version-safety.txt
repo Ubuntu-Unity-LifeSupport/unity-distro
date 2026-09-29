@@ -1,0 +1,93 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 1.32.0-6ubuntu4+unity2 is newer than resolute 1.32.0-6ubuntu4",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "lightdm",
+  "source_commit": "f5af23c0b9d5931aea0dfc7a2eaf424415cf8920",
+  "candidate_source_version": "1.32.0-6ubuntu4+unity2",
+  "pockets": {
+    "resolute": "1.32.0-6ubuntu4"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T16:38:30Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "gir1.2-lightdm-1",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "liblightdm-gobject-1-0-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "liblightdm-gobject-1-0",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "liblightdm-gobject-dev",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "liblightdm-qt5-3-0-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "liblightdm-qt5-3-0",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "liblightdm-qt5-3-dev",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "lightdm-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "lightdm-vala",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260928-019",
+    "packages": 303,
+    "list_sha256": "42bfc9ddc7514a45fdfbb15dbf36a62e1b447eff249cedd1995639e1298065df",
+    "model_entries": 274,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "eb0f8d65863983efa827027fc3d3de04b4939d06686b41e050015b9e28dc0e72"
+}

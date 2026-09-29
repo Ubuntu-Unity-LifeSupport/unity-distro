@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "lightdm",
+  "measured_at": "2026-09-29T16:38:30Z",
+  "sources_file": "/home/claude/work/a/unity-distro-019/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20260928-019",
+    "packages": 303,
+    "list_sha256": "42bfc9ddc7514a45fdfbb15dbf36a62e1b447eff249cedd1995639e1298065df",
+    "model_entries": 274,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "cfd0cf7e13560377298284619fc9cfb71eda9746dd2e834d1caec9d0de80e7bf",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 16:38:30 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "48b5f2957d6c33368fc3b38a24c35d2a0824ee09ac2b5ffbf7dea669cc1be3e6",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Mon, 28 Sep 2026 21:59:18 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "6e0189bb412cdc3947e5f30aeb6ebf075e1b91703dbe01c533620c0ba6ed642e",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 13:07:19 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "4fbe3251e3b827e661a178066a0800b6ad5e6df081e32e6b75c6d48d37dfe5a4",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026  9:31:07 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "5f7d314dcd8a8e0f3f8fcbb3f84397a7f0fa9c57fab2ce1a2f8e93de7b7b6bf9",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 15:11:25 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "1.32.0-6ubuntu4"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "gir1.2-lightdm-1",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "gir1.2-lightdm-1_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "gir1.2-lightdm-1:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "liblightdm-gobject-1-0-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "liblightdm-gobject-1-0-dbgsym_1.32.0-6ubuntu4+unity2_amd64.ddeb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "liblightdm-gobject-1-0-dbgsym:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "liblightdm-gobject-1-0",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "liblightdm-gobject-1-0_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "liblightdm-gobject-1-0:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "liblightdm-gobject-dev",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "liblightdm-gobject-dev_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "liblightdm-gobject-dev:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "liblightdm-qt5-3-0-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "liblightdm-qt5-3-0-dbgsym_1.32.0-6ubuntu4+unity2_amd64.ddeb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "liblightdm-qt5-3-0-dbgsym:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "liblightdm-qt5-3-0",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "liblightdm-qt5-3-0_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "liblightdm-qt5-3-0:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "liblightdm-qt5-3-dev",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "liblightdm-qt5-3-dev_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "liblightdm-qt5-3-dev:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "lightdm-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "lightdm-dbgsym_1.32.0-6ubuntu4+unity2_amd64.ddeb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "lightdm-dbgsym:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "lightdm-vala",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "lightdm-vala_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "lightdm-vala:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64",
+      "file": "lightdm_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "apt_candidate": "1.32.0-6ubuntu4+unity2",
+      "policy": "lightdm:\n  Installed: (none)\n  Candidate: 1.32.0-6ubuntu4+unity2\n  Version table:\n     1.32.0-6ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.32.0-6ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

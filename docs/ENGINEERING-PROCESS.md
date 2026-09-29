@@ -462,6 +462,32 @@ rule per kind and rejects anything else:
   artifacts and never expected in a snapshot.
 - Any other kind: rejected until a rule for it is added here.
 
+Extra build dependencies (UNITY-20260929-013). A package that needs a build
+dependency the target series' archive does not provide in a usable form
+(unity: the archive's nux breaks its configure step) is built with
+`build_sbuild.py --extra-package DEB` (repeatable). Each `.deb` is checked
+before sbuild starts (a readable regular `*.deb`, not a udeb, architecture
+`all` or the build architecture, valid Debian name and version fields, no
+second file of the same name, the same file twice, or a second file of the
+same package in any architecture), copied
+to `OUTPUT/build-dependencies/`, and the copy is given to sbuild. After the
+build the copies must be unchanged and each package must appear at its
+version in the `.buildinfo`'s `Installed-Build-Depends` - sbuild adds them to
+apt without a pin, so one not newer than the archive's is not used and the
+build is refused. The manifest then carries an optional
+`build_dependencies` list (file, sha256, size, package, version,
+architecture, source, the path given, the resolved path, whether the same
+bytes are in our published pool, and where). `artifacts` is unchanged.
+`create_release_gate.py` and `publish_aptly.py` check that list when it is
+present (`scripts/build_dependencies.py`): the name and version fields are
+valid Debian fields (so none can steer the pool path), each copy is in the
+manifest's `build-dependencies/` and matches its sha256, and the same bytes
+are in our published
+pool (`/srv/aptly/public/pool`, at the package's own pool location; the
+unpublished `candidate/` staging does not count). A publishable build
+depends only on extra packages we publish. Without the option nothing
+changes.
+
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
 the task to `READY_TO_PUBLISH`. The publisher also checks that board state.

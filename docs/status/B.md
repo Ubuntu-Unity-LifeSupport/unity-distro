@@ -5,6 +5,28 @@ Build directory: `~/work/b`
 
 ## Now
 
+**UNITY-20260927-021** (2026-09-29): calamares-settings-ubuntu
+1:26.04.12+unity2. Target PASS; PUBLISHED waits for UNITY-20260929-015.
+- Published 16:10Z as snapshot `unity-resolute-20260927-021-r2`.
+- Target check on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from the new snapshot `OEM-ready-unity2`.
+  In both boots Calamares is on top, and the wallpaper is DESKTOP/BELOW and
+  never focused.
+- Limit: apt does not fix an OEM system that is already installed.
+  basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz`
+  and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`,
+  branch `b/UNITY-20260927-021` deb301b.
+- `oem-test` is powered off. Snapshots `OEM-ready`, `OEM-ready-fixed` and
+  `OEM-ready-unity2` are kept.
+- Why it waits: taskctl compares the live snapshot by name, and `./resolute`
+  has since moved to `unity-resolute-20260928-019`. That snapshot is a
+  superset: only 11 lightdm records were added.
+- Next: UNITY-20260929-015, taskctl accepting a live snapshot that contains
+  every artifact of the publish record.
+
 **hud** (2026-09-26, B-12): hud is B's now.
 - `+unity1` builds in resolute: CMake 4, systemd-dev and C++17 fixed, 6/6
   test suites pass.
