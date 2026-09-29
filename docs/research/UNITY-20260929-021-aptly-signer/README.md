@@ -774,3 +774,61 @@ cut-over.** The aptly command can carry no environment prefix, so the
 stand-in reads `~/.config/aptly-signer/standin.json` of the user who runs
 aptly. That file is 0600 and holds the signer's URL, the timeout, the
 store and `key_id`. `APTLY_SIGNER_STANDIN_CONFIG` remains for tests only.
+
+## 16. Design review 4: APPROVE, and the amendments in code
+
+The Design Challenger's round 4 approved (b) and (c) and settled (d):
+- The rehearsal confirmed the gates, and the step-0 code fixes (executable
+  stand-in, absolute gpg paths, the exact Init probe, and keys that include
+  the version) are sound as design changes.
+- May's invariant is unchanged.
+
+**(b) In code.**
+- `signer_core.DebSet` takes the `.deb`s from `/propose`.
+  - A `.deb` is required for every Packages entry whose SHA256 is not in
+    last-live: an added entry, or one changed under the same name, version
+    and arch.
+  - Each must match the `Size` and `SHA256` of the entry in the Packages
+    the signer checked itself.
+  - A missing, mismatched or extra `.deb` refuses the proposal.
+- `aptly_signer.script_scanner` reads the control archive in memory
+  (`bounded_decompress` for tar, gz, xz and zst, capped by `max_control`,
+  16 MiB), lists member names only and extracts nothing.
+- The `:8080` fetch of `.deb`s is removed. `/live` still fetches
+  `InRelease` from the repository.
+- `signer_client.py propose` sends every `.deb` whose SHA256 is not in the
+  live Packages under `public_root`, read from the proposal publication's
+  pool.
+- **Effective limit.** `max_body` is 96 MiB, and the `.deb`s travel base64
+  inside it, so a proposal can carry at most about 72 MiB of `.deb`s. A
+  larger one is refused (fail closed).
+- Tests:
+  - missing, extra and mismatched `.deb`;
+  - a changed entry under the same key needs its `.deb`, and the console
+    shows "changed libdemo1 ... scripts: postinst";
+  - the decompression cap;
+  - the end-to-end flow now proposes with the pool, as a real rehearsal
+    publication has.
+
+**(c) The stand-in's config.**
+- The default path `~/.config/aptly-signer/standin.json` stays as the
+  fallback. `APTLY_SIGNER_STANDIN_CONFIG` stays as an override.
+- **Product mechanism, recorded for the `publish_aptly.py` follow-up and
+  May's step 4:** `publish_aptly.py` passes aptly its own `env`, with
+  `PATH=<stand-in dir>:...` and the config variable, in its
+  `subprocess.run`.
+- It does not use a global `~/.local/bin/gpg`, which would shadow gpg for
+  everything `claude` runs: debsign, git, and the key removal in the
+  rotation. That was acceptable only for the rehearsal window, with B on
+  hold.
+
+**(d) The leftover `*.tmp`: nothing more in this task.** They are
+unsigned, no Release references them, and the next switch overwrites them.
+For the follow-up:
+- report them as "the last switch was refused";
+- no agent deletes them behind aptly;
+- R2 ignores them. It already does, since it compares only the files the
+  trio's Release lists.
+
+The follow-up also sets or checks `go-w` on its trees, as the guard
+requires (deviation 3).
