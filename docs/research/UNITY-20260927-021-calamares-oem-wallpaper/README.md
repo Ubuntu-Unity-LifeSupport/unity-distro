@@ -175,3 +175,35 @@ below are preliminary evidence from that sbuild output.
   only exists once the package is in a repository apt uses.
 
 Resume at IMPLEMENTING (gated rebuild), then VERIFYING.
+
+## Gated rebuild and verification (2026-09-29)
+
+The two blockers above are resolved. `build_sbuild.py` handles epochs since
+main 6596001. The source commit c03daf48 is on
+`Ubuntu-Unity-LifeSupport/calamares-settings-ubuntu` as
+`b/UNITY-20260927-021` (repository created in UNITY-20260927-046); the push
+clone is `~/work/b/021-push`. The branch was merged with main (78933b4).
+
+- Pre-build (gate/): the pocket view shows resolute 1:26.04.12 only;
+  version_safety --pre-build gives UNKNOWN (expected before a build), and the
+  ordering is newer.
+- Gated sbuild: manifest PASS, source tree d4fb3f58. The binaries are
+  -ubuntu-unity, -common, -common-data, -common-dbgsym (.ddeb), -kubuntu and
+  -lubuntu.
+- logs/06: rt.sh on the gated -ubuntu-unity deb, Calamares on top 3/3 in all
+  three cases (basicwallpaper 077f7c36); the archive fails (logs/01).
+- logs/07: the file lists of -ubuntu-unity/-common/-common-data equal
+  +unity1; the changelog went from 1 to 95 entries.
+- Verifier round 1: INCOMPLETE (REVIEWED), no finding values. (a) and (b)
+  hold for the Ubuntu Unity binaries. The build also ships the patched
+  basicwallpaper in calamares-settings-lubuntu and -kubuntu 1:26.04.12+unity2
+  (their file lists equal the archive's; only basicwallpaper and the version
+  pins differ). +unity1 never published those two packages. Their behaviour
+  change is unmeasured:
+  - Lubuntu: openbox on X11, so the new desktop-window path is active;
+  - Kubuntu: depends on the Qt platform under kwin_wayland.
+
+  Publishing them would move any system with our repo from the archive
+  versions to ours and shadow later 1:26.04.12ubuntuN updates. Decision
+  pending (May, via C): leave them out of the publication, or measure the
+  Lubuntu/Kubuntu OEM sessions first.
