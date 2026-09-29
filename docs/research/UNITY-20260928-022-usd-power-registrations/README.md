@@ -99,7 +99,7 @@ candidate_approaches:
     stop() (else a cancelled request would never be made again after a
     restart - the lock-before-suspend inhibitor would be lost); the keyboard
     backlight proxy is cleared in stop()"
-chosen_approach: D1 (method error, property errors on every NULL path, unregister in finalize before the connection is cleared, bus_cancellable also cancelled in finalize) + A1; commit 6a12166 on a/UNITY-20260928-022 (on +unity7 b570a22), changelog +unity8 6465110
+chosen_approach: D1 (method error, property errors on every NULL path, unregister in finalize before the connection is cleared, bus_cancellable also cancelled in finalize) + A1; commit 27e75f4 on a/UNITY-20260928-022 (on +unity7 b570a22), changelog +unity8 41fd7eb (reworded after review 2; first version 6a12166/6465110, same code, never pushed or built to the end)
 correct_layer: >-
   The power manager owns its D-Bus registration and its async calls; its
   lifetime functions (stop, finalize) must end them. D1 keeps the
@@ -118,9 +118,9 @@ unknowns:
     dconf setting; the hang is then user-visible through media-keys'
     brightness calls - not measured)."
   - "The side finding (idle handling dead under cinnamon-session) and its dependency on the idle watches."
-  - "The logind g-signal handler (:3214) is not disconnected before its proxy is dropped; an in-flight call could keep the proxy alive - not tested."
+  - "The logind g-signal handler (:3214) is not disconnected before its proxy is dropped; an in-flight call could keep the proxy alive - not tested. If a PrepareForSleep (resume) then reaches a stopped manager, handle_resume_actions calls inhibit_suspend, which sets inhibit_suspend_taken with no proxy; the next start() would skip the lock-before-suspend inhibitor until the next resume (Design Challenger, review 2, R1). Not fixed here: not reproduced; proposed as a one-line follow-up (g_signal_handlers_disconnect_by_data before dropping logind_proxy)."
   - "The known gap: stop() before on_bus_gotten leaves Power unregistered until restart."
 design_challenger_required: true
 architectural_task: false
-design_review_result: PENDING   # review 1: REVISE (addressed); review 2 on the implementation pending
+design_review_result: APPROVE   # review 1: REVISE (addressed); review 2: APPROVE of the implementation (code only; runs on +unity8 required); R1 recorded as an unknown, R3 wording applied
 ```
