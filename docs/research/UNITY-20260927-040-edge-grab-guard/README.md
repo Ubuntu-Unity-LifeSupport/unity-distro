@@ -419,12 +419,43 @@ Temporary Design Challenger, separate read-only subagent.
    missing. Led to `runs/s11` and the card fields above.
 2. **APPROVE**.
 
+## Verification
+
+Independent Verifier (ephemeral subagent, `adversarial-verifier`), round 1 on
+the gated build of `7b0eca27`: **PASS** (`PATCH_CORRECT`), `REVIEWED`.
+
+- The traces, not only the summaries, show the scenario red on `+unity11`
+  (`runs/b11s` 5/5 and `runs/s6`, `runs/s8` 4/4: Edge's `XUngrabPointer`/
+  `XUngrabKeyboard` from `HandleFrameEvent`, no `ButtonRelease`, no expo
+  `REMOVE-GRAB`, the passive grab frozen) and green on the gated build
+  (`runs/rel`: 5/5 and replay 3/3 with `REMOVE-GRAB`, 0 frozen grabs).
+- The build is what was tested: 14 manifest artifacts, 3 build dependencies
+  and the log rehashed without mismatch; the source tarball equals
+  `git archive 7b0eca27`; `libunityshell.so` is identical in the test and
+  gated builds and matches the hash recorded on target.
+- `otherGrabExist(nullptr)` returns true for any grab on the list, including
+  unityshell's own `unity` and `unity-switcher`; dash, launcher and keynav
+  push none; move and resize already refuse `_NET_WM_MOVERESIZE` while
+  another grab is listed, so only the harmful ungrab is removed. No
+  permanently held grab was found. The function is the same on the compiz
+  `unity/resolute` branch (`+unity2`, `5610bd4`) as in the tree the Verifier
+  read.
+- The diff is one condition and its comment, plus the changelog entry.
+
+Remarks: the package build runs no unit tests (disabled upstream before this
+fix) and there is none for `Edge::ButtonDownEvent`, so the regression is
+guarded by the runtime test only; the root-cause release trace in `s8` is a
+single run, the causal proof resting on the `b11s` to `rel` pair and the
+patched replay. Not measured, as stated above: the `unity` gesture grab, wall
+and ezoom under A2, real hardware.
+
 ## Outcome (so far)
 
-`VERIFYING`: the fix (A2, unity `+unity12`, `7b0eca27`) has an approved
-build manifest from the gated release build, which is content-identical to
-the tested build and passes the regression test and the plan sample on
-target (section 8). Next: the independent Verifier, then the publication gate.
+`REVIEW`: the fix (A2, unity `+unity12`, `7b0eca27`) has an approved build
+manifest from the gated release build, which is content-identical to the
+tested build and passes the regression test and the plan sample on target
+(section 8); the independent Verifier returned PASS, REVIEWED (Verification).
+Next: the publication gate.
 
 Follow-ups proposed (IDs from C): the rest of LP #1393523 (title-bar buttons
 and menus react in expo, option F); `XWindowManager::UnGrabMousePointer`
