@@ -205,3 +205,103 @@ and -security, main and universe); no rebuild.
 - `SBUILD_CONFIG` values are applied (sbuild's log).
 
 Plus one real small build per model chosen.
+
+## 6. May's decisions and the design to implement
+
+May, through the coordinator, 2026-09-29:
+- Model (B): the tarball and the build both use
+  `https://snapshot.ubuntu.com/ubuntu/<T>`, and `<T>` is recorded at each
+  refresh.
+- Pockets: release, -updates and -security.
+- Components: main, universe and restricted, without multiverse.
+- Plus `--chroot=<absolute path>`, and a refusal when the log shows
+  "Creating chroot on-demand".
+
+The follow-up for `~/.sbuildrc` is UNITY-20260929-017.
+
+The snapshot service, checked 2026-09-29: for `<T>` = 20260929T000000Z,
+`dists/resolute`, `-updates` and `-security` all answer 200. The InRelease
+files carry no Valid-Until. `<T>` resolves to the latest publication before
+it (-updates Date 28 Sep 21:58 UTC). One request for the release pocket
+timed out and a retry answered in 1.3 s.
+
+**D1. `scripts/sbuild_chroot.py create --snapshot <T>`** (default: now,
+UTC, `YYYYMMDDTHHMMSSZ`; `--series resolute`, `--arch amd64`):
+- Fetches `dists/<suite>/InRelease` of the three suites from the snapshot
+  and records each Date and sha256. It refuses if any is missing.
+- Runs `mmdebstrap --variant=buildd --arch=amd64 --skip=output/mknod
+  --components=main,universe,restricted --aptopt='Acquire::Retries "5"'
+  resolute <tmp>.tar.zst` with three explicit
+  `deb https://snapshot.ubuntu.com/ubuntu/<T> <suite> main universe restricted`
+  lines. These become the chroot's `/etc/apt/sources.list`.
+- Renames the result to `~/.cache/sbuild/chroots/<series>-<arch>-<T>.tar.zst`
+  and writes a sidecar `<same>.json`. The sidecar holds the schema, series,
+  arch, `<T>`, the sources lines, the InRelease Dates and sha256s, the
+  mmdebstrap version and argv, created_at, and the tarball's name, sha256,
+  size and package list (read from `var/lib/dpkg/status` in the tarball).
+- It refuses to overwrite an existing tarball.
+
+**D2. `build/sbuild-config.pl`**, passed as `SBUILD_CONFIG`, sets
+`$unshare_mmdebstrap_auto_create = 0` as a guard. An explicit `--chroot`
+path is never auto-created anyway.
+
+**D3. `build_sbuild.py`.**
+- `--chroot-tarball PATH`. The default is the newest `<series>-<arch>-*.tar.zst`
+  in `~/.cache/sbuild/chroots/` that has a sidecar.
+- Before sbuild:
+  - The path is resolved to an absolute path.
+  - The sidecar must exist, and its sha256 must match the tarball.
+  - `./etc/apt/sources.list` inside the tarball must be exactly the
+    sidecar's lines. Those lines must be the three pockets of the target
+    series on `snapshot.ubuntu.com/ubuntu/<T>` with main, universe and
+    restricted.
+  - `<T>` must be no more than 7 days old, unless `--allow-old-chroot` is
+    given; the manifest records whether it was.
+- sbuild gets `--chroot-mode=unshare --chroot=<abs path>` and runs with
+  `SBUILD_CONFIG=<repo>/build/sbuild-config.pl`.
+- After sbuild, refuse with exit 2 and no manifest if any of these fails:
+  - The tarball's sha256 must be unchanged.
+  - The log must contain `I: Unpacking <abs path> to `.
+  - The log must not contain `Creating chroot on-demand`,
+    `Creating new chroot tarball` or `Unpacking tarball from STDIN`.
+  - Every `Get:` line fetching over http(s) must be under
+    `https://snapshot.ubuntu.com/ubuntu/<T>/`. Local `file:` and `copy:`
+    lines, from sbuild's own archive of the build dependencies, are allowed.
+- The manifest gets a `chroot` key:
+  - the tarball's path, sha256 and size;
+  - the sidecar's path and sha256;
+  - `<T>`, the sources and the InRelease Dates;
+  - `allow_old_chroot`;
+  - the log's `InRelease` Get lines.
+
+**D4. Refresh and retention.**
+- A new tarball, with a new `<T>`, is created with `sbuild_chroot.py
+  create` when the current one is more than 7 days old; `build_sbuild`
+  refuses such a tarball, as in D3. A new tarball is also created whenever
+  a task needs a newer archive state.
+- The test build and the gated build of one task should name the same
+  tarball. If they do not, their `.buildinfo` Installed-Build-Depends are
+  compared, and the target test is repeated on any difference.
+- Every tarball named by a committed manifest is kept. Others may be
+  deleted by hand.
+- The old `~/.cache/sbuild/resolute-amd64.tar.zst` stays as the record of
+  the builds up to 2026-09-29.
+
+**D5. Records.**
+- DECISIONS gets the policy.
+- DECISIONS gets a separate entry, now, via `append_record.py`: -041 and
+  -014's Q1 were built on sbuild's on-demand chroot, with no rebuild.
+- ENGINEERING-PROCESS section 6 gets the build step with the tarball.
+
+**Tests.**
+- Unit tests with a small fake tarball and sidecar, using the sbuild stub:
+  - a missing tarball, a missing sidecar, a sha256 mismatch, a sources
+    mismatch, a foreign mirror, and multiverse or -proposed in the sources
+    are each refused before sbuild;
+  - an old `<T>` is refused without `--allow-old-chroot`;
+  - the log checks work: an on-demand line (with the -041 log as a
+    fixture), no Unpacking line, a dpkg `Unpacking` line only, a non-snapshot
+    Get line, and a tarball changed during the build;
+  - the manifest's `chroot` key.
+- A real `sbuild_chroot.py create`, then one real build of tiny013 and one
+  of a real package, checking that `dist-upgrade` is a no-op ("0 upgraded").
