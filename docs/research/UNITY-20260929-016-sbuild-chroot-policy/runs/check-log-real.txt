@@ -2,3 +2,6 @@ S2 tiny013:  ACCEPTED (3 InRelease)
 S3 unity (with our nux):  ACCEPTED (3 InRelease)
 H2 build_sbuild, hostile config:  ACCEPTED (3 InRelease)
 H1 control, plain sbuild:  REFUSED: the build fetched from outside the snapshot https://snapshot.ubuntu.com/ubuntu/20260929T201245Z: Ign:1 file:/h 
+H3 control, plain sbuild: REFUSED: sbuild added a package that is not one of this build's extra packages: Copying /home/claude/work/a/0
+H4 build_sbuild: ACCEPTED
+S3 unity: ACCEPTED

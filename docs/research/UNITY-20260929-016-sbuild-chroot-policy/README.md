@@ -452,3 +452,39 @@ config content. Suite: 214 OK (1 skipped).
 The new `check_log` on the real logs (`runs/check-log-real.txt`): S2, S3
 (with the `file:`/`copy:` resolver archives of our nux) and H2 are accepted;
 H1 is refused.
+
+**Round 2** on `4a05de0`: **FAIL** (FIX_PARTIAL), REVIEWED.
+
+The Verifier ran sbuild's own config loader under a hostile config. The
+round-1 resets hold: the assignments replace the user's values, and
+`$apt_update = 0` is overridden. But `$extra_packages` from the user's
+config survives. The command line's `--extra-package` is appended to it, not
+put in its place. sbuild copies those packages into its resolver archive, which
+is served as the `file:` resolver URI that `check_log` accepts.
+
+Remarks: other settings also survive, for example `$apt_get`,
+`$build_env_cmnd` and `$unshare_bind_mounts`. An apt wrapper that also
+filtered apt's output would not be detected.
+
+**Fix** (code `59edb8d`):
+- `build/sbuild-config.pl` resets `$extra_packages`. build_sbuild's own
+  `--extra-package` options are applied after the config file. It also pins
+  `$apt_get = 'apt-get'`, `$build_env_cmnd = ''` and
+  `$unshare_bind_mounts = []`.
+- `check_log` also refuses any `Copying <file> to ...` line that is not one
+  of this build's `build-dependencies/` copies.
+- Tests: a foreign package copied, in the unit test and in a build. Our
+  own copies are accepted, and the config content is checked. Suite: 215 OK
+  (1 skipped).
+
+**Real runs** (`tools/hostile-extra-packages.sh`,
+`runs/hostile-extra-packages.log`): the user config sets
+`$extra_packages = [evilpkg_9.9_all.deb]`.
+- **H3 (control):** plain sbuild copies evilpkg into its archive, which shows
+  the config is read.
+- **H4:** `build_sbuild.py` with the same config plus our
+  `--extra-package libnux-4.0-common` (from the pool) exits 0. The only copy
+  is our `build-dependencies/` file, no line names evilpkg, and the
+  manifest's `build_dependencies` lists only libnux-4.0-common.
+
+`runs/check-log-real.txt`: H3 is refused; H4 and S3 are accepted.
