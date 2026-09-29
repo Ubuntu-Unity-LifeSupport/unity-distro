@@ -163,3 +163,14 @@ calamares-settings-ubuntu 1:26.04.12+unity3, 2026-09-29 (UNITY-20260927-041; the
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
 | calamares-settings-ubuntu | +unity3: `Makefile: chmod the Ubuntu Unity sudoers.oem, to 0440; release +unity3` (branch `b/UNITY-20260927-041`, `221c691`) | The Ubuntu Unity section of the Makefile ran chmod on Kubuntu's `sudoers.oem`, so ours shipped 0644 in `oemconfig.tar.gz` and became `/etc/sudoers` in OEM mode, with a mode that `visudo -c` of sudo-rs and sudo.ws rejects. Now 0440 root:root, the mode of the distribution's own `/etc/sudoers`. Nothing else in the tarballs changes. Kubuntu/Lubuntu stay 0400, out of scope. | none (Launchpad search: no bug; 26.10 has the same line) | [`research/UNITY-20260927-041-calamares-oem-sudoers/`](research/UNITY-20260927-041-calamares-oem-sudoers/) | local, gated publication |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3 published 2026-09-29 18:15:21Z (UNITY-20260927-041; the "Not yet published" line above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-041`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at 221c691; the gate is on `b/UNITY-20260927-041`.
+- ~18:4xZ: `./resolute` moved to `unity-resolute-20260927-040` (UNITY-20260927-040). It carries the same 7 records; `taskctl` confirmed this by content.
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository, then a fresh Calamares OEM install;
+  - in OEM mode, `/etc/sudoers` is 0440 root:root, and `visudo -c` of sudo-rs and sudo.ws passes;
+  - `snap-seed-glue-emb`, statically built with snapd 2.76.3, was exercised;
+  - a cold first boot from snapshot `OEM-ready-unity3` shows Calamares on top.
+- Record: `research/UNITY-20260927-041-calamares-oem-sudoers/target-verification.md`.

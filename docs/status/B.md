@@ -5,6 +5,19 @@ Build directory: `~/work/b`
 
 ## Now
 
+**2026-09-29 ~20:40Z**
+- **UNITY-20260927-041 DONE.** calamares-settings-ubuntu 1:26.04.12+unity3 was
+  published at 18:15Z and is live through -040.
+  - Target PASS: `/etc/sudoers` in OEM mode is 0440 and `visudo -c` passes;
+    a cold first boot from `OEM-ready-unity3` shows Calamares on top.
+  - `oem-test` is powered off. Snapshots OEM-ready, -fixed, -unity2 and
+    -unity3 are kept.
+- **UNITY-20260929-018** (SECURITY) was merged by C at 609f731 as a partial
+  tightening; the Verifier's verdict is FAIL, FIX_PARTIAL, and May decided to
+  merge it anyway. It is BLOCKED (resume REVIEW) until UNITY-20260929-019
+  (OS permissions) is done.
+- Next: UNITY-20260929-003 (guard false positives).
+
 **Before the restart 2026-09-29 (~19:00Z; VBoxSVC and builder are
 restarted, May's decision).**
 - UNITY-20260927-041 (calamares-settings-ubuntu 1:26.04.12+unity3):
