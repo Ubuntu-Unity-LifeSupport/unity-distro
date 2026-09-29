@@ -215,3 +215,6 @@ clone is `~/work/b/021-push`. The branch was merged with main (78933b4).
     our packages and stop receiving 1:26.04.12ubuntuN SRUs for them.
 
   The Lubuntu measurement stays with UNITY-20260927-044; no new task.
+  May confirmed again, knowing the Verifier's facts (basicwallpaper in
+  Lubuntu/Kubuntu unmeasured, 1:26.04.12ubuntuN SRUs shadowed): "Продолжаем,
+  публикуем все 6" (continue, publish all 6; C, 2026-09-29).
