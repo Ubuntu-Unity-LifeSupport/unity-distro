@@ -333,8 +333,17 @@ to C. Phase L needs a separate GO.
 
 ## Status
 
-IMPLEMENTING. Phase R was repeated on 2026-09-29 and passed (logs/42).
-Phase L needs a separate GO from May; freeze no. 1 stays in force.
+BLOCKED (resume at IMPLEMENTING): waiting for May's separate GO for phase L.
+Freeze no. 1 stays in force. /var/tmp/aptly-rehearsal is kept as left after
+the repeat.
+
+Phase R is **counted** as of 2026-09-29. C checked it independently: 15 log
+lines, 14 of them new, all b7902aab / 3b95d84f with `-config` inside the
+rehearsal root, and /srv/aptly by live-list.py at 10:06Z was 633 files,
+`e09a4db7...`. The marker was removed at 10:06:13Z. One deviation in R6:
+drop and republish were sent in one batch, so the `chmod -R go-w` between
+them was skipped. The drop creates no directory, and the guard's tree check
+allowed the publish.
 
 - Repeat of R, 2026-09-29 10:00-10:04Z, B session b7902aab with the guard:
   - Option (a) check: R2a, the first command that needs the marker, was
