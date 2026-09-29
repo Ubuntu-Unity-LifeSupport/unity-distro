@@ -34,3 +34,28 @@ Supplied after round 1: logs/21 (seeded `[fr]`, one write back to `[gb, us]`,
 3 of 3) and logs/22 (uprobe trace, 3 of 3: skip `(0,1) -> 0` in the window;
 recovery by LightDM `user-changed` with `(1,0) -> 1`; the manager retry
 entered after the pending flag was cleared, so no second migration).
+
+## Round 2 (2026-09-29, same Verifier; package 5d6a8c5, card aac89b3)
+
+Verdict: **PASS** (PATCH_CORRECT), `REVIEWED`.
+
+- The seeded proof shows the effect: 6 of 6 restarts (logs/21, logs/22) wrote
+  exactly one value, `[gb, us]`, with no `[]` and no 4294967295. On +unity3 the
+  same scenario writes both, so the pair is a real regression demonstration.
+- The trace shows the skip itself, 3 of 3: `greeter_sources_known(0,1) -> 0`
+  in the window, then LightDM user-changed with `(1,0) -> 1` and the write.
+- Probe identity was checked in the binary and dbgsym. lambda27 (manager
+  user_changed) tests the pending flag and jumps to migrate_input_sources
+  (0x102f0); lambda29 jumps there unconditionally. So "lambda27 entered, no
+  migration" shows the flag was cleared by the complete pass.
+- A retry migration was never observed. That is accepted as a stated
+  limitation: the gate is a fallback nothing observed needs, and the
+  logs/06 stuck state came from the stale snapshot that the fresh list fixes
+  (V3).
+
+Remarks: keep the unobserved retry migration and the unobserved partial
+multi-user union listed as limitations. The logs/21-22 timings are counted
+from the restart action, so they differ from the 0.25 s skip-to-write gap.
+Not checked: dconf same-value notification (it matters only with DISPLAY for
+update_login_layout); the (0,0) not-yet-loaded case, which is recorded in the
+card.
