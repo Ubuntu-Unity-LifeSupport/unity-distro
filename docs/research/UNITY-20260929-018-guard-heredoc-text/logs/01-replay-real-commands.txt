@@ -1,0 +1,25 @@
+# UNITY-20260929-018 replay of real commands (all Bash/Monitor tool_use in ~/.claude/projects/*/*.jsonl), inspect() of main 1173de0 vs this branch, data only, nothing executed; 2026-09-29T20:17:14Z
+distinct commands: 7712 | allow->deny: 18 | deny->allow: 0
+# every allow->deny case: a heredoc written to a file (cat > f / cat >> f) or an interpreter body whose text
+# mentions aptly or publish/task/api, in the same call as a command that is not a reader (python3 -, sudo cat,
+# rmadison, dpkg, ssh ...); that command could run the file, so the body is no longer TEXT.
+# Work-around: write the file with the Write tool, or in a separate call.
+# One case gets its runner from an existing lexer quirk (a quoted | in tr splits the group), not from this change.
+- aptly may only be run directly, or named | SP=/tmp/claude-1000/-home-claude/7ac578b4-005a-44bb-80fa-832f9a2bcca7/scratchpad/ut; R=/va
+- aptly publish/task/api is blocked in any | cd ~/work/b/unity-distro-012; cat >> docs/research/UNITY-20260928-012-guard-wiring/README.
+- aptly publish/task/api is blocked in any | cat > ~/coordinator/evidence/UNITY-20260928-003.json <<'EOF'
+- aptly publish/task/api is blocked in any | python3 - README.md <<'EOF'
+- aptly publish/task/api is blocked in any | cd /home/claude/work/a/unity-distro/docs/research/UNITY-20260928-007-build-sbuild-format1 
+- aptly publish/task/api is blocked in any | cd /home/claude/work/a/unity-distro/docs/research/UNITY-20260928-005-taskctl-nonpackage-do
+- aptly may only be run directly, or named | cd ~/unity-distro && python3 - <<'EOF'
+- aptly publish/task/api is blocked in any | D=~/unity-distro/docs/research/indicator-datetime-tasks; S=/tmp/claude-1000/-home-claude/f
+- aptly publish/task/api is blocked in any | cd ~/unity-distro && git pull -q --rebase && python3 - <<'EOF'
+- aptly may only be run directly, or named | R=~/work/b/unity-distro/docs/research/UNITY-20260927-021-calamares-oem-wallpaper; rmadison
+- aptly may only be run directly, or named | cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-041-calamares-oem-sudoers; cat 
+- aptly may only be run directly, or named | cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-048-version-safety; python3 - <
+- aptly may only be run directly, or named | cd ~/work/b/unity-distro && mkdir -p docs/apt/preferences.d && for f in ubuntu-pro-esm-app
+- aptly publish/task/api is blocked in any | cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-048-version-safety; grep -c "MO
+- aptly publish/task/api is blocked in any | cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-051-source-files; cat > $R/veri
+- aptly publish/task/api is blocked in any | cd ~/work/b/unity-distro && R=docs/research/UNITY-20260927-056-model-release; cat > $R/ver
+- aptly may only be run directly, or named | cd ~/work/b/unity-distro && git fetch -q origin && git status --short | wc -l && git switc
+- aptly may only be run directly, or named | S=/tmp/claude-1000/-home-claude/ff7c415d-a453-4b36-bf96-3ae4a13b23fd/scratchpad; cd ~/unit
