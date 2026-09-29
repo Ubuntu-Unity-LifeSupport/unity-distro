@@ -10,6 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_dependencies import manifest_error  # noqa: E402
+import tested_build  # noqa: E402
 
 
 def digest(path):
@@ -87,6 +88,10 @@ def main():
     # UNITY-20260929-013: extra build dependencies, only when the build had any.
     dependency_error = manifest_error(manifest, args.build_manifest.parent)
     if dependency_error: parser.error(dependency_error)
+    # UNITY-20260929-020: what the target test installed is this build or
+    # equivalent to it (ENGINEERING-PROCESS section 6).
+    tested, tested_error = tested_build.check(record, manifest, args.build_manifest.parent, root)
+    if tested_error: parser.error(tested_error)
     if not args.snapshot or not args.distribution: parser.error("snapshot and distribution are required")
     evidence_paths = record.get("evidence", {})
     if not isinstance(evidence_paths, dict) or not all(isinstance(evidence_paths.get(key), str) for key in ("evidence_card", "verification_record", "patch_record")):
@@ -132,6 +137,7 @@ def main():
                     "snapshot": args.snapshot},
         "build_manifest": {"file": str(manifest_path.relative_to(root)), "sha256": digest(manifest_path)},
         "evidence_manifest": {"file": str(evidence_manifest_path.relative_to(root)), "sha256": digest(evidence_manifest_path)},
+        "tested_build": tested,
     }
     gate_path.write_text(json.dumps(gate, indent=2) + "\n", encoding="utf-8")
     print(gate_path)

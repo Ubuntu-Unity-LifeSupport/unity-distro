@@ -119,6 +119,7 @@ class ConsumersEndToEndTest(unittest.TestCase):
                                    "sha256": sha(self.build / "demo_1.0+unity1_amd64.deb")}]}
         if entries is not None:
             manifest["build_dependencies"] = entries
+        manifest.update(getattr(self, "manifest_extra", {}))  # UNITY-20260929-020
         path = self.build / "manifest.json"
         path.write_text(json.dumps(manifest, indent=1))
         return path
@@ -141,7 +142,8 @@ class ConsumersEndToEndTest(unittest.TestCase):
         record.write_text(json.dumps({"task_id": TASK, "package": PACKAGE, "target_series": SERIES,
                                       "candidate_version": VERSION, "source_commit": self.commit,
                                       "verification_result": "PASS", "peer_notice": "ACK",
-                                      "patch_and_decision_docs": "docs", "source_provenance": "PUSHED"}))
+                                      "patch_and_decision_docs": "docs", "source_provenance": "PUSHED",
+                                      **getattr(self, "record_extra", {})}))
         self.board("REVIEW")
         return self.run_script("scripts/create_release_gate.py", "--record", str(record), "--build-manifest",
                                str(manifest), "--snapshot", "", "--distribution", "",
@@ -151,7 +153,10 @@ class ConsumersEndToEndTest(unittest.TestCase):
         """Stops after the check at its next step: the gate has no evidence_manifest."""
         manifest = self.write_manifest(entries)
         gate = self.root / "rec" / "gate.json"
-        gate.write_text(json.dumps({
+        extra = getattr(self, "gate_extra", {})
+        if callable(extra):
+            extra = extra(json.loads(manifest.read_text()))
+        gate.write_text(json.dumps({**extra, 
             "schema": 1, "task_id": TASK, "package": PACKAGE, "candidate_version": VERSION, "target_series": SERIES,
             "task_state": "READY_TO_PUBLISH", "source_tree": "CLEAN", "target_series_build": "PASS",
             "version_safety": "SAFE", "patch_and_decision_docs": "COMPLETE", "source_provenance": "PUSHED",
@@ -160,6 +165,10 @@ class ConsumersEndToEndTest(unittest.TestCase):
             "build_manifest": {"file": str(manifest.relative_to(self.root)), "sha256": sha(manifest)}}))
         self.git(self.root, "add", "-A")
         self.git(self.root, "commit", "-qm", "gate")
+        if getattr(self, "after_gate", None):  # UNITY-20260929-020: change a file after the gate
+            self.after_gate()
+            self.git(self.root, "add", "-A")
+            self.git(self.root, "commit", "-qm", "after the gate")
         self.git(self.root, "push", "-q", "origin", "HEAD:refs/heads/main")
         self.git(self.root, "fetch", "-q", "origin")
         evidence = self.home / "evidence.json"
@@ -189,7 +198,8 @@ class ConsumersEndToEndTest(unittest.TestCase):
         without = self.create_release_gate(None)
         good = self.create_release_gate([self.entry])
         self.assertEqual(good.returncode, 2, good.stderr)
-        self.assertIn("snapshot and distribution are required", good.stderr)
+        # UNITY-20260929-020: the next check is now the chroot record (this fixture has none)
+        self.assertIn("no chroot record", good.stderr)
         self.assertEqual((good.returncode, good.stderr), (without.returncode, without.stderr))
         for label in list(self.bad_cases()):
             with self.subTest(case=label):
@@ -197,7 +207,7 @@ class ConsumersEndToEndTest(unittest.TestCase):
                 result = self.create_release_gate(self.bad_cases()[label]())
                 self.assertEqual(result.returncode, 2, result.stderr)
                 self.assertIn("build dependenc", result.stderr)
-                self.assertNotIn("snapshot and distribution are required", result.stderr)
+                self.assertNotIn("no chroot record", result.stderr)
 
     def test_publish_aptly(self):
         without = self.publish(None)
@@ -212,6 +222,74 @@ class ConsumersEndToEndTest(unittest.TestCase):
                 self.assertEqual(result.returncode, 2, result.stderr)
                 self.assertIn("build dependenc", result.stderr)
                 self.assertNotEqual(result.stderr, without.stderr)
+
+
+sys.path.insert(0, str(SCRIPTS))
+import tested_build  # noqa: E402
+
+
+class TestedBuildEndToEndTest(ConsumersEndToEndTest):
+    """UNITY-20260929-020: the real gate and publisher check the tested build
+    (mode this_build here; the modes themselves are in test_tested_build.py)."""
+    test_create_release_gate = None  # the parent's cases, not repeated here
+    test_publish_aptly = None
+
+    def setUp(self):
+        super().setUp()
+        deb = self.build / "demo_1.0+unity1_amd64.deb"
+        (self.root / "rec" / "target-test.txt").write_text(f"installed {deb.name} on target-desktop\n")
+        self.git(self.root, "add", "-A")
+        self.git(self.root, "commit", "-qm", "target test record")
+        self.debs = {deb.name: sha(deb)}
+        self.manifest_extra = {"chroot": {"sha256": "a" * 64}}
+        self.record_extra = {"tested_build": "this_build",
+                             "target_test": {"record": "rec/target-test.txt", "debs": self.debs}}
+
+    def gate_record(self, manifest):
+        recorded, error = tested_build.check(self.record_extra, manifest, self.build, self.root)
+        self.assertIsNone(error)
+        return {"tested_build": recorded}
+
+    def test_gate_checks_tested_build(self):
+        result = self.create_release_gate([self.entry])
+        self.assertIn("snapshot and distribution are required", result.stderr)  # past the check
+        for case, extra, message in (
+                ("no tested_build", {"tested_build": None}, "tested_build must be"),
+                ("deb not of this build", {"target_test": {"record": "rec/target-test.txt",
+                                                          "debs": {"demo_1.0+unity1_amd64.deb": "0" * 64}}},
+                 "not binaries of this build"),
+                ("no chroot record", None, "no chroot record")):
+            with self.subTest(case=case):
+                self.tearDown(); self.setUp()
+                if extra is None:
+                    self.manifest_extra = {}
+                else:
+                    self.record_extra = dict(self.record_extra, **extra)
+                result = self.create_release_gate([self.entry])
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn(message, result.stderr)
+
+    def test_publish_checks_tested_build(self):
+        self.gate_extra = self.gate_record
+        good = self.publish([self.entry])
+        self.assertEqual(good.returncode, 2, good.stderr)
+        # past the check: the next one is the snapshot contract (this fixture has no source)
+        self.assertIn("manifest must include the matching source and binary artifacts", good.stderr)
+        cases = {
+            "gate without tested_build": ({}, None, "no tested_build record"),
+            "record changed after the gate": (self.gate_record, lambda: (self.root / "rec" / "target-test.txt").write_text(
+                "installed demo_1.0+unity1_amd64.deb, edited after the gate\n"), "does not match"),
+            "mode altered in the gate": (lambda m: {"tested_build": dict(self.gate_record(m)["tested_build"], mode="same_chroot")},
+                                         None, "tested"),
+        }
+        for case, (extra, hook, message) in cases.items():
+            with self.subTest(case=case):
+                self.tearDown(); self.setUp()
+                self.gate_extra, self.after_gate = extra, hook
+                result = self.publish([self.entry])
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn(message, result.stderr)
+                self.assertNotIn("matching source and binary artifacts", result.stderr)
 
 
 if __name__ == "__main__":
