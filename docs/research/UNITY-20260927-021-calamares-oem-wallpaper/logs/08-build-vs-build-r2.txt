@@ -11,6 +11,9 @@ DIFF calamares-settings-ubuntu_26.04.12+unity2.dsc 2f4d00e102be 6b7436f1c1b7
 DIFF calamares-settings-ubuntu_26.04.12+unity2.tar.xz 07beb2da43cc 4996c7e4c00d
 DIFF calamares-settings-ubuntu_26.04.12+unity2_amd64.buildinfo 90be21699945 a1b85cf22cb3
 DIFF calamares-settings-ubuntu_26.04.12+unity2_amd64.changes 2d1a3f77aead ae46c2fbe40c
-# cause: native source format 1.0 names the tarball's top directory after the source directory:
+# CORRECTED after Verifier round 3: the format is 3.0 (native). The .dsc/.tar.xz differ by the tarball's top
+# directory name (the source directory name); the -ubuntu-unity/-kubuntu/-lubuntu debs differ because the Makefile
+# packs oemconfig.tar.gz at build time, so its file dates are the build time - contents, modes and owners identical.
+# cause (source tarball): the top directory is named after the source directory:
 #   build:    021-push/
 #   build-r2: calamares-settings-ubuntu/

@@ -1,0 +1,4 @@
+# 2026-09-29T16:07:30Z snapshot unity-resolute-20260927-021-r2: calamares records (aptly snapshot search, read-only) vs build-r2 manifest
+# snapshot +unity2 binaries: kubuntu 0b2d92c0.., lubuntu 7a2ce695.., -common aff1f21b.., -common-data 84e9beec.., -dbgsym 9ff12b0e.., -ubuntu-unity 3b5b941a..
+# build-r2 manifest binaries: kubuntu 0b2d92c07b1f, lubuntu 7a2ce695125f, -common aff1f21bdca3, -common-data 84e9beecd478, -dbgsym 9ff12b0ea333, -ubuntu-unity 3b5b941a3081
+# result: all six equal; +unity1 records present as before; source record calamares-settings-ubuntu_1:26.04.12+unity2 present (checked by the publisher via Checksums-Sha256)
