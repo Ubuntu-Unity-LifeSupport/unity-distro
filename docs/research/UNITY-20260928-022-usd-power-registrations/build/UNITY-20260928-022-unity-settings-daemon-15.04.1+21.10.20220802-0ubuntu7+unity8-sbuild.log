@@ -1,0 +1,87 @@
+$ sbuild -d resolute --no-clean-source --verbose --dpkg-source-opt=-i --dpkg-source-opt=-I
+dpkg-source: warning: version number suggests Ubuntu vendor changes, but there is no XSBC-Original-Maintainer field
+dpkg-source: warning: source directory '/home/claude/work/a/022-usd/pkg' is not <sourcepackage>-<upstreamversion> 'unity-settings-daemon-15.04.1+21.10.20220802'
+dpkg-source: warning: .orig directory name pkg.orig is not <package>-<upstreamversion> (wanted unity-settings-daemon-15.04.1+21.10.20220802.orig)
+dpkg-source: info: using source format '1.0'
+dpkg-source: info: building unity-settings-daemon using existing ../unity-settings-daemon_15.04.1+21.10.20220802.orig.tar.gz
+dpkg-source: info: building unity-settings-daemon in ../unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8.diff.gz
+dpkg-source: warning: ignoring deletion of file plugins/rfkill/61-gnome-settings-daemon-rfkill.rules
+dpkg-source: warning: the diff modifies the following upstream files: 
+ TODOOOOOO.txt
+ data/unity-settings-daemon.desktop.in.in
+ gnome-settings-daemon/gnome-settings-manager.c
+ gnome-settings-daemon/gsd-idle-monitor.c
+ plugins/background/gnome-update-wallpaper-cache.c
+ plugins/color/Makefile.am
+ plugins/color/gcm-edid.c
+ plugins/color/gcm-self-test.c
+ plugins/color/gsd-color-manager.c
+ plugins/keyboard/gsd-keyboard-manager.c
+ plugins/media-keys/gsd-media-keys-manager.c
+ plugins/media-keys/what-did-you-plug-in/dialog-window.c
+ plugins/power/gsd-power-manager.c
+ plugins/rfkill/61-unity-settings-daemon-rfkill.rules
+ plugins/rfkill/Makefile.am
+ plugins/screensaver-proxy/Makefile.am
+ plugins/xrandr/gsd-xrandr-manager.c
+ po/POTFILES.in
+dpkg-source: info: use the '3.0 (quilt)' format to have separate and documented changes to upstream files, see dpkg-source(1)
+dpkg-source: info: building unity-settings-daemon in ../unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8.dsc
+sbuild (Debian sbuild) 0.91.2ubuntu3 (11 February 2026) on claude-pc
+
++======================================================================================================+
+| unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity8 (amd64) Tue, 29 Sep 2026 00:08:30 +0000 |
++======================================================================================================+
+
+Package: unity-settings-daemon
+Version: 15.04.1+21.10.20220802-0ubuntu7+unity8
+Source Version: 15.04.1+21.10.20220802-0ubuntu7+unity8
+Distribution: resolute
+Machine Architecture: amd64
+Host Architecture: amd64
+Build Architecture: amd64
+Build Type: binary
+
+I: Unpacking /home/claude/.cache/sbuild/resolute-amd64.tar.zst to /var/tmp/sbuild-claude/sbuild-unshare-9g2PsQ...
+I: Setting up the chroot...
+I: Creating chroot session...
+I: Setting up log color...
+I: Setting up apt archive...
+
++------------------------------------------------------------------------------+
+| Update chroot                                Tue, 29 Sep 2026 00:08:41 +0000 |
++------------------------------------------------------------------------------+
+
+Get:1 http://de.archive.ubuntu.com/ubuntu resolute InRelease [136 kB]
+Get:2 http://de.archive.ubuntu.com/ubuntu resolute/multiverse amd64 Packages [290 kB]
+Get:3 http://de.archive.ubuntu.com/ubuntu resolute/restricted amd64 Packages [152 kB]
+Get:4 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages [16.0 MB]
+Get:5 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages [1480 kB]
+Fetched 18.0 MB in 6s (3056 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+
++------------------------------------------------------------------------------+
+| Fetch source files                           Tue, 29 Sep 2026 00:08:49 +0000 |
++------------------------------------------------------------------------------+
+
+
+Local sources
+-------------
+
+/home/claude/work/a/022-usd/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8.dsc exists in /home/claude/work/a/022-usd; copying to chroot
+
++------------------------------------------------------------------------------+
+| Install package build dependencies           Tue, 29 Sep 2026 00:08:52 +0000 |
++------------------------------------------------------------------------------+
+
+
+Setup apt archive
+-----------------
+
+Merged Build-Depends: xauth, xvfb, debhelper-compat (= 13), dh-sequence-translations, gtk-doc-tools, dh-autoreconf, autotools-dev, intltool (>= 0.37.1), libdbus-glib-1-dev (>= 0.74), libglib2.0-dev (>= 2.35.3), libgtk-3-dev (>= 3.7.8), libgdk-pixbuf-2.0-dev (>= 2.23.0), libnm-dev (>= 1.0), libnotify-dev (>= 0.7.0), libxt-dev, libxi-dev, libfontconfig1-dev, libxext-dev, libx11-dev, libxtst-dev, gsettings-desktop-schemas-dev (>= 3.15.4), gsettings-unity-schemas-dev (>= 0.0.7+21.10.20210712-0ubuntu1), libgnome-desktop-3-dev (>= 3.7.90), libpulse-dev (>= 1:2.0), libasound2-dev, librsvg2-dev (>= 2.36.2), libcanberra-gtk3-dev, libpolkit-gobject-1-dev, libaccountsservice-dev (>= 0.6.34), libappindicator3-dev (>= 0.4.90), hwdata, libupower-glib-dev (>= 0.99.1), libcolord-dev (>= 0.1.12), liblcms2-dev, libnss3-dev, libgudev-1.0-dev, libwacom-dev (>= 0.7), xserver-xorg-input-wacom, libgnomekbd-dev (>= 3.5.1), libxklavier-dev, libsystemd-dev (>= 183), libibus-1.0-dev (>= 1.5.0), fcitx-libs-dev, gperf, libgl1-mesa-dev, libxkbfile-dev, xkb-data, python-is-python3, build-essential
+Filtered Build-Depends: xauth, xvfb, debhelper-compat (= 13), dh-sequence-translations, gtk-doc-tools, dh-autoreconf, autotools-dev, intltool (>= 0.37.1), libdbus-glib-1-dev (>= 0.74), libglib2.0-dev (>= 2.35.3), libgtk-3-dev (>= 3.7.8), libgdk-pixbuf-2.0-dev (>= 2.23.0), libnm-dev (>= 1.0), libnotify-dev (>= 0.7.0), libxt-dev, libxi-dev, libfontconfig1-dev, libxext-dev, libx11-dev, libxtst-dev, gsettings-desktop-schemas-dev (>= 3.15.4), gsettings-unity-schemas-dev (>= 0.0.7+21.10.20210712-0ubuntu1), libgnome-desktop-3-dev (>= 3.7.90), libpulse-dev (>= 1:2.0), libasound2-dev, librsvg2-dev (>= 2.36.2), libcanberra-gtk3-dev, libpolkit-gobject-1-dev, libaccountsservice-dev (>= 0.6.34), libappindicator3-dev (>= 0.4.90), hwdata, libupower-glib-dev (>= 0.99.1), libcolord-dev (>= 0.1.12), liblcms2-dev, libnss3-dev, libgudev-1.0-dev, libwacom-dev (>= 0.7), xserver-xorg-input-wacom, libgnomekbd-dev (>= 3.5.1), libxklavier-dev, libsystemd-dev (>= 183), libibus-1.0-dev (>= 1.5.0), fcitx-libs-dev, gperf, libgl1-mesa-dev, libxkbfile-dev, xkb-data, python-is-python3, build-essential
