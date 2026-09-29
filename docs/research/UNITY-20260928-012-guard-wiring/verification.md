@@ -41,3 +41,42 @@ Remarks (non-blocking) and what was done:
 After the fixes: `test_install_command_guard.py` 29/29, full suite 134/134
 (`logs/02-tests-after.txt`, `logs/03-full-suite.txt`). The installed handler
 string is unchanged by these fixes.
+
+## Round 2 (2026-09-29, same ephemeral Verifier, branch tip 0ac5199)
+
+Verdict: **PASS** (PATCH_CORRECT), `REVIEWED` (not independently
+reproduced: the Verifier read the new session's transcript, it did not start
+a session itself).
+
+- Tests 29/29 and the full suite 134/134, run by the Verifier. Round 2 does
+  not touch `.claude/`.
+- The Verifier tried to break the 8be3f62 fixes in a mktemp tree:
+  - `matches_bash`: True for `*`, `.*`, `""`, None, `Ba.*`, `Bash|Edit` and
+    the invalid regex `(`; False for `mcp__.*`, `Edit|Write`, `Monitor` and
+    `bash`.
+  - `{"hooks": []}` is refused cleanly.
+  - A symlinked settings file is refused; the link and its target are
+    unchanged.
+  - The first backup is kept.
+- The new-session proof was checked against the raw transcript
+  `~/.claude/projects/-home-claude/ddfd321b-....jsonl`: cwd `/home/claude` on
+  all 63 records; 19 hook errors carry the guard's own reasons, and the
+  fallback "did not decide (rc=N)" never occurs. A subagent transcript is
+  present (S8). The session root's project settings path is the user file
+  itself, and there is no `settings.local.json`, so the user-level handler is
+  what loaded.
+- The installed `~/.claude/settings.json` is unchanged since round 1 (same
+  sha256 8fdf9752..., same mtime).
+
+Missing before DONE (the owner's post-merge checks, agreed with C; if either
+fails, this PASS no longer holds):
+- step 1: `--check` prints OK on base main;
+- step 6: one guard run per call in a session rooted in `~/unity-distro`.
+
+Marker-allow and the log line: May's open decision, outside this verdict.
+
+Remarks (non-blocking):
+- `matches_bash` uses `re.fullmatch`. If Claude Code matches unanchored, a
+  matcher like `sh` would go unflagged. Impact is small: a deny still wins
+  over another hook's allow.
+- Hooks that match only `Monitor` are not checked.
