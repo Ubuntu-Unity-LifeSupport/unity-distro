@@ -26,6 +26,7 @@ import lzma
 import os
 from pathlib import Path
 import posixpath
+import re
 import subprocess
 import sys
 import tarfile
@@ -50,6 +51,12 @@ except ImportError:  # pragma: no cover
 DEFAULTS = {"port": 8580, "max_body": 96 * 1024 * 1024, "timeout": 30, "max_control": 16 * 1024 * 1024,
             "distribution": "resolute", "gpg": "/usr/bin/gpg", "gpgv": "/usr/bin/gpgv"}
 SCRIPTS = ("preinst", "postinst", "prerm", "postrm", "config")
+# A control archive holds only regular files at its top level (control,
+# md5sums, conffiles, triggers, shlibs, symbols, templates, the scripts...).
+# Anything else - a symlink, a hardlink, a subdirectory, a device - could make
+# tar write a file under another name than the one read here (Verifier round 2:
+# ./x -> . then ./x/preinst), so it refuses the .deb.
+CONTROL_NAME_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.+-]*")
 
 
 def load_config(path):
@@ -213,6 +220,19 @@ def _too_big():
     raise core.Refused("a control archive decompresses beyond the limit")
 
 
+def control_member_name(member):
+    """The name of a control-archive member, or None for the top directory
+    itself; refuses anything but a regular file directly at the top level."""
+    name = member.name[2:] if member.name.startswith("./") else member.name
+    if name in ("", ".") and member.isdir():
+        return None
+    if not member.isreg() or member.islnk() or member.issym():
+        raise core.Refused(f"the control archive holds a non-regular member {core.printable(member.name)}")
+    if "/" in name or not CONTROL_NAME_RE.fullmatch(name):
+        raise core.Refused(f"the control archive holds a member not at its top level: {core.printable(member.name)}")
+    return name
+
+
 def control_members(deb, limit=16 * 1024 * 1024):
     """The member names of a .deb's control archive (ar, control.tar.{gz,xz,zst}),
     read in memory with a decompression cap; nothing is extracted."""
@@ -233,7 +253,8 @@ def control_members(deb, limit=16 * 1024 * 1024):
             plain = bounded_decompress(name, body, limit)
             try:
                 with tarfile.open(fileobj=io.BytesIO(plain), mode="r:") as tar:
-                    names = [m.name.lstrip("./") for m in tar.getmembers()]
+                    names = [control_member_name(m) for m in tar.getmembers()]
+                    names = [n for n in names if n is not None]
                     end = tar.offset
                 # a complete tar ends with two zero blocks after its last member
                 if plain[end:end + 1024] != b"\0" * 1024:

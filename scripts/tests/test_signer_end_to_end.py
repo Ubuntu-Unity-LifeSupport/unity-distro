@@ -428,6 +428,46 @@ class SignerEndToEndTest(unittest.TestCase):
         with self.assertRaises(core.Refused):  # a tar without its end-of-archive marker
             aptly_signer.control_members(self.crafted_deb(gzip.compress, split=False, end_blocks=False))
 
+    def control_tar(self, members):
+        """A terminated control tar from (name, type, data, linkname) tuples."""
+        import tarfile as tf
+        buf = io.BytesIO()
+        with tf.open(fileobj=buf, mode="w", format=tf.USTAR_FORMAT) as t:
+            for name, kind, data, link in members:
+                info = tf.TarInfo(name)
+                info.type, info.linkname, info.mode = kind, link, 0o755
+                info.size = len(data) if kind == tf.REGTYPE else 0
+                t.addfile(info, io.BytesIO(data) if kind == tf.REGTYPE else None)
+        return buf.getvalue()
+
+    def deb_with_control(self, control_tar):
+        def member(n, data):
+            header = n.ljust(16) + b"0".ljust(12) + b"0".ljust(6) + b"0".ljust(6) + b"100644".ljust(8) + str(len(data)).encode().ljust(10) + b"`\n"
+            return header + data + (b"\n" if len(data) % 2 else b"")
+        return (b"!<arch>\n" + member(b"debian-binary", b"2.0\n") + member(b"control.tar.gz", gzip.compress(control_tar))
+                + member(b"data.tar.gz", gzip.compress(b"")))
+
+    def test_control_members_only_top_level_regular_files(self):
+        """Verifier round 2: ./x -> . then ./x/preinst hid a preinst that GNU tar
+        writes through the symlink. Only regular files at the top level pass."""
+        import tarfile as tf
+        control = ("./control", tf.REGTYPE, b"Package: demo\n", "")
+        cases = {
+            "symlink dir then script through it": [control, ("./x", tf.SYMTYPE, b"", "."), ("./x/preinst", tf.REGTYPE, b"echo pwned\n", "")],
+            "symlink named postinst": [control, ("./postinst", tf.SYMTYPE, b"", "control")],
+            "hardlink named postinst": [control, ("./postinst", tf.LNKTYPE, b"", "./control")],
+            "subdirectory": [control, ("./sub", tf.DIRTYPE, b"", ""), ("./sub/postinst", tf.REGTYPE, b"x", "")],
+            "dot-dot name": [control, ("./x/../postinst", tf.REGTYPE, b"x", "")],
+            "device": [control, ("./null", tf.CHRTYPE, b"", "")],
+            "trailing space": [control, ("./postinst ", tf.REGTYPE, b"x", "")],
+        }
+        for label, members in cases.items():
+            with self.subTest(case=label):
+                with self.assertRaises(core.Refused):
+                    aptly_signer.control_members(self.deb_with_control(self.control_tar(members)))
+        ok = self.control_tar([(".", tf.DIRTYPE, b"", ""), control, ("./postinst", tf.REGTYPE, b"#!/bin/sh\n", "")])
+        self.assertEqual(aptly_signer.control_members(self.deb_with_control(ok)), ["control", "postinst"])
+
     def test_refresh_write_order(self):
         raw = self.packages()
         self.propose_and_approve(raw)
