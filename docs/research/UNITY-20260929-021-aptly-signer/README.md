@@ -905,3 +905,40 @@ Remarks:
 Not changed, and stated: the per-read timeout (a slow client can hold the
 service; the signer is on the host-only network and signs nothing without
 May), and the design's 3-day window.
+
+**Round 2** on `aa76007`: **FAIL** (FIX_PARTIAL), REVIEWED.
+
+The round-1 fixes hold: the crafted gz, xz and zst `.deb`s and the
+multi-stream index files are refused. The Verifier built its suggested
+bypasses and compared the signer's flag with what `dpkg-deb -e` extracts.
+They agree, or the case is harmless:
+- two control members;
+- control after data;
+- `_x` first;
+- `./postinst/`;
+- `x/../postinst`;
+- `sub/postinst`;
+- a symlink or hardlink named postinst;
+- the gzip FNAME header;
+- `DEBIAN/postinst` in `data.tar`.
+
+**Finding:** a control tar with `./control`, then `./x` as a symlink to
+`.`, then `./x/preinst`.
+- The signer saw no script name.
+- GNU tar, as run by `dpkg-deb --control` for `dpkg --unpack`, writes
+  `preinst` through the symlink, so an executable `preinst` would run as
+  root while the console said "no scripts".
+
+**Fix** (code `bba2542`): `control_member_name`
+accepts only regular files directly at the top level. The name has one
+optional leading `./`, no `/`, and characters `[A-Za-z0-9][A-Za-z0-9_.+-]*`.
+The only directory allowed is `.` itself. Symlinks, hardlinks,
+subdirectories, devices, `..` and odd names refuse the `.deb`.
+- Tests: the symlinked directory case, a symlink or hardlink named
+  postinst, a subdirectory, `x/../postinst`, a device and a trailing space
+  are refused. A clean archive is accepted.
+- The Verifier's `pre.deb` is refused.
+- **No false refusals:** all 280 `.deb`s in the live pool are accepted, 74
+  of them flagged with maintainer scripts
+  (`rehearsal/07-live-pool-control-check.txt`).
+- Suite: 277 OK (1 skipped).
