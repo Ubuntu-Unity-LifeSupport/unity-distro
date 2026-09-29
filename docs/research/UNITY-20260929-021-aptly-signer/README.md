@@ -832,3 +832,76 @@ For the follow-up:
 
 The follow-up also sets or checks `go-w` on its trees, as the guard
 requires (deviation 3).
+
+## 17. Verification
+
+**Round 1** on `1748caf`: **FAIL** (FIX_PARTIAL, TEST_INVALID), REVIEWED.
+
+The Verifier confirmed that the invariant holds on the paths it probed:
+- the signer signs only its own Release, after a clean comparison;
+- a two-call replay works only with the same bytes;
+- the approval base is checked at `approve` and at `sign`;
+- `/live` refuses a used, revoked or re-signed InRelease;
+- a refusal leaves the state unchanged;
+- the console and logs are printable only.
+
+It re-checked the rehearsal claims byte for byte from the recorded files.
+
+Findings:
+- **FIX_PARTIAL: maintainer scripts could be hidden.** `bounded_decompress`
+  read `control.tar.gz` with one `zlib.decompressobj`, which stops after
+  the first gzip member. dpkg reads every member. A `.deb` with `control`
+  in one member and `postinst` in a second showed "no scripts" on the
+  console, while `dpkg-deb -e` extracts the executable `postinst`
+  (reproduced). `tarfile` accepted the first member's tar without its end
+  blocks.
+- **TEST_INVALID:**
+  - no test of the R5 write order;
+  - the `resign_set` assertion was vacuous (the function is not used in
+    production);
+  - the "404" case was refused by the client, not the signer;
+  - no multi-stream archive tests;
+  - a stale comment.
+
+Remarks:
+- bz2 and xz index files accepted a second stream or trailing bytes;
+- `str.isdigit` accepted non-ASCII digits, and `\d` in the task ID did too;
+- a non-object JSON body dropped the connection;
+- R2 did not check that every served index file is listed;
+- a slow client can hold the single-threaded service (denial of service
+  only);
+- the 3-day window in which an older approved set can be served is by
+  design.
+
+**Fixes** (code `aa76007`):
+- **The control archive must be exactly one complete compressed stream**
+  (gz, xz or zst) with no trailing data (`eof`, and empty `unused_data`),
+  within `max_control`. The tar inside must end with its two zero
+  end-of-archive blocks. Anything else refuses the proposal. The
+  Verifier's crafted gz, xz and zst `.deb`s are refused.
+- **bz2 and xz index files** must be exactly one complete stream. gzip is
+  read in full, as apt reads it.
+- `Size` and the task ID accept ASCII digits only.
+- A non-object JSON body is refused with 409.
+- R2 also refuses a served index file that the trio's Release does not
+  list.
+- `resign_set` is removed. The test now checks that a re-sign covers
+  last-live only, even while another approval is signed but not live.
+- New tests:
+  - the hidden postinst in a second gzip or xz stream is refused;
+  - a single-stream control archive with a postinst is reported;
+  - a tar without its end marker is refused;
+  - bz2 and xz with a second stream, trailing bytes or truncation are
+    refused;
+  - ASCII digits;
+  - the R5 write order (Release, then Release.gpg, then InRelease);
+  - an unlisted served index is refused;
+  - a non-object JSON body is refused.
+- The 404 case is dropped from the end-to-end `.deb` test, because the
+  missing `.deb` is covered by the signer-side test. The stale comment is
+  corrected.
+- Suite: 276 OK (1 skipped).
+
+Not changed, and stated: the per-read timeout (a slow client can hold the
+service; the signer is on the host-only network and signs nothing without
+May), and the design's 3-day window.
