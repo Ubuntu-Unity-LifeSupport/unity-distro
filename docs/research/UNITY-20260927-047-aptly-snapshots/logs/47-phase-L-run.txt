@@ -1,0 +1,41 @@
+# UNITY-20260927-047 phase L run, B session b7902aab-1709-4ec2-8775-3ae2d48a2d1f
+# Marker ~/coordinator/live-authorization.json sha256 61d806ab5b57dfc9e158fd74df9071219053171f58f1dadf140f63c87e7cf409
+# (C), window 2026-09-29T14:23:00Z-17:23:00Z; L0 record logs/44 at a6b96e3. Every command one foreground Bash call.
+
+## L1 (14:23:07-14:23:21Z, 058 rules)
+aptly -config=/home/claude/.aptly.conf repo show unity-resolute        -> Number of packages: 285
+aptly -config=/home/claude/.aptly.conf snapshot list -raw              -> (empty)
+aptly -config=/home/claude/.aptly.conf snapshot create unity-resolute-20260927-047 from repo unity-resolute -> created
+aptly -config=/home/claude/.aptly.conf snapshot show unity-resolute-20260927-047 -> Created At 2026-09-29 14:23:21 UTC, 285 packages, source unity-resolute [local]
+
+## L2
+P1 publish snapshot ... unity-resolute-20260927-047 candidate -> "Snapshot unity-resolute-20260927-047 has been successfully published" (deb .../candidate/ resolute main)
+P2 publish show resolute candidate -> Prefix: candidate / main: unity-resolute-20260927-047 [snapshot]
+== L2 candidate vs . (live): /srv/aptly/public/candidate/dists/resolute vs /srv/aptly/public/dists/resolute
+only in A: none; only in B: none; index files with different bytes: none
+Release fields that differ: Date Label MD5Sum Origin SHA1 SHA256 SHA512 (checksums through binary-amd64/Release, as R5)
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C; pool 258/258 same names
+
+## L3
+UTC right before P3: 2026-09-29T14:23:53.313386254Z
+P3 publish drop resolute -> "Removing /srv/aptly/public/dists... Removing /srv/aptly/public/pool... removed successfully"
+P4 publish snapshot ... unity-resolute-20260927-047 -> "successfully published" (deb http://your-server/ resolute main)
+new InRelease mtime: 2026-09-29 14:23:59.979016010 +0000
+gap (outage upper bound) 6.67 s, MEASURED. Rehearsal R6: <= 1.16 s with drop and republish sent in one batch;
+here the guard and the plan require two separate foreground calls, so the gap includes one tool round trip.
+
+## L4
+P5 publish show resolute -> Prefix: . / main: unity-resolute-20260927-047 [snapshot]
+== L4 live . (snapshot) vs L0 backup (repo): /srv/aptly/public/dists/resolute vs ~/backups/aptly-047-L-20260929T142117Z/public/dists/resolute
+only in A: none; only in B: none; index files with different bytes: none
+Release fields that differ: {'Date': ('Tue, 29 Sep 2026 14:23:59 UTC', 'Sat, 26 Sep 2026 20:53:52 UTC')}
+InRelease signed by: A 29A893E03970066F2DD287D47BF3F77FC27B152C | B 29A893E03970066F2DD287D47BF3F77FC27B152C; pool 258/258 same names
+isolated apt client on file:/srv/aptly/public (Signed-By the live key): apt-get update rc=0; E/W lines: 0;
+  candidates unity 7.7.1+26.04.20260306-0ubuntu3+unity11, libunity-gtk4-menu0 0.9
+target2 after-L (logs/46) vs before-L (logs/45): only the capture header and our Release Date (Sat 26 Sep 20:53:52 -> Tue 29 Sep 14:23:59); all policy lines identical
+target (A): after-L requested by C (pending)
+
+## guard note
+One helper command (sed building the apt-client script) was refused: "aptly may only be run directly, or named in a
+command made of plain readers" - only the path /srv/aptly in its data. Not rephrased; the script was written with the
+Write tool like the other helpers. C counts it as a false positive of the UNITY-20260929-003 kind. No P command refused.
