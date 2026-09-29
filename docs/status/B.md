@@ -5,6 +5,12 @@ Build directory: `~/work/b`
 
 ## Now
 
+**UNITY-20260927-027 DONE** (2026-09-29 ~23:00Z). nux +unity3 was published at 22:51Z
+(snapshot unity-resolute-20260927-027) and checked on target2 through the
+repository. UNITY-20260928-020, the same package, is BLOCKED until
+UNITY-20260929-023 (taskctl closing a task from another task's publish
+record). target2 is back on Clean-2.
+
 **UNITY-20260928-014 DONE** (2026-09-29 ~22:00Z). indicator-keyboard +unity4 was
 published at 21:51Z (snapshot unity-resolute-20260928-014) and upgraded on
 target2 from our repository. target2 is being rolled back to Clean-2.

@@ -181,3 +181,12 @@ indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1+unity4 published 2026-09-29 21:
 - Build: `scripts/build_sbuild.py` from `packages/indicator-keyboard` at 5d6a8c5 (`Ubuntu-Unity-LifeSupport/indicator-keyboard` `b/UNITY-20260928-014`), on the pinned chroot 20260929T201245Z. The payload is byte-identical to the build tested on target2.
 - Verifier round 3 on the gated build: PASS (INDEPENDENTLY_REPRODUCED).
 - target2, normal upgrade path: candidate +unity4 from our repository; the running binary after a reboot is the gated one.
+
+
+nux 4.0.8+18.10.20180623-0ubuntu15+unity3 published 2026-09-29 22:51:40Z (UNITY-20260927-027 with UNITY-20260928-020; the "Not yet published" line above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-027` (-014 plus 7 records).
+- Build: gated, from `packages/nux` at 0274bc5 (`Ubuntu-Unity-LifeSupport/nux` `b/UNITY-20260927-027`), on the pinned chroot 20260929T201245Z.
+- ABI: identical to +unity2, which unity +unity12 was built against.
+- Target test of this build on target2 (tested_build `this_build`): the fullscreen double-free reproduction passes 3 of 3.
+- After publication: a full-upgrade from Clean-2 through the repository, then compiz on the published libnux.
+- Verifier PASS.
