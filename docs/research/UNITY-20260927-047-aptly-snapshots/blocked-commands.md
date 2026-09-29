@@ -95,3 +95,86 @@ Every `publish` command above is allowed only while C's marker
 `~/coordinator/rehearsal-authorization.json` is valid (May's separate GO).
 The other aptly commands (repo, snapshot) work on the rehearsal config under
 the 058 rules.
+
+## Phase L (live) - prepared 2026-09-29; GO from May relayed by C, not executed
+
+Live aptly: `~/.aptly.conf` of user `claude` on builder, `rootDir` /srv/aptly,
+no publish endpoints; signing key 7BF3F77FC27B152C (fingerprint
+29A893E03970066F2DD287D47BF3F77FC27B152C) in claude's keyring. Commands use
+that default config: no `-config`, plain words, one per line, no quoting.
+Origin/Label are aptly's defaults (`. resolute`), which R2/R6 showed equal
+live, so no `-origin`/`-label` (the 2026-09-27 draft had them).
+
+**Who runs what.** The guard denies every live `publish` in an agent session;
+its allowance covers only the rehearsal root, and it is not changed or worked
+around. So:
+
+- **May** runs, in his own terminal on builder as user `claude` (outside
+  Claude Code), every live write through aptly: L1, L2, L3, L6 and the L5a
+  rollback, plus the `publish show` / `publish list` reads.
+- **B** runs the rest: preflight, backup, file comparisons, the target2
+  captures, the L5b restore (mv/cp, no aptly process) and the non-publish
+  aptly reads that the guard allows (`repo show`, `snapshot show`, `snapshot
+  list`).
+- **A** (or B with A's permission) captures target before/after.
+
+B waits between steps for May's pasted output.
+
+```sh
+# L0 - preflight (B), immediately before L1; C has declared the write freeze
+#   (no aptly and no publish_aptly.py by anyone from the backup to DONE)
+#   - no aptly/apt/dpkg process on builder; none on target/target2
+#   - not within 30 min of an apt timer on target (A) or target2; target2's
+#     apt-daily*.timer stopped for the window (B's machine)
+#   - target2: our source (http://192.168.56.10:8080/, Signed-By the
+#     published key) added, then client-capture.sh before-L
+#   - target: client-capture.sh before-L (A)
+#   - backup: cp -a /srv/aptly/db and /srv/aptly/public into
+#     ~/backups/aptly-047-L-<UTC>/ plus a sha256 list of both;
+#     live-list.py baseline (all of /srv/aptly)
+aptly repo show unity-resolute                       # B: 285 packages
+aptly snapshot list -raw                             # B: no unity-resolute-20260927-047 yet
+
+# L1 - the snapshot (May: a live db write)
+aptly snapshot create unity-resolute-20260927-047 from repo unity-resolute
+aptly snapshot show unity-resolute-20260927-047      # B: 285 packages = repo
+
+# L2 - publish the snapshot at prefix candidate (May)
+aptly publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate
+aptly publish show resolute candidate                # May
+# check (B): public/candidate vs public - no file-set/index difference;
+#   Release differs only in Date/Label/Origin (+ checksums through
+#   binary-amd64/Release), signed by 29A893E0...C27B152C
+
+# L3 - switch . from the repo to the snapshot: drop, then at once republish (May)
+#   (B records the UTC time right before; gap = new InRelease mtime - that;
+#   rehearsal R6: <= 1.16 s)
+aptly publish drop resolute
+aptly publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047
+
+# L4 - checks
+aptly publish show resolute                          # May: main: unity-resolute-20260927-047 [snapshot]
+# B: public/dists/resolute vs the backup's - only Date, InRelease,
+#   Release.gpg differ; pool 258/258; isolated apt client on
+#   file:/srv/aptly/public (Signed-By the key): update with no E/W,
+#   same candidates; target2 client-capture.sh after-L, diff with before-L
+# A: target after-L, diff with before-L
+
+# L5 - rollback, only if an L4 check fails
+# L5b (preferred; the only path if L3's republish itself failed) - B, no
+#   aptly process: mv /srv/aptly/db and /srv/aptly/public aside into
+#   ~/backups/aptly-047-L-<UTC>/aside/, cp -a the backup back, compare the
+#   sha256 list before any aptly command; then:
+aptly repo show unity-resolute                       # B
+aptly publish list                                   # May: ./resolute publishes {main: [unity-resolute]}
+# L5a (only if L3 succeeded and L5b is not wanted) - May:
+aptly publish drop resolute
+aptly publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute
+
+# L6 - after L4 passes: drop candidate (May)
+aptly publish drop resolute candidate
+aptly publish list                                   # May: only ./resolute, the snapshot
+# B: live-list.py after; only db/ and public/ may differ from the baseline,
+#   pool/ unchanged; tell UNITY-20260927-035 the live snapshot is
+#   unity-resolute-20260927-047
+```
