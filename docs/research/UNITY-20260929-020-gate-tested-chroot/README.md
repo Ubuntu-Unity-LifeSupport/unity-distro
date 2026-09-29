@@ -201,7 +201,7 @@ the three modes.
   - publish refuses when the recorded `tested_build` differs from the
     recomputed one.
 
-## 6. Design review 2: REVISE, and the changes
+## 6. Design review 2: REVISE, and the changes (the tested_changes path is superseded by section 9)
 
 R1-R4 and the test list resolve every point from round 1. One change is
 still needed. It also answers the open question: for a tested build without
@@ -308,3 +308,60 @@ tested. The tools check that it is consistent with the builds and with the
 record's text, not that it is complete. A gate naming fewer debs is a
 smaller claim, not a forgery, so the publisher accepts it when it is
 consistent.
+
+## 9. Verification round 1: FAIL, and design review 4
+
+**Verifier round 1** on `aed9ec3`: **FAIL** (FIX_PARTIAL),
+INDEPENDENTLY_REPRODUCED.
+
+The Verifier reproduced the 7 failures on main and 229 OK on the branch. It
+found the publisher's recomputation, the path and commit checks, and the
+`this_build` and `same_chroot` checks sound.
+
+**Finding:** `buildinfo_identical` compared only Source, Version,
+Build-Architecture and Installed-Build-Depends. A binary `.buildinfo` has no
+source checksum. So a tested build from another source commit or tree, or
+with other extra-package bytes at the same version, was accepted. A patch
+changed without a version bump, rebuilt and gated, would pass. The gap was in
+the approved design (section 6: the `tested_changes` path), not only in the
+code.
+
+Remarks:
+- The record named debs by substring.
+- An untracked symlink or a `..` path was recorded literally.
+- Duplicate Installed-Build-Depends entries collapsed.
+- Architecture and Binary were not compared.
+- `dependency_identity` could sort None.
+
+**Measured:** the `.changes` files of our earlier test builds never list the
+`.dsc`: -040's test build (plain sbuild), -019's, and B's -014 out2. All are
+binary-only. Neither the debs nor the `.buildinfo` carry the source hash. So
+without a build manifest, no tool output establishes a tested build's source.
+`build_sbuild.py` manifests, including those from before -016, record
+`source_commit` and `source_tree_hash`, and `build_sbuild.py` refuses a dirty
+tree.
+
+**Design review 4: APPROVE** of the change below. It replaces section 6's
+`tested_changes` path, which is superseded.
+
+**Fix** (code `cb0bf7b`):
+- `buildinfo_identical` requires a committed `tested_manifest`: schema 1,
+  with non-empty `source_commit` and `source_tree_hash`. It may be from
+  before -016, without `chroot`.
+- Both tested-manifest modes compare `source_commit`, `source_tree_hash` and
+  the extra build dependencies (package, version, architecture, sha256).
+  `same_chroot` also requires `--tested-with` and the same chroot.
+- The `.buildinfo` comparison adds Binary and Architecture, and refuses a
+  package listed twice in Installed-Build-Depends.
+- `tested_changes` and its parser are removed. A tested build made with
+  plain sbuild needs a new target test (`this_build` or `same_chroot`).
+- The record must name each deb by its exact file name as a whole word; a
+  path before it is fine. Record paths may not contain `..` or pass through
+  a symlink, and the normalized relative path is recorded.
+- `dependency_identity` is None-safe.
+- ENGINEERING-PROCESS section 6 and the release-record template say so.
+
+Tests: same version with another source tree or commit; other extra-package
+bytes; a tested manifest without source fields or with schema 0; a legacy
+tested manifest (no `chroot`) accepted; whole-word names; `..` and symlink
+paths; Binary, Architecture and duplicate entries. Suite: 232 OK (1 skipped).
