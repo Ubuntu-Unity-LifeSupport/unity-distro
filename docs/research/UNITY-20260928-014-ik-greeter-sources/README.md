@@ -16,10 +16,10 @@ expected: while AccountsService has no data for a listed user, the greeter's org
 existing_fix_result: NOT_FIXED
 architectural_task: false
 design_challenger_required: true
-design_review_result: PENDING
+design_review_result: APPROVE  # round 1 REVISE, round 2 REVISE, round 3 APPROVE (design A'')
 code_risks:
-  ownership_lifetime: checked (no new references; users is the existing SList<weak Act.User>, UNITY-20260928-016)
-  callbacks_cancellation: checked (the skipped write is redone by the existing LightDM user-changed callback)
+  ownership_lifetime: checked (fresh list_users() is a local, used only within the synchronous pass; the users field and per-user closures unchanged, UNITY-20260928-016)
+  callbacks_cancellation: checked (one manager notify::is-loaded handler in both branches; one manager user-changed handler gated by migration_pending; writes only on changed content, so repeated passes are no-ops)
   threading_reentrancy: not_applicable (main loop only)
   ABI_API_file_list: checked (internal functions of the service binary; no library, no file-list change)
 unknowns:
@@ -64,7 +64,7 @@ sources `[gb, us]`; login screen up after a normal boot. `repro.sh restart 10`
   the window opens when it comes back (`start`).
 - FACT (logs/04): SIGKILL of the service right after `sources []` (standing in
   for the greeter ending inside the window): systemd restarts it and the new
-  instance writes `[gb, us]` / 0. No lasting effect seen.
+  instance writes `[gb, us]` / 0. (That instance later misbehaves: logs/06, 10, 12 M3.)
 - FACT (logs/05, `nonexistent-in-window.py`, 3 of 3): in the manager's
   `notify::is-loaded` handler, the listed user mike is `loaded=True
   nonexistent=False user_name=None uid=0 input_sources=NULL`; before the
@@ -76,7 +76,10 @@ sources `[gb, us]`; login screen up after a normal boot. `repro.sh restart 10`
   itself and each read checks the index (main.vala:619, 690, 1164, 1264,
   UNITY-20260927-024). unity-greeter disables the u-s-d keyboard plugin, so
   the X layout used for the password is not taken from these settings.
-- FACT: no crash, no persisted value in the tests above.
+- FACT: no crash. A lasting effect exists: a stored `current 4294967295`
+  comes back after a reboot as the last index (logs/07, gb -> us), and an
+  instance started inside the window stays at `[]` or misses new users
+  (logs/06, 10, 12 M3).
 - INFERENCE: the effect is a ~0.3 s invalid state (no layouts, an index past
   the end) that other readers of the lightdm user's settings could see, and a
   write of `[]` over good data; under lightdm-gtk-greeter with `DISPLAY` the
@@ -92,8 +95,9 @@ before the listed users are repopulated (UNITY-20260927-024: an ordering
 weakness in the library; NULL is also returned by design for nonexistent
 users). The index is then computed as `list.size - 1` with no empty check.
 
-`invariant`: the greeter's input sources are only written from complete
-AccountsService data; `current < n_sources`, or 0 when there are none.
+`invariant` (narrowed after DC round 1): the greeter's input sources are not
+written while every listed, loaded, existing user has an empty
+AccountsService cache; `current < n_sources`, or 0 when there are none.
 
 `correct_layer`: indicator-keyboard, the consumer (UNITY-20260927-024
 conclusion: NULL belongs to the consumer). The library window cannot be
@@ -222,17 +226,73 @@ listed, loaded, existing user has an empty AccountsService cache; `current`
 is always `< n_sources`, or 0 when there are none. Users not yet loaded stay
 out, as today (their own `notify::is-loaded` migrates them).
 
-Known remaining: with several users, the recovery pass after the first
-`user-changed` may still see others without data and write a partial union
-for up to one debounce; it is never empty and the next `user-changed`
-completes it. A dead object alone (every real user deleted) freezes the old
-sources instead of writing `[]`.
+Superseded by A'' below (DC round 2: REVISE).
 
-Risk to check live for A: the skip relies on the recovery pass seeing the
-data. INFERENCE from logs/02: the recovery write already contains mike's
-`[gb, us]` with no `DISPLAY` and a NULL-name fallback unavailable, so the
-`Act.User` had its data when LightDM's `user-changed` ran. If a run shows the
-recovery pass also skipping (settings left at the old values while the daemon
-is back), A needs a second trigger (the `Act.User` `changed` signal). Live
-validation: N restarts, every one must end with the settings written once,
-from complete data, and no intermediate write.
+### DC round 2 measurements (logs/12, +unity3, 10:12Z)
+
+- M1 FACT: a fresh process lists only live users (mike); the object of a
+  user deleted while the daemon was down exists only in long-running
+  processes such as the greeter's service.
+- M3 FACT: in the instance that was restarted after the kill of logs/10, a
+  second real user ik014two (de) plus a daemon restart again came back as
+  `[gb, us]` without de (stale snapshot, second time).
+- M2 FACT: after restarting only the service (a new instance), de was
+  present at once, and a new user ik014new (fr) plus a daemon restart gave
+  `[]`, then in one pass `[gb, us, fr, de]` / 0. With three real users the
+  recovery wrote the complete union at once; no partial union was seen
+  (1 run). So an instance started normally re-lists users on every daemon
+  restart (the manager was not loaded at its start, so the `notify::is-loaded`
+  handler exists). The instance started inside the reload window took the
+  "already loaded" branch (main.vala:396-409), which has no handler and never
+  re-lists (INFERENCE from the code and M2 vs M3).
+
+## Design A'' (after DC round 2)
+
+- `migrate_keyboard_layouts()`: one manager `notify::is-loaded` handler,
+  connected in both branches (loaded or not at start), that calls the
+  migration when the manager becomes loaded. The per-user `notify::is-loaded`
+  closures and the `users` field stay as they are (UNITY-20260928-016).
+- One `ActUserManager::user-changed` handler: re-runs the migration while
+  `migration_pending` is set.
+- `migrate_input_sources()`: local fresh `manager.list_users()`, used only
+  within the synchronous pass. Return early when the manager is not loaded.
+  Count loaded, existing users with data (`user_name != null`) and without
+  it. `migration_pending = without > 0`; skip the write when `with == 0 &&
+  without > 0`. Otherwise build the union from the users with data plus the
+  LightDM layout as today.
+- Write only what changes: `sources` if it differs from the stored value,
+  then `current` from the helper (0 if empty, wanted if in range, else last)
+  if it differs. Then `update_greeter_user()` as today.
+- Helpers in `lib/input-sources.vala` on plain values, with unit tests.
+
+Behaviour changes, stated:
+
+- If accounts-daemon is absent or never loads, today the greeter gets
+  `[system layout]` from LightDM callbacks iterating an empty list. With A''
+  nothing is written, the stored values stay, and `update_greeter_user()` is
+  not reached from the migration (it still runs on entry selection).
+- A dead object among users with data keeps `migration_pending` set. That is
+  harmless: every later `user-changed` re-runs a pass, and the pass writes
+  nothing when the values are unchanged.
+- "Written once" in validation means no write with different content between
+  the stored good values and the recovered ones.
+
+Known remaining (A''):
+
+- With several users the recovery pass may see some users still without
+  data and write a partial union. It is never empty, `migration_pending`
+  stays set, and the next manager `user-changed` completes it. It was not
+  seen in 1 three-user run (logs/12 M2); validation repeats this at least
+  3 times.
+- A `current` of 4294967295 already stored by +unity3 is treated as today
+  (out of range, so the last index) after the next start; that is the gb->us
+  shift of logs/07. A'' never writes the underflow again. Mapping an
+  out-of-range stored `current` to 0 would change stock semantics; not done.
+- A dead object alone (every real user deleted while the daemon was down)
+  keeps the old sources instead of writing `[]`.
+
+Live validation for A'': repro.sh restart x3, stop/start, the kill-in-window
+sequence, M2 and M3 of round2-measure.sh, 3 multi-user restarts, and one
+boot (first write present). Pass criterion: no write of `[]` or of an index
+out of range, and no write with different content between the good values
+and the recovered ones.
