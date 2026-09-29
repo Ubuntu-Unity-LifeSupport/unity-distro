@@ -18,9 +18,13 @@ import tempfile
 import textwrap
 import unittest
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from chroot_fixtures import make_chroot  # noqa: E402
+
 # BUILD_SBUILD lets the same tests run against another copy of the script
 # (UNITY-20260928-007 ran them against the pre-fix version to show them fail).
 SCRIPT = Path(os.environ.get("BUILD_SBUILD", Path(__file__).resolve().parents[1] / "build_sbuild.py"))
+SBUILD_CONFIG = SCRIPT.resolve().parents[1] / "build" / "sbuild-config.pl"
 
 STUB = r'''#!/usr/bin/env python3
 import gzip, hashlib, io, json, os, subprocess, sys, tarfile
@@ -34,6 +38,18 @@ verbose = "--verbose" in sys.argv[1:]
 if spec.get("argv_file"):
     Path(spec["argv_file"]).write_text(json.dumps(sys.argv[1:]))
 extras = [a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--extra-package=")]
+# UNITY-20260929-016: the chroot sbuild is given; what sbuild logs about it.
+chroot = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--chroot=")), None)
+if spec.get("env_file"):
+    Path(spec["env_file"]).write_text(json.dumps({"SBUILD_CONFIG": os.environ.get("SBUILD_CONFIG")}))
+if spec.get("tamper_chroot") and chroot:
+    with open(chroot, "ab") as f:
+        f.write(b"tampered")
+stamp = Path(chroot).name.rsplit("-", 1)[-1][:-len(".tar.zst")] if chroot else ""
+chroot_log = [] if spec.get("no_unpack") else [f"I: Unpacking {chroot} to /var/tmp/sbuild-claude/sbuild-unshare-AbCdEf..."]
+chroot_log += [f"Get:5 https://snapshot.ubuntu.com/ubuntu/{stamp} resolute InRelease [136 kB]",
+               "Unpacking mount (2.41-4ubuntu4) ...", "0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded."]
+chroot_log += spec.get("log_extra", [])
 if spec.get("tamper") and extras:
     with open(extras[0], "ab") as f:
         f.write(b"tampered")
@@ -79,7 +95,7 @@ else:
     dsc_lines += [f" {sha(p)} {p.stat().st_size} {p.name}" for p in source_files]
     dsc_lines += ["Files:"] + [f" {hashlib.md5(p.read_bytes()).hexdigest()} {p.stat().st_size} {p.name}" for p in source_files]
     dsc.write_text("\n".join(dsc_lines) + "\n")
-log = [f"sbuild (stub) {src} {ver}"] + [f"log line {i}" for i in range(spec.get("log_lines", 50))]
+log = [f"sbuild (stub) {src} {ver}"] + chroot_log + [f"log line {i}" for i in range(spec.get("log_lines", 50))]
 files = []
 for name, arch in spec["binaries"]:
     kind = "ddeb" if name.endswith("-dbgsym") else "deb"
@@ -125,13 +141,15 @@ class BuildSbuildTest(unittest.TestCase):
         (bindir / "sbuild").write_text(STUB)
         (bindir / "sbuild").chmod(0o755)
         self.env = dict(os.environ, PATH=f"{bindir}:{os.environ['PATH']}")
+        self.chroot = make_chroot(self.base / "chroots")
 
     def tearDown(self):
         self.tmp.cleanup()
 
     def build(self, source, version, binaries, unrelated=(), source_files=(), source_full=False,
               source_members=None, random_source=False, real=None, extra=(), installed=None,
-              tamper=False, no_buildinfo=False, pool_root=None, cwd=None):
+              tamper=False, no_buildinfo=False, pool_root=None, cwd=None, chroot=None, chroot_args=(),
+              log_extra=(), no_unpack=False, tamper_chroot=False):
         """real: None (stub makes the source files) or (format, checkout) to
         build a tiny real package with the real dpkg-source; format is "1.0",
         "1.0 native", "3.0 (quilt)" or "3.0 (native)", checkout "clone" or
@@ -176,12 +194,17 @@ class BuildSbuildTest(unittest.TestCase):
                 "source_files": list(source_files), "source_full": source_full,
                 "source_members": source_members or {}, "random_source": random_source,
                 "real_source": bool(real), "argv_file": str(self.base / "sbuild-argv.json"),
-                "installed": installed, "tamper": tamper, "no_buildinfo": no_buildinfo}
+                "installed": installed, "tamper": tamper, "no_buildinfo": no_buildinfo,
+                "env_file": str(self.base / "sbuild-env.json"), "log_extra": list(log_extra),
+                "no_unpack": no_unpack, "tamper_chroot": tamper_chroot}
         env = dict(self.env, STUB_SPEC=json.dumps(spec))
         env["BUILD_SBUILD_POOL_ROOT"] = str(pool_root or self.base / "no-pool")
         output = self.base / "out"
         command = [sys.executable, str(SCRIPT), "--task-id", "UNITY-20260927-045",
                    "--source-repo", str(repo), "--target-series", "resolute", "--output-dir", str(output)]
+        if chroot is not False:
+            command += ["--chroot-tarball", str(chroot or self.chroot)]
+        command += list(chroot_args)
         for path in extra:
             command += ["--extra-package", str(path)]
         result = subprocess.run(command, env=env, capture_output=True, text=True, cwd=cwd)
@@ -283,7 +306,7 @@ class BuildSbuildTest(unittest.TestCase):
                                 [["overlay-scrollbar", "all"]])
         self.assertEqual(r.returncode, 0, r.stderr)
         log = (o / m["log"]["file"]).read_text().splitlines()
-        self.assertTrue(log[0].startswith("$ sbuild"), log[:3])
+        self.assertTrue(log[0].startswith(f"$ SBUILD_CONFIG={SBUILD_CONFIG} sbuild "), log[:3])  # -016
         self.assertIn("log line 49", log)
         self.assertEqual(hashlib.sha256((o / m["log"]["file"]).read_bytes()).hexdigest(), m["log"]["sha256"])
 
@@ -368,6 +391,98 @@ class BuildSbuildTest(unittest.TestCase):
                  "source_commit", "source_tree_hash", "build_command", "build_started", "build_finished",
                  "result", "log", "artifacts"}
 
+    def base_command(self, chroot=None):
+        """UNITY-20260929-016: the command now names the chroot."""
+        return self.BASE_COMMAND + ["--chroot-mode=unshare", f"--chroot={(chroot or self.chroot).resolve()}"]
+
+    def test_chroot_recorded_and_config_passed(self):
+        """UNITY-20260929-016: the manifest records the tarball; sbuild gets SBUILD_CONFIG."""
+        r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        c = m["chroot"]
+        self.assertEqual(c["tarball"], str(self.chroot.resolve()))
+        self.assertEqual(c["sha256"], hashlib.sha256(self.chroot.read_bytes()).hexdigest())
+        self.assertEqual(len(c["sources"]), 3)
+        self.assertTrue(all(f"snapshot.ubuntu.com/ubuntu/{c['snapshot']} " in line for line in c["sources"]))
+        self.assertEqual(len(c["log_inrelease"]), 1)
+        self.assertFalse(c["allow_old_chroot"])
+        env = json.loads((self.base / "sbuild-env.json").read_text())
+        self.assertEqual(env["SBUILD_CONFIG"], str(SBUILD_CONFIG))
+        self.assertIn("$unshare_mmdebstrap_auto_create = 0;", SBUILD_CONFIG.read_text())
+
+    def test_chroot_refused_before_sbuild(self):
+        """A bad tarball is refused before sbuild runs, and nothing is written."""
+        d = self.base / "bad"
+        cases = {
+            "missing": lambda: d / "resolute-amd64-20260929T000000Z.tar.zst",
+            "no sidecar": lambda: make_chroot(d, write_sidecar=False),
+            "live mirror": lambda: make_chroot(d, lines=["deb http://de.archive.ubuntu.com/ubuntu resolute main universe restricted"]),
+            "old": lambda: make_chroot(d, stamp="20260901T000000Z"),
+            "symlink": lambda: self.symlink_to(make_chroot(d)),
+        }
+        for label, make in cases.items():
+            with self.subTest(case=label):
+                self.tearDown(); self.setUp()
+                r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]], chroot=make())
+                self.assertEqual(r.returncode, 2, r.stderr)
+                self.assertIsNone(m)
+                self.assertIsNone(self.sbuild_argv(), f"sbuild ran for: {label}")
+                self.assertEqual(sorted(q.name for q in o.iterdir()) if o.exists() else [], [])
+                self.assertIn("chroot tarball", r.stderr)  # this refusal, not an argument error
+
+    def symlink_to(self, target):
+        link = self.base / "current.tar.zst"
+        link.symlink_to(target)
+        return link
+
+    def test_old_chroot_allowed_and_recorded(self):
+        old = make_chroot(self.base / "old", stamp="20260901T000000Z")
+        r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]], chroot=old, chroot_args=["--allow-old-chroot"])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertTrue(m["chroot"]["allow_old_chroot"])
+        self.assertTrue(m["chroot"]["older_than_max_age"])
+
+    def test_chroot_log_refusals(self):
+        """After sbuild: on-demand chroot, tarball not unpacked, foreign fetch,
+        tarball changed - refused, no manifest."""
+        cases = {
+            "on-demand": {"log_extra": ["I: Creating chroot on-demand by running:"]},
+            "not unpacked": {"no_unpack": True},
+            "foreign mirror": {"log_extra": ["Hit:7 http://de.archive.ubuntu.com/ubuntu resolute InRelease"]},
+            "tarball changed": {"tamper_chroot": True},
+        }
+        for label, kwargs in cases.items():
+            with self.subTest(case=label):
+                self.tearDown(); self.setUp()
+                r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]], **kwargs)
+                self.assertEqual(r.returncode, 2, r.stderr)
+                self.assertIsNone(m)
+                self.assertIn("no manifest written", r.stderr)
+                self.assertTrue("chroot" in r.stderr or "outside the snapshot" in r.stderr, r.stderr)
+
+    def test_tested_with(self):
+        """--tested-with: the tested build's chroot must be this one."""
+        r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        tested = self.base / "tested-manifest.json"
+        tested.write_text(json.dumps(m))
+        for p in (self.base / "work", self.base / "out"):
+            subprocess.run(["rm", "-rf", "--", str(p)], check=True)
+        (self.base / "sbuild-argv.json").unlink()
+        r2, m2, w2, o2 = self.build("demo", "1.0+unity1", [["demo", "amd64"]], chroot_args=["--tested-with", str(tested)])
+        self.assertEqual(r2.returncode, 0, r2.stderr)
+        self.assertEqual(m2["chroot"]["tested_with"]["chroot_sha256"], m["chroot"]["sha256"])
+        other = make_chroot(self.base / "other")
+        for p in (self.base / "work", self.base / "out"):
+            subprocess.run(["rm", "-rf", "--", str(p)], check=True)
+        (self.base / "sbuild-argv.json").unlink()
+        r3, m3, w3, o3 = self.build("demo", "1.0+unity1", [["demo", "amd64"]], chroot=other,
+                                    chroot_args=["--tested-with", str(tested)])
+        self.assertEqual(r3.returncode, 2, r3.stderr)
+        self.assertIn("the tested build used another chroot", r3.stderr)
+        self.assertIsNone(m3)
+        self.assertIsNone(self.sbuild_argv())
+
     def make_deb(self, directory, package, version, arch="amd64", source=None, package_type=None, filename=None):
         root = self.base / f".deb-{package}-{arch}-{len(list(self.base.iterdir()))}"
         (root / "DEBIAN").mkdir(parents=True)
@@ -392,11 +507,12 @@ class BuildSbuildTest(unittest.TestCase):
         """No option: today's command, today's key set, no build-dependencies/."""
         r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]])
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertEqual(m["build_command"], self.BASE_COMMAND)
-        self.assertEqual(set(m), self.BASE_KEYS)
+        self.assertEqual(m["build_command"], self.base_command())
+        self.assertEqual(set(m), self.BASE_KEYS | {"chroot"})
         self.assertFalse((o / "build-dependencies").exists())
-        self.assertEqual((o / m["log"]["file"]).read_text().splitlines()[0], "$ " + " ".join(self.BASE_COMMAND))
-        self.assertEqual(self.sbuild_argv(), self.BASE_COMMAND[1:])
+        self.assertEqual((o / m["log"]["file"]).read_text().splitlines()[0],
+                         f"$ SBUILD_CONFIG={SBUILD_CONFIG} " + " ".join(self.base_command()))
+        self.assertEqual(self.sbuild_argv(), self.base_command()[1:])
 
     def test_extra_packages_recorded_and_used(self):
         """Copies go to sbuild in order, the manifest records them, pool by content."""
@@ -415,8 +531,8 @@ class BuildSbuildTest(unittest.TestCase):
                                 pool_root=pool)
         self.assertEqual(r.returncode, 0, r.stderr)
         copies = [o / "build-dependencies" / dev.name, o / "build-dependencies" / common.name]
-        self.assertEqual(self.sbuild_argv(), self.BASE_COMMAND[1:] + [f"--extra-package={c}" for c in copies])
-        self.assertEqual(m["build_command"], self.BASE_COMMAND + [f"--extra-package={c}" for c in copies])
+        self.assertEqual(self.sbuild_argv(), self.base_command()[1:] + [f"--extra-package={c}" for c in copies])
+        self.assertEqual(m["build_command"], self.base_command() + [f"--extra-package={c}" for c in copies])
         self.assertEqual([e["file"] for e in m["build_dependencies"]],
                          [f"build-dependencies/{dev.name}", f"build-dependencies/{common.name}"])
         for entry, copy, given in zip(m["build_dependencies"], copies, (dev, common)):

@@ -16,6 +16,10 @@ import tarfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_dependencies import POOL_ROOT, field_error, in_pool, installed_build_depends, source_name  # noqa: E402
+import sbuild_chroot  # noqa: E402
+
+# UNITY-20260929-016: read by sbuild after the user's own config.
+SBUILD_CONFIG = Path(__file__).resolve().parents[1] / "build" / "sbuild-config.pl"
 
 
 def run(args, cwd=None, check=True, capture=True):
@@ -157,6 +161,14 @@ def main():
     # given to sbuild, and recorded in the manifest's build_dependencies.
     parser.add_argument("--extra-package", action="append", default=[], metavar="DEB",
                         help="a .deb for sbuild --extra-package, recorded in the manifest (repeatable)")
+    # UNITY-20260929-016: the chroot is a tarball made by sbuild_chroot.py from
+    # a pinned archive snapshot, passed to sbuild explicitly and recorded.
+    parser.add_argument("--chroot-tarball", type=Path,
+                        help="chroot tarball (default: the newest in ~/.cache/sbuild/chroots with a sidecar)")
+    parser.add_argument("--allow-old-chroot", action="store_true",
+                        help="accept a tarball whose snapshot is more than 7 days old (recorded)")
+    parser.add_argument("--tested-with", type=Path, metavar="MANIFEST",
+                        help="the manifest of the build tested on target; its chroot must be this build's")
     args = parser.parse_args()
     repo = args.source_repo.resolve()
     output = args.output_dir.resolve()
@@ -174,9 +186,39 @@ def main():
     tree = run(["git", "-C", str(repo), "rev-parse", "HEAD^{tree}"]).stdout.strip()
     version = run(["dpkg-parsechangelog", "-S", "Version"], cwd=repo).stdout.strip()
     package = run(["dpkg-parsechangelog", "-S", "Source"], cwd=repo).stdout.strip()
+    build_arch = run(["dpkg", "--print-architecture"]).stdout.strip()
+    # UNITY-20260929-016: which chroot, checked before anything is written.
+    given = args.chroot_tarball or sbuild_chroot.current_tarball(args.target_series, build_arch)
+    if given is None:
+        print(f"no chroot tarball for {args.target_series}-{build_arch} in {sbuild_chroot.CHROOT_DIR}; "
+              "create one with scripts/sbuild_chroot.py create", file=sys.stderr)
+        return 2
+    given = Path(given).expanduser()
+    if not given.is_absolute():
+        given = Path.cwd() / given
+    if given.is_symlink():
+        print(f"chroot tarball {given} is a symlink; give the file itself", file=sys.stderr)
+        return 2
+    tarball = given.resolve()  # sbuild logs the resolved path
+    chroot, error = sbuild_chroot.check_tarball(tarball, args.target_series, build_arch, args.allow_old_chroot)
+    if error:
+        print(error, file=sys.stderr)
+        return 2
+    if args.tested_with:
+        try:
+            tested = json.loads(args.tested_with.read_text(encoding="utf-8"))
+            tested_sha = tested["chroot"]["sha256"]
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            print(f"cannot read the chroot of the tested build from {args.tested_with}: {exc}", file=sys.stderr)
+            return 2
+        if tested_sha != chroot["sha256"]:
+            print(f"the tested build used another chroot ({tested_sha}); build on the same tarball, "
+                  "or compare the .buildinfo Installed-Build-Depends and repeat the target test", file=sys.stderr)
+            return 2
+        chroot["tested_with"] = {"manifest": str(args.tested_with.resolve()),
+                                 "manifest_sha256": sha256(args.tested_with), "chroot_sha256": tested_sha}
     dependencies = []
     if args.extra_package:
-        build_arch = run(["dpkg", "--print-architecture"]).stdout.strip()
         records, error = extra_packages(args.extra_package, build_arch, output / "build-dependencies")
         if error:
             print(error, file=sys.stderr)
@@ -206,17 +248,31 @@ def main():
     # does not (.git is diffed, or tarred for full tarballs): -i and -I apply
     # dpkg-source's default ignore lists to every format.
     command = ["sbuild", "-d", args.target_series, "--no-clean-source", "--verbose",
-               "--dpkg-source-opt=-i", "--dpkg-source-opt=-I"]
+               "--dpkg-source-opt=-i", "--dpkg-source-opt=-I",
+               "--chroot-mode=unshare", f"--chroot={tarball}"]
     command += [f"--extra-package={copy}" for copy, _entry in dependencies]
     logfile = output / f"{args.task_id}-{package}-{version}-sbuild.log"
+    env = dict(os.environ, SBUILD_CONFIG=str(SBUILD_CONFIG))
     with logfile.open("w", encoding="utf-8") as log:
-        log.write("$ " + shlex.join(command) + "\n")
+        log.write(f"$ SBUILD_CONFIG={shlex.quote(str(SBUILD_CONFIG))} " + shlex.join(command) + "\n")
         log.flush()
-        result = subprocess.run(command, cwd=repo, text=True, stdout=log, stderr=subprocess.STDOUT, check=False)
+        result = subprocess.run(command, cwd=repo, text=True, stdout=log, stderr=subprocess.STDOUT, check=False,
+                                env=env)
     finished = datetime.now(timezone.utc)
     if result.returncode:
         print(f"sbuild failed ({result.returncode}); see {logfile}", file=sys.stderr)
         return result.returncode
+    # UNITY-20260929-016: sbuild used this tarball, unchanged, built no chroot
+    # of its own, and fetched only from the snapshot.
+    if sbuild_chroot.sha256(tarball) != chroot["sha256"]:
+        print(f"chroot tarball {tarball} changed during the build; no manifest written", file=sys.stderr)
+        return 2
+    fetched, error = sbuild_chroot.check_log(logfile.read_text(encoding="utf-8", errors="replace"),
+                                             tarball, chroot["snapshot"])
+    if error:
+        print(f"{error}; no manifest written", file=sys.stderr)
+        return 2
+    chroot["log_inrelease"] = fetched
     # sbuild puts result files next to the source tree by default. The .changes
     # of this run lists every binary it produced; the source package is the
     # .dsc. Debian file names carry the version without its epoch.
@@ -333,6 +389,7 @@ def main():
     }
     if dependencies:
         manifest["build_dependencies"] = [entry for _copy, entry in dependencies]
+    manifest["chroot"] = chroot
     manifest_path = output / f"{args.task_id}-{package}-build-manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(manifest_path)
