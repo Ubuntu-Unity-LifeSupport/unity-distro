@@ -452,11 +452,11 @@ and ezoom under A2, real hardware.
 
 ## Outcome (so far)
 
-`REVIEW`: the fix (A2, unity `+unity12`, `7b0eca27`) has an approved build
+`PUBLISHED` 2026-09-29 18:40:26Z (snapshot `unity-resolute-20260927-040`; `target-verification.md`): the fix (A2, unity `+unity12`, `7b0eca27`) has an approved build
 manifest from the gated release build, which is content-identical to the
 tested build and passes the regression test and the plan sample on target
 (section 8); the independent Verifier returned PASS, REVIEWED (Verification).
-Next: the publication gate.
+Published after the release gate; target checked from the repository.
 
 Follow-ups: UNITY-20260929-010 (the rest of LP #1393523: title-bar buttons
 and menus react in expo, option F); UNITY-20260929-011

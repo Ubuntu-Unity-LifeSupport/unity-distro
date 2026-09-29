@@ -10,3 +10,4 @@ B -> A, first line: "B ACK UNITY-20260927-040 unity +unity12, no conflict"
   after that B has no apt operations against our repository.
 - B asked to see the snapshot diff before the gate.
 Order: per the coordinator, the notice and ACK come before repo add; the gate waits for "-041 switched".
+18:23Z B -> A: "B: -041 apt done, window open" - B's apt against our repository on oem-test finished 18:2xZ (3 calamares-settings +unity3, dpkg -V clean); from now on no apt against our repository on B's side. B checked the -040 snapshot diff itself: exactly 11 additions of unity +unity12, nothing removed or changed, no conflict with -041.
