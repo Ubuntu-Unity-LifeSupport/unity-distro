@@ -237,6 +237,40 @@ model treats it as copied. It is retired:
 5. `oem-test` live sessions pin the fingerprint when they fetch the key,
    instead of trusting whatever builder serves.
 
+### Design Challenger round 2 (REVISE): changes taken
+
+1. **An approval is used once and is bound to its base.** Each approval
+   records the signer's last-live state it was diffed against.
+   - It is valid only while that state is still last-live.
+   - It is consumed when its set goes live.
+   - Moving last-live revokes every other outstanding approval.
+   - The re-sign cadence covers only the current last-live set.
+   So a switch back to an older approved set (for example the one before the
+   -021 replacement) needs a new approval from May.
+2. **The signer writes Valid-Until.** aptly is not known to emit it. This
+   is to be confirmed from its documentation or source, since the guard
+   refuses the help text. So:
+   - The signer returns a rewritten `Release` (new Date and Valid-Until)
+     with `InRelease` and `Release.gpg`.
+   - The stand-in writes all three over aptly's temporary files before
+     aptly renames them into place. Rehearsal must prove it.
+   - The cadence refresh pulls all three files from the signer. A builder
+     that withholds a refresh makes the repository expire, which is
+     visible.
+3. **Contents files.** aptly also lists `Contents-*`, and possibly i18n
+   files. The signer checks them the same way (decompressed content, every
+   variant), or they are not published (`skipContentsPublishing`). The
+   choice is made during implementation.
+4. **Approvals match on decompressed content**, and every compressed
+   variant must decompress to it. The rehearsal root's `.gz`/`.xz` bytes
+   need not equal the live ones.
+5. **Maintainer-script flag.** For each added `.deb`, the signer fetches it
+   from :8080, checks its sha256 against the Packages entry, and reads the
+   control archive. Builder's word is never used for this.
+6. **Last-live confirmation.** The signer checks that the `InRelease`
+   served on :8080 carries its own signature over exactly the Release it
+   signed, not just that a file is there.
+
 ### What changes for existing tools
 
 | Tool or operation | Effect |
