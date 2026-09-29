@@ -376,3 +376,16 @@ logs/23 compares the two builds:
 - 130 Installed-Build-Depends differ; they are -updates/-security point releases.
 
 **No repeat of the target run (C, 2026-09-29).** The shipped bytes are the ones tested on target2, and the target's runtime libraries do not depend on the build chroot. Verifier round 3 re-checked this with `dpkg-deb -R` (verification.md).
+
+## Target verification of the publication (2026-09-29)
+
+Result: **PASS** (logs/25). This used the normal upgrade path on target2 (Clean-2 state, marker `~/.dirty`).
+
+- Our repository was added. `apt-cache policy indicator-keyboard` shows candidate `0.0.0+19.10.20240924-0ubuntu1+unity4` from `192.168.56.10:8080 resolute/main`.
+- After `apt-get install indicator-keyboard` the package is `ii` and `dpkg -V` is clean. The changelog has +unity4 on top.
+- After a reboot, the running `indicator-keyboard-service` has no `(deleted)` mappings, and its binary is sha256 83f581eb…, the file from the gated .deb.
+
+Limits:
+
+- Clean-2 logs in `mike` automatically. The greeter scenario itself (unity-greeter, accounts-daemon restarts, logs/20) was not repeated. It ran on byte-identical payload (logs/23, Verifier round 3).
+- target2's clock was about 4.5 min behind with NTP not synchronized, so the first `apt-get update` refused the new InRelease as not yet valid. It passed once the Release Date had passed on target2.
