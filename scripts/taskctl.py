@@ -259,6 +259,99 @@ def confirm_live_publication(record, distribution, prefix, run=run_aptly_read):
     return None
 
 
+# UNITY-20260929-023: a package task published as part of another task's
+# publication (same package version, one publish record under that task).
+_TASK_ID = re.compile(r"^UNITY-\d{8}-\d{3}$")
+_HEX64 = re.compile(r"^[0-9a-f]{64}$")
+_COMMIT = re.compile(r"^[0-9a-f]{40}$")
+
+
+def read_publish_record(path, expected_sha256=None):
+    """Read a publisher-written record once: no symlink, a regular file with
+    no write bit (write_once_record makes it 0444 with O_EXCL); the sha256 and
+    the JSON come from the same bytes."""
+    import stat
+    try:
+        descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    except OSError as exc:
+        raise ValueError(f"publisher-created record is required at {path}: {exc}")
+    with os.fdopen(descriptor, "rb") as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode):
+            raise ValueError(f"publish record {path} is not a regular file")
+        if info.st_mode & 0o222:
+            raise ValueError(f"publish record {path} is writable; the publisher writes it read-only")
+        raw = stream.read()
+    if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
+        raise ValueError(f"publish record {path} does not have the sha256 named in published_by")
+    try:
+        return json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"publish record {path} is not JSON: {exc}")
+
+
+def covering_record(data, task_id, records_dir):
+    """(record, publishing task) named by the evidence's published_by."""
+    covered = data.get("published_by")
+    if not isinstance(covered, dict) or set(covered) != {"task_id", "record_sha256"}:
+        raise ValueError("published_by must be {task_id, record_sha256}")
+    other, digest = covered.get("task_id"), covered.get("record_sha256")
+    if not isinstance(other, str) or not _TASK_ID.match(other):
+        raise ValueError("published_by.task_id must be a full UNITY-YYYYMMDD-NNN task id")
+    if not isinstance(digest, str) or not _HEX64.match(digest):
+        raise ValueError("published_by.record_sha256 must be 64 hex characters")
+    if other == task_id:
+        raise ValueError("published_by must name another task; this task's own record is read without it")
+    record = read_publish_record(Path(records_dir) / f"{other}.json", digest)
+    if not isinstance(record, dict) or record.get("task_id") != other:
+        raise ValueError(f"publish record of {other} does not belong to {other}")
+    return record, other
+
+
+def check_own_build(data, task_id, record, repo):
+    """The task's own gated build proves its change is in the published source:
+    same package version, its commit equal to or an ancestor of the record's,
+    and the same source and binary artifacts by name."""
+    ref = data.get("build_manifest")
+    if not isinstance(ref, str) or not ref:
+        raise ValueError("published_by requires the task's own build_manifest")
+    path = Path(ref).expanduser()
+    if not path.is_absolute():
+        path = Path(repo) / path
+    try:
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"cannot read the task's build_manifest {ref}: {exc}")
+    if not isinstance(manifest, dict) or manifest.get("task_id") != task_id:
+        raise ValueError("the build_manifest named by this task is not this task's build")
+    for key in ("package", "candidate_version"):
+        if manifest.get(key) != record.get(key):
+            raise ValueError(f"the task's build_manifest {key} differs from the publish record")
+    own, published = manifest.get("source_commit"), record.get("source_commit")
+    if not (isinstance(own, str) and _COMMIT.match(own) and isinstance(published, str) and _COMMIT.match(published)):
+        raise ValueError("build manifest and publish record must name full 40-hex source commits")
+    source = Path(str(manifest.get("source_repo") or "")).expanduser()
+    if not source.is_absolute():
+        source = Path(repo) / source
+    git = lambda *args: subprocess.run(["git", "-C", str(source), *args], capture_output=True, text=True, check=False)
+    if not source.is_dir() or git("rev-parse", "--git-dir").returncode:
+        raise ValueError(f"the build manifest's source_repo {source} is not a git repository")
+    if git("cat-file", "-e", f"{published}^{{commit}}").returncode:
+        raise ValueError(f"the published commit {published} is not in {source}")
+    if own != published:
+        ancestor = git("merge-base", "--is-ancestor", own, published).returncode
+        if ancestor == 1:
+            raise ValueError(f"this task's commit {own} is not in the published source {published}")
+        if ancestor:
+            raise ValueError(f"cannot compare {own} with {published} in {source}")
+    key = lambda a: (a.get("file"), a.get("package"), a.get("version"), a.get("architecture"))
+    wanted = {key(a) for a in manifest.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")}
+    shipped = {key(a) for a in record.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")}
+    if not wanted or wanted != shipped:
+        raise ValueError(f"the task's source and binary artifacts differ from the publish record's: "
+                         f"missing {sorted(wanted - shipped)}, extra {sorted(shipped - wanted)}")
+
+
 def require_authorization(data):
     """An operation acts on shared infrastructure: who approved it, where
     that approval is recorded, and what it covers."""
@@ -348,17 +441,28 @@ def require_evidence(target, data, task_id, kind=None, state=None):
         if data.get("independent_reproduction_required") is True and data.get("review_status") != "INDEPENDENTLY_REPRODUCED":
             raise ValueError("this task requires independent before/after reproduction")
     if target == "PUBLISHED":
-        record_path = Path.home() / "coordinator/publish-records" / f"{task_id}.json"
-        try:
-            record = json.loads(record_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise ValueError(f"publisher-created record is required at {record_path}: {exc}")
+        records_dir = Path.home() / "coordinator/publish-records"
+        repo = Path(__file__).resolve().parents[1]
+        covered_by = None
+        if "published_by" in data:
+            record, covered_by = covering_record(data, task_id, records_dir)
+            check_own_build(data, task_id, record, repo)
+        else:
+            record_path = records_dir / f"{task_id}.json"
+            try:
+                record = json.loads(record_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise ValueError(f"publisher-created record is required at {record_path}: {exc}")
         if not isinstance(record, dict) or record.get("schema") != 1:
             raise ValueError("publish record has unsupported schema")
         gate_ref = data.get("release_gate")
+        if covered_by:
+            # The gate is the publishing task's, named by its record.
+            if gate_ref and gate_ref != record.get("gate_file"):
+                raise ValueError("release_gate and published_by name different gates")
+            gate_ref = record.get("gate_file")
         if not isinstance(gate_ref, str):
             raise ValueError("PUBLISHED evidence must point to the release_gate")
-        repo = Path(__file__).resolve().parents[1]
         gate_path = Path(gate_ref).expanduser()
         if not gate_path.is_absolute():
             gate_path = repo / gate_path
@@ -375,8 +479,16 @@ def require_evidence(target, data, task_id, kind=None, state=None):
         if record.get("gate_file") != str(gate_path.relative_to(repo)):
             raise ValueError("publish record names a different release gate")
         for key in ("task_id", "package", "candidate_version", "source_commit"):
-            if record.get(key) != gate.get(key) or data.get(key) != gate.get(key):
+            if record.get(key) != gate.get(key):
                 raise ValueError(f"publish record and task evidence must match gate field {key}")
+            # A covered task has its own task id and may record its commit as
+            # text; check_own_build proved its commit is in the published one.
+            if covered_by and key in ("task_id", "source_commit"):
+                continue
+            if data.get(key) != gate.get(key):
+                raise ValueError(f"publish record and task evidence must match gate field {key}")
+        if covered_by and gate.get("task_id") != covered_by:
+            raise ValueError("the release gate named by the publish record belongs to another task")
         publish = gate.get("publish")
         if not isinstance(publish, dict):
             raise ValueError("release gate has no publish configuration")
