@@ -1,0 +1,156 @@
+Started ld019s3.service - [systemd-run] /usr/bin/bpftrace /home/mike/greeter-close-trace.bt.
+/home/mike/greeter-close-trace.bt:74:78-96: WARNING: Return value discarded.
+tracepoint:sched:sched_process_exit /!@g[pid] && pid == tid && @open[pid]/ { delete(@open[pid]); }
+                                                                             ~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:3-18: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+  ~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:20-36: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                   ~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:38-55: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                     ~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:57-77: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                                        ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:79-98: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                                                              ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:3-22: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+  ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:24-44: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                       ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:46-64: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                             ~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:66-85: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                                                 ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:87-107: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                                                                      ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:3-23: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+  ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:25-46: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                        ~~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:48-65: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                               ~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:67-87: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                                                  ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:89-105: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                                                                        ~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:86:3-24: WARNING: Return value discarded.
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+  ~~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:86:26-53: WARNING: Return value discarded.
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Attached 16 probes
+11:21:00.067667 greeter session-child 4546 started the greeter 4583
+11:23:16.699989 SIGTERM 1(systemd) -> 4546 result 0
+11:23:16.700318 deliver SIGTERM to 4546 tid 4546 (lightdm) reaped=0 stage=0
+11:23:16.700328 4546 kill(4583, 15) - handler passes SIGTERM on
+11:23:16.700907 4546 reaped 4583
+11:23:16.705562 4546 pam_close_session enter
+11:23:16.707470 4546 pam_close_session returned 0 after 1907 us
+11:23:16.708887 SUMMARY greeter-sc 4546 open=1 reaped=1 deliveries=1 passed_on=1 nochild=0 nochild_stage=0 close_enter=1 close_ret=1 setcred=1 pam_end=1 pam_end_ret=1 exit=2 reap_to_gone_us=7981
+11:24:46.295895 greeter session-child 8801 started the greeter 8836
+11:25:12.221805 SIGTERM 1(systemd) -> 8801 result 0
+11:25:12.221908 deliver SIGTERM to 8801 tid 8801 (lightdm) reaped=0 stage=0
+11:25:12.221918 8801 kill(8836, 15) - handler passes SIGTERM on
+11:25:12.222930 8801 reaped 8836
+11:25:12.233868 8801 pam_close_session enter
+11:25:12.237913 8801 pam_close_session returned 0 after 4045 us
+11:25:12.240215 SIGTERM 1125(lightdm) -> 8801 result 0
+11:25:12.240892 deliver SIGTERM to 8801 tid 8801 (lightdm) reaped=1 stage=5
+11:25:12.241562 SUMMARY greeter-sc 8801 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=5 close_enter=1 close_ret=1 setcred=1 pam_end=1 pam_end_ret=0 exit=4 reap_to_gone_us=18634
+11:27:44.143677 greeter session-child 13694 started the greeter 13729
+11:28:10.462485 SIGTERM 1(systemd) -> 13694 result 0
+11:28:10.464090 deliver SIGTERM to 13694 tid 13694 (lightdm) reaped=0 stage=0
+11:28:10.464101 13694 kill(13729, 15) - handler passes SIGTERM on
+11:28:10.467933 13694 reaped 13729
+11:28:10.473252 SIGTERM 1125(lightdm) -> 13694 result 0
+11:28:10.474742 deliver SIGTERM to 13694 tid 13694 (lightdm) reaped=1 stage=1
+11:28:10.475133 SUMMARY greeter-sc 13694 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=7202
+11:28:35.241947 greeter session-child 17082 started the greeter 17119
+11:28:44.992649 SIGTERM 1(systemd) -> 17082 result 0
+11:28:44.992970 deliver SIGTERM to 17082 tid 17082 (lightdm) reaped=0 stage=0
+11:28:44.992983 17082 kill(17119, 15) - handler passes SIGTERM on
+11:28:45.003678 17082 reaped 17119
+11:28:45.005815 SIGTERM 1125(lightdm) -> 17082 result 0
+11:28:45.012389 deliver SIGTERM to 17082 tid 17082 (lightdm) reaped=1 stage=1
+11:28:45.012575 SUMMARY greeter-sc 17082 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=8899
+11:32:00.462965 greeter session-child 21298 started the greeter 21341
+11:32:09.439856 SIGTERM 1(systemd) -> 21298 result 0
+11:32:09.439923 deliver SIGTERM to 21298 tid 21298 (lightdm) reaped=0 stage=0
+11:32:09.439938 21298 kill(21341, 15) - handler passes SIGTERM on
+11:32:09.441352 21298 reaped 21341
+11:32:09.450073 SIGTERM 1125(lightdm) -> 21298 result 0
+11:32:09.452150 deliver SIGTERM to 21298 tid 21298 (lightdm) reaped=1 stage=1
+11:32:09.452338 SUMMARY greeter-sc 21298 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=10988
+11:32:38.036120 greeter session-child 24191 started the greeter 24226
+11:32:47.101044 SIGTERM 1(systemd) -> 24191 result 0
+11:32:47.102729 24191 reaped 24226
+11:32:47.102812 deliver SIGTERM to 24191 tid 24191 (lightdm) reaped=1 stage=1
+11:32:47.102894 24191 kill(24226, 15) - handler passes SIGTERM on
+11:32:47.103965 SIGTERM 1125(lightdm) -> 24191 result 0
+11:32:47.105707 deliver SIGTERM to 24191 tid 24191 (lightdm) reaped=1 stage=1
+11:32:47.106053 SUMMARY greeter-sc 24191 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=3326
+11:33:10.949719 greeter session-child 27098 started the greeter 27133
+11:33:20.151503 SIGTERM 1(systemd) -> 27098 result 0
+11:33:20.152490 deliver SIGTERM to 27098 tid 27098 (lightdm) reaped=0 stage=0
+11:33:20.152959 SIGTERM 1125(lightdm) -> 27098 result 0
+11:33:20.153206 27098 kill(27133, 15) - handler passes SIGTERM on
+11:33:20.153694 deliver SIGTERM to 27098 tid 27099 (pool-spawner) reaped=0 stage=0
+11:33:20.153934 27098 kill(27133, 15) - handler passes SIGTERM on
+11:33:20.154540 27098 reaped 27133
+11:33:20.160720 27098 pam_close_session enter
+11:33:20.166673 27098 pam_close_session returned 0 after 5952 us
+11:33:20.167919 SUMMARY greeter-sc 27098 open=1 reaped=1 deliveries=2 passed_on=2 nochild=0 nochild_stage=0 close_enter=1 close_ret=1 setcred=1 pam_end=1 pam_end_ret=1 exit=2 reap_to_gone_us=13380
+11:33:44.145707 greeter session-child 29963 started the greeter 29998
+11:33:53.102586 SIGTERM 1125(lightdm) -> 29963 result 0
+11:33:53.104033 deliver SIGTERM to 29963 tid 29963 (lightdm) reaped=0 stage=0
+11:33:53.104102 29963 kill(29998, 15) - handler passes SIGTERM on
+11:33:53.104762 29963 reaped 29998
+11:33:53.110028 SIGTERM 1(systemd) -> 29963 result 0
+11:33:53.111838 deliver SIGTERM to 29963 tid 29963 (lightdm) reaped=1 stage=1
+11:33:53.112357 SUMMARY greeter-sc 29963 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=7597
+11:34:19.040108 greeter session-child 32964 started the greeter 33007
+11:34:28.084576 SIGTERM 1(systemd) -> 32964 result 0
+11:34:28.084657 deliver SIGTERM to 32964 tid 32964 (lightdm) reaped=0 stage=0
+11:34:28.084669 32964 kill(33007, 15) - handler passes SIGTERM on
+11:34:28.089827 32964 reaped 33007
+11:34:28.091514 SIGTERM 1125(lightdm) -> 32964 result 0
+11:34:28.094666 deliver SIGTERM to 32964 tid 32964 (lightdm) reaped=1 stage=1
+11:34:28.095938 32964 kill(33007, 15) - handler passes SIGTERM on
+11:34:28.109810 32964 pam_close_session enter
+11:34:28.112999 32964 pam_close_session returned 0 after 3189 us
+11:34:28.117978 SUMMARY greeter-sc 32964 open=1 reaped=1 deliveries=2 passed_on=2 nochild=1 nochild_stage=1 close_enter=1 close_ret=1 setcred=1 pam_end=1 pam_end_ret=1 exit=2 reap_to_gone_us=28153
+11:34:52.152777 greeter session-child 35948 started the greeter 35983
+11:35:01.180760 SIGTERM 1(systemd) -> 35948 result 0
+11:35:01.181025 deliver SIGTERM to 35948 tid 35948 (lightdm) reaped=0 stage=0
+11:35:01.181040 35948 kill(35983, 15) - handler passes SIGTERM on
+11:35:01.182010 SIGTERM 1125(lightdm) -> 35948 result 0
+11:35:01.183818 deliver SIGTERM to 35948 tid 35948 (lightdm) reaped=0 stage=0
+11:35:01.184370 35948 kill(35983, 15) - handler passes SIGTERM on
+11:35:01.184652 35948 reaped 35983
+11:35:01.191636 35948 pam_close_session enter
+11:35:01.195324 35948 pam_close_session returned 0 after 3688 us
+11:35:01.199799 SUMMARY greeter-sc 35948 open=1 reaped=1 deliveries=2 passed_on=2 nochild=0 nochild_stage=0 close_enter=1 close_ret=1 setcred=1 pam_end=1 pam_end_ret=1 exit=2 reap_to_gone_us=15149
+11:37:57.533324 greeter session-child 40048 started the greeter 40092
+11:38:16.960008 SIGTERM 1(systemd) -> 40048 result 0
+11:38:16.961355 deliver SIGTERM to 40048 tid 40048 (lightdm) reaped=0 stage=0
+11:38:16.961367 40048 kill(40092, 15) - handler passes SIGTERM on
+11:38:16.961764 40048 reaped 40092
+11:38:16.971910 40048 pam_close_session enter
+11:38:16.975401 SIGTERM 1125(lightdm) -> 40048 result 0
+11:38:16.975490 deliver SIGTERM to 40048 tid 40048 (lightdm) reaped=1 stage=2
+11:38:16.985702 SUMMARY greeter-sc 40048 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=2 close_enter=1 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=23941
