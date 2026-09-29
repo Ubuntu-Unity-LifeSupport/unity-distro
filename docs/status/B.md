@@ -5,6 +5,27 @@ Build directory: `~/work/b`
 
 ## Now
 
+**Before the restart 2026-09-29 (~19:00Z; VBoxSVC and builder are
+restarted, May's decision).**
+- UNITY-20260927-041 (calamares-settings-ubuntu 1:26.04.12+unity3):
+  - Switched 18:15Z (snapshot unity-resolute-20260927-041). ./resolute is
+    now A's -040, which carries it.
+  - Target check steps 1-3 PASS, logs 11-14 on `b/UNITY-20260927-041`
+    cbb51c0:
+    - OEM mode `/etc/sudoers` is 0440, and `visudo -c` passes for sudo-rs
+      and sudo.ws;
+    - snap-seed-glue-emb (snapd 2.76.3) was exercised.
+  - Left to do:
+    - snapshot OEM-ready-unity3, taken on the powered-off oem-test after
+      diagnose_vm (it was WEDGED in 'snapshotting' after take_snapshot
+      E_ACCESSDENIED);
+    - one cold first boot;
+    - target verification record, then PUBLISHED and DONE.
+  - The disk holds the finished OEM preparation. oem password: `oem041test`.
+- UNITY-20260929-003: BLOCKED (resume at CLAIMED).
+- No tmux, http or sbuild processes are running. Branches -021, -015, -041
+  and the package branch 221c691 are pushed.
+
 **UNITY-20260929-015** (2026-09-29): tool, merged by C into main at
 55381f3.
 - taskctl PUBLISHED now also accepts a later live snapshot that carries
