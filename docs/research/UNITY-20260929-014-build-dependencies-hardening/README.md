@@ -106,3 +106,40 @@ Results:
   None; Q2 the same plus an arm64 package exits 2 before sbuild, and the
   output directory stays empty; Q3 the UNITY-20260927-040 gated manifest
   under the new check (real pool) returns None.
+
+## Verification
+
+Independent temporary Verifier subagent (`.claude/agents/adversarial-verifier.md`),
+round 1 on `7a2afea`: **PASS** (`PATCH_CORRECT`), `INDEPENDENTLY_REPRODUCED`.
+It ran the new and changed tests itself on main's scripts (38 tests, 16
+failures, as recorded) and on the branch (all pass; full suite 200 OK);
+probed R1 (symlinked directory, a symlinked subdirectory or file inside it:
+refused; manifest directory through a symlink, relative path: accepted),
+R2 (`1.0`, `None`, `False`, text, a list: refused; a huge int by the size
+comparison), R3 (junk `.deb`, an exception after the copy, `dpkg-deb`
+missing: output empty, no `.partial`), and R4 (fake `aptly` always first,
+bare `aptly` calls only, every case stops before the first call; the real
+scripts with only the pool line replaced).
+
+Remarks, not blocking:
+
+- A refusal after sbuild has run (copy changed during the build, no
+  `.buildinfo`, package not used, an sbuild failure) leaves
+  `build-dependencies/`, the sbuild log and sbuild's result files in the
+  output, and writes no manifest - as since UNITY-20260929-013. The output
+  directory is single-use (a non-empty one is refused), so this is harmless;
+  this task only covers refusals before sbuild.
+- `rmtree(..., ignore_errors=True)` can leave a `.partial` on a permission
+  error, and a SIGKILL leaves one; the next run refuses the non-empty output
+  directory either way.
+- The directory check and the file reads are separate path lookups (no
+  directory handle); a swap in between is out of scope for our own build
+  tree.
+- A wrong-typed `size` is reported as "lacks one of ..."; no unit test
+  injects an exception into `extra_packages` (probed only).
+
+## Outcome
+
+`REVIEW` (tool task): the four remarks of UNITY-20260929-013's Verifier
+round 2 are closed. Branch `a/UNITY-20260929-014` for the coordinator to
+merge; `DONE` after the merge.
