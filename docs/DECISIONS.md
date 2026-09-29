@@ -1853,3 +1853,28 @@ Left for follow-ups:
 - Tests 6/6. On target2: LibreOffice's window kept 10/10, HUD answered 9/10; the miss is a first-start case tracked in UNITY-20260929-002.
 
 hud +unity3 contains +unity2 (UNITY-20260927-029). Verifier: PASS.
+
+
+## 2026-09-29 - UNITY-20260928-014: the greeter's indicator-keyboard does not write input sources it has no data for (agent B)
+
+**Context.** Follow-up of UNITY-20260927-024. Under unity-greeter, a restart of accounts-daemon (for instance an accountsservice upgrade at the login screen) made +unity3 write `sources=[]` and `current=4294967295` for about 0.3 s. A stored 4294967295 survived a reboot as the last layout, and an instance started inside the reload window kept a stale list of users. Record: `research/UNITY-20260928-014-ik-greeter-sources/`.
+
+**Decision.** Fix it in the consumer, indicator-keyboard. This is the -024 conclusion again: NULL is a legitimate libaccountsservice answer.
+- Skip the pass while no counted user has data. A dead object next to users with data does not block.
+- Redo the pass on `ActUserManager::user-changed` while it is pending.
+- List users afresh on every pass. Connect the `notify::is-loaded` handler in both start branches.
+- Write only changed values, sources before current.
+
+**Rejected.**
+- Skipping when any user lacks data: the dead object of a user deleted while the daemon was down stays listed with NULL data for good, and would freeze the migration.
+- Skipping only when the result is empty: under lightdm-gtk-greeter the list degrades rather than empties.
+- A timer.
+- A library change (as in -024).
+
+Design Challenger: REVISE, REVISE, APPROVE (design A''). +unity4 is built with tests 12/12. On target2, a uprobe trace shows the skip in the window and one write of the full data, 3/3. Verifier PASS (REVIEWED).
+
+**Limits, stated.**
+- A retry that migrates on its own has not been observed; LightDM's callback recovered first.
+- A partial multi-user union was not seen.
+- A `current` of 4294967295 already stored becomes the last index once, as in stock.
+- With no accounts-daemon, nothing is written.
