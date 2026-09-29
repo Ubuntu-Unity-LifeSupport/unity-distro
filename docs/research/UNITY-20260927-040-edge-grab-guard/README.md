@@ -382,7 +382,7 @@ unknowns:
   - "Gesture grab 'unity' not measurable on target (no touch device); covered by construction."
   - "Where exactly the release goes after Edge's ungrab in the replayed state (which window) - not traced; the fix removes the dependency."
   - "wall, ezoom: not measured."
-  - "Title-bar buttons and menus still react in expo (rest of LP #1393523; option F) - out of scope, follow-up proposed (ID from C)."
+  - "Title-bar buttons and menus still react in expo (rest of LP #1393523; option F) - out of scope, follow-up UNITY-20260929-010."
   - "unity-shared XWindowManager::UnGrabMousePointer (raw ungrab; PanelIndicatorEntryView.cpp:151, PanelMenuView.cpp:1478, StartMove): nux gets events only when no grab other than deco/move/switcher/resize is listed (unityshell.cpp:2119), so not during expo/wall/ezoom, but possibly during move/resize - unmeasured, follow-up proposed (ID from C)."
   - "Real hardware not tested."
 test_plan: >-
@@ -457,7 +457,8 @@ tested build and passes the regression test and the plan sample on target
 (section 8); the independent Verifier returned PASS, REVIEWED (Verification).
 Next: the publication gate.
 
-Follow-ups proposed (IDs from C): the rest of LP #1393523 (title-bar buttons
-and menus react in expo, option F); `XWindowManager::UnGrabMousePointer`
-(panel) under move/resize; cinnamon-session SEGV in `IceProcessMessages`
-after a compiz restart.
+Follow-ups: UNITY-20260929-010 (the rest of LP #1393523: title-bar buttons
+and menus react in expo, option F); UNITY-20260929-011
+(`XWindowManager::UnGrabMousePointer` in the panel under move/resize);
+UNITY-20260929-012 (cinnamon-session SEGV in `IceProcessMessages` after a
+compiz restart).
