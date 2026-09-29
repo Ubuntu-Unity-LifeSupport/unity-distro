@@ -58,6 +58,22 @@ handler has the same silent `return` when stopped and there is no
 ("No session"); it passes a per-manager cancellable to its proxy creations.
 Upstream is a GApplication, so its finalized case is structured differently.
 
+## Fix: u-s-d +unity8, measured
+
+`15.04.1+21.10.20220802-0ubuntu7+unity8` = +unity7 (`b570a22`) + the fix
+(`27e75f4`) + changelog (`41fd7eb`), branch `a/UNITY-20260928-022` on
+Ubuntu-Unity-LifeSupport/unity-settings-daemon; built with
+`scripts/build_sbuild.py`, exit 0 (`build/…build-manifest.json`). On target
+with its dbgsym and the perturb drop-in; +unity7 for comparison (`runs/05`):
+
+| Check | +unity7 | +unity8 |
+|---|---|---|
+| `Properties.Get Percentage`, plugin running, no battery | u-s-d **aborts** (NoReply after 7.7 s, restarted) | error "Property Percentage is not available" in 0.1 s, daemon alive (`runs/06`) |
+| Get / `Screen.GetPercentage`, plugin stopped | abort / 28 s timeout (`runs/01`, `runs/04`) | "The power plugin is not running" in 0.04 s, daemon alive (`runs/06`) |
+| quick on/off x3 then on: u-s-d's logind inhibitors | - (daemon had restarted) | while stopped only media-keys' key-handling block; after re-enabling the lid-switch block **and the `sleep` delay inhibitor are back** (`runs/06`) |
+| forced finalize, then `Screen.GetPercentage` by the well-known name | SIGSEGV in `handle_method_call` (`runs/02`) | ServiceUnknown, no crash (`runs/07`) |
+| forced finalize, then method and property Get **by u-s-d's unique name** (reaching the connection) | - | "object /org/gnome/SettingsDaemon/Power does not exist" for both, no crash (`runs/08`) |
+
 ## Evidence card
 
 ```yaml
