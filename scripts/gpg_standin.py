@@ -4,6 +4,7 @@
 GnuPG signer does in aptly 1.6.2 (pgp/gnupg.go):
 
   gpg --version
+  gpg --list-keys --dry-run --no-auto-check-trustdb      (GpgSigner.Init)
   gpg -o <dest> --digest-algo SHA256 --armor --yes [options] --detach-sign <Release>
   gpg -o <dest> --digest-algo SHA256 --yes [options] --clearsign <Release>
 
@@ -31,6 +32,11 @@ import urllib.error
 import urllib.request
 
 VERSION = "gpg (GnuPG) 2.4.8\nlibgcrypt 1.11.0\n"
+# aptly's GpgSigner.Init() runs this and refuses empty output when no -keyring
+# is given (aptly 1.6.2 pgp/gnupg.go; rehearsal deviation 5). The key is on
+# the signer; this line only says so.
+INIT_PROBE = ["--list-keys", "--dry-run", "--no-auto-check-trustdb"]
+INIT_ANSWER = "pub   (the signing key is held by the aptly-signer; this is the gpg stand-in)\n"
 WITH_VALUE = {"-o", "--output", "--digest-algo", "--keyring", "--secret-keyring", "-u", "--local-user",
               "--pinentry-mode", "--passphrase", "--passphrase-file", "--status-fd"}
 FLAGS = {"--armor", "--yes", "--no-auto-check-trustdb", "--no-default-keyring", "--no-tty", "--batch"}
@@ -110,6 +116,14 @@ def trace(config, argv, source):
 def main(argv):
     if argv == ["--version"]:
         sys.stdout.write(VERSION)
+        return 0
+    if argv == INIT_PROBE:
+        try:
+            key_id = str(json.loads(Path(CONFIG).read_text(encoding="utf-8")).get("key_id", ""))
+        except (OSError, ValueError):
+            key_id = ""
+        key_id = "".join(c for c in key_id if c in "0123456789ABCDEFabcdef")[:40]
+        sys.stdout.write(INIT_ANSWER if not key_id else f"pub   {key_id} (held by the aptly-signer; gpg stand-in)\n")
         return 0
     try:
         config = json.loads(Path(CONFIG).read_text(encoding="utf-8"))

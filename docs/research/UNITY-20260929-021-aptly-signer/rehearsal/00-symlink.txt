@@ -19,3 +19,56 @@ ls: cannot access '/home/claude/.local/bin/gpg': No such file or directory
 signer http://127.0.0.1:44745  repo http://127.0.0.1:39891  key C03BBF37C53CB569A933F8D155C61A9DE15A1EA7
 cleanup: temp gnupg home removed: True; ~/.gnupg unchanged: True
 ls: cannot access '/tmp/signer-rehearsal-gnupg-*': No such file or directory
+== step 0, third time, after the absolute-path fix (coordinator's go-ahead)
+2026-09-29T22:35:16Z
+lrwxrwxrwx 1 claude claude 59 Sep 29 22:35 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/home/claude/.local/bin/gpg
+gpg (GnuPG) 2.4.8
+libgcrypt 1.11.0
+== deviation 3 at 2026-09-29T22:36:25Z: the guard refused the first publish ('/var/tmp/aptly-rehearsal/021/state must be owned by uid 1000 and not writable by group or others'); symlink removed, local signer stopped
+/usr/bin/gpg
+cleanup: temp gnupg home removed: True; ~/.gnupg unchanged: True
+700 claude /var/tmp/aptly-rehearsal/021
+775 claude /var/tmp/aptly-rehearsal/021/state
+775 claude /var/tmp/aptly-rehearsal/021/incoming
+700 claude /var/tmp/aptly-rehearsal/021p
+700 claude /var/tmp/aptly-rehearsal/021p/state
+/var/tmp/aptly-rehearsal/021/state
+/var/tmp/aptly-rehearsal/021/signer-config.json
+/var/tmp/aptly-rehearsal/021/signer-state.json.lock
+/var/tmp/aptly-rehearsal/021/signer-state.json
+/var/tmp/aptly-rehearsal/021/signer.out
+/var/tmp/aptly-rehearsal/021/signer-pub.gpg
+/var/tmp/aptly-rehearsal/021/aptly.conf
+/var/tmp/aptly-rehearsal/021/standin.json
+/var/tmp/aptly-rehearsal/021/incoming
+/var/tmp/aptly-rehearsal/021/client.json
+/var/tmp/aptly-rehearsal/021p/aptly.conf
+/var/tmp/aptly-rehearsal/021/state/public
+/var/tmp/aptly-rehearsal/021/state/pool
+/var/tmp/aptly-rehearsal/021p/state/pool
+/var/tmp/aptly-rehearsal/021/state/pool/11
+/var/tmp/aptly-rehearsal/021/state/pool/02
+/var/tmp/aptly-rehearsal/021/state/pool/16
+/var/tmp/aptly-rehearsal/021p/state/pool/11
+/var/tmp/aptly-rehearsal/021p/state/pool/02
+/var/tmp/aptly-rehearsal/021/state/pool/11/1c
+== step 0, fourth time, after chmod -R go-w (coordinator's go-ahead)
+2026-09-29T22:37:08Z
+lrwxrwxrwx 1 claude claude 59 Sep 29 22:37 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/home/claude/.local/bin/gpg
+gpg (GnuPG) 2.4.8
+== deviation 4 at 2026-09-29T22:37:50Z: /propose refused - the signer fetches added .debs from the live repository base (:8080 in production, 021/state/public here), but a package that is not yet published is not under public/pool (aptly links pool files into public only when it publishes). Design gap (-019 round 2 item 5), not a rehearsal setup issue. Symlink removed, local signer stopped.
+/usr/bin/gpg
+cleanup: temp gnupg home removed: True; ~/.gnupg unchanged: True
+a
+c
+g
+== TEMPORARY rehearsal-only setting (coordinator's decision, deviation 4): the local repository server serves /var/tmp/aptly-rehearsal/021/state/public first, then /var/tmp/aptly-rehearsal/021p/state/public (127.0.0.1 only); not part of the product
+== step 0, fifth time
+2026-09-29T22:38:46Z
+lrwxrwxrwx 1 claude claude 59 Sep 29 22:38 /home/claude/.local/bin/gpg -> /home/claude/work/a/unity-distro-021/scripts/gpg_standin.py
+/home/claude/.local/bin/gpg
+gpg (GnuPG) 2.4.8
+== deviation 5 at 2026-09-29T22:39:22Z: publish snapshot rhA aborted at 'unable to initialize GPG signer' - the stand-in found no config at its default path ~/.config/aptly-signer/standin.json (the aptly command can carry no environment prefix), and aptly's initialisation calls gpg with arguments other than a bare --version (not yet traced). Nothing was published (aptly stops before writing). Symlink removed; the local signer (127.0.0.1) stays up with A's approval.
+/usr/bin/gpg

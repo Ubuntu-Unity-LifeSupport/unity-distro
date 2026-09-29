@@ -226,6 +226,20 @@ class SignerEndToEndTest(unittest.TestCase):
     def test_standin_passphrase_not_forwarded_and_version(self):
         r = subprocess.run([sys.executable, str(STANDIN), "--version"], capture_output=True, text=True)
         self.assertRegex(r.stdout, r"\(GnuPG.*\) (2).(\d)")   # aptly's detection regex
+        # aptly's GpgSigner.Init(): non-empty output, exit 0, no config and no signer needed
+        env = dict(self.env, APTLY_SIGNER_STANDIN_CONFIG=str(self.base / "no-such-config.json"))
+        r = subprocess.run([sys.executable, str(STANDIN), "--list-keys", "--dry-run", "--no-auto-check-trustdb"],
+                           capture_output=True, text=True, env=env)
+        self.assertEqual(r.returncode, 0)
+        self.assertTrue(r.stdout.strip())
+        r = subprocess.run([sys.executable, str(STANDIN), "--list-keys"], capture_output=True, text=True, env=env)
+        self.assertNotEqual(r.returncode, 0)  # only the exact probe
+        (self.base / "keyed.json").write_text(json.dumps({"url": "http://127.0.0.1:9", "key_id": self.fpr}))
+        env = dict(self.env, APTLY_SIGNER_STANDIN_CONFIG=str(self.base / "keyed.json"))
+        r = subprocess.run([sys.executable, str(STANDIN), "--list-keys", "--dry-run", "--no-auto-check-trustdb"],
+                           capture_output=True, text=True, env=env)
+        self.assertEqual(r.returncode, 0)
+        self.assertIn(self.fpr, r.stdout)  # the key id from the config
         raw = self.packages()
         self.propose_and_approve(raw)
         _, _, results = self.aptly_switch(raw)
