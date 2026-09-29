@@ -159,13 +159,20 @@ def check_tarball(tarball, series, arch, allow_old=False, now=None):
     return info, None
 
 
-def check_log(text, tarball, stamp, series):
+def check_log(text, tarball, stamp, series, copies=()):
     """(inrelease_lines, error) for an sbuild log: sbuild unpacked exactly this
     tarball, built no chroot of its own, fetched the InRelease of each of the
     series' three pockets from the snapshot <T>, and fetched nothing from
     anywhere else - no other mirror, no other snapshot, no local repository
-    except sbuild's own resolver archives (Verifier round 1)."""
+    except sbuild's own resolver archives (Verifier round 1) - and put into its
+    resolver archive only the given --extra-package copies (Verifier round 2:
+    a user config's $extra_packages would reach it through the same archive)."""
     lines = text.splitlines()
+    allowed = {str(copy) for copy in copies}
+    for line in lines:
+        match = re.match(r"^Copying (.+) to \S+\.\.\.$", line.strip())
+        if match and match.group(1) not in allowed:
+            return None, f"sbuild added a package that is not one of this build's extra packages: {line.strip()}"
     for marker in ON_DEMAND:
         if any(marker in line for line in lines):
             return None, f"sbuild built a chroot of its own, on-demand ({marker!r} in the log)"

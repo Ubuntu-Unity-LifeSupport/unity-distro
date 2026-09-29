@@ -268,7 +268,8 @@ def main():
         print(f"chroot tarball {tarball} changed during the build; no manifest written", file=sys.stderr)
         return 2
     fetched, error = sbuild_chroot.check_log(logfile.read_text(encoding="utf-8", errors="replace"),
-                                             tarball, chroot["snapshot"], args.target_series)
+                                             tarball, chroot["snapshot"], args.target_series,
+                                             [copy for copy, _entry in dependencies])
     if error:
         print(f"{error}; no manifest written", file=sys.stderr)
         return 2

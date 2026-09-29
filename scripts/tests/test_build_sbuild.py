@@ -51,6 +51,7 @@ chroot_log += [f"Get:{n} https://snapshot.ubuntu.com/ubuntu/{stamp} {pocket} InR
                for n, pocket in ((5, "resolute"), (6, "resolute-updates"), (7, "resolute-security"))]
 chroot_log += ["Ign:1 copy:/build/reproducible-path/resolver-AbC123/apt_archive ./ InRelease",
                "Unpacking mount (2.41-4ubuntu4) ...", "0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded."]
+chroot_log += [f"Copying {e} to /sbuild-unshare-dummy-location..." for e in extras]
 chroot_log += spec.get("log_extra", [])
 if spec.get("tamper") and extras:
     with open(extras[0], "ab") as f:
@@ -415,6 +416,7 @@ class BuildSbuildTest(unittest.TestCase):
         config = SBUILD_CONFIG.read_text()
         for setting in ("$unshare_mmdebstrap_auto_create = 0;", "$extra_repositories = [];",
                         "$extra_repository_keys = [];", "$chroot_setup_script = undef;",
+                        "$extra_packages = [];", "$unshare_bind_mounts = [];", "$apt_get = 'apt-get';",
                         '"chroot-setup-commands"         => [],', "$apt_allow_unauthenticated = 0;"):
             self.assertIn(setting, config)
 
@@ -458,6 +460,7 @@ class BuildSbuildTest(unittest.TestCase):
             "not unpacked": {"no_unpack": True},
             "foreign mirror": {"log_extra": ["Hit:7 http://de.archive.ubuntu.com/ubuntu resolute InRelease"]},
             "local repository": {"log_extra": ["Get:8 file:/home/claude/evilrepo ./ InRelease"]},
+            "foreign package": {"log_extra": ["Copying /home/claude/evil.deb to /sbuild-unshare-dummy-location..."]},
             "tarball changed": {"tamper_chroot": True},
         }
         for label, kwargs in cases.items():
@@ -467,7 +470,7 @@ class BuildSbuildTest(unittest.TestCase):
                 self.assertEqual(r.returncode, 2, r.stderr)
                 self.assertIsNone(m)
                 self.assertIn("no manifest written", r.stderr)
-                self.assertTrue("chroot" in r.stderr or "outside the snapshot" in r.stderr, r.stderr)
+                self.assertTrue(any(w in r.stderr for w in ("chroot", "outside the snapshot", "extra packages")), r.stderr)
 
     def test_tested_with(self):
         """--tested-with: the tested build's chroot must be this one."""

@@ -12,6 +12,15 @@ $unshare_mmdebstrap_auto_create = 0;
 $extra_repositories = [];
 $extra_repository_keys = [];
 $apt_allow_unauthenticated = 0;
+# No packages besides build_sbuild's own --extra-package copies (Verifier
+# round 2: the command line appends to the user's list instead of replacing
+# it). The command-line options are applied after this file.
+$extra_packages = [];
+# apt, the build environment command and bind mounts as sbuild ships them: a
+# wrapper or a mount over /etc/apt could add or hide sources.
+$apt_get = 'apt-get';
+$build_env_cmnd = '';
+$unshare_bind_mounts = [];
 # No commands that change the chroot or the build around sbuild.
 $chroot_setup_script = undef;
 $external_commands = {

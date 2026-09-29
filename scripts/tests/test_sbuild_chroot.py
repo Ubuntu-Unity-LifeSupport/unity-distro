@@ -123,6 +123,12 @@ class LogTest(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(len(fetched), 3)  # the three InRelease lines, Hit included
 
+    def test_own_copies_accepted(self):
+        copy = "/o/build-dependencies/libnux-4.0-dev_4.0.8_amd64.deb"
+        text = self.good() + f"Copying {copy} to /sbuild-unshare-dummy-location...\n"
+        self.assertIsNone(sbuild_chroot.check_log(text, self.tarball, self.stamp, "resolute", [copy])[1])
+        self.assertIsNotNone(self.check(text)[1])  # not given: refused
+
     def test_on_demand_log_refused(self):
         self.assertIn("on-demand", self.check(ON_DEMAND_LOG)[1])
         # even with this tarball's line present
@@ -148,6 +154,8 @@ class LogTest(unittest.TestCase):
             # no InRelease from the snapshot for one pocket (e.g. apt_update off)
             "security pocket missing": "\n".join(l for l in good.splitlines() if "resolute-security" not in l),
             "no snapshot fetch at all": "\n".join(l for l in good.splitlines() if "snapshot.ubuntu.com" not in l),
+            # Verifier round 2: a package from the user's $extra_packages
+            "foreign package copied": good + "Copying /home/claude/evil.deb to /sbuild-unshare-dummy-location...\n",
         }
         for label, text in cases.items():
             with self.subTest(case=label):
