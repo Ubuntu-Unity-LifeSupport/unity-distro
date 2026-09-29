@@ -60,8 +60,9 @@ The content path accepts only if all of these hold:
 3. That snapshot contains every artifact of the record:
    - For each `binary` artifact (.deb/.ddeb): `snapshot search -format
      '{{index . "SHA256"}}' <live> 'Name (<package>), Version (= <version>),
-     $Architecture (<architecture>)'` returns exactly one line, and that line
-     is the artifact's sha256.
+     Architecture (<architecture>)'` returns exactly one line, and that line
+     is the artifact's sha256. This is the plain field, per Design Challenger
+     finding 3; `$Architecture (amd64)` would also match `all`.
    - For `source` and `source_file` artifacts: the live snapshot's source
      package `Name (<package>), $Architecture (source), Version (= <version>)`
      has exactly the .dsc and source files with those sha256.
