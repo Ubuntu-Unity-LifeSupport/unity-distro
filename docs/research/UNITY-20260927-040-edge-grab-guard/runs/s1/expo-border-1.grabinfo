@@ -1,0 +1,12 @@
+[   888.555] (II) Printing all currently active device grabs:
+[   888.555] (II) End list of active device grabs
+[   888.555] Printing all currently registered grabs
+[   888.555]   Printing all registered grabs of client pid 1064 /usr/sbin/lightdm 
+[   888.555]   Printing all registered grabs of client pid 1701 /usr/libexec/ibus-x11 --kill-daemon
+[   888.555]   Printing all registered grabs of client pid 1689 /usr/libexec/ibus-ui-gtk3 
+[   888.555]   grab 0x4060001a (xi2), type 'KeyPress' on window 0x324
+[   888.555]     detail 65 (mask 0), modifiersDetail 66 (mask 0)
+[   888.555]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   888.555]       xi2 event mask 0xc 0 0 0 42 
+[   888.555]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   888.555]   grab 0x4060001b (xi2), type 'KeyPress' on window 0x324
