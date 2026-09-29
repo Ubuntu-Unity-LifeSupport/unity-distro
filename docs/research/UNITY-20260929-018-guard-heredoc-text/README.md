@@ -125,6 +125,27 @@ Every must-deny form stays denied.
     non-reader command;
   - work-around: write the file with the Write tool, or in a separate call.
 
+## Verification (2026-09-29)
+
+Round 1, ephemeral Verifier subagent, on f5f6175: **FAIL**, finding
+FIX_PARTIAL. Review status: `INDEPENDENTLY_REPRODUCED`.
+
+What the Verifier reproduced through `inspect()`, with nothing executed:
+
+- The must-deny forms are denied on this branch; main allowed them.
+- No deny->allow case was found, either in its own replay of the real
+  commands or in about 1000 variants of the DENIED list.
+- The full suite passes.
+
+In the same class, some forms are still allowed. The old main allows them
+too, so there is no regression.
+
+**Decision (May, via C, 2026-09-29): merge f5f6175 as a partial tightening.**
+No more bypass forms are worked through in the guard. The remaining risk
+is closed by operating-system permissions instead: a separate user for
+aptly, and publication only through `scripts/publish_aptly.py` by a sudo
+rule. That is a separate task, with another owner.
+
 ## Correct layer
 
 `_classify_body` (TEXT decision) and `_levels`, which computes the whole-call
