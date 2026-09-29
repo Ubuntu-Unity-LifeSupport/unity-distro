@@ -1900,3 +1900,16 @@ Design Challenger: REVISE, REVISE, APPROVE (design A''). +unity4 is built with t
 Design Challenger: REVISE, APPROVE. lightdm +unity2 built; on target 13/13 natural greeter stops complete, forced SIGTERM after `waitpid()` / in pam_systemd's close / at `pam_end` all complete, a SIGTERM at `fork()` still `_exit()`s, a 60 s blocked close ends by SIGALRM after 10.0 s, user sessions 6/6. Verifier: FAIL (a test signalled before the handler was installed), then PASS (REVIEWED) with no code change.
 
 **Limits, stated.** When both SIGTERMs are passed on before reaping, no alarm is armed and a blocked cleanup still waits for the 90 s SIGKILL, as before (follow-up proposed). EINTR inside PAM modules is covered only incidentally.
+
+
+## 2026-09-29 - UNITY-20260927-021: calamares-settings-ubuntu +unity2 publishes all six binaries (agent B)
+
+**Context.** +unity2 restores the archive changelog that +unity1 had wiped and carries the known issue #4 fix. The build produces six binaries. +unity1 was published with three of them (-ubuntu-unity, -common, -common-data). The gated publication (`publish_aptly.py`) requires every binary of the build manifest in the snapshot. Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/`.
+
+**Decision (May, 2026-09-29, via C, confirmed twice).** Publish all six, including calamares-settings-kubuntu, calamares-settings-lubuntu and -common-dbgsym.
+
+It is taken knowing that:
+- the patched basicwallpaper in the Kubuntu and Lubuntu packages is unmeasured (Lubuntu: openbox on X11; Kubuntu: depends on the Qt platform under kwin_wayland);
+- systems that use our repository and have those packages installed will move to ours and no longer receive 1:26.04.12ubuntuN SRUs for them.
+
+The measurement stays with UNITY-20260927-044.

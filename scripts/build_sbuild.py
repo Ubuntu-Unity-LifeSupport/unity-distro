@@ -6,10 +6,16 @@ from datetime import datetime, timezone
 import gzip
 import hashlib
 import json
+import os
 from pathlib import Path
+import shlex
+import shutil
 import subprocess
 import sys
 import tarfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dependencies import POOL_ROOT, field_error, in_pool, installed_build_depends, source_name  # noqa: E402
 
 
 def run(args, cwd=None, check=True, capture=True):
@@ -54,12 +60,71 @@ def vcs_entries(dsc_dir, names):
     return found
 
 
+def extra_packages(paths, build_arch, depdir):
+    """UNITY-20260929-013: check every --extra-package, copy it into depdir,
+    and read its fields from the copy - the bytes sbuild gets and the manifest
+    hashes. Returns (records, error); on error sbuild is not started. sbuild
+    itself would skip a missing path or a second file of the same name, read
+    every .deb of a directory, and only warn about a foreign architecture -
+    all refused here, before or right after the copy."""
+    records, names, files, packages = [], set(), set(), set()
+    for given in paths:
+        candidate = Path(given).expanduser()
+        if not candidate.is_absolute():
+            candidate = Path.cwd() / candidate
+        try:
+            resolved = candidate.resolve(strict=True)
+        except (OSError, RuntimeError):
+            return None, f"--extra-package {given}: no such file"
+        if not resolved.is_file():
+            return None, f"--extra-package {given}: not a regular file"
+        if resolved.suffix != ".deb":
+            return None, f"--extra-package {given}: only .deb files are accepted"
+        if not os.access(resolved, os.R_OK):
+            return None, f"--extra-package {given}: not readable"
+        if resolved.name in names:
+            return None, f"--extra-package {given}: a file named {resolved.name} is already given (sbuild would drop one)"
+        if resolved in files:
+            return None, f"--extra-package {given}: the same file is given twice"
+        names.add(resolved.name); files.add(resolved)
+        depdir.mkdir(exist_ok=True)
+        copy = depdir / resolved.name
+        shutil.copyfile(resolved, copy)
+        info = run(["dpkg-deb", "-f", str(copy), "Package", "Version", "Architecture", "Source", "Package-Type"],
+                   check=False)
+        fields = dict(line.split(": ", 1) for line in info.stdout.splitlines() if ": " in line) if not info.returncode else {}
+        package, version, arch = fields.get("Package"), fields.get("Version"), fields.get("Architecture")
+        if info.returncode or not (package and version and arch):
+            return None, f"--extra-package {given}: dpkg-deb cannot read Package, Version and Architecture"
+        source = source_name(fields.get("Source"), package)
+        error = field_error(package, version, arch, source)
+        if error:
+            return None, f"--extra-package {given}: {error}"
+        if fields.get("Package-Type") == "udeb":
+            return None, f"--extra-package {given}: udeb packages are not accepted"
+        if arch not in ("all", build_arch):
+            return None, f"--extra-package {given}: architecture {arch} is neither all nor {build_arch}"
+        # apt installs one version of a package: two files of it (e.g. all and
+        # amd64) would both read as used from one Installed-Build-Depends line
+        if package in packages:
+            return None, f"--extra-package {given}: package {package} is already given"
+        packages.add(package)
+        records.append({"given": given, "resolved": resolved, "copy": copy, "package": package,
+                        "version": version, "architecture": arch, "source": source})
+    return records, None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--source-repo", type=Path, required=True)
     parser.add_argument("--target-series", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    # UNITY-20260929-013: a build dependency from outside the target series'
+    # archive (our repository's nux for unity); copied into the output,
+    # given to sbuild, and recorded in the manifest's build_dependencies.
+    parser.add_argument("--extra-package", action="append", default=[], metavar="DEB",
+                        help="a .deb for sbuild --extra-package, recorded in the manifest (repeatable)")
     args = parser.parse_args()
     repo = args.source_repo.resolve()
     output = args.output_dir.resolve()
@@ -77,6 +142,30 @@ def main():
     tree = run(["git", "-C", str(repo), "rev-parse", "HEAD^{tree}"]).stdout.strip()
     version = run(["dpkg-parsechangelog", "-S", "Version"], cwd=repo).stdout.strip()
     package = run(["dpkg-parsechangelog", "-S", "Source"], cwd=repo).stdout.strip()
+    dependencies = []
+    if args.extra_package:
+        build_arch = run(["dpkg", "--print-architecture"]).stdout.strip()
+        records, error = extra_packages(args.extra_package, build_arch, output / "build-dependencies")
+        if error:
+            print(error, file=sys.stderr)
+            return 2
+        # The copy is what sbuild gets and what the manifest hashes. The pool
+        # root can be redirected for the tests only; the gate and the
+        # publisher check against POOL_ROOT themselves.
+        pool_root = Path(os.environ.get("BUILD_SBUILD_POOL_ROOT", POOL_ROOT))
+        for record in records:
+            copy = record["copy"]
+            digest = sha256(copy)
+            found, where = in_pool(pool_root, record["package"], record["version"], record["architecture"],
+                                   record["source"], digest)
+            entry = {"file": f"build-dependencies/{copy.name}", "sha256": digest, "size": copy.stat().st_size,
+                     "package": record["package"], "version": record["version"],
+                     "architecture": record["architecture"], "source": record["source"],
+                     "given_path": record["given"], "resolved_path": str(record["resolved"]),
+                     "in_our_repository_pool": found}
+            if found:
+                entry["pool_path"] = str(where)
+            dependencies.append((copy, entry))
     started = datetime.now(timezone.utc)
     # sbuild prints its build log to stdout only when stdout is a terminal or
     # --verbose is given; otherwise the log goes to its own .build file only.
@@ -86,9 +175,10 @@ def main():
     # dpkg-source's default ignore lists to every format.
     command = ["sbuild", "-d", args.target_series, "--no-clean-source", "--verbose",
                "--dpkg-source-opt=-i", "--dpkg-source-opt=-I"]
+    command += [f"--extra-package={copy}" for copy, _entry in dependencies]
     logfile = output / f"{args.task_id}-{package}-{version}-sbuild.log"
     with logfile.open("w", encoding="utf-8") as log:
-        log.write("$ " + " ".join(command) + "\n")
+        log.write("$ " + shlex.join(command) + "\n")
         log.flush()
         result = subprocess.run(command, cwd=repo, text=True, stdout=log, stderr=subprocess.STDOUT, check=False)
     finished = datetime.now(timezone.utc)
@@ -152,6 +242,33 @@ def main():
         if name in source_names:
             continue  # a source-full .changes: already recorded from the .dsc
         selected.append((path, digest, None))
+    if dependencies:
+        # UNITY-20260929-013: the copies are the bytes recorded, and each must
+        # have been installed for the build - sbuild adds them to apt without
+        # a pin, so one not newer than the archive's version is silently not
+        # used; the .buildinfo's Installed-Build-Depends says what was.
+        for copy, entry in dependencies:
+            if sha256(copy) != entry["sha256"]:
+                print(f"{entry['file']} changed during the build; no manifest written", file=sys.stderr)
+                return 2
+        buildinfos = [changes[0].parent / name for name, _ in listed if name.endswith(".buildinfo")]
+        if len(buildinfos) != 1:
+            print(f"--extra-package needs the build's .buildinfo to prove use; {changes[0].name} lists {len(buildinfos)}",
+                  file=sys.stderr)
+            return 2
+        try:
+            installed = installed_build_depends(buildinfos[0].read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            print(f"cannot read {buildinfos[0].name}: {exc}", file=sys.stderr)
+            return 2
+        for _copy, entry in dependencies:
+            used = [installed.get((entry["package"], qualifier))
+                    for qualifier in (None, entry["architecture"], build_arch)]
+            if entry["version"] not in used:
+                seen = sorted({v for (name, _q), v in installed.items() if name == entry["package"]})
+                print(f"extra package {entry['package']} {entry['version']} was not used by the build "
+                      f"(Installed-Build-Depends: {', '.join(seen) or 'absent'}); no manifest written", file=sys.stderr)
+                return 2
     artifacts = []
     for path, _digest, role in selected:
         copied = output / path.name
@@ -182,6 +299,8 @@ def main():
         "result": "PASS", "log": {"file": logfile.name, "sha256": sha256(logfile)},
         "artifacts": artifacts,
     }
+    if dependencies:
+        manifest["build_dependencies"] = [entry for _copy, entry in dependencies]
     manifest_path = output / f"{args.task_id}-{package}-build-manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(manifest_path)

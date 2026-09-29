@@ -393,7 +393,8 @@ Aptly freeze. A freeze protects the live publication state and
   the start and end times and the scope in the coordinator log. Agents and
   subagents never treat a freeze as lifted and never widen its exceptions.
 - **Default.** While a freeze is in force, an agent or subagent must not
-  call `aptly publish` directly in any form, including `show` and `list`.
+  call `aptly publish` directly in any form, including `show` and `list`,
+  except as allowed by the exceptions below.
 - **taskctl exception.** The internal `aptly publish show` that
   `scripts/taskctl.py` runs as part of an authorized publication workflow,
   after the corresponding gate has passed. It covers only `taskctl.py` and
@@ -415,6 +416,26 @@ Aptly freeze. A freeze protects the live publication state and
   allows. The exception gives no right to /srv/aptly or to any other live
   aptly state. It ends automatically when the rehearsal ends: C removes the
   marker, or it expires.
+- **Live-phase exception.** Applies to the live phase of a task that May has
+  explicitly authorized. The first is UNITY-20260927-047 phase L, allowance
+  UNITY-20260929-008.
+  - The command guard admits only the exact command strings in the reviewed
+    list `.claude/hooks/live-commands.json`, byte for byte, each run as one
+    foreground Bash call.
+  - The guard checks that the pinned aptly config is unchanged.
+  - The exception takes effect only through C's dated marker
+    `~/coordinator/live-authorization.json`. The marker records May's GO,
+    one session, a window of at most 6 hours, the list's sha256, and a
+    reference to the task's backup and preflight record.
+  - Every admitted command is logged to `~/coordinator/live-log.jsonl`.
+  - It covers nothing else.
+  - Known limit: a shell function, or a dynamic-loader variable such as
+    `LD_PRELOAD`, in the agent's own profile or environment could stand in
+    for the binary or run code inside it. The guard refuses only when it
+    finds one in the profile files, the shell snapshots or its own
+    environment.
+  - It ends when the live phase ends: C removes the marker, and removes the
+    list at the task's DONE.
 
 Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
 every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
@@ -440,6 +461,32 @@ rule per kind and rejects anything else:
 - `buildinfo`, `changes`: provenance only. They are hashed with the other
   artifacts and never expected in a snapshot.
 - Any other kind: rejected until a rule for it is added here.
+
+Extra build dependencies (UNITY-20260929-013). A package that needs a build
+dependency the target series' archive does not provide in a usable form
+(unity: the archive's nux breaks its configure step) is built with
+`build_sbuild.py --extra-package DEB` (repeatable). Each `.deb` is checked
+before sbuild starts (a readable regular `*.deb`, not a udeb, architecture
+`all` or the build architecture, valid Debian name and version fields, no
+second file of the same name, the same file twice, or a second file of the
+same package in any architecture), copied
+to `OUTPUT/build-dependencies/`, and the copy is given to sbuild. After the
+build the copies must be unchanged and each package must appear at its
+version in the `.buildinfo`'s `Installed-Build-Depends` - sbuild adds them to
+apt without a pin, so one not newer than the archive's is not used and the
+build is refused. The manifest then carries an optional
+`build_dependencies` list (file, sha256, size, package, version,
+architecture, source, the path given, the resolved path, whether the same
+bytes are in our published pool, and where). `artifacts` is unchanged.
+`create_release_gate.py` and `publish_aptly.py` check that list when it is
+present (`scripts/build_dependencies.py`): the name and version fields are
+valid Debian fields (so none can steer the pool path), each copy is in the
+manifest's `build-dependencies/` and matches its sha256, and the same bytes
+are in our published
+pool (`/srv/aptly/public/pool`, at the package's own pool location; the
+unpublished `candidate/` staging does not count). A publishable build
+depends only on extra packages we publish. Without the option nothing
+changes.
 
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
@@ -549,8 +596,15 @@ For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
 - Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
   `echo`, project scripts such as `taskctl.py`) may mention aptly and
   publish freely.
-- The rehearsal exception of section 6 (UNITY-20260927-057) is the only
-  allowance for `publish`. The command must start exactly
+- The live-phase exception of section 6 (UNITY-20260929-008) admits only
+  the strings of `.claude/hooks/live-commands.json`. Each starts
+  `/usr/bin/aptly -config=/home/claude/.aptly.conf publish` and runs as a
+  foreground Bash call. C's live marker must name the session and the
+  list's sha256. Each admitted command is logged to
+  `~/coordinator/live-log.jsonl`. The check runs before every other rule,
+  and only for a string that starts with that prefix.
+- Apart from that, the rehearsal exception of section 6
+  (UNITY-20260927-057) is the only allowance for `publish`. The command must start exactly
   `/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/<path> publish`
   (`--config=` also works), with no other flag before `publish`, as one
   plain command with no quoting, expansion, redirection or prefix. The

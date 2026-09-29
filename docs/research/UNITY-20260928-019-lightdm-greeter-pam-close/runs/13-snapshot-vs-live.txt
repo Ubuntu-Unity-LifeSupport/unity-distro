@@ -1,0 +1,25 @@
+# UNITY-20260928-019 2026-09-29T16:39:45Z: snapshot unity-resolute-20260928-019 against the live unity-resolute-20260927-021-r2
+## calamares-settings-ubuntu records in -019 (the 7 +unity2 records of UNITY-20260927-021 must be there, or the switch would roll -021 back):
+calamares-settings-kubuntu_1:26.04.12+unity2_all
+calamares-settings-lubuntu_1:26.04.12+unity2_all
+calamares-settings-ubuntu_1:26.04.12+unity2_source
+calamares-settings-ubuntu-common_1:26.04.12+unity2_amd64
+calamares-settings-ubuntu-common_1:26.04.12+unity1_amd64
+calamares-settings-ubuntu-common-data_1:26.04.12+unity2_all
+calamares-settings-ubuntu-common-data_1:26.04.12+unity1_all
+calamares-settings-ubuntu-common-dbgsym_1:26.04.12+unity2_amd64
+calamares-settings-ubuntu-unity_1:26.04.12+unity2_all
+calamares-settings-ubuntu-unity_1:26.04.12+unity1_all
+## snapshot diff 021-r2 -> 019 (only additions, exactly the 11 lightdm +unity2 records):
+  Arch   | Package                                  | Version in A                             | Version in B
++ amd64  | gir1.2-lightdm-1                         | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | liblightdm-gobject-1-0                   | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | liblightdm-gobject-1-0-dbgsym            | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | liblightdm-gobject-dev                   | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | liblightdm-qt5-3-0                       | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | liblightdm-qt5-3-0-dbgsym                | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | liblightdm-qt5-3-dev                     | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | lightdm                                  | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | lightdm-dbgsym                           | -                                        | 1.32.0-6ubuntu4+unity2                  
++ amd64  | lightdm-vala                             | -                                        | 1.32.0-6ubuntu4+unity2                  
++ source | lightdm                                  | -                                        | 1.32.0-6ubuntu4+unity2                  

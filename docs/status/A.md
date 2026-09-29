@@ -3,7 +3,25 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-09-29, UNITY-20260928-019)
+## Now (2026-09-29, after UNITY-20260927-040)
+
+**UNITY-20260927-040** (unity: Edge::ButtonDownEvent releases compiz's grab
+during expo; A2 = any-grab guard) - BLOCKED, resume_state IMPLEMENTING.
+Reproduced on published +unity11 (title drag in expo: pointer frozen 5/5, LP
+#1393523); keyboard move/resize unknown closed (covered by +unity10); gesture
+grab not measurable. Fix `+unity12` = Ubuntu-Unity-LifeSupport/unity branch
+`a/UNITY-20260927-040` `7b0eca27` (commit `78153782`, on `unity/resolute`
+`2040279d`); Design Challenger APPROVE (round 2); verified on target from a
+test build (regression 5/5 -> 0/5, full plan green). Blocked because
+`scripts/build_sbuild.py` cannot build unity (archive nux breaks configure; no
+way to add our nux) - no approved build manifest for VERIFYING. Card (task
+branch, not merged): `docs/research/UNITY-20260927-040-edge-grab-guard/README.md`.
+Package checkout `~/work/a/040-unity`; test build debs `~/work/a/040-build/test/`.
+Evidence `~/coordinator/evidence/UNITY-20260927-040.json`. Follow-ups proposed
+in the report to C.
+
+UNITY-20260927-047 phase L: before-L/after-L client captures on target in
+`~/work/a/047-capture/` (diff: label and our Release Date only).
 
 **UNITY-20260928-019** (lightdm: the greeter's session cleanup is cut short
 by the second SIGTERM) - BLOCKED at the publication gate (aptly freeze #1),
@@ -32,6 +50,13 @@ UNITY-20260927-012, UNITY-20260927-052, UNITY-20260928-008.
 
 ## State of `target`
 
+Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
+`Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
+`full-upgrade`; xdotool, x11-utils, xterm, python3-evdev installed. After the
+tests: unity back to the published `+unity11`, workspaces 1x1 again, test
+files removed, rebooted; the two 047 capture files stay in `~`. `~/.dirty`
+present. The earlier restore of the same day (below) is superseded:
+
 Restored 2026-09-29 07:55Z from `Clean-updated-2026-09-23` (confirmed from
 the guest: fresh boot, no `~/.dirty`), then: our aptly added
 (`/etc/apt/sources.list.d/unity-distro.list`, key
@@ -49,6 +74,7 @@ discarded it.
   `exp/option-b-request-shutdown` (rejected experiment).
 - `packages/cinnamon-session` - gbp repository, branch `unity/resolute`
   (`6.4.2-1+unity3`), https://github.com/Ubuntu-Unity-LifeSupport/cinnamon-session.
+- `packages/unity` - task branch `a/UNITY-20260927-040` (`+unity12`, not in our repository yet; checkout `~/work/a/040-unity`).
 - `packages/unity` branch `wip/confirm-inhibitors` (worktree `~/work/a/unity`),
   `+unity3` (not published) and `+unity4`.
 - `packages/compiz` - branch `unity/resolute` (`+unity2`), https://github.com/Ubuntu-Unity-LifeSupport/compiz.
