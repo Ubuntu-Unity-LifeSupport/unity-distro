@@ -159,6 +159,40 @@ The target check through the real path (live ISO session → our aptly →
 vendor install → OEM mode) runs after publication, together with
 UNITY-20260927-021's.
 
+## Gated build (2026-09-29, resumed)
+
+The blockers below are resolved:
+
+- `build_sbuild.py` handles epochs.
+- The source is on our GitHub:
+  `Ubuntu-Unity-LifeSupport/calamares-settings-ubuntu` `b/UNITY-20260927-041`
+  = 221c691, on top of 021's c03daf4.
+- 021's +unity2 is published (UNITY-20260927-021 DONE).
+
+Results:
+
+- **Pre-build check** (`gate/prebuild-version-safety.txt`): UNKNOWN, as
+  expected before a build. The candidate is newer than resolute 1:26.04.12.
+- **Gated sbuild** from `packages/calamares-settings-ubuntu` (221c691):
+  manifest PASS, `Status: successful`. Six binaries, as with +unity2.
+- **logs/09**, against 021's build-r2:
+  - All file lists are the same, except that the build IDs in `-dbgsym`
+    change.
+  - `oemconfig.tar.gz` of `-ubuntu-unity` has exactly one changed entry:
+    `ubuntuunity/oemconfig/etc/sudoers.oem` goes from 0644 to 0440,
+    root:root, with the same content.
+  - The Kubuntu and Lubuntu tarballs are unchanged (sudoers.oem 0400).
+  - The changelog has 96 entries, with +unity3 on top.
+  - basicwallpaper's bytes differ (ca88f9c3), although its source is
+    unchanged. The difference is only the build ID, the package-version
+    note and a build-path string. The target check runs this binary through
+    cold boots again.
+- **Regression (mode in the shipped tarball)**: 0644 in the archive
+  1:26.04.12 (logs/01) and in +unity2; 0440 in +unity3 (logs/09).
+- **On the real path**, logs/07 covers the preliminary build. The published
+  build is checked in the target verification: live session, our
+  repository, OEM install, then `/etc/sudoers` 0440 and `visudo -c`.
+
 ## Blocked
 
 Same as UNITY-20260927-021: `build_sbuild.py` (epoch), no remote of ours for
