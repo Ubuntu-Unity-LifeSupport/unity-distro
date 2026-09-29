@@ -199,3 +199,5 @@ tests of this task are OK in each. The exported symbols still equal
 - **Verifier round 2 on the gated build:** PASS (REVIEWED).
 
 Remark: the key run shows the fix against the archive build, not against +unity2. +unity2's `fix-missing-vidmode.patch` already cleared the pointer, and +unity3 moves that line into its own patch. The FBO fix and the two test-only patches are covered by the build-time tests.
+
+**This publication closes both tasks.** The one package, nux 4.0.8+18.10.20180623-0ubuntu15+unity3, carries UNITY-20260927-027 (vidmode double-free, FBO arrays) and UNITY-20260928-020 (the two test-only patches, card `research/UNITY-20260928-020-nux-gtest-segfault/`). The release gate and the publish record are those of -027. After -027 reaches PUBLISHED, -020 stays BLOCKED, with the reason "published as part of UNITY-20260927-027", until taskctl can close a task from another task's publish record (UNITY-20260929-023).
