@@ -98,8 +98,8 @@ unknowns:
     window object. In the same boot window-stack-bridge logged "name
     'org.ayatana.bamf' had owner '' but we thought it was ':1.38'" and
     hud-service activated bamfdaemon.service twice, so bamf may have lost
-    its name or restarted there. That is a lead, not a cause; a separate
-    task
+    its name or restarted there. That is a lead, not a cause:
+    UNITY-20260929-002
   - side effects of the window-id fallback (present upstream already for an
     empty desktop file, BamfWindowStack.cpp:75-77): the HUD shows no icon
     (it looks for "<xid>.desktop", ApplicationImpl.cpp:86-103), and usage
@@ -111,7 +111,7 @@ unknowns:
     and 4 of 5 first starts (logs/06), so for LibreOffice it is the usual
     case, not the exception. The HUD still answers; it shows no icon, and
     the usage history is kept under the window number. Following bamf's
-    re-match would fix it (follow-up task)
+    re-match would fix it (UNITY-20260929-001)
   - bamf's temporary application lacking its application interface for a
     moment is bamf's own; not traced further
 ```
@@ -209,11 +209,11 @@ control and +unity2 test results, and a target2 run with +unity2.
   "Could not get desktop file" still appears (5 of 20). Now the window is
   kept each time. In one of the 5 cold starts the HUD went empty 5 s later
   without that branch being taken: mechanism 2, see unknowns.
-- **Follow-ups for C:**
-  - follow bamf's re-match in window-stack-bridge, to get the right
-    application id; for LibreOffice it is the window number most of the
-    time;
-  - mechanism 2, with the dbusmenu lead.
+- **Follow-ups:**
+  - UNITY-20260929-001: follow bamf's re-match in window-stack-bridge, to
+    get the right application id; for LibreOffice it is the window number
+    most of the time;
+  - UNITY-20260929-002: mechanism 2, with the dbusmenu lead.
 
 ## Verification: PASS (REVIEWED), with notes
 
