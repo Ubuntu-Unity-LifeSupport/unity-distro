@@ -330,5 +330,38 @@ non-nullable. Fixed in 5d6a8c5.
   and no intermediate write, was seen in 9 daemon restarts. The partial union
   residual was not seen in 4 multi-user restarts.
 
-target2 stays dirty with +unity4 (not published), unity-greeter, and
-gir1.2-accountsservice-1.0.
+target2 stays dirty with +unity4 (not published), its dbgsym, unity-greeter,
+and gir1.2-accountsservice-1.0.
+
+## Verifier round 1: INCOMPLETE (REVIEWED), and the proof it asked for
+
+The Verifier found no defect in the diff (scope as A''; no re-entry; lifetimes
+checked in the disassembly; file list and Depends identical to +unity3;
+version ordering fine). Its objection: in logs/20 the recovered values equal
+the stored ones, so "no write" does not show that the skip and the recovery
+ran.
+
+- logs/21 (`retry-proof.sh`, 3 of 3): the greeter's sources were seeded to
+  `[fr]`, then accounts-daemon was restarted. Exactly one write followed,
+  `[gb, us]`, 0.9-1.1 s after the restart. There was no `[]`, no
+  4294967295, and no other write.
+- logs/22 (`retry-trace.bt`, uprobes by symbol with the +unity4 dbgsym
+  installed; 3 of 3), per restart:
+  1. `migrate_input_sources` -> `greeter_sources_known(with=0, without=1)`
+     -> 0: the window pass is skipped.
+  2. 0.25-0.44 s later, LightDM `user-changed` -> migrate ->
+     `greeter_sources_known(1, 0)` -> 1, and the write.
+  3. About 10 ms after that, the manager `user-changed` retry handler runs.
+     `migration_pending` has already been cleared by the complete pass, so
+     no second migration follows.
+
+  FACT: the skip works, and so do the pending flag and its clearing. In
+  these runs the recovery came from the existing LightDM callback. The
+  manager retry as a migration trigger was entered but not needed. Its role
+  is the fallback for an instance where the LightDM recovery does not come
+  (logs/06, where +unity3 stayed at `[]`). That case has not been reproduced
+  since the fresh listing (V3), so the retry's own migration is still
+  unobserved.
+- Verifier remark, (0, 0) case: if every listed user is not yet loaded, the
+  pass counts neither kind and writes the LightDM layout alone. It was not
+  seen (users are loaded when the manager reports loaded, logs/05, 11).
