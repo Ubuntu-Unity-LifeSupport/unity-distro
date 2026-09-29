@@ -144,7 +144,7 @@ too, so there is no regression.
 No more bypass forms are worked through in the guard. The remaining risk
 is closed by operating-system permissions instead: a separate user for
 aptly, and publication only through `scripts/publish_aptly.py` by a sudo
-rule. That is a separate task, with another owner.
+rule. That is UNITY-20260929-019, with another owner.
 
 ## Correct layer
 
