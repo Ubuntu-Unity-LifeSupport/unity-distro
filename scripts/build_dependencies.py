@@ -117,18 +117,23 @@ def manifest_error(manifest, manifest_dir, pool_root=None):
 def check_entries(entries, manifest_dir, pool_root=None):
     """Return an error message or None for a manifest's build_dependencies:
     a list of entries with the required fields; each file relative and inside
-    the manifest's directory, present, with its recorded sha256; the same
+    the manifest directory's own build-dependencies/ (itself no symlink),
+    present, with its recorded size and sha256; the same
     bytes in our published pool at the path the package's own fields give
     (a recorded pool_path must lie inside the pool root, but is not trusted)."""
     root = Path(pool_root) if pool_root is not None else POOL_ROOT
     base = Path(manifest_dir).resolve()
     if not isinstance(entries, list) or not entries:
         return "build_dependencies must be a non-empty list"
-    depdir = (base / "build-dependencies").resolve()
+    # UNITY-20260929-014: the manifest directory's own build-dependencies/,
+    # not a directory a symlink there points to (base is already resolved).
+    depdir = base / "build-dependencies"
+    if depdir.is_symlink() or depdir.resolve() != depdir or not depdir.is_dir():
+        return f"build dependencies must be in the manifest directory's own build-dependencies/: {depdir}"
     for entry in entries:
         if not isinstance(entry, dict) or not all(isinstance(entry.get(k), str) and entry.get(k)
                                                   for k in REQUIRED_FIELDS if k != "size") \
-                or not isinstance(entry.get("size"), int):
+                or type(entry.get("size")) is not int or entry["size"] < 0:
             return f"build dependency record lacks one of {', '.join(REQUIRED_FIELDS)}: {entry!r}"
         error = field_error(entry["package"], entry["version"], entry["architecture"], entry["source"])
         if error:
@@ -143,6 +148,8 @@ def check_entries(entries, manifest_dir, pool_root=None):
             return f"build dependency file must be in the manifest's build-dependencies/: {name!r}"
         if not path.is_file() or sha256(path) != entry["sha256"]:
             return f"build dependency {name} is missing or does not match its sha256"
+        if path.stat().st_size != entry["size"]:
+            return f"build dependency {name} does not match its recorded size"
         recorded = entry.get("pool_path")
         if recorded is not None:
             if not isinstance(recorded, str):

@@ -66,8 +66,32 @@ def extra_packages(paths, build_arch, depdir):
     hashes. Returns (records, error); on error sbuild is not started. sbuild
     itself would skip a missing path or a second file of the same name, read
     every .deb of a directory, and only warn about a foreign architecture -
-    all refused here, before or right after the copy."""
-    records, names, files, packages = [], set(), set(), set()
+    all refused here. UNITY-20260929-014: the path checks run for every file
+    before anything is copied; the copies go to a partial directory that
+    becomes depdir only when every package passed, and is removed on a
+    refusal."""
+    resolved_paths, error = extra_package_paths(paths)
+    if error:
+        return None, error
+    partial = depdir.with_name(depdir.name + ".partial")
+    partial.mkdir()
+    try:
+        records, error = copy_and_check(resolved_paths, build_arch, partial)
+    except BaseException:
+        shutil.rmtree(partial, ignore_errors=True)
+        raise
+    if error:
+        shutil.rmtree(partial, ignore_errors=True)
+        return None, error
+    partial.rename(depdir)
+    for record in records:
+        record["copy"] = depdir / record["copy"].name
+    return records, None
+
+
+def extra_package_paths(paths):
+    """([(given, resolved)], error): the path checks of extra_packages()."""
+    result, names, files = [], set(), set()
     for given in paths:
         candidate = Path(given).expanduser()
         if not candidate.is_absolute():
@@ -87,7 +111,15 @@ def extra_packages(paths, build_arch, depdir):
         if resolved in files:
             return None, f"--extra-package {given}: the same file is given twice"
         names.add(resolved.name); files.add(resolved)
-        depdir.mkdir(exist_ok=True)
+        result.append((given, resolved))
+    return result, None
+
+
+def copy_and_check(resolved_paths, build_arch, depdir):
+    """(records, error): copy each file into depdir and check the Debian
+    fields read from the copy."""
+    records, packages = [], set()
+    for given, resolved in resolved_paths:
         copy = depdir / resolved.name
         shutil.copyfile(resolved, copy)
         info = run(["dpkg-deb", "-f", str(copy), "Package", "Version", "Architecture", "Source", "Package-Type"],
