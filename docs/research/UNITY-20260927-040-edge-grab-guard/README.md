@@ -181,7 +181,7 @@ expected: >-
 reproduction: >-
   tools/replay-stuck1.sh OUTDIR N orig (deterministic, 4/4 stuck on +unity11)
   and ... noborder (control, 0/4); series: tools/grab-series.sh VARIANT N
-evidence: runs/s1-s10, runs/t-*, runs/stuck1-xorg-grabinfo.txt
+evidence: runs/s1-s11, runs/t-*, runs/stuck1-xorg-grabinfo.txt
 root_cause: >-
   decorations/DecorationsEdge.cpp Edge::ButtonDownEvent releases the X
   pointer and keyboard grab with raw Xlib calls whenever it is pressed, and
@@ -198,7 +198,20 @@ root_cause_mechanism: >-
   without an X grab; compiz thaws the frames' synchronous passive grabs only
   with an empty grab list (event.cpp:1369, 1683), so the next frame click
   freezes the pointer.
-root_cause_evidence: runs/s8 (UNITY-SEES/EXPO-SEES, orig vs noborder), runs/s6 (3 + 3), runs/s10 (harmless case), runs/stuck1-xorg-grabinfo.txt, runs/s6/*.grabinfo
+root_cause_evidence: >-
+  runs/s6 (orig 3/3: Edge ungrab, no expo REMOVE-GRAB, X grab list frozen;
+  noborder 3/3 clean - these traces have no button-event probes), runs/s8
+  (n=1 per variant with button probes: in orig the press is seen by
+  UnityScreen::handleEvent and ExpoScreen::handleEvent and no ButtonRelease
+  by either; in noborder both see press and release - "no release" means not
+  seen by those two handlers), runs/s10 (harmless case: release seen on the
+  border's input window), runs/s11 (nolauncher 0/2: without the launcher
+  click the check click on the sensor ends the second expo, so the border
+  click happens outside expo - the launcher click's role is only to leave
+  expo open), runs/stuck1-xorg-grabinfo.txt, runs/s6/*.grabinfo. The control
+  changes where the press lands (compiz's grab window instead of the border's
+  input window), so it shows Edge's ungrab is necessary; the A2 build on the
+  same replay is the causal test.
 invariant: >-
   No in-process component releases an X grab while compiz lists any grab:
   compiz core keeps its grab list and its X grab in step
@@ -230,14 +243,19 @@ candidate_approaches:
   - "D: compiz thaws frames' passive grabs regardless of its grab list
     (rejected in -001: hides leaked grabs, changes clicks on frames during
     every grab)."
-chosen_approach: A2 (pending Design Challenger)
+chosen_approach: A2 - Edge::ButtonDownEvent returns while compiz lists any grab (screen->otherGrabExist(nullptr))
 why_chosen: >-
   It is -001's general invariant enforced at the only place that breaks it:
   while any grab is listed, move and resize refuse Edge's
   _NET_WM_MOVERESIZE anyway, so the ungrab is the only effect left and it is
-  only harmful. The first border press (no grab listed) and every other
-  widget are unchanged; covers expo (measured) and wall, unity-switcher,
-  unity, ezoom by construction, without naming them.
+  only harmful. The first border press (no grab listed) is unchanged. The
+  title bar's drag-to-move also goes through Edge::ButtonDownEvent - GrabEdge
+  calls it on all three paths (DecorationsGrabEdge.cpp:48 immediate, :73
+  grab-wait timer, :89 motion) - so a title drag while a grab is listed now
+  does nothing either; harmless for the same reason (move refuses while
+  another grab is listed, move.cpp:57), and tested. Title-bar buttons and
+  menus are not Edge and are unchanged. Covers expo (measured) and wall,
+  unity-switcher, unity, ezoom by construction, without naming them.
 correct_layer: >-
   Same as UNITY-20260927-001: the decoration Edge runs inside compiz and
   releases compiz's X grab with raw Xlib behind compiz's grab list; compiz's
@@ -249,19 +267,60 @@ defensive_workaround_rejected: >-
   condition of the existing guard at the violating call.
 design_challenger_required: true
 architectural_task: true
-design_review_result: PENDING
+design_review_result: APPROVE   # review 1: REVISE (card: GrabEdge, n=1 trace, short windows, follow-ups, test plan), review 2: APPROVE
 code_risks:
   ownership_lifetime: not_applicable
   callbacks_cancellation: >-
-    checked - a border press during any grab no longer starts anything; it
-    could not before either (move/resize refuse while another grab is listed);
-    a border press within ~0.3 s of a viewport slide (wall) is ignored
+    checked - a border or title-bar (GrabEdge) press during any grab no longer
+    ungrabs or sends _NET_WM_MOVERESIZE; move/resize refused it anyway.
+    Short windows in which a user's border/title press is now ignored: wall
+    while its slide runs (~0.3 s, removed in donePaint) and while Ctrl+Alt is
+    still held after a keyboard viewport switch with the switcher shown
+    (showPreview cleared in terminate, wall.cpp:757/769); expo during its
+    zoom-out after leaving (REMOVE-GRAB 260 ms after the release, runs/s8);
+    unity-switcher while Alt+Tab is open; ezoom while a zoom box is drawn;
+    unity while a touch drag runs. A leaked grab would now leave borders dead
+    instead of freezing the pointer - input is broken either way.
   threading_reentrancy: not_applicable - compiz main thread only
   ABI_API_file_list: not_applicable - one condition in a .cpp
 unknowns:
   - "Gesture grab 'unity' not measurable on target (no touch device); covered by construction."
   - "Where exactly the release goes after Edge's ungrab in the replayed state (which window) - not traced; the fix removes the dependency."
   - "wall, ezoom: not measured."
-  - "Other decoration widgets (title bar, buttons) still react in expo (rest of LP #1393523) - not in scope."
+  - "Title-bar buttons and menus still react in expo (rest of LP #1393523; option F) - out of scope, follow-up proposed (ID from C)."
+  - "unity-shared XWindowManager::UnGrabMousePointer (raw ungrab; PanelIndicatorEntryView.cpp:151, PanelMenuView.cpp:1478, StartMove): nux gets events only when no grab other than deco/move/switcher/resize is listed (unityshell.cpp:2119), so not during expo/wall/ezoom, but possibly during move/resize - unmeasured, follow-up proposed (ID from C)."
   - "Real hardware not tested."
+test_plan: >-
+  One boot; compiz restarted after installing the build and checked for no
+  "(deleted)" in /proc/PID/maps; versions recorded. (1) replay orig
+  (regression): pass = EDGE-DOWN present with no XUngrabPointer/Keyboard from
+  HandleFrameEvent, expo REMOVE-GRAB in both phases, X grab list empty with
+  nothing frozen, then a click on the sensor that reaches it (the 0,207
+  launcher click proves nothing either way); noborder unchanged. (2) expo
+  series expo-border, expo-altf8-border, expo-dnd-border and the s10 variant:
+  0 ungrabs, expo still ends on the click, Escape still leaves expo after a
+  border press. (3) title bar: non-maximizable window immediate drag moves;
+  maximizable window press-and-hold (timer) and press-and-move (motion) move;
+  double-click still maximizes; title drag in expo: no ungrab. (4) first
+  border press right after a wall slide ends and right after expo closes
+  (after the traced REMOVE-GRAB) resizes. (5) keyboard move/resize series
+  (s9) unchanged. (6) UNITY-20260927-001's #3 regression set: rmbslow, rmb,
+  rmb2, wheel, mid, plain and the title variants - 0 stuck, resize/move still
+  working.
 ```
+
+## Design review
+
+Temporary Design Challenger, separate read-only subagent.
+
+1. **REVISE**: design and layer supported, card and tests not. The control
+   changes where the press lands as well, so it shows necessity, and the A2
+   build on the same replay is the causal test; the release trace is n=1;
+   `GrabEdge` (title-bar drag) also goes through `Edge::ButtonDownEvent` and
+   was missing; the short windows in which A2 ignores a press were not
+   listed; follow-ups for the rest of LP #1393523 and for the panel's
+   `UnGrabMousePointer` needed; test plan (launcher-independent pass
+   criteria, title bar paths, first press after a grab ends, one boot) was
+   missing. Led to `runs/s11` and the card fields above.
+2. **APPROVE**.
+
