@@ -37,5 +37,5 @@ for s in $(nm -D --defined-only $MV 2>/dev/null | awk '/moveInitiate|moveTermina
 done
 sudo -n timeout 40 bpftrace /tmp/uprobetrace-040.bt > "$OUT" 2>&1 &
 for i in $(seq 1 40); do sleep 0.5; grep -q READY "$OUT" 2>/dev/null && break; done
-DISPLAY=:0 ~/grab-edge.sh "$V" > "$OUT.result" 2>&1
+DISPLAY=:0 ~/${SCEN:-grab-edge.sh} "$V" > "$OUT.result" 2>&1   # SCEN=after-tests.sh for those variants
 wait

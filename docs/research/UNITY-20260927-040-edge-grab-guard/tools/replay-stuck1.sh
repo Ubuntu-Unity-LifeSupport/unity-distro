@@ -29,5 +29,8 @@ sudo tail -n +$((n + 1)) /var/log/Xorg.0.log | sed -n '1,12p' > "$D/r$i-$MODE.gr
 echo "run $i $MODE active grabs: $(grep -c 'Active grab' "$D/r$i-$MODE.grabinfo") frozen: $(grep -c 'device frozen' "$D/r$i-$MODE.grabinfo")"
 sudo ~/evkeys.py $K 'tap ESC' 'sleep 1'
 pkill -x soffice.bin 2>/dev/null
-pkill -HUP -x compiz; sleep 8; xdotool set_desktop_viewport 0 0; sleep 1
+# restart compiz only when stuck: a SIGHUP restart once took cinnamon-session
+# down with it (SEGV in IceProcessMessages, runs/u12-cinnamon-session-crash.txt)
+if grep -q 'device frozen' "$D/r$i-$MODE.grabinfo"; then pkill -HUP -x compiz; sleep 8; fi
+xdotool set_desktop_viewport 0 0; sleep 1
 echo "run $i $MODE recovered: $(~/grab-probe)"
