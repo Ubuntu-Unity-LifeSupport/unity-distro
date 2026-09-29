@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-047",
+  "root": "/srv/aptly",
+  "aptly_conf_sha256": "ece05ab8ad8469cdeaa39487013830d7a9304cc09cf9989a18543193d8831b25",
+  "commands": [
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish show resolute candidate",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish drop resolute",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish show resolute",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish list",
+    "/usr/bin/aptly -config=/home/claude/.aptly.conf publish drop resolute candidate"
+  ]
+}

@@ -212,7 +212,12 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**Rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
+**Rolled back to `Clean-2` again on 2026-09-28 ~14:55Z**, after
+UNITY-20260927-024 (unity-greeter, indicator-keyboard stock/+unity3, a test
+user). Checked inside: no `~/.dirty`, no `ik024test`, archive
+indicator-keyboard 0ubuntu1, greeter back to `lightdm-greeter`.
+
+Earlier: **rolled back to `Clean-2` on 2026-09-25 13:20Z** (host, after the Xfce/KDE
 test; checked inside: fresh boot, no `~/.dirty`, archive gtk-nocsd
 `3+0~20260321+0b77e1b-1`, no Xfce/Plasma). Everything B had installed there
 before is gone: our aptly packages, test applications, `~/b/` scripts. The

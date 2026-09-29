@@ -1,0 +1,21 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260927-004: does exit() in a lightdm session-child touch the malloc
+// arena? Counts free/malloc/calloc/realloc calls made between exit() and
+// _exit() (atexit handlers and ELF destructors of the loaded libraries - the
+// same set whether exit() is reached from main or from signal_cb). Any call
+// here could block on the arena lock if exit() interrupted malloc.
+// Attach to one session-child only (bpftrace -p PID, tools/exit-alloc-once.sh):
+// allocator uprobes without a pid trap every process on the machine.
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:exit /curtask->group_leader->comm == "lightdm"/ { @in[tid] = 1; @t0[tid] = nsecs; }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:free,
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:malloc,
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:calloc,
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:realloc /@in[tid]/ { @calls[tid, probe] = count(); if (@first[tid] == 0) { @first[tid] = 1; printf("%d first allocator call in exit(): %s\n%s\n", tid, probe, ustack(10)); } }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit /@in[tid]/ {
+  printf("%s %d exit() -> _exit after %d us; allocator calls:\n", strftime("%H:%M:%S.%f", nsecs), tid, (nsecs - @t0[tid]) / 1000);
+  print(@calls); clear(@calls);
+  $d = delete(@in[tid]); $d = delete(@t0[tid]); $d = delete(@first[tid]);
+}
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit /!@in[tid]/ {
+  printf("%s %d _exit(%d) without exit() - no destructors ran\n", strftime("%H:%M:%S.%f", nsecs), tid, arg0);
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260927-009: how compiz leaves at a restart - exit() (runs atexit
+// handlers and ELF destructors while other threads live: the crash of
+// research/shutdown-path) or _exit() (compiz +unity1's die callback) - and
+// which signals it got. Started by restart-via-dialog.sh before the clicks.
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:exit /comm == "compiz"/ { @ex[pid] = 1; printf("compiz %d exit(%d) from\n%s\n", pid, arg0, ustack(6)); }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit /comm == "compiz"/ { printf("compiz %d _exit(%d) %s\n", pid, arg0, @ex[pid] ? "at the end of exit()" : "directly (no exit handlers)"); }
+tracepoint:signal:signal_deliver /comm == "compiz" && pid == tid/ { printf("compiz %d got signal %d\n", pid, args.sig); }
+tracepoint:sched:sched_process_exit /comm == "compiz" && pid == tid/ { printf("compiz %d gone\n", pid); }

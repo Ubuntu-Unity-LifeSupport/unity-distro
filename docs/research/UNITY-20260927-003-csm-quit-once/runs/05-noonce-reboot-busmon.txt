@@ -1,0 +1,75 @@
+вер 28 16:32:55.598031 mike-virtualbox delaytest[4371]: action=reboot cinnamon-session 6.4.2-1+unity3~noonce1; inhibitors: 1
+вер 28 16:33:00.386613 mike-virtualbox delaytest[4472]: clicking Перезагрузить
+вер 28 16:33:00.485520 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.33276s: Requesting system restart...
+вер 28 16:33:00.485456 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.33276s: Requesting system restart...
+вер 28 16:33:00.559555 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.40677s: Requesting system restart...
+вер 28 16:33:00.559555 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.40682s: Requesting system restart...
+вер 28 16:33:00.559464 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.40677s: Requesting system restart...
+вер 28 16:33:00.559502 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.40682s: Requesting system restart...
+вер 28 16:33:00.627608 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.47492s: Requesting system restart...
+вер 28 16:33:00.628305 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.47492s: Requesting system restart...
+вер 28 16:33:00.654067 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.50090s: Requesting system restart...
+вер 28 16:33:00.653611 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.50090s: Requesting system restart...
+вер 28 16:33:00.681298 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.52770s: Requesting system restart...
+вер 28 16:33:00.680660 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.52770s: Requesting system restart...
+вер 28 16:33:00.711951 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.55892s: Requesting system restart...
+вер 28 16:33:00.711951 mike-virtualbox cinnamon-session[2288]: cinnamon-session-binary[2288]: WARNING: t+51.55902s: Requesting system restart...
+вер 28 16:33:00.711618 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.55892s: Requesting system restart...
+вер 28 16:33:00.711709 mike-virtualbox cinnamon-session-binary[2288]: WARNING: t+51.55902s: Requesting system restart...
+вер 28 16:33:01.156466 mike-virtualbox delaytest[4539]: t=1 seat0=3/mike compiz= csm=
+вер 28 16:33:02.390481 mike-virtualbox delaytest[4557]: t=2 seat0=3/mike compiz= csm=
+вер 28 16:33:03.466211 mike-virtualbox delaytest[4599]: t=3 seat0= compiz= csm=
+вер 28 16:33:04.552459 mike-virtualbox delaytest[4654]: t=4 seat0=c1/lightdm compiz= csm=
+вер 28 16:33:05.621431 mike-virtualbox delaytest[4752]: t=5 seat0=c1/lightdm compiz= csm=
+вер 28 16:33:06.693549 mike-virtualbox delaytest[4820]: t=6 seat0=c1/lightdm compiz= csm=
+вер 28 16:33:10.951551 mike-virtualbox delaytest[4893]: t=10 seat0=c1/lightdm compiz= csm=
+вер 28 16:33:32.159493 mike-virtualbox delaytest[5221]: t=30 seat0=c1/lightdm compiz= csm=
+вер 28 16:34:00.659528 mike-virtualbox systemd-logind[4256]: System is rebooting.
+--- counts (cinnamon-session-binary tag only, to avoid the doubled stderr copy)
+Requesting system restart: 8
+Requesting system shutdown: 0
+OperationInProgress: 0
+not confirmed by logind: 0
+--- last delaytest tick with the session manager alive
+--- first tick without it
+вер 28 16:33:01.156466 mike-virtualbox delaytest[4539]: t=1 seat0=3/mike compiz= csm=
+--- logind bus traffic (/var/tmp/cs-busmon.txt, if tools/cs-delay.sh recorded it)
+  Sender=:1.114  Destination=:1.89
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=12  Timestamp="Mon 2026-09-28 13:33:00.568222 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=13  Timestamp="Mon 2026-09-28 13:33:00.568252 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=14  Timestamp="Mon 2026-09-28 13:33:00.568260 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=15  Timestamp="Mon 2026-09-28 13:33:00.633157 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=16  Timestamp="Mon 2026-09-28 13:33:00.670210 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=17  Timestamp="Mon 2026-09-28 13:33:00.703417 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=18  Timestamp="Mon 2026-09-28 13:33:00.713260 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=19  Timestamp="Mon 2026-09-28 13:33:00.728235 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=Reboot
+‣ Type=signal  Endian=l  Flags=1  Version=1 Cookie=127  Timestamp="Mon 2026-09-28 13:33:00.728473 UTC"
+  Sender=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PrepareForShutdown
+--
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=147  ReplyCookie=13  Timestamp="Mon 2026-09-28 13:33:00.759059 UTC"
+  Sender=:1.114  Destination=:1.89
+  ErrorName=org.freedesktop.login1.OperationInProgress  ErrorMessage="Action reboot already in progress, refusing requested reboot operation."
+--- logind's replies to the session manager's Reboot/PowerOff calls
+‣ Type=method_return  Endian=l  Flags=1  Version=1 Cookie=128  ReplyCookie=12  Timestamp="Mon 2026-09-28 13:33:00.728482 UTC"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=147  ReplyCookie=13  Timestamp="Mon 2026-09-28 13:33:00.759059 UTC"
+  ErrorName=org.freedesktop.login1.OperationInProgress  ErrorMessage="Action reboot already in progress, refusing requested reboot operation."
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=151  ReplyCookie=14  Timestamp="Mon 2026-09-28 13:33:00.823227 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=153  ReplyCookie=15  Timestamp="Mon 2026-09-28 13:33:00.825622 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=155  ReplyCookie=16  Timestamp="Mon 2026-09-28 13:33:00.829187 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=157  ReplyCookie=17  Timestamp="Mon 2026-09-28 13:33:00.832200 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=159  ReplyCookie=18  Timestamp="Mon 2026-09-28 13:33:00.837688 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=161  ReplyCookie=19  Timestamp="Mon 2026-09-28 13:33:00.842159 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
