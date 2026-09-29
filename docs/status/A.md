@@ -6,9 +6,9 @@ Build directory: `~/work/a`
 ## Now (2026-09-29 23:10Z) - no new tasks (May, via C)
 
 **UNITY-20260929-021** (SECURITY: aptly-signer, step 2 of UNITY-20260929-019)
-- REVIEW; branch `a/UNITY-20260929-021` (`5755372`, worktree
-  `~/work/a/unity-distro-021`) for the coordinator to merge; DONE after the
-  merge.
+- DONE (merged by the coordinator, main 9ce2930); branch `a/UNITY-20260929-021` (`5755372`, worktree
+  `~/work/a/unity-distro-021`).
+
 - Signer core, service and template (`signer/`), gpg stand-in and client
   (`scripts/`), refusal and end-to-end tests. Suite 278 OK.
 - Rehearsal on aptly 1.6.2 (May's GO, C's marker, 22:29-22:48Z): argv,
@@ -22,8 +22,8 @@ Build directory: `~/work/a`
 - Not started, waiting for May: installation and key on the signer
   (step 3) and the cut-over (step 4).
 - Follow-ups proposed:
-  - the `publish_aptly.py` integration;
-  - Verifier header batteries as tests.
+  - UNITY-20260929-024: the `publish_aptly.py` integration (BACKLOG);
+  - UNITY-20260929-025: Verifier header batteries as tests (BACKLOG).
 
 Done today:
 - UNITY-20260929-020: the gate's tested build (main);
