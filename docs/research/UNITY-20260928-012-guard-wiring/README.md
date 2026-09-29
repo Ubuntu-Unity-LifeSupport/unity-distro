@@ -185,6 +185,13 @@ Rejected alternatives:
 - `--check`'s "behind origin/main" count reflects the last fetch only.
 - `--check` does not read `settings.local.json`, managed settings or a
   project-level `disableAllHooks` (Verifier round 1 remark).
+- Now that the guard runs in every session, its existing parse rule denies
+  some safe heredocs: C's `cat >> file <<'EOF'` (quoted delimiter, body with
+  an apostrophe and double quotes) and B's heredoc with backticks got "Command
+  guard could not parse shell quoting; tool call blocked" (2026-09-29). That
+  fails closed, as intended. The workaround is to write files with the
+  Edit/Write tools. The guard was not changed in this task; follow-up
+  UNITY-20260929-003.
 - The guard remains a pattern safety net, not a security boundary.
 
 ## Validation plan
@@ -267,3 +274,25 @@ identical), in a NEW session rooted at `/home/claude`, results into
 7. Marker allows / exactly one rehearsal-log line: needs C's marker after
    May's GO and runs the rehearsal command itself (-047 R territory);
    coordinated with C separately, not run by this task on its own.
+
+## Result
+
+- Steps 2-5 (before merge): `logs/05-new-session.txt`. New session
+  ddfd321b, rooted at `/home/claude`, started by May at 08:39Z. All 8 checks
+  came out as expected: the probe and both `/nonexistent/aptly` forms were
+  denied with the guard's own reasons, ordinary commands ran, and the
+  subagent's probe was denied. Verifier round 2: PASS (REVIEWED),
+  `verification.md`.
+- Merge: C fast-forwarded `main` to b505fef; base `~/unity-distro` is at
+  b505fef.
+- Step 1 (after merge): `logs/06-post-merge-check.txt` shows
+  `command_guard wiring: OK` on base main.
+- Step 6 (after merge): `logs/07-run-count.txt`. In a session rooted in
+  `~/unity-distro` (pid 2164419, started by May), three Bash calls produced
+  exactly 3 `timeout` and 3 `command_guard.py` execs, not 6. The identical
+  user and project handlers ran once per call. The third call (probe) was
+  denied.
+- Open, outside this task: marker allows / one rehearsal-log line (May's
+  decision via C: count it as the first command of a repeated R, or leave it
+  unproven here); follow-up UNITY-20260929-003 (heredoc false denials);
+  UNITY-20260928-001 (settings protection, sudo).
