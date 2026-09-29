@@ -280,3 +280,35 @@ new line is one call to `manifest_error`, tested directly and checked by
 reads only `artifacts` (taskctl.py ~l.331); it has no fixture test with a
 manifest file, so this is from the code.
 
+## Verification
+
+Independent temporary Verifier subagent (`.claude/agents/adversarial-verifier.md`).
+
+1. **FAIL** (REVIEWED, FIX_PARTIAL) on `7939c8f`: the pool check could be
+   steered by `..`/`/` in the manifest's name fields (section 5).
+2. **PASS** (REVIEWED, PATCH_CORRECT) on `94341a1`: its counterexamples and
+   new probes refused (candidate/ by traversal, own copy, pool file or pool
+   directory symlinked out of the root, `Source: ../../etc`, same package in
+   two architectures); the new tests fail on `7939c8f` (6 fail, 6 error) and on
+   main's tool (7), pass on `94341a1`; suite 180 OK; real runs R1-R3 re-checked
+   byte for byte; the path without `--extra-package` untouched. Not blocking:
+   `ConsumerTest` is textual (the call is one line, the function is tested);
+   build_sbuild imports the new module.
+
+## Outcome
+
+`DONE` (tool task): `build_sbuild.py --extra-package` records extra build
+dependencies (what, from where, sha256, used per `.buildinfo`, in our
+published pool), and `create_release_gate.py` / `publish_aptly.py` check them
+when present; without the option nothing changes. Branch
+`a/UNITY-20260929-013` for the coordinator to merge (`94341a1` code, records
+after it). It unblocks UNITY-20260927-040 (unity +unity12 builds with our nux,
+R3).
+
+Proposed follow-up (ID from C), minor, from Verifier round 2: refuse a
+`build-dependencies/` that is itself a symlink out of the manifest's
+directory (the pool guarantee holds, only "the copy sits next to the
+manifest" is lost); refuse a boolean `size`; optionally copy after the path
+checks only (a refused run leaves copies in an output directory that is
+single-use anyway); an end-to-end fixture for the two consumers.
+
