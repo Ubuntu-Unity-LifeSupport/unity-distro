@@ -188,3 +188,14 @@ tests of this task are OK in each. The exported symbols still equal
   UNITY-20260928-020, on the evidence and the clean build of 0274bc5. Its
   notes are in the card (death-test wording). `docs/PATCHES.md` and
   `docs/DECISIONS.md` entries were added through `append_record.py`.
+
+## Gated build, ABI and target test (2026-09-29)
+
+- **Gated build** of 0274bc5 (on GitHub `b/UNITY-20260927-027`) on the pinned chroot 20260929T201245Z: manifest PASS; suites 130 / 11 / 18 / 113 pass.
+- **ABI** (logs/09): SONAME, NEEDED and the dynamic symbols of the three libraries (3420 / 1052 / 1910) are identical to the published +unity2. The patches change only .cpp and test files, and `/usr/include` is identical. So unity +unity12, built against +unity2 as `--extra-package` (UNITY-20260927-040), stays compatible.
+- **Target test, mode this_build** (logs/10). target2 was full-upgraded from our repository, and the four gated .debs were installed on top, with sha256 equal to the manifest's.
+  - After a reboot, compiz maps the new libnux with no deleted mappings, and the Unity panel and launcher are drawn.
+  - `fullscreen-direct` under glibc malloc checking exits 0 in 3 of 3 runs, where the archive 0ubuntu12 failed 3 of 3 (logs/02).
+- **Verifier round 2 on the gated build:** PASS (REVIEWED).
+
+Remark: the key run shows the fix against the archive build, not against +unity2. +unity2's `fix-missing-vidmode.patch` already cleared the pointer, and +unity3 moves that line into its own patch. The FBO fix and the two test-only patches are covered by the build-time tests.
