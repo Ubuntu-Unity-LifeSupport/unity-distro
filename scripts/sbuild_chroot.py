@@ -37,6 +37,11 @@ CHROOT_DIR = Path.home() / ".cache" / "sbuild" / "chroots"
 MAX_AGE = timedelta(days=7)
 STAMP_RE = re.compile(r"\d{8}T\d{6}Z")
 SUFFIX = ".tar.zst"
+# The only local apt archives sbuild adds itself: its resolver's archive of the
+# build dependencies (copy:) and of --extra-package files (file:).
+LOCAL_ARCHIVE_RE = re.compile(r"(?:file|copy):/build/reproducible-path/resolver-[A-Za-z0-9]+/apt_archive")
+# A snapshot <T> this far in the future is refused (clock skew allowance).
+FUTURE_SLACK = timedelta(minutes=5)
 # sbuild's own lines when it builds a chroot instead of using the given one
 ON_DEMAND = ("Creating chroot on-demand", "Creating new chroot tarball", "Unpacking tarball from STDIN")
 
@@ -141,6 +146,8 @@ def check_tarball(tarball, series, arch, allow_old=False, now=None):
         return None, (f"chroot tarball {tarball.name} has other apt sources than the snapshot pockets: "
                       f"{inside!r} {extra!r}")
     now = now or datetime.now(timezone.utc)
+    if taken - now > FUTURE_SLACK:
+        return None, f"chroot tarball {tarball.name} is from a snapshot in the future"
     old = now - taken > MAX_AGE
     if old and not allow_old:
         return None, (f"chroot tarball {tarball.name} is from a snapshot more than {MAX_AGE.days} days old; "
@@ -152,11 +159,12 @@ def check_tarball(tarball, series, arch, allow_old=False, now=None):
     return info, None
 
 
-def check_log(text, tarball, stamp):
+def check_log(text, tarball, stamp, series):
     """(inrelease_lines, error) for an sbuild log: sbuild unpacked exactly this
-    tarball, built no chroot of its own, and every http(s) fetch came from the
-    snapshot <T>. Local file:/copy: fetches (sbuild's archive of the build
-    dependencies) are allowed."""
+    tarball, built no chroot of its own, fetched the InRelease of each of the
+    series' three pockets from the snapshot <T>, and fetched nothing from
+    anywhere else - no other mirror, no other snapshot, no local repository
+    except sbuild's own resolver archives (Verifier round 1)."""
     lines = text.splitlines()
     for marker in ON_DEMAND:
         if any(marker in line for line in lines):
@@ -170,12 +178,16 @@ def check_log(text, tarball, stamp):
         if not match:
             continue
         uri = match.group(1)
-        if uri.startswith(("file:", "copy:")):
+        if LOCAL_ARCHIVE_RE.fullmatch(uri):
             continue
         if uri != base and not uri.startswith(base + "/"):
             return None, f"the build fetched from outside the snapshot {base}: {line.strip()}"
         if line.rstrip().endswith("InRelease") or "InRelease [" in line:
             fetched.append(line.strip())
+    seen = {line.split()[2] for line in fetched if len(line.split()) > 2}
+    missing = [pocket for pocket in pockets(series) if pocket not in seen]
+    if missing:
+        return None, f"the sbuild log shows no InRelease from the snapshot for {', '.join(missing)}"
     return fetched, None
 
 
@@ -202,7 +214,9 @@ def packages(tarball):
 
 def create(args):
     stamp = args.snapshot or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    parse_stamp(stamp)
+    if parse_stamp(stamp) - datetime.now(timezone.utc) > FUTURE_SLACK:
+        print(f"snapshot {stamp} is in the future", file=sys.stderr)
+        return 2
     directory = Path(args.directory).expanduser() if args.directory else CHROOT_DIR
     directory.mkdir(parents=True, exist_ok=True)
     tarball = directory / tarball_name(args.series, args.arch, stamp)

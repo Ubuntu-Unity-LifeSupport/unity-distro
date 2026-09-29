@@ -512,10 +512,17 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
     snapshot more than 7 days old. `--allow-old-chroot` overrides the age
     limit, and the manifest records it.
   - It passes `--chroot-mode=unshare --chroot=<path>` and
-    `SBUILD_CONFIG=build/sbuild-config.pl`.
+    `SBUILD_CONFIG=build/sbuild-config.pl`. That file is read after the
+    user's own sbuild config and resets what could add apt sources or change
+    the chroot: extra repositories and keys, external and setup commands,
+    unauthenticated packages; it keeps apt update and dist-upgrade on.
   - After sbuild it refuses, with no manifest, a tarball that changed, a
     log without `I: Unpacking <path> to`, a chroot sbuild built on its own
-    ("Creating chroot on-demand"), and any fetch from outside the snapshot.
+    ("Creating chroot on-demand"), a log without the InRelease of each of
+    the three pockets from the snapshot, and any apt fetch from elsewhere -
+    another mirror, another snapshot, or a local repository other than
+    sbuild's own resolver archives
+    (`file:`/`copy:/build/reproducible-path/resolver-*/apt_archive`).
   - The manifest's `chroot` key records the tarball, its sha256, `<T>`, the
     sources and the InRelease lines.
 - **Refresh.** Create a new tarball when the current snapshot is more than

@@ -47,7 +47,9 @@ if spec.get("tamper_chroot") and chroot:
         f.write(b"tampered")
 stamp = Path(chroot).name.rsplit("-", 1)[-1][:-len(".tar.zst")] if chroot else ""
 chroot_log = [] if spec.get("no_unpack") else [f"I: Unpacking {chroot} to /var/tmp/sbuild-claude/sbuild-unshare-AbCdEf..."]
-chroot_log += [f"Get:5 https://snapshot.ubuntu.com/ubuntu/{stamp} resolute InRelease [136 kB]",
+chroot_log += [f"Get:{n} https://snapshot.ubuntu.com/ubuntu/{stamp} {pocket} InRelease [136 kB]"
+               for n, pocket in ((5, "resolute"), (6, "resolute-updates"), (7, "resolute-security"))]
+chroot_log += ["Ign:1 copy:/build/reproducible-path/resolver-AbC123/apt_archive ./ InRelease",
                "Unpacking mount (2.41-4ubuntu4) ...", "0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded."]
 chroot_log += spec.get("log_extra", [])
 if spec.get("tamper") and extras:
@@ -404,11 +406,17 @@ class BuildSbuildTest(unittest.TestCase):
         self.assertEqual(c["sha256"], hashlib.sha256(self.chroot.read_bytes()).hexdigest())
         self.assertEqual(len(c["sources"]), 3)
         self.assertTrue(all(f"snapshot.ubuntu.com/ubuntu/{c['snapshot']} " in line for line in c["sources"]))
-        self.assertEqual(len(c["log_inrelease"]), 1)
+        self.assertEqual(len(c["log_inrelease"]), 3)
+        self.assertEqual(c["sbuild_config"], {"file": str(SBUILD_CONFIG),
+                                              "sha256": hashlib.sha256(SBUILD_CONFIG.read_bytes()).hexdigest()})
         self.assertFalse(c["allow_old_chroot"])
         env = json.loads((self.base / "sbuild-env.json").read_text())
         self.assertEqual(env["SBUILD_CONFIG"], str(SBUILD_CONFIG))
-        self.assertIn("$unshare_mmdebstrap_auto_create = 0;", SBUILD_CONFIG.read_text())
+        config = SBUILD_CONFIG.read_text()
+        for setting in ("$unshare_mmdebstrap_auto_create = 0;", "$extra_repositories = [];",
+                        "$extra_repository_keys = [];", "$chroot_setup_script = undef;",
+                        '"chroot-setup-commands"         => [],', "$apt_allow_unauthenticated = 0;"):
+            self.assertIn(setting, config)
 
     def test_chroot_refused_before_sbuild(self):
         """A bad tarball is refused before sbuild runs, and nothing is written."""
@@ -449,6 +457,7 @@ class BuildSbuildTest(unittest.TestCase):
             "on-demand": {"log_extra": ["I: Creating chroot on-demand by running:"]},
             "not unpacked": {"no_unpack": True},
             "foreign mirror": {"log_extra": ["Hit:7 http://de.archive.ubuntu.com/ubuntu resolute InRelease"]},
+            "local repository": {"log_extra": ["Get:8 file:/home/claude/evilrepo ./ InRelease"]},
             "tarball changed": {"tamper_chroot": True},
         }
         for label, kwargs in cases.items():

@@ -4,6 +4,7 @@ build_sbuild.py runs before sbuild and the log check it runs after.
 Run: python3 -m unittest discover -s scripts/tests
 """
 
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import sys
 import tempfile
@@ -76,6 +77,12 @@ class TarballTest(unittest.TestCase):
                 self.assertIsNone(info)
                 self.assertTrue(error)
 
+    def test_future_snapshot_refused(self):
+        future = (datetime.now(timezone.utc) + timedelta(days=1)).strftime("%Y%m%dT%H%M%SZ")
+        info, error = self.check(make_chroot(self.dir, stamp=future), allow_old=True)
+        self.assertIsNone(info)
+        self.assertIn("future", error)
+
     def test_old_snapshot_allowed_and_recorded(self):
         info, error = self.check(make_chroot(self.dir, stamp=stamp_days_ago(8)), allow_old=True)
         self.assertIsNone(error)
@@ -106,7 +113,7 @@ class LogTest(unittest.TestCase):
     stamp = "20260929T000000Z"
 
     def check(self, text):
-        return sbuild_chroot.check_log(text, self.tarball, self.stamp)
+        return sbuild_chroot.check_log(text, self.tarball, self.stamp, "resolute")
 
     def good(self):
         return TARBALL_LOG.format(tarball=self.tarball, stamp=self.stamp)
@@ -133,6 +140,14 @@ class LogTest(unittest.TestCase):
             "other snapshot": good + "Get:7 https://snapshot.ubuntu.com/ubuntu/20260101T000000Z resolute InRelease\n",
             "snapshot prefix trick": good + f"Get:7 https://snapshot.ubuntu.com/ubuntu/{self.stamp}.evil resolute InRelease\n",
             "creating tarball": good + "I: Creating new chroot tarball:\n",
+            # Verifier round 1: a local repository from the user's sbuild config
+            "local file repository": good + "Get:3 file:/home/claude/evilrepo ./ InRelease\n",
+            "local copy repository": good + "Get:3 copy:/tmp/repo ./ Release [615 B]\n",
+            "resolver path trick": good + "Get:3 file:/build/reproducible-path/resolver-ab/apt_archive2 ./ InRelease\n",
+            "resolver path traversal": good + "Get:3 file:/build/reproducible-path/resolver-ab/../../../home ./ InRelease\n",
+            # no InRelease from the snapshot for one pocket (e.g. apt_update off)
+            "security pocket missing": "\n".join(l for l in good.splitlines() if "resolute-security" not in l),
+            "no snapshot fetch at all": "\n".join(l for l in good.splitlines() if "snapshot.ubuntu.com" not in l),
         }
         for label, text in cases.items():
             with self.subTest(case=label):

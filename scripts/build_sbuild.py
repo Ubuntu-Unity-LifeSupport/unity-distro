@@ -268,11 +268,12 @@ def main():
         print(f"chroot tarball {tarball} changed during the build; no manifest written", file=sys.stderr)
         return 2
     fetched, error = sbuild_chroot.check_log(logfile.read_text(encoding="utf-8", errors="replace"),
-                                             tarball, chroot["snapshot"])
+                                             tarball, chroot["snapshot"], args.target_series)
     if error:
         print(f"{error}; no manifest written", file=sys.stderr)
         return 2
     chroot["log_inrelease"] = fetched
+    chroot["sbuild_config"] = {"file": str(SBUILD_CONFIG), "sha256": sha256(SBUILD_CONFIG)}
     # sbuild puts result files next to the source tree by default. The .changes
     # of this run lists every binary it produced; the source package is the
     # .dsc. Debian file names carry the version without its epoch.
