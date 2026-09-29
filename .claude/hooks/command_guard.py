@@ -56,12 +56,15 @@ class Level:
     only reaches a command that runs nothing (a commit message, the terminal).
     """
     def __init__(self, groups, seps, bodies=(), subs=(), expansion=False, body=False,
-                 sink_safe=True, consumer=None, blob=False):
+                 sink_safe=True, consumer=None, blob=False, forced=False):
         self.groups, self.seps = groups, seps
         self.bodies, self.subs = list(bodies), list(subs)
         self.expansion, self.body, self.sink_safe = expansion, body, sink_safe
         self.consumer = consumer  # the command whose argument this substitution is
         self.blob = blob  # text in another language: its words count, it is no command
+        # UNITY-20260929-018: a body written where git or a later command may run it;
+        # its words are checked even when the call has no runner.
+        self.forced = forced
 
 
 _BRACE = re.compile(r"\{[^\s{}'\"]*(,|\.\.)[^\s{}'\"]*\}")
@@ -626,15 +629,64 @@ def _heredoc_owners(level: Level) -> list[tuple[list[str], str]]:
             for token in group if token == HEREDOC]
 
 
+_GIT_FILES = {"config", ".gitconfig", ".gitattributes", ".gitmodules"}
+
+
+def _git_component(path: str) -> bool:
+    return ".git" in path.replace("\\", "/").split("/")
+
+
+def _owner_output_groups(level: Level, owner: list[str]) -> list[list[str]]:
+    """The groups whose redirections receive the owner's output: the owner, an
+    earlier `exec` redirection, and the closing done/fi/esac/} after it."""
+    index = next((n for n, g in enumerate(level.groups) if g is owner), None)
+    if index is None:
+        return list(level.groups)
+    before = [g for g in level.groups[:index] if g and os.path.basename(g[0]) == "exec"]
+    after = [g for g in level.groups[index + 1:] if g and g[0] in ("done", "fi", "esac", "}")]
+    return before + [owner] + after
+
+
+def _text_blockers(level: Level, levels: list[Level], owner: list[str] | None = None) -> tuple[bool, bool]:
+    """UNITY-20260929-018: (text_ok, forced) for a heredoc body of this level.
+
+    A body is text only when nothing in the call can run it: no subshell, brace
+    group, function or process substitution around it, no pipe into a command
+    that runs something, no runner with an expansion or glob, and no file
+    written that a runner or git (hooks, config, attributes) may run.
+    """
+    runners = [g for lv in levels if not lv.blob for g in lv.groups if not _is_reader(g, None)]
+    compound = any("(" in s or ")" in s for s in level.seps) or \
+        any(g and g[0] in ("{", "}") for g in level.groups)
+    piped = any(_pipes(level.seps[n]) and n + 1 < len(level.groups)
+                and not _is_reader(level.groups[n + 1], None) for n in range(len(level.groups)))
+    expands = any(SUBST in t or any(c in t for c in "$*?[") for g in runners for t in g)
+    targets, unknown = [], False
+    for g in (_owner_output_groups(level, owner) if owner is not None else level.groups):
+        found = _redirect_targets(g)
+        if found is None:
+            unknown = True
+        else:
+            targets += [t for t in found if t != "/dev/null"]
+    tokens = [t for lv in levels for g in lv.groups for t in g]
+    git_path = any(_git_component(t) or os.path.basename(t) in _GIT_FILES for t in targets) or \
+        any("hooksPath" in t for t in tokens) or \
+        any(word_of(g) in ("cd", "ln") and any(_git_component(t) for t in g[_command_index(g) + 1:])
+            for lv in levels for g in lv.groups)
+    writes = bool(targets) or unknown
+    forced = writes and (bool(runners) or git_path)
+    return not (compound or piped or expands or forced), forced
+
+
 def _classify_body(body: Body, group: list[str], sep: str, level: Level, other_tokens: list[str],
-                   everything_reads: bool) -> str:
+                   everything_reads: bool, text_ok: bool = True) -> str:
     """TEXT (never runs), BLOB (another language: one token) or SCRIPT (shell)."""
     index = _command_index(group)
     word = os.path.basename(group[index]) if index < len(group) else ""
     keyword = word in ("done", "fi", "esac", "}")
     if keyword and not everything_reads:
         return "SCRIPT"
-    if (keyword or _is_reader(group, None)) and level.sink_safe and not _pipes(sep):
+    if text_ok and (keyword or _is_reader(group, None)) and level.sink_safe and not _pipes(sep):
         # An unquoted body's $(...) and `...` are collected separately; the rest is text.
         targets = _redirect_targets(group) or []
         operands = [t for t in group[index + 1:] if t != HEREDOC and not _REDIRECT.match(t)
@@ -662,21 +714,22 @@ def _levels(command: str) -> list[Level]:
             others = [t for lv in levels for g in lv.groups
                       if g is not group and not _is_reader(g, None) for t in g]
             everything = all(_is_reader(g, None) for lv in levels if not lv.blob for g in lv.groups)
-            kind = _classify_body(body, group, sep, level, others, everything)
+            text_ok, forced = _text_blockers(level, levels, group)
+            kind = _classify_body(body, group, sep, level, others, everything, text_ok)
             if not body.quoted:
                 for sub in _body_substitutions(body.text):
                     _collect(sub, 1, levels, level.body)
             if kind == "BLOB":
                 owner = word_of(group)
-                if owner in ("cat", "tee") or _STARTS_PROCESS.search(body.text) or \
+                if owner in ("cat", "tee") or forced or _STARTS_PROCESS.search(body.text) or \
                         (owner in ("perl", "ruby", "php") and "`" in body.text):
-                    levels.append(Level([[body.text]], [""], body=True, blob=True))
+                    levels.append(Level([[body.text]], [""], body=True, blob=True, forced=forced))
             elif kind == "SCRIPT":
                 part: list = []
                 try:
                     _collect(body.text, 1, part, body=True)
                 except ScanError:
-                    part = [Level([[body.text]], [""], body=True, blob=True)]
+                    part = [Level([[body.text]], [""], body=True, blob=True, forced=forced)]
                 levels.extend(part)
         level.bodies = []
     return levels
@@ -738,7 +791,7 @@ def _aptly_rules(levels: list[Level]) -> str | None:
                 return DENY_MESSAGES["aptly_copy"]
             if not _is_reader(group, aptly):
                 runners.add(id(group))
-    if not runners:
+    if not runners and not any(level.forced for level in levels):
         return None  # readers and literal aptly commands only: nothing else runs
     exposed = _exposed(commands, runners)
     reach = [t for level in commands for g in level.groups

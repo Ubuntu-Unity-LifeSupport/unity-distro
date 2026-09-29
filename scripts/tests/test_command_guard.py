@@ -279,6 +279,22 @@ class AptlyPublishGuardTest(unittest.TestCase):
                     if any("command_guard.py" in h["command"] for h in entry["hooks"])}
         self.assertEqual(matchers, {"Bash|Monitor"})
 
+    def test_heredoc_text_only_when_nothing_runs_it(self):
+        """UNITY-20260929-018: a heredoc body the shell (or git) may run is not text.
+
+        The forms are the Design Challenger's probes (data file). Keys starting
+        with "ok-" are ordinary writes that must stay allowed; "ctl-" keys are
+        controls with nothing forbidden in the body; every other key must be denied."""
+        forms = json.loads((Path(__file__).parent / "data" / "command_guard_018_must_deny.json").read_text())
+        self.assertGreaterEqual(len([k for k in forms if not k.startswith(("ok-", "ctl-"))]), 20)
+        for key, command in sorted(forms.items()):
+            with self.subTest(form=key):
+                result = run_hook(command)
+                if key.startswith("ok-"):
+                    self.assertEqual(result.returncode, 0, f"{key} denied: {result.stderr}")
+                elif not key.startswith("ctl-"):
+                    self.assertEqual(result.returncode, 2, f"{key} allowed")
+
     def test_other_rules_unchanged(self):
         for command in ("git add -A", "git push --force origin x", "xwd -root",
                         "pkill -f compiz", "rm -rf $X/y", "true\ngit push --force origin x",
