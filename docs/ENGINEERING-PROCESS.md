@@ -527,7 +527,9 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
     sbuild's own resolver archives
     (`file:`/`copy:/build/reproducible-path/resolver-*/apt_archive`), and any
     package sbuild copies into that archive other than this build's
-    `build-dependencies/` copies.
+    `build-dependencies/` copies. This guards against ordinary settings in
+    the user's sbuild config; the config is executable Perl, and a
+    deliberately hostile one is out of scope.
   - The manifest's `chroot` key records the tarball, its sha256, `<T>`, the
     sources and the InRelease lines.
 - **Refresh.** Create a new tarball when the current snapshot is more than

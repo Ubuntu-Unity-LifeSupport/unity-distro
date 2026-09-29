@@ -488,3 +488,35 @@ filtered apt's output would not be detected.
   manifest's `build_dependencies` lists only libnux-4.0-common.
 
 `runs/check-log-real.txt`: H3 is refused; H4 and S3 are accepted.
+
+**Round 3** on `59edb8d`: **PASS** (`PATCH_CORRECT`), REVIEWED.
+
+The Verifier ran sbuild's config and option loaders under a hostile config.
+- `$extra_packages`, `$apt_get`, `$build_env_cmnd` and `$unshare_bind_mounts`
+  come out reset, and our own `--extra-package` is still the only extra
+  package.
+- `check_log` accepts the real S3 log with its three copies and refuses it
+  if one copy is left out. unity's own `Copying uwidgets.egg-info` line does
+  not match.
+- `apt_update_archive_only` fails closed through the three-pocket check.
+- `manual_depends`/`core_depends` still install from the snapshot.
+- The aptitude and xapt wrappers, and `APT_CONFIG` through the environment
+  filter, would still show any other source in the apt lines.
+
+Remarks, not blocking:
+- `config.pl` is executable Perl. The reset and the log check guard against
+  ordinary user settings, not a deliberately hostile config, and the docs now
+  say so.
+- `$aptitude` and `$xapt` could be pinned like `$apt_get`.
+- A package whose own build prints `Copying X to Y...` would be falsely
+  refused, because the check scans the whole log.
+- `manual_depends` from a user config shows only in the `.buildinfo`.
+
+## Outcome
+
+`REVIEW` (tool task): builds run in a recorded chroot tarball from a pinned
+archive snapshot, passed to sbuild explicitly. They are refused when sbuild
+makes a chroot of its own, fetches from elsewhere, or adds packages that are
+not ours. Branch `a/UNITY-20260929-016` is for the coordinator to merge;
+`DONE` after the merge. Follow-ups: UNITY-20260929-017 (`~/.sbuildrc`) and
+UNITY-20260929-020 (the gate and `chroot.tested_with`).
