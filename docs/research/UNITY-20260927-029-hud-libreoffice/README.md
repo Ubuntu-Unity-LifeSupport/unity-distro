@@ -95,7 +95,11 @@ unknowns:
     the HUD answered, and 5 s later did not. At that moment hud-service
     logged DBusMenuImporter "no interface com.canonical.dbusmenu on object
     /org/ayatana/bamf/window…": its dbusmenu collector was pointed at a bamf
-    window object. That is a lead, not a cause; a separate task
+    window object. In the same boot window-stack-bridge logged "name
+    'org.ayatana.bamf' had owner '' but we thought it was ':1.38'" and
+    hud-service activated bamfdaemon.service twice, so bamf may have lost
+    its name or restarted there. That is a lead, not a cause; a separate
+    task
   - side effects of the window-id fallback (present upstream already for an
     empty desktop file, BamfWindowStack.cpp:75-77): the HUD shows no icon
     (it looks for "<xid>.desktop", ApplicationImpl.cpp:86-103), and usage
@@ -172,6 +176,15 @@ control and +unity2 test results, and a target2 run with +unity2.
 
 ## Result
 
+- **Tested binary:** the target2 runs used `hud_…+unity2_amd64.deb` of
+  the first build of 0e99dca (sha256 e29723ee17aa47fd…, installed with
+  `dpkg -i`). That build came out as a native source package, because no
+  orig tarball lay next to the tree (Verifier finding 1). It was rebuilt
+  from the same tree as non-native 1.0 (orig.tar.gz + diff.gz, like +unity1;
+  the orig is the one +unity1's .dsc names, sha256 3cb825f0…). The `hud`
+  package of the two builds has identical contents (0 differing files;
+  window-stack-bridge sha256 e7cbdf88…), so the target2 runs stand for the
+  rebuild. `build/`: the non-native build (tests 6/6, successful).
 - **Package:** hud `14.10+17.10.20170619-0ubuntu6+unity2`, local git tree
   `packages/hud`:
   - 0a94d01 archive 0ubuntu6;
@@ -191,7 +204,7 @@ control and +unity2 test results, and a target2 run with +unity2.
   |---|---|---|
   | lo7 Writer starts: window in the stack | 16 of 20 | 20 of 20 (logs/05) |
   | lo7 Writer starts: HUD answered | 16 of 20 | 20 of 20 |
-  | first start after a reboot: window kept | 4 of 5 | 5 of 5 (logs/06) |
+  | first start after a reboot: window kept | 4 of 5 | 5 of 5 (logs/06; the changed branch was not taken in any of these 5, so this shows no regression, not the fix) |
 
   "Could not get desktop file" still appears (5 of 20). Now the window is
   kept each time. In one of the 5 cold starts the HUD went empty 5 s later
@@ -202,6 +215,23 @@ control and +unity2 test results, and a target2 run with +unity2.
     time;
   - mechanism 2, with the dbusmenu lead.
 
+## Verification: PASS_WITH_NOTES (REVIEWED)
+
+The independent Verifier read the evidence, the trees and the build logs:
+- the base equals the published +unity1;
+- the change is one branch plus tests;
+- fail before / pass after;
+- 20/20 on target2.
+
+Its notes, applied:
+- the first build was native (rebuilt, above);
+- the cold-boot row shows no regression rather than the fix;
+- the bamf name-owner lines belong to the mechanism-2 lead;
+- the tested .deb is identified.
+
+`docs/PATCHES.md` and `docs/DECISIONS.md` entries were added through
+`append_record.py`.
+
 ## Status
 
-VERIFYING: independent verification next.
+REVIEW, then BLOCKED at the publication gate (freeze no. 1).
