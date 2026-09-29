@@ -1952,3 +1952,35 @@ Design Challenger: REVISE, APPROVE. unity +unity12 built with `scripts/build_sbu
 UNITY-20260927-040's gated build (17:19-17:36Z) and every earlier build used the tarball.
 
 **Decision (coordinator, 2026-09-29).** Neither is rebuilt. Their logs and `.buildinfo` record exactly what they were built against. -041's payload was verified on target and is published. Q1 only exercised a tool. The chroot policy that prevents a silent switch is UNITY-20260929-016.
+
+
+## 2026-09-29 - UNITY-20260929-016: builds run in a chroot from a pinned archive snapshot (agent A)
+
+**Context.** The sbuild unshare tarball of 2026-09-22 (entry "sbuild runs in unshare mode") had only the resolute release pocket, and nothing recorded which chroot a build used. When it passed sbuild's 7-day `max_age`, sbuild silently switched to an unrecorded chroot built on demand for each build (entry "two builds ran on sbuild's on-demand chroot"). sbuild also runs `apt-get update` and `dist-upgrade` in the chroot on every build by default. So a fixed tarball alone does not fix what a build is compiled against once -updates and -security are among its sources. Record: `research/UNITY-20260929-016-sbuild-chroot-policy/`.
+
+**Decision (May, 2026-09-29, via C).**
+- **Snapshot.** Tarball and build both use `https://snapshot.ubuntu.com/ubuntu/<T>`, and `<T>` is recorded at each refresh.
+- **Pockets.** Release, -updates and -security.
+- **Components.** main, universe and restricted; no multiverse.
+
+**Implementation.**
+- **`scripts/sbuild_chroot.py create`** builds `~/.cache/sbuild/chroots/<series>-<arch>-<T>.tar.zst` with mmdebstrap (buildd variant, plus `ca-certificates`, since the snapshot answers only over https). It writes a sidecar: sources, InRelease Dates, argv, package list and sha256.
+- **`build_sbuild.py` before sbuild.** It checks the tarball: sidecar, exact sources, and snapshot age of at most 7 days (`--allow-old-chroot` overrides this and is recorded).
+- **`build_sbuild.py` running sbuild.** It passes `--chroot-mode=unshare --chroot=<path>` with `SBUILD_CONFIG=build/sbuild-config.pl` (`auto_create = 0`).
+- **`build_sbuild.py` after sbuild.** It refuses, with no manifest:
+  - a changed tarball;
+  - a log without `I: Unpacking <path> to`;
+  - an on-demand chroot;
+  - any fetch from outside the snapshot.
+- **The manifest** records the chroot.
+- **Tested and gated builds.** They use the same tarball; `--tested-with` checks this.
+
+On a real snapshot tarball, tiny013 and unity each show "0 upgraded" in the build's dist-upgrade.
+
+**Rejected.**
+- The release pocket only. Our packages run against -updates and -security.
+- The live mirror with the `.buildinfo` as the record. A byte-for-byte rebuild of an old release is impossible.
+- `$unshare_mmdebstrap_keep_tarball`. sbuild refreshes on its own schedule, with main and universe only, and does so silently.
+- multiverse. Launchpad builds a universe source without it.
+
+Design Challenger: REVISE, REVISE, APPROVE.
