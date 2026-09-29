@@ -429,8 +429,11 @@ Aptly freeze. A freeze protects the live publication state and
     reference to the task's backup and preflight record.
   - Every admitted command is logged to `~/coordinator/live-log.jsonl`.
   - It covers nothing else.
-  - Known limit: a shell function in the agent's own profile could stand
-    in for the binary. The guard refuses only when it finds one.
+  - Known limit: a shell function, or a dynamic-loader variable such as
+    `LD_PRELOAD`, in the agent's own profile or environment could stand in
+    for the binary or run code inside it. The guard refuses only when it
+    finds one in the profile files, the shell snapshots or its own
+    environment.
   - It ends when the live phase ends: C removes the marker, and removes the
     list at the task's DONE.
 

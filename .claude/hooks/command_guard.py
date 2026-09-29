@@ -1138,9 +1138,14 @@ _LIVE_MARKER_KEYS = {"schema", "kind", "task_id", "root", "authorized_by", "reco
                      "not_before", "not_after", "reference", "session_id", "commands_sha256"}
 _LIVE_KIND = "live-publish"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
-# a function or alias named *aptly*, BASH_ENV, or a DEBUG/RETURN trap
-_SHADOW = re.compile(r"^\s*(?:function\s+\S*aptly|\S*aptly\S*\s*\(\s*\)|alias\s+\S*aptly)"
-                     r"|BASH_ENV|\btrap\b.*\b(?:DEBUG|RETURN)\b", re.MULTILINE)
+# A function or alias named *aptly* anywhere on a line (Claude Code's shell
+# snapshots define functions as eval $'name () \n{ ... }'), an exported
+# BASH_FUNC_*aptly*, BASH_ENV, a DEBUG/RETURN trap, or a dynamic-loader
+# variable that would run code inside the aptly binary.
+_SHADOW = re.compile(r"function\s+\S*aptly|[^\s'\"$]*aptly\S*\s*\(\s*\)|\balias\s+\S*aptly"
+                     r"|BASH_FUNC_\S*aptly|BASH_ENV|\btrap\b.*\b(?:DEBUG|RETURN)\b"
+                     r"|\bLD_(?:PRELOAD|LIBRARY_PATH|AUDIT)\b")
+_SHADOW_ENV = ("BASH_ENV", "LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT")
 
 
 def _sha256_hex(data: bytes) -> str:
@@ -1191,8 +1196,9 @@ def _check_live_config(listing: dict):
 
 def _check_live_shell():
     """Best effort: refuse when the agent's shell setup could shadow aptly."""
-    if os.environ.get("BASH_ENV"):
-        _deny("BASH_ENV is set")
+    for name in _SHADOW_ENV:
+        if os.environ.get(name):
+            _deny(f"{name} is set")
     paths = [os.path.join(LIVE_HOME, name) for name in LIVE_SHELL_FILES]
     snapshots = os.path.join(LIVE_HOME, LIVE_SNAPSHOTS)
     if os.path.isdir(snapshots):
@@ -1203,7 +1209,8 @@ def _check_live_shell():
         with open(path, "rb") as f:
             text = f.read(4 * 1024 * 1024).decode("utf-8", "replace")
         if _SHADOW.search(text):
-            _deny(f"{path} defines an aptly function or alias, BASH_ENV or a DEBUG/RETURN trap")
+            _deny(f"{path} defines an aptly function or alias, BASH_ENV, a DEBUG/RETURN trap "
+                  "or a dynamic-loader variable")
 
 
 def _check_live_marker(session_id: str | None, listing: dict, list_sha: str) -> tuple[dict, str]:
@@ -1368,7 +1375,7 @@ def main() -> int:
         tool_name = payload.get("tool_name")
         message = inspect(command, session if isinstance(session, str) else None,
                           tool_name if isinstance(tool_name, str) else None,
-                          tool_input.get("run_in_background") is True)
+                          tool_input.get("run_in_background") not in (None, False))
     except Exception as error:  # fail closed on any bug in the guard itself
         message = f"Command guard failed ({type(error).__name__}); tool call blocked."
     if message:

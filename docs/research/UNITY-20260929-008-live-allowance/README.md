@@ -279,3 +279,35 @@ Branch `b/UNITY-20260929-008`.
 Next: the independent Verifier; C merges; proof in a new session (feeding
 hook payloads, nothing executed). -047's blocked-commands.md phase L is
 rewritten to these strings with B running them when -047 resumes.
+
+## Verifier round 1: FAIL (INDEPENDENTLY_REPRODUCED) - fixed
+
+- F1 FIX_PARTIAL: Claude Code's shell snapshots define functions as
+  `eval $'name () \n{ ... }'`, and the anchored `_SHADOW` pattern could not
+  see that form, nor `export BASH_FUNC_/usr/bin/aptly%%=...`. The Verifier
+  showed in bash 5.3.9 that a function named with a slash replaces the
+  absolute path, in the eval form too.
+- F2 TEST_INVALID: the test used only forms the snapshots never write.
+- Remarks: dynamic-loader variables (`LD_PRELOAD` and similar) were not in
+  the stated limit; `run_in_background is True` treated a truthy
+  non-boolean as foreground.
+
+Fix (on d743b73):
+
+- `_SHADOW` finds a function or alias named `*aptly*` anywhere on a line
+  (the eval form included), `BASH_FUNC_*aptly*`, `BASH_ENV`, a DEBUG/RETURN
+  trap, and `LD_PRELOAD`/`LD_LIBRARY_PATH`/`LD_AUDIT`.
+- The guard's own environment is checked for those four variables.
+- Any value of `run_in_background` other than absent or false counts as
+  background.
+- ENGINEERING-PROCESS section 6 states the limit with loader variables.
+- Tests:
+  - the real snapshot format (a function with and without the path),
+    `BASH_FUNC_`, the loader variables in files and in the environment, a
+    real-format non-aptly snapshot function that must pass, the builder's
+    real home that must pass, and a truthy non-boolean
+    `run_in_background`;
+  - against d743b73: 13 failures (logs/05). The eval, BASH_FUNC and LD cases
+    are admitted there; the later subtests fail as a cascade on the log line
+    left behind;
+  - now 23/23 (logs/03), full suite 157/157 (logs/04).

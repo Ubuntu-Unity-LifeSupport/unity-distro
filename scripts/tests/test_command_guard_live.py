@@ -276,17 +276,37 @@ class LiveAllowanceTest(unittest.TestCase):
     def test_shadowing_in_rc_or_snapshot_is_refused(self):
         snap = self.home / ".claude" / "shell-snapshots" / "snapshot-bash-1.sh"
         for text in ["function /usr/bin/aptly { echo x; }\n", "aptly () { :; }\n",
-                     "alias aptly=true\n", "export BASH_ENV=/tmp/x\n", "trap 'echo' DEBUG\n"]:
+                     # the form Claude Code writes into a shell snapshot (Verifier round 1)
+                     "eval $'/usr/bin/aptly () \\n{ \\n    echo x\\n}' > /dev/null 2>&1\n",
+                     "eval $'aptly () \\n{ \\n    :\\n}' > /dev/null 2>&1\n",
+                     "export BASH_FUNC_/usr/bin/aptly%%='() {  echo x\n}'\n",
+                     "alias aptly=true\n", "export BASH_ENV=/tmp/x\n", "trap 'echo' DEBUG\n",
+                     "export LD_PRELOAD=/tmp/x.so\n", "export LD_LIBRARY_PATH=/tmp\n", "export LD_AUDIT=/tmp/a.so\n"]:
             with self.subTest(text=text):
                 snap.write_text("# snapshot\n" + text)
                 self.assert_denied(self.commands[2], "defines an aptly function")
+        # a real-format snapshot function that does not involve aptly passes
+        snap.write_text("eval $'gawkpath_default () \\n{ \\n    unset AWKPATH\\n}' > /dev/null 2>&1\n")
+        self.assertIsNone(self.allowed(self.commands[2]))
+        Path(self.hook.LIVE_LOG).unlink()
         snap.write_text("# a clean snapshot mentioning nothing\n")
         (self.home / ".bashrc").write_text("alias ll='ls -l'\nfunction /usr/bin/aptly { :; }\n")
         self.assert_denied(self.commands[2], "defines an aptly function")
 
-    def test_bash_env_in_the_environment(self):
-        os.environ["BASH_ENV"] = "/tmp/x"
-        self.assert_denied(self.commands[2], "BASH_ENV is set")
+    def test_shadowing_variables_in_the_environment(self):
+        for name in ("BASH_ENV", "LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT"):
+            with self.subTest(name=name):
+                os.environ[name] = "/tmp/x"
+                try:
+                    self.assert_denied(self.commands[2], f"{name} is set")
+                finally:
+                    del os.environ[name]
+
+    def test_the_real_home_has_no_shadowing(self):
+        # the installed profile and snapshots of this builder must not trip the scan
+        self.hook.LIVE_HOME = "/home/claude"
+        if os.path.isdir("/home/claude"):
+            self.hook._check_live_shell()
 
     # --- log ----------------------------------------------------------------
     def test_log_must_be_a_private_regular_file(self):
@@ -336,6 +356,9 @@ class LiveAllowanceTest(unittest.TestCase):
         self.assertEqual(rc, 2)
         self.assertIn("foreground Bash", err)
         rc, err = run(dict(base, tool_name="Monitor", tool_input={"command": self.commands[4]}))
+        self.assertEqual(rc, 2)
+        # a truthy non-boolean counts as background too
+        rc, err = run(dict(base, tool_name="Bash", tool_input={"command": self.commands[4], "run_in_background": "yes"}))
         self.assertEqual(rc, 2)
         self.assertEqual(len(self.log_lines()), 1)
 
