@@ -59,3 +59,16 @@ from the restart action, so they differ from the 0.25 s skip-to-write gap.
 Not checked: dconf same-value notification (it matters only with DISPLAY for
 update_login_layout); the (0,0) not-yet-loaded case, which is recorded in the
 card.
+
+## Round 3 (2026-09-29, ephemeral Verifier subagent; gated build of 5d6a8c5 on chroot 20260929T201245Z)
+
+Verdict: **PASS**. Review status: `INDEPENDENTLY_REPRODUCED`. Question: does the gated build ship exactly the reviewed and target-tested change?
+
+- **Manifest.** PASS, and all 6 artifacts, the log, the chroot tarball, its sidecar and sbuild-config.pl match. The source tree 07661b25 equals 5d6a8c5^{tree}. The commit is on our GitHub as `b/UNITY-20260928-014`.
+- **sbuild.** `Status: successful`; the unit tests ran (TAP 1..12, all ok).
+- **Source.** The unpacked .dsc equals `git archive 5d6a8c5`, and `git diff 10eb95c 5d6a8c5` is the reviewed change (logs/17).
+- **Against the tested build.** `dpkg-deb -R` of the gated .deb and dbgsym is identical to ~/work/b/ik4/out2, DEBIAN/control included. That is the build installed and tested on target2 (logs/20). Only the container sha256 differs (logs/23).
+- **Build dependencies.** 130 Installed-Build-Depends changed; they are SRU/security point updates. They cannot change behaviour, because every shipped file and the shlibs-derived Depends are byte-identical.
+- **Changelog.** The trailer is UTC, and the version order is +unity4 > +unity3 > 0ubuntu1.
+
+Remark: the gated-vs-tested log was renumbered to 23, because 21 and 22 were already used.
