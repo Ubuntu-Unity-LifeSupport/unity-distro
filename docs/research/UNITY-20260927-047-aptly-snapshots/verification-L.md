@@ -80,3 +80,23 @@ Re-verified in round 2:
 
 Accepted as stated: the db holding the snapshot rests on the P5/P7 output
 and the Release/Packages consistency.
+
+## Round 3 (2026-09-29, same Verifier; branch tip ef60709)
+
+Verdict: **PASS**, `REVIEWED`. No findings.
+
+- The evidence card is consistent with the phase L operation: `scope`,
+  `authorization` (approved_by May; reference to cde32da, APTLY-FREEZE.md
+  line 20, marker 61d806ab, May's direct confirmation) and `peer_notice`.
+- No field still says phase L is unauthorized. The only old text is the
+  dated, PRELIMINARY `phase_r_run_1`.
+
+Remarks:
+
+- The list removal takes effect only when C merges this branch. Until
+  then, main 6fe3640 still has `.claude/hooks/live-commands.json`, and only
+  the absent marker blocks the live strings.
+- The evidence verification fields are to be filled with this verdict.
+- The guard refused one inline `python3 -c` of the Verifier because of the
+  word aptly in the data. It was not rephrased; the Verifier read the file
+  with the Read tool instead.
