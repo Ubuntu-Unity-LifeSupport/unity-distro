@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-027",
+  "package": "nux",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/README.md",
+      "sha256": "1b8b10b6d2e79e2761d4efc34db4c162b56cabe84ed42e45df66aecd95d76e00"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/README.md",
+      "sha256": "1b8b10b6d2e79e2761d4efc34db4c162b56cabe84ed42e45df66aecd95d76e00"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "f0d80c1d2060367a55336b61cdd17dad4e1a145f9af0fa1f065778dd0bd5b20e"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "7f20844ee8a3e9ae6cd938d297c350a590e1ba32289192120e5392284422ae5c"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/gate/release-record.json",
+      "sha256": "04b332b894b36b7387aa4e3ee686512960a0e45d77284c8658493b50093fe8d8"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/gate/version-check.json",
+      "sha256": "5c517e4ee849a38686751c212ab3f6f20539b75f128bc9d2c1235bb944246afe"
+    }
+  }
+}

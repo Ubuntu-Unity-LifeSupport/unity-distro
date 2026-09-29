@@ -1,0 +1,10 @@
+# UNITY-20260927-027 ABI: gated libnux-4.0-0 +unity3 vs published +unity2 (what unity +unity12 was built against, UNITY-20260927-040), 2026-09-29T22:28:43Z
+usr/lib/x86_64-linux-gnu/libnux-4.0.so.0.8.0: SONAME ['libnux-4.0.so.0'] -> ['libnux-4.0.so.0']; exported 3420 -> 3420; removed 0, added 0; NEEDED same
+usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0.8.0: SONAME ['libnux-core-4.0.so.0'] -> ['libnux-core-4.0.so.0']; exported 1052 -> 1052; removed 0, added 0; NEEDED same
+usr/lib/x86_64-linux-gnu/libnux-graphics-4.0.so.0.8.0: SONAME ['libnux-graphics-4.0.so.0'] -> ['libnux-graphics-4.0.so.0']; exported 1910 -> 1910; removed 0, added 0; NEEDED same
+DEBIAN/shlibs: same apart from the version
+# Source side: git diff 9793c23 (our unity/resolute, +unity2) .. 0274bc5 touches debian/ only; the +unity3 patches change
+#   fix-fbo-attachment-arrays.patch: nux/NuxGraphics/IOpenGLFrameBufferObject.cpp + tests
+#   fix-fullscreen-mode-list-double-free.patch, fix-missing-vidmode.patch: nux/NuxGraphics/GraphicsDisplayX11.cpp + tests
+#   tests-*.patch: tests only
+# No header changes: class layouts and inline code are those of +unity2, so unity +unity12 (built with +unity2 as --extra-package) is binary-compatible with +unity3.

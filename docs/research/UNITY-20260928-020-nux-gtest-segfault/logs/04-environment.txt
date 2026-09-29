@@ -1,0 +1,6 @@
+# The same source (+unity2, 9793c23): the passing sbuild of 2026-09-24 against a failing one of 2026-09-28.
+## Package versions in the build chroot ('Package versions:' line): 446 and 446 packages, differences: 0
+## Kernel lines:
+Kernel: Linux 7.0.0-31-generic #31-Ubuntu SMP PREEMPT_DYNAMIC Sat Aug  1 04:26:38 UTC 2026 amd64 (x86_64)
+Kernel: Linux 7.0.0-34-generic #34-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep  2 14:29:37 UTC 2026 amd64 (x86_64)
+## Mesa and Xorg in both: libgl1-mesa-dri_26.0.3-1ubuntu1 libgallium_26.0.3-1ubuntu1 xserver-xorg-core_2:21.1.22-1ubuntu1 xserver-xorg-video-dummy_1:0.4.0-1ubuntu1 
