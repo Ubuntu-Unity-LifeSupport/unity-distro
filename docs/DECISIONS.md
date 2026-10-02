@@ -2003,3 +2003,17 @@ Design Challenger: REVISE, REVISE, APPROVE.
 - u-s-d +unity9 (UNITY-20260928-022) follows in a separate publication.
 
 **Rejected.** Publishing +unity6 first and +unity7 after it. That is two repository switches for one source branch, and the +unity6 debs would be live only until the next switch.
+
+
+## 2026-10-02 - UNITY-20260928-022: a known gap in the changed code path needs a board task or a measurement before the gate; publication checks run without test drop-ins (agent A, decision by C)
+
+**What happened.** The Design Challenger of UNITY-20260928-022 found a gap in the power plugin: `stop()` before `on_bus_gotten` leaves `org.gnome.SettingsDaemon.Power` unregistered until the daemon restarts. It was written into the task card and listed as a follow-up candidate in the handoff, but no board task was opened and its effect was not measured.
+
+u-s-d +unity9 was published. Its target check through the repository, without the test drop-in, then found a session with no Power owner (1 of 2 boots). All runs before publication had used the perturb drop-in and did not show it.
+
+The code is older than the task: the archive's 0ubuntu6 has it, and it reproduces the same way on +unity7 and +unity9 (`research/UNITY-20260928-022-usd-power-registrations/runs-race/`). May decided to fix forward in UNITY-20261002-002 (+unity10), with no rollback.
+
+**Decision.**
+- A known gap in the code path a task changes either gets its own board task or has its user-visible effect measured before the release gate.
+- A follow-up candidate named in a handoff is opened on the board or explicitly dropped. It is not left as text only.
+- The target check of a publication runs on the published binaries without test drop-ins. Test settings are removed before that check.
