@@ -1,0 +1,25 @@
+// UNITY-20261002-002: from early boot, record the power plugin's start(),
+// stop() and on_bus_gotten() in unity-settings-daemon, with the caller's
+// user stack, so a stop() between the bus request and its result can be seen
+// and attributed. Installed as u002-trace.service (tools/u002-trace.service).
+config = { max_strlen = 128 }
+
+uprobe:/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so:gsd_power_manager_start
+{
+  printf("%llu ms pid %d START\n%s\n", elapsed / 1000000, pid, ustack(12));
+}
+
+uprobe:/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so:gsd_power_manager_stop
+{
+  printf("%llu ms pid %d STOP\n%s\n", elapsed / 1000000, pid, ustack(16));
+}
+
+uprobe:/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so:on_bus_gotten
+{
+  printf("%llu ms pid %d ON-BUS-GOTTEN\n", elapsed / 1000000, pid);
+}
+
+uprobe:/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so:gsd_power_manager_new
+{
+  printf("%llu ms pid %d MANAGER-NEW (register_manager_dbus, inlined)\n", elapsed / 1000000, pid);
+}

@@ -1,0 +1,18 @@
+boot_id 1950eaf2-4915-4cc7-958e-71f05b29118d u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2166 drop-ins:  power-owner: (':1.37',)
+47412 ms pid 2166 MANAGER-NEW (register_manager_dbus, inlined)
+47412 ms pid 2166 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7afa16147b05
+        0x7afa16147d44
+        0x7afa16136920
+        0x7afa15f2bc1b
+        0x7afa15f2d257
+        g_main_loop_run+311
+
+53522 ms pid 2166 ON-BUS-GOTTEN

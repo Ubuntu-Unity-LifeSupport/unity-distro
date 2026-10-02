@@ -1,0 +1,18 @@
+boot_id 0d5a8c77-9753-42a5-8be9-904349dc2012 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2240 drop-ins:  power-owner: (':1.47',)
+43455 ms pid 2240 MANAGER-NEW (register_manager_dbus, inlined)
+43455 ms pid 2240 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x79eaebb47b05
+        0x79eaebb47d44
+        0x79eaebb36920
+        0x79eaeb92bc1b
+        0x79eaeb92d257
+        g_main_loop_run+311
+
+48160 ms pid 2240 ON-BUS-GOTTEN

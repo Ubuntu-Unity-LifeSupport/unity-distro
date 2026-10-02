@@ -1,0 +1,16 @@
+# UNITY-20261002-002 test unit (target only, removed after the measurement):
+# runs tools/u002-trace.bt from before the display manager starts and writes
+# one file per boot into /var/tmp/u002/.
+[Unit]
+Description=UNITY-20261002-002 power plugin trace
+DefaultDependencies=no
+After=local-fs.target
+Before=display-manager.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/mkdir -p /var/tmp/u002
+ExecStart=/bin/sh -c 'exec /usr/bin/bpftrace -o /var/tmp/u002/trace-$(cat /proc/sys/kernel/random/boot_id).txt /usr/local/lib/u002/u002-trace.bt'
+
+[Install]
+WantedBy=multi-user.target

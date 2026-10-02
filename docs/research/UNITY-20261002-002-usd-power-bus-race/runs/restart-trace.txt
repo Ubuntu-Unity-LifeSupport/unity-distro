@@ -1,0 +1,39 @@
+tools/u002-trace.bt on target-desktop, u-s-d +unity9 (published), 2026-10-02 19:16 EEST:
+`systemctl --user restart unity-settings-daemon.service` while the trace ran (warm restart, session up).
+Elapsed ms are since the tracer started. Verbatim bpftrace output:
+
+4663 ms pid 6850 STOP
+
+        gsd_power_manager_stop+0
+        _unload_plugin+56
+        g_slist_foreach+48
+        gnome_settings_manager_stop+59
+        gnome_settings_manager_dispose+21
+        g_object_unref+197
+        main+394
+        __libc_start_call_main+129
+        __libc_start_main@@GLIBC_2.34+136
+        _start+37
+
+4855 ms pid 7047 MANAGER-NEW (register_manager_dbus, inlined)
+4855 ms pid 7047 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x74babd747b05
+        0x74babd747d44
+        0x74babd736920
+        0x74babd52bc1b
+        0x74babd52d257
+        g_main_loop_run+311
+
+4946 ms pid 7047 ON-BUS-GOTTEN
+
+Reading: the old process stops the plugin on exit (dispose); the new one
+creates the manager (the bus request is queued here) and starts it in the
+same main-loop iteration; the bus result arrives 91 ms later. At a cold
+session start the same gap is 4-6 s (runs/boots-unity9/).
