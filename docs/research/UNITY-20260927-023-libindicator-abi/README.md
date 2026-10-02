@@ -274,3 +274,33 @@ Remarks, applied: the "no test suite" limit now has a row in the table.
 The panel Sync listing and the client's icon in logs/07 are transcribed
 notes; the raw gdbus output is not stored, and the screenshot is on the
 host. The script's path for the indicator-datetime binary is corrected.
+
+## Publication (2026-10-02)
+
+- db backup `~/backups/repo-023-20261002T175914Z`; repo add of the gated
+  build, 10 records (387 to 397); snapshot `unity-resolute-20260927-023` =
+  the live `unity-resolute-20260927-028` (hud +unity3) + those 10 (logs/09);
+  full apt view SAFE (gate/); peer notice ACK; release gate
+  (gate/release-gate.json, tested_build this_build on libindicator3-7 and
+  indicator-common). C checked the gate; May confirmed the switch in B's
+  session.
+- `publish_aptly.py` switched `./resolute` to `unity-resolute-20260927-023`
+  at 18:02:44 UTC; write-once record
+  `~/coordinator/publish-records/UNITY-20260927-023.json`.
+
+## Target verification of the publication (2026-10-02)
+
+Result: **PASS** (logs/10). target2 was rolled back to Clean-2 (checked
+inside: no `~/.dirty`, no `~/b029`, libindicator3-7 0ubuntu8; NTP
+synchronised) and upgraded from our repository by the normal path, no file
+repository (unattended-upgrades was let finish first).
+
+- apt's candidate for libindicator3-7 is +unity3 from 8080; the .debs apt
+  fetched are the gated ones (caac08af…, 08384eb2…); `dpkg -V` is clean.
+- After a reboot into the auto-login session: libindicator3.so.7.0.0 is the
+  gated .deb's file (f07e26fa…), exports 40 symbols, none Ayatana's;
+  unity-panel-service maps it with no deleted library.
+- The panel lists org.ayatana.indicator.messages with the other indicators;
+  with `mmclient.py` registered the entry's icon is indicator-messages-new.
+- target2 is left on this state (dirty); the UNITY-20260927-026 check rolls
+  it back.
