@@ -75,8 +75,9 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
-**2026-10-02 ~19:00Z: the four ready packages are published; no tasks
-left in B's queue.**
+**2026-10-02 ~19:15Z: no tasks (May: none assigned). The four ready
+packages are published and DONE; -003 waits for -019 (the signer, May's
+manual step) and -037 for its security review.**
 - Published today, one slot each (C checked every gate, May confirmed every
   switch in B's session), each with a gated rebuild on chroot
   20260929T201245Z, payload byte-identical to the tested build, this_build
@@ -85,8 +86,8 @@ left in B's queue.**
   - UNITY-20260927-029 hud +unity2, switch 16:50Z - DONE (merged);
   - UNITY-20260927-028 hud +unity3, switch 17:30Z - DONE (merged);
   - UNITY-20260927-023 libindicator +unity3, switch 18:02Z - DONE (merged);
-  - UNITY-20260927-026 indicator-datetime +unity3, switch 18:32Z -
-    PUBLISHED, DONE after C merges `b/UNITY-20260927-026`.
+  - UNITY-20260927-026 indicator-datetime +unity3, switch 18:32Z - DONE
+    (merged, bed9a41).
 - Live `./resolute` = unity-resolute-20260927-026 (400 packages). Backups
   `~/backups/repo-{029,028,023,026}-20261002T*`.
 - PATCHES and DECISIONS entries for -023 and -026 are in main (a6b9f78);
