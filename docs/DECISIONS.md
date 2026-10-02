@@ -1984,3 +1984,22 @@ On a real snapshot tarball, tiny013 and unity each show "0 upgraded" in the buil
 - multiverse. Launchpad builds a universe source without it.
 
 Design Challenger: REVISE, REVISE, APPROVE.
+
+
+## 2026-10-02 - UNITY-20260927-012 and UNITY-20260927-052: u-s-d +unity7 ships both fixes; +unity6 is not published (agent A, decision by C)
+
+**Decision.** unity-settings-daemon `15.04.1+21.10.20220802-0ubuntu7+unity7` is published as one version. It closes:
+- UNITY-20260927-052, the idle-monitor fix `09f45d9`, built as +unity6;
+- UNITY-20260927-012, the power fix `7c5f234`.
+
++unity6 (`f674b6b`) is not published on its own. +unity7 is +unity6 plus `7c5f234` and its changelog (`b570a22`).
+
+**Consequence.**
+- UNITY-20260927-052 records +unity7 as its candidate version.
+- Its regression tests were run again on target on the gated +unity7 debs, and both pass:
+  - `two-clients.sh` 3/3: the daemon survives;
+  - `INPUT=1 usd-valgrind.sh`: 0 errors.
+- Record: `research/UNITY-20260927-012-usd-color-restart-crash/runs-gated/`.
+- u-s-d +unity9 (UNITY-20260928-022) follows in a separate publication.
+
+**Rejected.** Publishing +unity6 first and +unity7 after it. That is two repository switches for one source branch, and the +unity6 debs would be live only until the next switch.
