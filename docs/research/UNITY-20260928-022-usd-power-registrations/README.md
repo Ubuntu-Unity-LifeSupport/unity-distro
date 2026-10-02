@@ -127,6 +127,53 @@ registered on our stack - see the side finding above).
 - Order: u-s-d +unity7 (UNITY-20260927-012) is published and verified on
   target first; then +unity9 is installed there for the key runs.
 
+## After publication: Power not registered at one session start (2026-10-02)
+
++unity9 was published (snapshot `unity-resolute-20260928-022`). The target
+check, through the repository and **without** the test drop-in, found:
+
+- First boot: u-s-d running, the power plugin active (its logind
+  inhibitors taken), NRestarts 0, no crash - but
+  `org.gnome.SettingsDaemon.Power` had **no owner**; u-s-d's other names
+  were there. Every Power call answered ServiceUnknown.
+- Second boot: the name was there. Three `systemctl --user restart`s: there
+  each time. So 1 of 2 boots.
+
+This is the **known gap** recorded above and in the evidence card's unknowns
+("stop() before on_bus_gotten leaves Power unregistered until restart"):
+`register_manager_dbus()` runs once per process (from
+`gsd_power_manager_new`); `stop()` cancels `bus_cancellable` and frees
+`introspection_data`; a stop before the bus result arrives makes
+`on_bus_gotten` return on CANCELLED, and no later `start()` registers again.
+
+It is **not new in +unity9**: the cancel in `stop()` is in `ubuntu/devel`
+(the archive's 0ubuntu6, since the 2014 import), `unity/resolute` and +unity7
+`b570a22`; 27e75f4 added a second cancel in `finalize` and left `stop()`'s
+as it was. Measured on target with `tools/stop-before-bus.sh` (u-s-d under
+gdb; after `gsd_power_manager_start()` returns, `gsd_power_manager_stop()` is
+called before the main loop delivers the bus result; then the plugin is cycled
+with gsettings `active` false -> true):
+
+| Version | no stop | stop before the bus result |
+|---|---|---|
+| +unity9 (published) | name owned, Get Icon answered (`runs-race/01`) | no owner after start or after the off/on cycle, ServiceUnknown (`runs-race/02`) |
+| +unity7 (published) | name owned, Get Icon answered (`runs-race/03`) | the same: no owner, ServiceUnknown (`runs-race/04`) |
+
+No crash in any run; back under systemd the name is owned. Not known yet:
+what stopped the power plugin during that session start. All runs before
+publication had the perturb drop-in (`G_MESSAGES_DEBUG=all`, malloc
+tunables) and did not show it; the one +unity7 boot without the drop-in
+owned the name, which is too few to compare rates.
+
+**Lesson.** The gap was found by the Design Challenger, written into this card
+and listed as a follow-up candidate in the handoff of 2026-09-29, but no task
+was opened on the board and it was not closed or re-checked before
+publication. Its user-visible effect (no Power D-Bus for the session:
+brightness keys, the power indicator's level) was not measured. A known gap
+in the code path a task changes needs a board task, or a measurement of its
+effect, before the gate; and the target check of a publication runs without
+test drop-ins, as this one did.
+
 ## Evidence card
 
 ```yaml
