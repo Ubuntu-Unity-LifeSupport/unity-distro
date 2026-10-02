@@ -2017,3 +2017,33 @@ The code is older than the task: the archive's 0ubuntu6 has it, and it reproduce
 - A known gap in the code path a task changes either gets its own board task or has its user-visible effect measured before the release gate.
 - A follow-up candidate named in a handoff is opened on the board or explicitly dropped. It is not left as text only.
 - The target check of a publication runs on the published binaries without test drop-ins. Test settings are removed before that check.
+
+
+## 2026-10-02 - UNITY-20260927-023: libindicator +unity3 hides the Ayatana wrapper's type instead of making it ABI (agent B)
+
+**Context.** Legacy B-L21: our libindicator +unity2 (the Ayatana menu wrapper of DECISIONS 2026-09-26, "Messaging menu under Unity") exported one symbol more than the archive, `indicator_ng_ayatana_menu_get_type`, declared in no header and tracked by no symbols file. Record: `research/UNITY-20260927-023-libindicator-abi/`.
+
+**Decision.** Hide it (a static prior declaration before G_DEFINE_TYPE), rather than keep it as a public ABI extension (a header, a symbols file and a shlibs bump), leave it, or narrow the library's export regex. The type is a private detail of one file with no possible consumer; making it ABI would make every later change to the wrapper an ABI question for a library upstream no longer maintains, and narrowing the whole export list to fix one name risks a real API symbol. Design Challenger: round 1 REVISE (static declaration instead of G_GNUC_INTERNAL, which leaves a global hidden symbol in the static library; the export regex exists; the pool scan is evidence), round 2 APPROVE.
+
+**Measured.**
+- libindicator3.so.7 exports 40 symbols in +unity3, the archive's list exactly; the GTK2 library stays at 34; libindicator3.a keeps no global wrapper symbol. Between +unity2 and +unity3 only the dropped export differs (imports, NEEDED, Depends, shlibs and file lists identical).
+- Removing the symbol is formally an ABI break: a scan of all 270 .debs in our pool found it only in libindicator +unity2 itself; none of the 22 reverse dependencies imports it.
+- On target2, unity-panel-service maps the new library and the Ayatana messaging menu works with a registered client (envelope "new", Inbox with the count bubble).
+- The gated rebuild on the pinned chroot is byte-identical inside every .deb to the tested build.
+
+Follow-up: a symbols file with the archive's 40 names, so an accidental export fails the build (UNITY-20260928-006). Verifier: PASS.
+
+
+## 2026-10-02 - UNITY-20260927-026: indicator-datetime keeps +unity2's no-time guard and proves it reachable (agent B)
+
+**Context.** Legacy B-L14: indicator-datetime +unity2 (DECISIONS 2026-09-26) added a guard in `get_appointment()` that skips a component with neither DTSTART nor DUE, and the review asked for it to be proven reachable or dropped. Record: `research/UNITY-20260927-026-idt-guard/`.
+
+**Decision.** Keep the guard and add the reachable case to the test suite (+unity3, 9a00446), with no `src/` change. The first approach, dropping the guard as unreachable (5d6492d, superseded), rested on reading EDS and on probes that never exercised the engine's own merge of stored overrides; the Verifier's round 1 FAIL (ROOT_CAUSE_UNPROVEN) showed that path, and the experiments confirmed it.
+
+**Measured.**
+- `merge_detached_instances()` replaces a generated instance of a recurring task with its stored override (matching RECURRENCE-ID) without checking for a start. An override whose RECURRENCE-ID matches in UTC reaches `get_appointment()` with no time: without the guard the service aborts; with it the task is skipped. A floating or TZID RECURRENCE-ID did not match and was never merged.
+- `test-eds-ics-tasks-without-start` now carries such an override: the control without the guard aborts, +unity3 passes 29 of 29 (also on the gated rebuild, pinned chroot 20260929T201245Z).
+- The git tree lacked the release tarball's empty EDS directories, so 11 of 29 tests failed from git; 5a21b08 creates them in the test script. The general orig-versus-git check is UNITY-20260928-010.
+- The gated rebuild is byte-identical inside the .deb to the tested build; on target2 the service runs from it and serves the panel.
+
+Open: one `test-eds-ics-all-day-events` failure in the superseded control build is not explained (UNITY-20261002-005). Verifier: PASS.
