@@ -306,3 +306,35 @@ logs/07 and above; the clock measurement before the rollback is logs/09;
 two more rows in the table (the fallback's side effects, bamf's momentary
 interface gap). The tested commit 0e99dca lives only in the base checkout's
 packages/hud history; the gated commit ef39a8d has the same tree.
+
+## Publication (2026-10-02)
+
+- db backup `~/backups/repo-029-20261002T163402Z`; repo add of the gated
+  build, 20 records (347 to 367); snapshot `unity-resolute-20260927-029` =
+  the live `unity-resolute-20260928-022` + those 20 (logs/10); full apt
+  view SAFE (gate/); library exports equal to +unity1 (logs/11); peer
+  notice ACK; release gate (gate/release-gate.json, tested_build
+  this_build on the hud .deb). C checked the gate; May confirmed the switch
+  in B's session.
+- `publish_aptly.py` switched `./resolute` to `unity-resolute-20260927-029`
+  at 16:50:22 UTC; write-once record
+  `~/coordinator/publish-records/UNITY-20260927-029.json`.
+
+## Target verification of the publication (2026-10-02)
+
+Result: **PASS** (logs/12). target2 was rolled back to Clean-2 (checked
+inside: no `~/.dirty`, no `~/b029`, hud 0ubuntu6; NTP synchronised) and
+upgraded from our repository by the normal path, no file repository. The
+first `full-upgrade` lost the dpkg lock to unattended-upgrades right after
+the boot and was rerun once it finished.
+
+- apt's candidate for hud is +unity2 from 8080; the .deb apt fetched is the
+  gated one (sha256 b3321894…); `dpkg -V hud` is clean.
+- After a reboot into the auto-login session: hud-service (776f30cb…) and
+  window-stack-bridge (e7cbdf88…) are the files of that .deb, no
+  "(deleted)" mapping.
+- `lo7.sh 10`: 10 of 10 windows in the stack; the HUD answered 9 of 10.
+  Run 1, the first Writer start after the reboot, is mechanism 2 again
+  (window in the stack, no desktop-file error; UNITY-20260929-002).
+- target2 is left on this state (dirty); the next task's check rolls it
+  back.
