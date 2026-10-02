@@ -17,7 +17,16 @@ while [ $i -lt 200 ]; do
 done
 t1=$(date +%s.%N)
 gsettings set $S active false; t2=$(date +%s.%N)
-sleep 0.3
-gsettings set $S active true; t3=$(date +%s.%N)
+# Wait until the daemon has processed the change: stop() drops its logind
+# inhibitors. Both writes landing while the main loop is still blocked in
+# the plugin-start phase are read as one final "true" and stop nothing
+# (seen in runs/toggle-unity9 boots 1-3).
+j=0
+while [ $j -lt 600 ]; do
+  if ! systemd-inhibit --list --no-pager 2>/dev/null | grep -q "unity-settings"; then break; fi
+  sleep 0.05; j=$((j+1))
+done
+t3=$(date +%s.%N)
+gsettings set $S active true; t4=$(date +%s.%N)
 d() { awk -v a="$1" -v b="$2" 'BEGIN { printf "%.2f", a - b }'; }
-echo "u-s-d $(dpkg-query -W -f '${Version}' unity-settings-daemon) pid $(pgrep -x unity-settings-): waited $(d "$t1" "$t0") s for the first inhibitor (polls: $i); active=false at +$(d "$t2" "$t0") s; active=true at +$(d "$t3" "$t0") s" > "$O"
+echo "u-s-d $(dpkg-query -W -f '${Version}' unity-settings-daemon) pid $(pgrep -x unity-settings-): waited $(d "$t1" "$t0") s for the first inhibitor (polls: $i); active=false at +$(d "$t2" "$t0") s; inhibitors gone at +$(d "$t3" "$t0") s (polls: $j$( [ $j -ge 600 ] && echo ', TIMEOUT')); active=true at +$(d "$t4" "$t0") s" > "$O"
