@@ -1,0 +1,55 @@
+# UNITY-20260927-029 target test (this_build) on target2 from Clean-2: our repository (InRelease sha256 26352d400896235e…, Date Fri, 2 Oct 2026 15:41:07 UTC) full-upgrade, then the gated hud +unity2 .debs from a file repository
+# builder utc 2026-10-02T15:49:29Z
+# before the script (15:38Z, same boot 742fa9de): ssh target2 'ls ~/.dirty' -> "No such file or directory" (the Clean-2 state), then touch ~/.dirty; so the script's marker line below says PRESENT. Clock before/after the rollback: logs/09.
+== install unity2 host=target2 boot=742fa9de-aaec-445c-8b23-ebf4f05b66fa utc=2026-10-02T15:49:29Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 18:49:29 EEST 
+== snapshot marker: ~/.dirty PRESENT
+== policy hud
+hud:
+  Установлен: 14.10+17.10.20170619-0ubuntu6
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity2
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity2 500
+        500 file:/var/tmp/localrepo-unity2 ./ Packages
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+full-upgrade rc=0
+xdotool rc=0
+== installed hud packages
+hud 14.10+17.10.20170619-0ubuntu6+unity2 ii 
+== installed .deb sha256 (apt cache of the file repository is the file itself)
+b3321894eabef4a0727cd13b1ddf292f17ebff6585704574c95577ae84ead22c  /var/tmp/localrepo-unity2/hud_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb
+## after a reboot (full-upgrade: 129 packages set up, no E:/W: lines)
+== session  host=target2 boot=40febe08-042f-4a18-8b07-5266ddeecc74 utc=2026-10-02T15:58:08Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 18:58:08 EEST 
+== hud installed: 14.10+17.10.20170619-0ubuntu6+unity2
+776f30cb0df95692e0c70fa1f4b5aa2426d181eea6853182ba14fd9e93b5afc3  /usr/lib/x86_64-linux-gnu/hud/hud-service
+e7cbdf88573fd0bc30cc8a10bd2acdcc3c7d5348b809f738c53c80a66be19208  /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge
+hud-service pid=3912 exe=/usr/lib/x86_64-linux-gnu/hud/hud-service deleted_maps=0
+window-stack-br pid=2222 exe=/usr/lib/x86_64-linux-gnu/hud/window-stack-bridge deleted_maps=0
+== lo7.sh 20 (GAP=3 WATCH_DELAY=0), as logs/05
+run 1: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=0 hud_after_5s=0 no_desktop_file=0
+run 2: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 4: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 5: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 7: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 8: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 9: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 10: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 11: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 12: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 13: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 14: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 15: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 16: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 17: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 18: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 19: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 20: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+== window-stack-bridge / hud-service warnings since boot
+== done
+# binaries: hud-service 776f30cb… and window-stack-bridge e7cbdf88… equal the files in the gated hud_…+unity2_amd64.deb (b3321894…); no "(deleted)" mapping.
+# 20/20 windows in the stack (the invariant). The HUD answered in runs 2-20; run 1, the first Writer start after the reboot,
+# had the window in the stack with no_desktop_file=0, so the changed branch was not taken: mechanism 2 (UNITY-20260929-002), as logs/06 boot 4.

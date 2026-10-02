@@ -1,0 +1,8 @@
+libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity9
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity9
+unity-settings-daemon-schemas	15.04.1+21.10.20220802-0ubuntu7+unity9
+0
+0
+dpkg-V-clean
+  Установлен: 15.04.1+21.10.20220802-0ubuntu7+unity9
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity9

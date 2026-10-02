@@ -1,0 +1,4 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2144 tunables: GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+u-s-d pid 2144 alive: yes; journal since 00:17:01: 0
+вер 29 00:17:13 mike-virtualbox unity-settings-daemon[2144]: gcm_session_active_changed_cb: assertion 'active_v != NULL' failed
+вер 29 00:17:13 mike-virtualbox unity-settings-daemon[2144]: gcm_session_active_changed_cb: assertion 'active_v != NULL' failed

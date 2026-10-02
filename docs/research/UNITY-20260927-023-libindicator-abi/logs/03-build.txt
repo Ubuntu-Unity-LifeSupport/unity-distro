@@ -1,0 +1,1 @@
+/home/claude/work/b/unity-distro/docs/research/UNITY-20260927-023-libindicator-abi/build/UNITY-20260927-023-libindicator-build-manifest.json

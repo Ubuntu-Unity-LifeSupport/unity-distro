@@ -1,0 +1,48 @@
+# UNITY-20260927-023 target verification of the publication on target2 from Clean-2 (restore checked inside at 17:57Z: no ~/.dirty, no ~/b029, libindicator3-7 0ubuntu8; NTPSynchronized=yes): our repository (live ./resolute = unity-resolute-20260927-023, InRelease Date Fri, 2 Oct 2026 18:02:44 UTC), normal full-upgrade, no file repository
+# builder utc 2026-10-02T18:13:08Z
+== install host=target2 boot=95fa5333-516e-48da-aafc-7e221c0a4ce6 utc=2026-10-02T18:13:09Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 21:13:09 EEST 
+== snapshot marker: ~/.dirty absent
+== policy libindicator3-7
+libindicator3-7:
+  Установлен: 16.10.0+18.04.20180321.1-0ubuntu8
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity3
+== policy indicator-datetime
+indicator-datetime:
+  Установлен: 15.10+21.04.20210304-0ubuntu6
+  Кандидат:   15.10+21.04.20210304-0ubuntu6+unity2
+full-upgrade rc=0
+gir1.2-messagingmenu-1.0 rc=0
+== installed
+indicator-common 16.10.0+18.04.20180321.1-0ubuntu8+unity3 ii 
+indicator-datetime 15.10+21.04.20210304-0ubuntu6+unity2 ii 
+libindicator3-7 16.10.0+18.04.20180321.1-0ubuntu8+unity3 ii 
+== the .debs apt fetched
+caac08af4472f33f91e6ae77ed97ba2e8df53e247ca0f6d3f48ec808e19b0767  /var/cache/apt/archives/libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb
+08384eb2f94a494687b9838d7df9ba1e218a934c4823c6511e566e43ca8332eb  /var/cache/apt/archives/indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb
+1c28ded4531d628eab088ae68de1b7eb5a5b7f8082dab88cb7e8a2b083fab4f6  /var/cache/apt/archives/indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity2_amd64.deb
+== dpkg -V: 0 lines
+## after a reboot
+== session host=target2 boot=989dfb25-9fbb-42b5-b959-3bf6b8a5f38e utc=2026-10-02T18:19:45Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 21:19:45 EEST 
+== libindicator3-7 16.10.0+18.04.20180321.1-0ubuntu8+unity3, indicator-datetime 15.10+21.04.20210304-0ubuntu6+unity2
+f07e26fa9f3435ce7b3364a63af47e2736aa766cd6beea4ad91081f7cf0f8680  /usr/lib/x86_64-linux-gnu/libindicator3.so.7.0.0
+0ca1ccd98665faf630ac4a7ef8392147888ea5bbf405fd8b0d5f11dece6fcd8e  /usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service
+exports=40 ayatana_exports=0
+unity-panel-ser pid=2752 exe=/usr/lib/x86_64-linux-gnu/unity/unity-panel-service libindicator3=5 deleted_maps=2 deleted_libs=0
+indicator-datet pid=2125 exe=/usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service libindicator3=0 deleted_maps=2 deleted_libs=0
+== panel entries (Sync)
+com.canonical.indicator.bluetooth com.canonical.indicator.datetime com.canonical.indicator.keyboard com.canonical.indicator.power com.canonical.indicator.session com.canonical.indicator.sound libapplication.so org.ayatana.indicator.messages 
+== datetime header
+desktop-header': (true, '', [<{'accessible-desc': <'21:19'>, 'label': <'21:19'>, 'title': <'Дата и время'>, 'visible': <true>}
+== messaging menu with a client
+registered pluma.desktop
+org.ayatana.indicator.messages', '0x5e8bda7b8040', 'ayatana-indicator-messages', 0, '', true, false, 6, '. GThemedIcon indicator-messages-new-offline indicator-messages-new indicator-messages indicato
+== warnings since boot
+== done
+# PASS. libindicator3-7 and indicator-common +unity3 came from the live ./resolute (unity-resolute-20260927-023); the .debs apt
+# fetched are the gated ones (caac08af..., 08384eb2...); libindicator3.so.7.0.0 f07e26fa... is the gated .deb's file; 40 exports,
+# none Ayatana's (the acceptance); dpkg -V clean. unity-panel-service maps it; its two "(deleted)" mappings are no library
+# (deleted_libs=0; dconf databases). The panel lists org.ayatana.indicator.messages with the other indicators; with the
+# messaging-menu client registered the entry's icon is indicator-messages-new. indicator-datetime is the published +unity2
+# (this run precedes UNITY-20260927-026). Natural session start, no drop-in, no test environment; NTPSynchronized=yes throughout.

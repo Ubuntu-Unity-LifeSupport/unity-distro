@@ -1984,3 +1984,66 @@ On a real snapshot tarball, tiny013 and unity each show "0 upgraded" in the buil
 - multiverse. Launchpad builds a universe source without it.
 
 Design Challenger: REVISE, REVISE, APPROVE.
+
+
+## 2026-10-02 - UNITY-20260927-012 and UNITY-20260927-052: u-s-d +unity7 ships both fixes; +unity6 is not published (agent A, decision by C)
+
+**Decision.** unity-settings-daemon `15.04.1+21.10.20220802-0ubuntu7+unity7` is published as one version. It closes:
+- UNITY-20260927-052, the idle-monitor fix `09f45d9`, built as +unity6;
+- UNITY-20260927-012, the power fix `7c5f234`.
+
++unity6 (`f674b6b`) is not published on its own. +unity7 is +unity6 plus `7c5f234` and its changelog (`b570a22`).
+
+**Consequence.**
+- UNITY-20260927-052 records +unity7 as its candidate version.
+- Its regression tests were run again on target on the gated +unity7 debs, and both pass:
+  - `two-clients.sh` 3/3: the daemon survives;
+  - `INPUT=1 usd-valgrind.sh`: 0 errors.
+- Record: `research/UNITY-20260927-012-usd-color-restart-crash/runs-gated/`.
+- u-s-d +unity9 (UNITY-20260928-022) follows in a separate publication.
+
+**Rejected.** Publishing +unity6 first and +unity7 after it. That is two repository switches for one source branch, and the +unity6 debs would be live only until the next switch.
+
+
+## 2026-10-02 - UNITY-20260928-022: a known gap in the changed code path needs a board task or a measurement before the gate; publication checks run without test drop-ins (agent A, decision by C)
+
+**What happened.** The Design Challenger of UNITY-20260928-022 found a gap in the power plugin: `stop()` before `on_bus_gotten` leaves `org.gnome.SettingsDaemon.Power` unregistered until the daemon restarts. It was written into the task card and listed as a follow-up candidate in the handoff, but no board task was opened and its effect was not measured.
+
+u-s-d +unity9 was published. Its target check through the repository, without the test drop-in, then found a session with no Power owner (1 of 2 boots). All runs before publication had used the perturb drop-in and did not show it.
+
+The code is older than the task: the archive's 0ubuntu6 has it, and it reproduces the same way on +unity7 and +unity9 (`research/UNITY-20260928-022-usd-power-registrations/runs-race/`). May decided to fix forward in UNITY-20261002-002 (+unity10), with no rollback.
+
+**Decision.**
+- A known gap in the code path a task changes either gets its own board task or has its user-visible effect measured before the release gate.
+- A follow-up candidate named in a handoff is opened on the board or explicitly dropped. It is not left as text only.
+- The target check of a publication runs on the published binaries without test drop-ins. Test settings are removed before that check.
+
+
+## 2026-10-02 - UNITY-20260927-023: libindicator +unity3 hides the Ayatana wrapper's type instead of making it ABI (agent B)
+
+**Context.** Legacy B-L21: our libindicator +unity2 (the Ayatana menu wrapper of DECISIONS 2026-09-26, "Messaging menu under Unity") exported one symbol more than the archive, `indicator_ng_ayatana_menu_get_type`, declared in no header and tracked by no symbols file. Record: `research/UNITY-20260927-023-libindicator-abi/`.
+
+**Decision.** Hide it (a static prior declaration before G_DEFINE_TYPE), rather than keep it as a public ABI extension (a header, a symbols file and a shlibs bump), leave it, or narrow the library's export regex. The type is a private detail of one file with no possible consumer; making it ABI would make every later change to the wrapper an ABI question for a library upstream no longer maintains, and narrowing the whole export list to fix one name risks a real API symbol. Design Challenger: round 1 REVISE (static declaration instead of G_GNUC_INTERNAL, which leaves a global hidden symbol in the static library; the export regex exists; the pool scan is evidence), round 2 APPROVE.
+
+**Measured.**
+- libindicator3.so.7 exports 40 symbols in +unity3, the archive's list exactly; the GTK2 library stays at 34; libindicator3.a keeps no global wrapper symbol. Between +unity2 and +unity3 only the dropped export differs (imports, NEEDED, Depends, shlibs and file lists identical).
+- Removing the symbol is formally an ABI break: a scan of all 270 .debs in our pool found it only in libindicator +unity2 itself; none of the 22 reverse dependencies imports it.
+- On target2, unity-panel-service maps the new library and the Ayatana messaging menu works with a registered client (envelope "new", Inbox with the count bubble).
+- The gated rebuild on the pinned chroot is byte-identical inside every .deb to the tested build.
+
+Follow-up: a symbols file with the archive's 40 names, so an accidental export fails the build (UNITY-20260928-006). Verifier: PASS.
+
+
+## 2026-10-02 - UNITY-20260927-026: indicator-datetime keeps +unity2's no-time guard and proves it reachable (agent B)
+
+**Context.** Legacy B-L14: indicator-datetime +unity2 (DECISIONS 2026-09-26) added a guard in `get_appointment()` that skips a component with neither DTSTART nor DUE, and the review asked for it to be proven reachable or dropped. Record: `research/UNITY-20260927-026-idt-guard/`.
+
+**Decision.** Keep the guard and add the reachable case to the test suite (+unity3, 9a00446), with no `src/` change. The first approach, dropping the guard as unreachable (5d6492d, superseded), rested on reading EDS and on probes that never exercised the engine's own merge of stored overrides; the Verifier's round 1 FAIL (ROOT_CAUSE_UNPROVEN) showed that path, and the experiments confirmed it.
+
+**Measured.**
+- `merge_detached_instances()` replaces a generated instance of a recurring task with its stored override (matching RECURRENCE-ID) without checking for a start. An override whose RECURRENCE-ID matches in UTC reaches `get_appointment()` with no time: without the guard the service aborts; with it the task is skipped. A floating or TZID RECURRENCE-ID did not match and was never merged.
+- `test-eds-ics-tasks-without-start` now carries such an override: the control without the guard aborts, +unity3 passes 29 of 29 (also on the gated rebuild, pinned chroot 20260929T201245Z).
+- The git tree lacked the release tarball's empty EDS directories, so 11 of 29 tests failed from git; 5a21b08 creates them in the test script. The general orig-versus-git check is UNITY-20260928-010.
+- The gated rebuild is byte-identical inside the .deb to the tested build; on target2 the service runs from it and serves the panel.
+
+Open: one `test-eds-ics-all-day-events` failure in the superseded control build is not explained (UNITY-20261002-005). Verifier: PASS.

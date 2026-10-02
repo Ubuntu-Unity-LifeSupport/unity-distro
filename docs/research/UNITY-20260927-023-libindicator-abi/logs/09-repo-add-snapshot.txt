@@ -1,0 +1,13 @@
+# 2026-10-02T17:59:30Z UNITY-20260927-023: backup ~/backups/repo-023-20261002T175914Z (db, 17 files, sha256 checked); repo add of the gated build (10 records: source, 6 .deb, 3 .ddeb) to unity-resolute (387 -> 397); snapshot unity-resolute-20260927-023 from the repo
+# live ./resolute before: unity-resolute-20260927-028 (hud +unity3, switched 2026-10-02 17:30Z)
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | indicator-common                         | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator-dev                         | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator3-7                          | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator3-7-dbgsym                   | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator3-dev                        | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator3-tools                      | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator3-tools-dbgsym               | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator7                            | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ amd64  | libindicator7-dbgsym                     | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3
++ source | libindicator                             | -                                        | 16.10.0+18.04.20180321.1-0ubuntu8+unity3

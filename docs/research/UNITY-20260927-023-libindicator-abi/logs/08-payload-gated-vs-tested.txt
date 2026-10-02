@@ -1,0 +1,9 @@
+# payload compare, version 16.10.0+18.04.20180321.1-0ubuntu8+unity3
+# old: /home/claude/work/b/unity-distro/packages
+# new: /home/claude/work/b/unity-distro-li023/docs/research/UNITY-20260927-023-libindicator-abi/build-gated
+indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb control=same files=same symbols=same files_with_other_sha256=0/3
+libindicator-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/10
+libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3
+libindicator3-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/11
+libindicator3-tools_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/4
+libindicator7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3

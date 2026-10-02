@@ -1,0 +1,25 @@
+# hud +unity2 (0e99dca build, dpkg -i) on target2 after a reboot, lo7.sh 20 (GAP=3 WATCH_DELAY=0), 2026-09-28.
+# Compare logs/01: archive hud, the same script, 4 of 20 windows missing from the stack.
+hud	14.10+17.10.20170619-0ubuntu6+unity2
+run 1: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 2: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 4: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 5: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 7: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 8: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 9: xid=58720292 in_window_stack=1 app_id=libreoffice-writer hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 10: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 11: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 12: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 13: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 14: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 15: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 16: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 17: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 18: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 19: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 20: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+# 20/20 in the stack, the HUD answered 20/20. "Could not get desktop file" in 5 runs (1, 3, 6, 7, 17): each window kept.
+# app id: the window number in 19 of 20, libreoffice-writer in 1 (see the card: the follow-up).
