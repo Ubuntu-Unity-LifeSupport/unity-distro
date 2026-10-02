@@ -5,6 +5,27 @@ Build directory: `~/work/b`
 
 ## Now
 
+**2026-10-02 ~17:30Z: publishing the four ready packages, one slot at a
+time (C holds the slot; May confirms each switch in B's session).**
+- **UNITY-20260927-029 PUBLISHED** (hud +unity2, switch 16:50Z, snapshot
+  unity-resolute-20260927-029 = live -022 + 20). Target verification on
+  target2 from Clean-2 PASS (logs/12). DONE after C merges
+  `b/UNITY-20260927-029`.
+- Ready for their slots, in this order, each with a gated rebuild on chroot
+  20260929T201245Z, payload byte-identical to the tested build, this_build
+  target test on target2, known-gaps section and Verifier PASS:
+  UNITY-20260927-028 (hud +unity3), UNITY-20260927-023 (libindicator
+  +unity3), UNITY-20260927-026 (indicator-datetime +unity3). PATCHES and
+  DECISIONS entries for -023 and -026 are in main (a6b9f78).
+- Worktrees: `~/work/b/unity-distro-029`, `~/work/b/unity-distro` (-028),
+  `~/work/b/unity-distro-li023`, `~/work/b/unity-distro-026`; sources on
+  GitHub under `b/<task>` (hud rebased onto `unity/resolute`).
+- target2: dirty, on the published hud +unity2; roll back to Clean-2 before
+  the next check. Its clock synchronised by itself after the rollback
+  (UNITY-20260929-022 line is with C).
+- UNITY-20260929-003: the draft design (root causes RC1-RC7) is committed
+  on its branch (b016511); BLOCKED on -019, as -018.
+
 **2026-09-29 ~23:30Z: no tasks (May: finish current work, take no new
 tasks).**
 - UNITY-20260929-023 is DONE: taskctl `published_by`, merged by C at 855ecdd.
