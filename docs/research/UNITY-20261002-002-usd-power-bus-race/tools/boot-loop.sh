@@ -15,10 +15,13 @@ for i in $(seq 1 "$N"); do
   done
   [ -n "$ok" ] || { echo "boot $i: target did not come back"; exit 1; }
   sleep 25
+  # the toggle unit (tools/u002-window-toggle.*) may still be running: wait for it
+  ssh target 'for t in $(seq 1 90); do systemctl --user is-active --quiet u002-window-toggle.service || break; sleep 1; done' 2>/dev/null
   ssh target '. ~/envt.sh; b=$(cat /proc/sys/kernel/random/boot_id)
+    sudo systemctl restart u002-trace.service; sleep 2
     o=$(gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.GetNameOwner org.gnome.SettingsDaemon.Power 2>&1 | cut -c1-60)
     echo "boot_id $b u-s-d $(dpkg-query -W -f "\${Version}" unity-settings-daemon) pid $(pgrep -x unity-settings-) drop-ins: $(ls ~/.config/systemd/user/unity-settings-daemon.service.d/ 2>/dev/null | tr "\n" " ") power-owner: $o"
     [ -f ~/u002/toggle-$b.txt ] && { echo "toggle: $(cat ~/u002/toggle-$b.txt)"; }
-    sudo cat /var/tmp/u002/trace-$b.txt' > "$O/boot-$i.txt" 2>&1
+    sudo sh -c "cat /var/tmp/u002/trace-$b*.txt"' > "$O/boot-$i.txt" 2>&1
   echo "boot $i: $(head -1 "$O/boot-$i.txt" | sed 's/.*power-owner: //'); stops: $(grep -c ' STOP$' "$O/boot-$i.txt")$(grep -q '^toggle:' "$O/boot-$i.txt" && echo '; toggled')"
 done

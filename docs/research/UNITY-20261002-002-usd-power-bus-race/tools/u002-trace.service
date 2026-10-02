@@ -10,7 +10,10 @@ Before=display-manager.service
 [Service]
 Type=simple
 ExecStartPre=/usr/bin/mkdir -p /var/tmp/u002
-ExecStart=/bin/sh -c 'exec /usr/bin/bpftrace -o /var/tmp/u002/trace-$(cat /proc/sys/kernel/random/boot_id).txt /usr/local/lib/u002/u002-trace.bt'
+# bpftrace buffers its file output and flushes on exit: one file per start,
+# and a `systemctl restart u002-trace.service` flushes the current one
+# before it is read (boot-loop.sh does that).
+ExecStart=/bin/sh -c 'exec /usr/bin/bpftrace -o /var/tmp/u002/trace-$(cat /proc/sys/kernel/random/boot_id)-$(date +%%s).txt /usr/local/lib/u002/u002-trace.bt'
 
 [Install]
 WantedBy=multi-user.target

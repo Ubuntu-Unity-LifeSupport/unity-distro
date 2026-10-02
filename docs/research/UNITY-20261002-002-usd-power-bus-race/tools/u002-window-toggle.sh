@@ -11,8 +11,12 @@ O=$HOME/u002/toggle-$(cat /proc/sys/kernel/random/boot_id).txt
 mkdir -p "$HOME/u002"
 t0=$(date +%s.%N)
 i=0
-while [ $i -lt 200 ]; do
-  if systemd-inhibit --list --no-pager 2>/dev/null | grep -q "unity-settings"; then break; fi
+# u-s-d holds three logind inhibitors while the power plugin runs (its
+# lid-switch block and sleep delay, plus media-keys' key-handling block) and
+# only media-keys' one while it is stopped.
+pw() { [ "$(systemd-inhibit --list --no-pager 2>/dev/null | grep -c unity-settings)" -ge 2 ]; }
+while [ $i -lt 400 ]; do
+  if pw; then break; fi
   sleep 0.05; i=$((i+1))
 done
 t1=$(date +%s.%N)
@@ -23,7 +27,7 @@ gsettings set $S active false; t2=$(date +%s.%N)
 # (seen in runs/toggle-unity9 boots 1-3).
 j=0
 while [ $j -lt 600 ]; do
-  if ! systemd-inhibit --list --no-pager 2>/dev/null | grep -q "unity-settings"; then break; fi
+  if ! pw; then break; fi
   sleep 0.05; j=$((j+1))
 done
 t3=$(date +%s.%N)
