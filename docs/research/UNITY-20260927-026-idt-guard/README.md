@@ -254,3 +254,31 @@ Remarks: the evidence's `build_manifest` and `target_verified` still
 describe the state before this round; the publish record carries the gated
 manifest and the target record. The target script's path for the service
 binary is corrected in the -023 card.
+
+## Publication (2026-10-02)
+
+- db backup `~/backups/repo-026-20261002T182345Z`; repo add of the gated
+  build, 3 records (397 to 400); snapshot `unity-resolute-20260927-026` =
+  the live `unity-resolute-20260927-023` (libindicator +unity3) + those 3
+  (logs/10); full apt view SAFE (gate/); peer notice ACK; release gate
+  (gate/release-gate.json, tested_build this_build; the target record is
+  the shared -023 logs/07). C checked the gate; May confirmed the switch in
+  B's session.
+- `publish_aptly.py` switched `./resolute` to `unity-resolute-20260927-026`
+  at 18:32:04 UTC; write-once record
+  `~/coordinator/publish-records/UNITY-20260927-026.json`.
+
+## Target verification of the publication (2026-10-02)
+
+Result: **PASS** (logs/11). target2 was rolled back to Clean-2 (checked
+inside: no `~/.dirty`, no `~/b029`, indicator-datetime 0ubuntu6; NTP
+synchronised) and upgraded from our repository by the normal path, no file
+repository (unattended-upgrades was let finish first).
+
+- apt's candidate for indicator-datetime is +unity3 from 8080; the .deb apt
+  fetched is the gated one (b090852c…); `dpkg -V` is clean.
+- After a reboot into the auto-login session: indicator-datetime-service is
+  the gated .deb's file (e85fafc7…), no deleted library; it is on the bus,
+  its desktop-header carries the clock label and the title, and the panel
+  lists com.canonical.indicator.datetime.
+- target2 is rolled back to Clean-2 afterwards (B's queue is done).
