@@ -1,0 +1,4 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity7 pid 2221 tunables: GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+STOP-CALLED
+u-s-d pid 2221 alive: yes; journal since 16:44:21: 0
+crash files: 
