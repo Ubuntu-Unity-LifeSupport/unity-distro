@@ -3,44 +3,43 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-10-02 19:05Z) - UNITY-20261002-002 at the publication gate
+## Now (2026-10-02 19:35Z) - no tasks (May, via C)
 
-**UNITY-20261002-002** (u-s-d power: D-Bus registration lost when stop()
-runs before the bus result; fix forward as +unity10, May's decision via C)
-- IMPLEMENTING -> gate: branch `a/UNITY-20261002-002` (worktree
-  `~/work/a/unity-distro-002`); package
-  `Ubuntu-Unity-LifeSupport/unity-settings-daemon` branch
-  `a/UNITY-20261002-002` at `122c413` (fix `ca997f7` on +unity9 `57945f5`).
-- Gated build on chroot 20260929T201245Z (`build/`), the same debs tested on
-  target (`tested_build: this_build`).
-- Design Challenger APPROVE; Verifier PASS (INDEPENDENTLY_REPRODUCED), 7
-  non-blocking remarks handled in the card; one left to C: the changelog
-  says "4-6 s" for the window, measured 4-11 s / up to 28.6 s.
-- Tests: gdb stop-before-bus FAIL on +unity9/+unity7, PASS on +unity10; key
-  toggle inside the window PASS on both (dispatch order - a demonstration
-  limit, accepted by C); valgrind race 0 errors; -022/-012/-052 regressions;
-  natural boots 19 (+unity9) + 10 (+unity10), no stop, Power owned.
-- Waiting for "slot A" (B publishes hud, libindicator, indicator-datetime
-  first); then db backup, repo add, snapshot, gate, May's confirmation.
-- Follow-ups on the board: -006 housekeeping (same gap), -007 xrandr,
-  -008 media-keys, -009 the trigger at session start (card with leads).
+All u-s-d tasks of 2026-10-02 are DONE:
+- UNITY-20260927-012 + UNITY-20260927-052: u-s-d +unity7 published 15:15Z
+  (snapshot `unity-resolute-20260927-012`), verified on target;
+- UNITY-20260928-022: u-s-d +unity9 published ~15:40Z
+  (`unity-resolute-20260928-022`), verified with the pre-existing Power
+  registration race as a limitation;
+- UNITY-20261002-002: u-s-d +unity10 published 19:13Z
+  (`unity-resolute-20261002-002`), the fix for that race (the D-Bus
+  registration lives with the manager object); DC APPROVE, Verifier PASS
+  (INDEPENDENTLY_REPRODUCED), target verified through the repository with
+  two natural boots; branch merged by the coordinator (main 0420698).
 
-Done today (2026-10-02):
-- UNITY-20260927-012 + UNITY-20260927-052: u-s-d +unity7 published
-  15:15Z, verified, DONE;
-- UNITY-20260928-022: u-s-d +unity9 published ~15:40Z, verified with the
-  pre-existing Power registration race as a limitation, DONE;
-- lesson recorded in DECISIONS: a known gap in the changed code path needs a
-  board task or a measurement before the gate; publication checks without
-  test drop-ins.
+Records: cards under `docs/research/UNITY-20260927-012-...`,
+`UNITY-20260928-022-...`, `UNITY-20261002-002-...`; PATCHES sections for
++unity7, +unity9, +unity10 (with corrections); DECISIONS of 2026-10-02
+(+unity7 as one version; the known-gap lesson; the -002 lifetime decision);
+UNITY-20261002-009 card with the leads for the trigger.
+
+Follow-ups on the board, unassigned: UNITY-20261002-006 (housekeeping, the
+identical gap), -007 (xrandr), -008 (media-keys), -009 (what stops the
+power plugin at a session start).
+
+Worktrees: `~/work/a/unity-distro-012`, `-052`, `-002` and
+`~/work/a/unity-distro` (-022), all merged; package clones under their
+`packages/unity-settings-daemon` (GitHub origin).
 
 ## State of `target`
 
-2026-10-02 ~19:00Z: u-s-d +unity10 (tested build, with dbgsym) installed by
-dpkg over the published +unity9; rebooted after the test units
-(`u002-trace.service`, `u002-window-toggle.service`) were removed; no
-drop-ins; valgrind and the test scripts of -012/-052/-022/-002 in `~`;
-`~/.dirty` present. Earlier states below are history:
+2026-10-02 19:30Z: u-s-d +unity10 from the repository (apt), with the two
+dbgsym packages of the gated build (dpkg); unity +unity12, lightdm +unity2
+as before; valgrind installed (for the -052 regression); test scripts of
+-012/-052/-022/-002 in `~` (and `~/u7g`, `~/u9g`, `~/u10` with the debs);
+no drop-ins, no test units, no tracer; `~/.dirty` present. B's hud,
+libindicator and indicator-datetime publications of today are NOT installed
+there (no apt upgrade run). Earlier states below are history:
 
 Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
 `Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
