@@ -1,0 +1,32 @@
+{
+  "task_id": "UNITY-20260927-012",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+  "source_commit": "b570a220e5b3fbb28c7ec3fbbb53277491545f12",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20260927-012",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-012-usd-color-restart-crash/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-012-usd-color-restart-crash/runs-gated/README.txt",
+    "debs": {
+      "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity7_amd64.deb": "44a92fc4321f5e5b776b749ab4b2da5fdd0f40cca8720581b9596871ddf0d926",
+      "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity7_amd64.deb": "ebcf1dee1dda302944572f9f15e3f44c4df6da084bfc3a2600e38e42b0bb1adf",
+      "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity7_all.deb": "49aeae3561e8cdd087a21a1e93e33a3a1e292255fa3038a243c4fdbebcd1a484"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-012-usd-color-restart-crash/README.md",
+    "verification_record": "docs/research/UNITY-20260927-012-usd-color-restart-crash/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}
