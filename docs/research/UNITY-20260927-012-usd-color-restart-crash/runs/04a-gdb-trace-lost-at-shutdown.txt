@@ -1,0 +1,5 @@
+restart 1: boot 2026-09-29 00:48:09: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+    trace: tracing u-s-d pid 2152 15.04.1+21.10.20220802-0ubuntu7+unity5
+restart 2: boot 2026-09-29 00:50:37: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+restart 3: boot 2026-09-29 00:53:29: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+    trace: tracing u-s-d pid 2222 15.04.1+21.10.20220802-0ubuntu7+unity5
