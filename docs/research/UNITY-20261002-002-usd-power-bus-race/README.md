@@ -112,6 +112,51 @@ read is **not shown**. Further natural boots: `runs/boots-unity9-b/`.
 - Gaps: issue comment threads not readable (dconf#41, glib#2174, g-s-d #867);
   -proposed and PPAs not checked.
 
+## Fix: F1, the registration lives with the manager object
+
+`stop()` no longer cancels `bus_cancellable` and no longer frees
+`introspection_data`; `finalize` cancels the one and frees the other, next
+to the unregister and unown it already does since 27e75f4. Nothing else
+changes: after a normal stop the object and name already stayed registered
+(stop never unregistered them), and the handlers answer "The power plugin
+is not running" while stopped (UNITY-20260928-022). The screensaver-proxy
+plugin already registers in `_new` and cancels only in finalize.
+
+Rejected: F2, register in `start()` / unregister in `stop()` - the name
+would come and go with every toggle and clients would see ServiceUnknown
+instead of the -022 error; F3, re-issue `g_bus_get` in `start()` when the
+connection is missing - a pending-state machine for a problem that
+disappears once stop() stops cancelling.
+
+Commit `ca997f7` on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch
+`a/UNITY-20261002-002` (on +unity9 `57945f5`), changelog +unity10 `122c413`.
+
+## Design Challenger: APPROVE (round 1, 2026-10-02)
+
+- D1 lifetime: finalize cancels `bus_cancellable` before anything else can
+  run; a GTask whose cancellable is cancelled returns CANCELLED even when it
+  had completed (GLib 2.88); and the only finalize path is process exit
+  after `gtk_main` returned (`main.c`, `_unload_all`), with no main-loop
+  iteration after it. `on_bus_gotten` checks the result before touching
+  `manager`. Safe on both counts.
+- D2 client-visible change: only the stop-before-registration case.
+- D3 `introspection_data`: created in `register_manager_dbus`, read in
+  `on_bus_gotten`, nothing in start/stop depends on it.
+- D4 layer: F1; precedent screensaver-proxy; F2 contradicts -022 D1, F3
+  adds state for nothing. Idempotent under the dconf change storm (one
+  `g_bus_get` per process).
+- D5 same gap elsewhere: **housekeeping** (identical pattern) - follow-up;
+  xrandr (name unowned in stop, object never unregistered) and media-keys
+  (cancel in stop, no unregister) - different defects, low, follow-ups.
+- D6 tests: required before the gate - a stop/start toggle inside the real
+  4-6 s session-start window without gdb (`tools/u002-window-toggle.*`:
+  FAIL on +unity9, PASS on +unity10, >= 5 boots each, the tracer showing
+  STOP before ON-BUS-GOTTEN); add a method call to `stop-before-bus.sh`
+  (done, D6b); `keyboard-toggle-race.sh` once under valgrind; the trigger
+  question stays a separate task.
+- D7 packaging: format 1.0, change in the tree, +unity10 sorts above
+  +unity9, UTC trailer.
+
 ## Evidence card
 
 ```yaml
