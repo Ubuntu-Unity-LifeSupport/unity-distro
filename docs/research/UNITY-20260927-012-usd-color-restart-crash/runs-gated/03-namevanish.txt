@@ -1,0 +1,5 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity7 pid 2213; cinnamon-session pid 2211; GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+STOP-CALLED
+AFTER-CONTINUE
+u-s-d pid 2213 alive after: no; crash reports: 0
+crash files: 

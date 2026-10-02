@@ -1,0 +1,19 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2235 tunables: GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+[Thread 0x799ea13f66c0 (LWP 2802) exited]
+[Thread 0x799ea1bf76c0 (LWP 2801) exited]
+[Thread 0x799ea25776c0 (LWP 2559) exited]
+STOP-CALLED
+Thread 1 "unity-settings-" received signal SIGSEGV, Segmentation fault.
+AFTER-CONTINUE
+#0  0x0000799ea262c148 in idle_is_session_inhibited (manager=0x5c395d212940, mask=GSM_INHIBITOR_FLAG_IDLE, is_inhibited=<synthetic pointer>) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity5/plugins/power/gsd-power-manager.c:2459
+#1  idle_configure (manager=0x5c395d212940) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity5/plugins/power/gsd-power-manager.c:2495
+#2  0x0000799eac7b868c in g_closure_invoke () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#3  0x0000799eac7d6bc9 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#4  0x0000799eac7d8b66 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#5  0x0000799eac7d8dc8 in g_signal_emit_valist () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#6  0x0000799eac7d8e83 in g_signal_emit () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#7  0x0000799eabf4efe1 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#8  0x0000799eabf36920 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#9  0x0000799eabd2bc1b in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+u-s-d pid 2235 alive: yes; journal since 00:22:11: 0
+crash files: _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash

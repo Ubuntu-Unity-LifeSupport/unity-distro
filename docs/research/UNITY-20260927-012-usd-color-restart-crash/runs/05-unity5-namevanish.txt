@@ -1,0 +1,14 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2228; cinnamon-session pid 2226; GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+STOP-CALLED
+POWER-CB manager=0x5bbf94843700
+Thread 8 "[pango] fontcon" received signal SIGCONT, Continued.
+AFTER-CONTINUE
+#0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+#1  0x000076c9a2cf50ab in g_cond_wait () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#2  0x000076c9a2c8ff6c in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#3  0x000076c9a2c8ffdc in g_async_queue_pop () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x000076c9a235ddcb in ??? () at /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0
+#5  0x000076c9a2cfe479 in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#6  0x000076c9a2aa3dfa in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:454
+#7  0x000076c9a2b375cc in __GI___clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+u-s-d pid 2228 alive after: no; crash reports: 0
