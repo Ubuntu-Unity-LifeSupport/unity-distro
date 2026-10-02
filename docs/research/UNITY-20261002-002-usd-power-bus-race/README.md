@@ -174,9 +174,22 @@ ON-BUS-GOTTEN.
   boots); when it resumes, `plugin_enabled_cb` reads the final value, true,
   and stops nothing. Not a reproduction: a finding about the test, kept as
   evidence that a quick off/on at session start is coalesced.
-- **v2 (false, wait until the inhibitors are gone = stop() processed, then
-  true)**: `runs/toggle-unity9-wait/` (+unity9) and `runs/toggle-unity10/`
-  (+unity10), results below.
+- **v2 (false, wait until the power plugin's inhibitors are gone = stop()
+  processed, then true)**. First run `runs/toggle-unity9-wait/` had harness
+  defects (wrong inhibitor condition, trace read before bpftrace flushed);
+  kept as evidence. Fixed harness, **+unity9, 3 boots
+  (`runs/toggle-unity9-v2/`): STOP lands 314-504 ms *after* ON-BUS-GOTTEN
+  in every boot, Power owned 3/3.** The `false` written inside the window
+  (+10.8 s after the unit started, window about 6 s from NEW) is processed
+  only when the main loop resumes, and the `g_bus_get` completion queued at
+  NEW is dispatched first. So the GSettings key cannot put the stop before
+  the registration on +unity9: D6a's "FAIL on +unity9 without gdb" is not
+  reachable through the key. The deterministic demonstration stays
+  `stop-before-bus.sh` (the stop injected synchronously inside the start
+  phase). Consequence for UNITY-20261002-009: the natural stop of the one
+  bad boot must have run inside the start phase, before the loop resumed -
+  not a key change dispatched by the main loop.
+- The same v2 toggle on +unity10 (`runs/toggle-unity10/`): results below.
 
 ## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
 
