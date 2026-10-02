@@ -235,3 +235,48 @@ Its notes, applied:
 ## Status
 
 REVIEW, then BLOCKED at the publication gate (freeze no. 1).
+
+## Gated rebuild and target test of this build (2026-10-02)
+
+- **Source.** The hud history was rebased onto the GitHub repository
+  (`Ubuntu-Unity-LifeSupport/hud`, `unity/resolute` = the published +unity1,
+  9e9e097). The +unity2 commits are `dc076ad` (the fix) and `ef39a8d` (the
+  release), branch `b/UNITY-20260927-029`, pushed. The source tree hash
+  (82b6b13d…) is the one of the tested build 0e99dca.
+- **Gated build** on the pinned chroot 20260929T201245Z (UNITY-20260929-016):
+  `build-gated/UNITY-20260927-029-hud-build-manifest.json`, PASS, 6 of 6
+  test suites. Source format 1.0 with the archive's
+  `hud_14.10+17.10.20170619.orig.tar.gz` (sha256 3cb825f0…, as the
+  resolute Sources index).
+- **Payload against the tested build** (logs/08, `payload-compare.sh`): for
+  all 14 .debs the control fields, file lists and exported symbols are the
+  same, and every file inside is byte-identical (0 of 83 differ). Only the
+  .deb containers differ.
+- **Target test, mode this_build** (logs/07). target2 was rolled back to
+  Clean-2 (checked inside: no `~/.dirty`), full-upgraded from our
+  repository, and the gated .debs were installed from a file repository;
+  the installed hud .deb is the manifest's (sha256 b3321894…). After a
+  reboot into the auto-login Unity session, with no drop-in and no test
+  environment: hud-service and window-stack-bridge are the files of the
+  gated .deb (776f30cb…, e7cbdf88…), no "(deleted)" mapping; `lo7.sh 20`
+  put 20 of 20 Writer windows in the window stack (the invariant); the HUD
+  answered 19 of 20. Run 1, the first start after the reboot, had the
+  window in the stack and no "Could not get desktop file", so the changed
+  branch was not taken: mechanism 2, as logs/06 boot 4.
+- **Clock** (UNITY-20260929-022). Before the rollback the running target2
+  was 2 days 51 min behind builder UTC (NTPSynchronized=no, restored from a
+  saved state). After the rollback and cold boot it synchronised by itself
+  (NTPSynchronized=yes, within 5 s of builder), so no `set-ntp` or `date
+  -s` was needed; recorded in logs/07 and both phases of the script.
+
+## Known gaps before the gate
+
+Every limit or follow-up candidate of this card, as DECISIONS 62d246c
+requires:
+
+| gap | state |
+|---|---|
+| mechanism 2: the HUD empty although the window is known | task UNITY-20260929-002; measured again before the gate: 1 of 20 on +unity2 (logs/07 run 1), 0 of 20 on +unity3 (-028 logs/04) |
+| LibreOffice's application id is the window number, not libreoffice-writer | task UNITY-20260929-001 |
+| "Could not get desktop file" still logged on some starts | the race this fix tolerates; following bamf's re-match is UNITY-20260929-001. 0 of 20 today, 5 of 20 in logs/05 |
+| mechanism 1 seen only on LibreOffice | not a gap of the fix: the fallback is the one already used for a window without a desktop file; no other application measured, none reported |
