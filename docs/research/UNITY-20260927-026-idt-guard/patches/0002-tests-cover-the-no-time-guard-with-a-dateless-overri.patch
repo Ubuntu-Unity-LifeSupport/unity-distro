@@ -1,0 +1,102 @@
+From 9a004468998ce694079698ae7225b52e23efe28c Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 13:42:47 +0000
+Subject: [PATCH 2/2] tests: cover the no-time guard with a dateless override;
+ release +unity3
+
++unity2's guard in get_appointment()/add_event_to_subtask() is reachable:
+merge_detached_instances() replaces a generated instance of a recurring
+task with its stored override (matching RECURRENCE-ID) without checking for
+a start, so an override with neither DTSTART nor DUE reaches the engine with
+no time. Without the guard the service aborts in DateTime::get(); with it
+the override is left out and the other instances stay.
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog                              | 14 ++++++++++++++
+ tests/test-eds-ics-tasks-without-start.cpp    | 14 +++++++++++++-
+ tests/test-eds-ics-tasks-without-start.ics.in | 15 +++++++++++++++
+ 3 files changed, 42 insertions(+), 1 deletion(-)
+
+diff --git a/debian/changelog b/debian/changelog
+index d2ce45d..bc820ed 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,17 @@
++indicator-datetime (15.10+21.04.20210304-0ubuntu6+unity3) resolute; urgency=medium
++
++  * tests/test-eds-ics-tasks-without-start: cover the case +unity2's guard
++    for components without a time exists for: an override (RECURRENCE-ID)
++    of a recurring task with neither DTSTART nor DUE, which
++    merge_detached_instances() hands to the engine unfiltered by EDS.
++    Without the guard the service aborts in DateTime::get()
++    (UNITY-20260927-026).
++  * tests/run-eds-ics-test.sh: create the EDS tasks directory before
++    copying the test calendar; git does not keep the empty directory that
++    the release tarball ships, so builds from git failed every EDS test.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Mon, 28 Sep 2026 13:10:18 +0000
++
+ indicator-datetime (15.10+21.04.20210304-0ubuntu6+unity2) resolute; urgency=medium
+ 
+   * src/engine-eds.cpp: a task with only a due date (as Nextcloud Tasks
+diff --git a/tests/test-eds-ics-tasks-without-start.cpp b/tests/test-eds-ics-tasks-without-start.cpp
+index 4fe5cdf..b1f68a7 100644
+--- a/tests/test-eds-ics-tasks-without-start.cpp
++++ b/tests/test-eds-ics-tasks-without-start.cpp
+@@ -35,7 +35,12 @@ using TasksFixture = GlibFixture;
+ 
+ // A task with only a due date (as Nextcloud Tasks creates them) used to
+ // abort the service in DateTime::get() (LP: #1848969, #2099742). It is
+-// placed at its due date; a task without any date is left out.
++// placed at its due date. A task without any date is left out by EDS.
++// An override (RECURRENCE-ID matching a generated instance) of a recurring
++// task that has no DTSTART and no DUE is handed to the engine by
++// merge_detached_instances() with no time;
++// the engine leaves it out instead of aborting (UNITY-20260927-026), and the
++// recurrence's other instances stay.
+ TEST_F(TasksFixture, TasksWithoutStart)
+ {
+     // start the EDS engine
+@@ -80,6 +85,13 @@ TEST_F(TasksFixture, TasksWithoutStart)
+     a.begin = a.end = DateTime { gtz, 2015, 6, 19, 12, 0, 0 };
+     expected.push_back(a);
+ 
++    for (int day : {22, 24}) {
++        a.uid = "recurring-utc@example.org";
++        a.summary = "Recurring task (UTC)";
++        a.begin = a.end = DateTime { gtz, 2015, 6, day, 9, 0, 0 };
++        expected.push_back(a);
++    }
++
+     EXPECT_EQ(expected, planner->appointments().get());
+ 
+     // cleanup
+diff --git a/tests/test-eds-ics-tasks-without-start.ics.in b/tests/test-eds-ics-tasks-without-start.ics.in
+index 1110441..3af8c46 100644
+--- a/tests/test-eds-ics-tasks-without-start.ics.in
++++ b/tests/test-eds-ics-tasks-without-start.ics.in
+@@ -22,4 +22,19 @@ DTSTAMP:20150601T000000Z
+ SUMMARY:Task without dates
+ STATUS:NEEDS-ACTION
+ END:VTODO
++BEGIN:VTODO
++UID:recurring-utc@example.org
++DTSTAMP:20150601T000000Z
++DTSTART:20150622T140000Z
++RRULE:FREQ=DAILY;COUNT=3
++SUMMARY:Recurring task (UTC)
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:recurring-utc@example.org
++DTSTAMP:20150601T000000Z
++RECURRENCE-ID:20150623T140000Z
++SUMMARY:Override without any date (UTC)
++STATUS:NEEDS-ACTION
++END:VTODO
+ END:VCALENDAR
+-- 
+2.53.0
+

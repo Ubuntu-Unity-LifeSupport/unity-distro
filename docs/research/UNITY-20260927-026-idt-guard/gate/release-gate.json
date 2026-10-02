@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-026",
+  "package": "indicator-datetime",
+  "target_series": "resolute",
+  "candidate_version": "15.10+21.04.20210304-0ubuntu6+unity3",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-026/packages/indicator-datetime",
+  "source_remote_ref": "origin/b/UNITY-20260927-026",
+  "source_commit": "9a004468998ce694079698ae7225b52e23efe28c",
+  "source_tree_hash": "b59dda47622fbcb370ac345c3e7b9531f9fd0c51",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-026"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-026-idt-guard/build-gated/UNITY-20260927-026-indicator-datetime-build-manifest.json",
+    "sha256": "23dc4195dad4fc0abceb8446f85219153be4b6bf7a00eef460a5b50caca66dc2"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-026-idt-guard/gate/evidence-manifest.json",
+    "sha256": "b622b400412cb2db6923708be2e436775da38d79e769f3d7a7e8d1b954c3b2bc"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20260927-023-libindicator-abi/logs/07-target-this-build.txt",
+        "sha256": "3b8cc5a27bb6ac4ec0d00586ab0e3f1b8ae57970def183841ebbeb258e2ef671"
+      },
+      "debs": {
+        "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb": "b090852c644ea6a751c91592991390370a382bdee1eca974de3898d42d0cbd90"
+      }
+    }
+  }
+}

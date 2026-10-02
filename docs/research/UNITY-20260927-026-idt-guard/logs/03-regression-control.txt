@@ -1,0 +1,9 @@
+# regression control e6576ce (not for release): +unity3 (5d6492d) without the due-date fallback, built from git with build_sbuild.py, 2026-09-28T10:28:45Z
+93% tests passed, 2 tests failed out of 29
+	 19 - test-eds-ics-all-day-events (Failed)
+	 29 - test-eds-ics-tasks-without-start (Failed)
+## test-eds-ics-tasks-without-start aborts as in LP #1848969 / #2099742:
+29: test-eds-ics-tasks-without-start: Bail out! Indicator-Datetime:ERROR:./src/date-time.cpp:172:GDateTime* unity::indicator::datetime::DateTime::get() const: assertion failed: (m_dt)
+## test-eds-ics-all-day-events: 0 appointments after the test's wait (EDS did not deliver its calendar in time; no copy error; VEVENT-only test, the control's change is VTODO-only):
+RangePlanner 0x5a911b1a0480 got 0 appointments
+## +unity3 itself (5d6492d): 29/29 (logs/04-build-unity3.txt; build/*-sbuild.log)

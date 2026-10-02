@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-026",
+  "package": "indicator-datetime",
+  "candidate_version": "15.10+21.04.20210304-0ubuntu6+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-026/packages/indicator-datetime",
+  "source_commit": "9a004468998ce694079698ae7225b52e23efe28c",
+  "source_tree_hash": "b59dda47622fbcb370ac345c3e7b9531f9fd0c51",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst"
+  ],
+  "build_started": "2026-10-02T15:54:14.601980+00:00",
+  "build_finished": "2026-10-02T16:07:56.280705+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-026-indicator-datetime-15.10+21.04.20210304-0ubuntu6+unity3-sbuild.log",
+    "sha256": "e177953b0c4e2ac66808c4d0dab9776854ef48e00afbc5a6dd82bf76c12208ef"
+  },
+  "artifacts": [
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.dsc",
+      "sha256": "4334a5bb9a0ea20e7902e09e2de00025e667a5b27e6ea8f470b8c7357d8e6c44",
+      "size": 1801,
+      "kind": "source",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.changes",
+      "sha256": "e40ed4114d0f4d753ce81eb9794dc71540ba123b8592910540e74d93a03699c5",
+      "size": 2328,
+      "kind": "changes"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304.orig.tar.gz",
+      "sha256": "29af10576be2f83a790aa0e5fd9ff8aba0792822e145cd1adcbb54c98c21c6a4",
+      "size": 143870,
+      "kind": "source_file",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3.diff.gz",
+      "sha256": "03e02b66f4297cbd21ccd6609625998a19add8a77330303ccb0d31b826737d31",
+      "size": 26178,
+      "kind": "source_file",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3"
+    },
+    {
+      "file": "indicator-datetime-dbgsym_15.10+21.04.20210304-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "d673c7764e6c2362e7cd66228b6b8a060d309ca52276c0051a12ce78ec94e38f",
+      "size": 6057328,
+      "kind": "binary",
+      "package": "indicator-datetime-dbgsym",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.buildinfo",
+      "sha256": "52b5e633fdc94cc1214c32e77886a63dbe94f0a788fcf1195d5ec6fec33bec3b",
+      "size": 24696,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb",
+      "sha256": "b090852c644ea6a751c91592991390370a382bdee1eca974de3898d42d0cbd90",
+      "size": 222508,
+      "kind": "binary",
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst",
+    "sha256": "d48b78645647c32d4c649374fb6920b135028de2a62715d142938b1f05defe80",
+    "size": 143090706,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json",
+    "sidecar_sha256": "228d4a7f87daaac9957dbb5e2d62e3a4fb0449a1670dd34e141de19545d46640",
+    "snapshot": "20260929T201245Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Tue, 29 Sep 2026 19:18:11 UTC",
+        "sha256": "d6d58182351b401877a611adfb38c7a6a5c249de6f6d5cf84c08de66e7bd0b0d"
+      },
+      "resolute-security": {
+        "date": "Tue, 29 Sep 2026 18:35:33 UTC",
+        "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-026/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}
