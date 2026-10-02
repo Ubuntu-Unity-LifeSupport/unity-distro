@@ -1,0 +1,52 @@
+=== boot 2026-09-29 16:55:08 | compiz	1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 libunity-core-6.0-9:amd64	7.7.1+26.04.20260306-0ubuntu3+unity12 unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+=== compiz 2779, deleted library mappings: 0
+=== (2) expo series
+SUMMARY expo-control stuck 0/3
+  expo-control-1 edge=0 ungrab-from-decorations=0 expo-removed=3
+  expo-control-2 edge=0 ungrab-from-decorations=0 expo-removed=3
+  expo-control-3 edge=0 ungrab-from-decorations=0 expo-removed=3
+=== (3)(4) title bar and first press after a grab ended
+  title-immediate 300x200+700+482 -> 300x200+772+518 | allowed-actions:  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 EDGE-DOWNbutton=1 REMOVE-GRAB
+  title-immediate 300x200+700+482 -> 300x200+773+518 | allowed-actions:  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 EDGE-DOWNbutton=1 REMOVE-GRAB
+  title-hold 400x290+500+232 -> 400x290+573+268 |  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 EDGE-DOWNbutton=1 REMOVE-GRAB
+  title-hold 400x290+500+232 -> 400x290+573+268 |  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 EDGE-DOWNbutton=1 REMOVE-GRAB
+  title-motion 400x290+500+232 -> 400x290+562+263 |  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 EDGE-DOWNbutton=1 REMOVE-GRAB
+  title-motion 400x290+500+232 -> 400x290+562+263 |  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 EDGE-DOWNbutton=1 REMOVE-GRAB
+  title-dblclick 400x290+500+232 max=0 -> 400x290+500+232 | max after 1st double-click: 1, after 2nd: 0 | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 GRABEDGE-DOWNbutton=1
+  title-dblclick 400x290+500+232 max=0 -> 400x290+500+232 | max after 1st double-click: 1, after 2nd: 0 | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB GRABEDGE-DOWNbutton=1 GRABEDGE-DOWNbutton=1
+  after-wall 400x290+1780+232 -> 400x290+1780+232 | grabs before the press: pointer=free keyboard=free | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB
+  after-wall 400x290+1780+232 -> 400x290+1780+232 | grabs before the press: pointer=free keyboard=free | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB
+  after-expo 400x290+1780+232 -> 400x290+1780+232 | grabs before the press: pointer=free keyboard=free | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABexpo REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB
+  after-expo 400x290+1780+232 -> 400x290+1780+232 | grabs before the press: pointer=free keyboard=free | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free | trace: PUSH-GRABwall REMOVE-GRAB PUSH-GRABexpo REMOVE-GRAB PUSH-GRABwall REMOVE-GRAB
+=== (5) keyboard move/resize
+SUMMARY kbdresize stuck 0/3
+  kbdresize-1 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB resize REMOVE-GRAB
+  kbdresize-2 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB resize REMOVE-GRAB
+  kbdresize-3 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB resize REMOVE-GRAB
+SUMMARY kbdmove stuck 0/3
+  kbdmove-1 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB move REMOVE-GRAB
+  kbdmove-2 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB move REMOVE-GRAB
+  kbdmove-3 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB move REMOVE-GRAB
+SUMMARY kbdresize-drag stuck 0/3
+  kbdresize-drag-1 edge=1 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB resize REMOVE-GRAB
+  kbdresize-drag-2 edge=1 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB resize REMOVE-GRAB
+  kbdresize-drag-3 edge=1 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB resize REMOVE-GRAB
+SUMMARY kbdmove-drag stuck 0/3
+  kbdmove-drag-1 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB move REMOVE-GRAB
+  kbdmove-drag-2 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB move REMOVE-GRAB
+  kbdmove-drag-3 edge=0 ungrab-from-decorations=0 PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB wall REMOVE-GRAB PUSH-GRAB move REMOVE-GRAB
+=== (6) UNITY-20260927-001 #3 regression set
+  rmbslow stuck=0/5 | first: rmbslow#1 ok | rmbslow border@901,377 -> xterm 520x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  rmb stuck=0/5 | first: rmb#1 ok | rmb border@901,377 -> xterm 526x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  rmb2 stuck=0/5 | first: rmb2#1 ok | rmb2 border@901,377 -> xterm 514x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  wheel stuck=0/5 | first: wheel#1 ok | wheel border@901,377 -> xterm 448x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  mid stuck=0/5 | first: mid#1 ok | mid border@901,377 -> xterm 424x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  plain stuck=0/5 | first: plain#1 ok | plain border@901,377 -> xterm 442x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  titlermb stuck=0/5 | first: titlermb#1 ok | titlermb border@740,216 -> xterm 400x290+574+263 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  titlermb2 stuck=0/5 | first: titlermb2#1 ok | titlermb2 border@740,216 -> xterm 400x290+1040+241 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  titlewheel stuck=0/5 | first: titlewheel#1 ok | titlewheel border@740,216 -> xterm 400x290+542+238 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  titlemovermb stuck=0/5 | first: titlemovermb#1 ok | titlemovermb border@740,216 -> xterm 400x290+596+276 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=
+  titlemovermb2 stuck=0/5 | first: titlemovermb2#1 ok | titlemovermb2 border@740,216 -> xterm 400x290+1040+241 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboa
+  titlemovewheel stuck=0/5 | first: titlemovewheel#1 ok | titlemovewheel border@740,216 -> xterm 400x290+556+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keybo
+  titleplain stuck=0/5 | first: titleplain#1 ok | titleplain border@740,216 -> xterm 400x290+536+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+=== done 14:51:59Z

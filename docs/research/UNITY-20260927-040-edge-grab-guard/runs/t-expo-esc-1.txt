@@ -1,0 +1,10 @@
+Attached 12 probes
+READY
+8498 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        nux::WindowCompositor::GrabKeyboardRemove(nux::InputArea*)+585
+        unity::launcher::Launcher::HideDragWindow()+106
+        unity::launcher::Launcher::OnDragWindowAnimCompleted()+21
+
+
+

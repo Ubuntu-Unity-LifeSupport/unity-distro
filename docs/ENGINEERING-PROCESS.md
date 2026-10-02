@@ -62,13 +62,35 @@ An investigation can close as `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`,
 `NOT_APPLICABLE`, `BLOCKED`, `REJECTED`, or `DUPLICATE`. During `VERIFYING`,
 the physical task owner completes and records the regression test, relevant
 tests, build, and live check on their assigned VM. `REVIEW` is a separate,
-ephemeral Verifier subagent reading that evidence and the diff. `PASS` advances
-to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
+ephemeral Verifier subagent reading that evidence and the diff. For a package,
+`PASS` advances to `READY_TO_PUBLISH`; `FAIL` returns to `IMPLEMENTING`; `INCOMPLETE` moves to
 `BLOCKED` with resume state `REVIEW` until the evidence is supplied. A strictly
 mechanical packaging-only change may skip independent review only under the
 `NOT_APPLICABLE` exception in section 6; that path advances from `VERIFYING`
-to `READY_TO_PUBLISH` after the release gate is complete. A non-package
-documentation or research task may move from `VERIFYING` to `DONE`. `taskctl`
+to `READY_TO_PUBLISH` after the release gate is complete.
+
+Every task has a kind, recorded as `task_kind` in its evidence; it decides the
+path to `DONE`. A task that changes several things takes the first kind that
+applies in this order:
+
+| Kind | What it changes | `READY_FOR_FIX` needs | `VERIFYING` needs | `DONE` |
+|---|---|---|---|---|
+| `package` | a source package we build or publish | the section 2 defect card | `regression_test`, `build_manifest` | only from `PUBLISHED` |
+| `tool` | code that changes behaviour and is not a package (`scripts/*.py`, hooks) | the section 2 defect card | `regression_test`, `validation_record` | only from `REVIEW`, with the Verifier's `PASS` |
+| `operation` | shared infrastructure: repositories, VMs, archive state | `scope`, `chosen_approach`, `existing_state_check` (what is already there), `authorization` {`approved_by`: May or C, `reference` to where the approval is recorded, `scope`} | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+| `documentation` | documentation and research records | `scope`, `chosen_approach` | `validation_record` | from `VERIFYING`, or `REVIEW` with `PASS` |
+
+Every kind records `architectural_task`, `design_challenger_required` and
+`correct_layer` at `READY_FOR_FIX`, and needs the Design Challenger's
+`APPROVE` when required. `READY_FOR_FIX` means "approach recorded, ready to
+implement" for every kind. Only package tasks enter `READY_TO_PUBLISH` or
+`PUBLISHED`. A legacy task whose evidence has `package_change: true` and no
+`task_kind` is a package; evidence carrying `build_manifest`, `release_gate`,
+`candidate_version` or `version_safety` is always a package. From
+`READY_FOR_FIX` on, `taskctl` refuses a transition whose kind it cannot
+resolve, and it records the kind in `<task-id>.kind` beside the evidence at
+the first transition that resolves it; later evidence must keep that kind.
+`taskctl`
 requires a machine-readable evidence JSON at
 `~/coordinator/evidence/<task-id>.json` (or an explicit `--evidence` path) for
 transitions; it validates stage-required keys before changing the board. A package
@@ -114,7 +136,8 @@ unknowns:
   - unanswered checks; use [] when none
 ```
 
-Do not enter `READY_FOR_FIX` until the issue is reproduced or the task is an
+For `package` and `tool` tasks (section 1): do not enter `READY_FOR_FIX`
+until the issue is reproduced or the task is an
 explicit build/packaging failure with a captured failing build, the
 `existing_fix_result` is `NOT_FIXED`, and `issue_search_result` is `FOUND` or
 `NOT_FOUND` with evidence. If a fix or patch already exists, verify its scope
@@ -331,6 +354,7 @@ version_safety: SAFE
 verification_result: PASS | NOT_APPLICABLE
 patch_and_decision_docs: COMPLETE
 peer_notice: ACK | COORDINATOR_CONFIRMED_NO_CONFLICT
+tested_build: this_build | same_chroot | buildinfo_identical (+ target_test)
 ```
 
 For a strictly mechanical packaging-only change, `verification_result` may be
@@ -363,13 +387,56 @@ traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
-Aptly freeze. While a freeze is in force, an agent or subagent must not call
-`aptly publish` directly in any form, including `show` and `list`. The one
-exception is the internal `aptly publish show` that `scripts/taskctl.py`
-runs as part of an authorized publication workflow, after the corresponding
-gate has passed. The exception covers only `taskctl.py` and only `aptly
-publish show`. It does not cover manual or direct calls by agents or
-subagents.
+Aptly freeze. A freeze protects the live publication state and
+/srv/aptly.
+
+- **Lifecycle.** Only May declares and lifts a freeze. C records the fact,
+  the start and end times and the scope in the coordinator log. Agents and
+  subagents never treat a freeze as lifted and never widen its exceptions.
+- **Default.** While a freeze is in force, an agent or subagent must not
+  call `aptly publish` directly in any form, including `show` and `list`,
+  except as allowed by the exceptions below.
+- **taskctl exception.** The internal `aptly publish show` that
+  `scripts/taskctl.py` runs as part of an authorized publication workflow,
+  after the corresponding gate has passed. It covers only `taskctl.py` and
+  only `aptly publish show`, never manual or direct calls by agents or
+  subagents.
+- **Rehearsal exception.** Direct `aptly publish` commands are allowed only
+  for the rehearsal phase of a specific task that May has explicitly
+  authorized, and only on an isolated aptly state. For such a command the
+  command guard checks:
+  - every place aptly writes lies inside the authorized rehearsal root:
+    rootDir, publish endpoint roots, package pool storage, the database
+    and its dbPath;
+  - remote (S3, Swift, Azure) endpoints are absent;
+  - no link leads out of the root (UNITY-20260927-057).
+
+  The authorization takes effect only through a dated marker that C writes
+  after May's approval (task, rehearsal root, validity window, reference to
+  the approval). The guard checks it and logs every rehearsal command it
+  allows. The exception gives no right to /srv/aptly or to any other live
+  aptly state. It ends automatically when the rehearsal ends: C removes the
+  marker, or it expires.
+- **Live-phase exception.** Applies to the live phase of a task that May has
+  explicitly authorized. The first is UNITY-20260927-047 phase L, allowance
+  UNITY-20260929-008.
+  - The command guard admits only the exact command strings in the reviewed
+    list `.claude/hooks/live-commands.json`, byte for byte, each run as one
+    foreground Bash call.
+  - The guard checks that the pinned aptly config is unchanged.
+  - The exception takes effect only through C's dated marker
+    `~/coordinator/live-authorization.json`. The marker records May's GO,
+    one session, a window of at most 6 hours, the list's sha256, and a
+    reference to the task's backup and preflight record.
+  - Every admitted command is logged to `~/coordinator/live-log.jsonl`.
+  - It covers nothing else.
+  - Known limit: a shell function, or a dynamic-loader variable such as
+    `LD_PRELOAD`, in the agent's own profile or environment could stand in
+    for the binary or run code inside it. The guard refuses only when it
+    finds one in the profile files, the shell snapshots or its own
+    environment.
+  - It ends when the live phase ends: C removes the marker, and removes the
+    list at the task's DONE.
 
 Build manifest artifacts. `scripts/build_sbuild.py` records the `.dsc` and
 every file of the build's `.changes`; `scripts/publish_aptly.py` applies one
@@ -395,6 +462,121 @@ rule per kind and rejects anything else:
 - `buildinfo`, `changes`: provenance only. They are hashed with the other
   artifacts and never expected in a snapshot.
 - Any other kind: rejected until a rule for it is added here.
+
+Extra build dependencies (UNITY-20260929-013). A package that needs a build
+dependency the target series' archive does not provide in a usable form
+(unity: the archive's nux breaks its configure step) is built with
+`build_sbuild.py --extra-package DEB` (repeatable). Each `.deb` is checked
+before sbuild starts (a readable regular `*.deb`, not a udeb, architecture
+`all` or the build architecture, valid Debian name and version fields, no
+second file of the same name, the same file twice, or a second file of the
+same package in any architecture), copied
+to `OUTPUT/build-dependencies/`, and the copy is given to sbuild. After the
+build the copies must be unchanged and each package must appear at its
+version in the `.buildinfo`'s `Installed-Build-Depends` - sbuild adds them to
+apt without a pin, so one not newer than the archive's is not used and the
+build is refused. The manifest then carries an optional
+`build_dependencies` list (file, sha256, size, package, version,
+architecture, source, the path given, the resolved path, whether the same
+bytes are in our published pool, and where). `artifacts` is unchanged.
+`create_release_gate.py` and `publish_aptly.py` check that list when it is
+present (`scripts/build_dependencies.py`): the name and version fields are
+valid Debian fields (so none can steer the pool path), each copy is in the
+manifest's `build-dependencies/` and matches its sha256, and the same bytes
+are in our published
+pool (`/srv/aptly/public/pool`, at the package's own pool location; the
+unpublished `candidate/` staging does not count). A publishable build
+depends only on extra packages we publish. Without the option nothing
+changes.
+
+The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
+
+- **What the builds use.** Every build runs in a chroot tarball made from a
+  pinned snapshot of the Ubuntu archive:
+  `https://snapshot.ubuntu.com/ubuntu/<T>`, with the target series' release,
+  `-updates` and `-security` pockets and the components main, universe and
+  restricted (no multiverse, no -backports, no -proposed).
+- **Why the snapshot.** The tarball's `/etc/apt/sources.list` keeps exactly
+  those three lines. sbuild's `apt-get update`/`dist-upgrade` in each build
+  therefore sees the same archive state as the tarball ("0 upgraded"). The
+  same tarball gives the same build dependencies, now and later.
+- **Creating a tarball.** `python3 scripts/sbuild_chroot.py create
+  [--snapshot <T>]`, where `<T>` defaults to now. It writes
+  `~/.cache/sbuild/chroots/<series>-<arch>-<T>.tar.zst` and a sidecar
+  `.json`: the sources, each pocket's InRelease Date, the mmdebstrap argv,
+  the package list and the sha256. It never overwrites.
+- **What `build_sbuild.py` does.**
+  - It takes `--chroot-tarball PATH`; the default is the newest tarball
+    with a sidecar.
+  - Before sbuild it refuses a symlink, a tarball without a matching
+    sidecar, one whose sources are not exactly the snapshot pockets, and a
+    snapshot more than 7 days old. `--allow-old-chroot` overrides the age
+    limit, and the manifest records it.
+  - It passes `--chroot-mode=unshare --chroot=<path>` and
+    `SBUILD_CONFIG=build/sbuild-config.pl`. That file is read after the
+    user's own sbuild config and resets what could add apt sources, packages
+    or change the chroot: extra repositories and keys, extra packages (only
+    the command line's `--extra-package` copies remain), external and setup
+    commands, unauthenticated packages, the apt-get command, the build
+    environment command and bind mounts; it keeps apt update and
+    dist-upgrade on.
+  - After sbuild it refuses, with no manifest, a tarball that changed, a
+    log without `I: Unpacking <path> to`, a chroot sbuild built on its own
+    ("Creating chroot on-demand"), a log without the InRelease of each of
+    the three pockets from the snapshot, and any apt fetch from elsewhere -
+    another mirror, another snapshot, or a local repository other than
+    sbuild's own resolver archives
+    (`file:`/`copy:/build/reproducible-path/resolver-*/apt_archive`), and any
+    package sbuild copies into that archive other than this build's
+    `build-dependencies/` copies. This guards against ordinary settings in
+    the user's sbuild config; the config is executable Perl, and a
+    deliberately hostile one is out of scope.
+  - The manifest's `chroot` key records the tarball, its sha256, `<T>`, the
+    sources and the InRelease lines.
+- **Refresh.** Create a new tarball when the current snapshot is more than
+  7 days old, or when a task needs a newer archive state.
+- **Test build and gated build** (UNITY-20260929-020). A build that will
+  be tested on target is made with `build_sbuild.py`, and its manifest,
+  `.buildinfo`, `.changes` and the target test record are committed. The
+  release record says what the target test installed and how it is tied to
+  the gated build, and `create_release_gate.py` refuses otherwise:
+  - `target_test`: `{"record": <committed record>, "debs": {<file>:
+    <sha256>}}`. These are the debs the target test installed. The record
+    must name each one by its exact file name. Record paths are
+    repository-relative, without `..` or symlinks.
+  - `tested_build: "this_build"`. The debs are binaries of the gated build,
+    matched by name and sha256.
+  - `tested_build: "same_chroot"`, with `tested_manifest` (committed). The
+    debs are binaries of the tested build. The gated build was made with
+    `--tested-with` that manifest. Both builds have the same chroot sha256,
+    source commit and tree, and extra build dependencies. A gated build on
+    the tested tarball may use `--allow-old-chroot`.
+  - `tested_build: "buildinfo_identical"`, with `tested_manifest` and
+    `tested_buildinfo` (both committed). For a tested build on another
+    tarball, or from before UNITY-20260929-016:
+    - the tested manifest must be a `build_sbuild.py` manifest (schema 1,
+      with its source commit and tree; `chroot` is not needed) listing the
+      debs and that `.buildinfo`;
+    - both builds must have the same source commit and tree and the same
+      extra build dependencies (package, version, architecture, sha256);
+    - the gated build's `.buildinfo` must match on Source, Binary,
+      Architecture, Version and Build-Architecture, with identical
+      Installed-Build-Depends and no package listed twice.
+
+    Any difference means a new target test. A tested build made without a
+    `build_sbuild.py` manifest (plain sbuild) cannot use this mode: nothing
+    else ties a binary build to its source. It needs a new target test.
+  - A gated manifest without `chroot` (built before UNITY-20260929-016) is
+    refused.
+
+  The gate records the mode and every hash as `tested_build`.
+  `publish_aptly.py` recomputes it from the committed files and refuses on
+  any difference. The recorded list of debs is the attestation of what was
+  tested; the tools check that it is consistent with the builds, not that
+  it is complete.
+- **Retention.** Keep every tarball named by a committed manifest; others
+  may be deleted by hand. `~/.cache/sbuild/resolute-amd64.tar.zst` (release
+  pocket only, 2026-09-22) is the record of the builds up to 2026-09-29.
 
 Example workflow. Generate the release gate while the task is in `REVIEW`;
 record its path in the task evidence, commit/push it, then have `taskctl` move
@@ -504,6 +686,23 @@ For aptly (UNITY-20260927-058) it does not follow aptly's flag grammar:
 - Commands made only of plain readers (`grep`, `ls`, `cat`, `git log`,
   `echo`, project scripts such as `taskctl.py`) may mention aptly and
   publish freely.
+- The live-phase exception of section 6 (UNITY-20260929-008) admits only
+  the strings of `.claude/hooks/live-commands.json`. Each starts
+  `/usr/bin/aptly -config=/home/claude/.aptly.conf publish` and runs as a
+  foreground Bash call. C's live marker must name the session and the
+  list's sha256. Each admitted command is logged to
+  `~/coordinator/live-log.jsonl`. The check runs before every other rule,
+  and only for a string that starts with that prefix.
+- Apart from that, the rehearsal exception of section 6
+  (UNITY-20260927-057) is the only allowance for `publish`. The command must start exactly
+  `/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/<path> publish`
+  (`--config=` also works), with no other flag before `publish`, as one
+  plain command with no quoting, expansion, redirection or prefix. The
+  config is strict JSON, with every place aptly writes inside
+  /var/tmp/aptly-rehearsal. The root is checked for links, hard links and
+  mounts. C's dated marker
+  `~/coordinator/rehearsal-authorization.json` must name the session, and
+  every allowed command is logged to `~/coordinator/rehearsal-log.jsonl`.
 
 In practice:
 

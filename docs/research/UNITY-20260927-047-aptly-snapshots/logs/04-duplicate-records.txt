@@ -1,0 +1,16 @@
+## duplicate records in unity-resolute (2026-09-27T21:52:39Z)
+unity-scope-calculator_0.1+14.04.20140328-0ubuntu6+unity1_all 1b4d61032903407c705adf96cd20ad04e89a00969a33a88c23f6c14fa5a6f2dd 5810 python3:any, python3, python3-gi, gnome-calculator, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0
+unity-scope-devhelp_0.1+14.04.20140328-0ubuntu5+unity1_all dd909987a0a2125cab3786e4bc5745b6bd97677dd39a0b4f6dac515f7c265f2b 6488 python3:any, python3, python3-gi, python3-lxml, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0
+unity-scope-gnote_0.1+13.10.20130723-0ubuntu4+unity1_all b401e507bd10a1fc926cde5bae621546cd55730db0e23ebcca7a6912df52af32 6550 python3:any, python3, python3-gi, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0
+unity-scope-manpages_3.0+14.04.20140324-0ubuntu5+unity1_all 40cd467309d35e52a05f293001e940c1e79bc491d1900d12f670b6522ac466f6 6184 python3:any, python3, python3-gi, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0, gir1.2-gtk-3.0, man-db
+unity-scope-tomboy_0.1+13.10.20130723-0ubuntu4+unity1_all 73cb5a7200e06cce0d977d5db950413cdd5d88b16bfccc35ff141cb5b686da40 6208 python3:any, python3, python3-gi, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0
+unity-scope-virtualbox_0.1+13.10.20130723-0ubuntu4+unity1_all e161b526053c2c427ac683d59437333431170addf3e062814a2bd572ca44f9be 6410 python3:any, python3, python3-gi, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0
+unity-scope-zotero_0.1+13.10.20130723-0ubuntu4+unity1_all 11a8203d378e32e8bc5ae7a716631d49ee129f52e2cac24459e2c3efda85a3d8 6570 python3:any, python3, python3-gi, gir1.2-unity-7.0 (>= 7), gir1.2-dee-1.0 (>= 1.2.5), unity-scopes-runner, gir1.2-glib-2.0
+## published index sha256 for them
+unity-scope-calculator 1b4d61032903407c705adf96cd20ad04e89a00969a33a88c23f6c14fa5a6f2dd
+unity-scope-devhelp dd909987a0a2125cab3786e4bc5745b6bd97677dd39a0b4f6dac515f7c265f2b
+unity-scope-gnote b401e507bd10a1fc926cde5bae621546cd55730db0e23ebcca7a6912df52af32
+unity-scope-manpages 40cd467309d35e52a05f293001e940c1e79bc491d1900d12f670b6522ac466f6
+unity-scope-tomboy 73cb5a7200e06cce0d977d5db950413cdd5d88b16bfccc35ff141cb5b686da40
+unity-scope-virtualbox e161b526053c2c427ac683d59437333431170addf3e062814a2bd572ca44f9be
+unity-scope-zotero 11a8203d378e32e8bc5ae7a716631d49ee129f52e2cac24459e2c3efda85a3d8

@@ -1,0 +1,25 @@
+Attached 12 probes
+READY
+1702 RESIZE-INITIATE state=1
+3610 EDGE-DOWN button=1
+3610 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+3610 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+3616 RESIZE-INITIATE state=4
+6697 XGRABKEYBOARD
+        XGrabKeyboard+0
+        nux::WindowCompositor::GrabKeyboardAdd(nux::InputArea*)+119
+        unity::launcher::Launcher::ShowDragWindow()+108
+        unity::launcher::Launcher::StartIconDrag(nux::ObjectPtr<unity::launcher::AbstractLauncherIcon> const&)+460
+
+
+

@@ -1,0 +1,19 @@
+# UNITY-20260927-021 build vs build-r2 (same commit c03daf48, tree d4fb3f58)
+build   source_repo /home/claude/work/b/021-push
+build-r2 source_repo /home/claude/work/b/unity-distro-021/packages/calamares-settings-ubuntu
+DIFF calamares-settings-kubuntu_26.04.12+unity2_all.deb dd0f1744ee2f 0b2d92c07b1f
+DIFF calamares-settings-lubuntu_26.04.12+unity2_all.deb 1bb59bda2de0 7a2ce695125f
+SAME calamares-settings-ubuntu-common-data_26.04.12+unity2_all.deb 84e9beecd478 84e9beecd478
+SAME calamares-settings-ubuntu-common-dbgsym_26.04.12+unity2_amd64.ddeb 9ff12b0ea333 9ff12b0ea333
+SAME calamares-settings-ubuntu-common_26.04.12+unity2_amd64.deb aff1f21bdca3 aff1f21bdca3
+DIFF calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb ee4db200fd6c 3b5b941a3081
+DIFF calamares-settings-ubuntu_26.04.12+unity2.dsc 2f4d00e102be 6b7436f1c1b7
+DIFF calamares-settings-ubuntu_26.04.12+unity2.tar.xz 07beb2da43cc 4996c7e4c00d
+DIFF calamares-settings-ubuntu_26.04.12+unity2_amd64.buildinfo 90be21699945 a1b85cf22cb3
+DIFF calamares-settings-ubuntu_26.04.12+unity2_amd64.changes 2d1a3f77aead ae46c2fbe40c
+# CORRECTED after Verifier round 3: the format is 3.0 (native). The .dsc/.tar.xz differ by the tarball's top
+# directory name (the source directory name); the -ubuntu-unity/-kubuntu/-lubuntu debs differ because the Makefile
+# packs oemconfig.tar.gz at build time, so its file dates are the build time - contents, modes and owners identical.
+# cause (source tarball): the top directory is named after the source directory:
+#   build:    021-push/
+#   build-r2: calamares-settings-ubuntu/

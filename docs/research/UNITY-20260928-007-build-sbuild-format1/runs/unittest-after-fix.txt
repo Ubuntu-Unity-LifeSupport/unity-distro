@@ -1,0 +1,68 @@
+test_binaries_not_named_after_source (test_build_sbuild.BuildSbuildTest.test_binaries_not_named_after_source)
+(2) Binaries come from .changes, including .ddeb, whatever their names. ... ok
+test_epoch (test_build_sbuild.BuildSbuildTest.test_epoch)
+(1) An epoch in the version never appears in file names. ... ok
+test_full_log (test_build_sbuild.BuildSbuildTest.test_full_log)
+(3) The manifest's log is the whole sbuild output, command header first. ... ok
+test_orig_tarball_not_inspected (test_build_sbuild.BuildSbuildTest.test_orig_tarball_not_inspected)
+Upstream's orig tarball may hold .git/.gitignore: it is not ours, it passes. ... ok
+test_partially_renamed_binaries_not_dropped (test_build_sbuild.BuildSbuildTest.test_partially_renamed_binaries_not_dropped)
+(2) xorg-server: one binary contains the source name, one does not. ... ok
+test_plain_version (test_build_sbuild.BuildSbuildTest.test_plain_version)
+Control: no epoch, binaries named after the source. ... ok
+test_real_dpkg_source_no_vcs_metadata (test_build_sbuild.BuildSbuildTest.test_real_dpkg_source_no_vcs_metadata)
+End to end with the real dpkg-source, run the way sbuild runs it: every ... ok
+test_source_files_recorded (test_build_sbuild.BuildSbuildTest.test_source_files_recorded)
+UNITY-20260927-051: every file the .dsc names is in the manifest with the .dsc's sha256. ... ok
+test_source_full_changes (test_build_sbuild.BuildSbuildTest.test_source_full_changes)
+A .changes that also lists the source: no duplicate .dsc, no unknown kinds. ... ok
+test_unreadable_source_file_fails_closed (test_build_sbuild.BuildSbuildTest.test_unreadable_source_file_fails_closed)
+A produced source file that cannot be read is not waved through. ... ok
+test_unrelated_files_ignored (test_build_sbuild.BuildSbuildTest.test_unrelated_files_ignored)
+Files next to the source that this build's .changes does not name stay out. ... ok
+test_vcs_metadata_rejected (test_build_sbuild.BuildSbuildTest.test_vcs_metadata_rejected)
+A produced source file with VCS metadata: no manifest, exit 2. ... ok
+test_allowed (test_command_guard.AptlyPublishGuardTest.test_allowed) ... ok
+test_denied (test_command_guard.AptlyPublishGuardTest.test_denied) ... ok
+test_hard_link_to_aptly (test_command_guard.AptlyPublishGuardTest.test_hard_link_to_aptly)
+Identity by device and inode: a hard link is aptly whatever its name. ... ok
+test_monitor_tool (test_command_guard.AptlyPublishGuardTest.test_monitor_tool)
+Monitor runs shell commands too; a WebSocket-only Monitor has no shell. ... ok
+test_other_rules_unchanged (test_command_guard.AptlyPublishGuardTest.test_other_rules_unchanged) ... ok
+test_settings_register_monitor (test_command_guard.AptlyPublishGuardTest.test_settings_register_monitor) ... ok
+test_symlink_to_aptly (test_command_guard.AptlyPublishGuardTest.test_symlink_to_aptly)
+A pre-existing link to the aptly binary under another name is aptly. ... ok
+test_binary_source (test_publish_contract.SnapshotContractTest.test_binary_source) ... ok
+test_contract_cases (test_publish_contract.SnapshotContractTest.test_contract_cases) ... ok
+test_aptly_view_parsed (test_publish_contract.SourceFilesContractTest.test_aptly_view_parsed) ... ok
+test_dsc_list_rule (test_publish_contract.SourceFilesContractTest.test_dsc_list_rule) ... ok
+test_snapshot_source_package (test_publish_contract.SourceFilesContractTest.test_snapshot_source_package) ... ok
+test_fetch_failure_refuses (test_version_safety.AptViewIntegrationTest.test_fetch_failure_refuses) ... ok
+test_full_view_selects_snapshot_binaries (test_version_safety.AptViewIntegrationTest.test_full_view_selects_snapshot_binaries) ... ok
+test_model_release_recognised_whatever_the_temp_path (test_version_safety.AptViewIntegrationTest.test_model_release_recognised_whatever_the_temp_path)
+UNITY-20260927-056: apt escapes "_" in file: URIs ("%5f") when naming list ... ok
+test_snapshot_older_than_archive_is_unsafe (test_version_safety.AptViewIntegrationTest.test_snapshot_older_than_archive_is_unsafe) ... ok
+test_apt_selects_another_version (test_version_safety.ComparatorTest.test_apt_selects_another_version) ... ok
+test_binaries_must_match_manifest (test_version_safety.ComparatorTest.test_binaries_must_match_manifest) ... ok
+test_binnmu_binaries_judged_by_own_version (test_version_safety.ComparatorTest.test_binnmu_binaries_judged_by_own_version) ... ok
+test_mode_mismatch (test_version_safety.ComparatorTest.test_mode_mismatch) ... ok
+test_not_in_archive (test_version_safety.ComparatorTest.test_not_in_archive) ... ok
+test_pocket_rules (test_version_safety.ComparatorTest.test_pocket_rules) ... ok
+test_pre_build_never_safe (test_version_safety.ComparatorTest.test_pre_build_never_safe) ... ok
+test_safe (test_version_safety.ComparatorTest.test_safe) ... ok
+test_typed_record_rejected (test_version_safety.ComparatorTest.test_typed_record_rejected) ... ok
+test_unknown_pocket (test_version_safety.ComparatorTest.test_unknown_pocket) ... ok
+test_apt_inputs_changed (test_version_safety.CompareViewsTest.test_apt_inputs_changed) ... ok
+test_model_release_changed (test_version_safety.CompareViewsTest.test_model_release_changed) ... ok
+test_other_snapshot_content (test_version_safety.CompareViewsTest.test_other_snapshot_content) ... ok
+test_release_missing (test_version_safety.CompareViewsTest.test_release_missing) ... ok
+test_release_went_backwards (test_version_safety.CompareViewsTest.test_release_went_backwards) ... ok
+test_same_or_newer_ok (test_version_safety.CompareViewsTest.test_same_or_newer_ok) ... ok
+test_valid_until_passed (test_version_safety.CompareViewsTest.test_valid_until_passed) ... ok
+test_old_style_or_unsafe_record_refused (test_version_safety.PublicationRecordContractTest.test_old_style_or_unsafe_record_refused) ... ok
+test_publisher_record_satisfies_taskctl (test_version_safety.PublicationRecordContractTest.test_publisher_record_satisfies_taskctl) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 33.029s
+
+OK

@@ -1,0 +1,5 @@
+Обрабатываются триггеры для libc-bin (2.43-2ubuntu2.4) …
+unity	7.7.1+26.04.20260306-0ubuntu3+unity8
+run 1: compiz 2849 -> 12863; crash files: _usr_bin_compiz.1000.crash ; segv in journal: 1
+run 2: compiz 12863 -> 13684; crash files: _usr_bin_compiz.1000.crash ; segv in journal: 1
+run 3: compiz 13684 -> 14567; crash files: _usr_bin_compiz.1000.crash ; segv in journal: 1

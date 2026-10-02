@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-019",
+  "package": "lightdm",
+  "source_commit": "f5af23c0b9d5931aea0dfc7a2eaf424415cf8920",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/README.md",
+      "sha256": "e7e89958b9c77a5129ac1213960c9a308a416f2c1a48c9a6758ec9fc71eb708d"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/verification.md",
+      "sha256": "0539a57eaf380f440235bb7791fd9273712b3c6d1cfeb5c81362eea885e56506"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "338045c3fe5d32661456186b1c3ebeffdaf1bfa42c4ab774c68887ba2b66ac0b"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "f4dda617609a59ba464a015f33862ec44bf0f4487ef6d9d49467a08b9277b434"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/gate/release-record.json",
+      "sha256": "c5f838ab4203a3ada418967c94e90f9ba901e7b87ced7b990364600a43a841b4"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260928-019-lightdm-greeter-pam-close/gate/version-check.json",
+      "sha256": "eb0f8d65863983efa827027fc3d3de04b4939d06686b41e050015b9e28dc0e72"
+    }
+  }
+}

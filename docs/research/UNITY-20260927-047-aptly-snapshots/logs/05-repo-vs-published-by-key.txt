@@ -1,0 +1,5 @@
+# repo vs published index, by aptly key (2026-09-27T21:53:00Z)
+records: 285; source records (key Psource): 27; binary records: 258; published index entries: 258
+in repo not published: 0; published not in repo: 0
+
+Correction: logs 02-04 compared by Architecture and took the source records of seven unity-scope-* packages (Architecture: all in their .dsc) for binaries; there are no duplicate records. The published binary index equals the repository's binary records.

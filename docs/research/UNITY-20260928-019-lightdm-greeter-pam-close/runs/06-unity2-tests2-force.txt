@@ -1,0 +1,41 @@
+== T3b-forced-in-pam_systemd-close
+13:11:57.127191 forcing SIGTERM into 57176 inside pam_systemd pam_sm_close_session
+13:11:57.132283 57176 gone
+13:12:45.612302 forcing SIGTERM into 60465 inside pam_systemd pam_sm_close_session
+13:12:45.622525 60465 gone
+13:13:35.429854 forcing SIGTERM into 63371 inside pam_systemd pam_sm_close_session
+13:13:35.437319 63371 gone
+13:14:25.090484 forcing SIGTERM into 66373 inside pam_systemd pam_sm_close_session
+13:14:25.097144 66373 gone
+== T4b-forced-at-pam_end
+13:15:24.533962 forcing SIGTERM into 69355 at pam_end
+13:15:24.535010 69355 gone
+13:16:12.669399 forcing SIGTERM into 72312 at pam_end
+13:16:12.672027 72312 gone
+13:17:03.194226 forcing SIGTERM into 75255 at pam_end
+13:17:03.195383 75255 gone
+13:17:50.848970 forcing SIGTERM into 77384 at pam_end
+13:17:50.851122 77384 gone
+== T6b-stalled-close-forced-stage1
+13:18:51.908074 forcing SIGTERM into greeter session-child 80530 at pam_getenv after waitpid
+13:19:52.732948 forcing SIGTERM into greeter session-child 83435 at pam_getenv after waitpid
+13:20:52.366086 forcing SIGTERM into greeter session-child 86345 at pam_getenv after waitpid
+== T5
+13:21:49.648161 forcing SIGTERM into 89248 at pam_open_session, before the greeter exists
+13:21:49.650351 89248 gone
+== stall hook
+вер 29 13:18:51.952517 mike-virtualbox ld019-stall[80791]: greeter close hook: sleeping 60 s
+вер 29 13:19:52.023269 mike-virtualbox ld019-stall[83650]: greeter close hook: done
+вер 29 13:19:52.768289 mike-virtualbox ld019-stall[83664]: greeter close hook: sleeping 60 s
+вер 29 13:20:52.391364 mike-virtualbox ld019-stall[86575]: greeter close hook: sleeping 60 s
+вер 29 13:20:52.792935 mike-virtualbox ld019-stall[86577]: greeter close hook: done
+вер 29 13:21:52.418479 mike-virtualbox ld019-stall[89428]: greeter close hook: done
+== phases
+вер 29 13:11:16.314164 mike-virtualbox ld019phase[56897]: phase T3b-forced-in-pam_systemd-close start
+вер 29 13:15:03.349440 mike-virtualbox ld019phase[69181]: phase T3b-forced-in-pam_systemd-close end
+вер 29 13:15:03.362503 mike-virtualbox ld019phase[69183]: phase T4b-forced-at-pam_end start
+вер 29 13:18:29.290050 mike-virtualbox ld019phase[80312]: phase T4b-forced-at-pam_end end
+вер 29 13:18:29.351644 mike-virtualbox ld019phase[80318]: phase T6b-stalled-close-forced-stage1 start
+вер 29 13:21:39.569904 mike-virtualbox ld019phase[89119]: phase T6b-stalled-close-forced-stage1 end
+вер 29 13:21:39.604744 mike-virtualbox ld019phase[89125]: phase T5-preexec start
+вер 29 13:22:18.567011 mike-virtualbox ld019phase[91285]: phase T5-preexec end

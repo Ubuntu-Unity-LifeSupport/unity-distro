@@ -1,0 +1,52 @@
+# UNITY-20260927-041 target step 2: Calamares OEM install from the live session with +unity3 (batch ubuntuunity-2604-2026-09-29, erase disk, normal installation, no third-party snaps selected)
+    CppJobModule "shellprocess@oemprep" loading complete. 
+    CppJobModule "shellprocess@fix-oem-uid" loading complete. 
+    .. Running QList("/bin/sh", "-c", "/usr/libexec/calamares-oemprep.sh /tmp/calamares-root-s70vb0_m") 
+    Notification not sent; completion: succeeded 
+
+== date (UTC)
+2026-09-29T18:40:07Z
+== /etc/sudoers in OEM mode
+440 root:root 1762 /mnt/t/etc/sudoers
+440 root:root 1800 /mnt/t/etc/sudoers.orig
+d0a025d4a98665a71767d8935314e9934a5c69e641bdffb9e382fe16533db96c  /mnt/t/etc/sudoers
+== visudo -c in the target (the active sudo alternative)
+/usr/lib/cargo/bin/sudo
+/usr/lib/cargo/bin/visudo
+/etc/sudoers: parsed OK
+visudo rc=0
+/etc/sudoers: parsed OK
+/etc/sudoers.d/10-installer: parsed OK
+/etc/sudoers.d/README: parsed OK
+/usr/sbin/visudo.ws rc=0
+/etc/sudoers: parsed OK
+/usr/lib/cargo/bin/visudo rc=0
+== target basicwallpaper
+ca88f9c350b78e6fefd6989097ca0f22f683df2ebc74eeff29db35f404b6f54a  /mnt/t/usr/bin/basicwallpaper
+== snap seeding in the target
+assertions
+seed.yaml
+snaps
+bare_5.snap
+core24_1587.snap
+firefox_8107.snap
+gnome-46-2404_153.snap
+gtk-common-themes_1535.snap
+mesa-2404_1165.snap
+snapd_26865.snap
+== target calamares packages
+calamares 3.3.14-0ubuntu25 ii 
+calamares-data 3.3.14-0ubuntu25 ii 
+== target sources
+ubuntu.sources
+== oem id
+oem:x:60999:60999:OEM configuration:/home/oem:/bin/bash
+== instrumentation: openssh-server + xdotool from the archive, key for oem
+Processing triggers for man-db (2.13.1-1build1) ...
+Processing triggers for libc-bin (2.43-2ubuntu2) ...
+enabled
+== unchanged after instrumentation
+ca88f9c350b78e6fefd6989097ca0f22f683df2ebc74eeff29db35f404b6f54a  /mnt/t/usr/bin/basicwallpaper
+440 root:root /mnt/t/etc/sudoers
+sda1 unmounted
+R041-AFTER-OK

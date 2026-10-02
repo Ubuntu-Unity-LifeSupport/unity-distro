@@ -1,0 +1,12 @@
+IdleMonitor owner after 6s: (':1.231',)
+valgrind start + clients from: 05:23:51
+first client at 05:24:21
+watch id 4 from :1.233
+input at 05:24:25
+input at 05:24:29
+watch id 5 from :1.234
+input at 05:24:38
+input at 05:24:43
+Warning: The unit file, source configuration file or drop-ins of unity-settings-daemon.service changed on disk. Run 'systemctl --user daemon-reload' to reload units.
+21:==00:00:01:08.751 9746== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+u-s-d back: 9875

@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-014",
+  "package": "indicator-keyboard",
+  "source_commit": "5d6a8c57443061f624258c43d39fc7cee36bb759",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260928-014-ik-greeter-sources/README.md",
+      "sha256": "0812ace638b2ea5af1beb0d6d534e1cec741c1d811e51b1e307612075134fb28"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260928-014-ik-greeter-sources/verification.md",
+      "sha256": "6e653edd22beddbf610c83a5529bb22007db5e7656d5a50dabca61342582f521"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "8daf44e23d342b26730f8c9b61d41639d0da946c95cb67835306781308b477b3"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "7f20844ee8a3e9ae6cd938d297c350a590e1ba32289192120e5392284422ae5c"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260928-014-ik-greeter-sources/gate/release-record.json",
+      "sha256": "f4b2ea42fa89bb1f90f938357ff9edc49348f21ea0cd050accdc0f22b441ea04"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260928-014-ik-greeter-sources/gate/version-check.json",
+      "sha256": "f4174efbbc10924f2acfdbf494fe70aa1c244124bb22a8240b4e2dc05b8b46c9"
+    }
+  }
+}

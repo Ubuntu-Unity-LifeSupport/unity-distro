@@ -1,0 +1,15 @@
+before: test-fm.desktop
+now: test-fm.desktop
+compiz 14567 -> ; unity7 activating; crash files: _usr_bin_compiz.1000.crash 
+вер 28 07:49:46 mike-virtualbox kernel: compiz[14567]: segfault at 18 ip 00007283b328f3cf sp 00007fff05df4550 error 4 in libsigc-2.0.so.0.0.0[33cf,7283b328f0
+вер 28 07:49:52 mike-virtualbox systemd[1262]: unity7.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 07:49:52 mike-virtualbox systemd[1262]: unity7.service: Failed with result 'core-dump'.
+вер 28 07:49:55 mike-virtualbox kernel: compiz[15804]: segfault at 18 ip 00007c487ed0b3cf sp 00007ffe23a397e0 error 4 in libsigc-2.0.so.0.0.0[33cf,7c487ed0b0
+вер 28 07:49:57 mike-virtualbox systemd[1262]: unity7.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 07:49:57 mike-virtualbox systemd[1262]: unity7.service: Failed with result 'core-dump'.
+вер 28 07:50:00 mike-virtualbox kernel: compiz[16084]: segfault at 18 ip 00007c0e35b1a3cf sp 00007ffda8a4c550 error 4 in libsigc-2.0.so.0.0.0[33cf,7c0e35b1a0
+вер 28 07:50:01 mike-virtualbox systemd[1262]: unity7.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 07:50:01 mike-virtualbox systemd[1262]: unity7.service: Failed with result 'core-dump'.
+вер 28 07:50:05 mike-virtualbox kernel: compiz[16377]: segfault at 18 ip 000078cd128ec3cf sp 00007ffe18bde190 error 4 in libsigc-2.0.so.0.0.0[33cf,78cd128ec0
+restored: nemo.desktop
+after restore: compiz 17564 unity7 active

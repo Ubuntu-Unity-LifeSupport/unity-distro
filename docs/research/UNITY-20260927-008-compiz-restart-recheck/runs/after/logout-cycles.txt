@@ -1,0 +1,12 @@
+cycle 1: compiz 9370, logging out
+cycle 1: greeter after 3s; compiz 9370 gone: yes
+2026-09-28T19:35:35+03:00 mike-virtualbox compiz[9370]: WARN  2026-09-28 19:35:35 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+2026-09-28T19:35:35+03:00 mike-virtualbox compiz[9370]: WARN  2026-09-28 19:35:35 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+2026-09-28T19:35:35+03:00 mike-virtualbox compiz[9370]: WARN  2026-09-28 19:35:35 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+cycle 2: compiz 12808, logging out
+cycle 2: greeter after 3s; compiz 12808 gone: yes
+2026-09-28T19:39:00+03:00 mike-virtualbox compiz[12808]: WARN  2026-09-28 19:39:00 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+2026-09-28T19:39:00+03:00 mike-virtualbox compiz[12808]: WARN  2026-09-28 19:39:00 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+2026-09-28T19:39:00+03:00 mike-virtualbox compiz[12808]: WARN  2026-09-28 19:39:00 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+journal since 2026-09-28 19:37:42: segfault|general protection|dumped core|g_hash_table: 0
+/var/crash: 

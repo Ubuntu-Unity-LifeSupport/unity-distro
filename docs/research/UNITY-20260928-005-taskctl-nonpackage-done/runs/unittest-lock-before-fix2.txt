@@ -1,0 +1,80 @@
+FFFFF..
+======================================================================
+FAIL: test_invalid_lock_contents_refused (test_taskctl.TaskctlKindsTest.test_invalid_lock_contents_refused) (content='')
+Verifier finding (UNITY-20260928-005 review 1): a lock that does not
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 185, in test_invalid_lock_contents_refused
+    self.assert_refused(self.go("DONE", validation_record="v", terminal_evidence="x"),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "repair it before any transition", "VERIFYING")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_invalid_lock_contents_refused (test_taskctl.TaskctlKindsTest.test_invalid_lock_contents_refused) (content='garbage')
+Verifier finding (UNITY-20260928-005 review 1): a lock that does not
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 185, in test_invalid_lock_contents_refused
+    self.assert_refused(self.go("DONE", validation_record="v", terminal_evidence="x"),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "repair it before any transition", "VERIFYING")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_invalid_lock_contents_refused (test_taskctl.TaskctlKindsTest.test_invalid_lock_contents_refused) (content='Package')
+Verifier finding (UNITY-20260928-005 review 1): a lock that does not
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 185, in test_invalid_lock_contents_refused
+    self.assert_refused(self.go("DONE", validation_record="v", terminal_evidence="x"),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "repair it before any transition", "VERIFYING")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_invalid_lock_contents_refused (test_taskctl.TaskctlKindsTest.test_invalid_lock_contents_refused) (content='package\nxx')
+Verifier finding (UNITY-20260928-005 review 1): a lock that does not
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 185, in test_invalid_lock_contents_refused
+    self.assert_refused(self.go("DONE", validation_record="v", terminal_evidence="x"),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "repair it before any transition", "VERIFYING")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_invalid_lock_contents_refused (test_taskctl.TaskctlKindsTest.test_invalid_lock_contents_refused) (content='tool tool')
+Verifier finding (UNITY-20260928-005 review 1): a lock that does not
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 185, in test_invalid_lock_contents_refused
+    self.assert_refused(self.go("DONE", validation_record="v", terminal_evidence="x"),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "repair it before any transition", "VERIFYING")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.224s
+
+FAILED (failures=5)

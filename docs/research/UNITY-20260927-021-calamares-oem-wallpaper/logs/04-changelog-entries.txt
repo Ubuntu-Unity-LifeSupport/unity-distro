@@ -1,0 +1,4 @@
+calamares-settings-ubuntu-unity_1%3a26.04.12_all.deb: changelog entries 0
+calamares-settings-ubuntu-unity_26.04.12+unity1_all.deb: changelog entries 1
+calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb: changelog entries 95
+file list unity2 == archive

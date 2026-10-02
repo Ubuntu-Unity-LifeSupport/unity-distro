@@ -1,0 +1,18 @@
+# Baseline: unchanged +unity2 (9793c23, the published source), two sbuilds in today's chroot (2026-09-28).
+# Both segfault in gtest-nux (make check-headless), test TestWindowThread.WatchFd; the other suites pass.
+# So the gtest-nux segfaults in +unity3 builds (logs/03, 07) predate this task. Earlier nux builds (2026-09-22..24):
+# 1 segfault in 5 builds (0ubuntu13, 13+unity1, 15+unity1 twice, 15+unity2; EmbeddedContextMultiWindow.ForeignFrameEndedPresentNone, 0ubuntu15+unity1 attempt 1).
+== base 1
+11601:[  PASSED  ] 130 tests.
+11652:[  PASSED  ] 9 tests.
+11714:[  PASSED  ] 18 tests.
+12117:Segmentation fault         (core dumped) $binary $@
+12159:Status: attempted
+[ RUN      ] TestWindowThread.WatchFd
+== base 2
+11601:[  PASSED  ] 130 tests.
+11651:[  PASSED  ] 9 tests.
+11713:[  PASSED  ] 18 tests.
+12118:Segmentation fault         (core dumped) $binary $@
+12160:Status: attempted
+[ RUN      ] TestWindowThread.WatchFd

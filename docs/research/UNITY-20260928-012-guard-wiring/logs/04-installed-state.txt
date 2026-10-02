@@ -1,0 +1,35 @@
+# 2026-09-29 08:10Z B session b7902aab, after --apply; handler fed each probe (probes not executed)
+P1-process: expect deny got deny OK | Pattern-based process matching is blocked; identify the exact PID.
+P3-live-form-nonexistent-binary: expect deny got deny OK | Publish through scripts/publish_aptly.py with a passing release gate.
+P3b-live-form-config: expect deny got deny OK | aptly rehearsal not allowed: call aptly as /usr/bin/aptly
+P4-harmless-ls: expect allow got allow OK | 
+P5-harmless-git-status: expect allow got allow OK | 
+P6-harmless-cat: expect allow got allow OK | 
+
+# installed file
+{
+  "theme": "dark",
+  "switchModelsOnFlag": false,
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Monitor",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/timeout -s KILL 20 /usr/bin/python3 -I /home/claude/unity-distro/.claude/hooks/command_guard.py >/dev/null || { rc=$?; [ \"$rc\" -eq 2 ] || echo \"command_guard did not decide (rc=$rc); tool call blocked.\" >&2; exit 2; }",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+# sha256
+8fdf97523090fe7896a6a4edabd64da71adf9f22e39f06ee0f0488069f5cb7da  /home/claude/.claude/settings.json
+84f717883cf022a6828d60d3b2f637527e4400aeb53a927044bb64a4ca7dc162  /home/claude/.claude/settings.json.bak-UNITY-20260928-012
+# check
+project settings /home/claude/unity-distro/.claude/settings.json: the command_guard handler differs from the expected one
+command_guard wiring: NOT OK
