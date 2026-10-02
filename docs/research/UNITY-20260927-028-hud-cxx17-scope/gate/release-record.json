@@ -1,0 +1,43 @@
+{
+  "task_id": "UNITY-20260927-028",
+  "package": "hud",
+  "target_series": "resolute",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity3",
+  "source_commit": "9e7c0939e236e92f6b9bc8ceecbed21d8bd51f93",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-028",
+  "version_safety": "",
+  "version_check": "docs/research/UNITY-20260927-028-hud-cxx17-scope/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-028-hud-cxx17-scope/logs/04-target-this-build.txt",
+    "debs": {
+      "gir1.2-hud-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "2a3a5e947617e0c2f17b460e692cd0a79a1baf3f61d0787f1d9539c27e3f86fe",
+      "gir1.2-hud-client-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "b55796336651a4e2eb45acb848d3992f643712aedadfec8a42d285b7db34f2b6",
+      "hud-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb": "8e0859ed6878c59392e2fc3eaf13c248fe1a40831d89e832dfe663e8398924eb",
+      "hud-tools_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "949d0a74484e12f011ce066279863c4338a4f39e268173b964a6188aa8e5470f",
+      "hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "53519934fe22c4368e4b80a6895ca6c50e9ce008d0133c8fe5df4dce86078c11",
+      "libhud-client2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "51c7181fd5f526c2724e2b06969e946d2681362645f02878b415d2637362ae72",
+      "libhud-client2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb": "32f6dc413818fc9a80d08df6d32f60dd9a9b1a6bbcca7a1e582a29c286eb158c",
+      "libhud-client2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "2ac43a1cea6ce514740974420fd2f52e0a78401a18c7b2adab0bd3aae5500780",
+      "libhud-gtk1-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "b228c0e0313155d80874001ca4c23bc0b37abfa11e146ddb6f50dc8847a41803",
+      "libhud-gtk1-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb": "aaaddba584c7f0fcd9c9940fc2f041ee6320250a719310e282624fd0cbd38e38",
+      "libhud-gtk1_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "d5d89573341e99c1d670cb8eaf9531c771b1be501e82652c84f100850eeb2d12",
+      "libhud2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "faf7bbac21a239ce07b324d7d194dbad4f57d7e4c0bd5823039075efd5ff2c7f",
+      "libhud2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb": "92be371a7bae3370c9ed0e4119968a9c05feec4372a1a4fd4290af2138579eed",
+      "libhud2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "7a54092465eaa4c53f8ee815c2222f5d97551a2b1015f01aeeeb4eb37ae3713f"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-028-hud-cxx17-scope/README.md",
+    "verification_record": "docs/research/UNITY-20260927-028-hud-cxx17-scope/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

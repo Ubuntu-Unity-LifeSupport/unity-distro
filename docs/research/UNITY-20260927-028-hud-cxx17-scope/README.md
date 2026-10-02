@@ -141,7 +141,7 @@ docs/status/B.md.
   test suites, with the archive's orig tarball (sha256 3cb825f0…).
 - **Payload against the tested build** (logs/05): all 14 .debs have the same
   control fields, file lists and exported symbols, and every file inside is
-  byte-identical (0 of 83 differ).
+  byte-identical (0 of 72 differ).
 - **Target test, mode this_build** (logs/04), on the UNITY-20260927-029
   session of target2 (Clean-2, our repository, gated +unity2): the gated
   +unity3 .debs installed from a file repository, the upgrade path +unity2
@@ -160,3 +160,18 @@ docs/status/B.md.
 |---|---|
 | tests (C++17) link objects built with C++14 | closed with a reason: only unshipped test binaries; shipped file lists and symbols identical to +unity2 (logs/01, logs/05); 6 of 6 suites pass on the gated build |
 | mechanism 2 (HUD empty with the window known), seen once on a C++14 build | task UNITY-20260929-002; 0 of 20 on this build (logs/04) |
+
+## Verifier round on the gated build (2026-10-02): PASS
+
+The independent Verifier re-measured the manifest against the chroot
+sidecar and the source tree (9e7c093, tree 2d9b6dba…, +unity2 ef39a8d in
+its chain), the sbuild log (6 of 6, sha256 as recorded), all 24 artifacts,
+the payload comparison (output identical to logs/05; the gated and tested
+hud .deb are even byte-identical), the target record (binaries equal the
+.deb's files, 20 of 20 in the stack and answered, NTP synchronised, no
+deleted mapping), the gaps table against the card's unknowns, and the
+evidence (PASS, REVIEWED).
+
+Remarks, applied: the payload count is 72 files, not 83 (corrected above).
+The evidence's `source_commit` and `build_manifest` still name the tested
+build; the publish record carries the gated commit and manifest.
