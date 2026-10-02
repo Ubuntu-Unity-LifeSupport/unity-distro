@@ -250,10 +250,11 @@ REVIEW, then BLOCKED at the publication gate (freeze no. 1).
   resolute Sources index).
 - **Payload against the tested build** (logs/08, `payload-compare.sh`): for
   all 14 .debs the control fields, file lists and exported symbols are the
-  same, and every file inside is byte-identical (0 of 83 differ). Only the
+  same, and every file inside is byte-identical (0 of 72 differ). Only the
   .deb containers differ.
 - **Target test, mode this_build** (logs/07). target2 was rolled back to
-  Clean-2 (checked inside: no `~/.dirty`), full-upgraded from our
+  Clean-2 (checked inside before the script: no `~/.dirty`; the marker was
+  then set, so the script's own line says PRESENT), full-upgraded from our
   repository, and the gated .debs were installed from a file repository;
   the installed hud .deb is the manifest's (sha256 b3321894…). After a
   reboot into the auto-login Unity session, with no drop-in and no test
@@ -267,7 +268,8 @@ REVIEW, then BLOCKED at the publication gate (freeze no. 1).
   was 2 days 51 min behind builder UTC (NTPSynchronized=no, restored from a
   saved state). After the rollback and cold boot it synchronised by itself
   (NTPSynchronized=yes, within 5 s of builder), so no `set-ntp` or `date
-  -s` was needed; recorded in logs/07 and both phases of the script.
+  -s` was needed; the before/after is logs/09, and both phases of the
+  script print NTPSynchronized=yes (logs/07).
 
 ## Known gaps before the gate
 
@@ -280,3 +282,22 @@ requires:
 | LibreOffice's application id is the window number, not libreoffice-writer | task UNITY-20260929-001 |
 | "Could not get desktop file" still logged on some starts | the race this fix tolerates; following bamf's re-match is UNITY-20260929-001. 0 of 20 today, 5 of 20 in logs/05 |
 | mechanism 1 seen only on LibreOffice | not a gap of the fix: the fallback is the one already used for a window without a desktop file; no other application measured, none reported |
+| side effects of the fallback id (no HUD icon, usage history under the window number) | task UNITY-20260929-001, which gives the window its application id |
+| bamf's temporary application lacks its interface for a moment | closed with a reason: bamf's own behaviour (re-match on a class change, by design); the fix tolerates it instead of tracing it |
+
+## Verifier round on the gated build (2026-10-02): PASS
+
+The independent Verifier re-measured the manifest against the chroot
+sidecar and the tarball itself, the source (ef39a8d, tree 82b6b13d… = the
+tested 0e99dca's tree, resolved in the base checkout), the sbuild log (6 of
+6, sha256 as recorded), all 24 artifacts, the payload comparison (identical
+to logs/08), the tested .debs against the tested manifest, the target
+record (binaries equal the .deb's files, 20 of 20 in the stack, 19 of 20
+answered, NTP synchronised, no deleted mapping), the gaps table against
+the follow-ups, and the evidence (PASS, REVIEWED).
+
+Remarks, applied: the `~/.dirty` check before the script is now stated in
+logs/07 and above; the clock measurement before the rollback is logs/09;
+two more rows in the table (the fallback's side effects, bamf's momentary
+interface gap). The tested commit 0e99dca lives only in the base checkout's
+packages/hud history; the gated commit ef39a8d has the same tree.

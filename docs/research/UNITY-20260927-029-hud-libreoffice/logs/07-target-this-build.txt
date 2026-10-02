@@ -1,5 +1,6 @@
 # UNITY-20260927-029 target test (this_build) on target2 from Clean-2: our repository (InRelease sha256 26352d400896235e…, Date Fri, 2 Oct 2026 15:41:07 UTC) full-upgrade, then the gated hud +unity2 .debs from a file repository
 # builder utc 2026-10-02T15:49:29Z
+# before the script (15:38Z, same boot 742fa9de): ssh target2 'ls ~/.dirty' -> "No such file or directory" (the Clean-2 state), then touch ~/.dirty; so the script's marker line below says PRESENT. Clock before/after the rollback: logs/09.
 == install unity2 host=target2 boot=742fa9de-aaec-445c-8b23-ebf4f05b66fa utc=2026-10-02T15:49:29Z
 == clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 18:49:29 EEST 
 == snapshot marker: ~/.dirty PRESENT

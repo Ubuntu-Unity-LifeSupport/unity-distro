@@ -1,0 +1,43 @@
+{
+  "task_id": "UNITY-20260927-029",
+  "package": "hud",
+  "target_series": "resolute",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity2",
+  "source_commit": "ef39a8d5a5a036ddad83952c508b98cc3b9f3708",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-029",
+  "version_safety": "",
+  "version_check": "docs/research/UNITY-20260927-029-hud-libreoffice/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-029-hud-libreoffice/logs/07-target-this-build.txt",
+    "debs": {
+      "gir1.2-hud-2_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "67dddbf0dded460b3abf4666b572ce44f266d31208380a7ee0fd4553625dfede",
+      "gir1.2-hud-client-2_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "704a819c9d61d6e2abfe42b5016f040526285b236c99e6dfc4840b347c7b0f41",
+      "hud-doc_14.10+17.10.20170619-0ubuntu6+unity2_all.deb": "050500c15e92f043727ac94398bc3121d41b7e0ce5ab6bf18b3dd7c4e0b43bb8",
+      "hud-tools_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "904e2f03c0fab5f9f07d539f6de92aa73d3a7c746e5fb47db61cf6263fa022f0",
+      "hud_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "b3321894eabef4a0727cd13b1ddf292f17ebff6585704574c95577ae84ead22c",
+      "libhud-client2-dev_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "b0426345bbb3cfa7f543d1400c55235f5f369187d7fe5ed2d293332d69fa1547",
+      "libhud-client2-doc_14.10+17.10.20170619-0ubuntu6+unity2_all.deb": "9982c82645a9d9c05210d60b9aca1221a9d6b06af58daff26bddbb4b0a8861d7",
+      "libhud-client2_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "901d7891f005025a0dad4365508bea8c7f50d08db3eff23c7305dc0a2fc394bc",
+      "libhud-gtk1-dev_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "a0694c776dbd56544e8787e2bcbecf0663554ba759f7c36c9e2fd75f3ac4bc37",
+      "libhud-gtk1-doc_14.10+17.10.20170619-0ubuntu6+unity2_all.deb": "29fad5e8fe34a6c7cad783a8841d6bd205abf943999534b8ce2be407f19ef426",
+      "libhud-gtk1_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "d94d6415682dbe00e027fa21befa8950d538e0142ae35ae5f02e6e1f63deb4f6",
+      "libhud2-dev_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "a21763f390242b58c47c067053478c52ddb627dbe13bfad3173f7d52d79c154c",
+      "libhud2-doc_14.10+17.10.20170619-0ubuntu6+unity2_all.deb": "f7950e0f17f27dfd5a40121eadbb335e9275cff47b45c3400c4d4142c2511a59",
+      "libhud2_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "ef5804d276e558f3ce33158cc2755f8855a9e16a72997205717a9775d0a1fdbe"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-029-hud-libreoffice/README.md",
+    "verification_record": "docs/research/UNITY-20260927-029-hud-libreoffice/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}
