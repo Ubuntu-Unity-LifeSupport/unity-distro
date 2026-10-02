@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-022",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity9",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20260928-022",
+  "source_commit": "57945f5eb580fef0e45ae7ad0fe063f6bb9278e3",
+  "source_tree_hash": "a68850b79a85b27fb2cdbdacc8ef40e7f18b5981",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260928-022"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260928-022-usd-power-registrations/build-gated/UNITY-20260928-022-unity-settings-daemon-build-manifest.json",
+    "sha256": "0a0ce07c8d0d53938bc0a14a12ec4e1e38e93498ec3e3d11b7e8fc5cc58d4b0f"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260928-022-usd-power-registrations/gate/evidence-manifest.json",
+    "sha256": "22158d4a464f975a6ae7923eaebf6c0db06a5ae99130c8b798c356f195c21520"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20260928-022-usd-power-registrations/runs-gated/README.txt",
+        "sha256": "2148e11498c364d22b0984906435e5b648932081d36e95444a6fa77b00d71bf6"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb": "57e86ee97ee0407850cfcfee0a4aff0f014bfb47392683fc1c6d0de7962099a4",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity9_all.deb": "7b4ad0e7a6d2b5647886a6d812c7a80c34ef92493ab99a53a43e0667186f590d",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb": "c56cad4bc58849d2e2d9fba2cae905333558b8679a645a6c4f524d5410d92a42"
+      }
+    }
+  }
+}

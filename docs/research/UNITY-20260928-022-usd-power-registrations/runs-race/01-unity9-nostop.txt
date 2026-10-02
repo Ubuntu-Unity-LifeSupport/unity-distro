@@ -1,0 +1,14 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9, mode nostop, 18:48:41
+after start: owner (':1.93',)
+after plugin off/on: owner (':1.93',)
+Power Get Icon: (<''>,)
+START-RETURNED bus_cancellable=0x55555562faa0
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+u-s-d back under systemd: owner (':1.99',)

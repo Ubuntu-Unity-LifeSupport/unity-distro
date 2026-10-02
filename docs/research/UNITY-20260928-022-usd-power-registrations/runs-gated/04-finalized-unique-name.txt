@@ -1,0 +1,7 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2200 unique name :1.32
+  org.gnome.SettingsDaemon.Power.Screen.GetPercentage via :1.32: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не сущест
+  org.freedesktop.DBus.Properties.Get via :1.32: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не сущест
+STOP-CALLED
+AFTER-CONTINUE
+#0  __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+u-s-d pid 2200 alive: yes; crash reports: 0

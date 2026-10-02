@@ -1,0 +1,10 @@
+## start 2026-10-02 18:27:56 pid 2200
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'UnknownMethod': 12092, 'not running': 36306, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 390}
+  u-s-d pid now: 2200 (was 2200); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 74693, 'not running': 37251}
+  u-s-d pid now: 2200 (was 2200); NRestarts 0
+== journal since 2026-10-02 18:27:56
+  crash files: 0
+  active: true
