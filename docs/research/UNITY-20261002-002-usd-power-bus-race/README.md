@@ -78,9 +78,39 @@ against the next good boot:
   (`10_ubuntu-settings.gschema.override` sets other power keys only); the
   key is stored `true` in the user db and defaults to `true`.
 
-Candidate: a GSettings "changed" for `active` reading false, or a changed
-storm after the user db was replaced (see the existing-fix sweep). Not shown.
-Further natural boots: `runs/boots-unity9-b/`.
+A documented path to `plugin_enabled_cb ("active")` at session start exists
+(sweep, 2026-10-02): dconf's `dconf_engine_watch_established` emits a change
+for every key under the watched path when another process's write lands
+while a GSettings object's subscription is being set up ("SHM invalidated
+while establishing subscription ... signalling change"; dconf 0.29.1 narrowed
+it from "/" to the watched path, GNOME/dconf#41). compiz writes dconf in
+that window. That gives a "changed" on `active`; a stop still needs the
+read to return false, and the sweep found no path for that on a valid user
+db (reads go through the lower sources only when the user gvdb fails to
+open). So: a "changed" on `active` in the window is expected; the false
+read is **not shown**. Further natural boots: `runs/boots-unity9-b/`.
+
+## Existing fix: NOT_FIXED (sweep 2026-10-02, 20 min, read-only)
+
+- gnome-settings-daemon: 3.8.6 has the same `register_manager_dbus` from
+  `_new()` and the cancel in `stop()`; 9166afdb (2014, "power: Call stop from
+  finalize", Ubuntu's LP: #1567116 fix) and the 2017 renames keep it. The
+  case was removed structurally: caf51f50 (3.23.2, 2016) "main: Remove
+  ability to start/stop individual plugins" - one process per plugin, stop()
+  only at exit. 015fe8ef / a212e6d7 (2025, GApplication port, issue #867)
+  move registration out of `_new()`. Neither is a fix we can carry: our
+  daemon is the 3.8-era monolith with the `active` keys.
+- unity-settings-daemon: no Launchpad bug for the missing Power name or dead
+  brightness keys until restart (searches: brightness, power,
+  SettingsDaemon.Power, no owner, not registered); LP: #1567116 is the crash
+  in `stop()` on unload, fixed 2016. Archive: resolute 0ubuntu6; stonking
+  26.10.1ubuntu.build1 (2026-09-22, no-change rebuild) - not checked for this
+  code, same lineage.
+- cinnamon-settings-daemon's csd-power: the same async `g_bus_get` from
+  `_new()` with a cancel in `stop()`, but `stop()` runs only at process exit
+  (daemon-skeleton): no re-start path, so the gap cannot happen there.
+- Gaps: issue comment threads not readable (dconf#41, glib#2174, g-s-d #867);
+  -proposed and PPAs not checked.
 
 ## Evidence card
 
