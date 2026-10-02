@@ -6,7 +6,13 @@
 # valgrind log (argument) and the race script's report on stdout.
 # usage: race-under-valgrind.sh LOGFILE   (needs ~/kbdrace.py in /tmp and
 # ~/keyboard-toggle-race.sh, as the -022 tools are installed on target)
+# The bpftrace tracer (u002-trace.service) must not run meanwhile: its
+# uprobes put int3 into libpower.so's code, and valgrind, translating the
+# code itself, executes them as real breakpoints (SIGTRAP at the first
+# probed function, gsd_power_manager_new). Stop it before, start it after.
 . ~/envt.sh; L=${1:?logfile}
+sudo -n systemctl stop u002-trace.service 2>/dev/null
+trap 'sudo -n systemctl start u002-trace.service 2>/dev/null' EXIT
 C=$(pgrep -x compiz)
 eval "export $(tr '\0' '\n' < /proc/$C/environ | grep -E '^(DISPLAY|XAUTHORITY|XDG_CURRENT_DESKTOP|XDG_SESSION_TYPE|XDG_SESSION_ID|DESKTOP_SESSION|GDMSESSION)=' | tr '\n' ' ')"
 systemctl --user stop unity-settings-daemon.service 'app-unity\x2dsettings\x2ddaemon@autostart.service' 2>/dev/null
