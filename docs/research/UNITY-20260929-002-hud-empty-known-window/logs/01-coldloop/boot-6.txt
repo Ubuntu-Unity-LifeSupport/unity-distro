@@ -1,0 +1,51 @@
+# boot 6 2026-10-02T20:51:46Z
+boot_id=18ebb055-491b-4d74-8218-cca56be39426 uptime=154.01
+hud-service pid=3934 window-stack-bridge pid=2301 bamfdaemon pid=2281
+## run: run 1: xid=65011748 in_window_stack=1 app_id=65011748 hud_now=1 hud_after_5s=1 no_desktop_file=0
+## GMenu window properties now, through window-stack-bridge, for the run's xid (what hud-service read once at WindowCreated)
+xid_now=
+Ошибка при анализе параметра 1 типа «u»: expected value:
+  (empty input)
+  ^
+
+## bamf window stack after the run
+([(uint32 31457320, '31457320', false, uint32 0), (65011748, '65011748', true, 0), (58720258, 'compiz', false, 0), (58720259, 'compiz', false, 0), (58720260, 'compiz', false, 0), (58720261, 'compiz', false, 0), (58720262, 'compiz', false, 0)],)
+## journal since boot: hud-service, window-stack-bridge, bamfdaemon, bamf activation
+жов 02 23:50:51.109973 target2 dbus-daemon[1279]: [session uid=1000 pid=1279 pidfd=5] Activating via systemd: service name='org.ayatana.bamf' unit='bamfdaemon.service' requested by ':1.50' (uid=1000 pid=2301 comm="/usr/lib/x86_64-linux-gnu/hud/window-stack-bridge" label="unconfined")
+жов 02 23:50:51.839388 target2 dbus-daemon[1279]: [session uid=1000 pid=1279 pidfd=5] Successfully activated service 'org.ayatana.bamf'
+жов 02 23:50:52.140389 target2 window-stack-bridge[2301]: QDBusConnection: name 'org.ayatana.bamf' had owner '' but we thought it was ':1.39'
+жов 02 23:51:53.871237 target2 hud-service[3934]: void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher*): "Не существует интерфейса “com.canonical.dbusmenu” на объекте по пути /org/ayatana/bamf/window/60817409"
+жов 02 23:52:07.074802 target2 hud-service[3934]: QCoreApplication::postEvent: Unexpected null receiver
+## bamfwatch files of this boot
+    2.011 ViewOpened window /org/ayatana/bamf/window/60817409
+    2.041    Parents -> ['/org/ayatana/bamf/application/0x63af0ed18df0']
+    2.043    DesktopFile -> 
+    2.043 ViewOpened application /org/ayatana/bamf/application/0x63af0ed18df0
+Traceback (most recent call last):
+  File "/home/mike/b029/bamfwatch.py", line 28, in on_signal
+    view, kind = params.unpack()
+    ^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+   15.553 ViewClosed window /org/ayatana/bamf/window/60817409
+   15.553 ViewClosed application /org/ayatana/bamf/application/0x63af0ed18df0
+Traceback (most recent call last):
+  File "/home/mike/b029/bamfwatch.py", line 28, in on_signal
+    view, kind = params.unpack()
+    ^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+   18.456 ViewOpened window /org/ayatana/bamf/window/65011748
+   19.118    Parents -> ['/org/ayatana/bamf/application/0x63af0ed49650']
+   19.237    DesktopFile -> 
+   19.237 ViewOpened application /org/ayatana/bamf/application/0x63af0ed49650
+Traceback (most recent call last):
+  File "/home/mike/b029/bamfwatch.py", line 28, in on_signal
+    view, kind = params.unpack()
+    ^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 0)
+   19.244 ActiveWindowChanged  /org/ayatana/bamf/window/31457320
+   19.244 ActiveWindowChanged /org/ayatana/bamf/window/65011748 
+   19.244 ActiveApplicationChanged /org/ayatana/bamf/application/0x63af0ed49650 
+   19.517 ViewClosed application /org/ayatana/bamf/application/0x63af0ed49650
+   19.522 ViewOpened application /org/ayatana/bamf/application/746707297
+   19.522 ActiveApplicationChanged /org/ayatana/bamf/application/746707297 
+   20.127 RunningApplicationsChanged [] ['/usr/share/applications/libreoffice-writer.desktop']
