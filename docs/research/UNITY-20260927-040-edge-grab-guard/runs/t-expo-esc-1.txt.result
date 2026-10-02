@@ -1,0 +1,1 @@
+expo-esc border@901,377 xterm 400x290+500+232 -> 400x290+500+232 | pointer before click: x:0 y:207 | during: pointer=GRABBED keyboard=GRABBED | after: pointer=GRABBED keyboard=free | click@-1080,207 reached=0 pointer=GRABBED keyboard=free

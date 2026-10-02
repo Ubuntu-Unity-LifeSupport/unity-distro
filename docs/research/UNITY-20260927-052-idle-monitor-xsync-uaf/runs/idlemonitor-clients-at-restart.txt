@@ -1,0 +1,5 @@
+# dbus-monitor --session interface=org.gnome.Mutter.IdleMonitor for 40 s around systemctl --user restart unity-settings-daemon (2026-09-28 ~04:53 EEST): only the monitor's own NameAcquired signals, no AddIdleWatch/AddUserActiveWatch/RemoveWatch call.
+signal time=1790560410.873492 sender=org.freedesktop.DBus -> destination=:1.165 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.165"
+signal time=1790560410.873531 sender=org.freedesktop.DBus -> destination=:1.165 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.165"

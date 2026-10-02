@@ -1,0 +1,21 @@
+== u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5, pid 7739
+== B: kept client, two others leave, then input, then idle
+watch id 6 from :1.168
+watch id 7 from :1.169
+  after the two departures (05:07:32): pid 
+  input at 05:07:32
+  listener: listener :1.167: user-active id=4, idle id=5
+  listener:    0.0s WatchFired id=5 (idle 4000 ms)
+== C: RemoveWatch then exit, twice
+watch id 4 from :1.172
+removed watch 4
+watch id 5 from :1.173
+removed watch 5
+  daemon survived (pid 8053)
+== A: two clients leave without RemoveWatch
+  watch id 6 from :1.174
+  watch id 7 from :1.175
+  u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5: pid 8053 -> 8152: DIED
+    вер 28 05:08:05.905584 mike-virtualbox unity-settings-daemon-localeexec[8053]: double free or corruption (!prev)
+    вер 28 05:08:07.444467 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+    вер 28 05:08:07.598078 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 2.

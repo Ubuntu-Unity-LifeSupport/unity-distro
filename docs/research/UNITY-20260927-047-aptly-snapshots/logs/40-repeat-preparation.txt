@@ -1,0 +1,31 @@
+# 2026-09-29T09:57:10Z B b7902aab: live list before the repeat preparation (live-list.py)
+files 633, entries 1237
+list sha256 (sha256sum format, sorted by path): e09a4db711a20d349db591a08e37b57b9e5673bd79636e0260d3b3ab81170aa1
+newest mtime 2026-09-28T13:09:08Z db
+newest ctime 2026-09-28T13:09:08Z db
+
+# keep-run1.py
+moved /var/tmp/aptly-rehearsal/aptly.conf -> /var/tmp/aptly-rehearsal/run1/aptly.conf
+moved /var/tmp/aptly-rehearsal/aside-r8b -> /var/tmp/aptly-rehearsal/run1/aside-r8b
+moved /var/tmp/aptly-rehearsal/backup-r4 -> /var/tmp/aptly-rehearsal/run1/backup-r4
+moved /var/tmp/aptly-rehearsal/backup-r4.sha256 -> /var/tmp/aptly-rehearsal/run1/backup-r4.sha256
+moved /var/tmp/aptly-rehearsal/incoming -> /var/tmp/aptly-rehearsal/run1/incoming
+moved /var/tmp/aptly-rehearsal/state -> /var/tmp/aptly-rehearsal/run1/state
+/var/tmp/aptly-rehearsal now: ['run1']; /var/tmp/aptly-rehearsal/run1: ['aptly.conf', 'aside-r8b', 'backup-r4', 'backup-r4.sha256', 'incoming', 'state']
+
+# prepare-rehearsal.py (KEPT=run1)
+/srv/aptly files before: 633
+/var/tmp/aptly-rehearsal exists, kept: ['run1']
+binary packages (Packages index): 258
+source packages (.dsc in pool): 27; their other files copied: 48
+incoming files: 333
+aptly.conf: {"rootDir": "/var/tmp/aptly-rehearsal/state", "downloadConcurrency": 4, "architectures": ["amd64"], "gpgDisableSign": false, "gpgDisableVerify": false, "FileSystemPublishEndpoints": {}}
+/srv/aptly files after: 633; unchanged: True
+prepare rc=0
+
+# live list after the preparation
+files 633, entries 1237
+list sha256 (sha256sum format, sorted by path): e09a4db711a20d349db591a08e37b57b9e5673bd79636e0260d3b3ab81170aa1
+newest mtime 2026-09-28T13:09:08Z db
+newest ctime 2026-09-28T13:09:08Z db
+before == after (byte-identical lists)

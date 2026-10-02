@@ -1,0 +1,233 @@
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6907
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity12
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity12), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64.deb
+Size: 1862682
+MD5sum: 2cb3aeeb052b4896598752a9bbf69640
+SHA1: 6f733471eb6afda71a1978a33d10ab26bd57894c
+SHA256: b37ed00db987239eaf2b5d2752a6a977b9a95643fe675116663d95694d8a2439
+SHA512: afc12db07d799a63c2d54f06116a0c27c21eca40b02f78b696774d5fabfa23d1b5e599ab8723602c1cc5e3a7f201fda32afc66b86dc8ad047fd49b27902659b4
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6907
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity11
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity11), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity11_amd64.deb
+Size: 1861488
+MD5sum: 140ed75c3f3d5e5e7c813db04ba3014e
+SHA1: aec1ab14e20be2728596130d72f921c6ec58de91
+SHA256: a55f069e61126bba93f39029befc94eda28fcfc14c784bda82745a145fa76d82
+SHA512: c49f3096347dfe417f2a15384f7c42c4903830fa1a444787b0481e1c2caf9ec4f36534c90e2dcc78792bec2d7c7a38d2dcb500a7ada27758bb49fad1daa729cb
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6907
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity10
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity10), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity10_amd64.deb
+Size: 1861370
+MD5sum: 6074a0b18a11eb9b855e13e550ea2b75
+SHA1: 690f47bec16abb33e20fe878a87aab93ff8ebc12
+SHA256: bcd2e2ff3eee094d03d183c2fe3c5a47b82c1a2438b5d48abe359879dc785987
+SHA512: fe9d490175ec2786e7075fb37fccc891206f274eb8c3807714fa71a11f18277e8da275f22e90fb0cb915d7848039ecceb721acb87767e31acc0d130e5cd7b073
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6907
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity9
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity9), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity9_amd64.deb
+Size: 1861346
+MD5sum: 2f8fd736804ba3eacc6a977e6d96a214
+SHA1: 97c8a4bd1d62c4dea55598cb7d8070c14651ed46
+SHA256: 6c1d9360a12dbfb73ac5c341faf44d21816107a7361629e6b40cf43c92bf31af
+SHA512: 0083c1651e4e9a3b5f5e8d2d42a1b937b266adf78e4930e05c1f41dd2e12d9e4bc626232eb09824d99787f02af39ce9d070ef27171ee93aed314ae8a0a08706d
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6907
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity8
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity8), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity8_amd64.deb
+Size: 1862462
+MD5sum: 349a10b4cc2972206c7c2bcbf08491d4
+SHA1: 69a707486a7b4d5ca331e5af40b50b3b98fd10ea
+SHA256: 6fdef4df2817a6a65e35770886393d925dcf039365b32d7684beb57a86384710
+SHA512: 902b90388d63eb871b7617dfae26fc632c89d889aab68bc27d5c03f526d160ac0bec194fa5d69f48c5f46db474d9d47bb24c37474db71460dc12889556eb088c
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6906
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity5
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity5), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity5_amd64.deb
+Size: 1861034
+MD5sum: 0c48ba140f33d85867e931a43de7a576
+SHA1: dc27200810da633efcc7b42feec351442150566a
+SHA256: fd2df7b3eed41f8f81d6c786bc2b096f9bca11847273af337887d29006bdd157
+SHA512: f325545f724b4358ae5793fd01c69f5ccc44bd308a3a8d4917eb1b43a0ad7f354e173f0d2906c18ae3bffa663edf16005dde4e3c21e74a1d028448a21f38af48
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6906
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity4
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity4), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity4_amd64.deb
+Size: 1860980
+MD5sum: 9ce23cd22938ce04db7a58fab9695607
+SHA1: b882958980b2cfedbf5967e9106b528e855812ee
+SHA256: 500e90bca65af4ade5d636f65e8bf90839ebead1371ca629006ef0648a09e1fb
+SHA512: 2b2d141fe72c3c90f1d0768841ee68a3f55c4f8f9cfee74a34ff632abdba6b8c332aa8d95b52b9c89c1940d641c77cccca9061a8a5bd432cb542e770e1e84f68
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6906
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity2
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity2), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity2_amd64.deb
+Size: 1860678
+MD5sum: 14b3459480b0319644ca5b40266c048d
+SHA1: 01f54c235c3d0dd62deaac2f7eba43750ed9335f
+SHA256: d423774532105857040a51f6b2f79d873b58541e1b21d5f3346f4ea9d14a0a48
+SHA512: 672f122184b8fb9dfd887c5e40d03a68fd46ada8e870294769f495c9e9265fbbcaa38fcc0939daf9a3c221ad40cc37803bc7a616736eff7e861b5f8bb2db8f6e
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity
+
+Package: unity
+Priority: optional
+Section: gnome
+Installed-Size: 6906
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity1
+Replaces: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~)
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), libsigc++-2.0-0v5 (>= 2.8.0), libstdc++6 (>= 14), libunity-core-6.0-9 (= 7.7.1+26.04.20260306-0ubuntu3+unity1), libunity-misc4 (>= 4.0.2), libunity-protocol-private0 (>= 7.1.4+19.04.20190319), libunity-settings-daemon1 (>= 14.04.0), libx11-6 (>= 2:1.2.99.901), libxext6, libxfixes3 (>= 1:5.0.1-1), libxi6 (>= 2:1.7.1.901), libxrender1 (>= 1:0.9.12), libzeitgeist-2.0-0 (>= 0.9.9), python3:any, compiz, compiz-core-abiversion-20180221, libnux-abiversion-20140307.0, compiz-plugins-default, gsettings-ubuntu-schemas (>= 0.0.7+17.10.20170922), unity-settings-daemon-schemas (>= 15.04.1+19.10.20190921-0ubuntu3), libglib2.0-bin, nux-tools, python3-gi, dconf-cli, unity-asset-pool (>= 0.8.18), unity-greeter, bamfdaemon, unity-scope-home
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+Breaks: compiz-gnome (<< 1:0.9.13.1+19.04.20190208-0ubuntu1~), ubuntu-session (<< 3.24.1-0ubuntu3~), unity-lens-applications (<< 5.12.0-0ubuntu2), unity-lens-files (<< 5.10.0-0ubuntu2), unity-lens-music (<< 6.0.0), unity-lens-video (<< 0.3.6-0ubuntu2)
+Filename: pool/main/u/unity/unity_7.7.1+26.04.20260306-0ubuntu3+unity1_amd64.deb
+Size: 1860606
+MD5sum: a0ed067a293afb91fd0f40ced9b49ad2
+SHA1: 16e8a9b3a831c578af69e1bebfd27e529a82350d
+SHA256: 166f0e929b3c250c88f126415cf76104d93e9c401eac3b3771f21de03b926f10
+SHA512: 86ab909bf9540f0b8a93a83319bb96f5eefdb2903be4832e8b40c1c553c92ce71004220fec8ae17144393a045ddf6255f46374722ccbd447dd5bb754e1913922
+Description: Interface designed for efficiency of space and interaction.
+ Unity is a desktop experience that sings. Designed by Canonical and the Ayatana
+ community, Unity is all about the combination of familiarity and the future. We
+ bring together visual design, analysis of user experience testing, modern
+ graphics technologies and a deep understanding of the free software landscape
+ to produce what we hope will be the lightest, most elegant and most delightful
+ way to use your PC.
+Homepage: https://launchpad.net/unity

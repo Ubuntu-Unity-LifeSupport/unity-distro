@@ -6,7 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py\""
+            "command": "/usr/bin/timeout -s KILL 20 /usr/bin/python3 -I /home/claude/unity-distro/.claude/hooks/command_guard.py >/dev/null || { rc=$?; [ \"$rc\" -eq 2 ] || echo \"command_guard did not decide (rc=$rc); tool call blocked.\" >&2; exit 2; }",
+            "timeout": 30
           }
         ]
       }

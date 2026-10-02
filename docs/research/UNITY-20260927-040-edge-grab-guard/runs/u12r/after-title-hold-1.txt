@@ -1,0 +1,87 @@
+Attached 14 probes
+READY
+530 PUSH-GRAB wall
+530 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+531 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+888 REMOVE-GRAB
+888 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+888 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+1501 PUSH-GRAB wall
+1501 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1501 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1868 REMOVE-GRAB
+1869 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+1869 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+2851 UNITY-SEES ButtonPress window=0x3200163 button=1
+2851 GRABEDGE-DOWN button=1
+3027 EDGE-DOWN button=1
+3027 XUNGRABPOINTER
+        XUngrabPointer+0
+        0x7d1646520903
+        unity::glib::Source::SourceCallback(void*)+32
+        0x7d166290aa71
+
+3027 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        0x7d1646520903
+        unity::glib::Source::SourceCallback(void*)+32
+        0x7d166290aa71
+
+3029 PUSH-POINTER-GRAB move
+3029 XGRABPOINTER
+        XGrabPointer+0
+        0x7d1658553031
+        MoveScreen::handleEvent(_XEvent*)+2189
+        CompScreen::handleEvent(_XEvent*)+103
+
+3993 UNITY-SEES ButtonRelease window=0x3200163 button=1
+3993 REMOVE-GRAB
+3993 XUNGRABPOINTER
+        XUngrabPointer+0
+        0x7d1658551d1f
+        MoveScreen::handleEvent(_XEvent*)+437
+        CompScreen::handleEvent(_XEvent*)+103
+
+5493 UNITY-SEES ButtonPress window=0x32001ae button=1
+
+

@@ -1,0 +1,42 @@
+Attached 14 probes
+READY
+4287 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7d915c108c1b
+
+4347 RESIZE-INITIATE state=1
+4347 PUSH-GRAB resize
+4347 XGRABPOINTER
+        XGrabPointer+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3141
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+4349 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3141
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+6573 UNITY-SEES ButtonPress window=0x300010c button=1
+6573 EDGE-DOWN button=1
+6960 UNITY-SEES ButtonRelease window=0x300010c button=1
+6961 RESIZE-TERMINATE state=8
+6961 REMOVE-GRAB
+6962 XUNGRABPOINTER
+        XUngrabPointer+0
+        ResizeLogic::terminateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+455
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+
+6962 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+        CompScreen::handleEvent(_XEvent*)+103
+
+13663 UNITY-SEES ButtonPress window=0x300001a button=1
+
+

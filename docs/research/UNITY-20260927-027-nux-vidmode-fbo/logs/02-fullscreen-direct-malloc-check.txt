@@ -1,0 +1,20 @@
+# fullscreen-direct 1280 800 on target2 under glibc malloc checking (LD_PRELOAD=libc_malloc_debug.so.0
+# GLIBC_TUNABLES=glibc.malloc.check=3), 3 runs, then gdb bt. Archive libnux 0ubuntu12.
+display before: (nil)
+CreateGLWindow(1280 x 800, fullscreen) -> 0x...
+free(): invalid pointer
+exit=134
+display before: (nil)
+CreateGLWindow(1280 x 800, fullscreen) -> 0x...
+free(): invalid pointer
+exit=134
+display before: (nil)
+CreateGLWindow(1280 x 800, fullscreen) -> 0x...
+free(): invalid pointer
+exit=134
+# gdb (frames 7-13):
+#7  __GI___libc_fatal (message="free(): invalid pointer")
+#10 __debug_free (mem=0x555555596f70) at ./malloc/malloc-debug.c:193
+#11 XFree () at /usr/lib/x86_64-linux-gnu/libX11.so.6
+#12 nux::GraphicsDisplay::~GraphicsDisplay() () at /usr/lib/x86_64-linux-gnu/libnux-graphics-4.0.so.0
+#13 main (argc=3, argv=...) at fullscreen-direct.cpp:29

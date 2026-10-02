@@ -1,0 +1,10 @@
+== /home/oem/oemconfig-a.tar.gz: /etc/sudoers -rw-r--r-- 644 root:root
+sudo-rs -n true: ok
+sudo.ws -n true: ok
+visudo(rs) -c: visudo: /etc/sudoers: bad permissions, should be mode 0440, but found 0644 
+visudo(ws) -c: /etc/sudoers: bad permissions, should be mode 0440 /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK 
+== /home/oem/oemconfig-u3.tar.gz: /etc/sudoers -r--r----- 440 root:root
+sudo-rs -n true: ok
+sudo.ws -n true: ok
+visudo(rs) -c: /etc/sudoers: parsed OK 
+visudo(ws) -c: /etc/sudoers: parsed OK /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK 

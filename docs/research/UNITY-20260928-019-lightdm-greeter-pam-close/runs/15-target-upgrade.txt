@@ -1,0 +1,26 @@
+userdel: почтовый ящик utest (/var/mail/utest) не найден
+id: 'utest': no such user
+apt-get update: no E/W
+Date: Tue, 29 Sep 2026 17:06:28 UTC
+lightdm:
+  Установлен: 1.32.0-6ubuntu4+unity2
+  Кандидат:   1.32.0-6ubuntu4+unity2
+  Таблица версий:
+ *** 1.32.0-6ubuntu4+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1.32.0-6ubuntu4+unity1 500
+Получено 236 kB за 0с (10,7 MB/s)
+Настраивается пакет liblightdm-gobject-1-0:amd64 (1.32.0-6ubuntu4+unity2) …
+Настраивается пакет lightdm (1.32.0-6ubuntu4+unity2) …
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 3 пакетов не обновлено.
+liblightdm-gobject-1-0:amd64	1.32.0-6ubuntu4+unity2
+lightdm	1.32.0-6ubuntu4+unity2
+815531b0f5038fc28b3d76cd6b384e09daabaed0c310e68fe7834cee74673570  /usr/sbin/lightdm
+2026-09-29 20:08:14
+liblightdm-gobject-1-0:amd64	1.32.0-6ubuntu4+unity2
+lightdm	1.32.0-6ubuntu4+unity2
+active
+3 1000 mike seat0 1233 user    - no -
+815531b0f5038fc2
+err-lines: 0

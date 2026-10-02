@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "pockets",
+  "source_package": "calamares-settings-ubuntu",
+  "measured_at": "2026-09-29T17:56:05Z",
+  "sources_file": "/home/claude/work/b/unity-distro-041/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "releases": [
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "48b5f2957d6c33368fc3b38a24c35d2a0824ee09ac2b5ffbf7dea669cc1be3e6",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Mon, 28 Sep 2026 21:59:18 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "6e0189bb412cdc3947e5f30aeb6ebf075e1b91703dbe01c533620c0ba6ed642e",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 13:07:19 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "f018bf6ae90ee14be2077c8814cb02ad14fb2a42c12a62823765fdefc83b94f9",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 15:24:44 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "4195b1924d630a559d542b80fbc386b801a593d806a0bd813990236a987cde2e",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 16:40:17 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "1:26.04.12"
+  },
+  "in_archive": true
+}

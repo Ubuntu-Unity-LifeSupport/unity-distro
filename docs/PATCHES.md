@@ -107,3 +107,104 @@ hud 14.10+17.10.20170619-0ubuntu6+unity2, 2026-09-29 (UNITY-20260927-029; the hu
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
 | hud | window-stack-bridge: keep a window whose application is gone (+unity2, af43552, in the tree; format 1.0) | bamf re-matches LibreOffice's window from a temporary application that closes; a DesktopFile() error on it dropped the window for good and the HUD was empty for LibreOffice in about a quarter of Writer starts. The window now gets its id as application id, as for an application without a desktop file. Three unit tests in TestBamfWindowStack (fail before / pass after); target2: 16/20 -> 20/20. | lp:hud (inactive); symptom LP: #1771173 | [`research/UNITY-20260927-029-hud-libreoffice/`](research/UNITY-20260927-029-hud-libreoffice/) | local |
+
+
+hud 14.10+17.10.20170619-0ubuntu6+unity3, 2026-09-29 (UNITY-20260927-028; the hud rows above are left as written). Source commit 2f2fa89 (B's local git tree packages/hud, on top of +unity2 0e99dca), non-native 1.0. Verification: independent Verifier PASS (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| hud | build flags: hud with C++14, only tests/ with C++17 (+unity3, 31fb59c, in the tree; format 1.0) | +unity1 had raised the whole project to C++17 while only resolute's googletest needed it. hud itself is compiled with C++14 again, as 0ubuntu6 was. File lists and every dynamic symbol are identical to +unity2; tests 6/6. | none (our build change) | [`research/UNITY-20260927-028-hud-cxx17-scope/`](research/UNITY-20260927-028-hud-cxx17-scope/) | local |
+
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| indicator-keyboard | +unity4: greeter input sources not rewritten without AccountsService data (`lib/main.vala`, `lib/input-sources.vala` `greeter_sources_known()` / `greeter_current()`, tests `greeter-sources-known`, `greeter-current`; branch `b/UNITY-20260928-014`, `949c6c3` + `5d6a8c5` on `10eb95c`) | While accounts-daemon restarts, the listed users are loaded with an empty cache for a fraction of a second. The greeter's `migrate_input_sources()` then wrote `sources=[]` and `current=4294967295` (`list.size - 1`); a stored 4294967295 came back after a reboot as the last layout. An instance started inside the reload window also never re-listed users. Now the pass is skipped while no counted user has data, redone on `ActUserManager::user-changed`; users are listed afresh; the manager `notify::is-loaded` handler exists in both start branches; sources are written before current, and only changed values. Verifier PASS (REVIEWED); target2 +unity3 3/3 window, +unity4 0/9 bad writes. Not in aptly (freeze #1). | not fixed in 26.10 (0ubuntu4); follow-up of LP: #2166139 | [`research/UNITY-20260928-014-ik-greeter-sources/`](research/UNITY-20260928-014-ik-greeter-sources/) | local, at the publication gate |
+
+
+lightdm 1.32.0-6ubuntu4+unity2, 2026-09-29 (UNITY-20260928-019; the lightdm row above is left as written). Source commit f5af23c on Ubuntu-Unity-LifeSupport/lightdm branch `a/UNITY-20260928-019` (patch db13faf, on +unity1 50a6a5d). Verification: independent Verifier PASS (REVIEWED). Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| lightdm | `session-child: finish the cleanup when SIGTERM arrives after the session ended` (quilt, `0010-...`, +unity2, on top of 0009) | A greeter is stopped by both logind and the daemon; the second SIGTERM usually reached session-child after `waitpid()`, where `signal_cb()` took `child_pid == 0` for "not started" and quit: the greeter's X authority removal and PAM close were skipped in most greeter stops, and the greeter's cookie could stay in lightdm's `.Xauthority`, opening the user's display as uid lightdm. A flag set after `waitpid()` now lets the cleanup finish, bounded by `alarm(10)`; before the session starts the handler still `_exit()`s. On target: 13/13 greeter stops complete, forced cases complete, blocked close ends after 10 s, user sessions unchanged; file lists identical to +unity1. | none (ours; not reported) | [`research/UNITY-20260928-019-lightdm-greeter-pam-close/`](research/UNITY-20260928-019-lightdm-greeter-pam-close/) | local |
+
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity2: `debian/changelog: restore the archive history; release +unity2` (branch `b/UNITY-20260927-021`, `c03daf4`, on `b6b546b`; native package) | Packaging defect of ours: +unity1 had replaced the whole archive `debian/changelog` (1491 lines) with 11 lines. +unity2 restores it byte for byte, with our two entries on top; the shipped changelog goes from 1 to 95 entries. The known issue #4 fix (basicwallpaper) is carried unchanged and revalidated (rt.sh 3/3). All 6 binaries are published (May, 2026-09-29), including calamares-settings-kubuntu/-lubuntu, whose patched basicwallpaper is unmeasured (UNITY-20260927-044). Verifier PASS (REVIEWED). | none | [`research/UNITY-20260927-021-calamares-oem-wallpaper/`](research/UNITY-20260927-021-calamares-oem-wallpaper/) | local, gated publication |
+
+
+lightdm 1.32.0-6ubuntu4+unity2 published 2026-09-29 17:06:28Z (UNITY-20260928-019; the "Not yet published" line above is left as written): live `./resolute` = snapshot `unity-resolute-20260928-019`, built by `scripts/build_sbuild.py` from `packages/lightdm` at f5af23c (payload identical to the verified build), gate on `a/UNITY-20260928-019` fdab8e3, Verifier short round on the gated build PASS (REVIEWED); target-desktop upgraded from the repository.
+
+
+calamares-settings-ubuntu 1:26.04.12+unity2 published 2026-09-29 16:10:23Z (UNITY-20260927-021; the calamares-settings-ubuntu +unity2 row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-021-r2`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at c03daf4 (build-r2). The gate is on `b/UNITY-20260927-021`.
+- 17:06:28Z: `./resolute` moved to `unity-resolute-20260928-019` (UNITY-20260928-019). That snapshot carries every -021 artifact byte for byte; `taskctl` confirmed this by content (UNITY-20260929-015).
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository;
+  - fresh Calamares OEM install;
+  - two cold first boots from snapshot `OEM-ready-unity2`: Calamares is on top, and the wallpaper is DESKTOP/BELOW and never focused.
+- Limit: apt does not deliver the fix to an OEM system that is already installed. basicwallpaper is unpacked from the installer medium's `oemconfig.tar.gz` and belongs to no package.
+- Record: `research/UNITY-20260927-021-calamares-oem-wallpaper/target-verification.md`.
+
+
+unity 7.7.1+26.04.20260306-0ubuntu3+unity12, 2026-09-29 (UNITY-20260927-040; the unity rows above are left as written). Source commit 7b0eca27 on Ubuntu-Unity-LifeSupport/unity branch `a/UNITY-20260927-040` (code 78153782, on `unity/resolute` 2040279d). Verification: independent Verifier PASS (REVIEWED) on the gated build. Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| unity | `decorations: Edge ignores presses while compiz lists any grab` (`decorations/DecorationsEdge.cpp`, +unity12; widens the +unity10 guard) | `Edge::ButtonDownEvent` releases the X pointer and keyboard with raw Xlib on every border or title-bar press; +unity10 stopped that only during move and resize. In expo a title drag or border press still ungrabbed behind compiz: expo missed its button release, stayed on compiz's grab list, and frame clicks froze the pointer (5/5 title drags on +unity11). The guard is now `screen->otherGrabExist(nullptr)`; move and resize already refuse `_NET_WM_MOVERESIZE` while another grab is listed, so only the harmful ungrab is removed. On target from the gated build: 0/5 stuck, replay 0/3, border, title bar, first press after expo, keyboard resize and the UNITY-20260927-001 set unchanged; packages identical to the tested build. | LP: #1393523 (the pointer freeze half; title-bar buttons in expo stay, UNITY-20260929-010) | [`research/UNITY-20260927-040-edge-grab-guard/`](research/UNITY-20260927-040-edge-grab-guard/) | local |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3, 2026-09-29 (UNITY-20260927-041; the calamares-settings-ubuntu rows above are left as written).
+- Source commit 221c691 on `Ubuntu-Unity-LifeSupport/calamares-settings-ubuntu` `b/UNITY-20260927-041`, on +unity2 c03daf4. Native package.
+- Built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu`, with resolute-updates/-security in the chroot. `-common`'s `snap-seed-glue-emb` is therefore statically built with snapd 2.76.3+ubuntu26.04.
+- Verification: independent Verifier PASS (INDEPENDENTLY_REPRODUCED).
+- Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| calamares-settings-ubuntu | +unity3: `Makefile: chmod the Ubuntu Unity sudoers.oem, to 0440; release +unity3` (branch `b/UNITY-20260927-041`, `221c691`) | The Ubuntu Unity section of the Makefile ran chmod on Kubuntu's `sudoers.oem`, so ours shipped 0644 in `oemconfig.tar.gz` and became `/etc/sudoers` in OEM mode, with a mode that `visudo -c` of sudo-rs and sudo.ws rejects. Now 0440 root:root, the mode of the distribution's own `/etc/sudoers`. Nothing else in the tarballs changes. Kubuntu/Lubuntu stay 0400, out of scope. | none (Launchpad search: no bug; 26.10 has the same line) | [`research/UNITY-20260927-041-calamares-oem-sudoers/`](research/UNITY-20260927-041-calamares-oem-sudoers/) | local, gated publication |
+
+
+calamares-settings-ubuntu 1:26.04.12+unity3 published 2026-09-29 18:15:21Z (UNITY-20260927-041; the "Not yet published" line above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-041`. It was built by `scripts/build_sbuild.py` from `packages/calamares-settings-ubuntu` at 221c691; the gate is on `b/UNITY-20260927-041`.
+- ~18:4xZ: `./resolute` moved to `unity-resolute-20260927-040` (UNITY-20260927-040). It carries the same 7 records; `taskctl` confirmed this by content.
+- Target verification PASS on `oem-test`:
+  - live ISO session with our repository, then a fresh Calamares OEM install;
+  - in OEM mode, `/etc/sudoers` is 0440 root:root, and `visudo -c` of sudo-rs and sudo.ws passes;
+  - `snap-seed-glue-emb`, statically built with snapd 2.76.3, was exercised;
+  - a cold first boot from snapshot `OEM-ready-unity3` shows Calamares on top.
+- Record: `research/UNITY-20260927-041-calamares-oem-sudoers/target-verification.md`.
+
+
+indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1+unity4 published 2026-09-29 21:51:54Z (UNITY-20260928-014; the "Not in aptly (freeze #1)" note in the row above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260928-014` (-040 plus 3 records).
+- Build: `scripts/build_sbuild.py` from `packages/indicator-keyboard` at 5d6a8c5 (`Ubuntu-Unity-LifeSupport/indicator-keyboard` `b/UNITY-20260928-014`), on the pinned chroot 20260929T201245Z. The payload is byte-identical to the build tested on target2.
+- Verifier round 3 on the gated build: PASS (INDEPENDENTLY_REPRODUCED).
+- target2, normal upgrade path: candidate +unity4 from our repository; the running binary after a reboot is the gated one.
+
+
+nux 4.0.8+18.10.20180623-0ubuntu15+unity3 published 2026-09-29 22:51:40Z (UNITY-20260927-027 with UNITY-20260928-020; the "Not yet published" line above is left as written).
+- Publication: live `./resolute` became snapshot `unity-resolute-20260927-027` (-014 plus 7 records).
+- Build: gated, from `packages/nux` at 0274bc5 (`Ubuntu-Unity-LifeSupport/nux` `b/UNITY-20260927-027`), on the pinned chroot 20260929T201245Z.
+- ABI: identical to +unity2, which unity +unity12 was built against.
+- Target test of this build on target2 (tested_build `this_build`): the fullscreen double-free reproduction passes 3 of 3.
+- After publication: a full-upgrade from Clean-2 through the repository, then compiz on the published libnux.
+- Verifier PASS.
+
+
+unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity7, 2026-10-02 (UNITY-20260927-012, with UNITY-20260927-052's +unity6 fix, which was never published separately). Source commit b570a22 on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch `a/UNITY-20260927-012` (format 1.0, fixes as git commits). Gated build on the pinned chroot 20260929T201245Z; its debs are byte-identical to the build tested on target. Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| unity-settings-daemon | `idle-monitor: don't free the XSync state when a D-Bus watcher leaves` (+unity6, `09f45d9`, UNITY-20260927-052) | `name_vanished_callback` ran when an org.gnome.Mutter.IdleMonitor client left the bus without RemoveWatch; it removed that client's watch and then freed the process-wide XSync state without resetting the pointer. The X event filter kept reading freed memory, and a second such client freed it again: glibc aborted the daemon ("double free or corruption"), 4/4 on +unity5 and 2/2 on archive 0ubuntu6 (`tools/two-clients.sh`). Now only the watch is removed, as in mutter's `name_vanished_callback` (mutter 3.10, where the code came from). | none (code present since the 2014 import; no bug found) | [`research/UNITY-20260927-052-idle-monitor-xsync-uaf/`](research/UNITY-20260927-052-idle-monitor-xsync-uaf/) | local |
+| unity-settings-daemon | `power: disconnect from the shared session and screensaver proxies` (+unity7, `7c5f234`, UNITY-20260927-012) | The power manager connected handlers to the process-wide session-manager proxy (g-properties-changed) and screensaver proxy (g-signal) with plain `g_signal_connect`, and `stop()` only dropped its references. After the session manager stopped the daemon and every plugin was finalized, a later property change (at logout or restart, when the session manager leaves the bus) ran `idle_configure()` on freed memory: SIGSEGV in `idle_is_session_inhibited()`. Both handlers are now disconnected in `stop()` and connected with `g_signal_connect_object`, as the color plugin does since +unity2. Also removes a +unity5 defect: every plugin off/on added another session callback. Under gdb on target (manager stopped, then an inhibitor or a killed cinnamon-session): no callback into the freed manager, no crash; power callbacks 2/0/2. Verifier PASS. | gnome-settings-daemon fb2ca61f (session proxy only), not in u-s-d | [`research/UNITY-20260927-012-usd-color-restart-crash/`](research/UNITY-20260927-012-usd-color-restart-crash/) | local, at the publication gate |
+
+
+Correction to the unity-settings-daemon +unity7 section of 2026-10-02 (UNITY-20260927-012; that section is left as written): in the `09f45d9` row, the 4/4 aborts on +unity5 were 1 run by hand and 3 runs of `tools/two-clients.sh`; the 2/2 on archive 0ubuntu6 were by the script.
+
+
+unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity9, 2026-10-02 (UNITY-20260928-022). Source commit 57945f5 on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch `a/UNITY-20260928-022`, on +unity7 `b570a22` (format 1.0, fixes as git commits; +unity8 was a test build, never published). Gated build on the pinned chroot 20260929T201245Z; its debs are byte-identical to the build tested on target. Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| unity-settings-daemon | `power: end D-Bus and async calls with the manager, answer when stopped` (+unity8, `27e75f4`), `power: answer keyboard calls when there is no backlight proxy` (+unity9, `df68430`) | The power plugin's D-Bus object outlived `stop()` and the manager: a call while stopped hung until the client timeout; a property Get returned NULL without an error and GDBus aborted the daemon (also while running: Percentage without a battery); a call after finalize ran on freed memory (SIGSEGV in `handle_method_call`); the async calls of `start()` wrote into a stopped manager. Now: errors when stopped or without a value, the object unregistered in finalize, a per-start cancellable, inhibitor flags reset in stop. +unity9 adds: Keyboard calls answer "No keyboard backlight" while the backlight proxy is being recreated after a restart of the plugin (in +unity8 the Verifier crashed it there, 2/2). Verifier round 2 on +unity9 PASS. | none (upstream gnome-settings-daemon master has the same silent return and no unregister) | [`research/UNITY-20260928-022-usd-power-registrations/`](research/UNITY-20260928-022-usd-power-registrations/) | local, at the publication gate |

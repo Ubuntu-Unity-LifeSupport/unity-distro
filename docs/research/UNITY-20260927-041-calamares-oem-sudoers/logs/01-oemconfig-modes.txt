@@ -1,0 +1,10 @@
+== calamares-settings-ubuntu-unity_1%3a26.04.12_all.deb
+-rw-r--r-- root/root      1762 2026-04-21 16:27 ubuntuunity/oemconfig/etc/sudoers.oem
+-rwxr-xr-x root/root   1234152 2026-04-21 16:27 ubuntuunity/oemconfig/usr/bin/basicwallpaper
+== calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb
+-rwxr-xr-x root/root   1240448 2026-09-27 18:18 ubuntuunity/oemconfig/usr/bin/basicwallpaper
+-rw-r--r-- root/root      1762 2026-09-27 18:18 ubuntuunity/oemconfig/etc/sudoers.oem
+== calamares-settings-kubuntu_1%3a26.04.12_all.deb
+-r-------- root/root      1762 2026-04-21 16:27 kubuntu/oemconfig/etc/sudoers.oem
+== calamares-settings-lubuntu_1%3a26.04.12_all.deb
+-r-------- root/root      1762 2026-04-21 16:27 lubuntu/oemconfig/etc/sudoers.oem

@@ -1,0 +1,13 @@
+# 2026-09-29T09:35:42Z mode=stop host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+service pid before: 1565
+service env: 
+09:35:42.575 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:35:45.175 ACTION stop accounts-daemon
+09:36:15.719 after 30s stopped: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:36:16.360 ACTION start accounts-daemon
+09:36:18.072 current: uint32 4294967295
+09:36:18.141 sources: @a(ss) []
+09:36:18.577 current: uint32 0
+09:36:18.719 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:36:24.406 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 1565 (same)
