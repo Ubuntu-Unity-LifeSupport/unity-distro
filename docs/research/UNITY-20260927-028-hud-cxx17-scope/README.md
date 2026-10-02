@@ -129,3 +129,34 @@ INFERENCE labels, 14 .debs, and the missing card fields.
 
 See the evidence (`~/coordinator/evidence/UNITY-20260927-028.json`) and
 docs/status/B.md.
+
+## Gated rebuild and target test of this build (2026-10-02)
+
+- **Source.** On the GitHub hud repository, branch `b/UNITY-20260927-028`
+  = `b/UNITY-20260927-029` (+unity2, ef39a8d) plus `99097d9` (the change)
+  and `9e7c093` (the release), pushed. The tree hash (2d9b6dba…) is the one
+  of the tested build 2f2fa89.
+- **Gated build** on the pinned chroot 20260929T201245Z:
+  `build-gated/UNITY-20260927-028-hud-build-manifest.json`, PASS, 6 of 6
+  test suites, with the archive's orig tarball (sha256 3cb825f0…).
+- **Payload against the tested build** (logs/05): all 14 .debs have the same
+  control fields, file lists and exported symbols, and every file inside is
+  byte-identical (0 of 83 differ).
+- **Target test, mode this_build** (logs/04), on the UNITY-20260927-029
+  session of target2 (Clean-2, our repository, gated +unity2): the gated
+  +unity3 .debs installed from a file repository, the upgrade path +unity2
+  to +unity3; the installed hud .deb is the manifest's (sha256 53519934…).
+  After a reboot into the auto-login Unity session, no drop-in, no test
+  environment: hud-service c2534c84… and window-stack-bridge 95ab8785… are
+  the gated .deb's files, no "(deleted)" mapping; `lo7.sh 20`: 20 of 20
+  windows in the stack, the HUD answered 20 of 20, now and after 5 s; no
+  warning from either service.
+- **Clock:** NTPSynchronized=yes on both phases (see the -029 card and
+  UNITY-20260929-022).
+
+## Known gaps before the gate
+
+| gap | state |
+|---|---|
+| tests (C++17) link objects built with C++14 | closed with a reason: only unshipped test binaries; shipped file lists and symbols identical to +unity2 (logs/01, logs/05); 6 of 6 suites pass on the gated build |
+| mechanism 2 (HUD empty with the window known), seen once on a C++14 build | task UNITY-20260929-002; 0 of 20 on this build (logs/04) |
