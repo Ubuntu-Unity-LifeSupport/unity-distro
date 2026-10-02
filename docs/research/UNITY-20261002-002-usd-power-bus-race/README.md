@@ -157,6 +157,27 @@ Commit `ca997f7` on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch
 - D7 packaging: format 1.0, change in the tree, +unity10 sorts above
   +unity9, UTC trailer.
 
+## Tests (Design Challenger D6)
+
+### D6a: the plugin switched off and on inside the session-start window, no gdb
+
+`tools/u002-window-toggle.service` + `.sh` (user unit, `After=` and
+`WantedBy=unity-settings-daemon.service`): waits for the power plugin's
+first logind inhibitor (`systemd-inhibit --list`), sets `active` false,
+then true. Boot batches with `tools/boot-loop.sh`, which also collects the
+unit's record; the bpftrace trace shows whether STOP landed before
+ON-BUS-GOTTEN.
+
+- **v1 (false, 0.3 s, true) on +unity9, 6 boots (`runs/toggle-unity9/`):
+  no STOP in any trace, Power owned 6/6.** Both writes land while the main
+  loop is still blocked in the plugin-start phase (4.5-19.7 s in these
+  boots); when it resumes, `plugin_enabled_cb` reads the final value, true,
+  and stops nothing. Not a reproduction: a finding about the test, kept as
+  evidence that a quick off/on at session start is coalesced.
+- **v2 (false, wait until the inhibitors are gone = stop() processed, then
+  true)**: `runs/toggle-unity9-wait/` (+unity9) and `runs/toggle-unity10/`
+  (+unity10), results below.
+
 ## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
 
 Not fixed by +unity10; each has its own task so that none is left as text
