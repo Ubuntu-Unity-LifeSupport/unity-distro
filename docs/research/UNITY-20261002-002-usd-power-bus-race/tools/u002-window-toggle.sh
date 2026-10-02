@@ -3,17 +3,16 @@
 # unity-settings-daemon.service starts. Waits until the power plugin has
 # started (its first logind inhibitor), then switches the plugin off and on
 # through the GSettings key, while the g_bus_get() result is still pending.
-# Writes what it did and when to /var/tmp/u002/toggle-<boot_id>.txt; the
+# Writes what it did and when to ~/u002/toggle-<boot_id>.txt; the
 # bpftrace trace of the same boot shows whether STOP landed before
 # ON-BUS-GOTTEN.
 S=com.canonical.unity.settings-daemon.plugins.power
-O=/var/tmp/u002/toggle-$(cat /proc/sys/kernel/random/boot_id).txt
-mkdir -p /var/tmp/u002
+O=$HOME/u002/toggle-$(cat /proc/sys/kernel/random/boot_id).txt
+mkdir -p "$HOME/u002"
 t0=$(date +%s.%N)
 i=0
 while [ $i -lt 200 ]; do
-  if gdbus call --session --dest org.freedesktop.login1 --object-path /org/freedesktop/login1 \
-       --method org.freedesktop.login1.Manager.ListInhibitors 2>/dev/null | grep -q "unity-settings-"; then break; fi
+  if systemd-inhibit --list --no-pager 2>/dev/null | grep -q "unity-settings"; then break; fi
   sleep 0.05; i=$((i+1))
 done
 t1=$(date +%s.%N)
