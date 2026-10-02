@@ -1,0 +1,30 @@
+{
+  "task_id": "UNITY-20260927-028",
+  "package": "hud",
+  "target_series": "resolute",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity3",
+  "source_commit": "9e7c0939e236e92f6b9bc8ceecbed21d8bd51f93",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-028",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-028-hud-cxx17-scope/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-028-hud-cxx17-scope/logs/04-target-this-build.txt",
+    "debs": {
+      "hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb": "53519934fe22c4368e4b80a6895ca6c50e9ce008d0133c8fe5df4dce86078c11"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-028-hud-cxx17-scope/README.md",
+    "verification_record": "docs/research/UNITY-20260927-028-hud-cxx17-scope/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

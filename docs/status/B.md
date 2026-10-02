@@ -3,6 +3,76 @@
 Test desktop: `target2` (192.168.56.30, VM `target-desktop-2`, snapshot `Clean-2`)
 Build directory: `~/work/b`
 
+## Handoff, 2026-09-29 ~01:20Z (session fa14e5f5 ends; May starts new sessions)
+
+Written so a new agent B can continue without the old chat. The live board
+is `~/coordinator/TASKS.md` (taskctl), and the evidence is
+`~/coordinator/evidence/<task>.json`. Each task's card is its
+`docs/research/<task>/README.md`, on the task branch `b/<task>` until C
+merges it.
+
+**Important, from this session:**
+
+- **The command guard is not active** in a session rooted at /home/claude
+  (UNITY-20260928-012 is open). Keep the rules by hand:
+  - no `aptly publish` of any kind (freeze no. 1, also no show or list);
+  - /srv/aptly is read as files only;
+  - forbidden command strings are never built in a heredoc (memory
+    feedback-guard-test-strings).
+- **The repository is public.** Cards hold facts only: no draft quotes, no
+  notes on correspondence.
+- **Verifier verdicts** are PASS, FAIL or INCOMPLETE only.
+- **DECISIONS.md and PATCHES.md** entries go through
+  `scripts/append_record.py` in `~/unity-distro`; C commits them.
+
+**target2:** at `Clean-2`, restored and checked from inside on 2026-09-29
+~01:14Z:
+- no `~/.dirty`;
+- archive hud 0ubuntu6 and archive gtk-nocsd;
+- no source of our repository configured.
+
+**/var/tmp/aptly-rehearsal** (UNITY-20260927-047): 0700, owner claude.
+**Keep it; May needs it.**
+- `aptly.conf` and `incoming/` are the prepared state.
+- `state/`, `backup-r4/`, `backup-r4.sha256` and `aside-r8b/` are left by
+  the preliminary run 1.
+- What a repeat of phase R needs is in 047's card, section "Repeating phase
+  R" (branch b/UNITY-20260927-047, 3f0d251).
+
+**Package git trees exist only on builder**, under
+`~/work/b/unity-distro/packages/`:
+
+| package | branch | head | remote of ours | export in the repository |
+|---|---|---|---|---|
+| hud | unity/resolute | 2f2fa89 (+unity3) | none | research/UNITY-20260927-028-hud-cxx17-scope/patches/full-series (from archive 0ubuntu6) |
+| nux | b/UNITY-20260927-027 | 0274bc5 (+unity3) | origin = gitlab ubuntu-unity (not ours) | research/UNITY-20260927-027-nux-vidmode-fbo/patches |
+| indicator-datetime | b/UNITY-20260927-026 | 9a00446 (+unity3) | origin not ours | research/UNITY-20260927-026-idt-guard/patches |
+| libindicator | b/UNITY-20260927-023 | f8fa299 (+unity3) | origin not ours | research of 023 |
+| unity-session | b/UNITY-20260927-037 | 7af2106 (+unity2) | lifesupport (GitHub) | research of 037 |
+| calamares-settings-ubuntu | 021/041 branches | c03daf4e / 221c691 | none | research of 021/041 |
+
+Build outputs: `~/work/b/nux027/`, `~/work/b/hud029/`. The hud orig
+tarball for non-native builds is `~/work/b/unity-distro/packages/hud_14.10+17.10.20170619.orig.tar.gz`.
+
+**Open tasks of B** (taskctl state, then where to resume):
+
+| task | state | resume | what is left |
+|---|---|---|---|
+| UNITY-20260927-028 hud C++17 scope | BLOCKED | REVIEW | +unity3 2f2fa89: C++14 for hud, C++17 for tests; Verifier PASS; publication gate |
+| UNITY-20260927-029 hud window-stack-bridge | BLOCKED | REVIEW | Verifier PASS; publication gate. Follow-ups UNITY-20260929-001 and -002 (C's) |
+| UNITY-20260927-027 + UNITY-20260928-020 nux +unity3 | BLOCKED | REVIEW | Verifier PASS; 3 clean sbuilds of 0274bc5; publication gate |
+| UNITY-20260927-026 indicator-datetime +unity3 | BLOCKED | REVIEW | Verifier PASS; publication gate |
+| UNITY-20260927-023 libindicator +unity3 | BLOCKED | REVIEW | publication gate |
+| UNITY-20260927-037 unity-session +unity2 | BLOCKED | REVIEW | publication gate; also security check UNITY-20260928-008 and May's decision |
+| UNITY-20260927-021, -041 calamares-settings-ubuntu | BLOCKED | IMPLEMENTING | build_sbuild.py epoch/binary-name matching; no source remote of ours |
+| UNITY-20260927-047 aptly snapshots | BLOCKED | IMPLEMENTING | UNITY-20260928-012, then repeat phase R (card) |
+
+The publication gate for all package tasks is one blocker: freeze no. 1
+and 047. hud +unity3 (028) contains +unity2 (029), so publish them
+together as +unity3, or +unity2 first.
+
+## Earlier state (before 2026-09-29)
+
 ## Now
 
 **2026-10-02 ~17:30Z: publishing the four ready packages, one slot at a
