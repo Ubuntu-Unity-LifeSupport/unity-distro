@@ -1,0 +1,18 @@
+boot_id a27d46ae-7d0e-44f3-8d3e-7ca1cadfaf14 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2295 drop-ins:  power-owner: (':1.41',)
+70405 ms pid 2295 MANAGER-NEW (register_manager_dbus, inlined)
+70405 ms pid 2295 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x75f1fc347b05
+        0x75f1fc347d44
+        0x75f1fc336920
+        0x75f1fc12bc1b
+        0x75f1fc12d257
+        g_main_loop_run+311
+
+76786 ms pid 2295 ON-BUS-GOTTEN

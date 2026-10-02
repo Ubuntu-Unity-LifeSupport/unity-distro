@@ -1,0 +1,20 @@
+boot_id 3b2c187f-2576-4ccf-a221-0b6549fe2f80 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2376 drop-ins:  power-owner: (':1.40',)
+97865 ms pid 2376 MANAGER-NEW (register_manager_dbus, inlined)
+97865 ms pid 2376 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7a88bd947b05
+        0x7a88bd947d44
+        0x7a88bd936920
+        0x7a88bd6c7c1b
+        0x7a88bd6c9257
+        g_main_loop_run+311
+
+104569 ms pid 2376 ON-BUS-GOTTEN
+
+

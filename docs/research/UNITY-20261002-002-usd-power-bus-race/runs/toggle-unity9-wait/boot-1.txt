@@ -1,0 +1,37 @@
+boot_id 8efd7f9f-33be-452e-a446-99bfd5afce6b u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2186 drop-ins:  power-owner: (':1.41',)
+62345 ms pid 2186 MANAGER-NEW (register_manager_dbus, inlined)
+62345 ms pid 2186 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x727274f47b05
+        0x727274f47d44
+        0x727274f36920
+        0x727274cc7c1b
+        0x727274cc9257
+        g_main_loop_run+311
+
+66981 ms pid 2186 ON-BUS-GOTTEN
+67767 ms pid 2186 STOP
+
+        gsd_power_manager_stop+0
+        g_cclosure_marshal_VOID__STRINGv+127
+        0x727274df5cc9
+        g_signal_emit_valist+56
+        g_signal_emit+147
+        0x727274f1f263
+        0x727274ea4fe2
+        0x727274df5cc9
+        g_signal_emit_valist+56
+        g_signal_emit+147
+        0x727274f212bd
+        0x727274f1bf96
+        0x727274cc7c1b
+        0x727274cc9257
+        g_main_loop_run+311
+        gtk_main+133
+

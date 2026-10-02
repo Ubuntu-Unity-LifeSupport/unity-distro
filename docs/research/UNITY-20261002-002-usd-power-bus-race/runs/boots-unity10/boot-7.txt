@@ -1,0 +1,20 @@
+boot_id 3e415927-1a29-4c7d-86b9-5fcc9bcf12cd u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2329 drop-ins:  power-owner: (':1.52',)
+55978 ms pid 2329 MANAGER-NEW (register_manager_dbus, inlined)
+55978 ms pid 2329 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x793c45f47b05
+        0x793c45f47d44
+        0x793c45f36920
+        0x793c45d2bc1b
+        0x793c45d2d257
+        g_main_loop_run+311
+
+61157 ms pid 2329 ON-BUS-GOTTEN
+
+

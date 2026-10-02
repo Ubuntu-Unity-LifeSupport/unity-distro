@@ -1,0 +1,20 @@
+boot_id 6f6289d7-401e-406e-9a30-4d99ee892374 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2225 drop-ins:  power-owner: (':1.39',)
+51452 ms pid 2225 MANAGER-NEW (register_manager_dbus, inlined)
+51452 ms pid 2225 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x73100e147b05
+        0x73100e147d44
+        0x73100e136920
+        0x73100e980c1b
+        0x73100e982257
+        g_main_loop_run+311
+
+57043 ms pid 2225 ON-BUS-GOTTEN
+
+

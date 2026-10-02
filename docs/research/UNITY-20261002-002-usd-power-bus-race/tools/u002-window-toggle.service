@@ -1,0 +1,17 @@
+# UNITY-20261002-002 test unit (Design Challenger D6a; target only, user
+# instance, removed before the publication checks): at session start, switch
+# the power plugin off and on through its GSettings key inside the window
+# between u-s-d's g_bus_get() and its result (4-6 s), without gdb.
+# Install: ~/.config/systemd/user/u002-window-toggle.service, then
+# systemctl --user enable u002-window-toggle.service.
+[Unit]
+Description=UNITY-20261002-002 power plugin off/on in the session-start window
+After=unity-settings-daemon.service
+Requisite=unity-settings-daemon.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /home/mike/u002-window-toggle.sh
+
+[Install]
+WantedBy=unity-settings-daemon.service

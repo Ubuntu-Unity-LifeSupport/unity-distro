@@ -1,0 +1,9 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10, mode stop, 20:58:25
+after start: owner (':1.127',)
+after plugin off/on: owner (':1.127',)
+Power Get Icon: (<''>,)
+Power Screen.GetPercentage: Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+START-RETURNED bus_cancellable=0x55555562f4d0
+STOP-CALLED bus_cancellable=0x55555562f4d0
+Warning: The unit file, source configuration file or drop-ins of unity-settings-daemon.service changed on disk. Run 'systemctl --user daemon-reload' to reload units.
+u-s-d back under systemd: owner (':1.134',)

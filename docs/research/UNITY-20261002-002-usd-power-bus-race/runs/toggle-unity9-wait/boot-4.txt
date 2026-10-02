@@ -1,0 +1,1 @@
+boot_id 204f6f65-fbd7-4046-861f-4e1ae5787f9b u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2303 drop-ins:  power-owner: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwne

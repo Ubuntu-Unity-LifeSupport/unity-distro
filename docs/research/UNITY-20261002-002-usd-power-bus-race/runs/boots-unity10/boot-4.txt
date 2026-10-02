@@ -1,0 +1,20 @@
+boot_id d1e45b67-a79f-41bf-b817-4703f4839940 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2283 drop-ins:  power-owner: (':1.43',)
+63743 ms pid 2283 MANAGER-NEW (register_manager_dbus, inlined)
+63744 ms pid 2283 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x766100843b05
+        0x766100843d44
+        0x766100832920
+        0x7660ffea4c1b
+        0x7660ffea6257
+        g_main_loop_run+311
+
+71008 ms pid 2283 ON-BUS-GOTTEN
+
+
