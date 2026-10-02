@@ -2047,3 +2047,19 @@ Follow-up: a symbols file with the archive's 40 names, so an accidental export f
 - The gated rebuild is byte-identical inside the .deb to the tested build; on target2 the service runs from it and serves the panel.
 
 Open: one `test-eds-ics-all-day-events` failure in the superseded control build is not explained (UNITY-20261002-005). Verifier: PASS.
+
+
+## 2026-10-02 - UNITY-20261002-002: the power plugin's D-Bus registration lives with the manager object, not with the running state (agent A, Design Challenger APPROVE, fix forward by May's decision)
+
+**Problem.** `register_manager_dbus()` runs once per process from `gsd_power_manager_new()` and queues `g_bus_get()`; `stop()` cancelled that request. At a session start the result is delivered only when the main loop resumes, 4-11 s after the request (29 traced boots; once 28.6 s), because every plugin's `start()` runs first. A stop in that window left the plugin running without its D-Bus object and name for the life of the process. Archive code since the 2014 import; one natural occurrence on the published +unity9 (2026-10-02); deterministic under gdb on +unity7 and +unity9.
+
+**Decision.** u-s-d +unity10 (`ca997f7`): `stop()` leaves `bus_cancellable` and `introspection_data` alone; `finalize` cancels the one and frees the other, next to the unregister and unown it already does since UNITY-20260928-022. The object and name exist as long as the manager object; while stopped the handlers answer "not running" (the -022 invariant). The screensaver-proxy plugin already works this way.
+
+**Rejected.**
+- Register in `start()` and unregister in `stop()`: the name would come and go with every toggle of the `active` key and clients would see ServiceUnknown instead of the -022 error; contradicts -022's D1.
+- Re-issue `g_bus_get()` in `start()` when the connection is missing: a pending-state machine for a problem that disappears once `stop()` stops cancelling.
+- A rollback to +unity7: the code is the same there.
+
+**Measured limit of the demonstration.** The stop requested through the GSettings key is dispatched by the main loop only after the queued `g_bus_get` result, on +unity9 and +unity10 alike (3 boots each): the key path cannot reach the defect, so the deterministic test is the gdb one. What stopped the plugin in the natural case is not identified (UNITY-20261002-009). The same gap exists in the housekeeping plugin (UNITY-20261002-006).
+
+**Harness lessons.** Writes of the key during the plugin-start phase are read as the final value when the loop resumes (a quick off/on stops nothing). bpftrace's file output is flushed on exit, not per line. uprobes put `int3` into the library's code, and a program under valgrind executes them as breakpoints: stop the tracer before a valgrind run.
