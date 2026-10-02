@@ -1,0 +1,246 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "hud",
+  "measured_at": "2026-10-02T17:27:23Z",
+  "sources_file": "/home/claude/work/b/unity-distro/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20260927-028",
+    "packages": 387,
+    "list_sha256": "63866699fdedd63ee69a8d6746f5f1d8cdb783ff1969110519be9713f306d562",
+    "model_entries": 350,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "85d415ba6a05ce16dd78db7efe0186893bab544ea40aa5444ea9858ed03a6a05",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Fri, 02 Oct 2026 17:27:25 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "b9f3d202cc3cbe05bfc7c486f0fba6a187f230f80b7c0365458de34bb8b8ac00",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Fri, 02 Oct 2026  6:20:50 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "a01c70001e71c578f593d4b457550cc523c21d3f726effbef76bdef566a8d9d3",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Fri, 02 Oct 2026 14:16:10 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "db53d8c8ea4d7265ed09542c8177514105072f30c85da3141c0a4254fc92356f",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Fri, 02 Oct 2026  8:00:50 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "70b2a6711a3b6e859f3c3602b85d2fcf9ef1ed31299fa20b3a59304a3f6dc5b2",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Fri, 02 Oct 2026  6:19:46 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "14.10+17.10.20170619-0ubuntu6"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "gir1.2-hud-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "gir1.2-hud-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "gir1.2-hud-2:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "gir1.2-hud-client-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "gir1.2-hud-client-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "gir1.2-hud-client-2:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "hud-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "hud-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "hud-dbgsym:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "hud-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "file": "hud-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "hud-doc:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "hud-tools-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "hud-tools-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "hud-tools-dbgsym:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "hud-tools",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "hud-tools_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "hud-tools:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "hud:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud-client2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud-client2-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-client2-dbgsym:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libhud-client2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud-client2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-client2-dev:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud-client2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "file": "libhud-client2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-client2-doc:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud-client2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud-client2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-client2:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud-gtk1-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud-gtk1-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-gtk1-dbgsym:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libhud-gtk1-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud-gtk1-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-gtk1-dev:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud-gtk1-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "file": "libhud-gtk1-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-gtk1-doc:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud-gtk1",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud-gtk1_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud-gtk1:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud2-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud2-dbgsym:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libhud2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud2-dev:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "file": "libhud2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud2-doc:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libhud2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "file": "libhud2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "policy": "libhud2:\n  Installed: (none)\n  Candidate: 14.10+17.10.20170619-0ubuntu6+unity3\n  Version table:\n     14.10+17.10.20170619-0ubuntu6+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     14.10+17.10.20170619-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}
