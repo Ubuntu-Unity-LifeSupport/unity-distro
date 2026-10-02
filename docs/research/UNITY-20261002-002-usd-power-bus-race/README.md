@@ -157,6 +157,25 @@ Commit `ca997f7` on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch
 - D7 packaging: format 1.0, change in the tree, +unity10 sorts above
   +unity9, UTC trailer.
 
+## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
+
+Not fixed by +unity10; each has its own task so that none is left as text
+(DECISIONS 2026-10-02, UNITY-20260928-022):
+
+- **UNITY-20261002-006** housekeeping: the identical pattern - register in
+  `_new`, cancel of the bus request in `stop()`, `on_bus_gotten` bails on
+  cancelled (`gsd-housekeeping-manager.c`).
+- **UNITY-20261002-007** xrandr: name unowned in `stop()`, object never
+  unregistered; a re-start registers the same path again (fails with
+  EXISTS).
+- **UNITY-20261002-008** media-keys: cancel in `stop()`, no name or
+  unregister handling.
+- **UNITY-20261002-009** what deactivates the power plugin at a session
+  start: the trigger of the one bad boot is not identified; tracing
+  continues with a probe on `plugin_enabled_cb` (and the `active` read).
+  +unity10 removes the consequence (the lost registration) whatever the
+  trigger.
+
 ## Evidence card
 
 ```yaml
