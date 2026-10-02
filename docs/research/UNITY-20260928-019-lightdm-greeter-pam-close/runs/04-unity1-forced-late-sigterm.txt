@@ -1,0 +1,163 @@
+Started ld019s4.service - [systemd-run] /usr/bin/bpftrace /home/mike/greeter-close-trace.bt.
+/home/mike/greeter-close-trace.bt:74:78-96: WARNING: Return value discarded.
+tracepoint:sched:sched_process_exit /!@g[pid] && pid == tid && @open[pid]/ { delete(@open[pid]); }
+                                                                             ~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:3-18: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+  ~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:20-36: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                   ~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:38-55: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                     ~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:57-77: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                                        ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:83:79-98: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                                                              ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:3-22: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+  ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:24-44: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                       ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:46-64: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                             ~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:66-85: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                                                 ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:84:87-107: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                                                                      ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:3-23: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+  ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:25-46: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                        ~~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:48-65: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                               ~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:67-87: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                                                  ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:85:89-105: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                                                                        ~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:86:3-24: WARNING: Return value discarded.
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+  ~~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:86:26-53: WARNING: Return value discarded.
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Attached 16 probes
+11:48:15.196985 greeter session-child 55810 started the greeter 55909
+11:48:24.096568 SIGTERM 1(systemd) -> 55810 result 0
+11:48:24.096683 deliver SIGTERM to 55810 tid 55810 (lightdm) reaped=0 stage=0
+11:48:24.096696 55810 kill(55909, 15) - handler passes SIGTERM on
+11:48:24.097626 55810 reaped 55909
+11:48:24.097746 SIGTERM 55810(lightdm) -> 55810 result 0
+11:48:24.103075 SIGTERM 52507(lightdm) -> 55810 result 2
+11:48:24.103937 deliver SIGTERM to 55810 tid 55810 (lightdm) reaped=1 stage=1
+11:48:24.104088 SUMMARY greeter-sc 55810 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=6464
+11:51:04.957379 greeter session-child 60323 started the greeter 60358
+11:51:29.014113 SIGTERM 1(systemd) -> 60323 result 0
+11:51:29.014294 deliver SIGTERM to 60323 tid 60323 (lightdm) reaped=0 stage=0
+11:51:29.014375 60323 kill(60358, 15) - handler passes SIGTERM on
+11:51:29.015490 60323 reaped 60358
+11:51:29.015733 SIGTERM 60323(lightdm) -> 60323 result 0
+11:51:29.015793 deliver SIGTERM to 60323 tid 60323 (lightdm) reaped=1 stage=1
+11:51:29.015881 SUMMARY greeter-sc 60323 open=1 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=4 reap_to_gone_us=394
+11:54:06.590623 greeter session-child 64783 started the greeter 64818
+====FORCE
+Started ld019f1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt.
+/home/mike/force-late-sigterm.bt:31:3-18: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@reaped[pid]);
+  ~~~~~~~~~~~~~~~
+/home/mike/force-late-sigterm.bt:31:20-40: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@reaped[pid]);
+                   ~~~~~~~~~~~~~~~~~~~~
+Attached 5 probes
+11:48:24.097698 forcing SIGTERM into greeter session-child 55810 at pam_getenv after waitpid
+11:51:29.015677 forcing SIGTERM into greeter session-child 60323 at pam_getenv after waitpid
+====CYCLES
+Started ld019c7.service - [systemd-run] /bin/sh /home/mike/greeter-cycles.sh 4 utest Utest-019pw.
+cycle 1: logout utest
+cycle 1: mike off seat0 after 1s
+cycle 1: utest session on seat0, greeter gone after 1s
+cycle 1: utest session on seat0, greeter gone after 1s
+--- state after cycle 1 (08:48:45.073Z)
+sessions: 202 1001 utest seat0 56113 user    - no -
+sessions: 203 1001 utest -     56230 manager - no -
+users: 1001 utest no active
+session: Id=202 Name=utest Scope=session-202.scope Leader=56113 Class=user State=active
+session: Id=203 Name=utest Scope= Leader=56230 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-202.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+uid lightdm with its .Xauthority opens :0: YES
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 2: logout utest
+cycle 2: utest off seat0 after 60s
+cycle 2: utest session on seat0, greeter gone after 0s
+cycle 2: utest session on seat0, greeter gone after 0s
+--- state after cycle 2 (08:51:19.974Z)
+sessions: 224  109 lightdm -     60329 manager-early - no -
+sessions: 226 1000 mike    -     60532 manager       - no -
+sessions: c13  109 lightdm seat0 60323 greeter       - no -
+users:  109 lightdm no active
+users: 1000 mike    no closing
+session: Id=224 Name=lightdm Scope= Leader=60329 Class=manager-early State=active
+session: Id=226 Name=mike Scope= Leader=60532 Class=manager State=active
+session: Id=c13 Name=lightdm Scope=session-c13.scope Leader=60323 Class=greeter State=active
+lightdm-uid processes:   60329 systemd   60333 (sd-pam)   60357 pulseaudio   60358 lightdm-greeter   60359 lightdm-gtk-gre   60363 dbus-daemon   60364 at-spi-bus-laun   60371 dbus-daemon   60374 gvfsd   60384 gvfsd-fuse   60417 bwrap   60418 bwrap   60419 glycin-image-rs   60424 bwrap   60425 bwrap   60426 glycin-svg   60433 gvfsd-metadata   60468 at-spi2-registr
+user@109: active runtime-dir: /run/user/109
+greeter scopes: session-c13.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+uid lightdm with its .Xauthority opens :0: YES
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 3: logout utest
+Ошибка подключения: Не удалось подключиться: Нет такого файла или каталога
+cycle 3: utest off seat0 after 0s
+cycle 3: utest session on seat0, greeter gone after 1s
+cycle 3: utest session on seat0, greeter gone after 1s
+--- state after cycle 3 (08:51:50.011Z)
+sessions: 227 1001 utest seat0 60466 user    - no -
+sessions: 228 1001 utest -     60712 manager - no -
+users: 1001 utest no active
+session: Id=227 Name=utest Scope=session-227.scope Leader=60466 Class=user State=active
+session: Id=228 Name=utest Scope= Leader=60712 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-227.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+uid lightdm with its .Xauthority opens :0: YES
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 0
+cycle 4: logout utest
+cycle 4: utest session on seat0, greeter gone after 0s
+cycle 4: utest session on seat0, greeter gone after 0s
+--- state after cycle 4 (08:54:23.489Z)
+sessions: 249  109 lightdm -     64791 manager-early - no -
+sessions: 251 1000 mike    -     64991 manager       - no -
+sessions: c14  109 lightdm seat0 64783 greeter       - no -
+users:  109 lightdm no active
+users: 1000 mike    no closing
+session: Id=249 Name=lightdm Scope= Leader=64791 Class=manager-early State=active
+session: Id=251 Name=mike Scope= Leader=64991 Class=manager State=active
+session: Id=c14 Name=lightdm Scope=session-c14.scope Leader=64783 Class=greeter State=active
+lightdm-uid processes:   64791 systemd   64796 (sd-pam)   64817 pulseaudio   64818 lightdm-greeter   64819 lightdm-gtk-gre   64823 dbus-daemon   64824 at-spi-bus-laun   64831 dbus-daemon   64836 gvfsd   64844 gvfsd-fuse   64877 bwrap   64878 bwrap   64879 glycin-image-rs   64884 bwrap   64885 bwrap   64886 glycin-svg   64893 gvfsd-metadata   64928 at-spi2-registr
+user@109: active runtime-dir: /run/user/109
+greeter scopes: session-c14.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:1
+uid lightdm with its .Xauthority opens :0: YES
+journal 'session closed for user lightdm' since cycle start: 0
+journal 'session opened for user lightdm' since cycle start: 2
+ld019c7.service: Deactivated successfully.
+ld019c7.service: Consumed 10.750s CPU time over 6min 12.490s wall clock time, 3.8M memory peak.

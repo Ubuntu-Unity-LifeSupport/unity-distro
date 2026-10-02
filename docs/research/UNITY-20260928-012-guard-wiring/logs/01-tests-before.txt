@@ -1,0 +1,116 @@
+# new tests against the unmodified wiring (.claude/settings.json at 9d8db2e)
+.F..FFFFFF.............FF
+======================================================================
+FAIL: test_crash_at_import (scripts.tests.test_install_command_guard.HandlerTests.test_crash_at_import)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 95, in test_crash_at_import
+    self.assert_blocked(self.run_handler(payload("ls")), "did not decide (rc=1)")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 70, in assert_blocked
+    self.assertEqual(result.returncode, 2, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2 : CompletedProcess(args=['/bin/sh', '-c', 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "/tmp/tmpmcvhyh0c/.claude/hooks/command_guard.py", line 1, in <module>\n    raise ImportError(\'broken guard\')\nImportError: broken guard\n')
+
+======================================================================
+FAIL: test_hang_is_blocked_before_the_hook_timeout (scripts.tests.test_install_command_guard.HandlerTests.test_hang_is_blocked_before_the_hook_timeout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 108, in test_hang_is_blocked_before_the_hook_timeout
+    self.assertIn(inner, command)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: 'timeout -s KILL 20 ' not found in 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'
+
+======================================================================
+FAIL: test_hostile_pythonpath_is_ignored (scripts.tests.test_install_command_guard.HandlerTests.test_hostile_pythonpath_is_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 128, in test_hostile_pythonpath_is_ignored
+    self.assert_blocked(self.run_handler(payload(PROBE), env=env), "Pattern-based process matching is blocked")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 70, in assert_blocked
+    self.assertEqual(result.returncode, 2, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : CompletedProcess(args=['/bin/sh', '-c', 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'], returncode=0, stdout='{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "allow"}}\n', stderr='')
+
+======================================================================
+FAIL: test_interpreter_missing (scripts.tests.test_install_command_guard.HandlerTests.test_interpreter_missing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 91, in test_interpreter_missing
+    self.assert_blocked(self.run_handler(payload("ls"), command=command, env=env), "did not decide (rc=127)")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 70, in assert_blocked
+    self.assertEqual(result.returncode, 2, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 127 != 2 : CompletedProcess(args=['/bin/sh', '-c', 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'], returncode=127, stdout='', stderr='/bin/sh: 1: python3: not found\n')
+
+======================================================================
+FAIL: test_killed_by_signal (scripts.tests.test_install_command_guard.HandlerTests.test_killed_by_signal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 99, in test_killed_by_signal
+    self.assert_blocked(self.run_handler(payload("ls")), "did not decide (rc=")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 70, in assert_blocked
+    self.assertEqual(result.returncode, 2, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 143 != 2 : CompletedProcess(args=['/bin/sh', '-c', 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'], returncode=143, stdout='', stderr='Terminated\n')
+
+======================================================================
+FAIL: test_non_dict_payload (scripts.tests.test_install_command_guard.HandlerTests.test_non_dict_payload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 103, in test_non_dict_payload
+    self.assert_blocked(self.run_handler("[]"), "did not decide (rc=1)")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 70, in assert_blocked
+    self.assertEqual(result.returncode, 2, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2 : CompletedProcess(args=['/bin/sh', '-c', 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "/tmp/tmp90enxb1f/.claude/hooks/command_guard.py", line 1203, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File "/tmp/tmp90enxb1f/.claude/hooks/command_guard.py", line 1183, in main\n    tool_input = payload.get("tool_input", {})\n                 ^^^^^^^^^^^\nAttributeError: \'list\' object has no attribute \'get\'\n')
+
+======================================================================
+FAIL: test_stdout_never_reaches_claude_code (scripts.tests.test_install_command_guard.HandlerTests.test_stdout_never_reaches_claude_code)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 118, in test_stdout_never_reaches_claude_code
+    self.assertEqual((result.returncode, result.stdout), (2, ""), result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (2, '{"hookSpecificOutput": {"permissionDecision": "allow"}}\n') != (2, '')
+
+First differing element 1:
+'{"hookSpecificOutput": {"permissionDecision": "allow"}}\n'
+''
+
+- (2, '{"hookSpecificOutput": {"permissionDecision": "allow"}}\n')
++ (2, '') : CompletedProcess(args=['/bin/sh', '-c', 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'], returncode=2, stdout='{"hookSpecificOutput": {"permissionDecision": "allow"}}\n', stderr='')
+
+======================================================================
+FAIL: test_no_project_dir_placeholder (scripts.tests.test_install_command_guard.ProjectSettingsTests.test_no_project_dir_placeholder)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 138, in test_no_project_dir_placeholder
+    self.assertNotIn("CLAUDE_PROJECT_DIR", project_handler())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CLAUDE_PROJECT_DIR' unexpectedly found in 'python3 "${CLAUDE_PROJECT_DIR}/.claude/hooks/command_guard.py"'
+
+======================================================================
+FAIL: test_project_handler_is_the_installer_handler (scripts.tests.test_install_command_guard.ProjectSettingsTests.test_project_handler_is_the_installer_handler)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/b/unity-distro-012/scripts/tests/test_install_command_guard.py", line 134, in test_project_handler_is_the_installer_handler
+    self.assertEqual(icg.settings_problems(data, Path(DEPLOYED), "project"), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['project: the command_guard handler differs from the expected one'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'project: the command_guard handler differs from the expected one'
+
+- ['project: the command_guard handler differs from the expected one']
++ []
+
+----------------------------------------------------------------------
+Ran 25 tests in 6.416s
+
+FAILED (failures=9)

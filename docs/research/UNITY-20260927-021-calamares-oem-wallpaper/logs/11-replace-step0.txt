@@ -1,0 +1,3 @@
+# 2026-09-29T16:03:56Z replacement step 0
+db backup /home/claude/backups/aptly-021-replace-20260929T160356Z: 17 files, equal to live: True, list sha256 a0c9f677667e713f897a88320e47239c3d3106224369fdf57eee6f7e1d2fa965
+public/ now 268 files; equal to the post-L list (047 logs/48b): True

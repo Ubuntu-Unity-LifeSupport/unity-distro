@@ -1,0 +1,14 @@
+exit 0
+ssh as oem up at 192.168.56.105 (17:29:29)
+== cold-unity2-2 start at uptime 58.53s  basicwallpaper sha256 077f7c36fc6c
+65.40 xfwm4 pid 1955
+72.69 wallpaper viewable 4194311
+88.64 focus -> 6291506 (Xfwm4)
+89.23 calamares viewable 14680071
+  0x400007   "basicwallpaper", "basicwallpaper"   STICKY, SKIP_PAGER, SKIP_TASKBAR, BELOW | DESKTOP, _KDEOVERRIDE, NORMAL
+  0xe00007   "calamares", "calamares"             MAXIMIZED_HORZ, MAXIMIZED_VERT | _KDEOVERRIDE, NORMAL
+106.71 pixel 700,200: #EFEFEF -> Calamares on top
+== rollback check
+ls: cannot access '/home/oem/.dirty-cold-unity2-1': No such file or directory
+ 19:30:21 up 1 min,  2 users,  load average: 3,28, 1,49, 0,55
+

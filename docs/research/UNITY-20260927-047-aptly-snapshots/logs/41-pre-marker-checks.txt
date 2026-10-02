@@ -1,0 +1,7 @@
+# 2026-09-29T09:57:53Z pre-marker checks (guard functions from main 5ef8e4a)
+root, tree, mounts: OK ( /var/tmp/aptly-rehearsal )
+config schema: OK {"rootDir": "/var/tmp/aptly-rehearsal/state", "downloadConcurrency": 4, "architectures": ["amd64"], "gpgDisableSign": false, "gpgDisableVerify": false, "FileSystemPublishEndpoints": {}}
+marker present: False
+rehearsal log lines: 1
+rc=0
+command_guard wiring: OK

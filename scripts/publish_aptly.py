@@ -12,6 +12,10 @@ import re
 import subprocess
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dependencies import manifest_error  # noqa: E402
+import tested_build  # noqa: E402
+
 
 def fail(message):
     print(f"publish-aptly: {message}", file=sys.stderr)
@@ -375,6 +379,13 @@ def main():
         artifact_path = manifest_path.parent / artifact["file"]
         if not artifact_path.is_file() or sha256(artifact_path) != artifact.get("sha256"):
             return fail(f"artifact hash mismatch: {artifact_path}")
+    # UNITY-20260929-013: extra build dependencies, only when the build had any.
+    dependency_error = manifest_error(manifest, manifest_path.parent)
+    if dependency_error: return fail(dependency_error)
+    # UNITY-20260929-020: the gate's tested-build record, recomputed from the
+    # committed files.
+    tested_error = tested_build.publish_error(gate.get("tested_build"), manifest, manifest_path.parent, root)
+    if tested_error: return fail(tested_error)
     expected_snapshot_names, contract_error = snapshot_expectations(artifacts, manifest_path.parent, package, version)
     if contract_error: return fail(contract_error)
 
