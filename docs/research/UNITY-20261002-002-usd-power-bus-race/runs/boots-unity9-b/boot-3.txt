@@ -1,0 +1,18 @@
+boot_id 6fba5df6-7762-4f16-a0c1-b241ea132353 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2294 drop-ins:  power-owner: (':1.34',)
+51833 ms pid 2294 MANAGER-NEW (register_manager_dbus, inlined)
+51833 ms pid 2294 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x74da77947b05
+        0x74da77947d44
+        0x74da77936920
+        0x74da776c7c1b
+        0x74da776c9257
+        g_main_loop_run+311
+
+58960 ms pid 2294 ON-BUS-GOTTEN
