@@ -29,6 +29,11 @@ ayatana-indicat pid=2274 exe=/usr/libexec/ayatana-indicator-messages/ayatana-ind
 1
 == warnings since boot
 == done
+## the installed .deb files (the lines above print package, version and the file's sha256; these are the file names)
+# indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb 08384eb2f94a494687b9838d7df9ba1e218a934c4823c6511e566e43ca8332eb
+# libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb caac08af4472f33f91e6ae77ed97ba2e8df53e247ca0f6d3f48ec808e19b0767
+# indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb b090852c644ea6a751c91592991390370a382bdee1eca974de3898d42d0cbd90
+# not installed in the session (nothing depends on them): libindicator7, libindicator-dev, libindicator3-dev, libindicator3-tools.
 ## notes (B, same boot, interactive checks)
 # the script's sha256 line for indicator-datetime-service used a wrong path (/usr/libexec); the installed
 # /usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service is e85fafc7..., equal to the file in the gated .deb.

@@ -232,7 +232,11 @@ accidental export fails the build.
 - **Target test, mode this_build** (logs/07), on the UNITY-20260927-029/-028
   session of target2 (Clean-2, our repository, gated hud): the gated .debs
   installed from a file repository; libindicator3-7 +unity3 is the manifest's
-  .deb (sha256 caac08af…). After a reboot into the auto-login Unity session,
+  .deb (sha256 caac08af…); indicator-common came with it. libindicator7
+  (GTK2), the -dev packages and -tools are not installed in the session
+  (nothing depends on them), so the release record's `target_test.debs`
+  names the two installed .debs; the other four are covered by the payload
+  comparison. After a reboot into the auto-login Unity session,
   no drop-in, no test environment:
   - the installed library (f07e26fa…, the gated .deb's file) exports 40
     symbols, none Ayatana's: the acceptance;
