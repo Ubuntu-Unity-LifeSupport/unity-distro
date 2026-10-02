@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-022",
+  "package": "unity-settings-daemon",
+  "source_commit": "57945f5eb580fef0e45ae7ad0fe063f6bb9278e3",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260928-022-usd-power-registrations/README.md",
+      "sha256": "5c8c60b24e53b396498fe8db029799c3b1f131575f4d2c5c6dc49cbfdb615867"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260928-022-usd-power-registrations/README.md",
+      "sha256": "5c8c60b24e53b396498fe8db029799c3b1f131575f4d2c5c6dc49cbfdb615867"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "e3f8f639c88316e496ef9f9db3949789b5415be07b657cca0757c66b3c5fbaa7"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260928-022-usd-power-registrations/gate/release-record.json",
+      "sha256": "43b487ec00bf5d49c782b526d7497147b26b96107cd1da3d5d8c9aebefe5ec3f"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260928-022-usd-power-registrations/gate/version-check.json",
+      "sha256": "0dce11daaf63982d3105fb3cacf6b14c9e8b47eea49dd3007d5e73fcc284a742"
+    }
+  }
+}
