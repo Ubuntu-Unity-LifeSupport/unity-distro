@@ -173,6 +173,25 @@ time) - not a u-s-d finding, not investigated; a session is up only when
 `org.gnome.SessionManager` has an owner - checking the process names alone
 once met a lightdm restart whose session could not open `:0`.
 
+## Gated build for publication (2026-10-02)
+
+- Build: `scripts/build_sbuild.py` from `packages/unity-settings-daemon` at
+  `b570a22` (a fresh clone of Ubuntu-Unity-LifeSupport/unity-settings-daemon),
+  on the pinned chroot 20260929T201245Z (UNITY-20260929-016); manifest
+  `build-gated/UNITY-20260927-012-unity-settings-daemon-build-manifest.json`.
+- Against the tested build: all 5 debs and 2 ddebs byte-identical
+  (`build/gated-vs-tested.txt`); the build environment differs in 142
+  packages from -updates/-security, so `tested_build` is `this_build`.
+- Key runs repeated on target with the gated debs (`runs-gated/`): power
+  2 / 0 / 2, inhibitor and name-vanish reproducers with no callback after
+  stop and no crash, as `runs/13`-`15`.
+- Short Verifier on the gated build: round 1 FAIL (no `docs/PATCHES.md`
+  entry; the build itself checked out), fixed in main `07af312` (+ the
+  correction `5c394d9`); round 2 PASS (REVIEWED). The publish-time
+  `apt_view.py` / `version_safety.py` check follows the snapshot. The
+  PATCHES row for `09f45d9` links to the UNITY-20260927-052 card, which is
+  on `a/UNITY-20260927-052` until that branch is merged.
+
 ## Evidence card
 
 ```yaml
