@@ -256,7 +256,12 @@ REVIEW, then BLOCKED at the publication gate (freeze no. 1).
   Clean-2 (checked inside before the script: no `~/.dirty`; the marker was
   then set, so the script's own line says PRESENT), full-upgraded from our
   repository, and the gated .debs were installed from a file repository;
-  the installed hud .deb is the manifest's (sha256 b3321894…). After a
+  the installed hud .deb is the manifest's (sha256 b3321894…). Only `hud`
+  is installed in the Unity session on target2: nothing there depends on
+  the libraries, GIR bindings, tools or docs (the other 13 .debs), so the
+  release record's `target_test.debs` names the hud .deb alone; those 13
+  are covered by the payload comparison (byte-identical to the tested
+  build) and, for the libraries, by logs/11. After a
   reboot into the auto-login Unity session, with no drop-in and no test
   environment: hud-service and window-stack-bridge are the files of the
   gated .deb (776f30cb…, e7cbdf88…), no "(deleted)" mapping; `lo7.sh 20`
