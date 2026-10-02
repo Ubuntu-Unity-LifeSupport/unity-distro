@@ -1,0 +1,46 @@
+# UNITY-20260927-028 target verification of the publication on target2 from Clean-2 (restore checked inside at 17:26Z: no ~/.dirty, no ~/b029, hud 0ubuntu6; NTPSynchronized=yes): our repository (live ./resolute = unity-resolute-20260927-028, InRelease Date Fri, 2 Oct 2026 17:30:29 UTC), normal full-upgrade from the archive hud straight to +unity3, no file repository
+# builder utc 2026-10-02T17:40:42Z
+== install  host=target2 boot=5c541335-4377-43bf-87ca-b0a3b11ad582 utc=2026-10-02T17:40:42Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 20:40:42 EEST 
+== snapshot marker: ~/.dirty absent
+== policy hud
+hud:
+  Установлен: 14.10+17.10.20170619-0ubuntu6
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity3
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+full-upgrade rc=0
+xdotool rc=0
+== installed: hud 14.10+17.10.20170619-0ubuntu6+unity3 ii 
+== the .deb apt fetched: 53519934fe22c4368e4b80a6895ca6c50e9ce008d0133c8fe5df4dce86078c11  /var/cache/apt/archives/hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb
+== dpkg -V hud: 0 lines
+## after a reboot
+== session 14.10+17.10.20170619-0ubuntu6+unity3 host=target2 boot=599a1a11-c589-4ad4-b515-3665ce6aca9f utc=2026-10-02T17:49:05Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 20:49:06 EEST 
+== hud installed: 14.10+17.10.20170619-0ubuntu6+unity3 (expected 14.10+17.10.20170619-0ubuntu6+unity3)
+c2534c84c9960ad1c2ab4f6b7098fef68cc680f6387c232c92d2591249c3be41  /usr/lib/x86_64-linux-gnu/hud/hud-service
+95ab8785f0c70278967ae73dcb08e4228ab6636c1bcea58724474f33d155d4a0  /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge
+hud-service pid=3701 exe=/usr/lib/x86_64-linux-gnu/hud/hud-service deleted_maps=0
+window-stack-br pid=2112 exe=/usr/lib/x86_64-linux-gnu/hud/window-stack-bridge deleted_maps=0
+== lo7.sh 10 (GAP=3 WATCH_DELAY=0)
+run 1: xid=56623243 in_window_stack=1 app_id=56623243 hud_now=0 hud_after_5s=0 no_desktop_file=0
+run 2: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 4: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 5: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 7: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 8: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 9: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 10: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+== warnings since boot
+== done
+# PASS. hud +unity3 came from the live ./resolute (unity-resolute-20260927-028); the .deb apt fetched is the gated one (53519934...);
+# hud-service c2534c84... and window-stack-bridge 95ab8785... are its files; no "(deleted)" mapping; dpkg -V clean.
+# 10 of 10 windows in the stack; the HUD answered 9 of 10. Run 1 (the first Writer start after the reboot) is mechanism 2
+# (UNITY-20260929-002): window in the stack, no desktop-file error; its xid 56623243 is the same first-start xid as the
+# one mechanism-2 case of the -029 card (archive hud), so the "first-start window" lead of -002 gets one more data point.
+# Natural session start (auto-login after a plain reboot), no drop-in, no test environment. Clock NTPSynchronized=yes throughout.

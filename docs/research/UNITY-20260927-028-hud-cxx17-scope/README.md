@@ -178,3 +178,35 @@ evidence (PASS, REVIEWED).
 Remarks, applied: the payload count is 72 files, not 83 (corrected above).
 The evidence's `source_commit` and `build_manifest` still name the tested
 build; the publish record carries the gated commit and manifest.
+
+## Publication (2026-10-02)
+
+- db backup `~/backups/repo-028-20261002T172700Z`; repo add of the gated
+  build, 20 records (367 to 387); snapshot `unity-resolute-20260927-028` =
+  the live `unity-resolute-20260927-029` (hud +unity2) + those 20 (logs/06);
+  full apt view SAFE (gate/); peer notice ACK; release gate
+  (gate/release-gate.json, tested_build this_build on the hud .deb). C
+  checked the gate; May confirmed the switch in B's session.
+- `publish_aptly.py` switched `./resolute` to `unity-resolute-20260927-028`
+  at 17:30:29 UTC; write-once record
+  `~/coordinator/publish-records/UNITY-20260927-028.json`.
+
+## Target verification of the publication (2026-10-02)
+
+Result: **PASS** (logs/07). target2 was rolled back to Clean-2 (checked
+inside: no `~/.dirty`, no `~/b029`, hud 0ubuntu6; NTP synchronised) and
+upgraded from our repository by the normal path, from the archive hud
+straight to +unity3, no file repository (unattended-upgrades was let finish
+first).
+
+- apt's candidate for hud is +unity3 from 8080; the .deb apt fetched is the
+  gated one (sha256 53519934…); `dpkg -V hud` is clean.
+- After a reboot into the auto-login session: hud-service (c2534c84…) and
+  window-stack-bridge (95ab8785…) are the files of that .deb, no
+  "(deleted)" mapping.
+- `lo7.sh 10`: 10 of 10 windows in the stack; the HUD answered 9 of 10.
+  Run 1, the first Writer start after the reboot, is mechanism 2
+  (UNITY-20260929-002); its xid 56623243 is the first-start xid the -029
+  card noted for the one archive-hud case.
+- target2 is left on this state (dirty); the next task's check rolls it
+  back.
