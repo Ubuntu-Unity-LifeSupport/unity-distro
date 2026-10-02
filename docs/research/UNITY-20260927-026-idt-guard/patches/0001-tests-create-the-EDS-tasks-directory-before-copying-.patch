@@ -1,0 +1,34 @@
+From 5a21b084704bdd1c8fde123dd6594e2d6bc97242 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 09:57:07 +0000
+Subject: [PATCH 1/2] tests: create the EDS tasks directory before copying the
+ test calendar
+
+The release tarball ships tests/test-eds-ics-config-files/.local/share/
+evolution/{calendar,tasks}/system as empty directories, which git does not
+keep. Built from a git checkout, run-eds-ics-test.sh could not copy
+tasks.ics, EDS saw an empty calendar and all eleven test-eds-ics-* tests
+failed.
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ tests/run-eds-ics-test.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tests/run-eds-ics-test.sh b/tests/run-eds-ics-test.sh
+index e939133..6e14131 100755
+--- a/tests/run-eds-ics-test.sh
++++ b/tests/run-eds-ics-test.sh
+@@ -54,6 +54,8 @@ fi
+ # if there's a specific ics file to test, copy it on top of the canned config files
+ if [ -e ${ICS_FILE} ]; then
+   echo "copying ${ICS_FILE} into $HOME"
++  # the empty directory is in the release tarball but not in a git checkout
++  mkdir -p ${XDG_DATA_HOME}/evolution/tasks/system
+   cp --verbose --archive ${ICS_FILE} ${XDG_DATA_HOME}/evolution/tasks/system/tasks.ics
+ fi
+ 
+-- 
+2.53.0
+

@@ -1,0 +1,30 @@
+commit f7eb6326ef72a5ac1894d3a9d3a108c6b8d38773
+Author: NeiroNext <mihail.rozshko@gmail.com>
+Date:   Mon Sep 28 11:37:35 2026 +0000
+
+    EXPERIMENT (not for release): +unity3 without the guard, probe a recurring task whose override has no DTSTART and DUE
+
+diff --git a/tests/test-eds-ics-tasks-without-start.ics.in b/tests/test-eds-ics-tasks-without-start.ics.in
+index 1110441..4527af5 100644
+--- a/tests/test-eds-ics-tasks-without-start.ics.in
++++ b/tests/test-eds-ics-tasks-without-start.ics.in
+@@ -22,4 +22,19 @@ DTSTAMP:20150601T000000Z
+ SUMMARY:Task without dates
+ STATUS:NEEDS-ACTION
+ END:VTODO
++BEGIN:VTODO
++UID:probe-recurring@example.org
++DTSTAMP:20150601T000000Z
++DTSTART:20150622T090000
++RRULE:FREQ=DAILY;COUNT=3
++SUMMARY:Probe recurring task with a start
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:probe-recurring@example.org
++DTSTAMP:20150601T000000Z
++RECURRENCE-ID:20150623T090000
++SUMMARY:Probe override without DTSTART and DUE
++STATUS:NEEDS-ACTION
++END:VTODO
+ END:VCALENDAR

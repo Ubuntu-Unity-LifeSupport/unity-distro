@@ -1,0 +1,9 @@
+# regression for the final +unity3 (9a00446), 2026-09-28
+## control 002c06d (not for release): 9a00446 with the guard removed
+97% tests passed, 1 tests failed out of 29
+	 29 - test-eds-ics-tasks-without-start (Failed)
+29: test-eds-ics-tasks-without-start: Bail out! Indicator-Datetime:ERROR:./src/date-time.cpp:172:GDateTime* unity::indicator::datetime::DateTime::get() const: assertion failed: (m_dt)
+## +unity3 9a00446 (guard kept, new test): build/*-sbuild.log
+100% tests passed, 0 tests failed out of 29
+Status: successful
+fail before (abort), pass after (29/29)
