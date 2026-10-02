@@ -1,0 +1,6 @@
+# 2026-10-02T18:23:59Z UNITY-20260927-026: backup ~/backups/repo-026-20261002T182345Z (db, 18 files, sha256 checked); repo add of the gated build (3 records: source, 1 .deb, 1 .ddeb) to unity-resolute (397 -> 400); snapshot unity-resolute-20260927-026 from the repo
+# live ./resolute before: unity-resolute-20260927-023 (libindicator +unity3, switched 2026-10-02 18:02Z)
+  Arch   | Package                                  | Version in A                             | Version in B
++ amd64  | indicator-datetime                       | -                                        | 15.10+21.04.20210304-0ubuntu6+unity3    
++ amd64  | indicator-datetime-dbgsym                | -                                        | 15.10+21.04.20210304-0ubuntu6+unity3    
++ source | indicator-datetime                       | -                                        | 15.10+21.04.20210304-0ubuntu6+unity3    

@@ -1,0 +1,45 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 15.10+21.04.20210304-0ubuntu6+unity3 is newer than resolute 15.10+21.04.20210304-0ubuntu6",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "indicator-datetime",
+  "source_commit": "9a004468998ce694079698ae7225b52e23efe28c",
+  "candidate_source_version": "15.10+21.04.20210304-0ubuntu6+unity3",
+  "pockets": {
+    "resolute": "15.10+21.04.20210304-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T18:23:59Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "indicator-datetime-dbgsym",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "15.10+21.04.20210304-0ubuntu6+unity3"
+    },
+    {
+      "package": "indicator-datetime",
+      "version": "15.10+21.04.20210304-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "15.10+21.04.20210304-0ubuntu6+unity3"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-026",
+    "packages": 400,
+    "list_sha256": "c79789232464a90a2fcf0498b4a0e35c84e00cb7ff1131c2ff3946002f25d51e",
+    "model_entries": 361,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "54056e25788131c1463c144c7e147ad847a710b980bc50311c2bd9b7f61fcf11"
+}
