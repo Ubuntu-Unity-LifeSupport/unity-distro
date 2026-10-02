@@ -1,0 +1,14 @@
+gated build-gated/ vs tested build-unity9/ (UNITY-20260928-022)
+libunity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb: files=11 list-diff=0 control=same md5-diff=0 
+libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb: files=11 list-diff=0 control=same md5-diff=0 
+unity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb: files=26 list-diff=0 control=same md5-diff=0 
+unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity9_all.deb: files=24 list-diff=0 control=same md5-diff=0 
+unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb: files=455 list-diff=0 control=same md5-diff=0 
+--- sha256 of debs/ddebs
+libunity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb fd3ba8168a7ca037 fd3ba8168a7ca037 identical
+libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb 57e86ee97ee04078 57e86ee97ee04078 identical
+unity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb e805e831b7ab6ae6 e805e831b7ab6ae6 identical
+unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity9_all.deb 7b4ad0e7a6d2b564 7b4ad0e7a6d2b564 identical
+unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb c56cad4bc58849d2 c56cad4bc58849d2 identical
+libunity-settings-daemon1-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.ddeb bb2295de1b1073fb bb2295de1b1073fb identical
+unity-settings-daemon-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.ddeb a5b06ef4a2081b26 a5b06ef4a2081b26 identical
