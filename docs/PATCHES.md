@@ -201,3 +201,10 @@ unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity7, 2026-10-02 (UNITY-
 
 
 Correction to the unity-settings-daemon +unity7 section of 2026-10-02 (UNITY-20260927-012; that section is left as written): in the `09f45d9` row, the 4/4 aborts on +unity5 were 1 run by hand and 3 runs of `tools/two-clients.sh`; the 2/2 on archive 0ubuntu6 were by the script.
+
+
+unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity9, 2026-10-02 (UNITY-20260928-022). Source commit 57945f5 on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch `a/UNITY-20260928-022`, on +unity7 `b570a22` (format 1.0, fixes as git commits; +unity8 was a test build, never published). Gated build on the pinned chroot 20260929T201245Z; its debs are byte-identical to the build tested on target. Not yet published.
+
+| Package | Patch / change | What it does | Upstream | Where | Status |
+|---|---|---|---|---|---|
+| unity-settings-daemon | `power: end D-Bus and async calls with the manager, answer when stopped` (+unity8, `27e75f4`), `power: answer keyboard calls when there is no backlight proxy` (+unity9, `df68430`) | The power plugin's D-Bus object outlived `stop()` and the manager: a call while stopped hung until the client timeout; a property Get returned NULL without an error and GDBus aborted the daemon (also while running: Percentage without a battery); a call after finalize ran on freed memory (SIGSEGV in `handle_method_call`); the async calls of `start()` wrote into a stopped manager. Now: errors when stopped or without a value, the object unregistered in finalize, a per-start cancellable, inhibitor flags reset in stop. +unity9 adds: Keyboard calls answer "No keyboard backlight" while the backlight proxy is being recreated after a restart of the plugin (in +unity8 the Verifier crashed it there, 2/2). Verifier round 2 on +unity9 PASS. | none (upstream gnome-settings-daemon master has the same silent return and no unregister) | [`research/UNITY-20260928-022-usd-power-registrations/`](research/UNITY-20260928-022-usd-power-registrations/) | local, at the publication gate |
