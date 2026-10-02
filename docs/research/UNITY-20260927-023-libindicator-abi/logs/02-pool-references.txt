@@ -1,0 +1,4 @@
+# every .deb in /srv/aptly/pool (read-only): does its data contain the string indicator_ng_ayatana_menu_get_type? 2026-09-28T08:38:25Z
+HIT 7290762456193ec340a6daf8634e_libindicator3-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity2_amd64.deb: 2
+HIT 15b307c6481e11fde53b01adaabc_libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity2_amd64.deb: 1
+scanned: 270 .deb files

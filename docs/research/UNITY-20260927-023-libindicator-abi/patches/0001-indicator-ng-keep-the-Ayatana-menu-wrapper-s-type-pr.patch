@@ -1,0 +1,54 @@
+From f8fa2993bdbdaafb54e1428e8468f84f9cca917a Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 08:40:23 +0000
+Subject: [PATCH] indicator-ng: keep the Ayatana menu wrapper's type private;
+ release +unity3
+
+G_DEFINE_TYPE emits a non-static get_type, which the library's
+-export-symbols-regex exported as indicator_ng_ayatana_menu_get_type. A static
+prior declaration gives it internal linkage, so libindicator3.so.7 exports the
+archive's 40 symbols again.
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog            | 10 ++++++++++
+ libindicator/indicator-ng.c |  4 ++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/debian/changelog b/debian/changelog
+index c5afeb0..691b9a3 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,13 @@
++libindicator (16.10.0+18.04.20180321.1-0ubuntu8+unity3) resolute; urgency=medium
++
++  * libindicator/indicator-ng.c: declare the Ayatana menu wrapper's get_type
++    static. +unity2's G_DEFINE_TYPE exported it
++    (indicator_ng_ayatana_menu_get_type) although it is private to this
++    file; the library again exports exactly the archive's 40 symbols
++    (UNITY-20260927-023).
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Mon, 28 Sep 2026 08:40:23 +0000
++
+ libindicator (16.10.0+18.04.20180321.1-0ubuntu8+unity2) resolute; urgency=medium
+ 
+   * libindicator/indicator-ng.c: accept Ayatana indicators, whose root menu
+diff --git a/libindicator/indicator-ng.c b/libindicator/indicator-ng.c
+index 8bad994..7664f19 100644
+--- a/libindicator/indicator-ng.c
++++ b/libindicator/indicator-ng.c
+@@ -364,6 +364,10 @@ typedef struct
+ 
+ typedef GMenuModelClass IndicatorNgAyatanaMenuClass;
+ 
++/* A private type of this file: the static declaration keeps G_DEFINE_TYPE's
++ * get_type out of the library's exported symbols. */
++static GType indicator_ng_ayatana_menu_get_type (void);
++
+ G_DEFINE_TYPE (IndicatorNgAyatanaMenu, indicator_ng_ayatana_menu, G_TYPE_MENU_MODEL)
+ 
+ static GMenuModel * indicator_ng_ayatana_menu_new (GMenuModel *base);
+-- 
+2.53.0
+

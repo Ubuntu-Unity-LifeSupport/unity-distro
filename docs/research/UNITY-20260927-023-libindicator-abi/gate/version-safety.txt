@@ -1,0 +1,87 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 16.10.0+18.04.20180321.1-0ubuntu8+unity3 is newer than resolute 16.10.0+18.04.20180321.1-0ubuntu8",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "libindicator",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "candidate_source_version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+  "pockets": {
+    "resolute": "16.10.0+18.04.20180321.1-0ubuntu8"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T17:59:31Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "indicator-common",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "all",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator-dev",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator3-7-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator3-7",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator3-dev",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator3-tools-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator3-tools",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator7-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "package": "libindicator7",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-023",
+    "packages": 397,
+    "list_sha256": "3999fbd1e21c31f69c7b303dfea08aa8db5b3db38d15951f17bfea317031d725",
+    "model_entries": 359,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "d01001fd7a9ced4c12dcad9b2b4b68e168c498d77dcac9227b8a1951ff62b442"
+}

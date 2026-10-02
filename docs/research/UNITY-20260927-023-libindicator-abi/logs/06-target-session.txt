@@ -1,0 +1,31 @@
+== session host=target2 boot=ab5d9a79-2858-4866-957a-674814cf3af9 utc=2026-09-28T08:52:17Z
+== libindicator3-7 installed: 16.10.0+18.04.20180321.1-0ubuntu8+unity3
+== exported symbols of the installed library
+40
+0
+== unity-panel-service maps libindicator3 and the messages indicator
+pid=3598
+libindicator3.so.7.0.0
+== ayatana-indicator-messages service
+○ ayatana-indicator-messages.service - Ayatana Indicator Messages Service
+     Loaded: loaded (/usr/lib/systemd/user/ayatana-indicator-messages.service; enabled; preset: enabled)
+     Active: inactive (dead)
+== panel entries (unity-panel-service Sync): indicator names
+== warnings from unity-panel-service since boot
+== done
+
+== crash reports on the guest: /var/crash/_usr_bin_light-locker.1000.crash, Date Mon Sep 28 11:35:27 2026 (guest local time), SIGABRT in light-locker 1.8.0-3ubuntu4 - written during the first boot of the restored Clean-2, before the install phase (08:47Z = 11:47 local); unrelated to libindicator
+
+== messaging menu with a client (2026-09-28 08:53-08:54Z)
+gir1.2-messagingmenu-1.0 (archive, needed by the test client) installed on the dirty target2.
+research/messaging-menu/mmclient.py registered pluma.desktop with an "Inbox" source of 3 that draws
+attention ("registered pluma.desktop" in the user journal). unity-panel-service Sync then lists
+'org.ayatana.indicator.messages', entry 0x61837ef8b2b0, visible, icon indicator-messages-new.
+Screenshots (vbox MCP, saved on the Windows host):
+- target-desktop-2-20260928-115400.png: envelope with the yellow "new" dot in the panel
+- target-desktop-2-20260928-115427.png: the envelope's menu opened from the keyboard (Alt+F10,
+  arrows): "Pluma" (application row with icon and submenu arrow), "Inbox" with the count bubble 3,
+  "Очистить". The count bubble is Unity's IDO messages source item, which renders only because the
+  wrapper added x-canonical-type com.canonical.indicator.messages.source - without the wrapper the
+  row is plain and greyed (research/messaging-menu). So the wrapper type works with its get_type
+  now internal.
