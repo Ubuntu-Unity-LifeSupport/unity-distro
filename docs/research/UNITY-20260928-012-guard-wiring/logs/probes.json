@@ -1,0 +1,32 @@
+[
+ {
+  "id": "P1-process",
+  "expect": "deny",
+  "command": "pgrep -f unity-guard-probe-zzz"
+ },
+ {
+  "id": "P3-live-form-nonexistent-binary",
+  "expect": "deny",
+  "command": "/nonexistent/aptly publish list"
+ },
+ {
+  "id": "P3b-live-form-config",
+  "expect": "deny",
+  "command": "/nonexistent/aptly -config=/nonexistent/aptly.conf publish list"
+ },
+ {
+  "id": "P4-harmless-ls",
+  "expect": "allow",
+  "command": "ls /home/claude/unity-distro"
+ },
+ {
+  "id": "P5-harmless-git-status",
+  "expect": "allow",
+  "command": "git -C /home/claude/unity-distro status --short"
+ },
+ {
+  "id": "P6-harmless-cat",
+  "expect": "allow",
+  "command": "cat /home/claude/coordinator/AGENT-REGISTRY.json"
+ }
+]

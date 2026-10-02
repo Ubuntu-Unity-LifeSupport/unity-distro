@@ -1,0 +1,28 @@
+# UNITY-20260927-027 (with UNITY-20260928-020) target verification of the publication: target2 restored to Clean-2 (checked: no ~/.dirty, archive libnux 0ubuntu12), our repository (./resolute = unity-resolute-20260927-027), full-upgrade
+clean check: ls: cannot access '/home/mike/.dirty': No such file or directory
+libnux-4.0-0	4.0.8+18.10.20180623-0ubuntu12
+2026-09-29T22:53:50Z
+Пол:1 http://192.168.56.10:8080 resolute InRelease [4 314 B]
+Пол:2 http://192.168.56.10:8080 resolute/main amd64 Packages [70,2 kB]
+libnux-4.0-0:
+  Установлен: 4.0.8+18.10.20180623-0ubuntu12
+  Кандидат:   4.0.8+18.10.20180623-0ubuntu15+unity3
+  Таблица версий:
+     4.0.8+18.10.20180623-0ubuntu15+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu15+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+libnux-4.0-0 4.0.8+18.10.20180623-0ubuntu15+unity3 ii 
+libnux-4.0-common 4.0.8+18.10.20180623-0ubuntu15+unity3 ii 
+unity 7.7.1+26.04.20260306-0ubuntu3+unity12 ii 
+dpkg -V done
+## after a reboot
+2026-09-29T22:59:27Z
+ 01:59:27 up 1 min,  2 users,  load average: 4,66, 1,49, 0,52
+compiz pid 2773
+/usr/lib/x86_64-linux-gnu/libnux-4.0.so.0.8.0 
+/usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0.8.0 
+/usr/lib/x86_64-linux-gnu/libnux-graphics-4.0.so.0.8.0 
+2dbccbd70a4ff026d437b65176dc9b355794f537bedcf3abf64306acf6a4ec0a  /usr/lib/x86_64-linux-gnu/libnux-4.0.so.0.8.0
+5a7f9645d130a55155528887451829df00d8b34e5ee20a4ddf7a904f432f8fd2  /usr/lib/x86_64-linux-gnu/libnux-graphics-4.0.so.0.8.0
+# libnux-4.0.so.0.8.0 2dbccbd7... is the file of the gated libnux-4.0-0 .deb (logs/10); MCP screenshot 01:59:29 local: Unity panel and launcher drawn

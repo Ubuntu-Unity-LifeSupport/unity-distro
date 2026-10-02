@@ -1,0 +1,14 @@
+# 2026-09-29T09:36:55Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+09:36:55.505 service pid 1565; before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:36:56.969 ACTION restart accounts-daemon
+09:36:57.990 current: uint32 4294967295
+09:36:58.231 sources: @a(ss) []
+09:36:58.471 SIGKILL 1565
+09:38:35 now: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+   2633 вт вер 29 12:36:55 2026 gsettings
+   2671 вт вер 29 12:36:58 2026 indicator-keybo
+вер 29 12:36:58 target2 systemd[1256]: indicator-keyboard.service: Failed with result 'signal'.
+вер 29 12:36:58 target2 systemd[1256]: indicator-keyboard.service: Scheduled restart job, restart counter is at 1.
+вер 29 12:36:58 target2 systemd[1256]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 29 12:36:59 target2 indicator-keyboard-service[2671]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 29 12:38:36 target2 sudo[2738]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/journalctl --user -M lightdm@ -u indicator-keyboard.service --since -3min --no-pager

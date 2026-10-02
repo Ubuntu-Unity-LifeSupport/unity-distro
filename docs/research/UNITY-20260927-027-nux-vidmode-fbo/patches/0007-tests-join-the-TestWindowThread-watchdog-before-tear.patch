@@ -1,0 +1,90 @@
+From d869093ba8d63c63525eb935ece7973236670062 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 20:43:58 +0000
+Subject: [PATCH 7/8] tests: join the TestWindowThread watchdog before tearing
+ down (UNITY-20260928-020)
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .../tests-windowthread-join-watchdog.patch    | 68 +++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 debian/patches/tests-windowthread-join-watchdog.patch
+
+diff --git a/debian/patches/tests-windowthread-join-watchdog.patch b/debian/patches/tests-windowthread-join-watchdog.patch
+new file mode 100644
+index 0000000..685860c
+--- /dev/null
++++ b/debian/patches/tests-windowthread-join-watchdog.patch
+@@ -0,0 +1,68 @@
++Description: tests: join the TestWindowThread watchdog before tearing down
++ The watchdog was a nux::SystemThread that the fixture deleted in its
++ destructor. It writes to the quit pipe and then returns through
++ SystemThread::Run, which still uses the object (parent_, SetThreadState,
++ TerminateChildThreads). The write wakes the main loop, the test ends, and
++ when the fixture is faster the thread runs on freed memory: SIGSEGV in
++ SystemThread::Run (SystemThread.cpp:91) while the main thread is already in
++ ~GraphicsDisplay. NThread's destructor only detaches, and it detaches even a
++ joined thread, so the object cannot be joined and then deleted either.
++ .
++ Use a std::thread for the watchdog and join it in the destructor. On target2,
++ TestWindowThread.* crashed in 5 of 20 runs before and 0 of 30 after.
++Author: NeiroNext <mihail.rozshko@gmail.com>
++Forwarded: no
++Last-Update: 2026-09-28
++Index: nux/tests/gtest-nux-windowthread.cpp
++===================================================================
++--- nux.orig/tests/gtest-nux-windowthread.cpp
+++++ nux/tests/gtest-nux-windowthread.cpp
++@@ -11,6 +11,7 @@
++ #include <memory>
++ #include <iostream>
++ #include <gmock/gmock.h>
+++#include <thread>
++ #include <boost/filesystem.hpp>
++ #include <glib.h>
++ 
++@@ -58,7 +59,6 @@ class TestWindowThread : public ::testin
++ 
++     TestWindowThread()
++       : seconds_to_quit(0)
++-      , quit_thread (NULL)
++     {
++       nux::NuxInitialize(0);
++       wnd_thread.reset (nux::CreateNuxWindow("Nux Window", 300, 200,
++@@ -81,8 +81,11 @@ class TestWindowThread : public ::testin
++ 
++     ~TestWindowThread()
++     {
++-      if (quit_thread)
++-        delete quit_thread;
+++      // The watchdog writes to quit_pipe_ and may still be returning from
+++      // that write when the test ends: wait for it before the pipes and the
+++      // window thread go away.
+++      if (quit_thread.joinable())
+++        quit_thread.join();
++ 
++       close(quit_pipe_[0]);
++       close(quit_pipe_[1]);
++@@ -94,7 +97,7 @@ class TestWindowThread : public ::testin
++ 
++     std::unique_ptr <nux::WindowThread> wnd_thread;
++     unsigned int                        seconds_to_quit;
++-    nux::SystemThread                   *quit_thread;
+++    std::thread                         quit_thread;
++ 
++     void WatchFdForEventsOnRun(int fd,
++                                const nux::WindowThread::FdWatchCallback &cb)
++@@ -111,8 +114,7 @@ class TestWindowThread : public ::testin
++     void QuitAfter(unsigned int seconds)
++     {
++       seconds_to_quit = seconds;
++-      quit_thread = nux::CreateSystemThread(NULL, TestWindowThread::QuitTask, this);
++-      quit_thread->Start(NULL);
+++      quit_thread = std::thread(TestWindowThread::QuitTask, nullptr, this);
++     }
++ 
++     void WaitForQuit()
+-- 
+2.53.0
+

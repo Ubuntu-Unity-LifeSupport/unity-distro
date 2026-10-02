@@ -1,0 +1,21 @@
+# 2026-09-29T11:57:08Z B session b7902aab, main 3559561; chmod g-w ~/.aptly.conf (C's request; -047 L0 operation)
+before: mode 664, sha256 ece05ab8ad8469cdeaa39487013830d7a9304cc09cf9989a18543193d8831b25
+after:  mode 644, sha256 ece05ab8ad8469cdeaa39487013830d7a9304cc09cf9989a18543193d8831b25 (= list aptly_conf_sha256)
+
+# live-proof.py dry run in B's own session (payloads only, nothing executed)
+list sha256 4e9dde5a5b862f58a27f47bfaea80942fab73c46ac0b9434a0c0d6e70f42294a (8 commands)
+live marker present: False; live log present: False
+L1 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L2 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L3 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L4 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L5 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L6 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L7 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+L8 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+near-miss (extra space): rc=2 OK | aptly live command not allowed: not an exact entry of the reviewed live command list
+near-miss (extra arg): rc=2 OK | aptly live command not allowed: not an exact entry of the reviewed live command list
+Monitor tool: rc=2 OK | aptly live command not allowed: live commands run only as a foreground Bash call
+background: rc=2 OK | aptly live command not allowed: live commands run only as a foreground Bash call
+live log present after: False
+RESULT: all denied as expected

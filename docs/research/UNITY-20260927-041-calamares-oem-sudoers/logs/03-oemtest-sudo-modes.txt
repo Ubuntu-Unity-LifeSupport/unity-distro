@@ -1,0 +1,16 @@
+-- mode 644 root:root
+sudo-rs true:  ok
+sudo.ws true:  ok
+visudo(rs) -c: visudo: /etc/sudoers: bad permissions, should be mode 0440, but found 0644  rc=0
+visudo(ws) -c: /etc/sudoers: bad permissions, should be mode 0440 /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK  rc=0
+-- mode 440 root:root
+sudo-rs true:  ok
+sudo.ws true:  ok
+visudo(rs) -c: /etc/sudoers: parsed OK  rc=0
+visudo(ws) -c: /etc/sudoers: parsed OK /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK  rc=0
+-- mode 400 root:root
+sudo-rs true:  ok
+sudo.ws true:  ok
+visudo(rs) -c: visudo: /etc/sudoers: bad permissions, should be mode 0440, but found 0400  rc=0
+visudo(ws) -c: /etc/sudoers: bad permissions, should be mode 0440 /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK  rc=0
+restored: 644

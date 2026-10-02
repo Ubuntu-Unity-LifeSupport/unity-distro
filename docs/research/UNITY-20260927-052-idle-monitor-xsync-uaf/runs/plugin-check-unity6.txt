@@ -1,0 +1,21 @@
+== plugin-check 1
+Warning: The unit file, source configuration file or drop-ins of unity-settings-daemon.service changed on disk. Run 'systemctl --user daemon-reload' to reload units.
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6, pid 9137, hidden: 1
+watch id 4 from :1.196
+watch id 5 from :1.197
+after two departures: pid 9137
+after the input, pid 9137 logged: became active;Attempting to show the cursor; => PASS
+== plugin-check 2
+Warning: The unit file, source configuration file or drop-ins of unity-settings-daemon.service changed on disk. Run 'systemctl --user daemon-reload' to reload units.
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6, pid 9234, hidden: 1
+watch id 4 from :1.199
+watch id 5 from :1.200
+after two departures: pid 9234
+after the input, pid 9234 logged: became active;Attempting to show the cursor; => PASS
+== plugin-check 3
+Warning: The unit file, source configuration file or drop-ins of unity-settings-daemon.service changed on disk. Run 'systemctl --user daemon-reload' to reload units.
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6, pid 9323, hidden: 1
+watch id 4 from :1.202
+watch id 5 from :1.203
+after two departures: pid 9323
+after the input, pid 9323 logged: became active;Attempting to show the cursor; => PASS

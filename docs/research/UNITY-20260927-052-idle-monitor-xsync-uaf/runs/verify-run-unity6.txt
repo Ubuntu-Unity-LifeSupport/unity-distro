@@ -1,0 +1,65 @@
+0
+Warning: The unit file, source configuration file or drop-ins of unity-settings-daemon.service changed on disk. Run 'systemctl --user daemon-reload' to reload units.
+######## run 1
+== u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6, pid 9456
+== B: kept client, two others leave, then input, then idle
+watch id 6 from :1.206
+watch id 7 from :1.207
+  after the two departures (05:20:18): pid 9456
+  input at 05:20:19
+  listener: listener :1.205: user-active id=4, idle id=5
+  listener:    0.0s WatchFired id=5 (idle 4000 ms)
+  listener:    5.6s WatchFired id=4 (user-active)
+  listener:    9.8s WatchFired id=5 (idle 4000 ms)
+== C: RemoveWatch then exit, twice
+watch id 8 from :1.208
+removed watch 8
+watch id 9 from :1.209
+removed watch 9
+  daemon survived (pid 9456)
+== A: two clients leave without RemoveWatch
+  watch id 10 from :1.210
+  watch id 11 from :1.211
+  u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6: pid 9456 -> 9456: SURVIVED
+######## run 2
+== u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6, pid 9456
+== B: kept client, two others leave, then input, then idle
+watch id 14 from :1.213
+watch id 15 from :1.214
+  after the two departures (05:21:27): pid 9456
+  input at 05:21:28
+  listener: listener :1.212: user-active id=12, idle id=13
+  listener:    0.0s WatchFired id=13 (idle 4000 ms)
+  listener:    5.3s WatchFired id=12 (user-active)
+  listener:   10.0s WatchFired id=13 (idle 4000 ms)
+== C: RemoveWatch then exit, twice
+watch id 16 from :1.215
+removed watch 16
+watch id 17 from :1.216
+removed watch 17
+  daemon survived (pid 9456)
+== A: two clients leave without RemoveWatch
+  watch id 18 from :1.217
+  watch id 19 from :1.218
+  u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6: pid 9456 -> 9456: SURVIVED
+######## run 3
+== u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6, pid 9456
+== B: kept client, two others leave, then input, then idle
+watch id 22 from :1.220
+watch id 23 from :1.221
+  after the two departures (05:22:36): pid 9456
+  input at 05:22:36
+  listener: listener :1.219: user-active id=20, idle id=21
+  listener:    0.0s WatchFired id=21 (idle 4000 ms)
+  listener:    5.4s WatchFired id=20 (user-active)
+  listener:    9.7s WatchFired id=21 (idle 4000 ms)
+== C: RemoveWatch then exit, twice
+watch id 24 from :1.222
+removed watch 24
+watch id 25 from :1.223
+removed watch 25
+  daemon survived (pid 9456)
+== A: two clients leave without RemoveWatch
+  watch id 26 from :1.224
+  watch id 27 from :1.225
+  u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity6: pid 9456 -> 9456: SURVIVED

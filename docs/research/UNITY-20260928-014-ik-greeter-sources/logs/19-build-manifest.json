@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-014",
+  "package": "indicator-keyboard",
+  "candidate_version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/indicator-keyboard-014",
+  "source_commit": "5d6a8c57443061f624258c43d39fc7cee36bb759",
+  "source_tree_hash": "07661b25891c6a352451f942cf034243bbd6e9e8",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I"
+  ],
+  "build_started": "2026-09-29T10:22:15.599039+00:00",
+  "build_finished": "2026-09-29T10:27:02.178099+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260928-014-indicator-keyboard-0.0.0+19.10.20240924-0ubuntu1+unity4-sbuild.log",
+    "sha256": "9f39ca548d213b27a7a62f90439d39ed83259b18e8d7e9c70b2aa99090fe3634"
+  },
+  "artifacts": [
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4.dsc",
+      "sha256": "893f414ee181578ebd86c294d86a26f427565e9367ab9b262d02b7d92557b4f0",
+      "size": 1325,
+      "kind": "source",
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.changes",
+      "sha256": "83c4b76e45570a588b201f9f887cb2952a43856e1bacaff632e8d0d54e35eb54",
+      "size": 2811,
+      "kind": "changes"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4.tar.gz",
+      "sha256": "84219c5dc76046258eead51524136d93de9ded4c7d563fc462bccabeeacc6b8a",
+      "size": 71502,
+      "kind": "source_file",
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4"
+    },
+    {
+      "file": "indicator-keyboard-dbgsym_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.ddeb",
+      "sha256": "716d4923526ee3cb9ba92b303effc6244869b76d1d82fa44b14ad8fecc3f4485",
+      "size": 239146,
+      "kind": "binary",
+      "package": "indicator-keyboard-dbgsym",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+      "architecture": "amd64"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.buildinfo",
+      "sha256": "b99633d2ff7f8a4568a72515db40223b675945be8ef1b18ce7b38c1bfefcb759",
+      "size": 19104,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "indicator-keyboard_0.0.0+19.10.20240924-0ubuntu1+unity4_amd64.deb",
+      "sha256": "a1205c9d393fbc8c27d3ead27cf78119ffa3f96d2a34d28129cd9b7824d95865",
+      "size": 54066,
+      "kind": "binary",
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+      "architecture": "amd64"
+    }
+  ]
+}

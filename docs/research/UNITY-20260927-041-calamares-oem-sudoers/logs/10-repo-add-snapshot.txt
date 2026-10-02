@@ -1,0 +1,10 @@
+# 2026-09-29T18:08:45Z UNITY-20260927-041: repo add of the gated build (7 records: source + 5 .deb + 1 .ddeb) to unity-resolute (303 -> 310), snapshot unity-resolute-20260927-041
+# live ./resolute before: unity-resolute-20260928-019 (/srv/aptly/public/dists/resolute/Release mtime 2026-09-29 17:06:28.063237395 +0000)
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | calamares-settings-kubuntu               | -                                        | 1:26.04.12+unity3                       
++ all    | calamares-settings-lubuntu               | -                                        | 1:26.04.12+unity3                       
++ all    | calamares-settings-ubuntu-common-data    | -                                        | 1:26.04.12+unity3                       
++ all    | calamares-settings-ubuntu-unity          | -                                        | 1:26.04.12+unity3                       
++ amd64  | calamares-settings-ubuntu-common         | -                                        | 1:26.04.12+unity3                       
++ amd64  | calamares-settings-ubuntu-common-dbgsym  | -                                        | 1:26.04.12+unity3                       
++ source | calamares-settings-ubuntu                | -                                        | 1:26.04.12+unity3                       

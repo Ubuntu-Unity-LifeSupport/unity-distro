@@ -1,0 +1,36 @@
+== step 4: publish switch to rhB (re-publish, .tmp suffix) at 2026-09-29T22:47:12Z
+-- stand-in trace (last two calls):
+{"argv": ["-o", "/tmp/aptly998160780/Release.gpg", "--digest-algo", "SHA256", "--armor", "--yes", "--detach-sign", "/tmp/aptly998160780/Release"], "tempdir": "/tmp/aptly998160780", "listing": [["Release", 1896, false], ["main_binary-amd64_Packages", 960, false], ["main_binary-amd64_Packages.bz2", 591, false], ["main_binary-amd64_Packages.gz", 535, false], ["main_binary-amd64_Release", 126, false]]}
+{"argv": ["-o", "/tmp/aptly998160780/InRelease", "--digest-algo", "SHA256", "--yes", "--clearsign", "/tmp/aptly998160780/Release"], "tempdir": "/tmp/aptly998160780", "listing": [["Release", 1896, false], ["Release.gpg", 228, false], ["main_binary-amd64_Packages", 960, false], ["main_binary-amd64_Packages.bz2", 591, false], ["main_binary-amd64_Packages.gz", 535, false], ["main_binary-amd64_Release", 126, false]]}
+-- published dists (no .tmp left after the rename):
+/var/tmp/aptly-rehearsal/021/state/public/dists/resolute:
+total 24
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:47 .
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 ..
+-rw-r--r-- 1 claude claude 2216 Sep 29 22:47 InRelease
+-rw-r--r-- 1 claude claude 1896 Sep 29 22:47 Release
+-rw-r--r-- 1 claude claude  228 Sep 29 22:47 Release.gpg
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 main
+
+/var/tmp/aptly-rehearsal/021/state/public/dists/resolute/main/binary-amd64:
+total 24
+drwxr-xr-x 2 claude claude 4096 Sep 29 22:47 .
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 ..
+-rw-r--r-- 1 claude claude  960 Sep 29 22:47 Packages
+-rw-r--r-- 1 claude claude  591 Sep 29 22:47 Packages.bz2
+-rw-r--r-- 1 claude claude  535 Sep 29 22:47 Packages.gz
+-rw-r--r-- 1 claude claude  126 Sep 29 22:47 Release
+-- InRelease:
+gpgv: Good signature from "aptly-signer rehearsal <rehearsal@example.invalid>"
+2
+-- Release.gpg over aptly's Release (window):
+gpgv: BAD signature from "aptly-signer rehearsal <rehearsal@example.invalid>"
+refresh exit 0
+gpgv: Good signature from "aptly-signer rehearsal <rehearsal@example.invalid>"
+077fe206757a78571d2e3f27405b34bfb8098f8865b9f8c10f1493152ce4610c
+live exit 0
+-- the old trio of B, kept for step 5:
+dc0ba27d3a7c3e9fa2de1a1ef493b9cd52e9d2816f8df2568a33387ecd80fb5a  /var/tmp/aptly-rehearsal/021/b-trio/InRelease
+d993bcebbf95b62ef6228883e6903540474d8014697e1771817385c3d01d1531  /var/tmp/aptly-rehearsal/021/b-trio/Release
+3cfadb565e2a679c2ff96a3691f36d3c6d3d398c5bb33d57187429378b1e637a  /var/tmp/aptly-rehearsal/021/b-trio/Release.gpg
+7aead3accf95b09c917b8e93b7c61af929bd8da78129932c4a8d4720345af8d3  /var/tmp/aptly-rehearsal/021/state/public/dists/resolute/main/binary-amd64/Packages

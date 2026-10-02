@@ -14,6 +14,15 @@
   "peer_notice": "ACK",
   "patch_and_decision_docs": true,
   "decision_required": false,
+  "target_test": {
+    "record": "docs/research/task/target-test.txt",
+    "debs": {
+      "package_version_arch.deb": "sha256-of-the-installed-deb"
+    }
+  },
+  "tested_build": "this_build | same_chroot | buildinfo_identical",
+  "tested_manifest": "docs/research/task/test-build/TASK-package-build-manifest.json (same_chroot, buildinfo_identical)",
+  "tested_buildinfo": "docs/research/task/test-build/package_version_arch.buildinfo (buildinfo_identical)",
   "evidence": {
     "evidence_card": "docs/research/task/README.md",
     "verification_record": "docs/research/task/verification.md",
