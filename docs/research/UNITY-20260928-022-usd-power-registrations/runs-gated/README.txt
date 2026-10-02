@@ -16,6 +16,8 @@ version 15.04.1+21.10.20220802-0ubuntu7+unity9):
 - 02-keyboard-toggle-race.txt: tools/keyboard-toggle-race.sh (needs tools/kbdrace.py in /tmp; the first attempt,
   without it, made no calls and is not kept) - Keyboard.StepUp: "No keyboard backlight" 390 times, every call
   answered; Screen.GetPercentage likewise; same pid, NRestarts 0, 0 crash files; as runs/10.
-- 03-quick-toggle.txt: tools/quick-toggle.sh - the proxy callbacks of each start run after it, alive, 0 crash.
+- 03-quick-toggle.txt: tools/quick-toggle.sh - the trace shows the proxy callbacks of a start still arriving after
+  the next STOP, as in runs/03 (+unity7): the dprintfs fire at the callbacks' entry, before +unity9's early return
+  on a cancelled start, so the trace shows timing only; the effect is checked in 01 (inhibitors back). Alive, 0 crash.
 - 04-finalized-unique-name.txt: tools/finalized-unique-name.sh - after a forced finalize, method and property Get by
   u-s-d's unique name answer "object does not exist", no crash; as runs/08.
