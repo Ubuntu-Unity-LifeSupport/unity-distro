@@ -108,6 +108,25 @@ blocking: `on_bus_gotten` would not release an older connection/name id (it
 runs once per manager), and `stop()` leaves the idle watches (never
 registered on our stack - see the side finding above).
 
+## Gated build for publication (2026-10-02)
+
+- Build: `scripts/build_sbuild.py` from `packages/unity-settings-daemon` at
+  `57945f5` (a fresh clone of Ubuntu-Unity-LifeSupport/unity-settings-daemon,
+  ref `a/UNITY-20260928-022`), on the pinned chroot 20260929T201245Z
+  (UNITY-20260929-016); manifest
+  `build-gated/UNITY-20260928-022-unity-settings-daemon-build-manifest.json`.
+- Against the tested build `build-unity9/`: all 5 debs and 2 ddebs
+  byte-identical (`build/gated-vs-tested.txt`). The tested build has no
+  chroot record, so `tested_build` is `this_build`, with the key runs
+  repeated on target on the gated debs.
+- The gated source package is format 1.0 native (one `.tar.gz`), the tested
+  one orig + diff; the binaries are unaffected and our repository publishes
+  binaries. Same as UNITY-20260927-012's gated build.
+- `docs/PATCHES.md`: section for +unity9 appended in main `9807121`.
+- Short Verifier on the gated build: PASS (REVIEWED).
+- Order: u-s-d +unity7 (UNITY-20260927-012) is published and verified on
+  target first; then +unity9 is installed there for the key runs.
+
 ## Evidence card
 
 ```yaml
