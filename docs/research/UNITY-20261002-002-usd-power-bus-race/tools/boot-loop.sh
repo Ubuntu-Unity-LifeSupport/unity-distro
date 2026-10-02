@@ -18,6 +18,7 @@ for i in $(seq 1 "$N"); do
   ssh target '. ~/envt.sh; b=$(cat /proc/sys/kernel/random/boot_id)
     o=$(gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.GetNameOwner org.gnome.SettingsDaemon.Power 2>&1 | cut -c1-60)
     echo "boot_id $b u-s-d $(dpkg-query -W -f "\${Version}" unity-settings-daemon) pid $(pgrep -x unity-settings-) drop-ins: $(ls ~/.config/systemd/user/unity-settings-daemon.service.d/ 2>/dev/null | tr "\n" " ") power-owner: $o"
+    [ -f /var/tmp/u002/toggle-$b.txt ] && { echo "toggle: $(cat /var/tmp/u002/toggle-$b.txt)"; }
     sudo cat /var/tmp/u002/trace-$b.txt' > "$O/boot-$i.txt" 2>&1
-  echo "boot $i: $(head -1 "$O/boot-$i.txt" | sed 's/.*power-owner: //'); stops: $(grep -c ' STOP$' "$O/boot-$i.txt")"
+  echo "boot $i: $(head -1 "$O/boot-$i.txt" | sed 's/.*power-owner: //'); stops: $(grep -c ' STOP$' "$O/boot-$i.txt")$(grep -q '^toggle:' "$O/boot-$i.txt" && echo '; toggled')"
 done
