@@ -1,0 +1,5 @@
+# 2026-09-29T10:58:54Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1 greeter=lightdm-greeter
+--- fresh: before: X layout:     gb | sources=@a(ss) [] current=uint32 0 | explicit keys: 
+    after start: X layout:     gb | sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0 | pid 4995
+--- cur1: before: X layout:     gb | sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1 | explicit keys: current sources 
+    after start: X layout:     gb | sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0 | pid 5084

@@ -1,0 +1,11 @@
+# UNITY-20260928-019 peer notice (ENGINEERING-PROCESS section 6), 2026-09-29
+A -> B (SendMessage to "Agent B"): lightdm 1.32.0-6ubuntu4+unity2, 11 records, snapshot unity-resolute-20260928-019;
+diff against the live unity-resolute-20260927-021-r2 = the 11 additions only; asked for ACK and a window without apt
+operations against our repository.
+B -> A, verbatim first line: "B ACK UNITY-20260928-019 lightdm 1.32.0-6ubuntu4+unity2, no conflict."
+B checked the snapshot diff itself (11 additions, nothing removed or changed; calamares-settings-ubuntu +unity2 stays).
+Window: B's only apt operation against our repository (oem-test live session) ran 16:29-16:30Z and is finished;
+the rest of UNITY-20260927-021 does not use our repository; the switch may happen any time from B's side, B will
+write before using our repository again.
+Order note: the coordinator first listed the peer notice after READY_TO_PUBLISH; create_release_gate.py requires
+peer_notice ACK in the release record, so it came before the gate (coordinator confirmed).

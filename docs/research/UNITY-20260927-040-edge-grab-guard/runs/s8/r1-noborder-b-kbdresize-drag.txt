@@ -1,0 +1,23 @@
+Attached 14 probes
+READY
+1809 RESIZE-INITIATE state=1
+3741 UNITY-SEES ButtonPress window=0x3000005 button=1
+3741 EXPO-SEES ButtonPress window=0x3000005 button=1
+4130 UNITY-SEES ButtonRelease window=0x3000005 button=1
+4130 EXPO-SEES ButtonRelease window=0x3000005 button=1
+4392 REMOVE-GRAB
+4392 XUNGRABPOINTER
+        XUngrabPointer+0
+        ExpoScreen::donePaint()+684
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+4392 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+6511 UNITY-SEES ButtonPress window=0x3000114 button=1
+
+

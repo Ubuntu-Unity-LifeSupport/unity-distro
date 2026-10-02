@@ -1,0 +1,32 @@
+# UNITY-20260927-027 target test (this_build) on target2 from Clean-2 (~/.dirty set): our repository (./resolute = unity-resolute-20260928-014) full-upgrade, then the gated nux +unity3 .debs installed with apt
+## installed debs (sha256 = the gated manifest's)
+ce0dba348a8b6b8f525a4cae6bd66899f9a1cdf324a950247f29cfda532a0028  libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb
+1cc0617d98c5b56b3b769bf02b07169515c389183d7072d80e7223dfde22a479  libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb
+7b1ddd64f358e6d87c9a3b034075b51ec33e82ea10878b51192301e87c15e209  libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb
+102ffeec361143652ecdd0b78dc35cd20042451c4f8352d5574273e51af3572a  nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb
+## after a reboot: the Unity session (unity 7.7.1+26.04.20260306-0ubuntu3+unity12 from our repository, built with nux +unity2)
+2026-09-29T22:35:40Z
+ 01:35:40 up 1 min,  2 users,  load average: 5,44, 1,87, 0,67
+compiz pid 2810
+/usr/lib/x86_64-linux-gnu/libnux-4.0.so.0.8.0 
+/usr/lib/x86_64-linux-gnu/libnux-core-4.0.so.0.8.0 
+/usr/lib/x86_64-linux-gnu/libnux-graphics-4.0.so.0.8.0 
+2dbccbd70a4ff026d437b65176dc9b355794f537bedcf3abf64306acf6a4ec0a  /usr/lib/x86_64-linux-gnu/libnux-4.0.so.0.8.0
+2815 /usr/lib/x86_64-linux-gnu/unity/unity-panel-service
+# screenshot (MCP) 01:35:49 local: Unity panel and launcher drawn, desktop normal
+## key run: fullscreen-direct (the card's program, built on target2 against libnux-4.0-dev +unity3), as logs/02 (archive 0ubuntu12: free(): invalid pointer, exit=134, 3 of 3)
+# 2026-09-29T22:36:10Z libnux 4.0.8+18.10.20180623-0ubuntu15+unity3, LD_PRELOAD=libc_malloc_debug.so.0 GLIBC_TUNABLES=glibc.malloc.check=3
+display before: (nil)
+CreateGLWindow(1280 x 800, fullscreen) -> 0x...
+DELETED
+exit=0
+display before: (nil)
+CreateGLWindow(1280 x 800, fullscreen) -> 0x...
+DELETED
+exit=0
+display before: (nil)
+CreateGLWindow(1280 x 800, fullscreen) -> 0x...
+DELETED
+exit=0
+   1280x800      60.00*+  59.81    59.91  
+compiz still running

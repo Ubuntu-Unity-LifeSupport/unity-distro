@@ -1,0 +1,3 @@
+# UNITY-20260927-041 peer notice (ENGINEERING-PROCESS section 6)
+2026-09-29 18:10Z B -> A: calamares-settings-ubuntu 1:26.04.12+unity3, 7 records, snapshot unity-resolute-20260927-041 (= live -019 + 7), switch after C and May
+A -> B: A ACK UNITY-20260927-041 calamares-settings-ubuntu 1:26.04.12+unity3, no conflict; -040 repo add only after C's '-041 switched'; no apt against our repository on target-desktop until A's switch

@@ -1,0 +1,10 @@
+# 2026-09-29T22:48:46Z UNITY-20260927-027: backup ~/backups/repo-027-20260929T224822Z (db, 17 files, sha256 checked); repo add of the gated build (7 records: source, 4 .deb, 2 .ddeb) to unity-resolute (324 -> 331); snapshot unity-resolute-20260927-027
+# live ./resolute before: unity-resolute-20260928-014
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | libnux-4.0-common                        | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   
++ amd64  | libnux-4.0-0                             | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   
++ amd64  | libnux-4.0-0-dbgsym                      | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   
++ amd64  | libnux-4.0-dev                           | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   
++ amd64  | nux-tools                                | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   
++ amd64  | nux-tools-dbgsym                         | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   
++ source | nux                                      | -                                        | 4.0.8+18.10.20180623-0ubuntu15+unity3   

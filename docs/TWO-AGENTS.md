@@ -198,6 +198,22 @@ Run `ListAgents` first, then inspect the JSON registry. If the session ID is
 unavailable, pass `UNKNOWN` and replace it when known. A restart or rename
 updates only the current registry; history remains append-only.
 
+Right after registering, check that the command guard is wired into this
+session (UNITY-20260928-012):
+
+```
+python3 ~/unity-distro/scripts/install_command_guard.py --check
+```
+
+It must print `command_guard wiring: OK`. Then run the probe
+`pgrep -f unity-guard-probe-zzz` once: the hook must deny it. If either
+fails, stop and tell C; do not work around a missing guard. The handler lives
+in `~/.claude/settings.json` (every session of user `claude`, any cwd) and,
+byte-identical, in `.claude/settings.json` here; only May approves a change to
+the user file (`--diff` shows it, `--apply` writes it). The handler always
+runs the guard of this base checkout, so a guard change on a task branch takes
+effect only after it is merged to `main` and the base is pulled.
+
 ### Inbox acknowledgement
 
 At the start of each assigned task and after a failed direct message, read your

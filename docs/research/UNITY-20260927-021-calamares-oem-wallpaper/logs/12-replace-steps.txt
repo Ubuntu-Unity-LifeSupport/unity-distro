@@ -1,0 +1,18 @@
+# 2026-09-29T16:05:32Z replacement steps 0-4 (C's decision)
+db backup /home/claude/backups/aptly-021-replace-20260929T160356Z: 17 files, equal to live: True, list sha256 a0c9f677667e713f897a88320e47239c3d3106224369fdf57eee6f7e1d2fa965
+public/ now 268 files; equal to the post-L list (047 logs/48b): True
+repo show before: 292; snapshot list: unity-resolute-20260927-021, unity-resolute-20260927-047 (publish list not runnable: guard; publication checked by files: public/ = 047 logs/48b)
+1 repo remove (dry-run first, then real): the 7 records 1:26.04.12+unity2 (source + 6 binaries) -> repo show 285
+2 snapshot drop unity-resolute-20260927-021 (unpublished) -> snapshot list: unity-resolute-20260927-047
+3 repo add exactly the build-r2 artifacts (.dsc + 5 .deb + 1 .ddeb): 7 records added, no pool conflict -> repo show 292
+  pool check (pool-check.py):
+  OK  calamares-settings-ubuntu_26.04.12+unity2.dsc  pool copies 2, others ['2f4d00e102be']
+  OK  calamares-settings-ubuntu_26.04.12+unity2.tar.xz  pool copies 2, others ['07beb2da43cc']
+  OK  calamares-settings-kubuntu_26.04.12+unity2_all.deb  pool copies 2, others ['dd0f1744ee2f']
+  OK  calamares-settings-lubuntu_26.04.12+unity2_all.deb  pool copies 2, others ['1bb59bda2de0']
+  OK  calamares-settings-ubuntu-common-data_26.04.12+unity2_all.deb  pool copies 1, others []
+  OK  calamares-settings-ubuntu-common-dbgsym_26.04.12+unity2_amd64.ddeb  pool copies 1, others []
+  OK  calamares-settings-ubuntu-common_26.04.12+unity2_amd64.deb  pool copies 1, others []
+  OK  calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb  pool copies 2, others ['ee4db200fd6c']
+  the 'others' hashes are the first build's files (build/ manifest), left as orphans in the pool until UNITY-20260927-035
+4 snapshot create unity-resolute-20260927-021-r2 from repo unity-resolute

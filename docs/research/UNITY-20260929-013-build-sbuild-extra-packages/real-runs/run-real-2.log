@@ -1,0 +1,10 @@
+== R1 tiny013 + libnux-4.0-common 0ubuntu11 (older than the archive's 0ubuntu12)
+extra package libnux-4.0-common 4.0.8+18.10.20180623-0ubuntu11 was not used by the build (Installed-Build-Depends: 4.0.8+18.10.20180623-0ubuntu12); no manifest written
+R1 exit=2
+== R2 tiny013 + libnux-4.0-common 4.0.8+18.10.20180623-0ubuntu15+unity2 from the pool
+/home/claude/work/a/013-real/out-r2/UNITY-20260929-013-tiny013-build-manifest.json
+R2 exit=0
+== R3 unity 7b0eca27 + libnux-4.0-0, -common, -dev 4.0.8+18.10.20180623-0ubuntu15+unity2 from the pool
+/home/claude/work/a/013-real/out-r3/UNITY-20260927-040-unity-build-manifest.json
+R3 exit=0
+== done (code 94341a1)

@@ -1,0 +1,24 @@
+# UNITY-20260927-021 target step 1'': OEM preparation on the fresh install, state before snapshot OEM-ready-unity2
+== date (UTC)
+2026-09-29T17:23:43Z
+== basicwallpaper
+077f7c36fc6c90d046282775fc3d52515d367e58a055a4e89720c9caa444ff9f  /usr/bin/basicwallpaper
+== /etc/lightdm/lightdm.conf
+[SeatDefaults]
+allow-guest=false
+autologin-guest=false
+autologin-user=oem
+autologin-user-timeout=0
+autologin-session=ubuntu-unity-oem-environment
+== calamares-finish-oem output
+[SeatDefaults]
+allow-guest=false
+autologin-guest=false
+autologin-user=oem
+autologin-user-timeout=0
+autologin-session=ubuntu-unity-oem-environment
+== instrumentation (not part of the product): openssh-server (added from the live session through a chroot), xdotool (apt from the archive as oem), ssh key in /home/oem/.ssh
+openssh-server	1:10.2p1-2ubuntu3.6
+xdotool	1:3.20160805.1-5.1build1
+== our repository not configured on the target
+ubuntu.sources

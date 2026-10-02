@@ -56,12 +56,15 @@ class Level:
     only reaches a command that runs nothing (a commit message, the terminal).
     """
     def __init__(self, groups, seps, bodies=(), subs=(), expansion=False, body=False,
-                 sink_safe=True, consumer=None, blob=False):
+                 sink_safe=True, consumer=None, blob=False, forced=False):
         self.groups, self.seps = groups, seps
         self.bodies, self.subs = list(bodies), list(subs)
         self.expansion, self.body, self.sink_safe = expansion, body, sink_safe
         self.consumer = consumer  # the command whose argument this substitution is
         self.blob = blob  # text in another language: its words count, it is no command
+        # UNITY-20260929-018: a body written where git or a later command may run it;
+        # its words are checked even when the call has no runner.
+        self.forced = forced
 
 
 _BRACE = re.compile(r"\{[^\s{}'\"]*(,|\.\.)[^\s{}'\"]*\}")
@@ -626,15 +629,64 @@ def _heredoc_owners(level: Level) -> list[tuple[list[str], str]]:
             for token in group if token == HEREDOC]
 
 
+_GIT_FILES = {"config", ".gitconfig", ".gitattributes", ".gitmodules"}
+
+
+def _git_component(path: str) -> bool:
+    return ".git" in path.replace("\\", "/").split("/")
+
+
+def _owner_output_groups(level: Level, owner: list[str]) -> list[list[str]]:
+    """The groups whose redirections receive the owner's output: the owner, an
+    earlier `exec` redirection, and the closing done/fi/esac/} after it."""
+    index = next((n for n, g in enumerate(level.groups) if g is owner), None)
+    if index is None:
+        return list(level.groups)
+    before = [g for g in level.groups[:index] if g and os.path.basename(g[0]) == "exec"]
+    after = [g for g in level.groups[index + 1:] if g and g[0] in ("done", "fi", "esac", "}")]
+    return before + [owner] + after
+
+
+def _text_blockers(level: Level, levels: list[Level], owner: list[str] | None = None) -> tuple[bool, bool]:
+    """UNITY-20260929-018: (text_ok, forced) for a heredoc body of this level.
+
+    A body is text only when nothing in the call can run it: no subshell, brace
+    group, function or process substitution around it, no pipe into a command
+    that runs something, no runner with an expansion or glob, and no file
+    written that a runner or git (hooks, config, attributes) may run.
+    """
+    runners = [g for lv in levels if not lv.blob for g in lv.groups if not _is_reader(g, None)]
+    compound = any("(" in s or ")" in s for s in level.seps) or \
+        any(g and g[0] in ("{", "}") for g in level.groups)
+    piped = any(_pipes(level.seps[n]) and n + 1 < len(level.groups)
+                and not _is_reader(level.groups[n + 1], None) for n in range(len(level.groups)))
+    expands = any(SUBST in t or any(c in t for c in "$*?[") for g in runners for t in g)
+    targets, unknown = [], False
+    for g in (_owner_output_groups(level, owner) if owner is not None else level.groups):
+        found = _redirect_targets(g)
+        if found is None:
+            unknown = True
+        else:
+            targets += [t for t in found if t != "/dev/null"]
+    tokens = [t for lv in levels for g in lv.groups for t in g]
+    git_path = any(_git_component(t) or os.path.basename(t) in _GIT_FILES for t in targets) or \
+        any("hooksPath" in t for t in tokens) or \
+        any(word_of(g) in ("cd", "ln") and any(_git_component(t) for t in g[_command_index(g) + 1:])
+            for lv in levels for g in lv.groups)
+    writes = bool(targets) or unknown
+    forced = writes and (bool(runners) or git_path)
+    return not (compound or piped or expands or forced), forced
+
+
 def _classify_body(body: Body, group: list[str], sep: str, level: Level, other_tokens: list[str],
-                   everything_reads: bool) -> str:
+                   everything_reads: bool, text_ok: bool = True) -> str:
     """TEXT (never runs), BLOB (another language: one token) or SCRIPT (shell)."""
     index = _command_index(group)
     word = os.path.basename(group[index]) if index < len(group) else ""
     keyword = word in ("done", "fi", "esac", "}")
     if keyword and not everything_reads:
         return "SCRIPT"
-    if (keyword or _is_reader(group, None)) and level.sink_safe and not _pipes(sep):
+    if text_ok and (keyword or _is_reader(group, None)) and level.sink_safe and not _pipes(sep):
         # An unquoted body's $(...) and `...` are collected separately; the rest is text.
         targets = _redirect_targets(group) or []
         operands = [t for t in group[index + 1:] if t != HEREDOC and not _REDIRECT.match(t)
@@ -662,21 +714,22 @@ def _levels(command: str) -> list[Level]:
             others = [t for lv in levels for g in lv.groups
                       if g is not group and not _is_reader(g, None) for t in g]
             everything = all(_is_reader(g, None) for lv in levels if not lv.blob for g in lv.groups)
-            kind = _classify_body(body, group, sep, level, others, everything)
+            text_ok, forced = _text_blockers(level, levels, group)
+            kind = _classify_body(body, group, sep, level, others, everything, text_ok)
             if not body.quoted:
                 for sub in _body_substitutions(body.text):
                     _collect(sub, 1, levels, level.body)
             if kind == "BLOB":
                 owner = word_of(group)
-                if owner in ("cat", "tee") or _STARTS_PROCESS.search(body.text) or \
+                if owner in ("cat", "tee") or forced or _STARTS_PROCESS.search(body.text) or \
                         (owner in ("perl", "ruby", "php") and "`" in body.text):
-                    levels.append(Level([[body.text]], [""], body=True, blob=True))
+                    levels.append(Level([[body.text]], [""], body=True, blob=True, forced=forced))
             elif kind == "SCRIPT":
                 part: list = []
                 try:
                     _collect(body.text, 1, part, body=True)
                 except ScanError:
-                    part = [Level([[body.text]], [""], body=True, blob=True)]
+                    part = [Level([[body.text]], [""], body=True, blob=True, forced=forced)]
                 levels.extend(part)
         level.bodies = []
     return levels
@@ -738,7 +791,7 @@ def _aptly_rules(levels: list[Level]) -> str | None:
                 return DENY_MESSAGES["aptly_copy"]
             if not _is_reader(group, aptly):
                 runners.add(id(group))
-    if not runners:
+    if not runners and not any(level.forced for level in levels):
         return None  # readers and literal aptly commands only: nothing else runs
     exposed = _exposed(commands, runners)
     reach = [t for level in commands for g in level.groups
@@ -879,11 +932,14 @@ def _real_inside(path: str, root: str) -> bool:
     return _inside(os.path.normpath(real), root)
 
 
-def _strict_json(path: str, what: str):
+def _strict_json(path: str, what: str, private: bool = True):
     st = os.lstat(path)
     if not stat.S_ISREG(st.st_mode):
         _deny(f"{what} must be a regular file, not a link")
-    _owned_private(st, what)
+    if private:
+        _owned_private(st, what)
+    elif st.st_uid != os.getuid():
+        _deny(f"{what} must be owned by uid {os.getuid()}")
     if st.st_size > REHEARSAL_MAX_FILE:
         _deny(f"{what} is too large")
     fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
@@ -1110,7 +1166,186 @@ def _check_rehearsal(command: str, session_id: str | None):
     _log_rehearsal(command, session_id, marker, marker_sha)
 
 
-def inspect(command: str, session_id: str | None = None) -> str | None:
+# --- live-phase allowance (UNITY-20260929-008) ---------------------------------
+#
+# ENGINEERING-PROCESS section 6: for the live phase of a task May authorized,
+# only the exact command strings of the reviewed list are admitted, byte for
+# byte, as one foreground Bash call, through C's dated live marker (a separate
+# file and key set from the rehearsal marker). The pinned aptly config must be
+# unchanged. Every admitted command is logged. Known limit: a shell function
+# in the agent's own profile could stand in for the binary; the guard refuses
+# only when it finds one. Design and review:
+# docs/research/UNITY-20260929-008-live-allowance/.
+
+LIVE_COMMANDS = "/home/claude/unity-distro/.claude/hooks/live-commands.json"
+LIVE_CONFIG = "/home/claude/.aptly.conf"
+LIVE_MARKER = REHEARSAL_COORDINATOR + "/live-authorization.json"
+LIVE_LOG = REHEARSAL_COORDINATOR + "/live-log.jsonl"
+LIVE_MAX_WINDOW = 6 * 3600
+LIVE_PREFIX = APTLY_BINARY + " -config=" + LIVE_CONFIG + " publish "
+LIVE_HOME = "/home/claude"
+LIVE_SHELL_FILES = (".bashrc", ".profile", ".bash_profile", ".bash_aliases")
+LIVE_SNAPSHOTS = ".claude/shell-snapshots"
+_LIVE_LIST_KEYS = {"schema", "task_id", "root", "aptly_conf_sha256", "commands"}
+_LIVE_MARKER_KEYS = {"schema", "kind", "task_id", "root", "authorized_by", "recorded_by",
+                     "not_before", "not_after", "reference", "session_id", "commands_sha256"}
+_LIVE_KIND = "live-publish"
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+# A function or alias named *aptly* anywhere on a line (Claude Code's shell
+# snapshots define functions as eval $'name () \n{ ... }'), an exported
+# BASH_FUNC_*aptly*, BASH_ENV, a DEBUG/RETURN trap, or a dynamic-loader
+# variable that would run code inside the aptly binary.
+_SHADOW = re.compile(r"function\s+\S*aptly|[^\s'\"$]*aptly\S*\s*\(\s*\)|\balias\s+\S*aptly"
+                     r"|BASH_FUNC_\S*aptly|BASH_ENV|\btrap\b.*\b(?:DEBUG|RETURN)\b"
+                     r"|\bLD_(?:PRELOAD|LIBRARY_PATH|AUDIT)\b")
+_SHADOW_ENV = ("BASH_ENV", "LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT")
+
+
+def _sha256_hex(data: bytes) -> str:
+    import hashlib
+    return hashlib.sha256(data).hexdigest()
+
+
+def _check_aptly_binary():
+    st = os.lstat(APTLY_BINARY)
+    on_path = _which("aptly")
+    if not stat.S_ISREG(st.st_mode) or st.st_uid != 0 or st.st_mode & 0o022 \
+            or not on_path or not os.path.samefile(on_path, APTLY_BINARY):
+        _deny(f"{APTLY_BINARY} must be the root-owned aptly on PATH")
+
+
+def _live_list() -> tuple[dict, str]:
+    # A git checkout file (umask 0002 gives 0664); its integrity comes from
+    # the marker's commands_sha256, so only owner and file type are checked.
+    listing, data = _strict_json(LIVE_COMMANDS, "the live command list", private=False)
+    if set(listing) != _LIVE_LIST_KEYS or listing["schema"] != 1 or type(listing["schema"]) is not int:
+        _deny(f"the live command list must have exactly {sorted(_LIVE_LIST_KEYS)} and schema 1")
+    if type(listing["task_id"]) is not str or not listing["task_id"] or listing["root"] != LIVE_APTLY:
+        _deny(f"the live command list must name a task and the root {LIVE_APTLY}")
+    if type(listing["aptly_conf_sha256"]) is not str or not _SHA256.match(listing["aptly_conf_sha256"]):
+        _deny("the live command list aptly_conf_sha256 must be a sha256")
+    commands = listing["commands"]
+    if type(commands) is not list or not commands or len(set(commands)) != len(commands) \
+            or any(type(c) is not str or not _REHEARSAL_SHAPE.match(c) or not c.startswith(LIVE_PREFIX)
+                   for c in commands):
+        _deny(f"the live command list must hold unique plain commands starting {LIVE_PREFIX!r}")
+    return listing, _sha256_hex(data)
+
+
+def _check_live_config(listing: dict):
+    config, data = _strict_json(LIVE_CONFIG, "the live aptly config")
+    if _sha256_hex(data) != listing["aptly_conf_sha256"]:
+        _deny(f"{LIVE_CONFIG} differs from the reviewed one")
+    if config.get("rootDir") != LIVE_APTLY:
+        _deny(f"the live aptly config rootDir must be {LIVE_APTLY}")
+    for key in ("S3PublishEndpoints", "SwiftPublishEndpoints", "AzurePublishEndpoints",
+                "FileSystemPublishEndpoints"):
+        if config.get(key, {}) != {}:
+            _deny(f"the live aptly config must not have {key}")
+    for key in ("databaseBackend", "packagePoolStorage"):
+        if key in config:
+            _deny(f"the live aptly config must not set {key}")
+
+
+def _check_live_shell():
+    """Best effort: refuse when the agent's shell setup could shadow aptly."""
+    for name in _SHADOW_ENV:
+        if os.environ.get(name):
+            _deny(f"{name} is set")
+    paths = [os.path.join(LIVE_HOME, name) for name in LIVE_SHELL_FILES]
+    snapshots = os.path.join(LIVE_HOME, LIVE_SNAPSHOTS)
+    if os.path.isdir(snapshots):
+        paths += [os.path.join(snapshots, name) for name in sorted(os.listdir(snapshots))]
+    for path in paths:
+        if not os.path.isfile(path):
+            continue
+        with open(path, "rb") as f:
+            text = f.read(4 * 1024 * 1024).decode("utf-8", "replace")
+        if _SHADOW.search(text):
+            _deny(f"{path} defines an aptly function or alias, BASH_ENV, a DEBUG/RETURN trap "
+                  "or a dynamic-loader variable")
+
+
+def _check_live_marker(session_id: str | None, listing: dict, list_sha: str) -> tuple[dict, str]:
+    st = os.lstat(REHEARSAL_COORDINATOR)
+    if not stat.S_ISDIR(st.st_mode):
+        _deny(f"{REHEARSAL_COORDINATOR} must be a directory, not a link")
+    _owned_private(st, REHEARSAL_COORDINATOR)
+    if not os.path.lexists(LIVE_MARKER):
+        _deny("no live authorization is recorded (C writes it after May's GO and the L0 record)")
+    if os.path.realpath(LIVE_MARKER) != LIVE_MARKER:
+        _deny("the live authorization must not resolve elsewhere")
+    marker, data = _strict_json(LIVE_MARKER, "the live authorization")
+    if set(marker) != _LIVE_MARKER_KEYS:
+        _deny(f"the live authorization must have exactly {sorted(_LIVE_MARKER_KEYS)}")
+    if marker["schema"] != 1 or type(marker["schema"]) is not int:
+        _deny("the live authorization has an unknown schema")
+    for key in _LIVE_MARKER_KEYS - {"schema"}:
+        if type(marker[key]) is not str or not marker[key]:
+            _deny(f"the live authorization {key} must be a non-empty string")
+    if marker["kind"] != _LIVE_KIND:
+        _deny(f"the live authorization kind must be {_LIVE_KIND}")
+    if marker["root"] != LIVE_APTLY or marker["authorized_by"] != "May" or marker["recorded_by"] != "C" \
+            or marker["task_id"] != listing["task_id"]:
+        _deny("the live authorization is not May's, recorded by C, for this task and the live root")
+    if marker["commands_sha256"] != list_sha:
+        _deny("the live authorization names another command list")
+    if not session_id or marker["session_id"] != session_id:
+        _deny("the live authorization belongs to another session")
+    from datetime import datetime, timezone
+    import time
+    stamps = []
+    for key in ("not_before", "not_after"):
+        if not _UTC_STAMP.match(marker[key]):
+            _deny(f"the live authorization {key} must be YYYY-MM-DDTHH:MM:SSZ")
+        stamps.append(datetime.strptime(marker[key], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp())
+    if not stamps[0] < stamps[1] or stamps[1] - stamps[0] > LIVE_MAX_WINDOW:
+        _deny("the live authorization window must be positive and at most 6 hours")
+    if not stamps[0] <= time.time() < stamps[1]:
+        _deny("the live authorization is not valid now")
+    return marker, _sha256_hex(data)
+
+
+def _log_live(command: str, session_id: str, tool_name: str, marker: dict, marker_sha: str, list_sha: str):
+    fd = os.open(LIVE_LOG, os.O_WRONLY | os.O_APPEND | os.O_CREAT | os.O_NOFOLLOW, 0o600)
+    try:
+        st = os.fstat(fd)
+        if not stat.S_ISREG(st.st_mode):
+            _deny("the live log must be a regular file")
+        _owned_private(st, "the live log")
+        from datetime import datetime, timezone
+        line = json.dumps({"time": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                           "event": "admitted", "session_id": session_id, "task_id": marker["task_id"],
+                           "tool_name": tool_name, "cwd": os.getcwd(), "command": command,
+                           "marker_sha256": marker_sha, "commands_sha256": list_sha}) + "\n"
+        if os.write(fd, line.encode("ascii")) != len(line):
+            _deny("the live log write was incomplete")
+    finally:
+        os.close(fd)
+
+
+def _check_live(command: str, session_id: str | None, tool_name: str | None, background: bool):
+    if tool_name != "Bash" or background:
+        _deny("live commands run only as a foreground Bash call")
+    listing, list_sha = _live_list()
+    if command not in listing["commands"]:
+        _deny("not an exact entry of the reviewed live command list")
+    _check_aptly_binary()
+    _check_live_config(listing)
+    _check_live_shell()
+    marker, marker_sha = _check_live_marker(session_id, listing, list_sha)
+    _log_live(command, session_id, tool_name, marker, marker_sha, list_sha)
+
+
+def inspect(command: str, session_id: str | None = None, tool_name: str | None = "Bash",
+            background: bool = False) -> str | None:
+    # Live phase: only an exact reviewed string, checked before the floor.
+    if command.startswith(LIVE_PREFIX):
+        try:
+            _check_live(command, session_id, tool_name, background)
+        except (RehearsalDenied, OSError, ValueError) as error:
+            return f"aptly live command not allowed: {error}"
+        return None
     # The earlier tokenisation stays as a floor: UNITY-20260927-058 only adds denials.
     message = _group_rules(_legacy_groups(command))
     if message:
@@ -1190,7 +1425,10 @@ def main() -> int:
         return 2
     try:
         session = payload.get("session_id")
-        message = inspect(command, session if isinstance(session, str) else None)
+        tool_name = payload.get("tool_name")
+        message = inspect(command, session if isinstance(session, str) else None,
+                          tool_name if isinstance(tool_name, str) else None,
+                          tool_input.get("run_in_background") not in (None, False))
     except Exception as error:  # fail closed on any bug in the guard itself
         message = f"Command guard failed ({type(error).__name__}); tool call blocked."
     if message:

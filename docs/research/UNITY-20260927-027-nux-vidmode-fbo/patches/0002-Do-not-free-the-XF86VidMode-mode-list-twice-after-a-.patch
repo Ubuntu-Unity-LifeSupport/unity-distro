@@ -1,0 +1,150 @@
+From 5230f4c105f8ab7ec742bd4deb06c51b602e8ae4 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 15:02:55 +0000
+Subject: [PATCH 2/8] Do not free the XF86VidMode mode list twice after a
+ fullscreen switch
+
+Reproduced through GLWindowManager::CreateGLWindow with fullscreen_flag on
+Xorg with XFree86-VidModeExtension; Unity does not reach it. New test in
+gtest-nuxgraphics.
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ ...fix-fullscreen-mode-list-double-free.patch | 113 ++++++++++++++++++
+ debian/patches/series                         |   1 +
+ 2 files changed, 114 insertions(+)
+ create mode 100644 debian/patches/fix-fullscreen-mode-list-double-free.patch
+
+diff --git a/debian/patches/fix-fullscreen-mode-list-double-free.patch b/debian/patches/fix-fullscreen-mode-list-double-free.patch
+new file mode 100644
+index 0000000..9ff2a68
+--- /dev/null
++++ b/debian/patches/fix-fullscreen-mode-list-double-free.patch
+@@ -0,0 +1,113 @@
++Description: Do not free the XF86VidMode mode list twice after a fullscreen switch
++ CreateOpenGLWindow's fullscreen branch switches to the mode of the requested
++ size and XFree()s m_X11VideoModes, but leaves the pointer set, and
++ ~GraphicsDisplay XFree()s it again. Reproduced through the public API
++ (GLWindowManager::CreateGLWindow with fullscreen_flag) on Xorg with
++ XFree86-VidModeExtension: under glibc's malloc checking the destructor aborts
++ with "free(): invalid pointer". Unity and Nux's own WindowThread never ask for
++ fullscreen, so shipped consumers do not reach it.
++ .
++ Clear the pointer and the count after the free. The test creates a fullscreen
++ display at the current mode's size and destroys it in a child running with
++ libc_malloc_debug; it is skipped when the server has no XF86VidMode modes.
++Author: NeiroNext <mihail.rozshko@gmail.com>
++Forwarded: no
++Last-Update: 2026-09-28
++Index: nux/NuxGraphics/GraphicsDisplayX11.cpp
++===================================================================
++--- nux.orig/NuxGraphics/GraphicsDisplayX11.cpp
+++++ nux/NuxGraphics/GraphicsDisplayX11.cpp
++@@ -608,6 +608,8 @@ namespace nux
++       //Width = m_X11VideoModes[best_mode]->hdisplay;
++       //Height = m_X11VideoModes[best_mode]->vdisplay;
++       XFree(m_X11VideoModes);
+++      m_X11VideoModes = NULL; // the destructor frees it too
+++      m_NumVideoModes = 0;
++ 
++       /* create a fullscreen window */
++ 
++Index: nux/tests/Makefile.am
++===================================================================
++--- nux.orig/tests/Makefile.am
+++++ nux/tests/Makefile.am
++@@ -133,8 +133,8 @@ gtest_nuxgraphics_SOURCES = \
++   gtest-nuxgraphics-texture.cpp \
++   gtest-nuxgraphics-graphic-display.cpp
++ 
++-gtest_nuxgraphics_CPPFLAGS = $(GTestFlags)
++-gtest_nuxgraphics_LDADD = $(GTestLibs)
+++gtest_nuxgraphics_CPPFLAGS = $(GTestFlags) $(NUX_GRAPHICS_CFLAGS)
+++gtest_nuxgraphics_LDADD = $(GTestLibs) $(NUX_GRAPHICS_LIBS)
++ 
++ 
++ test_graphics_display_SOURCES = test_graphics_display.cpp
++Index: nux/tests/gtest-nuxgraphics-graphic-display.cpp
++===================================================================
++--- nux.orig/tests/gtest-nuxgraphics-graphic-display.cpp
+++++ nux/tests/gtest-nuxgraphics-graphic-display.cpp
++@@ -1,9 +1,16 @@
++ #include <memory>
+++#include <cstdlib>
+++#include <unistd.h>
++ #include <gmock/gmock.h>
++ #include <glib.h>
++ 
++ #include "Nux/Nux.h"
++ #include "NuxGraphics/GraphicsDisplay.h"
+++#include "NuxGraphics/GLWindowManager.h"
+++
+++#if defined(USE_X11)
+++#include <X11/extensions/xf86vmode.h>
+++#endif
++ 
++ using namespace testing;
++ using namespace nux;
++@@ -42,6 +49,47 @@ TEST_F(TestGraphicsDisplay, X11Timestamp
++   EXPECT_EQ(xevent.xbutton.time, event_time);
++ }
++ 
+++// A fullscreen window switches to the XF86VidMode mode of its size and frees
+++// the mode list; the destructor then freed the same list a second time. The
+++// display is created and destroyed in a child process that runs with glibc's
+++// malloc checking, so the second free aborts it.
+++TEST(TestGraphicsDisplayFullscreen, DestroyAfterModeSwitchFreesModeListOnce)
+++{
+++  Display* dpy = XOpenDisplay(NULL);
+++  ASSERT_NE(dpy, nullptr);
+++  int event_base, error_base, num_modes = 0;
+++  XF86VidModeModeInfo** modes = NULL;
+++  bool have_modes = XF86VidModeQueryExtension(dpy, &event_base, &error_base)
+++                    && XF86VidModeGetAllModeLines(dpy, DefaultScreen(dpy), &num_modes, &modes)
+++                    && num_modes > 0;
+++  // The first mode is the current one, so fullscreen at its size switches to it.
+++  int width = have_modes ? modes[0]->hdisplay : 0;
+++  int height = have_modes ? modes[0]->vdisplay : 0;
+++  XFree(modes);
+++  XCloseDisplay(dpy);
+++
+++  if (!have_modes)
+++    GTEST_SKIP() << "the X server has no XF86VidMode modes, no fullscreen branch";
+++
+++  // The child is a new exec of this test, so it inherits the environment.
+++  GTEST_FLAG_SET(death_test_style, "threadsafe");
+++  g_setenv("LD_PRELOAD", "libc_malloc_debug.so.0", TRUE);
+++  g_setenv("GLIBC_TUNABLES", "glibc.malloc.check=3", TRUE);
+++
+++  EXPECT_EXIT({
+++    nux::NuxCoreInitialize(0);
+++    nux::NuxGraphicsInitialize();
+++    nux::GraphicsDisplay* display =
+++      gGLWindowManager.CreateGLWindow("nux::TestGraphicsDisplayFullscreen", width, height,
+++                                      nux::WINDOWSTYLE_NORMAL, 0, true, false);
+++    delete display;
+++    _exit(display ? 0 : 2);
+++  }, ::testing::ExitedWithCode(0), "");
+++
+++  g_unsetenv("LD_PRELOAD");
+++  g_unsetenv("GLIBC_TUNABLES");
+++}
+++
++ #endif
++ 
++ }
++\ No newline at end of file
+diff --git a/debian/patches/series b/debian/patches/series
+index 47d3a6b..2cb938f 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -6,4 +6,5 @@ disable-TestLoggingWriter-test.diff
+ boost1.90.patch
+ remove_unicode_licensed.patch
+ fix-missing-vidmode.patch
++fix-fullscreen-mode-list-double-free.patch
+ fix-fbo-attachment-arrays.patch
+-- 
+2.53.0
+

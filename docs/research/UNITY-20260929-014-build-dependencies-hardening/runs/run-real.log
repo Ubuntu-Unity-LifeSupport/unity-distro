@@ -1,0 +1,19 @@
+== Q1 tiny013 + libnux-4.0-common 4.0.8+18.10.20180623-0ubuntu15+unity2 from the pool (real sbuild)
+/home/claude/work/a/014-real/out-q1/UNITY-20260929-014-tiny013-build-manifest.json
+Q1 exit=0
+  UNITY-20260929-014-tiny013-1.0-sbuild.log
+  UNITY-20260929-014-tiny013-build-manifest.json
+  build-dependencies
+  tiny013_1.0.dsc
+  tiny013_1.0.tar.xz
+  tiny013_1.0_all.deb
+  tiny013_1.0_amd64.buildinfo
+  tiny013_1.0_amd64.changes
+  Q1 manifest_error: None
+== Q2 the same + a foreign-architecture package: refused before sbuild, output left empty
+--extra-package /home/claude/work/a/014-real/libfoo_1.0_arm64.deb: architecture arm64 is neither all nor amd64
+Q2 exit=2
+  Q2 output: []
+== Q3 the UNITY-20260927-040 gated manifest under the new check (real pool)
+  Q3 manifest_error: None
+== done

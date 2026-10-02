@@ -1,0 +1,93 @@
+Attached 14 probes
+READY
+35 PUSH-GRAB wall
+35 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+39 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+347 REMOVE-GRAB
+347 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+347 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+1043 PUSH-GRAB wall
+1043 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1044 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1368 REMOVE-GRAB
+1368 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+1368 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+2387 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7d1662908c1b
+
+2436 RESIZE-INITIATE state=1
+2437 PUSH-GRAB resize
+2437 XGRABPOINTER
+        XGrabPointer+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3141
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+2439 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3141
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+3649 UNITY-SEES ButtonPress window=0x3200005 button=1
+4001 UNITY-SEES ButtonRelease window=0x3200005 button=1
+4001 RESIZE-TERMINATE state=8
+4001 REMOVE-GRAB
+4001 XUNGRABPOINTER
+        XUngrabPointer+0
+        ResizeLogic::terminateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+455
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+
+4001 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+        CompScreen::handleEvent(_XEvent*)+103
+
+6961 UNITY-SEES ButtonPress window=0x32001ae button=1
+
+

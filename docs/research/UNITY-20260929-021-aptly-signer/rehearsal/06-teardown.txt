@@ -1,0 +1,9 @@
+== teardown at 2026-09-29T22:47:47Z
+command -v gpg: /usr/bin/gpg
+ls: cannot access '/home/claude/.local/bin/gpg': No such file or directory
+ls: cannot access '/home/claude/.config/aptly-signer': No such file or directory
+cleanup: temp gnupg home removed: True; ~/.gnupg unchanged: True
+ls: cannot access '/tmp/signer-rehearsal-gnupg-*': No such file or directory
+no a021 tmux session
+0
+rehearsal-log lines: 21

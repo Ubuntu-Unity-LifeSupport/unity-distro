@@ -1,0 +1,12 @@
+[  7737.725] (II) Printing all currently active device grabs:
+[  7737.725] Active grab 0x43000c3b (core) on device 'Virtual core pointer' (2):
+[  7737.725]       client pid 2563 /usr/bin/compiz 
+[  7737.725]       at 7708243 (from passive grab) (device frozen, state 6)
+[  7737.725]         core event mask 0x4c
+[  7737.725]       passive grab type 4, detail 0x0, activating key 0
+[  7737.725]       owner-events false, kb 1 ptr 0, confine 0, cursor 0x300020b
+[  7737.725] (II) End list of active device grabs
+[  7737.725] Printing all currently registered grabs
+[  7737.725]   Printing all registered grabs of client pid 1064 /usr/sbin/lightdm 
+[  7737.725]   Printing all registered grabs of client pid 1701 /usr/libexec/ibus-x11 --kill-daemon
+[  7737.725]   Printing all registered grabs of client pid 1689 /usr/libexec/ibus-ui-gtk3 
