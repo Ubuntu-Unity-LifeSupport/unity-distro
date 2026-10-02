@@ -201,3 +201,39 @@ Its non-blocking caveats:
 
 BLOCKED at the publication gate (047; freeze no. 1). The version check and
 release gate need the package in an aptly snapshot.
+
+## Gated rebuild and target test of this build (2026-10-02)
+
+- **Source.** `9a00446` on `Ubuntu-Unity-LifeSupport/indicator-datetime`,
+  branch `b/UNITY-20260927-026` (5a21b08 + 9a00446 on the published +unity2,
+  846dfa0), pushed.
+- **Gated build** on the pinned chroot 20260929T201245Z (UNITY-20260929-016):
+  `build-gated/UNITY-20260927-026-indicator-datetime-build-manifest.json`,
+  PASS, 29 of 29 tests (test-eds-ics-tasks-without-start included), with the
+  archive's `indicator-datetime_15.10+21.04.20210304.orig.tar.gz` (sha256
+  29af1057…, as the resolute Sources index).
+- **Payload against the tested build** (logs/09): the .deb has the same
+  control fields, file list and exported symbols, and every file inside is
+  byte-identical (0 of 39 differ).
+- **Target test, mode this_build** (`research/UNITY-20260927-023-libindicator-abi/logs/07-target-this-build.txt`,
+  shared with libindicator), on the UNITY-20260927-029/-028 session of
+  target2 (Clean-2, our repository, gated hud): the gated .deb installed from
+  a file repository, the manifest's (sha256 b090852c…). After a reboot into
+  the auto-login Unity session, no drop-in, no test environment:
+  indicator-datetime-service is the gated .deb's file (e85fafc7…), its only
+  "(deleted)" mappings are the two dconf databases; the service is on the
+  bus and its desktop-header action has the clock label and the title.
+  There is no src change in +unity3, so the session check is that the
+  service runs and serves the panel.
+- **Clock:** NTPSynchronized=yes on both phases (UNITY-20260929-022; the
+  before/after is in the -029 card).
+
+## Known gaps before the gate
+
+| gap | state |
+|---|---|
+| which RECURRENCE-ID forms (floating, TZID, UTC) merge_detached_instances matches was not mapped | closed with a reason: the guard sits in get_appointment(), after the merge, so every merged override without a start is covered whatever its form; the mapping decides only which overrides are merged |
+| the alarm-only path (add_alarms_to_subtask) not measured separately | closed with a reason: it goes through the same get_appointment() |
+| other EDS versions not measured | closed with a reason: the target is resolute's EDS 3.56.2, the pinned chroot's |
+| one test-eds-ics-all-day-events failure in the control e6576ce, not explained | no task ID yet; +unity3 passed it in five builds, the gated one included (29 of 29) |
+| orig-vs-git empty directories (the EDS test directories) | fixed here by 5a21b08; the general check is task UNITY-20260928-010 |
