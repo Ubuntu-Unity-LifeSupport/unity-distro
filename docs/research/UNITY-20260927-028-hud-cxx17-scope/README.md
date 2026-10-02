@@ -146,6 +146,9 @@ docs/status/B.md.
   session of target2 (Clean-2, our repository, gated +unity2): the gated
   +unity3 .debs installed from a file repository, the upgrade path +unity2
   to +unity3; the installed hud .deb is the manifest's (sha256 53519934…).
+  Only `hud` is installed in the session (nothing depends on the other 13
+  .debs), so `target_test.debs` names the hud .deb alone; the rest are
+  covered by the payload comparison.
   After a reboot into the auto-login Unity session, no drop-in, no test
   environment: hud-service c2534c84… and window-stack-bridge 95ab8785… are
   the gated .deb's files, no "(deleted)" mapping; `lo7.sh 20`: 20 of 20
