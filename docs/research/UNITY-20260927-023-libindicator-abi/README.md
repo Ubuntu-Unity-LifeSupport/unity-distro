@@ -252,4 +252,21 @@ accidental export fails the build.
 | a symbols file, so that an accidental export fails the build | task UNITY-20260928-006 |
 | removing the +unity2 export is formally an ABI break | closed with a reason: the pool scan (logs/02, 270 .debs) found no consumer; +unity2 was published 2026-09-26 only, with no header; a third-party dlsym by name of an undocumented type is not plausible |
 | the Verifier's limit: panel entry grep printed nothing (wrong bus name), interactive observations not in the logs | measured before the gate on this build, logs/07: the right bus name, the entry listed, the client and the "new" icon recorded |
+| the build runs no test suite | closed with a reason: the acceptance is measured on the built binaries (exports), and the session check runs the library in unity-panel-service |
 | wrapper cost: links wrapped anew on each `get_item_links` | closed with a reason: one small object per submenu per change (design review); not a defect of this task |
+
+## Verifier round on the gated build (2026-10-02): PASS
+
+The independent Verifier re-measured the manifest against the chroot
+sidecar and the tarball itself, the source tree (f8fa299, tree 26b45002…),
+the sbuild log, all 14 artifacts (orig tarball 0029ac3a…), the ABI on the
+gated .debs (libindicator3.so.7.0.0: 40 exports, 0 Ayatana; libindicator.so.7:
+34), the payload comparison (identical to logs/08), the target record
+(library f07e26fa… is the .deb's file, panel entry listed, NTP
+synchronised) and the gaps table against the unknowns and the earlier
+verifier's limits, and the evidence (PASS, REVIEWED, APPROVE).
+
+Remarks, applied: the "no test suite" limit now has a row in the table.
+The panel Sync listing and the client's icon in logs/07 are transcribed
+notes; the raw gdbus output is not stored, and the screenshot is on the
+host. The script's path for the indicator-datetime binary is corrected.

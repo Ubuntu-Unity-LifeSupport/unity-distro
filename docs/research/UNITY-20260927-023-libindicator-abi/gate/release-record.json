@@ -1,0 +1,35 @@
+{
+  "task_id": "UNITY-20260927-023",
+  "package": "libindicator",
+  "target_series": "resolute",
+  "candidate_version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-023",
+  "version_safety": "",
+  "version_check": "docs/research/UNITY-20260927-023-libindicator-abi/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-023-libindicator-abi/logs/07-target-this-build.txt",
+    "debs": {
+      "indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb": "08384eb2f94a494687b9838d7df9ba1e218a934c4823c6511e566e43ca8332eb",
+      "libindicator-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb": "21a6d85feb33b0b1cf3f84991950a5db8c5ace9a8721bb7b825b379ba2cdcadd",
+      "libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb": "caac08af4472f33f91e6ae77ed97ba2e8df53e247ca0f6d3f48ec808e19b0767",
+      "libindicator3-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb": "2cf1d468335ec02d896a309149f80902b58174698f7ab7b109a81d2b9b511598",
+      "libindicator3-tools_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb": "4e601346c0176c4a8baefb9f23d8f68a60b76ab4668c82293a34ee6d13032ba1",
+      "libindicator7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb": "8014b6d373fcd4cf5b44915bc8893edeafd64e7232c84cb8213dcc720e737e3b"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-023-libindicator-abi/README.md",
+    "verification_record": "docs/research/UNITY-20260927-023-libindicator-abi/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

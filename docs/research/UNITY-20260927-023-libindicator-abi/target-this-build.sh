@@ -30,7 +30,7 @@ fi
 export DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
 echo "== libindicator3-7 $(dpkg-query -W -f='${Version}' libindicator3-7), indicator-datetime $(dpkg-query -W -f='${Version}' indicator-datetime)"
 lib=/usr/lib/x86_64-linux-gnu/libindicator3.so.7
-sha256sum "$(readlink -f $lib)" /usr/libexec/indicator-datetime/indicator-datetime-service 2>/dev/null
+sha256sum "$(readlink -f $lib)" /usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service 2>/dev/null
 echo "exports=$(nm -D --defined-only $lib | grep -c .) ayatana_exports=$(nm -D --defined-only $lib | grep -c ayatana)"
 for n in unity-panel-ser indicator-datet ayatana-indicat; do
     for pid in $(pgrep -u "$(id -u)" "$n"); do
