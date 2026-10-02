@@ -1,0 +1,65 @@
+# UNITY-20260927-029 target verification of the publication on target2 from Clean-2 (restore checked inside: no ~/.dirty, no ~/b029, hud 0ubuntu6; NTPSynchronized=yes, guest utc 16:54:12Z = builder 16:54:10Z): our repository (live ./resolute = unity-resolute-20260927-029, InRelease Date Fri, 2 Oct 2026 16:50:22 UTC), normal full-upgrade, no file repository
+# builder utc 2026-10-02T16:54:25Z
+== install  host=target2 boot=e894de4b-c2c0-437b-8e25-217ec8221d33 utc=2026-10-02T16:54:26Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 19:54:26 EEST 
+== snapshot marker: ~/.dirty absent
+== policy hud
+hud:
+  Установлен: 14.10+17.10.20170619-0ubuntu6
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity2
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+full-upgrade rc=100
+E: Не удалось получить блокировку файла /var/lib/dpkg/lock-frontend. Она удерживается процессом 4321 (unattended-upgr)
+E: Невозможно получить блокировку внешнего интерфейса dpkg (/var/lib/dpkg/lock-frontend); она уже используется другим процессом?
+xdotool rc=100
+== installed: hud 14.10+17.10.20170619-0ubuntu6 ii 
+== the .deb apt fetched: 
+== dpkg -V hud: 0 lines
+## retry after unattended-upgrades released the dpkg lock (first attempt rc=100 above)
+== install  host=target2 boot=e894de4b-c2c0-437b-8e25-217ec8221d33 utc=2026-10-02T17:06:49Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 20:06:49 EEST 
+== snapshot marker: ~/.dirty PRESENT
+== policy hud
+hud:
+  Установлен: 14.10+17.10.20170619-0ubuntu6
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity2
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+full-upgrade rc=0
+xdotool rc=0
+== installed: hud 14.10+17.10.20170619-0ubuntu6+unity2 ii 
+== the .deb apt fetched: b3321894eabef4a0727cd13b1ddf292f17ebff6585704574c95577ae84ead22c  /var/cache/apt/archives/hud_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb
+== dpkg -V hud: 0 lines
+## after a reboot
+== session 14.10+17.10.20170619-0ubuntu6+unity2 host=target2 boot=3b173fc6-0d74-41fd-9e1b-6ec280d2ecbf utc=2026-10-02T17:17:22Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 20:17:22 EEST 
+== hud installed: 14.10+17.10.20170619-0ubuntu6+unity2 (expected 14.10+17.10.20170619-0ubuntu6+unity2)
+776f30cb0df95692e0c70fa1f4b5aa2426d181eea6853182ba14fd9e93b5afc3  /usr/lib/x86_64-linux-gnu/hud/hud-service
+e7cbdf88573fd0bc30cc8a10bd2acdcc3c7d5348b809f738c53c80a66be19208  /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge
+hud-service pid=3784 exe=/usr/lib/x86_64-linux-gnu/hud/hud-service deleted_maps=0
+window-stack-br pid=2228 exe=/usr/lib/x86_64-linux-gnu/hud/window-stack-bridge deleted_maps=0
+== lo7.sh 10 (GAP=3 WATCH_DELAY=0)
+run 1: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=0 hud_after_5s=0 no_desktop_file=0
+run 2: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 4: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 5: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 7: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 8: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 9: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 10: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+== warnings since boot
+== done
+# PASS. hud +unity2 came from the live ./resolute (unity-resolute-20260927-029); the .deb apt fetched is the gated one (b3321894...);
+# hud-service 776f30cb... and window-stack-bridge e7cbdf88... are its files; no "(deleted)" mapping; dpkg -V clean.
+# 10 of 10 windows in the stack; the HUD answered 9 of 10. Run 1 (the first Writer start after the reboot) had the window in the
+# stack with no "Could not get desktop file": mechanism 2 (UNITY-20260929-002), as in logs/07 run 1 and logs/06 boot 4.
+# Natural session start (auto-login after a plain reboot), no drop-in, no test environment. Clock NTPSynchronized=yes throughout.
