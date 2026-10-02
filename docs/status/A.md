@@ -3,45 +3,44 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-09-29 23:10Z) - no new tasks (May, via C)
+## Now (2026-10-02 19:05Z) - UNITY-20261002-002 at the publication gate
 
-**UNITY-20260929-021** (SECURITY: aptly-signer, step 2 of UNITY-20260929-019)
-- DONE (merged by the coordinator, main 9ce2930); branch `a/UNITY-20260929-021` (`5755372`, worktree
-  `~/work/a/unity-distro-021`).
+**UNITY-20261002-002** (u-s-d power: D-Bus registration lost when stop()
+runs before the bus result; fix forward as +unity10, May's decision via C)
+- IMPLEMENTING -> gate: branch `a/UNITY-20261002-002` (worktree
+  `~/work/a/unity-distro-002`); package
+  `Ubuntu-Unity-LifeSupport/unity-settings-daemon` branch
+  `a/UNITY-20261002-002` at `122c413` (fix `ca997f7` on +unity9 `57945f5`).
+- Gated build on chroot 20260929T201245Z (`build/`), the same debs tested on
+  target (`tested_build: this_build`).
+- Design Challenger APPROVE; Verifier PASS (INDEPENDENTLY_REPRODUCED), 7
+  non-blocking remarks handled in the card; one left to C: the changelog
+  says "4-6 s" for the window, measured 4-11 s / up to 28.6 s.
+- Tests: gdb stop-before-bus FAIL on +unity9/+unity7, PASS on +unity10; key
+  toggle inside the window PASS on both (dispatch order - a demonstration
+  limit, accepted by C); valgrind race 0 errors; -022/-012/-052 regressions;
+  natural boots 19 (+unity9) + 10 (+unity10), no stop, Power owned.
+- Waiting for "slot A" (B publishes hud, libindicator, indicator-datetime
+  first); then db backup, repo add, snapshot, gate, May's confirmation.
+- Follow-ups on the board: -006 housekeeping (same gap), -007 xrandr,
+  -008 media-keys, -009 the trigger at session start (card with leads).
 
-- Signer core, service and template (`signer/`), gpg stand-in and client
-  (`scripts/`), refusal and end-to-end tests. Suite 278 OK.
-- Rehearsal on aptly 1.6.2 (May's GO, C's marker, 22:29-22:48Z): argv,
-  temp dir, the window closed by the refresh, signing before the rename,
-  a refusal leaving the old files live.
-- Design Challenger: 4 rounds. Verifier: rounds 1-3 FAIL (hidden
-  maintainer scripts, all fixed), round 4 PASS.
-- Card: `docs/research/UNITY-20260929-021-aptly-signer/README.md`.
-- The rehearsal roots `/var/tmp/aptly-rehearsal/021` and `021p` are kept
-  for review.
-- Not started, waiting for May: installation and key on the signer
-  (step 3) and the cut-over (step 4).
-- Follow-ups proposed:
-  - UNITY-20260929-024: the `publish_aptly.py` integration (BACKLOG);
-  - UNITY-20260929-025: Verifier header batteries as tests (BACKLOG).
-
-Done today:
-- UNITY-20260929-020: the gate's tested build (main);
-- UNITY-20260929-016: the chroot policy (main e9f83de);
-- UNITY-20260927-040: unity +unity12, published;
-- UNITY-20260929-014 and UNITY-20260929-013: build dependencies;
-- UNITY-20260928-019: lightdm +unity2, published.
-
-My other open tasks are unchanged: UNITY-20260928-022 (its handoff is on
-branch `a/UNITY-20260928-022`, not in main - the coordinator handles that),
-UNITY-20260927-012, UNITY-20260927-052, UNITY-20260928-008.
+Done today (2026-10-02):
+- UNITY-20260927-012 + UNITY-20260927-052: u-s-d +unity7 published
+  15:15Z, verified, DONE;
+- UNITY-20260928-022: u-s-d +unity9 published ~15:40Z, verified with the
+  pre-existing Power registration race as a limitation, DONE;
+- lesson recorded in DECISIONS: a known gap in the changed code path needs a
+  board task or a measurement before the gate; publication checks without
+  test drop-ins.
 
 ## State of `target`
 
-2026-09-29 (unchanged since 18:49Z, the VBoxSVC restart restored its saved
-state): published unity `+unity12` and lightdm `+unity2`, workspaces 1x1, no
-test files, `~/.dirty` present. B's nux `+unity3` (UNITY-20260927-027) is not
-installed there. Earlier states below are history:
+2026-10-02 ~19:00Z: u-s-d +unity10 (tested build, with dbgsym) installed by
+dpkg over the published +unity9; rebooted after the test units
+(`u002-trace.service`, `u002-window-toggle.service`) were removed; no
+drop-ins; valgrind and the test scripts of -012/-052/-022/-002 in `~`;
+`~/.dirty` present. Earlier states below are history:
 
 Restored again 2026-09-29 11:04Z (UNITY-20260927-040) from
 `Clean-updated-2026-09-23` (fresh boot, no `~/.dirty`), our repository added,
