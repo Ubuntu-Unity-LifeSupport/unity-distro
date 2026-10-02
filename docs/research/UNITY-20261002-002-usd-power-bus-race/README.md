@@ -193,7 +193,53 @@ ON-BUS-GOTTEN.
   (2026-10-02). Lead for UNITY-20261002-009, recorded in that task's card:
   the natural stop of that boot ran inside the start phase, before the main
   loop resumed - not a key change dispatched by the loop.
-- The same v2 toggle on +unity10 (`runs/toggle-unity10/`): results below.
+- The same v2 toggle on **+unity10, 3 boots (`runs/toggle-unity10/`): STOP
+  1-450 ms after ON-BUS-GOTTEN, Power owned 3/3** - the same dispatch order,
+  no change in behaviour where the key path is concerned.
+- Summary of D6a: gdb (`stop-before-bus.sh`) FAIL on +unity9 / PASS on
+  +unity10; the key toggle in the window PASS on both, with the dispatch
+  order as the reason.
+
+### D6b: the deterministic test, with a method call
+
+`tools/stop-before-bus.sh` (the -022 script plus `Screen.GetPercentage`)
+on +unity10 (`runs/unity10/01`, `02`): with the stop before the bus result,
+`bus_cancellable` is unchanged after STOP-CALLED, the name is owned after
+start and after the off/on cycle, `Get Icon` answers, `Screen.GetPercentage`
+answers with the -022 error ("Screen backlight ...", no backlight on the
+VM) - never NoReply or ServiceUnknown. Same on the `nostop` run.
+
+### D6c: keyboard-toggle-race under valgrind
+
+`tools/race-under-valgrind.sh` on +unity10 (`runs/unity10/04-*.txt`,
+`.log`): u-s-d under valgrind in the live session, Power owned after 7 s,
+the two 20 s races (StepUp and Screen.GetPercentage in flight while the
+plugin is toggled 15x): every call answered ("No keyboard backlight" 267x,
+"not running", the -022 error), NRestarts 0, 0 crash files, Power still
+owned after the race; valgrind ERROR SUMMARY 0 errors (the "definitely
+lost" blocks are the SIGTERM exit path).
+
+Harness note: the first attempt died with SIGTRAP at
+`gsd_power_manager_new` after 4.4 s. Cause: the bpftrace tracer's uprobes
+put `int3` into `libpower.so`'s code and valgrind, translating the code
+itself, executes them as breakpoints. +unity9 "worked" under valgrind only
+because its `dpkg -i` had given the file a new inode the probes were not
+attached to. The script now stops `u002-trace.service` for its run.
+
+### Regressions on +unity10 (`runs/unity10/05`-`09`)
+
+- UNITY-20260928-022 `power-dbus-checks.sh`: "not running" answers while
+  stopped, inhibitors back after the quick toggles, alive;
+  `keyboard-toggle-race.sh` under systemd: every call answered, same pid,
+  0 crash files.
+- UNITY-20260927-012 `usd-power-regress.sh`: session callbacks 2/0/2;
+  `usd-color-uaf.sh`: STOP-CALLED, alive, 0 journal lines.
+- UNITY-20260927-052 `two-clients.sh`: SURVIVED.
+- `/var/crash`: 0 u-s-d reports; NRestarts 0.
+
+### Natural boots of +unity10
+
+`runs/boots-unity10/`: results below.
 
 ## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
 
