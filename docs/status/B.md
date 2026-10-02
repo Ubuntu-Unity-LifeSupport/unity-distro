@@ -75,24 +75,32 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
-**2026-10-02 ~17:30Z: publishing the four ready packages, one slot at a
-time (C holds the slot; May confirms each switch in B's session).**
-- **UNITY-20260927-029 PUBLISHED** (hud +unity2, switch 16:50Z, snapshot
-  unity-resolute-20260927-029 = live -022 + 20). Target verification on
-  target2 from Clean-2 PASS (logs/12). DONE after C merges
-  `b/UNITY-20260927-029`.
-- Ready for their slots, in this order, each with a gated rebuild on chroot
+**2026-10-02 ~19:00Z: the four ready packages are published; no tasks
+left in B's queue.**
+- Published today, one slot each (C checked every gate, May confirmed every
+  switch in B's session), each with a gated rebuild on chroot
   20260929T201245Z, payload byte-identical to the tested build, this_build
-  target test on target2, known-gaps section and Verifier PASS:
-  UNITY-20260927-028 (hud +unity3), UNITY-20260927-023 (libindicator
-  +unity3), UNITY-20260927-026 (indicator-datetime +unity3). PATCHES and
-  DECISIONS entries for -023 and -026 are in main (a6b9f78).
+  target test, known-gaps section, Verifier PASS, and a target verification
+  of the publication on target2 from Clean-2 (PASS):
+  - UNITY-20260927-029 hud +unity2, switch 16:50Z - DONE (merged);
+  - UNITY-20260927-028 hud +unity3, switch 17:30Z - DONE (merged);
+  - UNITY-20260927-023 libindicator +unity3, switch 18:02Z - DONE (merged);
+  - UNITY-20260927-026 indicator-datetime +unity3, switch 18:32Z -
+    PUBLISHED, DONE after C merges `b/UNITY-20260927-026`.
+- Live `./resolute` = unity-resolute-20260927-026 (400 packages). Backups
+  `~/backups/repo-{029,028,023,026}-20261002T*`.
+- PATCHES and DECISIONS entries for -023 and -026 are in main (a6b9f78);
+  the hud rows (-029, -028) name the pre-rebase commits 0e99dca/2f2fa89;
+  the published commits are ef39a8d/9e7c093 on GitHub (same trees).
 - Worktrees: `~/work/b/unity-distro-029`, `~/work/b/unity-distro` (-028),
   `~/work/b/unity-distro-li023`, `~/work/b/unity-distro-026`; sources on
   GitHub under `b/<task>` (hud rebased onto `unity/resolute`).
-- target2: dirty, on the published hud +unity2; roll back to Clean-2 before
-  the next check. Its clock synchronised by itself after the rollback
-  (UNITY-20260929-022 line is with C).
+- target2: rolled back to Clean-2 after the last check. Its clock
+  synchronised by itself after each rollback (UNITY-20260929-022 line is
+  with C).
+- Open follow-ups seen today: mechanism 2 of the empty HUD on the first
+  Writer start after a boot (UNITY-20260929-002; 1 of 10 or 20 in every
+  run today).
 - UNITY-20260929-003: the draft design (root causes RC1-RC7) is committed
   on its branch (b016511); BLOCKED on -019, as -018.
 
