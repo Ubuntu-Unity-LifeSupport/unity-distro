@@ -1,0 +1,36 @@
+### A: kill the service inside the window
+# 2026-09-29T09:51:03Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+09:51:04.036 service pid 1674; before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1
+09:51:05.328 ACTION restart accounts-daemon
+09:51:06.669 current: uint32 4294967295
+09:51:06.743 sources: @a(ss) []
+09:51:06.851 SIGKILL 1674
+09:51:19.534 stored right after the kill: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1
+09:51:20.164 service back: pid 2465
+09:51:28.354 after the new service settled: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1
+### B: next daemon restart, served by the restarted instance
+# 2026-09-29T09:51:34Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+service pid before: 2465
+service env: UNITY_GREETER_DBUS_NAME=:1.4 
+09:51:34.852 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1
+09:51:37.393 ACTION restart accounts-daemon
+09:51:38.183 current: uint32 4294967295
+09:51:38.284 sources: @a(ss) []
+09:51:38.394 current: uint32 1
+09:51:38.455 current: uint32 0
+09:51:38.514 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:51:50.287 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 2465 (same)
+### C: once more
+# 2026-09-29T09:51:53Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+service pid before: 2465
+service env: UNITY_GREETER_DBUS_NAME=:1.4 
+09:51:54.430 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:51:57.419 ACTION restart accounts-daemon
+09:51:58.083 current: uint32 4294967295
+09:51:58.324 sources: @a(ss) []
+09:51:58.363 current: uint32 1
+09:51:58.451 current: uint32 0
+09:51:58.478 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:52:10.844 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 2465 (same)

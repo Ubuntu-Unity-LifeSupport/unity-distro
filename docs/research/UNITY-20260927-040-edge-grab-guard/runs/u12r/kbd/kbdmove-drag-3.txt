@@ -1,0 +1,90 @@
+Attached 14 probes
+READY
+531 PUSH-GRAB wall
+532 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+532 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+860 REMOVE-GRAB
+860 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+862 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+1498 PUSH-GRAB wall
+1499 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1500 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1814 REMOVE-GRAB
+1814 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+1814 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+2822 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7d1662908c1b
+
+2873 PUSH-GRAB move
+2873 XGRABPOINTER
+        XGrabPointer+0
+        0x7d16585530cf
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+2874 XGRABKEYBOARD
+        XGrabKeyboard+0
+        0x7d16585530cf
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+4741 UNITY-SEES ButtonPress window=0x3200005 button=1
+4741 REMOVE-GRAB
+4741 XUNGRABPOINTER
+        XUngrabPointer+0
+        0x7d1658551d1f
+        MoveScreen::handleEvent(_XEvent*)+437
+        CompScreen::handleEvent(_XEvent*)+103
+
+4741 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        MoveScreen::handleEvent(_XEvent*)+437
+        CompScreen::handleEvent(_XEvent*)+103
+        WorkaroundsScreen::handleEvent(_XEvent*)+125
+
+7417 UNITY-SEES ButtonPress window=0x32001ae button=1
+
+

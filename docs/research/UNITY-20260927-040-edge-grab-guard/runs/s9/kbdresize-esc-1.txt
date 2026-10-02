@@ -1,0 +1,41 @@
+Attached 14 probes
+READY
+2734 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompEventSource::callback()+27
+        Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+        0x7d915c108c1b
+
+2781 RESIZE-INITIATE state=1
+2781 PUSH-GRAB resize
+2781 XGRABPOINTER
+        XGrabPointer+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3141
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+2783 XGRABKEYBOARD
+        XGrabKeyboard+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3141
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+        PrivateScreen::triggerKeyPressBindings(std::vector<CompOption, std::allocator<CompOption> >&, std::vector<CompAction, std::allocator<CompAction> >&, XKeyEvent*, std::vector<CompOption, std::allocator<CompOption> >&)+232
+
+4099 UNITY-SEES ButtonPress window=0x3000005 button=1
+4448 UNITY-SEES ButtonRelease window=0x3000005 button=1
+4448 RESIZE-TERMINATE state=8
+4448 REMOVE-GRAB
+4449 XUNGRABPOINTER
+        XUngrabPointer+0
+        ResizeLogic::terminateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+455
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+
+4449 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+        CompScreen::handleEvent(_XEvent*)+103
+
+7317 UNITY-SEES ButtonPress window=0x300001a button=1
+
+

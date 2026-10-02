@@ -1,0 +1,62 @@
+# typesorder (research/nocsd-reply2/tests) under gdb trace.gdb, LD_PRELOAD one build, 2026-09-28. "early" creates a GObject
+# before GTK is loaded; "control" (SKIP_EARLY_OBJECT=1) does not. Counted lines. AT EXIT GTKNoCSDGTKWindow=0 = types never fetched.
+== 6b1f70a early
+      1 AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=0
+      1 Breakpoint 1 (GTKNoCSDGetReferences) pending.
+      1 Function "GTKNoCSDGetReferences" not defined.
+      1 GetReferences(0) before: version=-1 gottypes=1 window=0
+    249 GetReferences(0) before: version=4 gottypes=1 window=0
+      1 GetReferences(1) before: version=-1 gottypes=0 window=0
+    623 GetReferences(1) before: version=4 gottypes=1 window=0
+      1 GtkWindow type 93824992767904, window 0x5555558bfa50
+== 6b1f70a control
+      1 AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=93824992760064
+      1 Breakpoint 1 (GTKNoCSDGetReferences) pending.
+      1 Function "GTKNoCSDGetReferences" not defined.
+      1 GetReferences(0) before: version=-1 gottypes=0 window=0
+      7 GetReferences(0) before: version=4 gottypes=0 window=0
+     28 GetReferences(0) before: version=4 gottypes=0 window=93824992760064
+    240 GetReferences(0) before: version=4 gottypes=1 window=93824992760064
+      1 GetReferences(1) before: version=4 gottypes=0 window=0
+    626 GetReferences(1) before: version=4 gottypes=1 window=93824992760064
+      1 GtkWindow type 93824992760064, window 0x5555558c5f10
+== e817d80 early
+      1 AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=0
+      1 Breakpoint 1 (GTKNoCSDGetReferences) pending.
+      1 Function "GTKNoCSDGetReferences" not defined.
+      1 GetReferences(0) before: version=-1 gottypes=1 window=0
+    250 GetReferences(0) before: version=4 gottypes=1 window=0
+      1 GetReferences(1) before: version=-1 gottypes=0 window=0
+    650 GetReferences(1) before: version=4 gottypes=1 window=0
+      1 GtkWindow type 93824992767904, window 0x5555558bf120
+== e817d80 control
+      1 AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=93824992760064
+      1 Breakpoint 1 (GTKNoCSDGetReferences) pending.
+      1 Function "GTKNoCSDGetReferences" not defined.
+      1 GetReferences(0) before: version=-1 gottypes=0 window=0
+      7 GetReferences(0) before: version=4 gottypes=0 window=0
+     28 GetReferences(0) before: version=4 gottypes=0 window=93824992760064
+    241 GetReferences(0) before: version=4 gottypes=1 window=93824992760064
+      1 GetReferences(1) before: version=4 gottypes=0 window=0
+    653 GetReferences(1) before: version=4 gottypes=1 window=93824992760064
+      1 GtkWindow type 93824992760064, window 0x5555558c5bf0
+== a57e976 early
+      1 AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=0
+      1 Breakpoint 1 (GTKNoCSDGetReferences) pending.
+      1 Function "GTKNoCSDGetReferences" not defined.
+      1 GetReferences(0) before: version=-1 gottypes=1 window=0
+    250 GetReferences(0) before: version=4 gottypes=1 window=0
+      1 GetReferences(1) before: version=-1 gottypes=0 window=0
+    650 GetReferences(1) before: version=4 gottypes=1 window=0
+      1 GtkWindow type 93824992767904, window 0x5555558bf120
+== a57e976 control
+      1 AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=93824992760064
+      1 Breakpoint 1 (GTKNoCSDGetReferences) pending.
+      1 Function "GTKNoCSDGetReferences" not defined.
+      1 GetReferences(0) before: version=-1 gottypes=0 window=0
+      7 GetReferences(0) before: version=4 gottypes=0 window=0
+     28 GetReferences(0) before: version=4 gottypes=0 window=93824992760064
+    241 GetReferences(0) before: version=4 gottypes=1 window=93824992760064
+      1 GetReferences(1) before: version=4 gottypes=0 window=0
+    653 GetReferences(1) before: version=4 gottypes=1 window=93824992760064
+      1 GtkWindow type 93824992760064, window 0x5555558c5650

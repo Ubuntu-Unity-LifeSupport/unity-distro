@@ -1,0 +1,32 @@
+# 2026-09-29T09:45:39Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+09:45:45.995 with ik014del: sources=@a(ss) [] current=uint32 4294967295
+09:45:49.702 ACTION stop accounts-daemon
+09:45:52.430 ACTION userdel ik014del
+09:45:55.305 ACTION start accounts-daemon
+09:46:11.610 Завершено         sudo -n -u lightdm env DBUS_SESSION_BUS_ADDRESS=$BUS XDG_RUNTIME_DIR=/run/user/$LUID "$@"
+09:46:13.042 end: sources=@a(ss) [] current=uint32 4294967295
+--- list-users-probe (as mike, seconds since its start)
+  0.054 MANAGER is-loaded = True
+  1.596 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name='ik014del' uid=1001
+  2.376 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name='ik014del' uid=1001
+  3.132 MANAGER is-loaded = False
+  9.650   USER changed: /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name=None uid=0
+  9.650 MANAGER is-loaded = True
+ 10.637 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 11.659 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 12.666 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 13.673 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 14.712 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 15.713 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 16.722 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 17.727 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 18.729 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 19.736 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 20.765 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 21.783 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 22.784 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 23.786 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 24.788 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 25.789 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+вер 29 12:36:59.108564 target2 indicator-keyboard-service[2671]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 29 12:45:41.078491 target2 indicator-keyboard-service[2671]: ActUserManager: user (null) has no username (object path: /org/freedesktop/Accounts/User1001, uid: 0)

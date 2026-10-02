@@ -1,0 +1,22 @@
+# UNITY-20260929-015 reproduction: the real refusal (2026-09-29 17:32Z, agent B, base checkout main 2de93ad)
+$ python3 scripts/taskctl.py transition --actor B UNITY-20260927-021 PUBLISHED
+taskctl: live aptly publish show does not confirm the recorded snapshot
+# state stays READY_TO_PUBLISH
+
+# why:
+# publish record ~/coordinator/publish-records/UNITY-20260927-021.json: snapshot unity-resolute-20260927-021-r2,
+#   published_at 2026-09-29T16:10:23Z, aptly_result PASS, post_publish_check PASS
+# ~/coordinator/publish-records/UNITY-20260928-019.json: ./resolute switched to unity-resolute-20260928-019
+#   at 2026-09-29T17:06:28Z (/srv/aptly/public/dists/resolute/Release mtime 17:06:28Z)
+# taskctl.py (PUBLISHED gate) requires the live `publish show` to name record["snapshot"]; it names -019.
+
+# the -021 content is live, unchanged (read-only, agent B 17:3xZ):
+$ aptly snapshot diff unity-resolute-20260927-021-r2 unity-resolute-20260928-019
+  only 11 "+" lines (lightdm 1.32.0-6ubuntu4+unity2: source, 7 .deb, 3 .ddeb); no "-" or "!" lines
+$ aptly snapshot search -format '{{.Package}} {{.Version}} {{.Architecture}} {{index . "SHA256"}}' unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common-dbgsym), Version (= 1:26.04.12+unity2), $Architecture (amd64)'
+calamares-settings-ubuntu-common-dbgsym 1:26.04.12+unity2 amd64 9ff12b0ea3332eedceb7ec3908725dc8ccc9957f5d001a8b1cdfc04ef08987df
+$ aptly snapshot search -format '{{index . "Checksums-Sha256"}}' unity-resolute-20260928-019 'Name (calamares-settings-ubuntu), $Architecture (source), Version (= 1:26.04.12+unity2)'
+ 6b7436f1c1b7a6aad550e350b4e2d7dc84a9da50fe0d010bdd929b41203ee5dc 1770 calamares-settings-ubuntu_26.04.12+unity2.dsc
+ 4996c7e4c00dfce28250d5b1c9ea48adb4491c77bd715e181da3c45a4a394633 11799888 calamares-settings-ubuntu_26.04.12+unity2.tar.xz
+$ aptly snapshot search -format '{{index . "SHA256"}}' unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common), Version (= 1:26.04.12+unity9), $Architecture (amd64)'
+ERROR: no results        (rc=1)

@@ -1,0 +1,31 @@
+# 2026-09-29T09:49:50Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+09:49:56.609 with ik014del: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'de')] current=uint32 2
+09:49:59.811 ACTION stop accounts-daemon
+09:50:02.402 ACTION userdel ik014del
+09:50:07.269 ACTION start accounts-daemon
+09:50:08.515 current: uint32 4294967295
+09:50:08.798 sources: @a(ss) []
+09:50:08.951 current: uint32 1
+09:50:09.054 sources: [('xkb', 'gb'), ('xkb', 'us')]
+09:50:23.858 Завершено         sudo -n -u lightdm env DBUS_SESSION_BUS_ADDRESS=$BUS XDG_RUNTIME_DIR=/run/user/$LUID "$@"
+09:50:23.831 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1
+--- list-users-probe (as mike, seconds since its start)
+  0.036 MANAGER is-loaded = True
+  1.615 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name='ik014del' uid=1001
+  2.499 MANAGER is-loaded = False
+ 10.958 MANAGER is-loaded = True
+ 11.190   USER changed: /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000
+ 11.820 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 12.827 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 13.844 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 14.863 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 15.913 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 16.930 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 17.931 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 18.978 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 20.007 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 21.038 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 22.046 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 23.052 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 24.064 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0
+ 25.073 SNAP /org/freedesktop/Accounts/User1000 loaded=True nonexistent=False name='mike' uid=1000 | /org/freedesktop/Accounts/User1001 loaded=True nonexistent=False name=None uid=0

@@ -1,0 +1,1 @@
+after-wall 400x290+500+232 -> 400x290+500+232 | grabs before the press: pointer=GRABBED keyboard=free | after: pointer=GRABBED keyboard=free | click@200,207 reached=0 pointer=GRABBED keyboard=free

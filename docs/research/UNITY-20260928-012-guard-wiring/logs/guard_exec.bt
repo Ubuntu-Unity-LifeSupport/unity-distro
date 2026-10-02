@@ -1,0 +1,11 @@
+// UNITY-20260928-012 step 6: every exec of the handler's timeout / python3, with the
+// process ancestry so each event can be attributed to one Claude Code session.
+tracepoint:syscalls:sys_enter_execve
+/str(args->filename) == "/usr/bin/timeout" || str(args->filename) == "/usr/bin/python3"/
+{
+  printf("%s file=%s pid=%d ppid=%d gppid=%d ggppid=%d\n",
+         strftime("%H:%M:%S", nsecs), str(args->filename), pid,
+         curtask->real_parent->tgid,
+         curtask->real_parent->real_parent->tgid,
+         curtask->real_parent->real_parent->real_parent->tgid);
+}

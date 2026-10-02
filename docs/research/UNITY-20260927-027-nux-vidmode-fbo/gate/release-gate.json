@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-027",
+  "package": "nux",
+  "target_series": "resolute",
+  "candidate_version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-027/packages/nux",
+  "source_remote_ref": "origin/b/UNITY-20260927-027",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "source_tree_hash": "63abc181b013eee9dbef1b86b40827054ff532e4",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-027"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/build-gated/UNITY-20260927-027-nux-build-manifest.json",
+    "sha256": "2704b2990af46e490c8880f906227e58f8297e74a895d8d376ed367043415c1a"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/gate/evidence-manifest.json",
+    "sha256": "e8a4076128c5762c7a061ad5fcb82c331aeef30ac96096e327b19ee5fedb9bcc"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/logs/10-target-this-build.txt",
+        "sha256": "8f291d6b23ca2c6b0fe0af2d6cad41eff2be51c6b87c625db2bb1fba05ccb372"
+      },
+      "debs": {
+        "libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb": "ce0dba348a8b6b8f525a4cae6bd66899f9a1cdf324a950247f29cfda532a0028",
+        "libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb": "1cc0617d98c5b56b3b769bf02b07169515c389183d7072d80e7223dfde22a479",
+        "libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb": "7b1ddd64f358e6d87c9a3b034075b51ec33e82ea10878b51192301e87c15e209",
+        "nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb": "102ffeec361143652ecdd0b78dc35cd20042451c4f8352d5574273e51af3572a"
+      }
+    }
+  }
+}

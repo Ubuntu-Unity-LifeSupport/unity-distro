@@ -1,0 +1,10 @@
+== H3 control: plain sbuild, user config with $extra_packages
+H3 exit=0
+24:Copying /home/claude/work/a/016-real/evilpkg_9.9_all.deb to /sbuild-unshare-dummy-location...
+== H4 build_sbuild.py, same user config, plus our own --extra-package
+/home/claude/work/a/016-real/out-h4/UNITY-20260929-016-tiny013-build-manifest.json
+H4 exit=0
+25:Copying /home/claude/work/a/016-real/out-h4/build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb to /sbuild-unshare-dummy-location...
+  H4 lines naming evilpkg: 0
+  H4 build_dependencies: ['libnux-4.0-common'] chroot 20260929T201245Z
+== done 21:07:21Z

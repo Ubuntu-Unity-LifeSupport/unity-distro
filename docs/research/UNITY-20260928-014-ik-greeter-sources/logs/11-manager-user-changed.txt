@@ -1,0 +1,18 @@
+== run 1
+  0.021 is-loaded=True list: ["/org/freedesktop/Accounts/User1000 name='mike' nonexistent=False"]
+  2.013 RESTART accounts-daemon
+  2.055 is-loaded=False list: 
+  2.180 is-loaded=True list: ['/org/freedesktop/Accounts/User1000 name=None nonexistent=False']
+  2.427 user-changed: /org/freedesktop/Accounts/User1000 name='mike' nonexistent=False | fresh list: ["/org/freedesktop/Accounts/User1000 name='mike' nonexistent=False"]
+== run 2
+  0.020 is-loaded=True list: ["/org/freedesktop/Accounts/User1000 name='mike' nonexistent=False"]
+  2.158 RESTART accounts-daemon
+  2.198 is-loaded=False list: 
+  2.352 is-loaded=True list: ['/org/freedesktop/Accounts/User1000 name=None nonexistent=False']
+  2.597 user-changed: /org/freedesktop/Accounts/User1000 name='mike' nonexistent=False | fresh list: ["/org/freedesktop/Accounts/User1000 name='mike' nonexistent=False"]
+== run 3
+  0.023 is-loaded=True list: ["/org/freedesktop/Accounts/User1000 name='mike' nonexistent=False"]
+  2.096 RESTART accounts-daemon
+  2.139 is-loaded=False list: 
+  2.288 is-loaded=True list: ['/org/freedesktop/Accounts/User1000 name=None nonexistent=False']
+  2.540 user-changed: /org/freedesktop/Accounts/User1000 name='mike' nonexistent=False | fresh list: ["/org/freedesktop/Accounts/User1000 name='mike' nonexistent=False"]

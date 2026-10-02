@@ -1,0 +1,8 @@
+# push to GitHub, 2026-09-28T09:02:51Z; A agreed (repository created by A in 046)
+temporary clone with origin=git@github.com:Ubuntu-Unity-LifeSupport/nux.git (safe_git.py pushes only to origin)
+git update-ref refs/heads/unity/resolute 9793c2329dd99f0fe779c51409a79f2c4ab077cc 3c56e898d112e9ec4e7212d78a548bab82e60079 (after git merge-base --is-ancestor)
+python3 scripts/safe_git.py push --repo . --branch unity/resolute:
+   3c56e89..9793c23  HEAD -> unity/resolute   (fast-forward, no '+', no force)
+git ls-remote after:
+9793c2329dd99f0fe779c51409a79f2c4ab077cc	refs/heads/b/fbo
+9793c2329dd99f0fe779c51409a79f2c4ab077cc	refs/heads/unity/resolute

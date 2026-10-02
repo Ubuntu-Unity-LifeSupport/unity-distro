@@ -1,0 +1,12 @@
+[   404.807] (II) Printing all currently active device grabs:
+[   404.807] (II) End list of active device grabs
+[   404.807] Printing all currently registered grabs
+[   404.807]   Printing all registered grabs of client pid 1153 /usr/sbin/lightdm 
+[   404.807]   Printing all registered grabs of client pid 1934 /usr/libexec/ibus-x11 --kill-daemon
+[   404.808]   Printing all registered grabs of client pid 1921 /usr/libexec/ibus-ui-gtk3 
+[   404.808]   grab 0x4060001a (xi2), type 'KeyPress' on window 0x324
+[   404.808]     detail 65 (mask 0), modifiersDetail 66 (mask 0)
+[   404.808]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   404.808]       xi2 event mask 0xc 0 0 0 42 
+[   404.808]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   404.808]   grab 0x4060001b (xi2), type 'KeyPress' on window 0x324

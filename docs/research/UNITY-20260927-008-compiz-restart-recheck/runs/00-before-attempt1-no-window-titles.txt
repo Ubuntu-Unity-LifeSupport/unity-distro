@@ -1,0 +1,21 @@
+packages: cinnamon-session=6.4.2-1 compiz-core=1:0.9.14.2+25.10.20250930-0ubuntu3 libgtk-nocsd0=3+0~20260321+0b77e1b-1 nux-tools=4.0.8+18.10.20180623-0ubuntu12 unity=7.7.1+26.04.20260306-0ubuntu3 
+geometry: 2560, 1600
+X Error of failed request:  BadWindow (invalid Window parameter)
+  Major opcode of failed request:  12 (X_ConfigureWindow)
+  Resource id in failed request:  0x0
+  Serial number of failed request:  18
+  Current serial number in output stream:  20
+X Error of failed request:  BadWindow (invalid Window parameter)
+  Major opcode of failed request:  12 (X_ConfigureWindow)
+  Resource id in failed request:  0x0
+  Serial number of failed request:  18
+  Current serial number in output stream:  20
+before:     compiz=2639 
+sighup 1:   compiz=4662 
+sighup 2:   compiz=5632 
+sighup 3:   compiz=6599 
+sighup 4:   compiz=7632 
+sighup 5:   compiz=8603 
+journal since 2026-09-28 18:15:00: segfault|general protection|dumped core|g_hash_table: 100
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 
+/home/mike/run-all.sh: 18: 3: parameter not set

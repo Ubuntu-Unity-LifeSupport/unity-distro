@@ -1,0 +1,95 @@
+# UNITY-20260927-041 target step 1: live ISO session of oem-test with our repository (./resolute = unity-resolute-20260927-041)
+== date (UTC)
+2026-09-29T18:22:43Z
+== before
+calamares-settings-ubuntu-common	1:26.04.12
+calamares-settings-ubuntu-common-data	1:26.04.12
+calamares-settings-ubuntu-unity	1:26.04.12
+fpr:::::::::29A893E03970066F2DD287D47BF3F77FC27B152C:
+Types: deb
+URIs: http://192.168.56.10:8080/
+Suites: resolute
+Components: main
+Signed-By: /etc/apt/keyrings/unity-distro.asc
+== policy
+calamares-settings-ubuntu-unity:
+  Installed: 1:26.04.12
+  Candidate: 1:26.04.12+unity3
+  Version table:
+     1:26.04.12+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 1:26.04.12 500
+        500 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+calamares-settings-ubuntu-common:
+  Installed: 1:26.04.12
+  Candidate: 1:26.04.12+unity3
+  Version table:
+     1:26.04.12+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 1:26.04.12 500
+        500 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+calamares-settings-ubuntu-common-data:
+  Installed: 1:26.04.12
+  Candidate: 1:26.04.12+unity3
+  Version table:
+     1:26.04.12+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 1:26.04.12 500
+        500 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Solving dependencies...
+The following packages will be upgraded:
+  calamares-settings-ubuntu-common calamares-settings-ubuntu-common-data
+  calamares-settings-ubuntu-unity
+3 upgraded, 0 newly installed, 0 to remove and 534 not upgraded.
+Need to get 4127 kB of archives.
+After this operation, 242 kB of additional disk space will be used.
+Fetched 4127 kB in 0s (50.9 MB/s)
+Setting up calamares-settings-ubuntu-common-data (1:26.04.12+unity3) ...
+Setting up calamares-settings-ubuntu-common (1:26.04.12+unity3) ...
+Setting up calamares-settings-ubuntu-unity (1:26.04.12+unity3) ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/icon.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/install.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/logo.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/welcome-oem.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/welcome.png ...
+Installing new version of config file /etc/calamares/oemconfig.tar.gz ...
+Processing triggers for desktop-file-utils (0.28-1build1) ...
+Processing triggers for hicolor-icon-theme (0.18-2build1) ...
+Processing triggers for gnome-menus (3.38.1-1ubuntu1) ...
+Processing triggers for bamfdaemon (0.5.6+22.04.20220217-0ubuntu6) ...
+Rebuilding /usr/share/applications/bamf-2.index...
+== after
+calamares-settings-ubuntu-common 1:26.04.12+unity3 ii 
+calamares-settings-ubuntu-common-data 1:26.04.12+unity3 ii 
+calamares-settings-ubuntu-unity 1:26.04.12+unity3 ii 
+== dpkg -V (empty = clean)
+dpkg -V done
+== changelog entries
+calamares-settings-ubuntu-unity: 96 top: calamares-settings-ubuntu (1:26.04.12+unity3) resolute; urgency=medium
+calamares-settings-ubuntu-common: 96 top: calamares-settings-ubuntu (1:26.04.12+unity3) resolute; urgency=medium
+calamares-settings-ubuntu-common-data: 96 top: calamares-settings-ubuntu (1:26.04.12+unity3) resolute; urgency=medium
+== oemconfig
+2bf47026660ab65ab26db5643dda6c2dbbdc69c2a0033eb7ed1981a30e3ac06a  /etc/calamares/oemconfig.tar.gz
+-rwxr-xr-x root/root   1240448 2026-09-29 18:01 ubuntuunity/oemconfig/usr/bin/basicwallpaper
+-r--r----- root/root      1762 2026-09-29 18:01 ubuntuunity/oemconfig/etc/sudoers.oem
+d0a025d4a98665a71767d8935314e9934a5c69e641bdffb9e382fe16533db96c  /tmp/tmp.7hRPhUZiS2/ubuntuunity/oemconfig/etc/sudoers.oem
+ca88f9c350b78e6fefd6989097ca0f22f683df2ebc74eeff29db35f404b6f54a  /tmp/tmp.7hRPhUZiS2/ubuntuunity/oemconfig/usr/bin/basicwallpaper
+R041-LIVE-OK

@@ -1,0 +1,15 @@
+# UNITY-20260927-041: snap-seed-glue-emb of -common +unity3 (statically built with snapd 2.76.3) exercised in the live session on a copy of /var/lib/snapd/seed, as pkgselect_snap_context.conf runs it when Thunderbird is selected; the OEM install above selected no third-party snap, so it did not run this binary
+calamares-settings-ubuntu-common	1:26.04.12+unity3
+e64e3d62598510c85a54a8cfc1d58da422cb56bd246a7e303a7814ad872a3b36  /usr/bin/snap-seed-glue-emb
+-rwxr-xr-x 1 root root 12254432 Sep 27 20:57 /usr/bin/snap-seed-glue-emb
+before: 7 snaps
+18:44:45
+glue rc=0
+18:45:32
+2026/09/29 20:45:21 thunderbird_1274.snap
+after: 8 snaps
+thunderbird_1274.snap
+23:- name: thunderbird
+24-  channel: latest/stable
+25-  file: thunderbird_1274.snap
+11

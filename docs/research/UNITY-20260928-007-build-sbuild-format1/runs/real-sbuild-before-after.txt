@@ -1,0 +1,15 @@
+# u-s-d f674b6b: before (old script, worktree) vs after (fixed, clone)
+before: 43 lines, after: 42 lines
+2d1
+<   diff:.git
+
+# u-s-d f674b6b: after, clone vs worktree
+before: 42 lines, after: 42 lines
+IDENTICAL (names, paths, orig sha256)
+
+# gtk-nocsd a2a0747 (3.0 quilt): before (old script) vs after (fixed), both from a clone
+before: 25 lines, after: 25 lines
+IDENTICAL (names, paths, orig sha256)
+
+# u-s-d from a clone with the old script: UNITY-20260927-052 ~/work/a/052/out-1 - sbuild failed:
+dpkg-source: error: cannot represent change to .git/index: binary file contents changed
