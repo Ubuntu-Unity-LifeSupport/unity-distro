@@ -1,0 +1,19 @@
+boot_id 9f5869cb-4e46-4e3e-afa4-0bd9f983a23f u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2351 drop-ins:  power-owner: (':1.55',)
+toggle: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2351: waited 7,46 s for the first inhibitor (polls: 101); active=false at +8,07 s; active=true at +8,68 s
+60442 ms pid 2351 MANAGER-NEW (register_manager_dbus, inlined)
+60443 ms pid 2351 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7ec66b547b05
+        0x7ec66b547d44
+        0x7ec66b536920
+        0x7ec66b32bc1b
+        0x7ec66b32d257
+        g_main_loop_run+311
+
+64968 ms pid 2351 ON-BUS-GOTTEN
