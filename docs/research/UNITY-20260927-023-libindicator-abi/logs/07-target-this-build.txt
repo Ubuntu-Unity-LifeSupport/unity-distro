@@ -1,0 +1,49 @@
+# UNITY-20260927-023 and UNITY-20260927-026 target test (this_build) on target2: continues the Clean-2 session of UNITY-20260927-029/-028 (our repository, gated hud +unity2 then +unity3), then the gated libindicator +unity3 and indicator-datetime +unity3 .debs from file repositories
+# builder utc 2026-10-02T16:17:24Z
+== install host=target2 boot=b6ec793f-e8e5-40b1-bbb7-a78692bbbe3b utc=2026-10-02T16:17:25Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 19:17:25 EEST 
+== snapshot marker: ~/.dirty PRESENT
+== policy libindicator3-7
+libindicator3-7:
+  Установлен: 16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity3
+== policy indicator-datetime
+indicator-datetime:
+  Установлен: 15.10+21.04.20210304-0ubuntu6+unity2
+  Кандидат:   15.10+21.04.20210304-0ubuntu6+unity3
+full-upgrade rc=0
+== installed versions and the file-repository .debs they came from
+indicator-common 16.10.0+18.04.20180321.1-0ubuntu8+unity3 08384eb2f94a494687b9838d7df9ba1e218a934c4823c6511e566e43ca8332eb
+libindicator3-7 16.10.0+18.04.20180321.1-0ubuntu8+unity3 caac08af4472f33f91e6ae77ed97ba2e8df53e247ca0f6d3f48ec808e19b0767
+indicator-datetime 15.10+21.04.20210304-0ubuntu6+unity3 b090852c644ea6a751c91592991390370a382bdee1eca974de3898d42d0cbd90
+## after a reboot
+== session host=target2 boot=2a603cec-38df-4cff-a232-a01766214f6f utc=2026-10-02T16:21:29Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 19:21:30 EEST 
+== libindicator3-7 16.10.0+18.04.20180321.1-0ubuntu8+unity3, indicator-datetime 15.10+21.04.20210304-0ubuntu6+unity3
+f07e26fa9f3435ce7b3364a63af47e2736aa766cd6beea4ad91081f7cf0f8680  /usr/lib/x86_64-linux-gnu/libindicator3.so.7.0.0
+exports=40 ayatana_exports=0
+unity-panel-ser pid=2888 exe=/usr/lib/x86_64-linux-gnu/unity/unity-panel-service libindicator3=5 deleted_maps=0
+indicator-datet pid=2235 exe=/usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service libindicator3=0 deleted_maps=2
+ayatana-indicat pid=2274 exe=/usr/libexec/ayatana-indicator-messages/ayatana-indicator-messages-service libindicator3=0 deleted_maps=2
+== indicator-datetime on the bus
+1
+== warnings since boot
+== done
+## notes (B, same boot, interactive checks)
+# the script's sha256 line for indicator-datetime-service used a wrong path (/usr/libexec); the installed
+# /usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service is e85fafc7..., equal to the file in the gated .deb.
+# libindicator3.so.7.0.0 f07e26fa... equals the file in the gated libindicator3-7 .deb; 40 exports, none Ayatana's (the acceptance of -023).
+# deleted_maps=2 for indicator-datetime-service and ayatana-indicator-messages-service: both are dconf databases
+# (~/.config/dconf/user, /run/user/1000/dconf/user, replaced by dconf writes), no library.
+# unity-panel-service maps libindicator3 and has no "(deleted)" mapping.
+# indicator-datetime: the desktop-header action (org.gtk.Actions.DescribeAll) has label 19:21 (guest local time),
+# title "Дата и время", visible true.
+# panel entries (gdbus Sync on com.canonical.Unity.Panel.Service.Desktop, the bus name logs/06 got wrong):
+# org.ayatana.indicator.messages, com.canonical.indicator.{bluetooth,datetime,keyboard,power,session,sound}, libapplication.so.
+# messaging menu with a client (as logs/06, same boot, builder utc 2026-10-02T16:3xZ): gir1.2-messagingmenu-1.0 24.5.1-1build1+unity1
+# installed; docs/research/messaging-menu/mmclient.py registered pluma.desktop ("registered pluma.desktop"). Sync then lists
+# org.ayatana.indicator.messages, entry 0x653efc64ad00, visible, icon indicator-messages-new (GThemedIcon ... indicator-messages-new ...).
+# Screenshot (vbox MCP, on the Windows host): target-desktop-2-20261002-192510.png, the envelope with the yellow "new" dot in the panel.
+# The installed libindicator3.so.7.0.0 is byte-identical to the tested build's (payload compare: 0 of 3 files differ), so logs/06's
+# menu rendering (Inbox with the IDO count bubble) is the same code.
+# natural session start: a plain reboot into the auto-login Unity session; no drop-in, no test env (no G_MESSAGES_DEBUG).

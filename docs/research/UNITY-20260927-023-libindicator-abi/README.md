@@ -216,3 +216,40 @@ BLOCKED at the publication gate: the version check and gate need the
 package in an aptly snapshot (047). Follow-up proposed: a symbols file for
 libindicator3-7 with the archive's 40 symbols, so that any future
 accidental export fails the build.
+
+## Gated rebuild and target test of this build (2026-10-02)
+
+- **Source.** `f8fa299` on `Ubuntu-Unity-LifeSupport/libindicator`, branch
+  `b/UNITY-20260927-023` (on top of the published +unity2, 67bfe16), pushed.
+- **Gated build** on the pinned chroot 20260929T201245Z (UNITY-20260929-016):
+  `build-gated/UNITY-20260927-023-libindicator-build-manifest.json`, PASS,
+  with the archive's `libindicator_16.10.0+18.04.20180321.1.orig.tar.gz`
+  (sha256 0029ac3a…, as the resolute Sources index).
+- **Payload against the tested build** (logs/08): the six .debs have the same
+  control fields, file lists and exported symbols, and every file inside is
+  byte-identical (0 of 34 differ); libindicator3.so.7.0.0 is the tested
+  library, byte for byte.
+- **Target test, mode this_build** (logs/07), on the UNITY-20260927-029/-028
+  session of target2 (Clean-2, our repository, gated hud): the gated .debs
+  installed from a file repository; libindicator3-7 +unity3 is the manifest's
+  .deb (sha256 caac08af…). After a reboot into the auto-login Unity session,
+  no drop-in, no test environment:
+  - the installed library (f07e26fa…, the gated .deb's file) exports 40
+    symbols, none Ayatana's: the acceptance;
+  - unity-panel-service maps it, no "(deleted)" mapping, and Sync on
+    `com.canonical.Unity.Panel.Service.Desktop` lists
+    org.ayatana.indicator.messages with the other indicators;
+  - with `mmclient.py` registered, the entry's icon is
+    indicator-messages-new and the panel shows the envelope with the "new"
+    dot (screenshot target-desktop-2-20261002-192510.png on the host).
+- **Clock:** NTPSynchronized=yes on both phases (UNITY-20260929-022; the
+  before/after is in the -029 card).
+
+## Known gaps before the gate
+
+| gap | state |
+|---|---|
+| a symbols file, so that an accidental export fails the build | task UNITY-20260928-006 |
+| removing the +unity2 export is formally an ABI break | closed with a reason: the pool scan (logs/02, 270 .debs) found no consumer; +unity2 was published 2026-09-26 only, with no header; a third-party dlsym by name of an undocumented type is not plausible |
+| the Verifier's limit: panel entry grep printed nothing (wrong bus name), interactive observations not in the logs | measured before the gate on this build, logs/07: the right bus name, the entry listed, the client and the "new" icon recorded |
+| wrapper cost: links wrapped anew on each `get_item_links` | closed with a reason: one small object per submenu per change (design review); not a defect of this task |
