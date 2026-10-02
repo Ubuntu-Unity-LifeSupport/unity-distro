@@ -1,0 +1,22 @@
+# +unity3 exports (built build, measured 2026-09-28T08:46:40Z)
+## libindicator3.so.7: 40 symbols; diff against the archive 0ubuntu8:
+(identical to the archive)
+## libindicator.so.7 (GTK2): 34; diff against +unity1:
+(identical)
+## the wrapper's get_type in the static libindicator3.a:
+0000000000000010 b IndicatorNgAyatanaMenu_private_offset
+0000000000000340 t indicator_ng_ayatana_menu_base_changed
+0000000000000430 t indicator_ng_ayatana_menu_class_intern_init
+0000000000000750 t indicator_ng_ayatana_menu_finalize
+0000000000000590 t indicator_ng_ayatana_menu_get_item_attributes
+00000000000004c0 t indicator_ng_ayatana_menu_get_item_links
+00000000000002a0 t indicator_ng_ayatana_menu_get_n_items
+0000000000000350 t indicator_ng_ayatana_menu_get_type_once
+0000000000000010 t indicator_ng_ayatana_menu_init
+0000000000000740 t indicator_ng_ayatana_menu_is_mutable
+00000000000003a0 t indicator_ng_ayatana_menu_new
+0000000000000018 b indicator_ng_ayatana_menu_parent_class
+## the wrapper code is still in the library (string of the type name):
+1
+## DEBIAN/shlibs
+libindicator3 7 libindicator3-7 (>= 0.4.90)

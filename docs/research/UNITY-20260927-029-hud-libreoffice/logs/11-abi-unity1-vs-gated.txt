@@ -1,0 +1,6 @@
+# library exports: the +unity1 .debs in /srv/aptly/public/pool/main/h/hud against the gated +unity2 .debs,
+# nm -D --defined-only (name, type), sorted, compared by digest; 2026-10-02 16:40Z
+libhud.so.2.0.0        soname libhud.so.2         25 symbols  SAME
+libhud-client.so.2.0.0 soname libhud-client.so.2  70 symbols  SAME
+libhud-gtk.so.1.0.0    soname libhud-gtk.so.1      3 symbols  SAME
+# +unity2 changes window-stack-bridge (and its tests) only; the libraries are rebuilt from the same source with the same flags.
