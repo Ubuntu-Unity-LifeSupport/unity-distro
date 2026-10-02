@@ -1,0 +1,76 @@
+==00:00:00:00.000 8262== Memcheck, a memory error detector
+==00:00:00:00.000 8262== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==00:00:00:00.000 8262== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
+==00:00:00:00.000 8262== Command: /usr/lib/unity-settings-daemon/unity-settings-daemon
+==00:00:00:00.000 8262== Parent PID: 8253
+==00:00:00:00.000 8262== 
+==00:00:00:40.396 8262== Invalid read of size 4
+==00:00:00:40.396 8262==    at 0x48BA1AB: xevent_filter (gsd-idle-monitor.c:332)
+==00:00:00:40.396 8262==    by 0x57AD5DF: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2420.32)
+==00:00:00:40.396 8262==    by 0x57B5AAE: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2420.32)
+==00:00:00:40.396 8262==    by 0x5755F1A: gdk_display_get_event (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2420.32)
+==00:00:00:40.396 8262==    by 0x57B60ED: ??? (in /usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2420.32)
+==00:00:00:40.396 8262==    by 0x529CC1A: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x529E256: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x529E5F6: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x4AF0C04: gtk_main (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2420.32)
+==00:00:00:40.396 8262==    by 0x4005099: main (main.c:483)
+==00:00:00:40.396 8262==  Address 0x8ca4f88 is 8 bytes inside a block of size 24 free'd
+==00:00:00:40.396 8262==    at 0x485BB1D: free_sized (vg_replace_malloc.c:1034)
+==00:00:00:40.396 8262==    by 0x511FF23: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x51241E4: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x510E91F: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x529CC1A: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x529E256: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x529E5F6: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x4AF0C04: gtk_main (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2420.32)
+==00:00:00:40.396 8262==    by 0x4005099: main (main.c:483)
+==00:00:00:40.396 8262==  Block was alloc'd at
+==00:00:00:40.396 8262==    at 0x4858858: malloc (vg_replace_malloc.c:447)
+==00:00:00:40.396 8262==    by 0x52A36F9: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:40.396 8262==    by 0x48BAB6B: gsd_idle_monitor_init_dbus (gsd-idle-monitor.c:959)
+==00:00:00:40.396 8262==    by 0x48BAB6B: gsd_idle_monitor_init_dbus (gsd-idle-monitor.c:952)
+==00:00:00:40.396 8262==    by 0x4005094: main (main.c:481)
+==00:00:00:40.396 8262== 
+==00:00:00:49.014 8262== Invalid free() / delete / delete[] / realloc()
+==00:00:00:49.014 8262==    at 0x485BB1D: free_sized (vg_replace_malloc.c:1034)
+==00:00:00:49.014 8262==    by 0x511FF23: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:49.014 8262==    by 0x51241E4: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:49.014 8262==    by 0x510E91F: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:49.014 8262==    by 0x529CC1A: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.014 8262==    by 0x529E256: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.014 8262==    by 0x529E5F6: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.014 8262==    by 0x4AF0C04: gtk_main (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2420.32)
+==00:00:00:49.014 8262==    by 0x4005099: main (main.c:483)
+==00:00:00:49.015 8262==  Address 0x8ca4f80 is 0 bytes inside a block of size 24 free'd
+==00:00:00:49.015 8262==    at 0x485BB1D: free_sized (vg_replace_malloc.c:1034)
+==00:00:00:49.015 8262==    by 0x511FF23: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x51241E4: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x510E91F: ??? (in /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x529CC1A: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x529E256: ??? (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x529E5F6: g_main_loop_run (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x4AF0C04: gtk_main (in /usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2420.32)
+==00:00:00:49.015 8262==    by 0x4005099: main (main.c:483)
+==00:00:00:49.015 8262==  Block was alloc'd at
+==00:00:00:49.015 8262==    at 0x4858858: malloc (vg_replace_malloc.c:447)
+==00:00:00:49.015 8262==    by 0x52A36F9: g_malloc (in /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0)
+==00:00:00:49.015 8262==    by 0x48BAB6B: gsd_idle_monitor_init_dbus (gsd-idle-monitor.c:959)
+==00:00:00:49.015 8262==    by 0x48BAB6B: gsd_idle_monitor_init_dbus (gsd-idle-monitor.c:952)
+==00:00:00:49.015 8262==    by 0x4005094: main (main.c:481)
+==00:00:00:49.015 8262== 
+==00:00:01:11.723 8262== 
+==00:00:01:11.725 8262== HEAP SUMMARY:
+==00:00:01:11.725 8262==     in use at exit: 3,592,472 bytes in 56,098 blocks
+==00:00:01:11.725 8262==   total heap usage: 733,689 allocs, 677,592 frees, 54,890,067 bytes allocated
+==00:00:01:11.725 8262== 
+==00:00:01:12.320 8262== LEAK SUMMARY:
+==00:00:01:12.320 8262==    definitely lost: 1,362 bytes in 25 blocks
+==00:00:01:12.320 8262==    indirectly lost: 8,953 bytes in 288 blocks
+==00:00:01:12.320 8262==      possibly lost: 2,152 bytes in 10 blocks
+==00:00:01:12.320 8262==    still reachable: 3,402,713 bytes in 54,256 blocks
+==00:00:01:12.320 8262==         suppressed: 4 bytes in 1 blocks
+==00:00:01:12.320 8262== Rerun with --leak-check=full to see details of leaked memory
+==00:00:01:12.320 8262== 
+==00:00:01:12.320 8262== For lists of detected and suppressed errors, rerun with: -s
+==00:00:01:12.320 8262== ERROR SUMMARY: 6 errors from 2 contexts (suppressed: 0 from 0)
