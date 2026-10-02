@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-023",
+  "package": "libindicator",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-023-libindicator-abi/README.md",
+      "sha256": "3ec27c8e895e294af0db230247d5a0fda9fdf9e4d0c9a1001773605efdcdf403"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-023-libindicator-abi/README.md",
+      "sha256": "3ec27c8e895e294af0db230247d5a0fda9fdf9e4d0c9a1001773605efdcdf403"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "e3f8f639c88316e496ef9f9db3949789b5415be07b657cca0757c66b3c5fbaa7"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "7f20844ee8a3e9ae6cd938d297c350a590e1ba32289192120e5392284422ae5c"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-023-libindicator-abi/gate/release-record.json",
+      "sha256": "f78f99629e2511ad60f50119e5651260be388b9f4fdfda0c499a4df5d8e87601"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-023-libindicator-abi/gate/version-check.json",
+      "sha256": "d01001fd7a9ced4c12dcad9b2b4b68e168c498d77dcac9227b8a1951ff62b442"
+    }
+  }
+}
