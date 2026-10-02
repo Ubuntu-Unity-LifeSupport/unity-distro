@@ -235,5 +235,5 @@ release gate need the package in an aptly snapshot.
 | which RECURRENCE-ID forms (floating, TZID, UTC) merge_detached_instances matches was not mapped | closed with a reason: the guard sits in get_appointment(), after the merge, so every merged override without a start is covered whatever its form; the mapping decides only which overrides are merged |
 | the alarm-only path (add_alarms_to_subtask) not measured separately | closed with a reason: it goes through the same get_appointment() |
 | other EDS versions not measured | closed with a reason: the target is resolute's EDS 3.56.2, the pinned chroot's |
-| one test-eds-ics-all-day-events failure in the control e6576ce, not explained | no task ID yet; +unity3 passed it in five builds, the gated one included (29 of 29) |
+| one test-eds-ics-all-day-events failure in the control e6576ce, not explained | task UNITY-20261002-005; +unity3 passed it in five builds, the gated one included (29 of 29) |
 | orig-vs-git empty directories (the EDS test directories) | fixed here by 5a21b08; the general check is task UNITY-20260928-010 |
