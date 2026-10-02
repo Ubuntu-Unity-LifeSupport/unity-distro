@@ -237,3 +237,20 @@ release gate need the package in an aptly snapshot.
 | other EDS versions not measured | closed with a reason: the target is resolute's EDS 3.56.2, the pinned chroot's |
 | one test-eds-ics-all-day-events failure in the control e6576ce, not explained | task UNITY-20261002-005; +unity3 passed it in five builds, the gated one included (29 of 29) |
 | orig-vs-git empty directories (the EDS test directories) | fixed here by 5a21b08; the general check is task UNITY-20260928-010 |
+
+## Verifier round on the gated build (2026-10-02): PASS
+
+The independent Verifier re-measured the manifest against the chroot
+sidecar and the tarball itself, the source tree (9a00446, tree b59dda47…,
+5a21b08 in its chain), the sbuild log (29 of 29, tasks-without-start
+passed), the artifacts (orig tarball 29af1057…), the payload comparison
+(identical to logs/09; the gated and tested .deb differ only in the
+container, 222508 against 222502 bytes), the shared target record (the
+service binary e85fafc7… is the .deb's file, the deleted mappings are
+dconf's, NTP synchronised), the gaps table against the four unknowns, and
+the evidence (PASS, REVIEWED).
+
+Remarks: the evidence's `build_manifest` and `target_verified` still
+describe the state before this round; the publish record carries the gated
+manifest and the target record. The target script's path for the service
+binary is corrected in the -023 card.
