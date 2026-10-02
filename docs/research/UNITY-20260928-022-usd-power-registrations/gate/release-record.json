@@ -1,0 +1,31 @@
+{
+  "task_id": "UNITY-20260928-022",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity9",
+  "source_commit": "57945f5eb580fef0e45ae7ad0fe063f6bb9278e3",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20260928-022",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260928-022-usd-power-registrations/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20260928-022-usd-power-registrations/runs-gated/README.txt",
+    "debs": {
+      "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb": "c56cad4bc58849d2e2d9fba2cae905333558b8679a645a6c4f524d5410d92a42",
+      "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity9_amd64.deb": "57e86ee97ee0407850cfcfee0a4aff0f014bfb47392683fc1c6d0de7962099a4",
+      "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity9_all.deb": "7b4ad0e7a6d2b5647886a6d812c7a80c34ef92493ab99a53a43e0667186f590d"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260928-022-usd-power-registrations/README.md",
+    "verification_record": "docs/research/UNITY-20260928-022-usd-power-registrations/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}
