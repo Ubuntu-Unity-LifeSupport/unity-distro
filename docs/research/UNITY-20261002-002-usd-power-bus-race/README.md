@@ -242,6 +242,44 @@ attached to. The script now stops `u002-trace.service` for its run.
 `runs/boots-unity10/`, 10 boots, toggle unit disabled, tracer recording:
 **Power owned 10/10, 0 stops, NEW -> ON-BUS-GOTTEN 4.3-28.6 s (one boot at 28.6 s), 0 crash files, NRestarts 0.** With the 19 boots of +unity9 that makes 29 traced natural boots without a stop in the window; the one bad boot of 2026-10-02 stays the only natural occurrence (UNITY-20261002-009).
 
+## Verifier: PASS (INDEPENDENTLY_REPRODUCED, 2026-10-02)
+
+Independent Verifier on a33aab5: manifest, artifacts, chroot sha, .changes
+and .dsc checksums, changelog trailer; the diff 57945f5..122c413 is exactly
+the described change and the D1 lifetime argument holds (`bus_cancellable`
+created once in init, used once in `register_manager_dbus`, cancelled only
+in finalize; `on_bus_gotten` checks the result first; finalize only on the
+exit path); version ordering above +unity9, 0ubuntu6 and every published
+u-s-d; target state re-checked (versions, deb hashes equal to `build/`, no
+replaced mapping, Power owned, no test units, NRestarts 0); every run's
+raw output supports the card's numbers (window values recomputed from the
+traces). The gdb and valgrind runs were reviewed from their recorded
+outputs (not re-run; the Verifier may not run them on target).
+
+Remarks and what was done:
+1. `build/*.dsc` untracked: kept untracked on purpose, as in the earlier
+   publications (the manifest records its hash; it is needed for
+   `repo add`).
+2. `/var/crash` held the memcheck crash of the SIGTRAP harness incident
+   (valgrind under the tracer's uprobes, not a u-s-d report): removed, and
+   target rebooted before the gate so that no traced process remains.
+3. The changelog and commit message say the window is "4-6 s" (the first 10
+   boots); later measurements give 4-11 s on +unity9 and up to 28.6 s on
+   +unity10. PATCHES and this card carry the full ranges; changing the
+   package text would mean a rebuild and a repeat of the target test -
+   left to the coordinator's decision.
+4. The +unity10 gdb runs print no `ON-BUS-GOTTEN` lines (the -022 +unity9
+   runs printed 8): the tracer's uprobes, installed before those runs,
+   consumed the breakpoint at `on_bus_gotten` before gdb saw it. The owner
+   check proves the registration; noted here.
+5. The last tracer run overlapped the running u-s-d for a minute: a reboot
+   before the gate (remark 2) gives the clean state.
+6. Lintian "fail" lines in the sbuild log (native changelog version, `.la`
+   dependency_libs) are the same 24 as in the +unity9 gated build;
+   pre-existing.
+7. PATCHES' "a key toggle inside the window keeps the name" compresses D6a:
+   a correction record states the dispatch order explicitly.
+
 ## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
 
 Not fixed by +unity10; each has its own task so that none is left as text
