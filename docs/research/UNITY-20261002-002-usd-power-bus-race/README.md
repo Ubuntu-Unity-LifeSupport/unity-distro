@@ -184,11 +184,15 @@ ON-BUS-GOTTEN.
   only when the main loop resumes, and the `g_bus_get` completion queued at
   NEW is dispatched first. So the GSettings key cannot put the stop before
   the registration on +unity9: D6a's "FAIL on +unity9 without gdb" is not
-  reachable through the key. The deterministic demonstration stays
+  reachable through the key. **This is a limit of the demonstration, not
+  evidence that the defect is absent**: the defect is proved by
   `stop-before-bus.sh` (the stop injected synchronously inside the start
-  phase). Consequence for UNITY-20261002-009: the natural stop of the one
-  bad boot must have run inside the start phase, before the loop resumed -
-  not a key change dispatched by the main loop.
+  phase; FAIL on +unity9 and +unity7, PASS on +unity10) and was observed
+  at a natural session start of the published +unity9 on 2026-10-02
+  (UNITY-20260928-022 target-verification). Accepted in this form by C
+  (2026-10-02). Lead for UNITY-20261002-009, recorded in that task's card:
+  the natural stop of that boot ran inside the start phase, before the main
+  loop resumed - not a key change dispatched by the loop.
 - The same v2 toggle on +unity10 (`runs/toggle-unity10/`): results below.
 
 ## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
