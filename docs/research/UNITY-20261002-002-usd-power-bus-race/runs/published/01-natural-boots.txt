@@ -1,0 +1,2 @@
+boot 1:  2 min u-s-d pid 2416 15.04.1+21.10.20220802-0ubuntu7+unity10 deleted-maps:0 Power-owner:(':1.53',) NRestarts=0 crash:0 inhibitors:3 tunables:0 bpftrace:0
+boot 2:  2 min u-s-d pid 2368 15.04.1+21.10.20220802-0ubuntu7+unity10 deleted-maps:0 Power-owner:(':1.51',) NRestarts=0 crash:0 inhibitors:3 tunables:0 bpftrace:0
