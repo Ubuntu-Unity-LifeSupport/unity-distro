@@ -1,0 +1,20 @@
+boot_id 853d3c31-dfcc-46aa-8d2b-416ec6db5d64 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2264 drop-ins:  power-owner: (':1.41',)
+52614 ms pid 2264 MANAGER-NEW (register_manager_dbus, inlined)
+52614 ms pid 2264 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7fe230b47b05
+        0x7fe230b47d44
+        0x7fe230b36920
+        0x7fe23137ac1b
+        0x7fe23137c257
+        g_main_loop_run+311
+
+61634 ms pid 2264 ON-BUS-GOTTEN
+
+

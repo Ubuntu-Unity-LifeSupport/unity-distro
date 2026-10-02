@@ -239,7 +239,8 @@ attached to. The script now stops `u002-trace.service` for its run.
 
 ### Natural boots of +unity10
 
-`runs/boots-unity10/`: results below.
+`runs/boots-unity10/`, 10 boots, toggle unit disabled, tracer recording:
+**Power owned 10/10, 0 stops, NEW -> ON-BUS-GOTTEN 4.3-28.6 s (one boot at 28.6 s), 0 crash files, NRestarts 0.** With the 19 boots of +unity9 that makes 29 traced natural boots without a stop in the window; the one bad boot of 2026-10-02 stays the only natural occurrence (UNITY-20261002-009).
 
 ## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
 
