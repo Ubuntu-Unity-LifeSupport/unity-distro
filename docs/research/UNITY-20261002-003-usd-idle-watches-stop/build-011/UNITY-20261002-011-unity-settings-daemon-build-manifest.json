@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-011",
+  "package": "unity-settings-daemon",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/unity-distro-053/packages/unity-settings-daemon",
+  "source_commit": "89648a32c3d24c0298b9e351cb50736731485873",
+  "source_tree_hash": "56d96c9b1ac47b01f01d1b8a4d5f2ebb8612a248",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst"
+  ],
+  "build_started": "2026-10-02T23:16:18.546762+00:00",
+  "build_finished": "2026-10-02T23:48:11.877273+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261002-011-unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity11-sbuild.log",
+    "sha256": "7d56d506d324849f9111ccce28043c8f798a1f51ec95cce9b793bfea5ef54cae"
+  },
+  "artifacts": [
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11.dsc",
+      "sha256": "0e09f76fa3b4d9e911369bf90bee6193fe586ea8d412a8e890001db54dc1c6c3",
+      "size": 2222,
+      "kind": "source",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.changes",
+      "sha256": "59afc24f6e0839c614495535b86a0f22e9af7c412d55428584b1c3fd27f39edf",
+      "size": 5223,
+      "kind": "changes"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11.tar.gz",
+      "sha256": "7e345b4f393b0444bcede6d0192b7ca591380253242dc58ec4e9610e524a5bbd",
+      "size": 2918392,
+      "kind": "source_file",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11"
+    },
+    {
+      "file": "libunity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "sha256": "6d47bcd4e3227b8774d04c83d0c9ba1b2a23fe707d328c9ad4ebb9c54095a150",
+      "size": 78684,
+      "kind": "binary",
+      "package": "libunity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-settings-daemon1-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.ddeb",
+      "sha256": "1dd8686cba7e397b1dfe226826357c3b7d930f760f4f79906ed17e7f77c42bd3",
+      "size": 224118,
+      "kind": "binary",
+      "package": "libunity-settings-daemon1-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "sha256": "8afcf5adee4c7ed203b90ac7a0c479c799a2445e8e2023d42c85b94265ee3117",
+      "size": 68308,
+      "kind": "binary",
+      "package": "libunity-settings-daemon1",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-settings-daemon-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.ddeb",
+      "sha256": "0b87c9569f5b8333f723fff511f81bfee7b1f1f2e035851c4d4378513a34be36",
+      "size": 1833102,
+      "kind": "binary",
+      "package": "unity-settings-daemon-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "sha256": "929292ee97b9ea865442a093d803634be93be8fa68a559b281f8a7d41f5337ec",
+      "size": 12986,
+      "kind": "binary",
+      "package": "unity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity11_all.deb",
+      "sha256": "5447a543cbc05e9bcbd336780bc9d87a1a902418f25bc9088c89b5e611b01e33",
+      "size": 14748,
+      "kind": "binary",
+      "package": "unity-settings-daemon-schemas",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "all"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.buildinfo",
+      "sha256": "d022f62b89eb426deee3eeab1df6f30d83800b156627fdebb56ebbcf645be988",
+      "size": 23829,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "sha256": "b4cba78fb62b24e56c36c6bb9a4a184fb73fc4bbeb25cbb7edda3092495458d3",
+      "size": 1358998,
+      "kind": "binary",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst",
+    "sha256": "d48b78645647c32d4c649374fb6920b135028de2a62715d142938b1f05defe80",
+    "size": 143090706,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json",
+    "sidecar_sha256": "228d4a7f87daaac9957dbb5e2d62e3a4fb0449a1670dd34e141de19545d46640",
+    "snapshot": "20260929T201245Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Tue, 29 Sep 2026 19:18:11 UTC",
+        "sha256": "d6d58182351b401877a611adfb38c7a6a5c249de6f6d5cf84c08de66e7bd0b0d"
+      },
+      "resolute-security": {
+        "date": "Tue, 29 Sep 2026 18:35:33 UTC",
+        "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/a/unity-distro-053/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}
