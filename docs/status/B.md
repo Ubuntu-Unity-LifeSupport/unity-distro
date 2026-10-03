@@ -75,6 +75,22 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-03: STOPPED (May stops all agents, through C).**
+- UNITY-20260929-002 (hud: HUD empty although the window is known) is
+  INVESTIGATING, branch `b/UNITY-20260929-002` @ f18f35c, worktree
+  `~/work/b/unity-distro-002`, card
+  `research/UNITY-20260929-002-hud-empty-known-window/`.
+  - Round 1 (logs/01): 3 of 10 cold boots empty at the first query on the
+    published hud +unity3.
+  - Round 2 (logs/02, D-Bus menu trace): stopped after 6 of 10 boots; boot
+    6 empty at the first query. The captures are saved, not analysed.
+  - Resume: analyse boot 6 against boots 1-5 in logs/02 (the order of
+    WindowCreated, hud-service's org.gtk.Menus Start and LibreOffice's
+    Changed), then boots 7-10 (`coldloop3.sh 4`). No code yet; DC first.
+- Nothing running: the loop is stopped, no tmux, sbuild or tracer.
+- target2 is left as it is: Clean-2 + our repository + hud +unity3
+  (dirty), session up.
+
 **2026-10-02 ~19:15Z: no tasks (May: none assigned). The four ready
 packages are published and DONE; -003 waits for -019 (the signer, May's
 manual step) and -037 for its security review.**
