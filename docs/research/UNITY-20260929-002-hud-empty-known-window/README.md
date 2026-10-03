@@ -108,7 +108,36 @@ of the -029 card (xid 56623243, no application id). If so, mechanism 2 is
 not a hud defect but the dialog's focus, and the measurement scripts
 mis-chose the window.
 
-HYPOTHESIS A, kept until B is measured: on the first Writer start after a boot the window
+Round 1 result (logs/01): **3 of 10** cold boots empty at the first query
+(boots 1, 4, 5); boot 5 answered at the second query 5 s later. In boots
+4 and 5 the window stack holds one LibreOffice window, focused, so
+hypothesis B (a dialog has the focus) does not explain them; boot 1 did
+have a second, focused window (54526746). The splash window (60817409,
+"LibreOffice 26.2", class soffice) opens about 1 s after the start and
+closes when the document window appears, 7-18 s later; the failing boots
+are not the slowest ones (boot 6, 15.5 s, passed).
+
+Correction to the code reading: `QtGMenuModel::GetQMenu` builds a new
+`QMenu` on every call (`QtGMenuModel.cpp:157-164`), so every `StartQuery`
+gets a new token and a fresh index (`GMenuCollector::activate`,
+`WindowImpl::activate`). The HUD is therefore empty at a query when the
+imported model has no (enabled) items *at that moment*, not because of a
+stale index. Hypothesis A, restated: in the failing boots LibreOffice's
+exported menu model is still empty 8 s after the window is visible (and
+13 s in boot 4), and filled by 13 s in boot 5; what delays the export
+(the Registrar name watch, `UpdateFull`, or the action group) is the
+measurement of round 2 (logs/02: the D-Bus order of WindowCreated, the
+Start subscription and its reply, the Changed signals, and the query).
+
+Round 2 (logs/02, `coldloop3.sh` with `menutrace.sh` and `lowindows.sh`),
+**stopped after 6 of 10 boots** (2026-10-03, all agents stopped by May):
+boot 6 was empty at the first query and answered at the second (4 hits);
+boots 1-5 answered both. The D-Bus captures (`boot-N.raw`, with the
+WindowCreated / Start / Changed order) are saved but **not analysed yet**.
+Next step on resume: compare the order in boot 6 against boots 1-5, then
+boots 7-10.
+
+HYPOTHESIS A, original wording, kept for the record: on the first Writer start after a boot the window
 is mapped, and bamf announces it, before LibreOffice attaches the menubar;
 hud-service subscribes to a model with no items, indexes nothing, and the
 `Changed` that follows never makes it re-index, so the HUD stays empty
