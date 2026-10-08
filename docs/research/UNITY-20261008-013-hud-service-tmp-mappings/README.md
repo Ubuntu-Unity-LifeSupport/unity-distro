@@ -4,7 +4,7 @@ Owner: agent B (target2). Found by the UNITY-20260929-001 Verifier.
 
 ```yaml
 task_id: UNITY-20261008-013
-package: hud (hud-service)
+package: libcolumbus (the symptom is in hud-service; the correct layer is libcolumbus)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
 status: INVESTIGATING
@@ -67,5 +67,5 @@ process: 3 mappings per query, and the RSS with them.
 
 Next:
 1. Existing-fix discovery for libcolumbus: newer Ubuntu and Debian, upstream (lp:libcolumbus), Launchpad bugs.
-2. Then the design for the Design Challenger. The fix belongs in libcolumbus (`munmap` in `~Trie`), not in hud. That makes it a new package of ours, so C decides the package and task.
+2. Then the design for the Design Challenger. C's decision (2026-10-08): this task carries libcolumbus +unity1 (`munmap` in `~Trie`); hud is not changed.
 3. The Writer starts' RSS (+4.7 MB per 10 starts, no files) is a separate question: menus imported and kept, or another leak.
