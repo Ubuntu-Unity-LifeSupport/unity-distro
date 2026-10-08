@@ -434,14 +434,18 @@ def released_in_record(data, task_id, rows, records_dir):
 # off, a shallow repository is refused (check_released_commits), and the
 # history is walked here, not by git: every commit on the way is read raw and
 # its sha1 checked against its id, so a forged object under a real id, loose,
-# packed or behind alternates, is refused (VerifiedHistory).
-GIT_TRUSTED = ["git", "--no-replace-objects", "-c", "core.commitGraph=false"]
+# packed or behind alternates, is refused (VerifiedHistory). Git must not run
+# anything the repository's config names: no lazy fetch (a partial clone is
+# refused as well), no fsmonitor, no transport; only rev-parse and cat-file
+# are called.
+GIT_TRUSTED = ["git", "--no-replace-objects", "-c", "core.commitGraph=false", "-c", "core.fsmonitor=false",
+               "-c", "protocol.allow=never", "-c", "core.hooksPath=/nonexistent/taskctl-no-hooks"]
 
 
 def git_env():
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     env.update({"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": "/nonexistent/taskctl-no-grafts",
-                "GIT_CONFIG_NOSYSTEM": "1"})
+                "GIT_CONFIG_NOSYSTEM": "1", "GIT_NO_LAZY_FETCH": "1", "GIT_TERMINAL_PROMPT": "0"})
     return env
 
 
@@ -484,16 +488,20 @@ class VerifiedHistory:
         if len(body) != size or hashlib.sha1(b"commit %d\0" % size + body).hexdigest() != commit_id:
             raise ValueError(f"released_in: the object stored as {commit_id} in {self.repo} does not hash to its "
                              "id (corrupt or forged)")
-        tree, parents = None, []
-        for line in body.split(b"\n"):
-            if not line:
-                break
-            if line.startswith(b"tree ") and tree is None:
-                tree = line[5:].decode()
-            elif line.startswith(b"parent "):
-                parents.append(line[7:].decode())
-        if not tree or not _HEX40.match(tree) or not all(_HEX40.match(parent) for parent in parents):
-            raise ValueError(f"released_in: commit {commit_id} in {self.repo} has no valid tree or parents")
+        # As git reads a commit: "tree" first, then only consecutive "parent"
+        # lines, then "author".
+        lines = body.split(b"\n")
+        header = lines[:lines.index(b"")] if b"" in lines else lines
+        tree = header[0][5:].decode("ascii", "replace") if header and header[0].startswith(b"tree ") else None
+        parents, index = [], 1
+        while index < len(header) and header[index].startswith(b"parent "):
+            parents.append(header[index][7:].decode("ascii", "replace"))
+            index += 1
+        well_formed = (tree is not None and _HEX40.match(tree) and all(_HEX40.match(parent) for parent in parents)
+                       and index < len(header) and header[index].startswith(b"author ")
+                       and not any(line.startswith((b"tree ", b"parent ")) for line in header[index:]))
+        if not well_formed:
+            raise ValueError(f"released_in: commit {commit_id} in {self.repo} is not a well-formed commit")
         self.commits[commit_id] = (tree, parents)
         return tree, parents
 
@@ -512,11 +520,15 @@ class VerifiedHistory:
         return False
 
 
-def git_commit(repo, ref, what):
-    code, out = git_out(repo, "rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}")
-    if code or not _HEX40.match(out):
-        raise ValueError(f"released_in: {what} {ref} is not a commit in {repo}")
-    return out
+def git_commit(history, ref, what):
+    """A full commit id, verified through history (no revision parsing by git)."""
+    if not isinstance(ref, str) or not _HEX40.match(ref):
+        raise ValueError(f"released_in: {what} {ref!r} is not a full 40-hex commit id")
+    try:
+        history.commit(ref)
+    except ValueError as exc:
+        raise ValueError(f"released_in: {what} {ref}: {exc}")
+    return ref
 
 
 def check_released_commits(data, record, gate, records_dir):
@@ -530,6 +542,9 @@ def check_released_commits(data, record, gate, records_dir):
     if code or shallow != "false":
         raise ValueError(f"released_in: the source repository {repo} is shallow or unreadable; its history is "
                          "incomplete")
+    code, promisor = git_out(repo, "config", "--get-regexp", r"^(extensions\.partialclone|remote\..*\.promisor)$")
+    if code not in (0, 1) or promisor:
+        raise ValueError(f"released_in: the source repository {repo} is a partial clone; its history is incomplete")
     history = VerifiedHistory(repo)
     try:
         check_released_history(released, record, gate, records_dir, repo, history)
@@ -538,7 +553,7 @@ def check_released_commits(data, record, gate, records_dir):
 
 
 def check_released_history(released, record, gate, records_dir, repo, history):
-    shipped = git_commit(repo, record.get("source_commit"), "the published source commit")
+    shipped = git_commit(history, record.get("source_commit"), "the published source commit")
     tree, _ = history.commit(shipped)
     if tree != gate.get("source_tree_hash"):
         raise ValueError("released_in: the repository's tree of the published source commit is not the gate's "
@@ -563,15 +578,13 @@ def check_released_history(released, record, gate, records_dir, repo, history):
         if when.tzinfo is None or this_time.tzinfo is None:
             raise ValueError(f"publish record {path} or the releasing record has a published_at without a timezone")
         if when <= this_time:
-            before = git_commit(repo, other.get("source_commit"), f"the source commit of {path.name}")
-            history.commit(before)
-            earlier.append(before)
+            earlier.append(git_commit(history, other.get("source_commit"), f"the source commit of {path.name}"))
     for commit in released["change_commits"]:
-        full = git_commit(repo, commit, "change commit")
-        if len(history.commit(full)[1]) != 1:
+        full = git_commit(history, commit, "change commit")
+        tree, parents = history.commit(full)
+        if len(parents) != 1:
             raise ValueError(f"released_in: change commit {commit} must have exactly one parent")
-        code, files = git_out(repo, "diff-tree", "--no-commit-id", "--name-only", "-r", full)
-        if code or not files:
+        if history.commit(parents[0])[0] == tree:
             raise ValueError(f"released_in: change commit {commit} changes no file")
         if not history.is_ancestor(full, shipped):
             raise ValueError(f"released_in: change commit {commit} is not in the published source commit {shipped}")

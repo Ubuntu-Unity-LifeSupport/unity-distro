@@ -389,3 +389,45 @@ Tests:
 `scripts/tests`: 409 passed, 1 skipped. The dry check on
 UNITY-20261008-014 is unchanged. Rule R says the history is walked and
 verified by taskctl.
+
+## Verification, round 3: FAIL (fixed)
+
+The Verifier confirmed:
+- the round-2 fix, with its four tests failing against the version before
+  it;
+- that all its earlier cases are refused;
+- the walk's speed on the unity history (about 0.1-0.2 s for ~420
+  commits);
+- that SHA-1 collisions are out of scope;
+- the dry check.
+
+One blocking finding: git reads the source repository's own configuration,
+and some settings there name programs that git runs, even for the read-only
+calls taskctl made. A taskctl transition is an allowed command, so this
+must not be possible. The change was still only on this task branch.
+
+Fix:
+- **The settings:** git runs with fsmonitor off, no transport protocol
+  allowed, hooks pointed nowhere, and `GIT_NO_LAZY_FETCH`.
+- **Partial clones:** a repository configured as one (`extensions.partialClone`
+  or a promisor remote) is refused.
+- **Fewer git calls:** taskctl no longer calls `diff-tree` ("changes files"
+  is now "the tree differs from its parent's tree", from verified bodies)
+  or `rev-parse --verify` (ids must be full 40-hex, and `cat-file`
+  checks the type). Only `rev-parse --is-shallow-repository`, `config
+  --get-regexp` and `cat-file --batch` are left.
+- **Commit parsing as git does it:** `tree` first, then only consecutive
+  `parent` lines, then `author`, and no `tree` or `parent` line later in
+  the header. This follows the Verifier's remark.
+
+Tests: five new tests.
+- A configured fsmonitor does not run.
+- A partial clone is refused and fetches nothing.
+- A missing object fetches nothing. This one already passed before the fix.
+- Two malformed but correctly hashed commits are refused (an extra parent
+  after `committer`, a parent before the tree).
+
+Against the round-3 version, exactly four of them fail.
+
+`scripts/tests`: 414 passed, 1 skipped. The dry check on
+UNITY-20261008-014 is unchanged. Rule R says what git may still do.

@@ -486,6 +486,65 @@ class ReleasedInTest(unittest.TestCase):
         data = self.evidence(released_in=self.released(source_repo=str(copy), change_commits=[self.unrelated]))
         self.refused("PUBLISHED", data, "does not hash to its id")
 
+    # git must not run anything the repository's config names
+    def marker_program(self, name):
+        marker = self.t / f"{name}.ran"
+        program = self.t / f"{name}.sh"
+        program.write_text(f"#!/bin/sh\ntouch {marker}\nexit 1\n")
+        program.chmod(0o755)
+        return program, marker
+
+    def test_fsmonitor_does_not_run(self):
+        program, marker = self.marker_program("fsmonitor")
+        self.git("config", "core.fsmonitor", str(program))
+        self.accepted("PUBLISHED", self.evidence())
+        self.assertFalse(marker.exists())
+
+    def test_partial_clone_is_refused_and_fetches_nothing(self):
+        program, marker = self.marker_program("uploadpack")
+        self.git("remote", "add", "origin", str(self.t / "nowhere"))
+        self.git("config", "remote.origin.promisor", "true")
+        self.git("config", "remote.origin.uploadpack", str(program))
+        self.git("config", "extensions.partialClone", "origin")
+        self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=["f" * 40])),
+                     "is a partial clone")
+        self.assertFalse(marker.exists())
+
+    def test_missing_object_fetches_nothing(self):
+        program, marker = self.marker_program("uploadpack2")
+        self.git("remote", "add", "origin", str(self.t / "nowhere"))
+        self.git("config", "remote.origin.uploadpack", str(program))
+        self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=["f" * 40])),
+                     "is not a commit")
+        self.assertFalse(marker.exists())
+
+    # commits are read as git reads them
+    def literal_commit(self, text):
+        return subprocess.run(["git", "-C", str(self.src), "hash-object", "-t", "commit", "-w", "--literally",
+                               "--stdin"], input=text.encode(), check=True, capture_output=True).stdout.decode().strip()
+
+    def test_extra_parent_after_committer(self):
+        text = (f"tree {self.tree}\nparent {self.c2}\nauthor t <t@example.invalid> 0 +0000\n"
+                f"committer t <t@example.invalid> 0 +0000\nparent {self.unrelated}\n\nodd\n")
+        history = self.taskctl.VerifiedHistory(str(self.src))
+        try:
+            with self.assertRaises(ValueError) as caught:
+                history.commit(self.literal_commit(text))
+        finally:
+            history.close()
+        self.assertIn("not a well-formed commit", str(caught.exception))
+
+    def test_parent_before_tree(self):
+        text = (f"parent {self.c2}\ntree {self.tree}\nauthor t <t@example.invalid> 0 +0000\n"
+                f"committer t <t@example.invalid> 0 +0000\n\nodd\n")
+        history = self.taskctl.VerifiedHistory(str(self.src))
+        try:
+            with self.assertRaises(ValueError) as caught:
+                history.commit(self.literal_commit(text))
+        finally:
+            history.close()
+        self.assertIn("not a well-formed commit", str(caught.exception))
+
     def test_own_review_status_missing(self):
         self.refused("PUBLISHED", self.evidence(review_status="PENDING"), "review_status")
 
