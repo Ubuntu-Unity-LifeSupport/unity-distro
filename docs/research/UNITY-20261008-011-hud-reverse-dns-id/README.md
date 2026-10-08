@@ -322,7 +322,7 @@ same. Its points, as applied:
 | `DesktopFileWithoutSuffixKeepsName` (`org.example.Foo`) | FAIL (`org`) | pass |
 | `DesktopFileNamedOnlySuffixGivesWindowNumber` (`/usr/share/applications/.desktop`) | FAIL (`""`) | pass |
 | `WindowMovedToReverseDnsApplication` (Created/Focused/Destroyed and GetWindowStack after the move) | FAIL | pass |
-| `UnknownPathsLeaveNoEntries` (subclass: GetWindowStack with an unknown active window, GetWindowProperties and GetWindowBusAddress for an unknown id; map sizes unchanged) | FAIL | pass |
+| `UnknownPathsLeaveNoEntries` (subclass; the stack holds a path the bridge does not know; GetWindowStack, and GetWindowProperties and GetWindowBusAddress for an unknown id **over D-Bus** (InvalidArgs replies); map sizes equal to those right after construction) | FAIL | pass |
 | `WindowAddedFromAnotherBusNameIsIgnored` (own fixture, second mock name; sync on a real bamf move) | pass (characterization) | pass |
 | `WindowAddedFromAnotherApplicationUsesParents` | pass (characterization) | pass |
 | service `TestApplication.ReverseDnsIdPathAndIcon` (`applicationPath("org.example.Foo")` = `/com/canonical/hud/applications/org_2eexample_2eFoo`, exported there; `XDG_DATA_DIRS` at a temporary `applications/org.example.Foo.desktop` with `Icon=foo-icon` gives `icon() == "foo-icon"`; `XDG_DATA_DIRS` restored) | pass | pass |
@@ -349,3 +349,40 @@ tests above. It must fail exactly `ReverseDnsDesktopFileGivesFullId`,
 | Writer: 10 starts, the -001 move | `libreoffice-writer` | `libreoffice-writer` |
 | bridge SIGKILL restart | ids as above | ids as above |
 | Unity HUD icon with a Terminal result selected (optional screenshot, Down after opening) | blank by the code | Terminal's icon |
+
+### Design review, round 2: REVISE (all points taken)
+
+The Design Challenger accepted the two choices beyond round 1 and the
+control table, with these changes:
+
+1. **`UnknownPathsLeaveNoEntries` calls `GetWindowProperties` and
+   `GetWindowBusAddress` over D-Bus**, through
+   `ComCanonicalUnityWindowStackInterface` as the `OverDBus` test does.
+   - For an unknown id both methods call `sendErrorReply` (`:267`,
+     `:285`). Outside a D-Bus call the `QDBusContext` has no message, so a
+     direct call would crash on both versions.
+   - The test expects an `InvalidArgs` error reply and then reads the
+     subclass's maps. The subclass is exported on the bus by the base
+     constructor.
+2. **The `GetWindowStack` part targets the stack loop** (`:229`), not the
+   active-window lookup, which already uses `value()` (`:245`).
+   - The mock's `WindowStackForMonitor` returns a path the bridge does not
+     know. The test's `createMatcherMethods` puts the active path into the
+     stack, so the test makes the active path an unknown one.
+   - The map sizes are compared with the sizes right after construction.
+3. **(a) accepted:** a file named only `.desktop` gives the window number.
+   This is a deliberate behaviour change for an unlikely case, not part of
+   the -011 fix. Today the empty id is ignored by hud-service, focus
+   changes to that window are ignored too, and the HUD keeps showing the
+   previous application's entries.
+4. **(b) accepted:** `value()` in `GetWindowProperties` and
+   `GetWindowBusAddress` is behaviour-neutral. The redundant `if (window)`
+   in the loop stays. The test subclass needs no `Q_OBJECT`.
+5. **Control:** the helper-only cases (`Foo.DESKTOP`, empty → window
+   number) have no control counterpart. Empty is already covered on
+   +unity4 by `HandlesWindowWhoseApplicationIsGone` and the no-desktop-file
+   path.
+6. **The warning for a failed `connect()` is untested.** A connect on the
+   session bus cannot be made to fail through the mock, so it is checked by
+   inspection only.
+7. **The target plan stands as written.**
