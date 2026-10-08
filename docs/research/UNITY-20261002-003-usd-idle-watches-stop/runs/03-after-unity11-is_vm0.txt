@@ -1,0 +1,22 @@
+cmdline: gnome.is_vm=0; SessionIsActive: b false; ac-type now: 'suspend' timeout: 0
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11 pid 2259 02:41:14
+plugin restarted under gdb at 02:41:30; after start: 1 forced
+watches state is printed at STOP; plugin off at 02:41:40
+input injected at 02:41:44 (idle reset after stop)
+25 s after the input: 02:42:09
+input injected again
+--- gdb events:
+STOP dim=0 blank=0 sleep=0 warn=0 user_active=0 mode=0 vm=0
+START
+FORCED cached SessionIsActive=1, is_virtual_machine=0
+IDLE-CB watch=14
+SET-MODE 3 (current 0)
+SET-MODE 2 (current 3)
+IDLE-CB watch=16
+SET-MODE 2 (current 3)
+IDLE-CB watch=17
+SET-MODE 3 (current 3)
+STOP dim=0 blank=16 sleep=17 warn=0 user_active=15 mode=3 vm=0
+START
+Thread 1 "unity-settings-" received signal SIGINT, Interrupt.
+callbacks after the last STOP: 0

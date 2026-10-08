@@ -1,0 +1,39 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11, cinnamon-session 6.4.2-1+unity4, cmdline gnome.is_vm=0
+=== -022 power-dbus-checks
+  u-s-d pid 2160 alive: yes
+  u-s-d (pid 2160) logind inhibitors: unity-settings- handle-lid-switch Multiple displays attached block;unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;unity-settings- sleep GNOME 
+  Get Percentage (.0305 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Get Icon (.0342 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Screen.GetPercentage (.0288 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  u-s-d pid 2160 alive: yes
+  u-s-d (pid 2160) logind inhibitors: unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;
+  u-s-d pid 2160 alive: yes
+=== -022 keyboard race
+  calls by result: {'UnknownMethod': 6161, 'not running': 21389, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 388}
+  u-s-d pid now: 2160 (was 2160); NRestarts 0
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 43018, 'not running': 23738}
+  u-s-d pid now: 2160 (was 2160); NRestarts 0
+  crash files: 0
+=== -012 power-regress
+== start: 0 session / 0 screensaver callbacks so far
+== 1 inhibitor: 2 session / 0 screensaver callbacks so far
+== 2 lock+unlock: 2 session / 0 screensaver callbacks so far
+== 3 plugin off + inhibitor: 2 session / 0 screensaver callbacks so far
+== 4 plugin on + inhibitor: 4 session / 0 screensaver callbacks so far
+=== -012 color-uaf
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11 pid 2160 tunables: 
+STOP-CALLED
+u-s-d pid 2160 alive: yes; journal since 03:19:52: 0
+=== -052 two-clients
+watch id 5 from :1.240
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11: pid 2160 -> 2160: SURVIVED
+=== -002 stop-before-bus (stop)
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11, mode stop, 03:21:00
+after start: owner (':1.242',)
+after plugin off/on: owner (':1.242',)
+Power Get Icon: (<''>,)
+Power Screen.GetPercentage: Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+START-RETURNED bus_cancellable=0x55555562f2a0
+STOP-CALLED bus_cancellable=0x55555562f2a0
+u-s-d back under systemd: owner (':1.249',)
+=== end: NRestarts=0 crash=0

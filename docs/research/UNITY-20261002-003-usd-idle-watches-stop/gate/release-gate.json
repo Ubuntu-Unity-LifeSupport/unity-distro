@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-003",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-003/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20261002-003",
+  "source_commit": "89648a32c3d24c0298b9e351cb50736731485873",
+  "source_tree_hash": "56d96c9b1ac47b01f01d1b8a4d5f2ebb8612a248",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261002-003-r2"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/build-gate/UNITY-20261002-003-unity-settings-daemon-build-manifest.json",
+    "sha256": "319782c9ae76b67d397362de44aedb97d930e1dcb0d20dd75799d01db8b3de62"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/gate/evidence-manifest.json",
+    "sha256": "ff6e1cef493046e044ac9449632560be49e01a0a96509b4b989c5e17aace8035"
+  },
+  "tested_build": {
+    "mode": "buildinfo_identical",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/runs/README.txt",
+        "sha256": "4ad7907e26d5ef63eafd6198da1b8dba15aa3e0af7270537ba0c376c54511bf0"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb": "8afcf5adee4c7ed203b90ac7a0c479c799a2445e8e2023d42c85b94265ee3117",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity11_all.deb": "5447a543cbc05e9bcbd336780bc9d87a1a902418f25bc9088c89b5e611b01e33",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb": "b4cba78fb62b24e56c36c6bb9a4a184fb73fc4bbeb25cbb7edda3092495458d3"
+      }
+    },
+    "tested_manifest": {
+      "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/build/UNITY-20261002-003-unity-settings-daemon-build-manifest.json",
+      "sha256": "b3e8674cc98f6ef2ae587734e374c9b3f49237032d8a66aa8baaba677e0a476d"
+    },
+    "tested_buildinfo": {
+      "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/build/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.buildinfo",
+      "sha256": "2bfb0ebddaf361db312eeed58b695b2ff69b86996cb548963c779648e7f972f3"
+    },
+    "gated_buildinfo": {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.buildinfo",
+      "sha256": "4aaffa92266d28565d4bc692ee74c985114a4e87681dde90afed1583e140fde9"
+    }
+  }
+}
