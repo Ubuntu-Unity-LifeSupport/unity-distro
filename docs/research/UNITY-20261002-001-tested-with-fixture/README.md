@@ -99,3 +99,20 @@ Verifier:
   - path comparison instead of sha: `test_tested_with_same_bytes_elsewhere`
     fails.
 - `build_sbuild.py` and `chroot_fixtures.py` are unchanged against `main`.
+
+## 8. Verification
+
+Independent Verifier (temporary subagent), on `bae658a`: **PASS**. It re-ran
+every check itself:
+- On `main`, in a scratch worktree, the frozen-clock run fails with `0 != 2`.
+- On the branch, both tests pass under the frozen clock. A probe confirmed
+  the freeze: fixtures 1.2 s apart have the same sha at both 1 and 2 days.
+- The full suite gives 299 passed, 1 skipped.
+- Both mutations fail as expected.
+- The diff touches only the test and this directory.
+
+Notes, none blocking:
+- `assertNotIn("--allow-old-chroot", chroot_args)` documents intent only,
+  because the test builds that list itself.
+- `tools/repro.py` also fixes owner and group, but `tools/frozen-test.py`
+  does not. This makes no difference within one run.
