@@ -100,8 +100,23 @@ Unity session:
 ## Verification
 
 - Target test before publication: PASS, record in `gate/target-test.txt`.
-- Independent verification: pending.
+- Independent verification: PASS (the Verifier reviewed the diff, the
+  build record and the runtime records; it did not reproduce on its own).
 - Check on the target after publication: pending.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20260927-053-20261008T222617Z`.
+  19 files, complete, equal to live; list sha256
+  `8cae4f17c159b30a28cc80df0c56b9685004d59cd1a97369752b115734441861`.
+- **Repository:** 4 records added to `unity-resolute` (the source, 2 .deb
+  and 1 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20260927-053`, which is the live
+  `unity-resolute-20261008-016` plus these 4 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
 
 ## Not changed / known limits
 
