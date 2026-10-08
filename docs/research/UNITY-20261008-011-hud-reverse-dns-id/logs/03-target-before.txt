@@ -1,0 +1,32 @@
+# UNITY-20261008-011 target2 BEFORE: Clean-2 restored and confirmed inside 2026-10-08 17:35:34Z (no ~/.dirty, ~/b011, ~/b001, unity-distro.sources, usage table; hud 0ubuntu6; NTP synced); key + unity-distro.sources, apt full-upgrade to the live unity-resolute-20260929-001 (hud +unity4, candidate = installed); cold cycle (poweroff 17:51:57Z, start_vm); target011.sh (first version: Writer looked up 12 s after start, too early - its lines are taken again after the run)
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+gnome-terminal	3.58.0-1ubuntu1
+hud	14.10+17.10.20170619-0ubuntu6+unity4
+libreoffice-writer	4:26.2.6.3-0ubuntu0.26.04.2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+window-stack-br pid 2147 sha256 47701985ff1cb260 deleted-non-tmp 0
+hud-service pid 3621 sha256 785979af07d6ffda deleted-non-tmp 0
+== 2 windows
+Terminal 58720262, Mines 56623108, Disks 60817415, Writer 
+  58720262: (58720262, 'org'
+  56623108: (56623108, 'org'
+  60817415: (60817415, 'org'
+Applications: (<[('10485800', objectpath '/com/canonical/hud/applications/10485800'), ('62914699', '/com/canonical/hud/applications/62914699'), ('org', '/com/canonical/hud/applications/org')]>,)
+== 3 legacy icons
+Terminal: ('Создать окно', [('<b>Создать окно</b> (Файл)', '', '', '', '', <uint64 7>), ('Создать вкладку (Файл)', '', '', '', '', <uint64 6>), ('Закрыть окно (Файл)', '', '', '', '', <uint64 12>)], <'/com/canonical/hud/query/1'>)
+X Error of failed request:  BadWindow (invalid Window parameter)
+  Major opcode of failed request:  3 (X_GetWindowAttributes)
+  Resource id in failed request:  0x0
+  Serial number of failed request:  23
+  Current serial number in output stream:  24
+/home/mike/b011/repro.sh: строка 25: $3: не заданы границы переменной
+/home/mike/b011/repro.sh: строка 26: $3: не заданы границы переменной
+Writer:   
+== 4 Всегда наверху x2 in Terminal
+usage rows (application, entry, count): [('org', 'Window actions||Всегда наверху', 1)]
+usage rows (application, entry, count): [('org', 'Window actions||Всегда наверху', 2)]
+== 5 Disks empty HUD
+empty query, 6 rows, first: Всегда наверху Window actions | Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions
+(<[('10485800', objectpath '/com/canonical/hud/applications/10485800'), ('libreoffice-writer', '/com/canonical/hud/applications/libreoffice_2dwriter'), ('org', '/com/canonical/hud/applications/org')]>,)
+Writer: ('Сохранить', [('<b>Сохранить</b> (Файл)', 'libreoffice-writer', '', '', '', <uint64 30>), ('<b>Сохранить</b> как шаблон… (Файл, Шаблоны)', 'libreoffice-writer', '', '', '', <uint64 26>), ('<b>Сохрани

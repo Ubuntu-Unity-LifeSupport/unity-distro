@@ -10,7 +10,7 @@ task_id: UNITY-20261008-011 (+ UNITY-20261008-014)
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: IMPLEMENTING (stopped 2026-10-08 ~13:15Z, resume point below)
+status: TARGET_VERIFIED (2026-10-08), independent verification next
 source_version: 14.10+17.10.20170619-0ubuntu6+unity4 (published 2026-10-08)
 observed: >
   window-stack-bridge gives every application whose desktop file has a
@@ -406,7 +406,7 @@ implementation:
 3. **The control:** exactly the six D-Bus tests listed above fail on
    +unity4. Its output goes into the card next to the table.
 
-## Implementation (2026-10-08, in progress)
+## Implementation (2026-10-08)
 
 hud source `Ubuntu-Unity-LifeSupport/hud`, branch `b/UNITY-20261008-011`
 (pushed), on the published +unity4 (`b0c2444`):
@@ -445,3 +445,32 @@ restart):
    the guest. It was powered off dirty at 13:06:31Z (live publication +
    hud +unity4 + the reproduction session).
 4. Then the target plan above.
+
+**Builds after the restart** (`build_sbuild.py`, chroot 20261008T083223Z; logs/04):
+
+- +unity5 (`db26b0d`): 6 of 6 suites. window-stack-bridge has 33 tests, service 46.
+- control (`d5a32c2`): the window-stack-bridge suite fails exactly the six predicted tests (`ReverseDnsDesktopFileGivesFullId`, `MultiDotDesktopFileGivesFullId`, `DesktopFileWithoutSuffixKeepsName`, `DesktopFileNamedOnlySuffixGivesWindowNumber`, `WindowMovedToReverseDnsApplication`, `UnknownPathsLeaveNoEntries`). 26 pass, among them both -014 tests and `SubdirectoryDesktopFileGivesBaseName`; the service suite passes, its new test included.
+
+## Target check (target2, 2026-10-08, logs/03, logs/05)
+
+**Setup:**
+1. Clean-2 restored, checked from inside the guest (17:35Z): no `~/.dirty`, no work directories, none of our sources, no usage table, hud 0ubuntu6.
+2. The live publication `unity-resolute-20260929-001` (hud +unity4) by the usual path, no drop-ins; cold cycle.
+3. **Before** on +unity4 (`target011.sh`, logs/03).
+4. hud +unity5 from a file repository, by `apt full-upgrade`. It also took `unity-settings-daemon` +unity12 from the live repository: A's UNITY-20261002-012 was published in between (the automount helper, not hud).
+5. Cold cycle, then **after** with the same script (logs/05).
+6. Both bridge and hud-service run from the installed binaries; no "(deleted)" mappings other than hud-service's `/tmp/#…` files.
+
+| step | +unity4 (before) | +unity5 (after) |
+|---|---|---|
+| stack ids: Terminal, Mines, Disks | `org`, `org`, `org` | `org.gnome.Terminal`, `org.gnome.Mines`, `org.gnome.DiskUtility` |
+| hud-service `Applications` | one `org` | one per application: `…/org_2egnome_2eTerminal`, `…/org_2egnome_2eMines`, `…/org_2egnome_2eDiskUtility` |
+| legacy StartQuery icon, Terminal "Создать окно" | `''` | `org.gnome.Terminal` (the `Icon=` of its desktop file) |
+| legacy StartQuery icon, Writer "Сохранить" (control) | `libreoffice-writer` | `libreoffice-writer` |
+| Terminal "Создать окно" results | Создать окно, Создать вкладку, Закрыть окно (Файл) | the same |
+| "Всегда наверху" twice in Terminal: usage row | `('org', …, 2)` | `('org.gnome.Terminal', …, 2)`; the before run's `('org', …, 2)` is still in the table |
+| Disks' empty HUD after that | "Всегда наверху" first | default order ("Всегда наверху" fifth): the leftover `org` row has no effect |
+| Writer, 10 starts (the UNITY-20260929-001 move) | (-001 logs/06) | `libreoffice-writer` 10 of 10. Six starts took the move (Created/Focused/Destroyed of the window number), four got the final id at once |
+| window-stack-bridge SIGKILL | | restarted by systemd; the new process gives the same four ids |
+
+**Not done:** the Unity HUD screenshot (optional in the design). By the code, the HUD icon follows the selected result's icon, which is now `org.gnome.Terminal`.
