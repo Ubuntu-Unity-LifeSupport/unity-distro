@@ -137,6 +137,56 @@ WindowCreated / Start / Changed order) are saved but **not analysed yet**.
 Next step on resume: compare the order in boot 6 against boots 1-5, then
 boots 7-10.
 
+### Round 2, analysed (2026-10-08; `round2.py`, `hudsub.py`)
+
+The captures record method calls and signals of `org.gtk.Menus`, the
+window stack and `com.canonical.hud`, but no method returns, so the
+unique bus name of hud-service is not known from them.
+
+- In all 6 boots the window stack gives the Writer window the window
+  number as application id (the UNITY-20260927-029 fallback), the failing
+  boot 6 included. It does not tell boot 6 apart.
+- Two clients subscribe to LibreOffice's menubar after WindowCreated, each
+  with 82 `org.gtk.Menus` Start calls (the menubar and every submenu
+  group); one of them is hud-service, the other INFERENCE the panel's
+  appmenu. LibreOffice's first `Changed` comes 1.4-3.5 s after the first
+  Start.
+- **Boots 1-5:** both walks end 5.0-6.7 s before the HUD query.
+- **Boot 6 (empty first answer):** both walks were still running at the
+  query; their last Start calls are 2.65 and 2.87 s after it, and the walk
+  took about 15 s instead of about 5. The second query a few seconds later
+  answered (4 hits).
+
+So in boot 6 the query reached hud-service while it was still importing
+the menu; the answer is a snapshot of what had arrived. The code says the
+open query should then fill in by itself: `QueryImpl::refresh` calls
+`Window::activate` each time, which builds new tokens and a new index from
+the current `QMenu` (`GMenuCollector::activate`, `QtGMenuModel::GetQMenu`),
+and a token's `changed()` (from `items-changed`) calls `refresh`
+(`QueryImpl.cpp:190-205`). Whether it does, and what a user sees in the HUD
+during the import, is not measured: menutrace read only the reply of
+`StartQuery`.
+
+Next, round 3: record the unique names of hud-service and
+unity-panel-service; query the HUD as soon as the Writer window is
+visible (to land inside the import on purpose), keep that query open and
+read its results again at +1, +2, +5 and +10 s (changing the query text
+through `UpdateQuery` and back), and log hud-service's walk with the times.
+
+Two facts found while preparing round 3 (2026-10-08):
+
+- hud-service is D-Bus activated by compiz about one minute after the
+  session starts (the user journal of the 11 earlier boots: "Activating
+  via systemd: service name='com.canonical.hud' ... comm=/usr/bin/compiz"),
+  so it runs before Writer is started. In the session restored from a
+  saved state on 2026-10-08 it had not been started at all until the first
+  query activated it; that first query (legacy `StartQuery`, 4.3 s while
+  the service came up) returned 0 suggestions.
+- target2 for round 3 is not the round 1-2 state: UNITY-20261008-001
+  installed the GTK4/GTK3 applications of its audit, dev packages, gdb and
+  dotnet-sdk-10.0, and unattended-upgrades updated archive packages
+  (LibreOffice among them) on 2026-10-08.
+
 HYPOTHESIS A, original wording, kept for the record: on the first Writer start after a boot the window
 is mapped, and bamf announces it, before LibreOffice attaches the menubar;
 hud-service subscribes to a model with no items, indexes nothing, and the
