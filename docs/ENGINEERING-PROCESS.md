@@ -607,8 +607,12 @@ caused it.
      `~/backups/<task>-<UTC stamp>/` (mode 0700), with a shared flock held
      on `db/LOCK` for the copy and the comparison. Next to the copy it
      writes `db.sha256` and `backup.json`.
-   - **When it refuses** (exit 2, nothing created): the lock is busy, a
-     repository tool process is running, or the target exists.
+   - **When it refuses** (exit 2, nothing created):
+     - `db/` or `db/LOCK` is missing;
+     - the lock is busy;
+     - a repository tool process is running;
+     - the target exists, lies inside the live root, or cannot be
+       created.
    - **Exit codes.** 0 means a complete copy equal to the live db. 1 means
      the copy failed or differs; it is left in place for inspection, and
      you must not go on. 2 is a refusal.

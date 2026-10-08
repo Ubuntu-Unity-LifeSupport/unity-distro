@@ -71,6 +71,9 @@ class BackupDbTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn(str(dst), result.stdout)
         self.assertEqual(dst.stat().st_mode & 0o777, 0o700)
+        for name in ("db.sha256", "backup.json"):  # written under umask 077
+            self.assertEqual((dst / name).stat().st_mode & 0o777, 0o600, name)
+        self.assertEqual(dst.parent.stat().st_mode & 0o777, 0o700)  # a parent the script created
         lines = (dst / "db.sha256").read_text().splitlines()
         names = [line.split("  ", 1)[1] for line in lines]
         self.assertEqual(names, sorted(f"db/{p.name}" for p in (self.live / "db").iterdir()))
@@ -171,6 +174,14 @@ open({str(done)!r}, 'w').close()
         link = self.dst("link")
         link.symlink_to(self.t / "nowhere")
         self.assert_refused(self.run_script(str(link)), "exists")
+
+    def test_backup_dir_not_creatable_refused(self):
+        blocker = self.t / "file"
+        blocker.write_text("x")
+        result = self.run_script(str(blocker / "bk"))
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("cannot create", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
 
     def test_backup_dir_inside_live_refused(self):
         self.assert_refused(self.run_script(str(self.live / "copy")), "inside the live", self.live / "copy")

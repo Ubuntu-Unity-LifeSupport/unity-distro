@@ -77,7 +77,10 @@ def main(argv=None):
             return refuse("a repository tool process is running")
 
         os.umask(0o077)
-        dst.mkdir(parents=True, mode=0o700)
+        try:
+            dst.mkdir(parents=True, mode=0o700)
+        except OSError as exc:
+            return refuse(f"cannot create {dst}: {exc}")
         copied = subprocess.run(["cp", "-a", str(live / "db"), str(dst / "db")], capture_output=True, text=True)
         complete = copied.returncode == 0 and (dst / "db").is_dir()
         copy = listing(dst) if (dst / "db").is_dir() else {}
