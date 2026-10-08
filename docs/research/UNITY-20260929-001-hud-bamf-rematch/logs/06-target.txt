@@ -112,3 +112,8 @@ stack: (62914596, 'libreoffice-writer', true
 after 10 s: bamfdaemon 8512, bridge 8281
 writer start 1: window 62914596; stack: (62914596, 'libreoffice-writer', true
    bridge: WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) 
+
+## the tested .deb (read on target2 2026-10-08 ~11:00Z, nothing changed there)
+installed: hud 14.10+17.10.20170619-0ubuntu6+unity4, dpkg -V hud clean
+hud_14.10+17.10.20170619-0ubuntu6+unity4_amd64.deb sha256 b936d26dcc84de41cc617edbec3ed506265a3de8a2a9a673236b2af37319cf5c (~/b001/repo, the file repository apt installed it from; equal to build/ and the manifest)
+apt history after the +unity4 install: 13:13:37 local apt-get -y full-upgrade: Upgrade hud (+unity3 -> +unity4) only; 13:53:56 local unattended-upgrade: Remove of the old 7.0.0-14 kernel packages (not hud, after the measurements)
