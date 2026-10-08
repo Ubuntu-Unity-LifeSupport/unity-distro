@@ -1,0 +1,37 @@
+UNITY-20261008-016 (slot 3 of UNITY-20261002-012): target test of light-locker 1.8.0-3ubuntu4+unity3
+
+Target: target-desktop. Base: the published stack of 2026-10-08, restored (confirmed inside the guest),
+plus unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity12, unity 7.7.1+26.04.20260306-0ubuntu3+unity13
+(the unity debs used are byte-identical to UNITY-20261008-015's gated build) and the light-locker deb below.
+Installed with apt from files, then a cold boot (power off, power on). No other tools were installed.
+
+Installed light-locker deb (sha256 equal to build-ll/ and the build manifest):
+  fee605bbfbc7322879e78f1172dae982493ebb122172eba42b9454a47ff8c9b1  light-locker_1.8.0-3ubuntu4+unity3_amd64.deb
+sha256 of /usr/bin/light-locker on the target =
+  45474e34afdd767465ef8041a5fdf0ace6610a0b9b46bd4a0077c97061357b9e = the file in the built deb.
+
+light-locker owns org.gnome.ScreenSaver and org.freedesktop.ScreenSaver in both runs.
+
+Run 1:
+  Lock requested through logind: light-locker locks.
+    5 samples: GetActive (light-locker) true, logind LockedHint "yes".
+    ActiveChanged(true) x1 and SetLockedHint(true) x1, both from light-locker's process.
+  The screen woken up under the lock (light-locker shows its unlock prompt):
+    5 samples: GetActive true, LockedHint "yes"; no ActiveChanged(false).
+  The run ended with a power-off; it had no unlock.
+
+Run 2 (the unlock path):
+  Lock as in run 1, with the same samples and signals: true/"yes", ActiveChanged(true) x1,
+  SetLockedHint(true) x1. The screen woken up under the lock: still true/"yes".
+  A medium (an ISO image in the optical drive) was inserted under the lock: not mounted.
+  The user unlocked by logging in again at light-locker's prompt; the tester typed nothing.
+    5 samples: session active, GetActive false, LockedHint "no".
+    ActiveChanged(false) x1 and SetLockedHint(false) x1 from light-locker's process.
+  Only the automount helper process of unity-settings-daemon was then restarted: its start-up pass
+  mounted the medium, so the hint does not stay "yes" after the unlock.
+  Also captured: right after the login, Unity briefly held its own lock (about 1.6 s) and released it.
+  The end state was false/"no" everywhere. This is listed under UNITY-20261008-006.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build; a build of the same commit made before
+the tests is byte-identical).

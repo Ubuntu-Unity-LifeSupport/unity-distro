@@ -1,6 +1,21 @@
-# UNITY-20261002-012: the automount helper mounts only in an unlocked session
+# UNITY-20261002-012: screen lockers report the lock state
 
-Agent A, target `target-desktop`.
+Agent A, target `target-desktop`. Published in three steps: UNITY-20261002-012
+(unity-settings-daemon), UNITY-20261008-015 (unity), UNITY-20261008-016
+(light-locker).
+
+## Before this fix
+
+On Ubuntu Unity 26.04 the screen locker answers `org.gnome.ScreenSaver` and
+`org.freedesktop.ScreenSaver` for the session. Programs ask it whether the
+session is locked: the automount helper of unity-settings-daemon, and
+anything that calls `GetActive` or listens to `ActiveChanged`. The answer did
+not follow the lock:
+
+- `GetActive` and `ActiveChanged` reported only whether the screen was
+  blanked;
+- neither locker told logind about its lock, so the session's `LockedHint`
+  stayed "no" while the session was locked.
 
 ## What is fixed
 
@@ -126,7 +141,50 @@ Target record: `gate-015/target-test.txt`.
   locker's hint.
 - Verifier: PASS, review status REVIEWED.
 
+## Slot 3: light-locker +unity3 (UNITY-20261008-016)
+
+| package | version | change |
+|---|---|---|
+| light-locker | 1.8.0-3ubuntu4+unity3 | `debian/patches/0005`. `GetActive` and `GetActiveTime` answer "blanked or locked", and `ActiveChanged` is sent once per change of that value, so a screen that wakes up under the lock no longer reports "not active". The lock is reported to logind with `SetLockedHint`, and the hint is cleared once at start. |
+
+**Build.** Built with `scripts/build_sbuild.py` from the light-locker package
+branch `a/UNITY-20261002-012` at 07367c0 (patches 0001-0005), in chroot
+snapshot T=20261008T083223Z. The orig tarball was regenerated from
+pristine-tar; its checksums equal the archive's
+`light-locker_1.8.0.orig.tar.bz2`. The manifest is in `build-ll/`. A build
+of the same commit made earlier for the target tests is byte-identical to
+this one (same deb sha256), so the tested debs are this build.
+
+**Checks (properties measured on the target).** The target is the published
+stack plus unity-settings-daemon +unity12, unity +unity13 and light-locker
++unity3. light-locker owns both ScreenSaver names.
+
+- **While locked:** `GetActive` is true and `LockedHint` is "yes", with one
+  `ActiveChanged(true)` and one `SetLockedHint(true)`, both from light-locker.
+- **When the screen wakes under the lock:** both stay true and "yes", and
+  no `ActiveChanged(false)` arrives.
+- **A medium inserted under the lock** is not mounted.
+- **After the user logs in again to unlock:**
+  - `GetActive` is false and `LockedHint` is "no", with one
+    `ActiveChanged(false)` and one `SetLockedHint(false)` from light-locker;
+  - when the automount helper is restarted, its start-up pass mounts the
+    medium, so the hint does not stay "yes".
+
+Target record: `gate-016/target-test.txt`.
+
+**Verification.**
+- Design and code review: APPROVE, no required changes.
+- Verifier: PASS, review status REVIEWED. It checked the code against the
+  design, the build provenance (orig tarball equal to the archive), and both
+  target runs.
+
 ## Not changed / known limits
+
+- In a session where both lockers are installed, light-locker starts first
+  and owns both ScreenSaver names, so it is the locker. Which locker the
+  Unity session keeps is UNITY-20261008-006. Right after a login, Unity
+  briefly took its own lock (about 1.6 s) and released it, and the end
+  state was "unlocked" everywhere. That too belongs to UNITY-20261008-006.
 
 - Under cinnamon-session the automount helper does not mount on hotplug at
   all, because `org.gnome.SessionManager` has no `SessionIsActive`
