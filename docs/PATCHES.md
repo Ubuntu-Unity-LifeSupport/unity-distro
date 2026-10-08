@@ -243,7 +243,7 @@ unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity11, 2026-10-08 (UNITY
 | unity-settings-daemon | `debian/unity-settings-daemon-schemas.gsettings-override` (+unity11, `cc675a5`, UNITY-20261002-011) | `sleep-inactive-ac-timeout=0` for `com.canonical.unity.settings-daemon.plugins.power`: a desktop on mains power does not suspend after 20 minutes of idle time once the idle policy runs, as Ubuntu does for `org.gnome.settings-daemon` (`10_ubuntu-settings`). Battery timeouts and idle dimming keep the schema defaults. On target: effective value 0, 27 minutes of idle on AC without a suspend. | none (distribution default) | [`research/UNITY-20261002-003-usd-idle-watches-stop/`](research/UNITY-20261002-003-usd-idle-watches-stop/) | local, at the publication gate |
 
 
-hud 14.10+17.10.20170619-0ubuntu6+unity4, 2026-10-08 (UNITY-20260929-001; the hud rows above are left as written). Source commit b0c2444 on Ubuntu-Unity-LifeSupport/hud branch `b/UNITY-20260929-001` (551a798 + cc0a279 + b0c2444 on the published +unity3 9e7c093), non-native 1.0. Verification: independent Verifier PASS (VERIFIED). Not yet published.
+hud 14.10+17.10.20170619-0ubuntu6+unity4, 2026-10-08 (UNITY-20260929-001; the hud rows above are left as written). Source commit b0c2444 on Ubuntu-Unity-LifeSupport/hud branch `b/UNITY-20260929-001` (551a798 + cc0a279 + b0c2444 on the published +unity3 9e7c093), non-native 1.0. Verification: independent Verifier PASS (REVIEWED). Not yet published.
 
 | Package | Patch / change | What it does | Upstream | Where | Status |
 |---|---|---|---|---|---|
