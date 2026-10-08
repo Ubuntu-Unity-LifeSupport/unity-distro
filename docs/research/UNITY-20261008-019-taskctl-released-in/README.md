@@ -249,3 +249,30 @@ revised design below:
   - BLOCKED → PUBLISHED with the task's own record;
   - READY_TO_PUBLISH → PUBLISHED;
   - the existing `published_by` and live-snapshot tests.
+
+### Design review, round 2: APPROVE
+
+Checked against the publish records and the hud clone of -011's gate.
+
+- **-014 is not blocked by the earlier-record check.** The earlier hud records are +unity2 `ef39a8d`, +unity3 `9e7c093` and +unity4 `b0c2444`. All three are commits in that clone and ancestors of `db26b0d`, and `1fc54e1` is an ancestor of none of them.
+- **The tree and gate pins hold.** `db26b0d^{tree}` equals `gate.source_tree_hash`, and the gate sha256 equals the record's.
+- **The other packages' latest gates have their earlier source commits present** (unity, unity-settings-daemon; light-locker has no earlier record).
+- **The known limit:** versions published before publish records existed (hud +unity1) are never checked. Rule R says so.
+
+Implementation details taken into the design:
+
+1. **A test:** REVIEW → PUBLISHED with `published_by` (and no `released_in`) is refused until C decides otherwise.
+2. **Two git exit codes:** `git merge-base --is-ancestor` exits 1 for "not an ancestor" and 128 for an unknown object. Every id is first resolved with `git rev-parse --verify <id>^{commit}`, and any exit code other than 0 or 1 refuses. A test covers an earlier record whose source commit is unknown.
+3. **Earlier records fail closed:**
+   - only files named exactly `UNITY-YYYYMMDD-NNN.json` are read, and the releasing record is skipped by its `task_id`;
+   - a record that cannot be read, is not JSON or has a bad `published_at` refuses the transition;
+   - `published_at` is compared as a parsed UTC datetime;
+   - a test covers an unreadable record of the same package.
+4. **The harness:**
+   - the copy is imported with `importlib.util.spec_from_file_location` under its own name, not as `taskctl`;
+   - it sits at `<tmp>/scripts/taskctl.py`, so that `parents[1]` is the temporary repository;
+   - `check_released_in` does not import `tested_build` (which imports `build_dependencies` at load time);
+   - `sys.argv` is patched and stderr captured.
+5. **-014's evidence before its transition:**
+   - `released_in.change_commits` = [`1fc54e15eedd51e04e26cac549d29487dd650008`];
+   - `release_gate` exactly `record.gate_file`, or removed.
