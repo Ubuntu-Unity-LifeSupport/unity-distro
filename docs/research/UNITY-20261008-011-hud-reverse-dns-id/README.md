@@ -386,3 +386,22 @@ control table, with these changes:
    session bus cannot be made to fail through the mock, so it is checked by
    inspection only.
 7. **The target plan stands as written.**
+
+### Design review, round 3: APPROVE
+
+The round-2 points are applied as asked; the Design Challenger checked
+`20a007e..f3bdf2a` against the +unity4 code and tests. Remarks for the
+implementation:
+
+1. **The unknown active path:** `createMatcherMethods` also lists it in
+   `WindowPaths`. Construction tries to add it, fails at `GetXid`, and
+   does not insert it (as in `HandlesMissingWindow`), with a warning, so the
+   constructor sits inside the file's "EXPECTED ERROR" lines. The map sizes
+   are taken after construction. `GetWindowStack` may be called directly,
+   because it never sends an error reply.
+2. **Empty desktop file to window number:** on +unity4 this is covered by
+   `HandlesWindowWhoseApplicationIsGone` and by the move tests using
+   `createApplication(2, false)`. The only helper-only case is
+   `Foo.DESKTOP`.
+3. **The control:** exactly the six D-Bus tests listed above fail on
+   +unity4. Its output goes into the card next to the table.
