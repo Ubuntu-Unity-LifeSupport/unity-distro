@@ -525,3 +525,15 @@ Remarks:
 | The Unity HUD's on-screen icon after the fix is not seen. | by the code it follows the selected result's icon, which the legacy StartQuery now gives as `org.gnome.Terminal` (logs/05) |
 | Old usage rows under the cut ids (`org`, `io`, `python3`) stay until hud's 30-day expiry. | harmless (logs/05: no effect in Disks' empty HUD) |
 | The `org.ayatana.bamf` owner warning of the first bridge instance (remark 7) is not explained. | seen once, not again after the restart; follow-up UNITY-20261008-018 |
+
+## Publication (2026-10-08)
+
+The slot came from C. The release covers UNITY-20261008-011, and UNITY-20261008-014 is part of the same revision.
+
+- **Gated build:** `build/` (hud `db26b0d`, chroot 20261008T083223Z). It is the build tested on target2, so `tested_build` is this_build. The hud .deb installed there is this build's (sha256 `65ca0c56…`, logs/05).
+- **Database backup:** `~/backups/UNITY-20261008-011-20261008T184250Z` (18 files, equal to live), list_sha256 `7ec54728655c48515c76d75e5eed627f73a9cccfdb4edd71b462167f230df0bc`.
+- **repo add** of the manifest's artifacts to unity-resolute, at 18:43Z: 20 records (source, 14 .deb, 5 .ddeb), 444 → 464. Each pool file's sha256 equals the manifest's (22 of 22).
+- **Snapshot:** `unity-resolute-20261008-011`. `snapshot diff` against the live `unity-resolute-20261002-012-usd` shows only these 20 records added (gate/snapshot-diff.txt). The live snapshot is taken from the latest publish record and the Release Date of the published files.
+- **Version safety:** SAFE (gate/version-check.json, gate/version-safety.txt, at 18:43:49Z). The pre-build ordering check is in gate/prebuild-version-safety.txt.
+- **Patch record:** docs/PATCHES.md.
+- **Peer notice:** A ACK (gate/peer-notice.txt).

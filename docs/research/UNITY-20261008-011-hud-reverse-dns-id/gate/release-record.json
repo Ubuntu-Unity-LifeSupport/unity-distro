@@ -1,0 +1,29 @@
+{
+ "task_id": "UNITY-20261008-011",
+ "package": "hud",
+ "target_series": "resolute",
+ "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity5",
+ "source_commit": "db26b0d82d5273990b094738b4dc836f35d08065",
+ "source_provenance": "PUSHED",
+ "source_remote_ref": "origin/b/UNITY-20261008-011",
+ "version_safety": "SAFE",
+ "version_check": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/gate/version-check.json",
+ "verification_result": "PASS",
+ "verification_scope": "",
+ "verification_reason": "",
+ "peer_notice": "ACK",
+ "patch_and_decision_docs": true,
+ "decision_required": false,
+ "target_test": {
+  "record": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/logs/05-target-after.txt",
+  "debs": {
+   "hud_14.10+17.10.20170619-0ubuntu6+unity5_amd64.deb": "65ca0c56a162c9f6d05200adb51e06f2eaae095c23a2c3ff435c28167b4d0045"
+  }
+ },
+ "tested_build": "this_build",
+ "evidence": {
+  "evidence_card": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/README.md",
+  "verification_record": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/README.md",
+  "patch_record": "docs/PATCHES.md"
+ }
+}

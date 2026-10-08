@@ -51,3 +51,7 @@ writer start 10: window 69206052; stack: (69206052, 'libreoffice-writer', true
 == bridge-restart
 window-stack-bridge: old pid 2126, now 6902 (active)
 (58720260, 'org.gnome.Mines', false (60817414, 'org.gnome.Terminal', false (65011719, 'org.gnome.DiskUtility', false (69206052, 'libreoffice-writer', true 
+
+## the tested .deb (read on target2 2026-10-08 ~18:45Z, nothing changed there)
+installed: hud 14.10+17.10.20170619-0ubuntu6+unity5 (apt: installed = candidate, from file:/home/mike/b011/repo), dpkg -V hud clean
+hud_14.10+17.10.20170619-0ubuntu6+unity5_amd64.deb sha256 65ca0c56a162c9f6d05200adb51e06f2eaae095c23a2c3ff435c28167b4d0045 (~/b011/repo, equal to build/ and the manifest)
