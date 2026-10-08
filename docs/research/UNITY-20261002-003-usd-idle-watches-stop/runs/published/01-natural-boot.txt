@@ -1,0 +1,9 @@
+after publication, natural boot 2026-10-08T03:14:33Z: uptime  06:14:33 up 2 min
+ versions: cinnamon-session 6.4.2-1+unity3;libunity-settings-daemon1 15.04.1+21.10.20220802-0ubuntu7+unity11;unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity11;unity-settings-daemon-schemas 15.04.1+21.10.20220802-0ubuntu7+unity11;
+ cmdline gnome.is_vm: absent
+ u-s-d pid 2306 replaced maps: 0
+ Power owner: (':1.56',)
+ NRestarts: 0
+ crash files: 0
+ dpkg -V: clean
+ sleep-inactive-ac-timeout: 0, battery: 1200
