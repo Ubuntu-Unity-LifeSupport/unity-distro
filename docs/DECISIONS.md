@@ -2063,3 +2063,17 @@ Open: one `test-eds-ics-all-day-events` failure in the superseded control build 
 **Measured limit of the demonstration.** The stop requested through the GSettings key is dispatched by the main loop only after the queued `g_bus_get` result, on +unity9 and +unity10 alike (3 boots each): the key path cannot reach the defect, so the deterministic test is the gdb one. What stopped the plugin in the natural case is not identified (UNITY-20261002-009). The same gap exists in the housekeeping plugin (UNITY-20261002-006).
 
 **Harness lessons.** Writes of the key during the plugin-start phase are read as the final value when the loop resumes (a quick off/on stops nothing). bpftrace's file output is flushed on exit, not per line. uprobes put `int3` into the library's code, and a program under valgrind executes them as breakpoints: stop the tracer before a valgrind run.
+
+
+## 2026-10-08 - UNITY-20261002-003 / -011: the power plugin's idle watches end with stop(); no suspend on AC by default (agent A; decisions by May and C)
+
+**Idle watches.** u-s-d +unity11 removes every idle watch, the user-active watch, the temporary-unidle timer and the sleep-warning notification in `stop()` and in `finalize`, and keeps the user-active watch's id so it is added once (Design Challenger APPROVE with conditions G4a/G4b). It ships before the session-manager change of UNITY-20260927-053, which makes the idle path reachable under cinnamon-session for the first time.
+
+**No suspend on AC (May's decision).** Once the idle policy runs, the Unity power schema's default would suspend a machine on mains power after 20 minutes of idle time (`sleep-inactive-ac-timeout=1200`, type `suspend`). Ubuntu disables this for `org.gnome.settings-daemon` (`10_ubuntu-settings`). We do the same for `com.canonical.unity.settings-daemon.plugins.power`. Battery timeouts and idle dimming stay at the defaults; dimming happens only on battery by code.
+
+**Where.** It ships as a gsettings override in `unity-settings-daemon-schemas` (UNITY-20261002-011). The task was opened for unity-session; C moved it on the Design Challenger's recommendation. Reasons:
+- the override sits in the schema's own package;
+- `dh_installgsettings` installs it at priority 10, with no conflicting key in `10_ubuntu-settings`;
+- it arrives in the same publication as -003, so there is no window with the idle policy live and without the override.
+
+**Test bench.** u-s-d does no idle transition on a virtual machine. Our idle tests therefore run with `gnome.is_vm=0` on the kernel command line, recorded as a changed test condition and removed afterwards. The gate's target test is a boot in the users' environment.
