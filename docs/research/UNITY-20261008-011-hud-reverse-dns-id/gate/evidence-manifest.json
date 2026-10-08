@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-011",
+  "package": "hud",
+  "source_commit": "db26b0d82d5273990b094738b4dc836f35d08065",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/README.md",
+      "sha256": "94027d8e70d600c6b53eb4cb385fc456951ba3c79fda0c97e8ffd4c37154d882"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/README.md",
+      "sha256": "94027d8e70d600c6b53eb4cb385fc456951ba3c79fda0c97e8ffd4c37154d882"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "c83f4af633981524611cfb392444055af26cbcb783c36e10004861ba47489df9"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/gate/release-record.json",
+      "sha256": "fb2ae2f5ce05f0fd0ac7ce9d1b20f4a0f7369be13dd5f3191c6c85668b68e1c9"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/gate/version-check.json",
+      "sha256": "e87cbc4f98087e9e02583ac58b1aad3860324015f784a8a329ddecd56389dbbc"
+    }
+  }
+}
