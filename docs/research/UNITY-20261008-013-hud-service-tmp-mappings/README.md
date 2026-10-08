@@ -238,7 +238,8 @@ advice values with `|`, which is not valid (it ends up as
   `unique_ptr` cleans up.
 - **`Trie::~Trie()`** is `delete p`.
 - **`expand()`:**
-  1. `newSize` (1024, or twice `mapSize`);
+  1. `newSize` (1024 when `mapSize` is 0, or twice `mapSize`; above
+     `UINT32_MAX / 2` it throws "Trie too large" first, round 2);
   2. `ftruncate(newSize)` (throws on failure, with the old map unchanged);
   3. `mmap` into a local variable; on `MAP_FAILED` it throws, with the old
      map, `h` and `mapSize` unchanged;
@@ -282,3 +283,29 @@ from a file repository, a cold cycle; before and after):
     screenshot).
 - **Both processes** have no "(deleted)" libcolumbus mapping after the
   cold cycle.
+
+### Design review, round 2: REVISE (one point, taken)
+
+The Design Challenger checked the two questions:
+
+- **A later `expand()` after a failed `mmap` is correct.**
+  - The file stays at the new size while the map, `h`, `mapSize` and the
+    header keep the old one.
+  - `append()` keeps calling `expand()` with a correct bound, the next
+    `ftruncate` to the same size does nothing, and the `mmap` is retried.
+  - Pages of the file beyond the mapping are just not mapped.
+- **"Throw with everything unchanged" is safe for the callers.**
+  - `append` moves `firstFree` only after `expand()` returns.
+  - A failed `addNewNode` or `addNewSibling` leaves only an orphaned node;
+    links are written after both appends.
+  - A failed `insertWord` leaves prefix nodes without a word (they are not
+    found), and `numWords` is unchanged.
+  - The callers (`LevenshteinIndex::insertWord`, `WordStore::getID`)
+    update their own state only after the insert returns.
+
+The one point: `TrieOffset` is `uint32_t`. Above 2 GiB, `2 * mapSize`
+wraps to 0. The old order (unmap first) then failed cleanly. The new order
+would truncate the file to 0 under the live mapping, and the next access
+would raise SIGBUS. Taken into the design: before `ftruncate`, `expand()`
+throws `runtime_error("Trie too large")` if `mapSize > UINT32_MAX / 2`. Our
+users never get near that size.
