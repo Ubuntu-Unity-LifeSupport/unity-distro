@@ -1,0 +1,4 @@
+released_in_record: ok, releasing task UNITY-20261008-011 state DONE record sha256 b1e741c95e32d20d
+gate docs/research/UNITY-20261008-011-hud-reverse-dns-id/gate/release-gate.json sha256 equal: True verification_result PASS
+check_released_commits: ok (1fc54e1 in db26b0d82d52 and in no earlier hud publication)
+refused as expected: released_in: change commit b0c2444561557bb91d4b045bac73f1b6b5f0f6f4 was already in an earlier publication of hud (b0c2444561557bb91d4b045bac73f1b6b5f0f6f4)
