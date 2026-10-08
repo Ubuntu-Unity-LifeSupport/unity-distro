@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-013",
+  "package": "libcolumbus",
+  "source_commit": "3da4d89457f3528b1bf75324d5fda35faf8cb1de",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/README.md",
+      "sha256": "af40334125090382241711f9207388d4d6e7accfb783894f81b9ad48c4fef5f6"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/README.md",
+      "sha256": "af40334125090382241711f9207388d4d6e7accfb783894f81b9ad48c4fef5f6"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "1efb15a314f6b1b9b05e83f0a90a9d95afedb73d6d985a81fd5ad19c50ea91d2"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/gate/release-record.json",
+      "sha256": "cf4f01ace9a8a98e550de88c1ecc8b6ac69062396899a2ca4eafdda4d5418a49"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/gate/version-check.json",
+      "sha256": "3485a2536b21290451986484b9282d5b04d2e71ff1d6be6603da65e0d3a948ad"
+    }
+  }
+}
