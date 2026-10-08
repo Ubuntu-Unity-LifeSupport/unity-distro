@@ -23,10 +23,10 @@ same version but other bytes than the manifest's, creates a snapshot, and
 runs today's checks on it (`runs/01-repro-main.txt`):
 
 ```text
-manifest demo-bin sha256 54730666071a | in repository 440fa49a8ae9
+manifest demo-bin sha256 79b833507585 | in repository b958c3dc2fed
 name check: pass | source check: pass
-snapshot demo-bin SHA256 field: ['440fa49a8ae9'] | equals manifest: False
-RESULT: ACCEPTED by today's checks
+snapshot demo-bin SHA256 field: ['b958c3dc2fed'] | equals manifest: False
+RESULT (checks of main c672ce9): ACCEPTED
 ```
 
 The snapshot's `SHA256` field gives the bytes that are really there.
@@ -193,3 +193,40 @@ and `version` arguments, because the artifacts carry them.
   - step 5, in its closing paragraph, which is **[tool]**;
   - the note on the pool check in step 4;
   - the `.deb`/`.ddeb` rule in "Build manifest artifacts".
+
+## 8. Verification
+
+An independent Verifier, a temporary subagent, checked `188e1b0`. Verdict:
+**PASS**.
+
+- On `scripts/` of main, a scratch aptly root accepts a `demo-bin` of the
+  same version with other bytes. The branch refuses it. Every aptly call
+  used the scratch `-config`.
+- The moved code is identical to the removed taskctl body:
+  - the same queries, order and message parts;
+  - the import stays lazy;
+  - the taskctl test file is unchanged.
+- `main()` calls `check_gated_snapshot` exactly once and passes its result
+  to `fail()`. The call comes before the switch-time `apt_view.py`, the
+  `START` log line and the switch.
+- Full suite: 315 passed and 1 skipped. The skip is unrelated (the live
+  command list). The integration test ran.
+- Five mutations of the Verifier's own were each caught:
+  - the call removed;
+  - names only;
+  - the key count weakened;
+  - "line contains the sha" accepted;
+  - `.ddeb` skipped.
+- The three edits to section 6 match the code.
+- A scratch snapshot with these contents was accepted:
+  - epoch versions;
+  - an `Architecture: all` binary;
+  - older versions of the same packages.
+
+  A rebuilt arch-all `.deb` was refused.
+
+Notes, none blocking:
+- Section 1 now quotes the run on main as committed in
+  `runs/01-repro-main.txt`.
+- The follow-up on a snapshot dropped and recreated under the same name
+  (section 3) is still open, and its ID comes from C.
