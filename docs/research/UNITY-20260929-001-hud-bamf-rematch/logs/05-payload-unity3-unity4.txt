@@ -1,0 +1,15 @@
+# +unity3 (UNITY-20260927-028 gated) against +unity4 (this build), per package: file list (path, mode), exported symbols of shared objects, files whose content differs
+gir1.2-hud-2 files=same symbols=same content-differs: none
+gir1.2-hud-client-2 files=same symbols=same content-differs: none
+hud-doc files=same symbols=same content-differs: none
+hud-tools files=same symbols=same content-differs: usr/bin/hud-gtk usr/bin/hud-cli-toolbar usr/bin/hud-cli-param usr/bin/hud-cli-appstack usr/bin/hud-cli 
+hud files=same symbols=same content-differs: usr/lib/x86_64-linux-gnu/hud/window-stack-bridge usr/lib/x86_64-linux-gnu/hud/hud-service 
+libhud-client2-dev files=same symbols=same content-differs: none
+libhud-client2-doc files=same symbols=same content-differs: none
+libhud-client2 files=same symbols=same content-differs: usr/lib/x86_64-linux-gnu/libhud-client.so.2.0.0 
+libhud-gtk1-dev files=same symbols=same content-differs: none
+libhud-gtk1-doc files=same symbols=same content-differs: none
+libhud-gtk1 files=same symbols=same content-differs: usr/lib/x86_64-linux-gnu/libhud-gtk.so.1.0.0 
+libhud2-dev files=same symbols=same content-differs: none
+libhud2-doc files=same symbols=same content-differs: none
+libhud2 files=same symbols=same content-differs: usr/lib/x86_64-linux-gnu/libhud.so.2.0.0 

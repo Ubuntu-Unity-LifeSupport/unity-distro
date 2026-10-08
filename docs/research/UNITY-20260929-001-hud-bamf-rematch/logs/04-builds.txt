@@ -1,0 +1,40 @@
+# UNITY-20260929-001 builds on chroot 20261008T083223Z, 2026-10-08
+## build: 14.10+17.10.20170619-0ubuntu6+unity4 cc0a2792d5b3 PASS
+1/6 Test #1: test-integration-tests ................   Passed    4.19 sec
+100% tests passed, 0 tests failed out of 6
+1: [  PASSED  ] 6 tests.
+2/6 Test #2: test-libhud-unit-tests ................   Passed    2.94 sec
+2: [  PASSED  ] 10 tests.
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed   13.30 sec
+3: [  PASSED  ] 15 tests.
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.08 sec
+4: [  PASSED  ] 0 tests.
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.09 sec
+5: [  PASSED  ] 45 tests.
+6/6 Test #6: test-window-stack-bridge-unit-tests ...   Passed    5.53 sec
+6: [  PASSED  ] 22 tests.
+## build-control: 
+1/6 Test #1: test-integration-tests ................   Passed    5.80 sec
+1: [  PASSED  ] 6 tests.
+2/6 Test #2: test-libhud-unit-tests ................   Passed    2.23 sec
+2: [  PASSED  ] 10 tests.
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed    7.85 sec
+3: [  PASSED  ] 15 tests.
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.06 sec
+4: [  PASSED  ] 0 tests.
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.02 sec
+5: [  PASSED  ] 45 tests.
+6/6 Test #6: test-window-stack-bridge-unit-tests ...***Failed   30.84 sec
+6: [  FAILED  ] 5 tests, listed below:
+6: [  FAILED  ] TestBamfWindowStack.FocusKeptOverUnknownActiveWindow
+6: [  FAILED  ] TestBamfWindowStack.FocusKeptOverUnknownActiveWindow (5763 ms)
+6: [  FAILED  ] TestBamfWindowStack.FocusedWindowMovedToItsApplication
+6: [  FAILED  ] TestBamfWindowStack.FocusedWindowMovedToItsApplication (5414 ms)
+6: [  FAILED  ] TestBamfWindowStack.MovedWindowKeepsNewIdInLaterSignals
+6: [  FAILED  ] TestBamfWindowStack.MovedWindowKeepsNewIdInLaterSignals (5030 ms)
+6: [  FAILED  ] TestBamfWindowStack.StartupFocusedWindowMovedWithoutActiveWindowChanged
+6: [  FAILED  ] TestBamfWindowStack.StartupFocusedWindowMovedWithoutActiveWindowChanged (5088 ms)
+6: [  FAILED  ] TestBamfWindowStack.UnfocusedWindowMovedWithoutFocus
+6: [  FAILED  ] TestBamfWindowStack.UnfocusedWindowMovedWithoutFocus (4998 ms)
+6: [  PASSED  ] 17 tests.
+83% tests passed, 1 tests failed out of 6

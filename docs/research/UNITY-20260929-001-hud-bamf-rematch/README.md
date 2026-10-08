@@ -285,6 +285,24 @@ no signal); bamf restarts.
    killed and started again, then a move (Start Center -> a document): the
    HUD still knows the focused application.
 
+### Design review, round 3: APPROVE
+
+Remarks, taken into the target plan:
+
+- hud-service does not reset its state when the bridge goes away (the
+  watcher in `ApplicationListImpl` is stored but its `serviceUnregistered`
+  is not connected; `GetWindowStack` is read only in its constructor). So
+  the bridge-restart check is meaningful only with the new package
+  installed, both processes restarted, and the Start Center window already
+  under libreoffice-startcenter before the kill. Kill the bridge with
+  SIGKILL (its unit restarts on failure); log the stack before, the three
+  signals after the move, and hud-service's focused application.
+- An application hud-service learned under a window number from the old
+  package stays there until hud-service restarts (a later
+  `WindowDestroyed` with the right id only logs "non-existent
+  application"); hud-service is restarted before every measurement, and a
+  leftover numeric entry from before is not a fault of the fix.
+
 ## Plan (before the Design Challenger)
 
 1. Reproduction on Clean-2 + the published stack: window stack, the
@@ -301,3 +319,42 @@ no signal); bamf restarts.
    subscribe to each application's `WindowAdded`; or resolve lazily in
    `GetWindowStack`/`ActiveWindowChanged`. Measure what hud-service does
    with a destroy/create pair for a live window (its menus are re-imported).
+
+## Implementation (2026-10-08)
+
+hud source `Ubuntu-Unity-LifeSupport/hud`, branch `b/UNITY-20260929-001`
+(pushed): `551a798` (the bridge and the tests) and `cc0a279` (+unity4) on
+the published +unity3 (`9e7c093`).
+
+- `BamfWindow::resolveApplicationId` (one place for `Parents()` ->
+  `DesktopFile()`; outcomes: Parents error, DesktopFile error, no parent,
+  an id) and `setApplicationId`. The constructor keeps its behaviour: a
+  Parents error drops the window, the other non-id outcomes give the window
+  number.
+- `BamfWindowStack`: `WindowAdded` from bamf on any path, connected before
+  `WindowPaths()`; `m_activeWindowPath` set from `ActiveWindow()` at start,
+  from `ActiveWindowChanged` when it reports, from `GetWindowStack` when it
+  marks the focus, cleared by `ViewClosed`. `WindowAdded` re-resolves a
+  known window and on a new id emits Created(new), Focused(new) if it is
+  the reported focus, Destroyed(old). `m_windows.value()` instead of
+  `operator[]` in the two focus lookups, so an unknown path does not insert
+  an empty entry.
+- Tests: 9 in TestBamfWindowStack (the moves, the no-op cases, the later
+  signals, the startup focus, focus over an unknown window), 1 in
+  TestApplicationList (Created, Focused, Destroyed leaves the new
+  application focused and no old id).
+
+**Builds** (`build_sbuild.py`, chroot 20261008T083223Z; logs/04):
+
+- +unity4 (`cc0a279`): 6 of 6 suites; window-stack-bridge 22 tests,
+  service 45.
+- control (`5252964`: the new tests on the +unity3 bridge, a local branch
+  only): the window-stack-bridge suite fails 5 tests, exactly the moves
+  (FocusedWindowMovedToItsApplication,
+  StartupFocusedWindowMovedWithoutActiveWindowChanged,
+  UnfocusedWindowMovedWithoutFocus, MovedWindowKeepsNewIdInLaterSignals,
+  FocusKeptOverUnknownActiveWindow); the 4 no-op tests and the service
+  test pass there too, as they should.
+- +unity3 against +unity4 (logs/05): every package has the same file list
+  and the same exported symbols; the binaries differ in bytes (the newer
+  chroot), the source only in the bridge.
