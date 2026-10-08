@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "light-locker",
+  "measured_at": "2026-10-08T20:29:33Z",
+  "sources_file": "/home/claude/work/a/unity-distro-1002-012/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261008-016",
+    "packages": 478,
+    "list_sha256": "00f25f57577743ed27f673778c6d5f46d0bee894215008657a9f3edc8c8f21ef",
+    "content_sha256": "93dd0e5fda658cafb5c0c37998a263ca45eb71034824241fbc93a5ad17bf3f92",
+    "model_entries": 432,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "aec7488739e3d2e9f734fc1b8ccf83d7572a1eabb439d05f897b52c48b835bc4",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Thu, 08 Oct 2026 20:29:34 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "85fa521de522f0118fe75c400a958340e0a9afd821c2ac83a9336a7a78b3b3ea",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Wed, 07 Oct 2026 21:11:53 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "a96fe39b58e3020c27d34bb6850278f15bc49d89a2dffd3db3d3837f45102a59",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Thu, 08 Oct 2026 18:00:21 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "d0304e0262e88d5f9a346a191b4a4f0839083e331838f24af1989f94aa36fda4",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Thu, 08 Oct 2026 17:59:48 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "3cacb72f61b91fad87b2fb5900faa07b82881203ccab5aef189569417dab6a01",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Thu, 08 Oct 2026 17:19:49 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "1.8.0-3ubuntu4"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "light-locker-dbgsym",
+      "version": "1.8.0-3ubuntu4+unity3",
+      "architecture": "amd64",
+      "file": "light-locker-dbgsym_1.8.0-3ubuntu4+unity3_amd64.ddeb",
+      "apt_candidate": "1.8.0-3ubuntu4+unity3",
+      "policy": "light-locker-dbgsym:\n  Installed: (none)\n  Candidate: 1.8.0-3ubuntu4+unity3\n  Version table:\n     1.8.0-3ubuntu4+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "light-locker",
+      "version": "1.8.0-3ubuntu4+unity3",
+      "architecture": "amd64",
+      "file": "light-locker_1.8.0-3ubuntu4+unity3_amd64.deb",
+      "apt_candidate": "1.8.0-3ubuntu4+unity3",
+      "policy": "light-locker:\n  Installed: (none)\n  Candidate: 1.8.0-3ubuntu4+unity3\n  Version table:\n     1.8.0-3ubuntu4+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1.8.0-3ubuntu4+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.8.0-3ubuntu4 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}
