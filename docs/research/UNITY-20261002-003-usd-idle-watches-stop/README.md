@@ -226,6 +226,32 @@ bytes), and it must be byte-identical to `build/` (the debs in the snapshot
 and on target come from `build/`). Lesson (C): build for the gate in the
 worktree of the task that carries the publication.
 
+### Comparison of the gate rebuild with the tested build, and the decision (C, 2026-10-08)
+
+| what | tested `build/` vs gate `build-gate/` |
+|---|---|
+| source commit, tree, chroot, Installed-Build-Depends | same (89648a3; 20260929T201245Z; IBD diff 0 lines) |
+| file lists, control fields, md5sums of every file in the 5 debs | same (compare-builds: list-diff 0, control same, md5-diff 0) |
+| the 2 ddebs | byte-identical |
+| sha256 of the 5 debs, the `.dsc`, the `.tar.gz` | differ |
+
+Cause: the source tarball takes the files' mtimes from the checkout (21:41
+in the first build, 22:13 in the rebuild: two different clones), so the
+`.tar.gz` and `.dsc` differ, and the debs differ in container bytes only.
+
+Decision (C, as with UNITY-20260929-021): publish the gate rebuild with
+`tested_build: buildinfo_identical` - `tested_manifest` = the committed
+`build/` manifest, `tested_buildinfo` = its `.buildinfo` (committed with
+`git add -f`, `*.buildinfo` is ignored), the target test stays on the tested
+debs from `build/`. In the repository: fresh db backup
+`/home/claude/backups/repo-003r2-20261008T030010Z`; the 8 +unity11 records
+of the first build removed (416 -> 408); the unpublished snapshot
+`unity-resolute-20261002-003` dropped; the 8 records of `build-gate/` added
+(408 -> 416), each pool file's sha256 equal to the manifest; snapshot
+`unity-resolute-20261002-003-r2` = live `-002` + 8, nothing removed;
+version check SAFE. The pool files of the first build stay as orphans
+(7 files; the ddebs are shared) until UNITY-20260929-035.
+
 ## Evidence card
 
 ```yaml
