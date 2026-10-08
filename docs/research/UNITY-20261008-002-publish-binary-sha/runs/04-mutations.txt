@@ -1,0 +1,11 @@
+== none: 16 passed
+== main-call-removed: 2 failed, 14 passed
+   FAILED MainWiringTest::test_before_apt_view_and_start
+   FAILED MainWiringTest::test_one_call_refusing_on_its_result
+== names-only: 4 failed, 12 passed
+   FAILED CheckGatedSnapshotTest::test_binary_same_version_other_bytes_refused
+   FAILED CheckGatedSnapshotTest::test_binary_twice_refused
+   FAILED CheckGatedSnapshotTest::test_ddeb_other_bytes_refused
+   FAILED CheckGatedSnapshotAptlyTest::test_real_snapshots
+== key-count-removed: 1 failed, 15 passed
+   FAILED CheckGatedSnapshotTest::test_two_source_packages_refused

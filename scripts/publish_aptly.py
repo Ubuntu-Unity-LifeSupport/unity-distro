@@ -181,6 +181,60 @@ def source_package_matches(artifacts, snapshot_checksums):
     return None
 
 
+def snapshot_content(artifacts, snapshot, run=None):
+    """UNITY-20261008-002 (from taskctl, UNITY-20260929-015): what the snapshot
+    lacks of the manifest, by bytes. Each binary must be in the snapshot exactly
+    once with its recorded sha256 (aptly's SHA256 field), and the source must be
+    exactly one source package made of exactly the .dsc and its files.
+    Returns (missing, differing), two lists of descriptions."""
+    run = run or run_aptly
+    missing, differing = [], []
+    for a in artifacts:
+        if a.get("kind") != "binary":
+            continue
+        name = f"{a.get('package')} {a.get('version')} {a.get('architecture')}"
+        found = run(["snapshot", "search", "-format", '{{index . "SHA256"}}', snapshot,
+                     f"Name ({a.get('package')}), Version (= {a.get('version')}), Architecture ({a.get('architecture')})"])
+        lines = [line.strip() for line in found.stdout.splitlines() if line.strip()] if not found.returncode else []
+        if not lines:
+            missing.append(name)
+        elif lines != [a.get("sha256")]:
+            differing.append(name)
+    source = next(a for a in artifacts if a.get("kind") == "source")
+    query = f"Name ({source.get('package')}), $Architecture (source), Version (= {source.get('version')})"
+    keys = run(["snapshot", "search", "-format", "{{.Key}}", snapshot, query])
+    # an aptly key is one line with spaces in it ("Psource demo 1:1.0 <hash>")
+    key_lines = [line for line in keys.stdout.splitlines() if line.strip()] if not keys.returncode else []
+    if len(key_lines) != 1:
+        missing.append(f"{source.get('package')} {source.get('version')} source"
+                       + (f" (found {len(key_lines)} source packages)" if key_lines else ""))
+    else:
+        checksums = run(["snapshot", "search", "-format", '{{index . "Checksums-Sha256"}}', snapshot, query])
+        if checksums.returncode:
+            missing.append(f"{source.get('package')} {source.get('version')} source")
+        else:
+            error = source_package_matches(artifacts, dsc_checksums("Checksums-Sha256:\n" + checksums.stdout))
+            if error:
+                differing.append(error)
+    return missing, differing
+
+
+def check_gated_snapshot(snapshot, expected_names, artifacts, run=None):
+    """UNITY-20261008-002: the gated snapshot holds every expected record by name
+    and every manifest artifact by bytes (snapshot_content). Error or None."""
+    run = run or run_aptly
+    shown = run(["snapshot", "show", "-with-packages", snapshot])
+    if shown.returncode:
+        return f"aptly cannot inspect snapshot {snapshot}: {shown.stderr.strip()}"
+    for name in expected_names:
+        if not re.search(rf"(?m)^\s*{re.escape(name)}\s*$", shown.stdout):
+            return f"aptly snapshot {snapshot} does not contain expected artifact {name}"
+    missing, differing = snapshot_content(artifacts, snapshot, run)
+    if missing or differing:
+        return f"aptly snapshot {snapshot} does not hold the build's artifacts: missing {missing}, other sha256 {differing}"
+    return None
+
+
 def control_fields(path):
     result = subprocess.run(["dpkg-deb", "-f", str(path), "Package", "Version", "Architecture", "Source", "Package-Type"],
                             check=False, capture_output=True, text=True)
@@ -447,16 +501,8 @@ def main():
 
     if (gate_view.get("snapshot") or {}).get("name") != snapshot:
         return fail("the gate-time version check measured another snapshot")
-    shown = run_aptly(["snapshot", "show", "-with-packages", snapshot])
-    if shown.returncode: return fail(f"aptly cannot inspect snapshot {snapshot}: {shown.stderr.strip()}")
-    for name in expected_snapshot_names:
-        if not re.search(rf"(?m)^\s*{re.escape(name)}\s*$", shown.stdout):
-            return fail(f"aptly snapshot {snapshot} does not contain expected artifact {name}")
-    source_query = run_aptly(["snapshot", "search", "-format", '{{index . "Checksums-Sha256"}}', snapshot,
-                              f"Name ({package}), $Architecture (source), Version (= {version})"])
-    if source_query.returncode: return fail(f"aptly cannot read the snapshot's source package: {source_query.stderr.strip()}")
-    source_error = source_package_matches(artifacts, dsc_checksums("Checksums-Sha256:\n" + source_query.stdout))
-    if source_error: return fail(source_error)
+    snapshot_error = check_gated_snapshot(snapshot, expected_snapshot_names, artifacts)
+    if snapshot_error: return fail(snapshot_error)
 
     # Measure the target apt view again right before the switch; it is authoritative.
     apt_inputs = [root / "docs/apt/target.sources"] + sorted((root / "docs/apt/preferences.d").glob("*"))
