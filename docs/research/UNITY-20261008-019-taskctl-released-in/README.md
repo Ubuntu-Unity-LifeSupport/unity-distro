@@ -356,3 +356,36 @@ Also from the Verifier's remarks:
 
 `scripts/tests`: 405 passed, 1 skipped. The dry check on
 UNITY-20261008-014 is unchanged.
+
+## Verification, round 2: FAIL (fixed)
+
+The Verifier confirmed the following:
+- the round-1 fix, and its seven tests against the version before it;
+- that its own round-1 cases are now refused;
+- that a crafted commit-graph, the repository's own config, a `.git` file
+  pointing elsewhere and a sha256 repository gain nothing;
+- the whole suite and the dry check.
+
+One blocking finding: git verifies the hash of a commit that is named
+directly, but not of the commits an ancestry walk passes through. A
+repository could therefore hold, under a real intermediate commit's id, an
+object that does not hash to it (loose, packed or behind alternates).
+`git fsck` notices such an object; `merge-base` does not. The change was
+still only on this task branch.
+
+Fix: taskctl walks the history itself (`VerifiedHistory`):
+- one `git cat-file --batch` process reads each commit on the way raw;
+- the sha1 of `commit <size>\0<body>` must equal the id;
+- the tree and the parents are taken only from verified bodies;
+- `merge-base` and `rev-list` are no longer used for these checks;
+- this covers the published commit's tree, the single-parent check, the
+  ancestry, and the earlier-publication check.
+
+Tests:
+- four new tests: a forged intermediate commit loose, packed and behind
+  alternates, and one hiding an earlier publication;
+- run against the round-2 version, exactly these four fail.
+
+`scripts/tests`: 409 passed, 1 skipped. The dry check on
+UNITY-20261008-014 is unchanged. Rule R says the history is walked and
+verified by taskctl.

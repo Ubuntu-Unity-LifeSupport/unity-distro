@@ -436,6 +436,56 @@ class ReleasedInTest(unittest.TestCase):
         (self.src / ".git" / "shallow").write_text(self.c2 + "\n")
         self.refused("PUBLISHED", self.evidence(), "is shallow")
 
+    # an object stored under a real commit's id must hash to that id
+    def forged_object(self, commit, new_parent):
+        """zlib bytes of a commit object like `commit` but with another parent (it hashes to another id)."""
+        import zlib
+        body = subprocess.run(["git", "-C", str(self.src), "cat-file", "commit", commit], check=True,
+                              capture_output=True).stdout
+        lines = body.split(b"\n")
+        lines = [b"parent " + new_parent.encode() if line.startswith(b"parent ") else line for line in lines]
+        body = b"\n".join(lines)
+        return zlib.compress(b"commit %d\0" % len(body) + body)
+
+    def put_loose(self, objects, commit, data):
+        path = objects / commit[:2] / commit[2:]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if path.exists():
+            os.chmod(path, 0o644)
+        path.write_bytes(data)
+
+    def test_forged_intermediate_commit_loose(self):
+        self.put_loose(self.src / ".git" / "objects", self.c2, self.forged_object(self.c2, self.unrelated))
+        self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=[self.unrelated])),
+                     "does not hash to its id")
+
+    def test_forged_intermediate_commit_hiding_an_earlier_publication(self):
+        self.write_earlier(self.empty)
+        self.put_loose(self.src / ".git" / "objects", self.c2, self.forged_object(self.c2, self.c0))
+        self.refused("PUBLISHED", self.evidence(), "does not hash to its id")
+
+    def test_forged_intermediate_commit_packed(self):
+        self.put_loose(self.src / ".git" / "objects", self.c2, self.forged_object(self.c2, self.unrelated))
+        packed = subprocess.run(["git", "-C", str(self.src), "repack", "-a", "-d", "-q"], capture_output=True)
+        if packed.returncode:
+            self.skipTest("git refused to pack the forged object")
+        self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=[self.unrelated])),
+                     "does not hash to its id")
+
+    def test_forged_intermediate_commit_behind_alternates(self):
+        copy = self.t / "copy"
+        shutil.copytree(self.src, copy, symlinks=True)
+        real = copy / ".git" / "objects" / self.c2[:2] / self.c2[2:]
+        os.chmod(real, 0o644)
+        real.unlink()
+        store = self.t / "store" / "objects"
+        self.put_loose(store, self.c2, self.forged_object(self.c2, self.unrelated))
+        (copy / ".git" / "objects" / "info").mkdir(exist_ok=True)
+        (copy / ".git" / "objects" / "info" / "alternates").write_text(str(store) + "\n")
+        self.write_releasing_build(source_repo=str(self.t / "gone"))
+        data = self.evidence(released_in=self.released(source_repo=str(copy), change_commits=[self.unrelated]))
+        self.refused("PUBLISHED", data, "does not hash to its id")
+
     def test_own_review_status_missing(self):
         self.refused("PUBLISHED", self.evidence(review_status="PENDING"), "review_status")
 

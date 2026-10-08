@@ -431,17 +431,85 @@ def released_in_record(data, task_id, rows, records_dir):
 # The repository is the evidence's or the gate's, a working tree anyone can
 # change: only object hashes are trusted. Git's history overrides (replace
 # refs, grafts, a commit-graph file, inherited GIT_* settings) are switched
-# off, and a shallow repository is refused (check_released_commits).
+# off, a shallow repository is refused (check_released_commits), and the
+# history is walked here, not by git: every commit on the way is read raw and
+# its sha1 checked against its id, so a forged object under a real id, loose,
+# packed or behind alternates, is refused (VerifiedHistory).
 GIT_TRUSTED = ["git", "--no-replace-objects", "-c", "core.commitGraph=false"]
 
 
-def git_out(repo, *args):
+def git_env():
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     env.update({"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": "/nonexistent/taskctl-no-grafts",
                 "GIT_CONFIG_NOSYSTEM": "1"})
+    return env
+
+
+def git_out(repo, *args):
     result = subprocess.run(GIT_TRUSTED + ["-C", str(repo)] + list(args), check=False, capture_output=True,
-                            text=True, env=env)
+                            text=True, env=git_env())
     return result.returncode, result.stdout.strip()
+
+
+class VerifiedHistory:
+    """Commits of one repository read through `git cat-file --batch`, each
+    one's sha1 checked against its id before its tree and parents are used."""
+
+    def __init__(self, repo):
+        self.repo = repo
+        self.commits = {}
+        self.process = subprocess.Popen(GIT_TRUSTED + ["-C", str(repo), "cat-file", "--batch"],
+                                        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                                        env=git_env())
+
+    def close(self):
+        if self.process.stdin:
+            self.process.stdin.close()
+        self.process.wait()
+
+    def commit(self, commit_id):
+        """(tree, parents) of a verified commit."""
+        if commit_id in self.commits:
+            return self.commits[commit_id]
+        if not isinstance(commit_id, str) or not _HEX40.match(commit_id):
+            raise ValueError(f"released_in: {commit_id!r} is not a full commit id")
+        self.process.stdin.write(commit_id.encode() + b"\n")
+        self.process.stdin.flush()
+        header = self.process.stdout.readline().split()
+        if len(header) != 3 or header[0].decode() != commit_id or header[1] != b"commit":
+            raise ValueError(f"released_in: {commit_id} is not a commit in {self.repo}")
+        size = int(header[2])
+        body = self.process.stdout.read(size)
+        self.process.stdout.read(1)
+        if len(body) != size or hashlib.sha1(b"commit %d\0" % size + body).hexdigest() != commit_id:
+            raise ValueError(f"released_in: the object stored as {commit_id} in {self.repo} does not hash to its "
+                             "id (corrupt or forged)")
+        tree, parents = None, []
+        for line in body.split(b"\n"):
+            if not line:
+                break
+            if line.startswith(b"tree ") and tree is None:
+                tree = line[5:].decode()
+            elif line.startswith(b"parent "):
+                parents.append(line[7:].decode())
+        if not tree or not _HEX40.match(tree) or not all(_HEX40.match(parent) for parent in parents):
+            raise ValueError(f"released_in: commit {commit_id} in {self.repo} has no valid tree or parents")
+        self.commits[commit_id] = (tree, parents)
+        return tree, parents
+
+    def is_ancestor(self, ancestor, descendant):
+        """ancestor is descendant, or reachable from it through verified parents."""
+        self.commit(ancestor)
+        seen, todo = set(), [descendant]
+        while todo:
+            current = todo.pop()
+            if current == ancestor:
+                return True
+            if current in seen:
+                continue
+            seen.add(current)
+            todo.extend(self.commit(current)[1])
+        return False
 
 
 def git_commit(repo, ref, what):
@@ -449,13 +517,6 @@ def git_commit(repo, ref, what):
     if code or not _HEX40.match(out):
         raise ValueError(f"released_in: {what} {ref} is not a commit in {repo}")
     return out
-
-
-def git_is_ancestor(repo, ancestor, descendant):
-    code, _ = git_out(repo, "merge-base", "--is-ancestor", ancestor, descendant)
-    if code not in (0, 1):
-        raise ValueError(f"released_in: git merge-base --is-ancestor {ancestor} {descendant} failed in {repo}")
-    return code == 0
 
 
 def check_released_commits(data, record, gate, records_dir):
@@ -469,9 +530,17 @@ def check_released_commits(data, record, gate, records_dir):
     if code or shallow != "false":
         raise ValueError(f"released_in: the source repository {repo} is shallow or unreadable; its history is "
                          "incomplete")
+    history = VerifiedHistory(repo)
+    try:
+        check_released_history(released, record, gate, records_dir, repo, history)
+    finally:
+        history.close()
+
+
+def check_released_history(released, record, gate, records_dir, repo, history):
     shipped = git_commit(repo, record.get("source_commit"), "the published source commit")
-    code, tree = git_out(repo, "rev-parse", f"{shipped}^{{tree}}")
-    if code or not tree or tree != gate.get("source_tree_hash"):
+    tree, _ = history.commit(shipped)
+    if tree != gate.get("source_tree_hash"):
         raise ValueError("released_in: the repository's tree of the published source commit is not the gate's "
                          "source_tree_hash")
     try:
@@ -494,19 +563,20 @@ def check_released_commits(data, record, gate, records_dir):
         if when.tzinfo is None or this_time.tzinfo is None:
             raise ValueError(f"publish record {path} or the releasing record has a published_at without a timezone")
         if when <= this_time:
-            earlier.append(git_commit(repo, other.get("source_commit"), f"the source commit of {path.name}"))
+            before = git_commit(repo, other.get("source_commit"), f"the source commit of {path.name}")
+            history.commit(before)
+            earlier.append(before)
     for commit in released["change_commits"]:
         full = git_commit(repo, commit, "change commit")
-        code, parents = git_out(repo, "rev-list", "--parents", "-n", "1", full)
-        if code or len(parents.split()) != 2:
+        if len(history.commit(full)[1]) != 1:
             raise ValueError(f"released_in: change commit {commit} must have exactly one parent")
         code, files = git_out(repo, "diff-tree", "--no-commit-id", "--name-only", "-r", full)
         if code or not files:
             raise ValueError(f"released_in: change commit {commit} changes no file")
-        if not git_is_ancestor(repo, full, shipped):
+        if not history.is_ancestor(full, shipped):
             raise ValueError(f"released_in: change commit {commit} is not in the published source commit {shipped}")
         for before in earlier:
-            if git_is_ancestor(repo, full, before):
+            if history.is_ancestor(full, before):
                 raise ValueError(f"released_in: change commit {commit} was already in an earlier publication "
                                  f"of {record.get('package')} ({before})")
 

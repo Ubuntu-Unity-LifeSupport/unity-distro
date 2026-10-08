@@ -836,9 +836,11 @@ Rules used by these steps:
     source commit of any older publish record. A record or a commit that
     cannot be read refuses the transition.
   - **What is trusted in the repository.** Only object hashes are
-    trusted. `taskctl` runs git with replace refs, grafts, the commit-graph
-    file and inherited `GIT_*` settings switched off, and it refuses a
-    shallow repository.
+    trusted. `taskctl` walks the history itself: it reads every commit on
+    the way raw, checks its sha1 against its id, and takes the tree and the
+    parents only from verified commits. It runs git with replace refs,
+    grafts, the commit-graph file and inherited `GIT_*` settings switched
+    off, and it refuses a shallow repository.
   - **Limits.** Versions published before publish records existed are not
     checked. A later revert of the change is not detected. A change commit
     is not tied to the task: any commit of the published source that did
