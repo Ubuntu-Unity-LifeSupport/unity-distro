@@ -1,0 +1,20 @@
+=================== gnome-disks (pid 101443)
+  shim: NOT HOOKED in pid 101443
+=================== gnome-connections (pid 101613)
+  shim: NOT HOOKED in pid 101613
+=================== gnome-taquin (pid 101812)
+  shim: NOT HOOKED in pid 101812
+=================== gnome-tetravex (pid 101888)
+  shim: NOT HOOKED in pid 101888
+=================== four-in-a-row (pid 102024)
+  shim: NOT HOOKED in pid 102024
+=================== five-or-more (pid 102101)
+  shim: NOT HOOKED in pid 102101
+=================== hitori (pid 102195)
+  shim: NOT HOOKED in pid 102195
+=================== gnome-klotski (pid 102294)
+  shim: NOT HOOKED in pid 102294
+=================== dconf-editor (pid 102362)
+  shim: NOT HOOKED in pid 102362
+=================== seahorse (pid 102563)
+  shim: NOT HOOKED in pid 102563

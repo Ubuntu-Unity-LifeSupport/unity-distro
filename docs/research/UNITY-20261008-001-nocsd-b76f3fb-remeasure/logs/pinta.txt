@@ -1,0 +1,424 @@
+=================== pinta-S-on-1 (pid 108025)
+            -                                        _File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        _Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        _Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        A_dd-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        _Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        _Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-S-on-2 (pid 108086)
+            -                                        _File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        _Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        _Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        A_dd-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        _Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        _Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-S-on-3 (pid 108142)
+            -                                        _File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        _Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        _Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        A_dd-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        _Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        _Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-U-on-1 (pid 108201)
+            -                                        File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        Add-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-U-on-2 (pid 108259)
+            -                                        File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        Add-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-U-on-3 (pid 108316)
+            -                                        File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        Add-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-U-g2-1 (pid 108375)
+            -                                        File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        Add-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-U-g2-2 (pid 108425)
+            -                                        File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        Add-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+=================== pinta-U-g2-3 (pid 108482)
+            -                                        File
+    ok        app.new                                  New...
+    ok        app.NewScreenshot                        New Screenshot...
+    ok        app.open                                 Open...
+    ok        app.save                                 Save
+    ok        app.saveAs                               Save As...
+    ok        app.close                                Close
+    ok        app.quit                                 Quit
+            -                                        Edit
+    disabled  app.undo                                 Undo
+    disabled  app.redo                                 Redo
+    ok        app.cut                                  Cut
+    ok        app.copy                                 Copy
+    ok        app.copymerged                           Copy Merged
+    ok        app.paste                                Paste
+    ok        app.pasteintonewlayer                    Paste Into New Layer
+    ok        app.pasteintonewimage                    Paste Into New Image
+    ok        app.selectall                            Select All
+    disabled  app.deselect                             Deselect All
+    disabled  app.eraseselection                       Erase Selection
+    disabled  app.fillselection                        Fill Selection
+    disabled  app.invertselection                      Invert Selection
+    disabled  app.offsetselection                      Offset Selection
+              -                                        Palette
+      ok        app.loadpalette                          Open...
+      ok        app.savepalette                          Save As...
+      ok        app.resetpalette                         Reset to Default
+      ok        app.resizepalette                        Set Number of Colors
+            -                                        Layers
+    ok        app.importfromfile                       Import from File...
+    ok        app.fliplayerhorizontal                  Flip Horizontal
+    ok        app.fliplayervertical                    Flip Vertical
+    ok        app.RotateZoom                           Rotate / Zoom Layer...
+    ok        app.properties                           Layer Properties...
+            -                                        Add-ins
+    ok        app.AddinManager                         Add-in Manager...
+            -                                        Window
+    ok        app.SaveAll                              Save All
+    ok        app.CloseAll                             Close All
+    ok        app.active_document                      Unsaved Image 1
+            -                                        Help
+    ok        app.contents                             Contents
+    ok        app.website                              Pinta Website
+    ok        app.bugs                                 File a Bug
+    ok        app.translate                            Translate This Application
+    ok        app.about                                About
+packaged library restored: 6fcf52bcc6d96440
