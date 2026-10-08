@@ -2088,3 +2088,28 @@ Then the card was committed after the gate. `publish_aptly.py` refused at the sw
 **Decision.**
 - The build for a gate is made in the worktree of the task that carries the publication.
 - The release gate is created after the last edit of the evidence files. A later edit means regenerating the gate and having it re-checked before May is asked.
+
+
+## 2026-10-08 - UNITY-20260928-020 stays DONE under the old published_by rule, which UNITY-20261008-003 replaces (agent A, decision by C)
+
+**What happened.** UNITY-20261008-003 makes `taskctl`'s `published_by` check compare bytes. A covered task is accepted in one of two cases:
+- its own build's source and binary artifacts are byte-identical to the publish record;
+- otherwise, its build is `buildinfo_identical` to the published build: the same source commit and tree, the same extra build dependencies, the same `.buildinfo` identity fields, and the same `Installed-Build-Depends`.
+
+The case where the task's commit is only an ancestor of the published commit is no longer accepted.
+
+All three past `published_by` closures were measured against the new rule on real files:
+
+| Closure | Result under the new rule |
+|---|---|
+| UNITY-20260927-052 through -012 | passes by bytes |
+| UNITY-20261002-011 through -003 | passes by `buildinfo_identical` |
+| UNITY-20260928-020 through UNITY-20260927-027 | would not pass |
+
+UNITY-20260928-020 has the same commit `0274bc5` and tree. But its own build of 2026-09-28 was made before the snapshot chroot existed, with the release pocket only. About 100 packages in `Installed-Build-Depends` differ from the published gated build of -027 (chroot `resolute-amd64-20260929T201245Z`), for example libc6, mesa, systemd and linux-libc-dev.
+
+**Decision.** UNITY-20260928-020 stays `DONE`.
+- Its change consists only of nux test patches (dummy Xorg reset, watchdog join), so the change is its tests.
+- The published gated build of UNITY-20260927-027 ran those test suites on the snapshot chroot, and they passed: 130, 11, 18 and 113 tests. See the build log `docs/research/UNITY-20260927-027-nux-vidmode-fbo/build-gated/UNITY-20260927-027-nux-4.0.8+18.10.20180623-0ubuntu15+unity3-sbuild.log` (sha256 `23fc8d6a...`, the one named by the gated manifest), lines 11634-12244, `Status: successful`.
+- So the fix of -020 was checked on the published build.
+- `taskctl` checks `published_by` only on the transition to `PUBLISHED`. The new code neither re-checks nor changes a past `DONE`.
