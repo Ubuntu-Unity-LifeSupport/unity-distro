@@ -333,7 +333,15 @@ class PublishedByTest(unittest.TestCase):
     def test_unhashable_artifact_field_is_a_refusal_not_a_crash(self):
         odd = artifacts()
         odd[2] = dict(odd[2], sha256=["x"])
-        self.refused(self.evidence(self.write_record(), build_manifest=self.manifest(artifacts=odd)), "not the published bytes")
+        self.refused(self.evidence(self.write_record(), build_manifest=self.manifest(artifacts=odd)),
+                     "needs a file and a sha256")
+
+    def test_extra_artifact_without_sha_refused(self):
+        """Verifier note: an own binary without a sha256 must not drop out of the comparison."""
+        extra = {"file": "demo-extra_1.0+unity3_amd64.deb", "sha256": None, "kind": "binary",
+                 "package": "demo-extra", "version": VERSION, "architecture": "amd64"}
+        self.refused(self.evidence(self.write_record(), build_manifest=self.manifest(artifacts=artifacts(extra=[extra]))),
+                     "needs a file and a sha256")
 
 
 if __name__ == "__main__":

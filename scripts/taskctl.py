@@ -319,9 +319,13 @@ def check_own_build(data, task_id, record, repo):
     pairs = lambda m: {(a.get("file"), a.get("sha256")) for a in m.get("artifacts") or []
                        if isinstance(a, dict) and a.get("kind") in ("source", "binary")
                        and isinstance(a.get("file"), str) and isinstance(a.get("sha256"), str)}
-    own, shipped = pairs(manifest), pairs(record)
-    if not own:
+    listed = [a for a in manifest.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")]
+    if not listed:
         raise ValueError("the task's build_manifest lists no source or binary artifacts")
+    if any(not isinstance(a.get("file"), str) or not isinstance(a.get("sha256"), str) or not _HEX64.match(a["sha256"])
+           for a in listed):
+        raise ValueError("every source and binary artifact of the task's build_manifest needs a file and a sha256")
+    own, shipped = pairs(manifest), pairs(record)
     if own == shipped:
         return
     byte_reason = f"missing {sorted(own - shipped)}, extra {sorted(shipped - own)}"
