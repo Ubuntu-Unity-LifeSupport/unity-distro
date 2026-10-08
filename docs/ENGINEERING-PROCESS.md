@@ -835,10 +835,17 @@ Rules used by these steps:
     publication of the same package: it must not be an ancestor of the
     source commit of any older publish record. A record or a commit that
     cannot be read refuses the transition.
+  - **What is trusted in the repository.** Only object hashes are
+    trusted. `taskctl` runs git with replace refs, grafts, the commit-graph
+    file and inherited `GIT_*` settings switched off, and it refuses a
+    shallow repository.
   - **Limits.** Versions published before publish records existed are not
-    checked. A later revert of the change is not detected. The target
-    record must therefore exercise this task's change on the published
-    version. `taskctl` does not read its content. **[process]**
+    checked. A later revert of the change is not detected. A change commit
+    is not tied to the task: any commit of the published source that did
+    not ship earlier passes, and the task's Verifier checks that the
+    commits are its own. The target record must therefore exercise this
+    task's change on the published version. `taskctl` does not read its
+    content. **[process]**
   - Run `taskctl` from a checkout that holds the releasing task's gate,
     which is `main` after C's merge.
 - **K. Known gaps.** A gap known before the gate goes on the board as its

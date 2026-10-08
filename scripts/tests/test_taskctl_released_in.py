@@ -382,13 +382,66 @@ class ReleasedInTest(unittest.TestCase):
         self.write_releasing_build(source_repo=str(self.t / "gone"))
         self.refused("PUBLISHED", self.evidence(), "is not available")
 
-    def test_alternative_repository_with_another_tree(self):
-        other = self.t / "other"
-        subprocess.run(["git", "clone", "-q", str(self.src), str(other)], check=True)
-        self.git("commit", "-q", "--amend", "-m", "release, rewritten", repo=other)
-        self.write_releasing_build(source_repo=str(self.t / "gone"), source_tree_hash="1" * 40)
-        self.refused("PUBLISHED", self.evidence(released_in=self.released(source_repo=str(other))),
-                     "not the gate's source_tree_hash")
+    def test_gate_tree_differs_from_the_repository(self):
+        # A repository holding the published commit has its tree (hashes); the
+        # gate's tree must agree with it.
+        self.write_releasing_build(source_tree_hash="1" * 40)
+        self.refused("PUBLISHED", self.evidence(), "not the gate's source_tree_hash")
+
+    # git's history overrides must not count: only object hashes do
+    def clone(self, name="clone"):
+        path = self.t / name
+        subprocess.run(["git", "clone", "-q", str(self.src), str(path)], check=True)
+        return path
+
+    def parentless_copy(self, repo, commit):
+        """A new root commit with commit's tree, made in repo."""
+        tree = self.git("rev-parse", f"{commit}^{{tree}}", repo=repo)
+        return self.git("commit-tree", tree, "-m", "same tree, other history", repo=repo)
+
+    def test_replace_ref_in_the_evidence_repository(self):
+        clone = self.clone()
+        fake = self.git("commit-tree", self.tree, "-p", self.unrelated, "-m", "fake release", repo=clone)
+        self.git("replace", self.shipped, fake, repo=clone)
+        self.write_releasing_build(source_repo=str(self.t / "gone"))
+        data = self.evidence(released_in=self.released(source_repo=str(clone), change_commits=[self.unrelated]))
+        self.refused("PUBLISHED", data, "is not in the published source commit")
+
+    def test_replace_ref_in_the_gate_repository(self):
+        fake = self.git("commit-tree", self.tree, "-p", self.unrelated, "-m", "fake release")
+        self.git("replace", self.shipped, fake)
+        self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=[self.unrelated])),
+                     "is not in the published source commit")
+
+    def test_replace_ref_hiding_an_earlier_publication(self):
+        self.write_earlier(self.c2)
+        self.git("replace", self.c2, self.parentless_copy(self.src, self.c2))
+        self.refused("PUBLISHED", self.evidence(), "already in an earlier publication")
+
+    def test_grafts_file(self):
+        (self.src / ".git" / "info").mkdir(exist_ok=True)
+        (self.src / ".git" / "info" / "grafts").write_text(f"{self.shipped} {self.merge} {self.unrelated}\n")
+        self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=[self.unrelated])),
+                     "is not in the published source commit")
+
+    def test_grafts_from_the_environment(self):
+        grafts = self.t / "grafts"
+        grafts.write_text(f"{self.shipped} {self.merge} {self.unrelated}\n")
+        with mock.patch.dict(os.environ, {"GIT_GRAFT_FILE": str(grafts)}):
+            self.refused("PUBLISHED", self.evidence(released_in=self.released(change_commits=[self.unrelated])),
+                         "is not in the published source commit")
+
+    def test_shallow_repository(self):
+        self.write_earlier(self.c2)
+        (self.src / ".git" / "shallow").write_text(self.c2 + "\n")
+        self.refused("PUBLISHED", self.evidence(), "is shallow")
+
+    def test_own_review_status_missing(self):
+        self.refused("PUBLISHED", self.evidence(review_status="PENDING"), "review_status")
+
+    def test_earlier_record_at_the_same_time_counts(self):
+        self.write_earlier(self.c2, published_at="2099-01-01T12:00:00Z")
+        self.refused("PUBLISHED", self.evidence(), "already in an earlier publication")
 
     def test_relative_source_repository(self):
         self.refused("PUBLISHED", self.evidence(released_in=self.released(source_repo="src")), "absolute path")

@@ -428,8 +428,19 @@ def released_in_record(data, task_id, rows, records_dir):
     return record, other
 
 
+# The repository is the evidence's or the gate's, a working tree anyone can
+# change: only object hashes are trusted. Git's history overrides (replace
+# refs, grafts, a commit-graph file, inherited GIT_* settings) are switched
+# off, and a shallow repository is refused (check_released_commits).
+GIT_TRUSTED = ["git", "--no-replace-objects", "-c", "core.commitGraph=false"]
+
+
 def git_out(repo, *args):
-    result = subprocess.run(["git", "-C", str(repo)] + list(args), check=False, capture_output=True, text=True)
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    env.update({"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": "/nonexistent/taskctl-no-grafts",
+                "GIT_CONFIG_NOSYSTEM": "1"})
+    result = subprocess.run(GIT_TRUSTED + ["-C", str(repo)] + list(args), check=False, capture_output=True,
+                            text=True, env=env)
     return result.returncode, result.stdout.strip()
 
 
@@ -454,6 +465,10 @@ def check_released_commits(data, record, gate, records_dir):
     repo = released.get("source_repo") or gate.get("source_repo")
     if not isinstance(repo, str) or not Path(repo).is_dir():
         raise ValueError(f"released_in: the source repository {repo!r} is not available")
+    code, shallow = git_out(repo, "rev-parse", "--is-shallow-repository")
+    if code or shallow != "false":
+        raise ValueError(f"released_in: the source repository {repo} is shallow or unreadable; its history is "
+                         "incomplete")
     shipped = git_commit(repo, record.get("source_commit"), "the published source commit")
     code, tree = git_out(repo, "rev-parse", f"{shipped}^{{tree}}")
     if code or not tree or tree != gate.get("source_tree_hash"):
@@ -478,7 +493,7 @@ def check_released_commits(data, record, gate, records_dir):
             raise ValueError(f"publish record {path} has no valid published_at")
         if when.tzinfo is None or this_time.tzinfo is None:
             raise ValueError(f"publish record {path} or the releasing record has a published_at without a timezone")
-        if when < this_time:
+        if when <= this_time:
             earlier.append(git_commit(repo, other.get("source_commit"), f"the source commit of {path.name}"))
     for commit in released["change_commits"]:
         full = git_commit(repo, commit, "change commit")

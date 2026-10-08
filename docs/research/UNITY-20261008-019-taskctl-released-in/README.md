@@ -314,3 +314,45 @@ Branch `b/UNITY-20261008-019`:
   "for `published_by`"; the path line in section 1; step 12.
 - **Tests:** all of `scripts/tests` pass (397 passed, 1 skipped; before
   the change 352 + 1 skipped).
+
+## Verification, round 1: FAIL (fixed)
+
+The Verifier (independent subagent) checked the following and found
+nothing wrong in them:
+- the diff against the design;
+- every transition reachable without `released_in` (unchanged);
+- the round-2 details;
+- the whole suite;
+- mutation tests;
+- the dry check, which is byte-identical.
+
+One blocking finding: the repository the ancestry is checked in is a
+working tree anyone can change, and git's own history-override settings in
+such a repository were trusted. With them, a commit that was never
+published, or one that shipped earlier, could pass. Forged objects
+themselves fail closed, because git verifies object hashes. The change
+existed only on this task branch and never reached main.
+
+Fix:
+- `git_out` runs git with replace refs, grafts and the commit-graph file
+  switched off, and without inherited `GIT_*` settings;
+- a shallow repository is refused;
+- an earlier record with the same `published_at` counts as earlier.
+
+Tests:
+- seven new tests, one for each such override (in the evidence's
+  repository, in the gate's, hiding an earlier publication, grafts in the
+  repository and from the environment), a shallow repository, and the
+  equal timestamp;
+- run against the version before the fix, exactly these seven fail.
+
+Also from the Verifier's remarks:
+- the own `review_status` check now has a test;
+- the tree test now says what it tests (the gate's tree must agree with
+  the repository's; a repository holding the published commit always has
+  its tree);
+- rule R says what is trusted in the repository, and that a change commit
+  is not tied to the task by the tool (the task's Verifier checks that).
+
+`scripts/tests`: 405 passed, 1 skipped. The dry check on
+UNITY-20261008-014 is unchanged.
