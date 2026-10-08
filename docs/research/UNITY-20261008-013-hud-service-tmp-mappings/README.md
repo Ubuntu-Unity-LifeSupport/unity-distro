@@ -65,7 +65,94 @@ The file descriptor is closed, which matches the steady fd count in logs/01.
 The deleted file stays mapped together with its pages for the life of the
 process: 3 mappings per query, and the RSS with them.
 
-Next:
-1. Existing-fix discovery for libcolumbus: newer Ubuntu and Debian, upstream (lp:libcolumbus), Launchpad bugs.
-2. Then the design for the Design Challenger. C's decision (2026-10-08): this task carries libcolumbus +unity1 (`munmap` in `~Trie`); hud is not changed.
-3. The Writer starts' RSS (+4.7 MB per 10 starts, no files) is a separate question: menus imported and kept, or another leak.
+
+## The Writer starts (2026-10-08, logs/03)
+
+30 Writer starts in the same session, with no HUD query, leave hud-service's RSS at 44.2-44.3 MB and add no mapping. The +4.7 MB of the first 10 starts in logs/01 is a one-time cost: the menus imported and kept. It is not a leak, so there is no follow-up.
+
+## Existing-fix discovery (subagent, read-only, 2026-10-08)
+
+Result: **NOT_FIXED**; issue search **NOT_FOUND** for this bug.
+
+- **Upstream** `~unity-team/libcolumbus/trunk`: last revision 2015-08-06, the same code as our source; read through the git import `github.com/megari/libcolumbus`. `~Trie` there has no `munmap` (`src/Trie.cc:91-94`).
+- **Ubuntu:** every series from trusty to resolute and stonking. resolute has `1.1.0+15.10.20150806-0ubuntu39`; its only patch is a Python 3.10 build fix, and ubuntu35 to ubuntu39 are no-change rebuilds and a symbols edit. Nothing newer in -proposed.
+- **Elsewhere:** Debian does not package it; no Lomiri fork; the Arch and AUR copies carry no patches.
+- **Launchpad:** nothing on the missing `munmap`. Related reports:
+  - LP#1282261: SIGBUS in `Trie::append` blamed on a full /tmp. The leaked mappings keep deleted /tmp files allocated; this is not proven to be the cause.
+  - LP#1257215: `tmpfile()` failure; it added the throw.
+  - Several reports of hud-service memory growth without a root cause: LP#1253593, #1645186, #1670507, #1368896, #987060.
+- **Reverse dependencies in resolute:** `libcolumbus1v5` is used by hud and unity-lens-applications (both installed on target2), and by python3-columbus and libcolumbus1-dev, which nothing uses.
+- **Other weaknesses in the same code:**
+  - `Trie::Trie()` leaks `p` (and the file) when `tmpfile()` or `expand()` throws.
+  - `expand()` leaves `p->map` dangling when the new `mmap` fails after the old one was unmapped.
+  - `Matcher` and `ErrorValues` delete only `operator=`, not the copy constructor; this is latent.
+  - `Word`'s move assignment to itself deletes its own text.
+  - No other destructor leaks: WordStore, LevenshteinIndex, ErrorValues, ErrorMatrix and Matcher are correct.
+
+## Design (for the Design Challenger)
+
+**Invariant:** a destroyed Trie leaves no mapping and no file behind. A
+process that creates and destroys Matchers keeps a constant number of
+mappings.
+
+**Package:** libcolumbus `1.1.0+15.10.20150806-0ubuntu39+unity1`, source
+format 1.0 as the archive has it. The change goes in the tree, as with hud;
+the existing `debian/patches` is left as it is.
+
+**`src/Trie.cc`:**
+
+1. `TriePrivate` gains `TrieOffset mapSize`, the size of the current
+   mapping. It is kept outside the mapping, so the destructor does not read
+   the size from memory it is about to unmap. `TriePrivate` is private (a
+   pimpl), so the ABI does not change; the symbols file stays.
+2. **`~Trie()`:** if `p->map` is set, `munmap(p->map, p->mapSize)`, then
+   `fclose(p->f)` (if open), then `delete p`.
+   - Unmapping first is the natural order. Either order frees the pages once
+     both are done, and the file is gone when the last reference goes.
+   - A failed `munmap` in a destructor cannot be reported by an exception: it
+     is written to stderr and ignored.
+3. **`expand()`:**
+   - Before it unmaps, the old size is taken from `p->mapSize`.
+   - After a successful `munmap`, `p->map = nullptr` and `p->mapSize = 0`, so
+     a failed `ftruncate` or `mmap` does not leave a dangling map for the
+     destructor.
+   - After a successful `mmap`, `p->mapSize = newSize`.
+   - The header write (`p->h->totalSize`) stays as it is; the file format is
+     unchanged.
+4. **`Trie()` exception safety:** if `tmpfile()` fails, `delete p` before
+   the throw. If `expand()` throws, the constructor unmaps (when mapped),
+   closes the file and deletes `p`, then rethrows. Without it, the
+   destructor would never run for a half-built object, and the fix would
+   still leak there.
+5. **Not in scope**, recorded as remarks: the latent copy constructors of
+   Matcher and ErrorValues, and Word's self move. None of them is reached
+   by hud or the lens, and changing the public headers would touch the ABI.
+
+**Tests** (`test/TrieTest.cc`, run by `dh_auto_test` / ctest in the build):
+
+- `testNoMappingLeft`: count `/proc/self/maps` lines with `(deleted)`,
+  create and destroy 50 Tries with a few words each, and count again: the
+  same number. Before the fix it grows by 50.
+- `testNoMappingLeftAfterExpand`: a Trie that grows (enough words for
+  several `expand()` calls), then destroyed: no mapping left.
+- A Matcher test (`test/MatcherTest.cc` or a new one in the existing
+  `coltest` set): create and destroy 20 `Columbus::Matcher`s with a small
+  corpus (`index`), then count the mappings as above. This is the hud
+  pattern.
+- **Control:** the same tests on the unpatched source must fail. They are
+  in a separate commit, and a control build is made without the fix.
+- The existing tests (trie, levtrie, the others) pass.
+
+**Target check** (Clean-2 + the live publication, then libcolumbus +unity1
+from a file repository, a cold cycle):
+
+- `leak.sh` before and after:
+  - +0 deleted `/tmp/#` files per 10 queries, from +30 now;
+  - RSS per query close to 0 (the first queries may still allocate caches);
+- the HUD still answers: Writer "Сохранить" and Terminal "Создать окно"
+  give the same results;
+- unity-lens-applications: the Dash application search still finds an
+  application, checked by its scope over D-Bus or by a screenshot of the
+  Dash;
+- running processes use the new library: no `(deleted)` libcolumbus
+  mapping in hud-service.
