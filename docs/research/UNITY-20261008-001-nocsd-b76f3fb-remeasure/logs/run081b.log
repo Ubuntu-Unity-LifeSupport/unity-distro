@@ -1,0 +1,9 @@
+/home/mike/b081/nocsd-60ec176-dbg/Source/GTK-NoCSD.c: patched
+## 2026-10-08T04:02:04Z debug build 60ec176: rc=0 warnings=0
+S-dbg: 44 apps, menus 53 top, NO-MENUBAR 0, NO-GTK-PROPS 1, MISSING 3, crashes 3
+## S dropped custom items in: dialect gnome-calendar gnome-sudoku gnome-text-editor kgx loupe yelp 
+/home/mike/b081/nocsd-b76f3fb-dbg/Source/GTK-NoCSD.c: patched
+## 2026-10-08T04:08:25Z debug build b76f3fb: rc=0 warnings=0
+U-dbg: 44 apps, menus 53 top, NO-MENUBAR 0, NO-GTK-PROPS 1, MISSING 3, crashes 3
+## U dropped custom items in: dialect gnome-calendar gnome-sudoku gnome-text-editor kgx loupe yelp 
+## 2026-10-08T04:14:47Z packaged library restored: 6fcf52bcc6d96440; dpkg -V: 0 lines

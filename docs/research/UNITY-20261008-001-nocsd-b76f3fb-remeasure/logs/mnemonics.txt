@@ -1,0 +1,7 @@
+S pinta Alt+F: new windows: 
+S text-editor F10: new windows: 
+S text-editor then к: new windows against before F10:  
+U pinta Alt+F: new windows: 
+U text-editor F10: new windows: 
+U text-editor then к: new windows against before F10: 58720260:кк (Черновик) - текстовый редактор 
+packaged library restored: 6fcf52bcc6d96440

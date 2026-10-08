@@ -1,0 +1,11 @@
+#### S-on (GTK_NOCSD_GLOBAL_MENU=1)
+nautilus before:  disabled win.undo _Отменить; disabled win.redo _Повторить;
+nautilus after rename:  ok win.undo _Отменить переименование; disabled win.redo _Повторить; files: rename-b.txt 
+papers start page:  - Просмотрщик документов; ok app.shortcuts _Комбинации клавиш; ok app.help _Справка; ok app.about _О приложении;
+papers started with a PDF:  - Просмотрщик документов; ok win.gtk-nocsd-doc-print _Печать…; ok win.fullscreen Полноэкранный режим; ok win.presentation Показать как слайд-шоу; ok win.gtk-nocsd-doc-digital-signing Цифровая п; ok win.gtk-nocsd-doc-open-copy Открыть _копию; ok win.gtk-nocsd-doc-open-with Открыть с помощь; ok win.gtk-nocsd-doc-save-as Сохранить _как…; ok win.gtk-nocsd-doc-continuous _Непрерывно; ok win.gtk-nocsd-doc-dual-page _Две страницы; disabled win.gtk-nocsd-doc-dual-odd-left _Нечёт; ok win.gtk-nocsd-doc-rtl Документ справа на лев; ok win.gtk-nocsd-doc-rotate-right Поверн_уть ⤵; ok win.gtk-nocsd-doc-show
+#### U-on (GTK_NOCSD_MENU=1)
+nautilus before:  disabled win.undo Отменить; disabled win.redo Повторить;
+nautilus after rename:  ok win.undo Отменить переименование; disabled win.redo Повторить; files: rename-b.txt 
+papers start page:  - Просмотрщик документов; ok app.shortcuts Комбинации клавиш; ok app.help Справка; ok app.about О приложении;
+papers started with a PDF:  - Просмотрщик документов; ok win.gtk-nocsd-doc-print Печать…; ok win.fullscreen Полноэкранный режим; ok win.presentation Показать как слайд-шоу; ok win.gtk-nocsd-doc-digital-signing Цифровая п; ok win.gtk-nocsd-doc-open-copy Открыть копию; ok win.gtk-nocsd-doc-open-with Открыть с помощь; ok win.gtk-nocsd-doc-save-as Сохранить как…; ok win.gtk-nocsd-doc-continuous Непрерывно; ok win.gtk-nocsd-doc-dual-page Две страницы; disabled win.gtk-nocsd-doc-dual-odd-left Нечётн; ok win.gtk-nocsd-doc-rtl Документ справа на лев; ok win.gtk-nocsd-doc-rotate-right Повернуть ⤵; ok win.gtk-nocsd-doc-show-prope
+6fcf52bcc6d96440
