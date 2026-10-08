@@ -1,0 +1,3 @@
+# UNITY-20260929-001 peer notice (ENGINEERING-PROCESS section 6 step 7)
+2026-10-08 10:53Z B -> A: hud 14.10+17.10.20170619-0ubuntu6+unity4, 20 records, snapshot unity-resolute-20260929-001 (= live unity-resolute-20261002-003-r2 + 20, nothing removed or changed), version_safety SAFE, window-stack-bridge only, switch after C and May
+2026-10-08 10:53Z A -> B: A ACK UNITY-20260929-001; no repo add, snapshot or slot on A's side; nothing of A's in unity-resolute after the live unity-resolute-20261002-003-r2; A's UNITY-20261002-012 builds are local only

@@ -485,3 +485,15 @@ Remarks (not blocking; the follow-ups are separate tasks):
 | hud-service mapping and RSS growth, partly on the move path (the menu re-import accepted in design point 6). | UNITY-20261008-013 |
 | Numeric usage rows written by +unity3 stay in users' usage tables; +unity4 does not migrate them. | accepted in design round 3 |
 | The ids of applications with reverse-DNS desktop files are cut at the first dot. | UNITY-20261008-011 |
+
+## Publication (2026-10-08)
+
+Slot from C (no other publication in progress).
+
+- **Gated build:** `build/` (hud `b0c2444`, chroot 20261008T083223Z), the build tested on target2: `tested_build` this_build. The hud .deb installed there is the build's (sha256 `b936d26d…`, the Verifier compared it and the running binaries).
+- **Database backup:** `~/backups/UNITY-20260929-001-20261008T105044Z` (17 files, equal to live), list_sha256 `0c65c32d41d94f744fa44864a3fe612397c2480f13635941d38697ed09c8f1fa`.
+- **repo add** of the manifest's artifacts to unity-resolute, at 10:51Z: 20 records (source, 14 .deb, 5 .ddeb), taking it from 416 to 436. Each pool file's sha256 equals the manifest's (22 of 22: the .dsc and its files, 14 .deb, 5 .ddeb).
+- **Snapshot:** `unity-resolute-20260929-001`. `snapshot diff` against the live `unity-resolute-20261002-003-r2` shows only these 20 records added (gate/snapshot-diff.txt). The live snapshot is taken from the latest publish record and the Release Date of the published files.
+- **Version safety:** SAFE (gate/version-check.json, gate/version-safety.txt, at 10:52:43Z). The pre-build ordering check is in gate/prebuild-version-safety.txt.
+- **Peer notice:** A ACK (gate/peer-notice.txt).
+- **Patch record:** docs/PATCHES.md.
