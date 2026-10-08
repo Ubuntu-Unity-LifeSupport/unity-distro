@@ -204,3 +204,148 @@ file, and `ApplicationImpl::desktopPath()` finds the file by it.
 - Writer's id stays `libreoffice-writer` (the -001 move);
 - 10 Writer starts;
 - bridge SIGKILL restart.
+
+### Design review, round 1: REVISE (all points taken)
+
+The Design Challenger (an independent subagent) confirmed the rule: file
+name minus a trailing `.desktop`. It is bamf's own desktop-id rule
+(`bamf-matcher.c:953-955`; bamf loads only names ending in `.desktop`,
+`:998`). Ids whose only dot is the one in `.desktop` stay byte for byte the
+same. Its points, as applied:
+
+1. **The "Why not completeBaseName()" reason was wrong.** bamf's
+   `DesktopFile()` ends in `.desktop` for the `_GTK_APPLICATION_ID` and
+   snap/flatpak paths too (`:676`, `:1827`). A name without the suffix
+   comes only from the `_BAMF_DESKTOP_FILE` window hint or
+   `--desktop_file_hint` (`:33`, `:544`, `:2164`). The conclusion (keep such
+   a name whole) stands, and an uppercase `.DESKTOP` is also kept whole.
+2. **A fifth consumer of the id: `RegisterApplication`.**
+   `HudServiceImpl.cpp:45-53` creates the Application for the id a libhud
+   client sends, `g_application_get_application_id`, which is reverse-DNS
+   (`libhud/manager.c:238`). Before the fix such a client's sources went to
+   an Application (`org.gnome.Foo`) that none of its windows belonged to
+   (they were under `org`). After the fix they meet. target2 has no libhud
+   library installed (libhud2, libhud-client2, libhud-gtk1: not installed),
+   so nothing there uses it.
+   - The other consumers need no change:
+     - `GetWindowProperties` ignores the id;
+     - keywords come from the actions;
+     - `UpdateApp` does nothing;
+     - SQL binds values;
+     - `applicationPath` escapes `.` and `_`, so paths stay valid and
+       unique.
+3. **Old usage rows:**
+   - **They do not stay.** `store-usage-data` defaults to true, and rows
+     older than 30 days are deleted at startup and daily
+     (`SqliteUsageTracker.cpp:91-92`, `:105`).
+   - **They are harmless meanwhile.** An application without history gets
+     `usage() = 0` (`:135-137`) and the default order. After the change
+     only a file literally named `org.desktop` (or a hint `org`) gives the
+     id `org`; target2 has none (logs/01).
+   - **The same holds for `io` and `python3`.** A future `io.desktop` or
+     `python3.desktop` would inherit their rows for up to 30 days, which
+     is negligible.
+4. **Edge cases, decided and tested:**
+   - **A subdirectory:** bamf walks subdirectories (`bamf-matcher.c:1205`),
+     so `applications/kde4/foo.desktop` gives `foo`, as today.
+     `desktopPath()` looks for `applications/foo.desktop` and finds no icon,
+     as today. The rule and the lookup agree; the XDG id `kde4-foo` is out
+     of scope.
+   - **Several dots:** `org.gnome.Terminal.Preferences.desktop` gives
+     `org.gnome.Terminal.Preferences`, and `python3.14.desktop` gives
+     `python3.14`.
+   - **No suffix:** a name is kept whole.
+   - **A file named just `.desktop`:** today it gives `""`, and hud-service
+     drops the window through its ignore list. +unity5 gives the window
+     number instead, as for an empty desktop file, so the window keeps its
+     window actions.
+5. **Not in scope (pre-existing):** `desktopPath()` reads only
+   `XDG_DATA_DIRS`, not `XDG_DATA_HOME`. User desktop files and files
+   outside the XDG directories get the right id but no icon.
+6. **`value()`:**
+   - The null entry from `m_windows[path]` in `GetWindowStack` is never
+     returned, because every reader uses `value()`, `take()` or
+     overwrites it. So the change is behaviour-neutral, and no D-Bus test
+     can tell +unity4 from +unity5. The test reads the protected maps
+     through a test subclass.
+   - `GetWindowProperties` and `GetWindowBusAddress` have the same insert
+     on read (`m_windowsById[windowId]`). They get `value()` in the same
+     change.
+   - Logging a warning on a failed `connect()` and continuing is right.
+7. **The two -014 tests are characterization tests.** They pass on
+   +unity4 already: the connect filters by service name
+   (`BamfWindowStack.cpp:178`), and the slot re-resolves from `Parents()`.
+   The card now says so. Their mechanics:
+   - **The second mock name** is registered before `dbus.startServices()`,
+     in a fixture of its own.
+   - **The negative test needs a sync point.** After the foreign emit, a
+     real bamf `WindowAdded` for another moved window is waited for, and
+     then the foreign one must have produced nothing.
+   - **`Parents()` must already name another application**, so the test
+     cannot pass vacuously.
+8. **Control prediction by test name, the move test also checks
+   `GetWindowStack`, an object path test, `XDG_DATA_DIRS` restored after
+   the icon test:** see the revised design below.
+9. **The target plan gets measured steps with expected values**, including
+   the upgrade path with the old `org` row. Unity's HUD:
+   `HudController::OnQuerySelected` sets the HUD icon from the selected
+   result's `icon_name` with no fallback (unity `hud/HudController.cpp:510-514`).
+   `OnQueriesFinished` falls back to bamf's icon only when all results
+   have an empty icon (`:516-530`). So by the code, moving the selection
+   onto a Terminal result blanks the HUD icon on +unity4.
+
+## Design, revised after round 1
+
+**Code (hud window-stack-bridge):**
+
+- **The helper:** `applicationIdFromDesktopFile(path, windowId)`, a free
+  function in `BamfWindowStack.cpp`, declared in the header for the tests.
+  It takes `QFileInfo(path).fileName()`, removes a trailing `.desktop`
+  (case-sensitive), and gives the window number for an empty path or an
+  empty result. `resolveApplicationId` uses it, and so does the
+  constructor's window-number fallback, which stays as it is.
+- **`value()`:** `GetWindowStack` uses `m_windows.value(path)`;
+  `GetWindowProperties` and `GetWindowBusAddress` use
+  `m_windowsById.value(windowId)`.
+- **The connect:** `connect(... "WindowAdded" ...)` is checked, and on
+  failure the bridge logs
+  `qWarning() << "Could not connect to bamf's WindowAdded; windows moved to another application keep their first id"`.
+
+**Tests:**
+
+| test | +unity4 (control) | +unity5 |
+|---|---|---|
+| `ApplicationIdFromDesktopFile` (helper: `org.example.Foo.desktop`, `org.gnome.Terminal.Preferences.desktop`, `python3.14.desktop`, `kde4/foo.desktop` → `foo`, `appid-1.desktop`, `org.example.Foo` (no suffix), `Foo.DESKTOP`, `.desktop` → window number, empty → window number) | does not build (no helper); the control replaces this test with the D-Bus ones below | pass |
+| `ReverseDnsDesktopFileGivesFullId` (WindowCreated, GetWindowStack) | FAIL | pass |
+| `MultiDotDesktopFileGivesFullId` (`python3.14.desktop`) | FAIL | pass |
+| `SubdirectoryDesktopFileGivesBaseName` (`kde4/foo.desktop` → `foo`) | pass | pass |
+| `DesktopFileWithoutSuffixKeepsName` (`org.example.Foo`) | FAIL (`org`) | pass |
+| `DesktopFileNamedOnlySuffixGivesWindowNumber` (`/usr/share/applications/.desktop`) | FAIL (`""`) | pass |
+| `WindowMovedToReverseDnsApplication` (Created/Focused/Destroyed and GetWindowStack after the move) | FAIL | pass |
+| `UnknownPathsLeaveNoEntries` (subclass: GetWindowStack with an unknown active window, GetWindowProperties and GetWindowBusAddress for an unknown id; map sizes unchanged) | FAIL | pass |
+| `WindowAddedFromAnotherBusNameIsIgnored` (own fixture, second mock name; sync on a real bamf move) | pass (characterization) | pass |
+| `WindowAddedFromAnotherApplicationUsesParents` | pass (characterization) | pass |
+| service `TestApplication.ReverseDnsIdPathAndIcon` (`applicationPath("org.example.Foo")` = `/com/canonical/hud/applications/org_2eexample_2eFoo`, exported there; `XDG_DATA_DIRS` at a temporary `applications/org.example.Foo.desktop` with `Icon=foo-icon` gives `icon() == "foo-icon"`; `XDG_DATA_DIRS` restored) | pass | pass |
+
+`createApplication` gets a desktop-file parameter (default
+`appid-N.desktop`, as now). The control build is +unity4 plus the D-Bus
+tests above. It must fail exactly `ReverseDnsDesktopFileGivesFullId`,
+`MultiDotDesktopFileGivesFullId`, `DesktopFileWithoutSuffixKeepsName`,
+`DesktopFileNamedOnlySuffixGivesWindowNumber`,
+`WindowMovedToReverseDnsApplication` and `UnknownPathsLeaveNoEntries`.
+
+**Target (after APPROVE; Clean-2 + the live publication, then measured
+"before" on +unity4, then +unity5 from a file repository, cold cycle):**
+
+| step | +unity4 (before) | +unity5 (expected) |
+|---|---|---|
+| stack ids: Terminal, Mines, Disks | `org` | `org.gnome.Terminal`, `org.gnome.Mines`, `org.gnome.DiskUtility` |
+| hud-service `Applications` | one `org` | one per application, paths `..._2e...` |
+| legacy StartQuery icon, Terminal "Создать окно" | `''` | `org.gnome.Terminal` (`Icon=` of its desktop file on target2) |
+| legacy StartQuery icon, Writer "Сохранить" (control) | `libreoffice-writer` | `libreoffice-writer` |
+| "Всегда наверху" twice in Terminal: usage row | `('org', …)` | `('org.gnome.Terminal', …)` |
+| Disks' empty HUD after that | "Всегда наверху" first | default order; the `org` row from the before run is still in the table and has no effect |
+| Terminal menu query "Создать окно" | 3 results from Файл | the same |
+| Writer: 10 starts, the -001 move | `libreoffice-writer` | `libreoffice-writer` |
+| bridge SIGKILL restart | ids as above | ids as above |
+| Unity HUD icon with a Terminal result selected (optional screenshot, Down after opening) | blank by the code | Terminal's icon |
