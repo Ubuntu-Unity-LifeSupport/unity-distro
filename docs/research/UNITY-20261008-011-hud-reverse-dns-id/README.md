@@ -10,7 +10,7 @@ task_id: UNITY-20261008-011 (+ UNITY-20261008-014)
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: VERIFIED (2026-10-08), publication next
+status: PUBLISHED (2026-10-08 19:56:14Z), target verified on the publication
 source_version: 14.10+17.10.20170619-0ubuntu6+unity4 (published 2026-10-08)
 observed: >
   window-stack-bridge gives every application whose desktop file has a
@@ -537,3 +537,19 @@ The slot came from C. The release covers UNITY-20261008-011, and UNITY-20261008-
 - **Version safety:** SAFE (gate/version-check.json, gate/version-safety.txt, at 18:43:49Z). The pre-build ordering check is in gate/prebuild-version-safety.txt.
 - **Patch record:** docs/PATCHES.md.
 - **Peer notice:** A ACK (gate/peer-notice.txt).
+- **Switch:** May confirmed in B's session, after C had checked the gate. `publish_aptly.py` switched `./resolute` to `unity-resolute-20261008-011` at 19:56:14 UTC. Write-once record: `~/coordinator/publish-records/UNITY-20261008-011.json`. The files under `/srv/aptly/public` show hud +unity5.
+
+## Target verification of the publication (2026-10-08)
+
+Result: **PASS** (logs/06).
+
+- **Restore:** target2 was rolled back to Clean-2. The restore waited for `safe_to_snapshot`, and the result was checked from inside the guest: no `~/.dirty`, no work directories, none of our sources, no usage table, hud 0ubuntu6.
+- **Upgrade:** through our repository by the normal path, with no file repository. apt's candidate for hud was +unity5 from 8080. The .deb apt fetched is the gated one (sha256 `65ca0c56…`), and `dpkg -V hud` is clean.
+- **Boot:** a cold cycle. The running bridge and hud-service are the files of that .deb, with no "(deleted)" mapping.
+- **Ids and objects:**
+  - Terminal is `org.gnome.Terminal`, Mines `org.gnome.Mines`, Disks `org.gnome.DiskUtility`, Writer `libreoffice-writer`.
+  - hud-service has one Application each.
+- **Icons:**
+  - Terminal's legacy StartQuery icon is `org.gnome.Terminal`.
+  - Writer's is `libreoffice-writer`. The first Writer query came while LibreOffice's first-start Welcome dialog was open (the UNITY-20260929-002 case); after the dialog was closed it was as expected.
+- **History:** "Всегда наверху" twice in Terminal is recorded under `org.gnome.Terminal`, and Disks' empty HUD keeps the default order.
