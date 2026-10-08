@@ -204,3 +204,48 @@ rounds.
 - `docs/research/UNITY-20260929-023-published-by/real-020.py` is a tool of
   the old rule. It is left unchanged as a historical record and would now
   refuse.
+
+## 8. Verification
+
+An independent Verifier, a temporary subagent, checked `341c7d9` and
+`2eda067`. Verdict: **PASS**.
+
+- **The past closures.**
+  - On the branch, -052 is accepted by bytes, -011 by buildinfo, and -020
+    is refused.
+  - The old code at main `78808f1` accepted all three.
+  - In a scratch clone with -020's on-disk `.buildinfo` copies committed,
+    the real code refuses -020 for "differ in Installed-Build-Depends",
+    while it still accepts -052 and -011.
+  - Both committed `.buildinfo` files match their manifests.
+- **Rules 1 and 2.** They work as described, and the published
+  `.buildinfo` is read from the published manifest's directory. No way
+  for other bytes to pass was found.
+- **`buildinfo_identity_error`.** It keeps the order and the messages of
+  `check()`, and `test_tested_build.py` is unchanged.
+- **Gate, publisher and `.gitignore`.** The gate and the publisher reach
+  the new check. `git check-ignore` confirms that `.gitignore` admits only
+  `docs/research/<task>/<dir>/*.buildinfo`.
+- **Suite and mutations.** The full suite gives 325 passed and 1 skipped.
+  Eleven of the Verifier's twelve mutations were caught. The one that
+  survived swaps which side is reported first when both `.buildinfo` files
+  list a package twice. That is a test gap only, since the code keeps the
+  old order.
+- **Section 6.** It matches the code.
+
+Notes, and what was done with them:
+- An own source or binary artifact without a string sha256 dropped out of
+  the rule 1 comparison. **Fixed in `bdfe535`**: such a manifest is
+  refused, and a test covers it. The Verifier re-checked this change:
+  **PASS**.
+  - The published_by and taskctl tests give 69 passed. The full suite
+    gives 326 passed and 1 skipped.
+  - `past-closures.py` is unchanged: -052 and -011 accepted, -020 refused.
+  - With the new check removed, two tests fail.
+  - On the first attempt the guard stopped a command line that held the
+    mutation strings. No aptly call was made. The strings then went into
+    a file, written with Write.
+- `dependency_identity` stringifies values and drops entries that are not
+  dicts. This was inherited, and the change leaves it as it was.
+- Rule P in section 6 does not repeat that a manifest must list exactly one
+  `.buildinfo`. The code enforces it.
