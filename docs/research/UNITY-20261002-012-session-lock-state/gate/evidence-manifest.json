@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-012",
+  "package": "unity-settings-daemon",
+  "source_commit": "b116af20655212040b4a9c1d436b16a9a1bd7d3d",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/README.md",
+      "sha256": "5e0dcfe511f2958c13a10988361e98b603876a9c3f3b6dd1ca8e16726ff47a6c"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/README.md",
+      "sha256": "5e0dcfe511f2958c13a10988361e98b603876a9c3f3b6dd1ca8e16726ff47a6c"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "4703a525b9c2f31a187d65e44d1f7444a7813c4679ffcb9be29af31e75b2007f"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/gate/release-record.json",
+      "sha256": "ebc9881fdd33752ff8d323120fbc686443d28d8c3f91939e548197eb435aa464"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/gate/version-check.json",
+      "sha256": "2068aed40fdb4316ee33b79a52ab8c72b9cf483cd000e0655a8a803236ba9bd9"
+    }
+  }
+}
