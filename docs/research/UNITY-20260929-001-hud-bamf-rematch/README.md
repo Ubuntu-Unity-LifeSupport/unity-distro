@@ -255,6 +255,36 @@ no signal); bamf restarts.
    bamf does not move (a terminal); bamfdaemon killed: the bridge stays up,
    what happens is recorded.
 
+### Design review, round 2: REVISE (all points taken)
+
+1. **"Focused" is the last focus the bridge reported** (`m_activeWindowPath`),
+   set where `ActiveWindowChanged` emits `FocusedWindowChanged`, where
+   `GetWindowStack` marks a window focused, and once in the constructor
+   from `ActiveWindow()` after `WindowPaths()`. Without that, a window
+   known from the start that moves before any `ActiveWindowChanged` (the
+   bridge restarted) would lose hud-service's focus.
+2. **Only reported focus updates it:** `ActiveWindowChanged` to an empty
+   path or an unknown window emits nothing and does not change the member;
+   `ViewClosed` of that path clears it (bamf's fake close and reopen of the
+   same path).
+3. **The resolver has three outcomes:** error, no parent, an id. The
+   constructor maps error and no parent to the window number, as today;
+   the `WindowAdded` handler maps both to "keep the id" (an empty
+   `Parents()` is a passing state during a move or close).
+4. **`WindowAdded` is connected before `WindowPaths()`**, with the other
+   connections, so no move between the reply and the connection is lost.
+5. **`BamfWindow::setApplicationId`** changes the stored id; `m_windows`
+   and `m_windowsById` share the window object, so `ViewClosed`,
+   `ActiveWindowChanged` and `GetWindowStack` all see the new id.
+6. **Three more unit tests:** a startup window that `ActiveWindow()`
+   reports focused, moved with no `ActiveWindowChanged`, gives Created,
+   Focused, Destroyed; a `WindowAdded` while `Parents()` is `[]` gives
+   nothing and keeps the id; `ActiveWindowChanged` to an unknown path, then
+   a move of the previously focused window, still gives Focused.
+7. **One more target measurement:** Writer running, window-stack-bridge
+   killed and started again, then a move (Start Center -> a document): the
+   HUD still knows the focused application.
+
 ## Plan (before the Design Challenger)
 
 1. Reproduction on Clean-2 + the published stack: window stack, the
