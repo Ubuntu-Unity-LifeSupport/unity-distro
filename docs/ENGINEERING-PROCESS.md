@@ -674,7 +674,10 @@ caused it.
      **[process]**
 8. **Evidence first, gate last.**
    - Finish the card, the verification record, the patch record, the
-     release record and the version check. Commit and push them.
+     release record and the version check. Commit and push them, together
+     with the build manifest and its `.buildinfo`.
+   - The gate and the publisher refuse a gated build whose `.buildinfo`
+     is not committed (UNITY-20261008-003). **[tool]**
    - Then run `scripts/create_release_gate.py`. It refuses unless the
      board state is `REVIEW` or `READY_TO_PUBLISH`.
    - The gate pins the sha256 of the build manifest, of `tested_build` and
@@ -751,19 +754,29 @@ Rules used by these steps:
   - It does not compare file contents. The owner shows that only container
     bytes differ by comparing file lists, control fields and md5sums
     (UNITY-20261002-003). **[process]**
-  - The tested `.buildinfo` is committed with `git add -f`, because
-    `*.buildinfo` is ignored.
+  - The tested `.buildinfo` is committed with its manifest. Since
+    UNITY-20261008-003, `.gitignore` admits `.buildinfo` files in
+    `docs/research/<task>/<build dir>/`. A file elsewhere needs
+    `git add -f`.
 - **P. `published_by`.** A task whose change shipped in another task's
   publication closes through `published_by: {task_id, record_sha256}`.
-  `taskctl` requires all of the following. **[tool]**
+  `taskctl` requires the following (UNITY-20261008-003). **[tool]**
   - The same `package` and `candidate_version`.
-  - The task's own `build_sbuild.py` manifest, whose commit equals the
-    published commit or is its ancestor.
-  - The same source and binary artifact names, by file, package, version
-    and architecture.
   - Verification `PASS` with a `review_status`.
+  - The task's own `build_sbuild.py` manifest, tied to the published bytes
+    in one of two ways:
+    1. Its `source` and `binary` artifacts equal the publish record, by
+       file and sha256.
+    2. Otherwise, it is `buildinfo_identical` to the published build. The
+       published build is read through the record's `gate_file` and
+       `gate_sha256`, then the gate's `build_manifest`. Both builds must
+       have the same source commit and tree, the same extra build
+       dependencies, the same `.buildinfo` identity fields and the same
+       `Installed-Build-Depends`. Both `.buildinfo` files must be
+       committed.
 
-  It is not a way to close a task whose version was not published.
+  A commit that is only an ancestor of the published one is refused. So is
+  a task whose version was not published.
 - **K. Known gaps.** A gap known before the gate goes on the board as its
   own task first. It does not wait for the publication or for May. A gap is
   a case not covered, a related bug or a follow-up. **[process]**

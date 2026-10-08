@@ -108,6 +108,44 @@ def duplicate_ibd(text):
     return sorted({n for n in names if names.count(n) > 1})
 
 
+def buildinfo_identity_error(a_text, b_text, a_label, b_label):
+    """The two builds are buildinfo_identical: the same identity fields, no
+    package listed twice, the same Installed-Build-Depends. Error or None.
+    (UNITY-20261008-003: shared by check() and taskctl's published_by.)"""
+    af, bf = buildinfo_fields(a_text), buildinfo_fields(b_text)
+    for key in BUILDINFO_FIELDS:
+        if af.get(key) != bf.get(key):
+            return f"the {a_label} and {b_label} .buildinfo differ in {key}: {af.get(key)!r} / {bf.get(key)!r}"
+    for label, text in ((a_label, a_text), (b_label, b_text)):
+        twice = duplicate_ibd(text)
+        if twice:
+            return f"the {label} .buildinfo lists {', '.join(twice)} twice in Installed-Build-Depends"
+    try:
+        if installed_build_depends(a_text) != installed_build_depends(b_text):
+            return f"the {a_label} and {b_label} builds differ in Installed-Build-Depends; repeat the target test"
+    except ValueError as exc:
+        return f"cannot compare Installed-Build-Depends: {exc}"
+    return None
+
+
+def manifest_buildinfo(root, manifest, manifest_dir, label):
+    """(text, error): the manifest's one .buildinfo, committed in the repository
+    and equal to the sha256 the manifest records (UNITY-20261008-003)."""
+    listed = [a for a in manifest.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") == "buildinfo"]
+    if len(listed) != 1:
+        return None, f"the {label} manifest lists {len(listed)} .buildinfo files, not one"
+    try:
+        rel = (Path(manifest_dir).resolve() / listed[0].get("file", "")).relative_to(Path(root).resolve()).as_posix()
+    except (TypeError, ValueError):
+        return None, f"the {label} .buildinfo is outside the repository"
+    path, _rel, digest, error = committed(root, rel, f"the {label} .buildinfo")
+    if error:
+        return None, error
+    if digest != listed[0].get("sha256"):
+        return None, f"the {label} .buildinfo {rel} does not match the sha256 its manifest records"
+    return path.read_text(encoding="utf-8", errors="replace"), None
+
+
 def check(fields, manifest, manifest_dir, root):
     """(tested_build object, error)."""
     chroot = manifest.get("chroot")
@@ -186,19 +224,9 @@ def check(fields, manifest, manifest_dir, root):
         return None, "the gated build's .buildinfo is missing or does not match its sha256"
     tested_text = tb_path.read_text(encoding="utf-8", errors="replace")
     gated_text = gb_path.read_text(encoding="utf-8", errors="replace")
-    tf, gf = buildinfo_fields(tested_text), buildinfo_fields(gated_text)
-    for key in BUILDINFO_FIELDS:
-        if tf.get(key) != gf.get(key):
-            return None, f"the tested and gated .buildinfo differ in {key}: {tf.get(key)!r} / {gf.get(key)!r}"
-    for label, text in (("tested", tested_text), ("gated", gated_text)):
-        twice = duplicate_ibd(text)
-        if twice:
-            return None, f"the {label} .buildinfo lists {', '.join(twice)} twice in Installed-Build-Depends"
-    try:
-        if installed_build_depends(tested_text) != installed_build_depends(gated_text):
-            return None, "the tested and gated builds differ in Installed-Build-Depends; repeat the target test"
-    except ValueError as exc:
-        return None, f"cannot compare Installed-Build-Depends: {exc}"
+    error = buildinfo_identity_error(tested_text, gated_text, "tested", "gated")
+    if error:
+        return None, error
     result["tested_buildinfo"] = {"file": tb_rel, "sha256": tb_sha}
     result["gated_buildinfo"] = {"file": gated[0]["file"], "sha256": gated[0]["sha256"]}
     return result, None

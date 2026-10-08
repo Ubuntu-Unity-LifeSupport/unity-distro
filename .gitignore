@@ -6,6 +6,9 @@
 *.deb
 *.ddeb
 *.buildinfo
+# UNITY-20261008-003: a build directory's .buildinfo is committed with its
+# manifest (docs/research/<task>/<build dir>/), for tested_build and published_by.
+!docs/research/*/*/*.buildinfo
 *.changes
 *.build
 # Source package files copied next to build manifests (build_sbuild.py); large,

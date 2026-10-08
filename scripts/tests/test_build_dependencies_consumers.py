@@ -83,6 +83,13 @@ class ConsumersEndToEndTest(unittest.TestCase):
         (self.build / "build-dependencies").mkdir(parents=True)
         self.make_deb(self.build / "demo_1.0+unity1_amd64.deb", PACKAGE, VERSION, PACKAGE)
         (self.build / "build.log").write_text("log\n")
+        # UNITY-20261008-003: the build's .buildinfo is committed with its manifest
+        self.buildinfo = self.build / "demo_1.0+unity1_amd64.buildinfo"
+        self.buildinfo.write_text(f"Format: 1.0\nSource: {PACKAGE}\nBinary: {PACKAGE}\nArchitecture: amd64\n"
+                                  f"Version: {VERSION}\nBuild-Architecture: amd64\n"
+                                  "Installed-Build-Depends:\n base-files (= 14ubuntu6.2)\n")
+        self.git(self.root, "add", str(self.buildinfo.relative_to(self.root)))
+        self.git(self.root, "commit", "-qm", "buildinfo")
         pooled = self.pool / "main" / "libd" / "libdemo" / DEP_NAME
         self.make_deb(pooled, "libdemo-dev", "2.0+unity1", "libdemo")
         shutil.copy2(pooled, self.build / "build-dependencies" / DEP_NAME)
@@ -116,7 +123,9 @@ class ConsumersEndToEndTest(unittest.TestCase):
                     "log": {"file": "build.log", "sha256": sha(self.build / "build.log")},
                     "artifacts": [{"file": "demo_1.0+unity1_amd64.deb", "kind": "binary", "package": PACKAGE,
                                    "version": VERSION, "architecture": "amd64",
-                                   "sha256": sha(self.build / "demo_1.0+unity1_amd64.deb")}]}
+                                   "sha256": sha(self.build / "demo_1.0+unity1_amd64.deb")},
+                                  {"file": self.buildinfo.name, "kind": "buildinfo", "package": PACKAGE,
+                                   "version": VERSION, "architecture": "amd64", "sha256": sha(self.buildinfo)}]}
         if entries is not None:
             manifest["build_dependencies"] = entries
         manifest.update(getattr(self, "manifest_extra", {}))  # UNITY-20260929-020
@@ -290,6 +299,30 @@ class TestedBuildEndToEndTest(ConsumersEndToEndTest):
                 self.assertEqual(result.returncode, 2, result.stderr)
                 self.assertIn(message, result.stderr)
                 self.assertNotIn("matching source and binary artifacts", result.stderr)
+
+    def untrack_buildinfo(self):
+        """The file stays on disk, with its sha256, but is no longer in git."""
+        with (self.root / ".gitignore").open("a") as f:
+            f.write("*.buildinfo\n")
+        self.git(self.root, "rm", "-q", "--cached", str(self.buildinfo.relative_to(self.root)))
+
+    def test_gate_refuses_uncommitted_buildinfo(self):
+        """UNITY-20261008-003: a gated build's .buildinfo must be committed."""
+        self.git(self.root, "rm", "-q", "--cached", str(self.buildinfo.relative_to(self.root)))
+        self.git(self.root, "commit", "-qm", "untrack")
+        self.assertTrue(self.buildinfo.is_file())
+        self.assertNotIn("buildinfo", self.git(self.root, "ls-files"))
+        result = self.create_release_gate([self.entry])
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("gated build's .buildinfo", result.stderr)
+        self.assertIn("must be tracked, committed and unmodified", result.stderr)
+
+    def test_publish_refuses_buildinfo_removed_from_git_after_the_gate(self):
+        self.gate_extra, self.after_gate = self.gate_record, self.untrack_buildinfo
+        result = self.publish([self.entry])
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("gated build's .buildinfo", result.stderr)
+        self.assertNotIn("matching source and binary artifacts", result.stderr)
 
 
 if __name__ == "__main__":
