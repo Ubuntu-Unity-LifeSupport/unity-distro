@@ -545,6 +545,21 @@ class ReleasedInTest(unittest.TestCase):
             history.close()
         self.assertIn("not a well-formed commit", str(caught.exception))
 
+    # taskctl holds the board lock: a blocked read in the repository must not hang it
+    def test_named_pipe_as_shallow_file(self):
+        self.taskctl.GIT_TIMEOUT = 2
+        os.mkfifo(self.src / ".git" / "shallow")
+        self.refused("PUBLISHED", self.evidence(), "did not finish")
+
+    def test_named_pipe_as_loose_object(self):
+        self.taskctl.GIT_TIMEOUT = 2
+        # the merge commit: every path from the published commit passes it
+        path = self.src / ".git" / "objects" / self.merge[:2] / self.merge[2:]
+        os.chmod(path, 0o644)
+        path.unlink()
+        os.mkfifo(path)
+        self.refused("PUBLISHED", self.evidence(), "is not a commit")
+
     def test_own_review_status_missing(self):
         self.refused("PUBLISHED", self.evidence(review_status="PENDING"), "review_status")
 

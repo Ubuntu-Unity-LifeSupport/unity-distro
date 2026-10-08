@@ -449,9 +449,17 @@ def git_env():
     return env
 
 
+# taskctl holds the board lock while it checks: no git call may hang it
+# (a named pipe in the repository would block a read).
+GIT_TIMEOUT = 120
+
+
 def git_out(repo, *args):
-    result = subprocess.run(GIT_TRUSTED + ["-C", str(repo)] + list(args), check=False, capture_output=True,
-                            text=True, env=git_env())
+    try:
+        result = subprocess.run(GIT_TRUSTED + ["-C", str(repo)] + list(args), check=False, capture_output=True,
+                                text=True, env=git_env(), timeout=GIT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        raise ValueError(f"released_in: git {args[0]} in {repo} did not finish in {GIT_TIMEOUT} s")
     return result.returncode, result.stdout.strip()
 
 
@@ -465,10 +473,21 @@ class VerifiedHistory:
         self.process = subprocess.Popen(GIT_TRUSTED + ["-C", str(repo), "cat-file", "--batch"],
                                         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
                                         env=git_env())
+        # A blocked read ends when the watchdog kills cat-file: the read then
+        # sees end of file and the commit is refused.
+        import threading
+        self.watchdog = threading.Timer(GIT_TIMEOUT, self.process.kill)
+        self.watchdog.daemon = True
+        self.watchdog.start()
 
     def close(self):
-        if self.process.stdin:
-            self.process.stdin.close()
+        self.watchdog.cancel()
+        try:
+            if self.process.stdin:
+                self.process.stdin.close()
+        except BrokenPipeError:
+            pass
+        self.process.kill()
         self.process.wait()
 
     def commit(self, commit_id):
@@ -477,8 +496,11 @@ class VerifiedHistory:
             return self.commits[commit_id]
         if not isinstance(commit_id, str) or not _HEX40.match(commit_id):
             raise ValueError(f"released_in: {commit_id!r} is not a full commit id")
-        self.process.stdin.write(commit_id.encode() + b"\n")
-        self.process.stdin.flush()
+        try:
+            self.process.stdin.write(commit_id.encode() + b"\n")
+            self.process.stdin.flush()
+        except BrokenPipeError:
+            raise ValueError(f"released_in: git cat-file in {self.repo} stopped (killed after {GIT_TIMEOUT} s?)")
         header = self.process.stdout.readline().split()
         if len(header) != 3 or header[0].decode() != commit_id or header[1] != b"commit":
             raise ValueError(f"released_in: {commit_id} is not a commit in {self.repo}")

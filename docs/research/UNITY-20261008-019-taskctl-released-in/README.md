@@ -431,3 +431,35 @@ Against the round-3 version, exactly four of them fail.
 
 `scripts/tests`: 414 passed, 1 skipped. The dry check on
 UNITY-20261008-014 is unchanged. Rule R says what git may still do.
+
+## Verification, round 4: PASS
+
+The Verifier checked:
+- the round-3 fix, with its four tests failing against the version before
+  it;
+- all seven earlier forgeries and the malformed commit (each refused);
+- ten more ways a repository's configuration could make git run a program:
+  lazy fetch through a promisor (via `uploadpack`, `core.sshCommand`, an
+  `ext::` URL, a credential helper), `core.fsmonitor` directly or through
+  `include.path`, `core.alternateRefsCommand`, a hook, `core.pager`, an
+  alias, `gpg.program`. On HEAD none ran. On the version before the
+  round-3 fix the probe saw two of them run, so it can detect them;
+- `objects/info/alternates` pointing at special files: nothing ran;
+- the suite and the dry check.
+
+Remarks:
+- **A named pipe in the repository could make taskctl hang** (as
+  `.git/shallow`, behind `include.path`, or in place of a loose object).
+  taskctl holds the board lock while it checks, so every other taskctl
+  command would wait. This is not a bypass. Fixed after the PASS:
+  - every `git_out` call has a timeout (`GIT_TIMEOUT`, 120 s);
+  - a watchdog kills the `cat-file --batch` process after the same time,
+    and the blocked read then ends and refuses the commit;
+  - two tests (a pipe as `.git/shallow`, a pipe in place of the merge
+    commit every path passes) are refused within the test's 2 s limit,
+    and both hang on the version before.
+- **SHA-1 collisions stay out of scope:** Python's `hashlib.sha1` has no
+  collision detection, unlike git's.
+
+`scripts/tests`: 416 passed, 1 skipped. The dry check on
+UNITY-20261008-014 is unchanged.
