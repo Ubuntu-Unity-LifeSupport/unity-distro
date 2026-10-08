@@ -148,9 +148,22 @@ rounds.
 
 All six old copies exit 0 when the copy differs from the live db. They
 print `equal to live: False` and stop there, so nothing prevents the
-`repo add` that follows. The canonical script exits 1 in that case. No
-recorded backup was hit by this: every card that used a copy shows
-`equal to live: True`.
+`repo add` that follows. The canonical script exits 1 in that case.
+
+Recorded outputs show `equal to live: True` for:
+- UNITY-20260927-040 (`runs/db-backup.txt`);
+- UNITY-20260927-021 (`logs/11-replace-step0.txt`);
+- UNITY-20260928-019 (`runs/11-db-backup.txt`).
+
+The cards of the following tasks record at most the backup path, not the
+script's result:
+- UNITY-20260927-012
+- UNITY-20260928-022
+- UNITY-20261002-002
+- UNITY-20261002-003
+
+Their results cannot be checked now, because the live db has changed
+since then.
 
 ## 7. Results (branch `a/UNITY-20261008-004`)
 
