@@ -313,3 +313,35 @@ users never get near that size.
 ### Design review, round 3: APPROVE
 
 The overflow guard's bound is exact (`mapSize` is a power of two from 1024, so the largest value let through, 2^30, doubles to 2^31, which still fits in `uint32_t`). It runs before `ftruncate`, so "Trie too large" leaves everything unchanged. `append()` cannot overflow below it. The first expand is unchanged. Code can go into the task branch.
+
+## Implementation (2026-10-08, in progress)
+
+The libcolumbus source is a local git tree (`packages/libcolumbus`). It was imported from the archive's
+`.dsc` with `gbp import-dsc`: `upstream` at `da1042c`, and `unity/resolute` at `9a24f85` for
+`0ubuntu39`. A public repository for it is pending May's decision. Branch `b/UNITY-20261008-013`:
+
+- `27955c8`, the tests:
+  - TrieTest: a live Trie maps one deleted file; 50 cycles leave none;
+    an expanded Trie (mapping over 1 KiB) leaves none;
+  - MatcherTest: an indexed Matcher with two fields maps three; 20 cycles
+    leave none;
+  - the tests fail if `/proc/self/maps` cannot be read;
+- `99ecdbf`, the fix in `src/Trie.cc` as approved in round 3;
+- `ead48a2`, +unity1;
+- `75ae6f2` and `3da4d89`, a build fix and its changelog line (below).
+
+**The archive `0ubuntu39` does not build in today's resolute.** CMake 4
+(`cmake 4.2.3-2ubuntu2`) refuses the `cmake_minimum_required(VERSION 2.8.9)`
+in `CMakeLists.txt`: "Compatibility with CMake < 3.5 has been removed from
+CMake", at configure time. Both first builds, of +unity1 and of the
+control, stopped there.
+- **The fix:** `cmake_minimum_required(VERSION 3.10)`, the same change as
+  hud +unity1. It is the only `cmake_minimum_required` in the tree, and
+  there is no `cmake_policy`.
+- **Review:** C, 2026-10-08: it is a mechanical change with a precedent and
+  needs no Design Challenger round. The Verifier checks that no other build
+  file changed.
+- **The control** is a separate clone (`packages/libcolumbus-control`,
+  `control/UNITY-20261008-013`): the archive, the tests (`27955c8`) and the
+  same build fix (`c6359e8`), without the Trie fix. A control without the
+  build fix would not build at all, so it would prove nothing.
