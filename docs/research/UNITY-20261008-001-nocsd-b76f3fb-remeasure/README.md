@@ -185,3 +185,21 @@ dialogs (for the crashes listed above), so the keys did not go to the
 panel. So the method did not reach the panel, and
 whether Alt mnemonics work with S or with U is **not tested**. A test needs
 real keyboard input on the panel (vbox `send_keys` and `screenshot`).
+
+## Verification of the crash section: PASS (REVIEWED)
+
+A second independent Verifier started the apps itself, without
+crash081.sh:
+
+- With `LD_PRELOAD` empty (libgtk-nocsd absent from `/proc/PID/maps` in
+  all 8 runs): showtime 4 of 5 runs with the `TypeError` traceback,
+  Apostrophe 2 of 3 with the pickling `TypeError`.
+- showtime with the session's packaged library: 0 of 5.
+- In `showtime/mpris.py` the `None` is the return of `_get(iface, prop)`,
+  the `org.freedesktop.DBus.Properties.Get` handler, for an interface
+  showtime does not serve (`_get_all` gives `{}` or `None`); line 209 then
+  builds a `(v)` reply from `(None,)`. Which session client sends that
+  `Get` was not identified.
+
+The rates per condition vary between runs and are not a measure of any
+build; the finding is that both errors occur without a preload.
