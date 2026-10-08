@@ -68,17 +68,20 @@ T=20261008T083223Z. The published nux 4.0.8+18.10.20180623-0ubuntu15+unity3
 was passed as an extra package, as for the previous unity build. The
 manifest is in `build-unity/`.
 
-The same tree had already been built and tested under the commit 80d5fc4e,
-whose messages were later rewritten (the tree is unchanged). Comparing the
-two builds:
+The same tree was built three times, all in the same chroot with the same
+nux:
 
-- 8 of the 10 packages are byte-identical;
-- in `unity` and `unity-dbgsym` only `libunityshell.so` differs, and only in
-  `.note.gnu.build-id` and `.gnu_debuglink`, which follow the debug
-  information;
-- code and data sections are identical.
+1. under the commit 80d5fc4e, whose messages were later rewritten (the tree
+   is unchanged); this is the build the earlier target tests used;
+2. under c5339fc6 for another task ID;
+3. under c5339fc6 for this task (the gated build).
 
-The gated build of this slot was tested on the target in its own right
+Builds 1 and 3 are byte-identical in all 10 packages. Build 2 differs only
+in `libunityshell.so`, and only in `.note.gnu.build-id` and
+`.gnu_debuglink`, which follow the debug information. Code and data
+sections are identical in all three.
+
+The gated build was also tested on the target in its own right
 (this_build).
 
 **Checks (properties measured on the target).** The target is the published
