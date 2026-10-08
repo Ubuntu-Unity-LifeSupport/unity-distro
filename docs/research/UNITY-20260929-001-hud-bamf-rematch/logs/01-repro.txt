@@ -1,0 +1,79 @@
+# 2026-10-08T08:29:11Z START
+## Writer window 62914596 (Без имени 1 — LibreOffice Writer); focused: Без имени 1 — LibreOffice Writer
+## window stack (window id, application id, focused)
+(62914596, '62914596', true
+## bamf now: ApplicationForXid 62914596 -> /org/ayatana/bamf/application/746707297, DesktopFile ('/usr/share/applications/libreoffice-writer.desktop',)
+## HUD legacy StartQuery (target, first suggestion)
+('Сохранить', [('<b>Сохранить</b> (Файл)', '', '', '', '', <uint64 30>), ('<b>Сохранить</b> как шаблон… (Файл, Шаблоны)', '', '', '', '', <uint64 26>), ('<b>Сохранить</b> как… (Файл)', '', '', '', '', <uint64 31>), ('<b>Сохранить</b> удалённо… (Файл)', '', '', '', '', <uint64 32>), ('<b>Сохранить</b> копию… (Файл)', '', '', '', '', <uint64 33>)], <'/com/canonical/hud/query/1'>)
+## bamf and bridge signals around the start (member, argument)
+   string ""
+1791448152.099270 :1.50 /org/ayatana/bamf/matcher ViewOpened
+   string "/org/ayatana/bamf/window/60817409"
+   string "window"
+1791448152.100801 :1.50 /org/ayatana/bamf/matcher ViewOpened
+   string "/org/ayatana/bamf/application/0x6175bf569c20"
+   string "application"
+1791448152.101001 :1.50 /org/ayatana/bamf/application/0x6175bf569c20 ChildAdded
+   string "/org/ayatana/bamf/window/60817409"
+1791448152.101141 :1.50 /org/ayatana/bamf/application/0x6175bf569c20 WindowAdded
+   string "/org/ayatana/bamf/window/60817409"
+   string ""
+1791448152.107715 :1.43 /com/canonical/Unity/WindowStack WindowCreated
+   uint32 60817409
+   string "60817409"
+1791448153.437619 :1.50 /org/ayatana/bamf/matcher ViewClosed
+   string "/org/ayatana/bamf/window/60817409"
+   string "window"
+1791448153.445497 :1.50 /org/ayatana/bamf/application/0x6175bf569c20 ChildRemoved
+   string "/org/ayatana/bamf/window/60817409"
+1791448153.445517 :1.50 /org/ayatana/bamf/application/0x6175bf569c20 WindowRemoved
+   string "/org/ayatana/bamf/window/60817409"
+1791448153.445523 :1.50 /org/ayatana/bamf/matcher ViewClosed
+   string "/org/ayatana/bamf/application/0x6175bf569c20"
+   string "application"
+1791448153.445545 :1.43 /com/canonical/Unity/WindowStack WindowDestroyed
+   uint32 60817409
+   string "60817409"
+   string ""
+1791448153.789031 :1.50 /org/ayatana/bamf/matcher ViewOpened
+   string "/org/ayatana/bamf/window/62914596"
+   string "window"
+1791448153.806964 :1.50 /org/ayatana/bamf/matcher ViewOpened
+   string "/org/ayatana/bamf/application/0x6175bf621950"
+   string "application"
+1791448153.806988 :1.50 /org/ayatana/bamf/application/0x6175bf621950 ChildAdded
+   string "/org/ayatana/bamf/window/62914596"
+1791448153.806991 :1.50 /org/ayatana/bamf/application/0x6175bf621950 WindowAdded
+   string "/org/ayatana/bamf/window/62914596"
+   string ""
+   string "/org/ayatana/bamf/window/35651624"
+   string ""
+   string ""
+   string "/org/ayatana/bamf/window/62914596"
+   uint32 2
+   string ""
+   string "/org/ayatana/bamf/application/0x6175bf621950"
+   uint32 2
+1791448153.893770 :1.43 /com/canonical/Unity/WindowStack WindowCreated
+   uint32 62914596
+   string "62914596"
+1791448153.893775 :1.43 /com/canonical/Unity/WindowStack FocusedWindowChanged
+   uint32 62914596
+   string "62914596"
+1791448153.902015 :1.50 /org/ayatana/bamf/application/0x6175bf621950 ChildRemoved
+   string "/org/ayatana/bamf/window/62914596"
+1791448153.902052 :1.50 /org/ayatana/bamf/application/0x6175bf621950 WindowRemoved
+   string "/org/ayatana/bamf/window/62914596"
+1791448153.902061 :1.50 /org/ayatana/bamf/matcher ViewClosed
+   string "/org/ayatana/bamf/application/0x6175bf621950"
+   string "application"
+   string ""
+1791448153.902097 :1.50 /org/ayatana/bamf/matcher ViewOpened
+   string "/org/ayatana/bamf/application/746707297"
+   string "application"
+1791448153.902100 :1.50 /org/ayatana/bamf/application/746707297 ChildAdded
+   string "/org/ayatana/bamf/window/62914596"
+1791448153.902103 :1.50 /org/ayatana/bamf/application/746707297 WindowAdded
+   string "/org/ayatana/bamf/window/62914596"
+   string ""
+   string "/org/ayatana/bamf/application/746707297"

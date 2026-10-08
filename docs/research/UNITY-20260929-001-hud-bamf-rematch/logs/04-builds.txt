@@ -1,0 +1,42 @@
+# UNITY-20260929-001 builds on chroot 20261008T083223Z, 2026-10-08 (rebuilt after b0c2444, the opened-during-move test)
+## build: 14.10+17.10.20170619-0ubuntu6+unity4 hud b0c2444 PASS
+1: [  PASSED  ] 6 tests.
+1/6 Test #1: test-integration-tests ................   Passed   12.00 sec
+2: [  PASSED  ] 10 tests.
+2/6 Test #2: test-libhud-unit-tests ................   Passed    2.56 sec
+3: [  PASSED  ] 15 tests.
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed    3.33 sec
+4: [  PASSED  ] 0 tests.
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.10 sec
+5: [  PASSED  ] 45 tests.
+5/6 Test #5: test-service-unit-tests ...............   Passed    3.23 sec
+6: [  PASSED  ] 23 tests.
+6/6 Test #6: test-window-stack-bridge-unit-tests ...   Passed    8.88 sec
+100% tests passed, 0 tests failed out of 6
+## build-control: hud-control 5e1f77f (the new tests on the +unity3 bridge) FAIL, expected
+1: [  PASSED  ] 6 tests.
+1/6 Test #1: test-integration-tests ................   Passed    5.55 sec
+2: [  PASSED  ] 10 tests.
+2/6 Test #2: test-libhud-unit-tests ................   Passed    2.69 sec
+3: [  PASSED  ] 15 tests.
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed    3.33 sec
+4: [  PASSED  ] 0 tests.
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.09 sec
+5: [  PASSED  ] 45 tests.
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.48 sec
+6: [  FAILED  ] TestBamfWindowStack.FocusedWindowMovedToItsApplication (4958 ms)
+6: [  FAILED  ] TestBamfWindowStack.StartupFocusedWindowMovedWithoutActiveWindowChanged (4901 ms)
+6: [  FAILED  ] TestBamfWindowStack.UnfocusedWindowMovedWithoutFocus (4948 ms)
+6: [  FAILED  ] TestBamfWindowStack.MovedWindowKeepsNewIdInLaterSignals (5039 ms)
+6: [  FAILED  ] TestBamfWindowStack.WindowOpenedDuringMoveIsCorrected (5021 ms)
+6: [  FAILED  ] TestBamfWindowStack.FocusKeptOverUnknownActiveWindow (5744 ms)
+6: [  PASSED  ] 17 tests.
+6: [  FAILED  ] 6 tests, listed below:
+6: [  FAILED  ] TestBamfWindowStack.FocusedWindowMovedToItsApplication
+6: [  FAILED  ] TestBamfWindowStack.StartupFocusedWindowMovedWithoutActiveWindowChanged
+6: [  FAILED  ] TestBamfWindowStack.UnfocusedWindowMovedWithoutFocus
+6: [  FAILED  ] TestBamfWindowStack.MovedWindowKeepsNewIdInLaterSignals
+6: [  FAILED  ] TestBamfWindowStack.WindowOpenedDuringMoveIsCorrected
+6: [  FAILED  ] TestBamfWindowStack.FocusKeptOverUnknownActiveWindow
+6/6 Test #6: test-window-stack-bridge-unit-tests ...***Failed   35.91 sec
+83% tests passed, 1 tests failed out of 6

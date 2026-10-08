@@ -1,0 +1,516 @@
+# UNITY-20260929-001: window-stack-bridge keeps the window number as LibreOffice's application id
+
+Owner: agent B (target2). Follow-up of UNITY-20260927-029. Since hud
+`+unity2` window-stack-bridge keeps a window whose first application is
+gone, with the window number as application id (the fallback the bridge
+already had for an application without a desktop file). For LibreOffice
+that is now the usual case: bamf announces the Writer window under a
+temporary application and re-matches it to libreoffice-writer a moment
+later, and the bridge never looks again.
+
+```yaml
+task_id: UNITY-20260929-001
+package: hud (window-stack-bridge)
+target_series: resolute
+issue: local - follow-up of UNITY-20260927-029
+status: PUBLISHED (2026-10-08 11:04:20Z), target verified on the publication
+source_version: 14.10+17.10.20170619-0ubuntu6+unity3 (published 2026-10-02)
+observed: >
+  The window stack lists the LibreOffice Writer document window with its
+  window number as application id: 19 of 20 starts in -029 logs/05, 10 of
+  10 cold boots in UNITY-20260929-002 round 3 (2026-10-08, Clean-2 + the
+  published stack). The Tip of the Day dialog, opened later under the
+  already re-matched application, gets libreoffice-writer.
+expected: >
+  every window of an application gets that application's id
+  (libreoffice-writer), as the dialog does.
+user_effect: >
+  hud records the HUD commands used in Writer under the window number, a
+  new key at every start, so the "most used" list of the empty HUD never
+  carries over to the next Writer start. The HUD icon on the panel is not
+  affected (Unity takes it from bamf); the "no icon" of the -029 card was
+  not reproduced and is closed as not this defect.
+```
+
+## Reading the code (hud +unity3)
+
+- `BamfWindow::BamfWindow` (window-stack-bridge/BamfWindowStack.cpp:28-75)
+  computes the application id once: the first entry of the window's
+  `Parents()`, then that application's `DesktopFile()` base name; with no
+  parent, an empty desktop file, or (since +unity2) a failed
+  `DesktopFile()` call, the window number.
+- `BamfWindowStack::ViewOpened` (:284-291) creates the window and emits
+  `WindowCreated(windowId, applicationId)`; `ViewClosed` emits
+  `WindowDestroyed`; `ActiveWindowChanged` emits `FocusedWindowChanged`
+  with the stored id; `GetWindowStack` returns the stored id. Only the
+  matcher's `ViewOpened`, `ViewClosed` and `ActiveWindowChanged` are
+  connected (:150-160). Nothing follows a window moving to another
+  application.
+- hud-service keys its applications by that id
+  (`ApplicationListImpl::ensureApplication`, service/ApplicationListImpl.cpp:
+  89-100; `WindowCreated` -> `ensureApplicationWithWindow`,
+  `WindowDestroyed` -> `removeWindow`, which drops an application left
+  without windows).
+- bamf offers what is needed to follow it (data/org.ayatana.bamf.view.xml):
+  on the application, `WindowAdded(path)` / `WindowRemoved(path)`,
+  `Xids()`, `DesktopFile()`; on every view `ChildAdded` / `ChildRemoved`,
+  `Parents()`, `Children()`; the matcher announces the new application
+  with `ViewOpened(path, "application")` (the -029 bamfwatch logs: the
+  temporary application closes and libreoffice-writer opens about 0.1-0.2
+  s after the window).
+
+Consequences named in the -029 card: the HUD shows no application icon and
+name for such a window, and its usage history is kept under the window
+number, so it starts empty at every LibreOffice start.
+
+## Existing-fix discovery (subagent, read-only, 2026-10-08)
+
+Sources: git.launchpad.net/bamf (HEAD 9183645, 0.5.7; our archive has
+0.5.6, line numbers may differ), git.launchpad.net/unity (7.7.0+23.04),
+git.launchpad.net/ubuntu/+source/indicator-appmenu
+(15.02.0+20.10.20260311), git.launchpad.net/ubuntu/+source/hud
+(0ubuntu6).
+
+- **How bamf moves a window.** `handle_raw_window` connects
+  "class-changed" to `on_raw_window_class_changed` (src/bamf-matcher.c
+  l.2204): `bamf_view_remove_child(old_app, win)` (l.2229), register the
+  new application if needed, `bamf_view_add_child(new_app, win)` (l.2236).
+  The window object and its D-Bus path (`/org/ayatana/bamf/window/<xid>`)
+  stay the same. On the bus: old application `ChildRemoved` +
+  `WindowRemoved`; if it is now empty and closes, matcher
+  `ViewClosed(old app)` and its `Closed`; if new, matcher
+  `ViewOpened(new app, "application")`; new application `ChildAdded` +
+  `WindowAdded`. **No `ViewOpened`/`ViewClosed` for the window itself**, so
+  the bridge, which listens only to those, never sees the move. (The other
+  re-match path, `bamf_legacy_window_reopen`, fakes a close and reopen of
+  the window and is already handled by the bridge.)
+- **libbamf:** no "parent changed" on a window; applications re-emit
+  "window-added"/"window-removed"; `bamf_matcher_get_application_for_xid`
+  answers the current application.
+- **Unity 7** (`unity-shared/BamfApplicationManager.cpp`) connects every
+  application's child-added/child-removed (l.367, l.380), and
+  `AppWindow::application()` (l.242) asks bamf again on every call.
+  **indicator-appmenu** does not track the move and looks the application
+  up again on each use (`get_entries`, `ensure_menus`).
+- **No later fix:** hud 0ubuntu1..0ubuntu6 changes are rebuilds and build
+  fixes; no fork carries a change to window-stack-bridge. UNKNOWN: old bzr
+  branches other than trunk, the upstream history of the bridge.
+
+Existing fix: NOT_FIXED. Issue search: no report of this specific cause
+found (the symptom of a missing HUD icon/name was not searched for
+separately: UNKNOWN beyond LP #1771173, which is about an empty HUD).
+
+## Reproduction (2026-10-08, logs/01, logs/02)
+
+target2: Clean-2 + our repository by `full-upgrade` (hud `+unity3`, unity
+`+unity12`, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6, LibreOffice
+26.2.6.3) + `xdotool` (set up by the UNITY-20260929-002 Verifier).
+`repro.sh` starts Writer under a dbus-monitor capture of bamf and the
+bridge.
+
+The order on the bus for the document window 62914596 (logs/01):
+
+| t (s) | sender | signal |
+|---|---|---|
+| .7890 | bamf | matcher `ViewOpened(window/62914596, window)` |
+| .8070 | bamf | matcher `ViewOpened(application/0x…621950, application)`; that application `ChildAdded`/`WindowAdded(window/62914596)` |
+| .8938 | bridge | `WindowCreated(62914596, "62914596")`, `FocusedWindowChanged(62914596, "62914596")` |
+| .9020 | bamf | application/0x…621950 `ChildRemoved`/`WindowRemoved(window/62914596)`; matcher `ViewClosed(application/0x…621950)` |
+| .9021 | bamf | matcher `ViewOpened(application/746707297, application)`; it `ChildAdded`/`WindowAdded(window/62914596)` |
+
+The temporary application had no desktop file, so the bridge took the
+window number; 8 ms after its `WindowCreated` bamf moved the window to
+libreoffice-writer, and the bridge sent nothing more. Afterwards:
+
+- the window stack: `(62914596, '62914596', true)`;
+- bamf itself: `ApplicationForXid 62914596` -> application/746707297,
+  `DesktopFile` `/usr/share/applications/libreoffice-writer.desktop`.
+
+**What it changes for the user** (logs/02, vbox screenshots):
+
+- The HUD on the panel shows the Writer icon even so: Unity takes the
+  icon from bamf itself. The "no icon" of the -029 card is not seen here.
+- **The usage history:** executing one HUD result (`CreateQuery`, the
+  first result, `ExecuteCommand`, as Enter in the HUD does) recorded it in
+  `~/.cache/indicator-appmenu/hud-usage-log.sqlite` as
+  `('62914596', 'Файл||Сохранить')`. hud ranks results by that history per
+  application id, and the next Writer window has another number (54525988,
+  62914596, 65011748 in earlier boots), so Writer's HUD history is split by
+  window number and mostly not found again. Where the history is used:
+  `ItemStore::search` with an empty query (the HUD just opened, nothing
+  typed) lists up to 20 items ordered by `usage(m_applicationId, entry)`
+  (service/ItemStore.cpp:183-200), and `execute` marks the use under the
+  same id (:295, :334). So for LibreOffice the "most used" list shown when
+  the HUD opens does not learn across starts.
+
+**How often** (logs/03, `freq.sh`: Writer or Calc started again and again
+in one session, the previous instance killed; the window stack's id
+against bamf's application and whether bamf moved the window):
+
+| | window number as id | libreoffice-writer/-calc | bamf moved the window |
+|---|---|---|---|
+| Writer, 10 starts | 9 | 1 (start 1) | 9 (all but start 1) |
+| Calc, 3 starts | 2 | 1 (start 3) | 3 |
+
+Calc start 3 was moved and still got the right id: the bridge's
+`Parents()` call was answered after the move. So the result is a race
+between the bridge's two calls and bamf's re-match, which the bridge loses
+most of the time; when bamf does not move the window (Writer start 1) the
+id is right from the start.
+
+Reproduction: PASS.
+
+## Design (for the Design Challenger)
+
+Invariant: **the bridge's application id for a window is the id of the
+application bamf has the window under, also after bamf moves it.**
+
+Facts the design rests on:
+
+- bamf announces the move only with the applications' `ChildRemoved` /
+  `ChildAdded` (and `WindowRemoved` / `WindowAdded`); the window's path
+  stays the same.
+- hud-service keys windows by application id; `WindowDestroyed(id, old)`
+  removes the window and drops an application left empty, and if it was
+  the focused application, sets the focus to none
+  (`ApplicationListImpl::removeWindow`); `WindowCreated(id, new)` creates
+  the window again (its collectors re-import the menu).
+
+Candidates:
+
+- **(A) Follow the children.** One QtDBus match for `ChildAdded` on
+  `org.ayatana.bamf.view` from bamf on any path (the sender path is the
+  application). For a known window path whose stored id differs from the
+  new application's id (desktop file base name, or the window number if
+  it has none): store the new id, emit `WindowDestroyed(xid, old)`,
+  `WindowCreated(xid, new)`, and, if the window is bamf's active window,
+  `FocusedWindowChanged(xid, new, MAIN)`. `GetWindowStack` and later
+  `ActiveWindowChanged` then use the new id. This is Unity's own pattern
+  (BamfApplicationManager follows child-added).
+- **(B) Re-resolve lazily** (indicator-appmenu's pattern) in
+  `GetWindowStack`/`ActiveWindowChanged`, and emit the same three signals
+  when the answer differs. Simpler to wire, but the move is only noticed on
+  the next focus change or stack query; hud-service's keyed state stays
+  wrong until then.
+- **(C) Wait before announcing:** hold `WindowCreated` of a window with a
+  window-number id for some hundred milliseconds in case bamf moves it.
+  Rejected: a timing guess, and still wrong when the move comes later.
+
+Proposed: (A). To measure: the order of hud-service's own state after the
+three signals (the HUD keeps answering for the window; the usage history
+goes under libreoffice-writer); no extra windows or applications left
+behind; other applications unchanged (a window that bamf never moves gets
+no signal); bamf restarts.
+
+### Design review, round 1: REVISE (all points taken)
+
+1. **`WindowAdded` on `org.ayatana.bamf.application`, not `ChildAdded`**
+   (which every view sends, tabs included). One QtDBus connection from
+   `BAMF_DBUS_NAME` on any path (empty path); the match carries the
+   sender, the test confirms only bamf's signals arrive.
+2. **Resolve again from the window, keep the old id on error.** The
+   `Parents()` -> `DesktopFile()` code becomes one resolver
+   (`BamfWindow::resolveApplicationId`, false on any D-Bus error). On
+   `WindowAdded(p)`: ignore `p` unless it is a known window; on an error
+   or the same id, nothing; on a different id, store it and emit. It does
+   not trust the sending application (queued signals of the temporary
+   application arrive after the move). Every move ends with a
+   `WindowAdded` from the final application, so the last one handled sees
+   bamf's final state. Orders covered: move before the constructor's calls
+   (right at once, later signals no-ops); move between them (the
+   constructor's error gives the window number, the queued `WindowAdded`
+   corrects it); move after `WindowCreated` (this card's case). No signal
+   is handled for an unannounced window: `addWindow` and `WindowCreated`
+   run in one slot, and the blocking calls do not dispatch signals.
+3. **Order of the signals: `WindowCreated(new)`, then
+   `FocusedWindowChanged(new)`, then `WindowDestroyed(old)`.** Destroyed
+   first would set hud-service's focus to none (`removeWindow` on the
+   emptied focused application) and clear an open query's results; and
+   `ApplicationImpl::window` uses `QMap::operator[]`, which would insert a
+   null entry into the old application. With Created first the focus goes
+   straight to the new application.
+4. **Focused from the bridge's own last `ActiveWindowChanged`** (a new
+   member with that path), no extra synchronous `ActiveWindow()` call; a
+   background window's move does not move the focus.
+5. **Correction:** the bridge has no handling for a bamf owner change (no
+   `QDBusServiceWatcher` in window-stack-bridge). Out of scope; on the
+   target, "no crash, nothing worse than before".
+6. **Destroy + create, no new `WindowApplicationChanged` signal:** the
+   window's application id is fixed when hud-service builds its
+   `WindowImpl` (collectors, usage keys), so a new signal would rebuild it
+   anyway, in new code. Cost: one menu re-import per move.
+7. **(B) and (C) are worse**, the bridge is the right layer (the only
+   process here that talks to bamf); (B) would also miss the later move
+   LibreOffice Start Center -> Writer.
+8. **Unit tests** (tests/unit/window-stack-bridge/TestBamfWindowStack.cpp,
+   the dbusmock helpers): a focused window moved from no desktop file to
+   `appid-1` gives Created, Focused, Destroyed in that order and
+   `GetWindowStack` returns `appid-1`; an unfocused window gives no
+   Focused; the same application gives nothing; an unknown path gives
+   nothing; a `DesktopFile` error keeps the id and emits nothing; after a
+   move `ViewClosed` and `ActiveWindowChanged` carry the new id. Service
+   side (tests/unit/service/TestApplicationList.cpp): Created(new),
+   Focused(new), Destroyed(old) leaves the focused application the new one
+   and no old id in `applications()`.
+9. **Target measurements** (hud-service and window-stack-bridge restarted,
+   no "(deleted)" mappings): 10 cold Writer starts and 3 Calc starts with
+   libreoffice-writer / -calc in the stack each time; an open HUD query
+   during the move still answers and `ExecuteCommand` works; the usage row
+   under libreoffice-writer; no numeric application ids left in
+   hud-service; Start Center -> a document; no bridge signals for a window
+   bamf does not move (a terminal); bamfdaemon killed: the bridge stays up,
+   what happens is recorded.
+
+### Design review, round 2: REVISE (all points taken)
+
+1. **"Focused" is the last focus the bridge reported** (`m_activeWindowPath`),
+   set where `ActiveWindowChanged` emits `FocusedWindowChanged`, where
+   `GetWindowStack` marks a window focused, and once in the constructor
+   from `ActiveWindow()` after `WindowPaths()`. Without that, a window
+   known from the start that moves before any `ActiveWindowChanged` (the
+   bridge restarted) would lose hud-service's focus.
+2. **Only reported focus updates it:** `ActiveWindowChanged` to an empty
+   path or an unknown window emits nothing and does not change the member;
+   `ViewClosed` of that path clears it (bamf's fake close and reopen of the
+   same path).
+3. **The resolver has three outcomes:** error, no parent, an id. The
+   constructor maps error and no parent to the window number, as today;
+   the `WindowAdded` handler maps both to "keep the id" (an empty
+   `Parents()` is a passing state during a move or close).
+4. **`WindowAdded` is connected before `WindowPaths()`**, with the other
+   connections, so no move between the reply and the connection is lost.
+5. **`BamfWindow::setApplicationId`** changes the stored id; `m_windows`
+   and `m_windowsById` share the window object, so `ViewClosed`,
+   `ActiveWindowChanged` and `GetWindowStack` all see the new id.
+6. **Three more unit tests:** a startup window that `ActiveWindow()`
+   reports focused, moved with no `ActiveWindowChanged`, gives Created,
+   Focused, Destroyed; a `WindowAdded` while `Parents()` is `[]` gives
+   nothing and keeps the id; `ActiveWindowChanged` to an unknown path, then
+   a move of the previously focused window, still gives Focused.
+7. **One more target measurement:** Writer running, window-stack-bridge
+   killed and started again, then a move (Start Center -> a document): the
+   HUD still knows the focused application.
+
+### Design review, round 3: APPROVE
+
+Remarks, taken into the target plan:
+
+- hud-service does not reset its state when the bridge goes away (the
+  watcher in `ApplicationListImpl` is stored but its `serviceUnregistered`
+  is not connected; `GetWindowStack` is read only in its constructor). So
+  the bridge-restart check is meaningful only with the new package
+  installed, both processes restarted, and the Start Center window already
+  under libreoffice-startcenter before the kill. Kill the bridge with
+  SIGKILL (its unit restarts on failure); log the stack before, the three
+  signals after the move, and hud-service's focused application.
+- An application hud-service learned under a window number from the old
+  package stays there until hud-service restarts (a later
+  `WindowDestroyed` with the right id only logs "non-existent
+  application"); hud-service is restarted before every measurement, and a
+  leftover numeric entry from before is not a fault of the fix.
+
+## Plan (before the Design Challenger)
+
+1. Reproduction on Clean-2 + the published stack: window stack, the
+   bridge's signals and bamf's signals for a cold Writer start (bamfwatch,
+   dbus-monitor), and what the HUD shows (application name, icon) with the
+   window-number id.
+2. Existing fix: the -002 search covered later hud versions and forks
+   (none); check bamf's own clients (libbamf `bamf_window_get_application`
+   users, Unity's launcher) for how they follow a re-match.
+3. Candidate approaches for the Design Challenger, e.g.: re-resolve the id
+   when the matcher announces an application (`ViewOpened` of type
+   application: ask its `Xids()`, and for each known window whose id is the
+   window number, emit `WindowDestroyed(old)` + `WindowCreated(new)`); or
+   subscribe to each application's `WindowAdded`; or resolve lazily in
+   `GetWindowStack`/`ActiveWindowChanged`. Measure what hud-service does
+   with a destroy/create pair for a live window (its menus are re-imported).
+
+## Implementation (2026-10-08)
+
+hud source `Ubuntu-Unity-LifeSupport/hud`, branch `b/UNITY-20260929-001`
+(pushed): `551a798` (the bridge and the tests), `cc0a279` (+unity4) and
+`b0c2444` (one more test) on the published +unity3 (`9e7c093`).
+
+- `BamfWindow::resolveApplicationId` (one place for `Parents()` ->
+  `DesktopFile()`; outcomes: Parents error, DesktopFile error, no parent,
+  an id) and `setApplicationId`. The constructor keeps its behaviour: a
+  Parents error drops the window, the other non-id outcomes give the window
+  number.
+- `BamfWindowStack`: `WindowAdded` from bamf on any path, connected before
+  `WindowPaths()`; `m_activeWindowPath` set from `ActiveWindow()` at start,
+  from `ActiveWindowChanged` when it reports, from `GetWindowStack` when it
+  marks the focus, cleared by `ViewClosed`. `WindowAdded` re-resolves a
+  known window and on a new id emits Created(new), Focused(new) if it is
+  the reported focus, Destroyed(old). `m_windows.value()` instead of
+  `operator[]` in the two focus lookups, so an unknown path does not insert
+  an empty entry.
+- Tests: 10 in TestBamfWindowStack (the moves, the no-op cases, the later
+  signals, the startup focus, focus over an unknown window, a window opened
+  while its first application is already gone: the regression for the
+  ChildRemoved/ChildAdded sequence with no ViewOpened for the window), 1 in
+  TestApplicationList (Created, Focused, Destroyed leaves the new
+  application focused and no old id).
+
+**Builds** (`build_sbuild.py`, chroot 20261008T083223Z; logs/04):
+
+- +unity4 (`b0c2444`): 6 of 6 suites; window-stack-bridge 23 tests,
+  service 45.
+- control (`5e1f77f`: the new tests on the +unity3 bridge, a local branch
+  only): the window-stack-bridge suite fails 6 tests, exactly the moves
+  (FocusedWindowMovedToItsApplication,
+  StartupFocusedWindowMovedWithoutActiveWindowChanged,
+  UnfocusedWindowMovedWithoutFocus, MovedWindowKeepsNewIdInLaterSignals,
+  WindowOpenedDuringMoveIsCorrected, FocusKeptOverUnknownActiveWindow);
+  17 pass, among them the 4 no-op tests; the service test passes there
+  too, as it should.
+- +unity3 against +unity4 (logs/05): every package has the same file list
+  and the same exported symbols; the binaries differ in bytes (the newer
+  chroot), the source only in the bridge. That comparison is of the
+  `cc0a279` build; `b0c2444` adds only a test.
+
+## Target check (target2, 2026-10-08, logs/06)
+
+Clean-2 restored and confirmed from inside the guest (no `~/.dirty`, no
+work directories, hud `0ubuntu6`, NTP synchronized), then `apt
+full-upgrade` to the live publication `unity-resolute-20261002-003-r2`
+(InRelease Date 2026-10-08 03:05:41 UTC) the usual way, no drop-ins, no
+test environment. hud `+unity4` from a file repository on top (`apt
+full-upgrade` upgraded only hud). Every measurement follows a plain
+`systemctl reboot`; `versions` shows the running bridge and hud-service
+from the installed binaries (no `(deleted)` mappings).
+
+**Before / after** (the defect: hud records LibreOffice's commands under
+the window number, so its "most used" list never carries over to the next
+Writer start):
+
+| | published +unity3 | +unity4 |
+|---|---|---|
+| stack id of the Writer window | the window number (`'56623243'`, `'58720292'`), 4 of 4 starts | `libreoffice-writer`, 10 of 10 Writer starts in a row within one boot (+1 after the bamf kill) |
+| stack id of the Calc window | the window number, 1 of 1 | `libreoffice-calc`, 3 of 3 |
+| usage row for HUD "Сохранить" | `('58720292', 'Файл\|\|Сохранить')` | `('libreoffice-writer', 'Файл\|\|Сохранить')` (`libreoffice-calc` from Calc) |
+| bridge signals for the window | Created(xid, xid), Focused(xid, xid) only | Created(xid, xid) [Focused(xid, xid)], Created(xid, new), Focused(xid, new), Destroyed(xid, xid) |
+
+C's points:
+
+- (а) commands recorded under libreoffice-writer: the usage row above.
+  The target check: an empty HUD query in a fresh Writer start before any
+  Writer use lists only the window actions; after one HUD "Сохранить" in
+  run 1, Writer killed and started again (run 2), the empty query lists
+  "Сохранить (Файл)" first.
+- (б) no duplicates or dangling windows: in every start the old id gets
+  exactly one Destroyed, and the stack lists the window once, with the new
+  id.
+- (в) focus: the stack's focus flag is true for the moved window in every
+  start; Focused(new) comes either before Destroyed(old) (the window was
+  the reported focus at the move) or after it (focus reported later, by
+  `ActiveWindowChanged`, already with the new id). Both orders end with the
+  new application focused; hud-service answers HUD queries for it.
+- (г) both sides of the race: starts where the bridge saw the window first
+  under the temporary application (Created(xid, xid), then the move) and
+  starts where the bridge's lookup already got libreoffice-writer
+  (Created(xid, libreoffice-writer) only: starts 3, 6, 7) both end with
+  the right id.
+
+Other checks (design review point 9):
+
+- Live query: a CreateQuery opened as soon as the Writer window shows, not
+  reopened: 0 rows at +0/+1 s, 5 rows with (Файл) from +2 s (the menu
+  import), the query follows the move.
+- Start Center, then ctrl+n: the same window goes from
+  `libreoffice-startcenter` to `libreoffice-writer` (Created(new),
+  Focused(new), Destroyed(startcenter)); HUD "Сохранить" gives 4 results
+  from Файл.
+- Terminal: Created/Focused at open, Destroyed at close, no move. Its id
+  is `org` (from `org.gnome.Terminal.desktop`): `QFileInfo::baseName()`
+  stops at the first dot. That is the +unity3 code, unchanged here, and
+  outside this task.
+- window-stack-bridge killed with SIGKILL: systemd restarts it (restart
+  counter 1); the Start Center check above passes again with the new
+  process.
+- bamfdaemon killed: it is started again by D-Bus activation, the bridge
+  keeps running, the stack and a later Writer start give
+  libreoffice-writer.
+
+The leftover `'58720292'` row from the before run stays in the usage
+table: numeric rows from +unity3 are not removed by +unity4 (design review
+round 3).
+
+## Verification (independent Verifier, 2026-10-08): PASS
+
+The Verifier did not write the fix. Its checks:
+
+- **Code review** of `9e7c093..b0c2444` against the design:
+  - `WindowAdded` is connected before `WindowPaths()`;
+  - `m_activeWindowPath` is handled at all four places;
+  - the order is Created(new), Focused(new) only for the reported focus, then Destroyed(old);
+  - the id is kept on every bamf error;
+  - unknown and already-closed windows return early;
+  - a second move re-resolves from bamf.
+- **hud-service side:** `ApplicationListImpl` keeps windows per application, so Created(new) followed by Destroyed(old) cannot drop the new entry.
+- **Builds:**
+  - +unity4: 6 of 6 suites (bridge 23 tests);
+  - control `5e1f77f`: its tests are equal to `b0c2444`'s, and it fails exactly the 6 move tests;
+  - the bridge and hud-service in the .deb equal the running binaries on target2, and the .deb on target2 is the built one.
+- **target2 state:**
+  - apt history shows the full-upgrade to the live publication, then only hud +unity4;
+  - no unit drop-ins, environment overrides or `/etc/ld.so.preload` (the only `LD_PRELOAD` is the distro's gtk-nocsd).
+- **Its own two-run check** with other commands: HUD "Линейки (Вид)" and "Строка состояния (Вид)" in one Writer run. In the next Writer start the empty HUD lists them first, and the window number changed between the runs.
+- **C's points:** (а) to (г) hold, and the card's numbers match logs/06.
+
+Remarks (not blocking; the follow-ups are separate tasks):
+
+- hud-service accumulates deleted 128 KiB `/tmp/#…` shared mappings: about
+  60 per Writer start, about 72 with a move, about 3 per HUD query. On
+  target2 they went from 525 to 1161 in one boot, and RSS from 64 to 79 MB.
+  Starts without a move go through code this change does not touch.
+  Follow-up UNITY-20261008-013 (first a comparison on +unity3).
+- The `(deleted)` count in `target.sh versions` includes those `/tmp`
+  mappings; none of them is a library or the binary.
+- The return value of the `WindowAdded` connect is not checked or logged;
+  `GetWindowStack`'s loop still uses `m_windows[path]`, which inserts an
+  empty entry for an unknown path (harmless here, the move uses `value()`).
+  Two tests from design round 1 are missing: a `WindowAdded` from another
+  bus name, and a sender that differs from the `Parents()` answer.
+  Follow-up UNITY-20261008-014.
+- The bridge's id cut at the first dot (`org` for `org.gnome.Terminal`) is
+  +unity3 code: follow-up UNITY-20261008-011.
+
+## Known gaps
+
+| gap | where it is covered |
+|---|---|
+| The unit tests emit only bamf's `WindowAdded`, not the whole re-match sequence (ChildRemoved/WindowRemoved, ViewClosed(app), ViewOpened(app), ChildAdded). The bridge listens only to `WindowAdded`, so the tests reach every path of the new code. | the real sequence from bamf on target2: logs/01 (the signal order), logs/06 (the moves seen by the bridge) |
+| No test for a `WindowAdded` from another bus name, nor for a sender that differs from the `Parents()` answer (design round 1). | UNITY-20261008-014 |
+| hud-service mapping and RSS growth, partly on the move path (the menu re-import accepted in design point 6). | UNITY-20261008-013 |
+| Numeric usage rows written by +unity3 stay in users' usage tables; +unity4 does not migrate them. | accepted in design round 3 |
+| The ids of applications with reverse-DNS desktop files are cut at the first dot. | UNITY-20261008-011 |
+
+## Publication (2026-10-08)
+
+Slot from C (no other publication in progress).
+
+- **Gated build:** `build/` (hud `b0c2444`, chroot 20261008T083223Z), the build tested on target2: `tested_build` this_build. The hud .deb installed there is the build's (sha256 `b936d26d…`, the Verifier compared it and the running binaries).
+- **Database backup:** `~/backups/UNITY-20260929-001-20261008T105044Z` (17 files, equal to live), list_sha256 `0c65c32d41d94f744fa44864a3fe612397c2480f13635941d38697ed09c8f1fa`.
+- **repo add** of the manifest's artifacts to unity-resolute, at 10:51Z: 20 records (source, 14 .deb, 5 .ddeb), taking it from 416 to 436. Each pool file's sha256 equals the manifest's (22 of 22: the .dsc and its files, 14 .deb, 5 .ddeb).
+- **Snapshot:** `unity-resolute-20260929-001`. `snapshot diff` against the live `unity-resolute-20261002-003-r2` shows only these 20 records added (gate/snapshot-diff.txt). The live snapshot is taken from the latest publish record and the Release Date of the published files.
+- **Version safety:** SAFE (gate/version-check.json, gate/version-safety.txt, at 10:52:43Z). The pre-build ordering check is in gate/prebuild-version-safety.txt.
+- **Peer notice:** A ACK (gate/peer-notice.txt).
+- **Patch record:** docs/PATCHES.md.
+- **Switch:** May confirmed in B's session, after C had checked the gate. `publish_aptly.py` switched `./resolute` to `unity-resolute-20260929-001` at 11:04:20 UTC. Write-once record: `~/coordinator/publish-records/UNITY-20260929-001.json`. The files under `/srv/aptly/public` show hud +unity4 and Release Date 11:04:20 UTC.
+
+## Target verification of the publication (2026-10-08)
+
+Result: **PASS** (logs/07).
+
+- **Restore:** target2 was rolled back to Clean-2 and checked from inside the guest. There was no `~/.dirty`, no `~/b001` and none of our apt sources; hud was 0ubuntu6, there was no usage table yet, and NTP was synchronised.
+- **Upgrade:** through our repository by the normal path (the key, `unity-distro.sources`, `apt-get full-upgrade`), with no file repository.
+- **The .deb:** apt's candidate for hud was +unity4 from 8080. The .deb apt fetched is the gated one (sha256 `b936d26d…`), and `dpkg -V hud` is clean.
+- **Boot:** a cold cycle (poweroff, then start). The session booted with no drop-ins or test configuration of ours. The running bridge and hud-service are the files of that .deb, with no "(deleted)" mapping.
+- **Stack:** `libreoffice-writer` in 4 of 4 Writer starts.
+- **Focus flag:** true in 3 of the 4 starts. It was false when the stack was read 6 s after start 2; +unity3 showed the same thing in 2 of 4 starts.
+- **History key:**
+  - Before any Writer use, the empty HUD lists only the window actions.
+  - One HUD "Сохранить" is recorded as `('libreoffice-writer', 'Файл||Сохранить')`.
+  - After Writer was killed and started again, the empty HUD lists "Сохранить (Файл)" first.
+- After the check target2 was rolled back to Clean-2 (poweroff at 11:31:02Z, restore, start) and checked from inside at 11:33:32Z: no `~/.dirty`, no `~/b001`, no `unity-distro.sources`, no usage table, hud 0ubuntu6, NTP synchronised.
