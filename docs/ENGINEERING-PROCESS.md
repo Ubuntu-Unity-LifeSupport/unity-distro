@@ -578,9 +578,196 @@ The build chroot (UNITY-20260929-016, May's decision 2026-09-29).
   may be deleted by hand. `~/.cache/sbuild/resolute-amd64.tar.zst` (release
   pocket only, 2026-09-22) is the record of the builds up to 2026-09-29.
 
-Example workflow. Generate the release gate while the task is in `REVIEW`;
-record its path in the task evidence, commit/push it, then have `taskctl` move
-the task to `READY_TO_PUBLISH`. The publisher also checks that board state.
+Publication sequence (UNITY-20260929-009). These rules come from publishing
+between 2026-09-29 and 2026-10-08. Each rule is marked by who enforces it:
+- **[tool]**: a script refuses when the rule is broken.
+- **[process]**: only the owner, C and the Verifier check it.
+
+The steps run in this order. When a step refuses, go back to the step that
+caused it.
+
+1. **Slot.** Ask C for a publication slot, listing the task's known gaps
+   (rule K).
+   - One publication runs at a time. The repository `unity-resolute` is
+     shared, so a snapshot carries every record in it, including another
+     task's unpublished ones. **[process]**
+2. **Gated build** in the worktree of the task that carries the
+   publication.
+   - `--source-repo` must be `packages/<source>` under the repository the
+     gate script runs from. `create_release_gate.py` refuses otherwise
+     ("source repository must be a package checkout under packages/"), and
+     `publish_aptly.py` does the same.
+   - A build made in another task's worktree therefore cannot be gated.
+     Rebuild in this worktree and tie the rebuild to the tested build with
+     `tested_build` (rule B). **[tool]**
+3. **Database backup.** **[process]**
+   - With no aptly process running, copy the live `db/` to a new directory
+     under `~/backups/`.
+   - Compare the sha256 list of the copy with the live one.
+   - Record the backup path in the card.
+   - There is no canonical script yet. Tasks copy `tools/backup-db.py`
+     from the previous task.
+4. **Repository and snapshot.** **[process]**
+   - `aptly repo add unity-resolute <files>`: exactly the artifacts of the
+     gated build's manifest. That is the `.dsc`, which carries its source
+     files, and every `.deb` and `.ddeb`, but no `.buildinfo` or
+     `.changes`.
+   - Check each pool file's sha256 against the manifest.
+   - `aptly snapshot create unity-resolute-YYYYMMDD-NNN from repo
+     unity-resolute`, with the task's ID.
+   - `aptly snapshot diff <live snapshot> <new snapshot>` must show only
+     this build's records added, nothing removed or changed. The diff
+     compares names and versions, not bytes, which is why the pool check
+     above is needed.
+   - Commit the diff as `gate/snapshot-diff.txt`. This is new with this
+     section, and the gate does not pin it.
+   - The live snapshot is the one in the publish record with the latest
+     `published_at` in `~/coordinator/publish-records/`. Cross-check it
+     with the files under `/srv/aptly/public`. Never read it with
+     `aptly publish`, not even `show` or `list`.
+   - The guard admits `repo` and `snapshot` subcommands. Nothing checks
+     the repository name, the snapshot name or the diff.
+5. **Replacing unpublished records (`-r2`)** when the records in the
+   repository are not the bytes to be published, for example after a
+   rebuild:
+   1. take a fresh database backup;
+   2. `aptly repo remove` those records, with a dry run first;
+   3. `aptly snapshot drop` the unpublished snapshot;
+   4. `aptly repo add` the new build's artifacts, then check the pool
+      sha256 values;
+   5. create the snapshot again under the same name with `-r2`.
+
+   The old pool files stay as orphans until the pool cleanup task.
+
+   **[tool]** for the source only: `publish_aptly.py` compares the
+   snapshot's source package `Checksums-Sha256` with the `.dsc` and its
+   files, and refuses a regenerated source of the same name and version
+   ("the snapshot's source package differs from the build"). Binaries are
+   matched in the snapshot by `<Package>_<Version>_<Architecture>` only,
+   so for them the pool check is **[process]**.
+6. **Version safety.** **[tool]**
+   - Run `scripts/apt_view.py --manifest ... --snapshot <new> --write
+     gate/version-check.json`, then `scripts/version_safety.py`. The result
+     must be `SAFE`.
+   - The defaults of `apt_view.py --release` and of the gate's `--prefix`
+     match the live publication: prefix `.`, distribution `resolute`. Do
+     not pass another prefix.
+   - At publication, the view must be no older than four hours.
+7. **Peer notice** before the gate is created.
+   - Notify the other package owner and wait for the ACK.
+   - If the direct send fails, append to that agent's inbox and wait. A
+     failed send is not an ACK.
+   - C may record `COORDINATOR_CONFIRMED_NO_CONFLICT` only when the other
+     agent is confirmed idle.
+   - The release record carries the value. `create_release_gate.py` and
+     `publish_aptly.py` refuse any other value. **[tool]**
+   - The ACK itself, and any other human claim such as a Verifier
+     judgment, needs cited evidence and an independent reviewer.
+     **[process]**
+8. **Evidence first, gate last.**
+   - Finish the card, the verification record, the patch record, the
+     release record and the version check. Commit and push them.
+   - Then run `scripts/create_release_gate.py`. It refuses unless the
+     board state is `REVIEW` or `READY_TO_PUBLISH`.
+   - The gate pins the sha256 of the build manifest, of `tested_build` and
+     of the evidence manifest. The evidence manifest covers the card, the
+     verification, patch and release records, the version check, and a
+     decision record when the task requires one. `publish_aptly.py` recomputes every one of them.
+   - Any later edit to a pinned file refuses the publication, even one line
+     in the card. Regenerate the gate and have C check it again before May
+     is asked. **[tool]**
+   - Record the gate path in the task evidence. Commit and push the gate.
+9. **`READY_TO_PUBLISH`.**
+   - Run `taskctl.py` from the task worktree, so that its repository is the
+     one that holds the gate. Each script takes its repository from its own
+     location (`scripts/..`), not from the current directory.
+   - With base's `taskctl.py`, a relative gate path resolves in base
+     ("cannot read release gate"). An absolute path into the worktree is
+     refused ("release_gate must stay inside the repository").
+   - The same applies to `PUBLISHED` and to `publish_aptly.py` ("gate must
+     be inside this repository"). **[tool]**
+   - Append a `START` line to `~/AGENTS-LOG.md` with the package and the
+     full candidate version.
+10. **Publish.** C checks the gate, and May confirms directly in the
+    owner's session. Then run `scripts/publish_aptly.py --gate <gate>` and
+    nothing else. **[tool]**
+    - The publisher refuses unless the gate, the evidence manifest, the
+      build manifest and log, the release record, the review evidence and
+      the parent repository commit are pushed, tracked, committed and
+      clean.
+    - It checks the source commit and tree identity, remote-ref ancestry,
+      manifest linkage and each artifact hash, and the snapshot content.
+    - It never accepts an aptly command from the caller, and it checks that
+      the board state is `READY_TO_PUBLISH`.
+    - Afterwards, confirm the exact source and binary versions by reading
+      the files under `/srv/aptly/public`.
+11. **Target verification** on the assigned clean target. **[process]**
+    - Upgrade through the repository's normal path. Check `apt-cache
+      policy`, the installed version and the package hashes.
+    - Test in the users' environment: no drop-in, override, kernel argument
+      or test configuration of ours. Include at least one natural boot into
+      the session after the upgrade. Remove any test helper used earlier in
+      the task first, and record that you did.
+    - A `dpkg -i` of build files does not satisfy this gate.
+    - One exception exists only with C's approval for the task
+      (UNITY-20261002-003). It applies when the target already holds the
+      tested build of the same version with other bytes, so `apt-get
+      install --reinstall` refuses, and the VM snapshot cannot be restored.
+      Then:
+      - fetch the published debs with `apt-get download`;
+      - check their sha256 against the gated manifest;
+      - install them with `dpkg -i`;
+      - check that `apt-cache policy` shows the published version as both
+        candidate and installed.
+    - The target verification record states the test, the repository
+      version, the target state, which path was used, and the limitations.
+    - `taskctl` requires `target_verified: true` and an existing
+      `target_verification_record` file. It does not check their content.
+12. **`PUBLISHED`, then `DONE`.** `DONE` requires that all records are
+    committed and pushed, and that C has merged the task branch.
+
+Rules used by these steps:
+
+- **B. Tested build.** The target test normally runs on an earlier build.
+  The gate ties it to the gated build with `tested_build` (see "Test build
+  and gated build" above).
+  - Use `same_chroot` when the gated build was made on the tested tarball
+    with `--tested-with`.
+  - Use `buildinfo_identical` when the two builds differ only in container
+    bytes. For example, the source tarball takes its files' mtimes from the
+    checkout, so two clones of one commit give different `.tar.*`, `.dsc`
+    and `.deb` bytes.
+  - The tool compares the source commit and tree, the extra build
+    dependencies, the `.buildinfo` identity fields and
+    `Installed-Build-Depends`. **[tool]**
+  - It does not compare file contents. The owner shows that only container
+    bytes differ by comparing file lists, control fields and md5sums
+    (UNITY-20261002-003). **[process]**
+  - The tested `.buildinfo` is committed with `git add -f`, because
+    `*.buildinfo` is ignored.
+- **P. `published_by`.** A task whose change shipped in another task's
+  publication closes through `published_by: {task_id, record_sha256}`.
+  `taskctl` requires all of the following. **[tool]**
+  - The same `package` and `candidate_version`.
+  - The task's own `build_sbuild.py` manifest, whose commit equals the
+    published commit or is its ancestor.
+  - The same source and binary artifact names, by file, package, version
+    and architecture.
+  - Verification `PASS` with a `review_status`.
+
+  It is not a way to close a task whose version was not published.
+- **K. Known gaps.** A gap known before the gate goes on the board as its
+  own task first. It does not wait for the publication or for May. A gap is
+  a case not covered, a related bug or a follow-up. **[process]**
+- **S. Security material.** A finding that shows how to bypass a lock,
+  authentication or permission check stays out of every pushed branch
+  until the fix is published. That covers the recipe, the reproduction
+  scripts and the runs. Keep the task's records in a local branch. A public
+  branch carries only facts that give no recipe. The guard checks force
+  pushes only, not content. **[process]**
+
+Example commands, run from the task worktree, for task
+`UNITY-YYYYMMDD-NNN` with card directory `$D`:
 
 ```sh
 python3 scripts/apt_view.py --source-package <package> --write /tmp/pockets.json
@@ -589,43 +776,26 @@ python3 scripts/version_safety.py --view /tmp/pockets.json --pre-build \
 tmux new-session -d -s UNITY-YYYYMMDD-NNN-build \
   "python3 scripts/build_sbuild.py --task-id UNITY-YYYYMMDD-NNN \
   --source-repo packages/<package> --target-series resolute \
-  --output-dir docs/research/<task-id>-<topic>/build"
-python3 scripts/apt_view.py --manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
-  --snapshot <snapshot> --release "<prefix> <distribution>|<prefix> <distribution>|<distribution>|<distribution>" \
-  --write docs/research/<task-id>-<topic>/version-check.json
-python3 scripts/create_release_gate.py --record docs/research/<task-id>-<topic>/release-record.json \
-  --build-manifest docs/research/<task-id>-<topic>/build/<manifest>.json \
-  --distribution resolute --prefix unity --snapshot <snapshot> \
-  --output docs/research/<task-id>-<topic>/release-gate.json
+  --output-dir $D/build-gate"
+# slot from C and db backup, then (step 4):
+aptly repo add unity-resolute <the manifest's .dsc, .deb and .ddeb files>
+aptly snapshot create unity-resolute-YYYYMMDD-NNN from repo unity-resolute
+aptly snapshot diff <live snapshot> unity-resolute-YYYYMMDD-NNN > $D/gate/snapshot-diff.txt
+python3 scripts/apt_view.py --manifest $D/build-gate/<manifest>.json \
+  --snapshot unity-resolute-YYYYMMDD-NNN --write $D/gate/version-check.json
+python3 scripts/version_safety.py --view $D/gate/version-check.json \
+  --manifest $D/build-gate/<manifest>.json --write $D/gate/version-safety.json
+# peer notice and ACK; commit and push all evidence; then, last:
+python3 scripts/create_release_gate.py --record $D/gate/release-record.json \
+  --build-manifest $D/build-gate/<manifest>.json \
+  --distribution resolute --snapshot unity-resolute-YYYYMMDD-NNN \
+  --output $D/gate/release-gate.json
+# commit and push the gate, then:
 python3 scripts/taskctl.py transition UNITY-YYYYMMDD-NNN READY_TO_PUBLISH \
   --actor A --evidence ~/coordinator/evidence/UNITY-YYYYMMDD-NNN.json
-# Commit and push the gate, evidence manifest, release record, and evidence files.
-python3 scripts/publish_aptly.py --gate docs/research/<task-id>-<topic>/release-gate.json
+# after C's check and May's confirmation:
+python3 scripts/publish_aptly.py --gate $D/gate/release-gate.json
 ```
-
-The publisher checks that the gate, evidence manifest, build manifest, log,
-release record, review evidence, and parent-repository commit are pushed,
-tracked, committed, and clean; verifies source commit/tree identity, remote-ref
-ancestry, manifest linkage, and each artifact hash; and checks snapshot content
-before publication. It never accepts a caller-provided aptly command. It cannot
-cryptographically establish human-origin claims such as an ACK or verifier
-judgment, so those still require cited evidence and an independent reviewer.
-
-Before publication, append a `START` entry to `AGENTS-LOG.md`, state the
-package and full candidate version, and notify the other package owner. If
-direct messaging fails, append to that agent's inbox and wait for its
-acknowledgement; a failed send is not an acknowledgement. If the other agent
-is confirmed idle, the coordinator may record
-`COORDINATOR_CONFIRMED_NO_CONFLICT`.
-
-After publication, verify that aptly contains the exact source and binary
-versions. On the assigned clean target, use the repository's normal upgrade
-path and verify `apt-cache policy` and the installed package version. A manual
-`dpkg -i` experiment is useful evidence but does not satisfy this gate. Record
-the test, repository version, target state, and limitations in a target
-verification record; set `target_verified: true` and point
-`target_verification_record` to it before marking `PUBLISHED`. Mark `DONE` only
-after all records are committed and pushed.
 
 ## 7. Canonical fix examples
 
