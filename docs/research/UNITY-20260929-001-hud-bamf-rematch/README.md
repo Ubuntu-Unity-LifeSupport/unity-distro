@@ -194,7 +194,66 @@ Proposed: (A). To measure: the order of hud-service's own state after the
 three signals (the HUD keeps answering for the window; the usage history
 goes under libreoffice-writer); no extra windows or applications left
 behind; other applications unchanged (a window that bamf never moves gets
-no signal); bamf restarts (the existing name-owner handling).
+no signal); bamf restarts.
+
+### Design review, round 1: REVISE (all points taken)
+
+1. **`WindowAdded` on `org.ayatana.bamf.application`, not `ChildAdded`**
+   (which every view sends, tabs included). One QtDBus connection from
+   `BAMF_DBUS_NAME` on any path (empty path); the match carries the
+   sender, the test confirms only bamf's signals arrive.
+2. **Resolve again from the window, keep the old id on error.** The
+   `Parents()` -> `DesktopFile()` code becomes one resolver
+   (`BamfWindow::resolveApplicationId`, false on any D-Bus error). On
+   `WindowAdded(p)`: ignore `p` unless it is a known window; on an error
+   or the same id, nothing; on a different id, store it and emit. It does
+   not trust the sending application (queued signals of the temporary
+   application arrive after the move). Every move ends with a
+   `WindowAdded` from the final application, so the last one handled sees
+   bamf's final state. Orders covered: move before the constructor's calls
+   (right at once, later signals no-ops); move between them (the
+   constructor's error gives the window number, the queued `WindowAdded`
+   corrects it); move after `WindowCreated` (this card's case). No signal
+   is handled for an unannounced window: `addWindow` and `WindowCreated`
+   run in one slot, and the blocking calls do not dispatch signals.
+3. **Order of the signals: `WindowCreated(new)`, then
+   `FocusedWindowChanged(new)`, then `WindowDestroyed(old)`.** Destroyed
+   first would set hud-service's focus to none (`removeWindow` on the
+   emptied focused application) and clear an open query's results; and
+   `ApplicationImpl::window` uses `QMap::operator[]`, which would insert a
+   null entry into the old application. With Created first the focus goes
+   straight to the new application.
+4. **Focused from the bridge's own last `ActiveWindowChanged`** (a new
+   member with that path), no extra synchronous `ActiveWindow()` call; a
+   background window's move does not move the focus.
+5. **Correction:** the bridge has no handling for a bamf owner change (no
+   `QDBusServiceWatcher` in window-stack-bridge). Out of scope; on the
+   target, "no crash, nothing worse than before".
+6. **Destroy + create, no new `WindowApplicationChanged` signal:** the
+   window's application id is fixed when hud-service builds its
+   `WindowImpl` (collectors, usage keys), so a new signal would rebuild it
+   anyway, in new code. Cost: one menu re-import per move.
+7. **(B) and (C) are worse**, the bridge is the right layer (the only
+   process here that talks to bamf); (B) would also miss the later move
+   LibreOffice Start Center -> Writer.
+8. **Unit tests** (tests/unit/window-stack-bridge/TestBamfWindowStack.cpp,
+   the dbusmock helpers): a focused window moved from no desktop file to
+   `appid-1` gives Created, Focused, Destroyed in that order and
+   `GetWindowStack` returns `appid-1`; an unfocused window gives no
+   Focused; the same application gives nothing; an unknown path gives
+   nothing; a `DesktopFile` error keeps the id and emits nothing; after a
+   move `ViewClosed` and `ActiveWindowChanged` carry the new id. Service
+   side (tests/unit/service/TestApplicationList.cpp): Created(new),
+   Focused(new), Destroyed(old) leaves the focused application the new one
+   and no old id in `applications()`.
+9. **Target measurements** (hud-service and window-stack-bridge restarted,
+   no "(deleted)" mappings): 10 cold Writer starts and 3 Calc starts with
+   libreoffice-writer / -calc in the stack each time; an open HUD query
+   during the move still answers and `ExecuteCommand` works; the usage row
+   under libreoffice-writer; no numeric application ids left in
+   hud-service; Start Center -> a document; no bridge signals for a window
+   bamf does not move (a terminal); bamfdaemon killed: the bridge stays up,
+   what happens is recorded.
 
 ## Plan (before the Design Challenger)
 
