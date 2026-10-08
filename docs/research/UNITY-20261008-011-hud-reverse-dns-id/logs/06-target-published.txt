@@ -1,0 +1,36 @@
+# UNITY-20261008-011 target verification of the publication (target2, 2026-10-08)
+# 19:56:29Z poweroff over ssh; wait_for_state safe_to_snapshot=true; Clean-2 restored, started; confirmed inside at 19:58:33Z: no ~/.dirty, ~/b011, unity-distro.sources, b011-local.list, ~/.cache/indicator-appmenu; hud 14.10+17.10.20170619-0ubuntu6, libreoffice-writer 4:26.2.5.2, NTPSynchronized=yes.
+# The usual path: our key + unity-distro.sources, apt-get update, apt-cache policy hud: candidate 14.10+17.10.20170619-0ubuntu6+unity5 from http://192.168.56.10:8080 resolute/main (live ./resolute = unity-resolute-20261008-011, Release Date 19:56:14 UTC); apt-get full-upgrade (fu=0), xdotool (test helper). No file repository (sources.list.d: ubuntu.sources, unity-distro.sources).
+# /var/cache/apt/archives/hud_14.10+17.10.20170619-0ubuntu6+unity5_amd64.deb sha256 65ca0c56a162c9f6d05200adb51e06f2eaae095c23a2c3ff435c28167b4d0045 (= the gated manifest); dpkg -V hud clean. Installed: hud +unity5, unity +unity12, unity-settings-daemon +unity12.
+# Cold cycle: 20:09:09Z systemctl poweroff, powered off, start_vm; boot into the auto-login session; no drop-ins or test configuration of ours. target011.sh (test helper, over ssh).
+
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+gnome-terminal	3.58.0-1ubuntu1
+hud	14.10+17.10.20170619-0ubuntu6+unity5
+libreoffice-writer	4:26.2.6.3-0ubuntu0.26.04.2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+window-stack-br pid 2149 sha256 4fc321805de9659c deleted-non-tmp 0
+hud-service pid 3604 sha256 f081d11724459f67 deleted-non-tmp 0
+== 2 windows
+Terminal 60817414, Mines 56623108, Disks 62914567, Writer 67108900
+  60817414: (60817414, 'org.gnome.Terminal'
+  56623108: (56623108, 'org.gnome.Mines'
+  62914567: (62914567, 'org.gnome.DiskUtility'
+  67108900: (67108900, 'libreoffice-writer'
+Applications: (<[('10485800', objectpath '/com/canonical/hud/applications/10485800'), ('libreoffice-writer', '/com/canonical/hud/applications/libreoffice_2dwriter'), ('org.gnome.DiskUtility', '/com/canonical/hud/applications/org_2egnome_2eDiskUtility'), ('org.gnome.Mines', '/com/canonical/hud/applications/org_2egnome_2eMines'), ('org.gnome.Terminal', '/com/canonical/hud/applications/org_2egnome_2eTerminal')]>,)
+== 3 legacy icons
+Terminal: ('Создать окно', [('<b>Создать окно</b> (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 7>), ('Создать вкладку (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 6>), ('Закрыть окно (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 12>)], <'/com/canonical/hud/query/1'>)
+Writer:   ('Сохранить', @a(sssssv) [], <'/com/canonical/hud/query/3'>)
+== 4 Всегда наверху x2 in Terminal
+usage rows (application, entry, count): [('org.gnome.Terminal', 'Window actions||Всегда наверху', 1)]
+usage rows (application, entry, count): [('org.gnome.Terminal', 'Window actions||Всегда наверху', 2)]
+== 5 Disks empty HUD
+empty query, 6 rows, first: Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+67108900 Без имени 1 — LibreOffice Writer
+67109839 Добро пожаловать в LibreOffice.
+(56623108, 'org.gnome.Mines', false (67108900, 'libreoffice-writer', false (67109839, 'libreoffice-writer', false (60817414, 'org.gnome.Terminal', false (62914567, 'org.gnome.DiskUtility', true 
+Writer: ('Сохранить', @a(sssssv) [], <'/com/canonical/hud/query/8'>)
+67108900 Без имени 1 — LibreOffice Writer
+Writer: ('Сохранить', [('<b>Сохранить</b> (Файл)', 'libreoffice-writer', '', '', '', <uint64 30>), ('<b>Сохранить</b> как шаблон… (Файл, Шаблоны)', 'libreoffice-writer', '', '', '', <uint64 26>), ('<b>Сохрани
+(the first Writer query came while LibreOffice's first-start Welcome dialog was open - the UNITY-20260929-002 case; after Escape on it, the Writer control as expected)

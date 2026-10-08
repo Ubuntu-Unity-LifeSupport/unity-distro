@@ -1,0 +1,45 @@
+# UNITY-20261008-011 HUD effect on target2 (same boot, 2026-10-08 ~12:04-12:09Z); repro.sh, usage.py and frequent.py from the UNITY-20260929-001 card
+
+## gnome-terminal and gnome-mines open: window stack, hud-service Applications
+(60817414, 'org', false (58720260, 'org', true
+(<[('29360168', objectpath '/com/canonical/hud/applications/29360168'), ('org', '/com/canonical/hud/applications/org')]>,)
+60817414 = mike@target2: ~ (Terminal), 58720260 = Мины (Mines), 29360168 = Рабочий стол (nemo-desktop, no bamf application)
+
+## more org.* applications: id and empty HUD (only Terminal has a menu of its own)
+== shotwell: window 62914593 (Добро пожаловать!); stack: (62914593, 'org', true 
+empty query, 3 rows, first: Переместить Window actions | Всегда наверху Window actions | Закрыть Window actions
+== rhythmbox: window 65011719 (Rhythmbox); stack: (65011719, 'org', true 
+empty query, 6 rows, first: Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+== remmina: window 67108872 (Unlock Login Keyring); stack: (67108872, 'gcr-prompter', true 
+empty query, 4 rows, first: Свернуть Window actions | Переместить Window actions | Всегда наверху Window actions | Закрыть Window actions
+== file-roller: window 69206020 (File Roller); stack: (69206020, 'org', true (67108872, 'gcr-prompter', false 
+empty query, 6 rows, first: Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+== gnome-disks: window 71303175 (Диски); stack: (71303175, 'org', true (67108872, 'gcr-prompter', false 
+empty query, 6 rows, first: Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+(Remmina's first window was the keyring prompt, gcr-prompter; its main window 73400351 'Клиент удалённого рабочего стола Remmina' is 'org' in the stack below)
+
+## shared history: a window action used twice in Terminal (state back as before), then the empty HUD elsewhere
+== Terminal: Всегда наверху x2
+first result: ['4', 'Всегда наверху', '[(0, 14)]']
+usage rows (application, entry, count): [('org', 'Window actions||Всегда наверху', 1)]
+first result: ['4', 'Всегда наверху', '[(0, 14)]']
+usage rows (application, entry, count): [('org', 'Window actions||Всегда наверху', 2)]
+== Disks empty
+empty query, 6 rows, first: Всегда наверху Window actions | Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions
+== File Roller empty
+empty query, 6 rows, first: Всегда наверху Window actions | Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions
+== Mines empty
+empty query, 6 rows, first: Всегда наверху Window actions | Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions
+== control: Writer (own id)
+stack: (67108998, 'libreoffice-writer', false (67109507, 'libreoffice-writer', true (73400351, 'org', false (60817414, 'org', false 
+empty query, 3 rows, first: Переместить Window actions | Всегда наверху Window actions | Закрыть Window actions
+67108998 Без имени 1 — LibreOffice Writer
+main 67108998
+empty query, 20 rows, first: Свернуть Window actions | Восстановить прежний размер Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+73400351: Клиент удалённого рабочего стола Remmina
+
+
+
+
+('Сохранить', [('<b>Сохранить</b> (Файл)', 'libreoffice-writer', '', '', '', <uint64 30>), ('<b>Сохранить</b> как шаблон… (Файл, Шаблоны)', 'libreoffice-writer', '', '', '', <uint64 26>), ('<b>Сохранить</b> как… (Файл)', 'l
+('Создать окно', [('<b>Создать окно</b> (Файл)', '', '', '', '', <uint64 7>), ('Создать вкладку (Файл)', '', '', '', '', <uint64 6>), ('Закрыть окно (Файл)', '', '', '', '', <uint64 12>)], <'/com/canonical/hud/query/25'>)

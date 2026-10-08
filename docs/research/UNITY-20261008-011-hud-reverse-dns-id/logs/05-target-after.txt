@@ -1,0 +1,57 @@
+# UNITY-20261008-011 target2 AFTER: the BEFORE state (logs/03) + hud +unity5 from a file repository (~/b011/repo, the build/ .debs; hud .deb sha256 65ca0c56a162c9f6...) by apt full-upgrade at 18:26Z.
+# The same full-upgrade also took unity-settings-daemon +unity12 (3 packages) from the live repository: UNITY-20261002-012, published by A between the before and after runs (automount helper; not hud). Cold cycle (poweroff 18:26:58Z, start_vm).
+# The usage table at boot still holds the BEFORE run's ('org', ...) row: the upgrade path.
+
+usage table at boot: [('org', 'Window actions||Всегда наверху', 2)]
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+gnome-terminal	3.58.0-1ubuntu1
+hud	14.10+17.10.20170619-0ubuntu6+unity5
+libreoffice-writer	4:26.2.6.3-0ubuntu0.26.04.2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+window-stack-br pid 2126 sha256 4fc321805de9659c deleted-non-tmp 0
+hud-service pid 3648 sha256 f081d11724459f67 deleted-non-tmp 0
+== 2 windows
+Terminal 60817414, Mines 58720260, Disks 65011719, Writer 69206052
+  60817414: (60817414, 'org.gnome.Terminal'
+  58720260: (58720260, 'org.gnome.Mines'
+  65011719: (65011719, 'org.gnome.DiskUtility'
+  69206052: (69206052, 'libreoffice-writer'
+Applications: (<[('35651624', objectpath '/com/canonical/hud/applications/35651624'), ('libreoffice-writer', '/com/canonical/hud/applications/libreoffice_2dwriter'), ('org.gnome.DiskUtility', '/com/canonical/hud/applications/org_2egnome_2eDiskUtility'), ('org.gnome.Mines', '/com/canonical/hud/applications/org_2egnome_2eMines'), ('org.gnome.Terminal', '/com/canonical/hud/applications/org_2egnome_2eTerminal')]>,)
+== 3 legacy icons
+Terminal: ('Создать окно', [('<b>Создать окно</b> (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 7>), ('Создать вкладку (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 6>), ('Закрыть окно (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 12>)], <'/com/canonical/hud/query/1'>)
+Writer:   ('Сохранить', [('<b>Сохранить</b> (Файл)', 'libreoffice-writer', '', '', '', <uint64 30>), ('<b>Сохранить</b> как шаблон… (Файл, Шаблоны)', 'libreoffice-writer', '', '', '', <uint64 26>), ('<b>Сохрани
+== 4 Всегда наверху x2 in Terminal
+usage rows (application, entry, count): [('org', 'Window actions||Всегда наверху', 2), ('org.gnome.Terminal', 'Window actions||Всегда наверху', 1)]
+usage rows (application, entry, count): [('org', 'Window actions||Всегда наверху', 2), ('org.gnome.Terminal', 'Window actions||Всегда наверху', 2)]
+== 5 Disks empty HUD
+empty query, 6 rows, first: Свернуть Window actions | Развернуть на весь экран Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+
+## 10 Writer starts (target.sh writer 10, the UNITY-20260929-001 move) and window-stack-bridge SIGKILL
+writer start 1: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, 69206052) FocusedWindowChanged(69206052, 69206052) WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) WindowDestroyed(69206052, 69206052) 
+writer start 2: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, 69206052) FocusedWindowChanged(69206052, 69206052) WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) WindowDestroyed(69206052, 69206052) 
+writer start 3: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) 
+writer start 4: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) 
+writer start 5: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) 
+writer start 6: window 67108900; stack: (67108900, 'libreoffice-writer', true
+   bridge: WindowCreated(67108900, 67108900) FocusedWindowChanged(67108900, 67108900) WindowCreated(67108900, libreoffice-writer) FocusedWindowChanged(67108900, libreoffice-writer) WindowDestroyed(67108900, 67108900) 
+writer start 7: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, 69206052) FocusedWindowChanged(69206052, 69206052) WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) WindowDestroyed(69206052, 69206052) 
+writer start 8: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, 69206052) FocusedWindowChanged(69206052, 69206052) WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) WindowDestroyed(69206052, 69206052) 
+writer start 9: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) 
+writer start 10: window 69206052; stack: (69206052, 'libreoffice-writer', true
+   bridge: WindowCreated(69206052, 69206052) FocusedWindowChanged(69206052, 69206052) WindowCreated(69206052, libreoffice-writer) FocusedWindowChanged(69206052, libreoffice-writer) WindowDestroyed(69206052, 69206052) 
+== bridge-restart
+window-stack-bridge: old pid 2126, now 6902 (active)
+(58720260, 'org.gnome.Mines', false (60817414, 'org.gnome.Terminal', false (65011719, 'org.gnome.DiskUtility', false (69206052, 'libreoffice-writer', true 
+
+## the tested .deb (read on target2 2026-10-08 ~18:45Z, nothing changed there)
+installed: hud 14.10+17.10.20170619-0ubuntu6+unity5 (apt: installed = candidate, from file:/home/mike/b011/repo), dpkg -V hud clean
+hud_14.10+17.10.20170619-0ubuntu6+unity5_amd64.deb sha256 65ca0c56a162c9f6d05200adb51e06f2eaae095c23a2c3ff435c28167b4d0045 (~/b011/repo, equal to build/ and the manifest)

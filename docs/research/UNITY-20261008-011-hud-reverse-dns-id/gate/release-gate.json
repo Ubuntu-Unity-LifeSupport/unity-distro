@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-011",
+  "package": "hud",
+  "target_series": "resolute",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity5",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-011/packages/hud",
+  "source_remote_ref": "origin/b/UNITY-20261008-011",
+  "source_commit": "db26b0d82d5273990b094738b4dc836f35d08065",
+  "source_tree_hash": "09be28c4c65ee03f47696dd9a0540341fa863076",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-011"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/build/UNITY-20261008-011-hud-build-manifest.json",
+    "sha256": "20961e9a8ddcae4027dda278c4fc10712a46bfd28510d94ff6fa905e058687c8"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/gate/evidence-manifest.json",
+    "sha256": "223b7639f266d85ede25fb7c3298bb06a21107586a8fe86793bf85f0837fd0bb"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-011-hud-reverse-dns-id/logs/05-target-after.txt",
+        "sha256": "c68691b3abd2a1a73b6ccde2fdcffa1251b5cd4a2053be8ab2cd1ca92da4be71"
+      },
+      "debs": {
+        "hud_14.10+17.10.20170619-0ubuntu6+unity5_amd64.deb": "65ca0c56a162c9f6d05200adb51e06f2eaae095c23a2c3ff435c28167b4d0045"
+      }
+    }
+  }
+}
