@@ -100,4 +100,33 @@ The Design Challenger reviewed the text as follows.
 
 ## 5. Results
 
-To be filled after the review and verification.
+The independent Verifier, a temporary subagent, checked `3de8e65`. Verdict:
+**PASS**.
+
+- All five quoted refusals appear word for word in the code, and every
+  **[tool]** claim is cited to file and line. No **[process]** rule is
+  enforced by a tool.
+- Every requirement of the removed text is kept, and the step that holds
+  each one is listed.
+- All twelve requested topics are covered.
+- The flags in the example commands exist in each script's argparse. The
+  defaults are prefix `.` and `--release`. All 15 publish records use
+  prefix `.`. No `aptly publish` command appears in the text.
+- The steps match the recorded practice of UNITY-20260927-040,
+  UNITY-20260927-021 and UNITY-20261002-003.
+- Rule S names no task or component and gives no recipe. The nested lists
+  render correctly.
+- The diff touches only this document and the card.
+
+After the PASS, step 10 regained a sentence from the old text: the
+publisher checks that the board state is `READY_TO_PUBLISH`
+(`publish_aptly.py:312`).
+
+Remaining notes, none blocking:
+- `publish_aptly.py` also writes its own `START` line, so the manual line
+  in step 9 is redundant but harmless.
+- In UNITY-20261002-003 the `dpkg -i` path was accepted by C after the
+  fact, in its check of the target record. Step 11 now asks for that
+  approval beforehand.
+- There is no canonical db backup script. The six task copies have
+  diverged. This is a candidate follow-up task for C.

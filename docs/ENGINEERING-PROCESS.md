@@ -697,7 +697,8 @@ caused it.
       clean.
     - It checks the source commit and tree identity, remote-ref ancestry,
       manifest linkage and each artifact hash, and the snapshot content.
-    - It never accepts an aptly command from the caller.
+    - It never accepts an aptly command from the caller, and it checks that
+      the board state is `READY_TO_PUBLISH`.
     - Afterwards, confirm the exact source and binary versions by reading
       the files under `/srv/aptly/public`.
 11. **Target verification** on the assigned clean target. **[process]**
