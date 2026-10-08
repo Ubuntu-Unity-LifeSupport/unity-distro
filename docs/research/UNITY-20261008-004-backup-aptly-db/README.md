@@ -198,3 +198,45 @@ since then.
   The test for the early release was added after its mutation first
   survived. It passed 5 times out of 5 on the code and failed 5 times out
   of 5 on the mutation.
+
+## 8. Verification
+
+An independent Verifier, a temporary subagent, checked `4663570` and
+`93a5575`. Verdict: **PASS**. It did not run the script against the live
+root.
+
+- **Code reading.** The lock is taken before `pidof` and held through
+  both listings. Every refusal exits 2 before `mkdir`. Symlinked live and
+  target paths are resolved. A relative target and missing parents work,
+  with mode 0700. Nothing writes under the live root.
+- **Lock behaviour.** It reproduced the claim on its own scratch root.
+  The writer finished 5.7 s after the release.
+- **Tests.** The new tests and the guard test: 21 passed. Full suite: 339
+  passed, 1 skipped. `test_lock_held_through_the_second_read` passed 10
+  times out of 10.
+- **Mutations.** Its own mutations were each caught:
+  - exit 0 on a mismatch;
+  - flock dropped;
+  - lock released before the second read;
+  - `pidof` skipped;
+  - the target's parent not resolved.
+- **The live run record** is consistent. The backup exists with mode 0700,
+  its `backup.json` matches, and its list still checks out against the
+  live db.
+- **Section 6 and the finding** match the code and the old copies.
+
+Its notes, all fixed in `e22ad63`:
+- removing the umask went undetected; a test now checks the file and
+  directory modes;
+- a target that cannot be created gave a traceback; it is now a clean
+  refusal with exit 2;
+- section 6 now lists every refusal.
+
+The Verifier re-checked `e22ad63`: **PASS**.
+- `test_backup_aptly_db.py` gives 14 passed. The full suite gives 340
+  passed and 1 skipped.
+- The mutations "umask removed" and "mkdir try/except removed" are both
+  caught.
+- Its note: when the target cannot be created, `mkdir(parents=True)` may
+  already have made some parents. Section 6 now says so; the code is
+  unchanged.
