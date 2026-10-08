@@ -461,3 +461,18 @@ Remarks:
 | HUD results with the archive library and with +unity1 are not compared on the target. | the fix touches only the destruction and growth of a Trie; the Verifier's Writer queries and the Dash search give the expected results |
 | An Ubuntu upload of `0ubuntu39.1` or `0ubuntu40` would replace +unity1 without the fix. | the usual risk of a carried package (resolute has libcolumbus only in its release pocket today); by the rule for carried packages, +unity1 is rebased onto any such Ubuntu update |
 | A failed `munmap` of the old map during growth leaves that map. | logged; by design |
+
+## Publication (2026-10-09)
+
+The slot came from C. libcolumbus is a new package in our repository.
+
+- **Source:** `b/UNITY-20261008-013` pushed to `Ubuntu-Unity-LifeSupport/libcolumbus` at `3da4d89`. The repository was created on May's decision on 2026-10-08, with `unity/resolute` (the archive import) and `upstream`.
+- **Gated build:** `build/` (libcolumbus `3da4d89`, chroot 20261008T083223Z), the build tested on target2, so `tested_build` is this_build. The libcolumbus1v5 and libcolumbus1-common .debs installed there are this build's (sha256 `65773439…` and `cea9db10…`, logs/06).
+- **Database backup:** `~/backups/UNITY-20261008-013-20261008T235358Z` (19 files, equal to live), list_sha256 `a1486de83880df0139fc4be2c2644f3b861192a8771763a400a3cdf234ffadb1`.
+- **repo add** of the manifest's artifacts to unity-resolute, at 23:54Z: 7 records (source, 4 .deb, 2 .ddeb), 482 → 489. Each pool file's sha256 equals the manifest's (9 of 9).
+- **Snapshot:** `unity-resolute-20261008-013`. `snapshot diff` against the live `unity-resolute-20260927-053` shows only these 7 records added (gate/snapshot-diff.txt).
+- **Version safety:**
+  - SAFE (gate/version-check.json, gate/version-safety.txt, at 23:54:24Z): apt's candidate is +unity1 for every binary;
+  - before the build, resolute has libcolumbus only in its release pocket (0ubuntu39), with nothing in -updates, -security, -proposed or -backports (gate/prebuild-version-safety.txt).
+- **Peer notice:** A ACK (gate/peer-notice.txt).
+- **Patch record:** docs/PATCHES.md.

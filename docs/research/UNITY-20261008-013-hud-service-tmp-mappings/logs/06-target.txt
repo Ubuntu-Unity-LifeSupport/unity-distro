@@ -80,3 +80,8 @@ after  50 more queries: rss_kB   41688 deleted-maps   0
 Terminal 62914566: ('Создать окно', [('<b>Создать окно</b> (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 7>), ('Создать вкладку (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 6>), ('Закрыть окно (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 12>)], <'/com/canonical/
 
 ## AFTER: the Dash (applications lens) search 'gnome-t' lists Терминал first, then Reboot, Shutdown, Диски (vbox screenshot 2026-10-09 02:39:59 local)
+
+## the tested .debs (read on target2 2026-10-09 ~00:00Z, nothing changed there)
+installed: libcolumbus1v5 and libcolumbus1-common 1.1.0+15.10.20150806-0ubuntu39+unity1 (from file:/home/mike/b013/repo), dpkg -V clean
+libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb sha256 65773439ef292b3c3efbf49dec37a090c26f37519f6b80b9c511c4887e5c3520 (equal to build/ and the manifest)
+libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity1_all.deb sha256 cea9db10e53d0482ac5a51b70f774c4837a5f5ee4c2251013f7c083ca2a90637 (equal to build/ and the manifest)
