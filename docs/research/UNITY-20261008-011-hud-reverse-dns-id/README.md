@@ -10,12 +10,12 @@ task_id: UNITY-20261008-011 (+ UNITY-20261008-014)
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: TARGET_VERIFIED (2026-10-08), independent verification next
+status: VERIFIED (2026-10-08), publication next
 source_version: 14.10+17.10.20170619-0ubuntu6+unity4 (published 2026-10-08)
 observed: >
   window-stack-bridge gives every application whose desktop file has a
   reverse-DNS name the application id "org": on target2 29 applications
-  (17 visible in the menu, Terminal, Disks, File Roller, Rhythmbox,
+  (14 visible in the menu, Terminal, Disks, File Roller, Rhythmbox,
   Shotwell, Remmina, Mines, Help, ...). hud-service then treats them as
   one application: one usage history, one Application object, and no
   icon (it looks for org.desktop).
@@ -58,7 +58,7 @@ cold cycle (poweroff, then start).
 
 - **The ids (logs/01, `ids.py` with the session's `XDG_DATA_DIRS`):**
   - 132 applications have a desktop file, 31 of them with a dot in the name;
-  - 29 of them share the bridge id `org`, 17 of those visible;
+  - 29 of them share the bridge id `org`, 14 of those visible (15 are NoDisplay);
   - `io` (snapd's session agent) and `python3` (`python3.14`) are cut too,
     but each stands alone.
 - **One application object (logs/02):** with Terminal and Mines open, the
@@ -474,3 +474,54 @@ restart):
 | window-stack-bridge SIGKILL | | restarted by systemd; the new process gives the same four ids |
 
 **Not done:** the Unity HUD screenshot (optional in the design). By the code, the HUD icon follows the selected result's icon, which is now `org.gnome.Terminal`.
+
+## Verification (independent Verifier, 2026-10-08): PASS
+
+The Verifier did not write the fix. It re-measured the +unity5 state on
+target2 itself. The +unity4 "before" state rests on logs/03 and the
+control build.
+
+- **Code** (`b0c2444..db26b0d`), against the revised design:
+  - Every id goes through the rule: `resolveApplicationId` calls the helper, and the move takes its id from `resolveApplicationId`.
+  - The constructor's fallback is unchanged.
+  - Dot-free names keep their id: `appid-1` and `firefox_firefox` are pinned by the helper test.
+  - `value()` is used at all three read sites; the only insert left is `addWindow`.
+  - The connect is checked.
+  - The `hud` .deb file lists of +unity4 and +unity5 are identical.
+- **Tests:**
+  - The control differs from the fix's tests only by the helper test.
+  - It fails exactly the six tests, at their id and map-size assertions.
+  - Both -014 tests are not vacuous: the foreign emit triggers no `Parents()` call, and the result (`appid-3`) is not the sender's id.
+- **Provenance:** the manifest's tree hash equals `db26b0d^{tree}`, the .dsc source equals `git archive db26b0d`, and the hud .deb is `65ca0c56…` in the manifest, on disk and in target2's file repository.
+- **target2:**
+  - apt has +unity5 installed and as candidate, `dpkg -V hud` is clean, and no libhud is installed.
+  - The running bridge and hud-service are the .deb's files, with no "(deleted)" mappings.
+  - No unit drop-ins or overrides (only systemd's generic graphical-session-pre one).
+- **Its own check with File Roller** (an application the owner did not test):
+  - It gets the id `org.gnome.FileRoller`, its own Application, and the legacy icon `org.gnome.FileRoller`.
+  - "Развернуть на весь экран" and then "Восстановить прежний размер" from the HUD leave the window state as before. The usage rows go under `org.gnome.FileRoller` only.
+  - File Roller's empty HUD then starts with "Развернуть на весь экран". Mines and Disks keep the default order, and Terminal keeps its own history.
+- **The old `org` row:** it has no effect. No `org.desktop`, `io.desktop` or `python3.desktop` exists, and there are no desktop files in subdirectories.
+- **The connect:** the bridge journal of this boot has no "Could not connect" warning.
+
+Remarks:
+
+1. The card said "17 visible" `org` applications. logs/01 has 29, 15 of them NoDisplay, so 14 are visible. Corrected above.
+2. The evidence records of both tasks had template values in some fields (-014: root cause, invariant, approach, layer, reproduction record; both: verification, version-check and gate paths). They were filled in before the gate.
+3. The constructor's window-number fallback still uses `QString::number(m_windowId)` directly, not the helper as the design said. The behaviour is the same.
+4. `ReverseDnsIdPathAndIcon` does not restore `XDG_DATA_DIRS` when an ASSERT fails, and restores an unset variable as empty. This is harmless in the test binary.
+5. `ids.py`'s docstring named a column the script does not print. Corrected.
+6. **Left on target2:** two usage rows under `org.gnome.FileRoller`. After maximize and restore, File Roller's window was 32 px off its first geometry; its state flags were back to normal.
+7. **An unexplained journal line.** The bridge instance that ran before the SIGKILL (pid 2126) logged `QDBusConnection: name 'org.ayatana.bamf' had owner '' but we thought it was ':1.34'` once. It is not seen in the current instance and was not investigated.
+8. **Not checked:** the Unity HUD icon on screen; the failed-connect log path (by inspection only, as designed); the +unity4 state re-measured by the Verifier.
+
+## Known gaps
+
+| gap | where it is covered |
+|---|---|
+| Desktop files in subdirectories keep the base name (`kde4/foo` → `foo`), not the XDG desktop file id `kde4-foo`; hud-service then finds no icon for them. | none on the reference target (no such files); out of scope by design |
+| User desktop files (`~/.local/share/applications`, `XDG_DATA_HOME`) get the right id but no icon: `desktopPath()` reads only `XDG_DATA_DIRS`. | pre-existing; not in scope |
+| The failed-connect warning is untested (a session-bus connect cannot be made to fail through the mock). | by inspection only |
+| The Unity HUD's on-screen icon after the fix is not seen. | by the code it follows the selected result's icon, which the legacy StartQuery now gives as `org.gnome.Terminal` (logs/05) |
+| Old usage rows under the cut ids (`org`, `io`, `python3`) stay until hud's 30-day expiry. | harmless (logs/05: no effect in Disks' empty HUD) |
+| The `org.ayatana.bamf` owner warning of the first bridge instance (remark 7) is not explained. | seen once, not again after the restart |

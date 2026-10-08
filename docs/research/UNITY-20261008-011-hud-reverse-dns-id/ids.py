@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""ids.py - every .desktop file in the XDG applications directories, with the id window-stack-bridge gives it
-(QFileInfo::baseName(): the name up to the FIRST dot) and the full desktop-file id (completeBaseName: up to the
-last dot). Prints the bridge ids that more than one application shares (key collisions), and which of those
-applications have a menu bar the HUD could index (they are shown, not filtered: the HUD also offers window
-actions for every application)."""
+"""ids.py - every .desktop file in the XDG applications directories (subdirectories included), grouped by the id
+window-stack-bridge +unity4 gives it (QFileInfo::baseName(): the file name up to the FIRST dot). Prints the ids that
+more than one application shares (key collisions, with each file's full name, Name= and NoDisplay), and the ids
+that are cut but stand alone."""
 import collections
 import configparser
 import os
