@@ -116,3 +116,18 @@ target2 after the runs: the packaged `libgtk-nocsd.so.0` is back
 (`dpkg -V libgtk-nocsd0` clean); the applications, dev packages, gdb,
 dotnet-sdk-10.0 and the Pinta build stay installed; not rolled back
 (no VirtualBox control).
+
+## Alt mnemonics on the Unity panel: not tested
+
+Tried with `mnemo081.sh` (`logs/mnemonics.txt`), in the 10-15 minutes
+given, on Pinta (Alt+F, its top menu is `_File` in S and `File` in U) and
+GNOME Text Editor (F10, then the item mnemonic). In both builds the keys
+sent with `xdotool` did not open a panel menu: no new window appeared, and
+in Text Editor the letter was typed into the document. The screenshots
+(`gnome-screenshot`) were black or showed another window, and the vbox
+screenshot was not available. Afterwards the visible windows on the
+display were a light-locker window and six apport "Отчёт о неполадке"
+dialogs (for the crashes listed above), so the keys did not go to the
+panel. So the method did not reach the panel, and
+whether Alt mnemonics work with S or with U is **not tested**. A test needs
+real keyboard input on the panel (vbox `send_keys` and `screenshot`).
