@@ -2113,3 +2113,25 @@ UNITY-20260928-020 has the same commit `0274bc5` and tree. But its own build of 
 - The published gated build of UNITY-20260927-027 ran those test suites on the snapshot chroot, and they passed: 130, 11, 18 and 113 tests. See the build log `docs/research/UNITY-20260927-027-nux-vidmode-fbo/build-gated/UNITY-20260927-027-nux-4.0.8+18.10.20180623-0ubuntu15+unity3-sbuild.log` (sha256 `23fc8d6a...`, the one named by the gated manifest), lines 11634-12244, `Status: successful`.
 - So the fix of -020 was checked on the published build.
 - `taskctl` checks `published_by` only on the transition to `PUBLISHED`. The new code neither re-checks nor changes a past `DONE`.
+
+
+## 2026-10-08 - UNITY-20260929-002: the "mechanism 2" empty HUD is a LibreOffice first-start dialog or a query during the menu import, not a hud defect (agent B)
+
+**Context.** UNITY-20260927-029 left a second cause of the empty LibreOffice HUD open as "mechanism 2": the Writer window is in the window stack, yet the first Writer start after a boot gets no HUD answer. Records: `research/UNITY-20260929-002-hud-empty-known-window/`. This entry corrects how earlier records read that case; they stay as written.
+
+**Decision.** Close UNITY-20260929-002 without a code change (NOT_APPLICABLE). The HUD behaves correctly in both causes measured.
+
+**Measured** (target2, Clean-2 + the published stack: hud +unity3, unity +unity12, gtk-nocsd 4.8-1+unity3; 10 cold boots, the HUD queried through `CreateQuery` as soon as the Writer window is visible, the live results read up to 20 s):
+- In 2 of 10 boots LibreOffice's "Tip of the Day" dialog opened 3.6-5.0 s after the document window and took the focus; the HUD answers for the focused window, the dialog has no menu, so the answer was empty. Reproduced on purpose: with the dialog focused the HUD answers 0, after OK 4. On a new profile the first start shows the Welcome dialog instead, with the same effect (Verifier).
+- In the other 8 boots the first answer was empty and the open query filled in by itself within 2-5 s, without being reopened: a query in the first seconds comes while hud-service is still importing the menu over `org.gtk.Menus`.
+- The task's scripts (`lo4.sh`, `lo7.sh`) chose the window by its title, not by the focus.
+
+**Earlier records this corrects** (left unchanged):
+- `research/UNITY-20260927-029-hud-libreoffice/README.md`: the `unknowns:` entry on mechanism 2 (the dbusmenu lead: that message comes from hud-service's window-action collector for every window and is not related), the Result's follow-up line, the target sections ("Run 1 ... is mechanism 2 again") and the Known gaps row; `logs/06-unity2-coldloop.txt` boot 4 (answered, then empty 5 s later: INFERENCE, the dialog came up between the two queries; the focus was not recorded); `logs/07-target-this-build.txt` and `logs/12-target-published.txt` run 1 (INFERENCE, the dialog or the import; the focus was not recorded).
+- `research/UNITY-20260927-028-hud-cxx17-scope/README.md` (the `unknowns:` note, the Known gaps row, the target section) and its `logs/03-unity3-target2.txt`, `logs/07-target-published.txt` run 1: the same reading.
+- `research/UNITY-20260929-002-hud-empty-known-window/` round 1 boot 1: a second focused LibreOffice window was recorded (the dialog); round 1 boots 4 and 5 had one window (the import).
+- DECISIONS 2026-09-29 "UNITY-20260927-028": "the miss is a first-start case tracked in UNITY-20260929-002".
+
+In every one of those runs the window was kept in the window stack, so the UNITY-20260927-029 fix and its figures stand.
+
+Open observation: the import once took about 15 s instead of about 5; why was not measured. Verifier: PASS (REVIEWED), both causes reproduced independently (3 dialog trials, 5 early queries).
