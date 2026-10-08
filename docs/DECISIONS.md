@@ -2135,3 +2135,30 @@ UNITY-20260928-020 has the same commit `0274bc5` and tree. But its own build of 
 In every one of those runs the window was kept in the window stack, so the UNITY-20260927-029 fix and its figures stand.
 
 Open observation: the import once took about 15 s instead of about 5; why was not measured. Verifier: PASS (REVIEWED), both causes reproduced independently (3 dialog trials, 5 early queries).
+
+
+## 2026-10-08 - UNITY-20260927-053: SessionIsActive is exported by cinnamon-session, not worked around in its consumers (agent A, Design Challenger APPROVE)
+
+**Decision.** cinnamon-session 6.4.2-1+unity4 exports `SessionIsActive` on `org.gnome.SessionManager`. The property reflects logind's `Active` state of the user's display session from the moment the interface is exported. Until the session is found it reads TRUE: a session that cannot be found must not look inactive.
+
+**Why this layer.**
+- The `org.gnome.SessionManager` interface belongs to the session manager. gnome-session has exported the property since 3.7.2.
+- Three unity-settings-daemon consumers read it (the automount helper, the power plugin and the color plugin).
+
+**Alternative rejected (F1).** The automount helper could decide through logind by its own process. It was rejected for three reasons:
+- the helper runs in the same systemd user service, so it hits the same session-discovery gap;
+- it would fix one of the three consumers;
+- it would duplicate what the session manager owns.
+
+**Session discovery.** cinnamon-session runs as a systemd user service, where logind cannot map its process to a session and `XDG_SESSION_ID` is not set. The session is therefore looked up in a fixed order, and each candidate is checked with `GetSession`:
+1. the process's own session;
+2. `XDG_SESSION_ID`;
+3. logind's `User.Display`.
+
+Accepting only an open, graphical, class=user session is UNITY-20261008-024.
+
+**Order of publication.** unity-settings-daemon +unity11 shipped first (UNITY-20261002-003, UNITY-20261002-011). It ends the power plugin's idle watches in `stop()` and turns off idle suspend on AC. Both had to be in place because this change makes the idle path reachable under cinnamon-session for the first time.
+
+**Known and unchanged.** cinnamon-session's own presence idle does not work in the Unity session, because `org.cinnamon.Muffin.IdleMonitor` is missing there (UNITY-20261008-023).
+
+Record: `docs/research/UNITY-20260927-053-session-is-active/`.
