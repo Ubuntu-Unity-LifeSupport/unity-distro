@@ -449,7 +449,8 @@ rule per kind and rejects anything else:
   field (`Source: name` or `Source: name (version)`; missing parts default to
   the binary's own), so a binNMU or a `-dbgsym` with its own version is
   accepted. It must be in the
-  snapshot as `<Package>_<Version>_<Architecture>`.
+  snapshot as `<Package>_<Version>_<Architecture>`, exactly once, with the
+  manifest's sha256 in aptly's `SHA256` field (UNITY-20261008-002).
 - `source_file`: a file the `.dsc` names (`.orig.tar.*`, `.debian.tar.*`, a
   native `.tar.*`, `.diff.gz`), recorded with the `.dsc`'s sha256. The set must
   be exactly the `.dsc`'s list, and the snapshot's source package (aptly keeps
@@ -612,13 +613,15 @@ caused it.
      gated build's manifest. That is the `.dsc`, which carries its source
      files, and every `.deb` and `.ddeb`, but no `.buildinfo` or
      `.changes`.
-   - Check each pool file's sha256 against the manifest.
+   - Check each pool file's sha256 against the manifest. This is an early
+     check: since UNITY-20261008-002, `publish_aptly.py` also checks the
+     bytes in the snapshot (step 5).
    - `aptly snapshot create unity-resolute-YYYYMMDD-NNN from repo
      unity-resolute`, with the task's ID.
    - `aptly snapshot diff <live snapshot> <new snapshot>` must show only
      this build's records added, nothing removed or changed. The diff
-     compares names and versions, not bytes, which is why the pool check
-     above is needed.
+     compares names and versions, not bytes. The pool check above, and the
+     publisher (step 5), cover the bytes.
    - Commit the diff as `gate/snapshot-diff.txt`. This is new with this
      section, and the gate does not pin it.
    - The live snapshot is the one in the publish record with the latest
@@ -639,12 +642,17 @@ caused it.
 
    The old pool files stay as orphans until the pool cleanup task.
 
-   **[tool]** for the source only: `publish_aptly.py` compares the
-   snapshot's source package `Checksums-Sha256` with the `.dsc` and its
-   files, and refuses a regenerated source of the same name and version
-   ("the snapshot's source package differs from the build"). Binaries are
-   matched in the snapshot by `<Package>_<Version>_<Architecture>` only,
-   so for them the pool check is **[process]**.
+   These steps are **[process]**. The result is **[tool]**: before the
+   switch, `publish_aptly.py` (`check_gated_snapshot`, UNITY-20261008-002)
+   checks the snapshot. It requires:
+   - every manifest binary exactly once, with its sha256;
+   - exactly one source package of this name and version, made of exactly
+     the `.dsc` and its files with their sha256.
+
+   A regenerated source or binary of the same name and version is refused
+   ("aptly snapshot <s> does not hold the build's artifacts: missing
+   [...], other sha256 [...]"). `taskctl` uses the same check for a later
+   live snapshot at `PUBLISHED`.
 6. **Version safety.** **[tool]**
    - Run `scripts/apt_view.py --manifest ... --snapshot <new> --write
      gate/version-check.json`, then `scripts/version_safety.py`. The result
