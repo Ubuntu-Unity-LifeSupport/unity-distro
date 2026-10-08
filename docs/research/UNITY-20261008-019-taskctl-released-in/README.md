@@ -463,3 +463,15 @@ Remarks:
 
 `scripts/tests`: 416 passed, 1 skipped. The dry check on
 UNITY-20261008-014 is unchanged.
+
+## Verification, round 5: PASS
+
+The Verifier checked the hang fix (`d0487b4..d37a601`):
+- the timeout covers a whole walk; the largest package history on the builder (720 commits) takes about 0.25 s, far inside 120 s;
+- each watchdog kills only its own `cat-file`, a second history keeps working, and no git child is left behind;
+- the two pipe tests hang on the version before;
+- the suite (416 passed, 1 skipped) and the dry check.
+
+Remarks, not changed:
+- a walk past the limit would be refused as "is not a commit" or "stopped" rather than "did not finish";
+- the timer and `close()` racing on a reused process id is a window of microseconds.
