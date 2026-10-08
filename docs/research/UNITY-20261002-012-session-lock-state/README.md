@@ -172,6 +172,19 @@ stack plus unity-settings-daemon +unity12, unity +unity13 and light-locker
 
 Target record: `gate-016/target-test.txt`.
 
+**Publication (slot 3).**
+- **Database backup:** `/home/claude/backups/UNITY-20261008-016-20261008T202919Z`.
+  19 files, complete, equal to live; list sha256
+  `332312a91b4153bf1b53d3aaa4161a0fa470b5b849d6a6783cd31f40d8ea07a2`.
+- **Repository:** 3 records added to `unity-resolute` (the source, 1 .deb,
+  1 .ddeb). The sha256 of every pool file matches the manifest.
+- **Snapshot:** `unity-resolute-20261008-016`, which is the live
+  `unity-resolute-20261008-015` plus these 3 records
+  (`gate-016/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate-016/version-check.json`,
+  `gate-016/version-safety.json`).
+- **Peer notice:** agent B, ACK.
+
 **Verification.**
 - Design and code review: APPROVE, no required changes.
 - Verifier: PASS, review status REVIEWED. It checked the code against the

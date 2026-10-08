@@ -1,0 +1,4 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ amd64  | light-locker                             | -                                        | 1.8.0-3ubuntu4+unity3                   
++ amd64  | light-locker-dbgsym                      | -                                        | 1.8.0-3ubuntu4+unity3                   
++ source | light-locker                             | -                                        | 1.8.0-3ubuntu4+unity3                   
