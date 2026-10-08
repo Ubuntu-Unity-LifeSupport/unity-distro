@@ -171,7 +171,33 @@ Remarks, applied: the gnome-taquin wording (U exports nothing; the empty
 menubar is appmenu-gtk-module's); the leftover processes above. The crash
 attribution was added after the round, at the coordinator's request.
 
-## Alt mnemonics on the Unity panel: not tested
+## Alt mnemonics on the Unity panel (2026-10-08, real keys)
+
+Measured with the vbox server (`send_keys`, `screenshot`) once it was
+reachable again, on target2 rolled back to Clean-2 (checked inside: no
+`~/.dirty`, no work directories, archive packages) and brought to our
+repository by a user's `full-upgrade` (gtk-nocsd `4.8-1+unity3`, unity
+`+unity12`, hud `+unity3`), plus gnome-text-editor, nautilus, xdotool,
+libadwaita-1-dev, dotnet-sdk-10.0 and Pinta 3.1.2 built there. S and U
+rebuilt there, byte-identical to the builds above (sha256 `4535bda5…`,
+`81bcb168…`). `mnemostart.sh` installs one build, starts the app with that
+build's switch and focuses its window; the keys come from the host.
+
+| application | keys | S (`_File`, `Со_хранить`) | U (`File`, `Сохранить`) |
+|---|---|---|---|
+| Pinta 3.1.2 (top menus File, Edit, ...) | Alt+F | the File menu opens on the panel | nothing opens; on releasing Alt the HUD comes up |
+| GNOME Text Editor (holder "Текстовый редактор") | Alt+F10 | the holder opens; the mnemonic letters are underlined (Создать окно, Сохранить, Сохранить как…, Найти/Заменить…, Печать…, Параметры, Комбинации клавиш, О приложении) | the holder opens; no letter is underlined |
+
+- The guest's keyboard layouts are gb and us, so a Cyrillic item mnemonic
+  (Text Editor's "к" for Комбинации клавиш) cannot be typed there, and
+  Pinta's items carry none; activating an item by its letter inside an
+  open menu is not tested.
+- F10 alone did not open the panel menu with U; it was not tried with S.
+- Unrelated windows on the screen during the run: an apport report dialog
+  and a network notice (`shots` not kept; the vbox screenshots are on the
+  Windows host, 09:42-09:44 local).
+
+### The earlier attempt without the vbox server (not tested then)
 
 Tried with `mnemo081.sh` (`logs/mnemonics.txt`), in the 10-15 minutes
 given, on Pinta (Alt+F, its top menu is `_File` in S and `File` in U) and
