@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "unity-settings-daemon",
+  "measured_at": "2026-10-08T02:31:48Z",
+  "sources_file": "/home/claude/work/a/unity-distro-003/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261002-003",
+    "packages": 416,
+    "list_sha256": "7fa11a8ad4bbf4c363aabade744748987a3d7fa1202487ac6941d822bb8ca55b",
+    "model_entries": 375,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "1f500f5d994ed70953f9a9cc5f65a2a6c8a5a8413effc252f695578f3f5b5f1e",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Thu, 08 Oct 2026 02:31:48 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "4cfcf09e7e967a69c76fea49858469a9c48642fed873d59256782a37a7e156bc",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Tue, 06 Oct 2026 16:59:24 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "f5ebd1bfd369fcb00420eebfea2e20faa588d0fe1069411875165c97b4d23338",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Wed, 07 Oct 2026 18:03:30 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "709918b151aaaac9a0dc99ba157b9cf7fbbf8dcfd52f8acf36ccde0e020374b8",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Wed, 07 Oct 2026 18:02:46 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "6da80124e92f168a475adda13c5a567f070624dd939925a517d060b45dc95bd6",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Wed, 07 Oct 2026 21:10:13 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "15.04.1+21.10.20220802-0ubuntu6"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "libunity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64",
+      "file": "libunity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "libunity-settings-daemon-dev:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libunity-settings-daemon1-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64",
+      "file": "libunity-settings-daemon1-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.ddeb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "libunity-settings-daemon1-dbgsym:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libunity-settings-daemon1",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64",
+      "file": "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "libunity-settings-daemon1:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-settings-daemon-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64",
+      "file": "unity-settings-daemon-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.ddeb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "unity-settings-daemon-dbgsym:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "unity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64",
+      "file": "unity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "unity-settings-daemon-dev:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-settings-daemon-schemas",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "all",
+      "file": "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity11_all.deb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "unity-settings-daemon-schemas:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "architecture": "amd64",
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.deb",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity11",
+      "policy": "unity-settings-daemon:\n  Installed: (none)\n  Candidate: 15.04.1+21.10.20220802-0ubuntu7+unity11\n  Version table:\n     15.04.1+21.10.20220802-0ubuntu7+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu7+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     15.04.1+21.10.20220802-0ubuntu6 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}
