@@ -276,3 +276,41 @@ Implementation details taken into the design:
 5. **-014's evidence before its transition:**
    - `released_in.change_commits` = [`1fc54e15eedd51e04e26cac549d29487dd650008`];
    - `release_gate` exactly `record.gate_file`, or removed.
+
+## Implementation (2026-10-08)
+
+Branch `b/UNITY-20261008-019`:
+
+- **`scripts/taskctl.py` (`4dbd078`):**
+  - `released_in` is a package marker, and NEXT REVIEW gains PUBLISHED.
+  - `released_in_record` checks the shape, the board row of the releasing
+    task (from the rows `main` read under the lock), the write-once record
+    by sha256, the task's own review, and the package and version.
+  - `check_released_commits` checks the repository and its tree, the
+    earlier records of the package (fail closed), and each change commit:
+    one parent, files changed, in the published source, in no earlier
+    publication.
+  - **The PUBLISHED branch:**
+    - REVIEW without `released_in` is refused;
+    - READY_TO_PUBLISH with `released_in` is refused;
+    - `released_in` and `published_by` exclude each other;
+    - the gate comes from the record, its `verification_result` must be
+      PASS, and `build_manifest` and `release_gate` must be absent or
+      equal;
+    - only `task_id` is skipped in the identity loop, and `source_commit`
+      when absent.
+  - `read_publish_record`'s message is neutral ("named in published_by or
+    released_in").
+  - `require_evidence` takes the board rows.
+- **`scripts/tests/test_taskctl_released_in.py`:** 45 tests on the harness
+  of round 2. They cover:
+  - accepted: REVIEW → PUBLISHED → DONE, the BLOCKED route, a change
+    commit equal to the published one, an alternative repository, the
+    matching optional fields, a DONE releasing task;
+  - every refusal of the design, including REVIEW → PUBLISHED with
+    `published_by`, an earlier record with an unknown commit, an
+    unreadable earlier record, and other files in the records directory.
+- **`docs/ENGINEERING-PROCESS.md`:** rule R; rule P's ancestor sentence
+  "for `published_by`"; the path line in section 1; step 12.
+- **Tests:** all of `scripts/tests` pass (397 passed, 1 skipped; before
+  the change 352 + 1 skipped).
