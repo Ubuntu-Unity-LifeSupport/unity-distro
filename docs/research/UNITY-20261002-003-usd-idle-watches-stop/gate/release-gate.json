@@ -30,7 +30,7 @@
   },
   "evidence_manifest": {
     "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/gate/evidence-manifest.json",
-    "sha256": "e04c2ca36d468047efa114e6d43357b8c91679a406beb9154630c85865d29713"
+    "sha256": "ff6e1cef493046e044ac9449632560be49e01a0a96509b4b989c5e17aace8035"
   },
   "tested_build": {
     "mode": "buildinfo_identical",
