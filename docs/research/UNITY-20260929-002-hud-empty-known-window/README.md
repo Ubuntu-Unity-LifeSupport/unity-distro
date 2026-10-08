@@ -194,3 +194,72 @@ hud-service subscribes to a model with no items, indexes nothing, and the
 for that window. On later starts the menubar is attached before bamf
 announces the window. The earlier guess (properties missing at
 `WindowCreated`) is dropped: LibreOffice sets them at frame creation.
+
+## Round 3 (logs/03, 2026-10-08)
+
+**Where it ran.** target2 rolled back to Clean-2 (checked inside: no
+`~/.dirty`, no work directories, archive hud, LibreOffice 26.2.5.2), then
+our repository by a user's `full-upgrade` (hud `+unity3`, gtk-nocsd
+`4.8-1+unity3`, unity `+unity12`, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6;
+the archive's updates brought LibreOffice 26.2.6.3) plus `xdotool`, nothing
+else. A first round 3 on the state left by UNITY-20261008-001 stopped when
+target2 hit a Guru Meditation on the reboot after its boot 1 (about
+05:18Z); its one boot is kept apart in `logs/03-livequery-dirty` and not
+counted.
+
+**Method** (`coldloop4.sh`, `livequery.py`): 10 cold boots; Writer started
+as `lo7.sh` starts it; the HUD queried **as soon as the Writer window is
+visible**, the way Unity's HUD client does (`CreateQuery`, results in a Dee
+shared model); the live results model read at +0, +1, +2, +5, +10, +20 s,
+with `UpdateQuery` to another text and back at +12 s. Also one legacy
+`StartQuery` at +0.
+
+| | boots |
+|---|---|
+| empty at +0 (legacy `StartQuery` and live model) | 10 of 10 |
+| the open query fills in by itself (5 results with Файл) | 8 of 10: at +2 s in 1 boot, at +5 s in 7 |
+| still empty at +20 s, also after `UpdateQuery` | 2 of 10 (boots 1 and 2) |
+
+**Boots 1 and 2:** a second LibreOffice window opened 3.6-5.0 s after the
+document window, under the application libreoffice-writer, and took the
+focus (window stack: the document window `false`, the new one `true`);
+the HUD answers for the focused window. That second window is LibreOffice's
+**"Tip of the Day" dialog**: with `LastTipOfTheDayShown` set back from
+20734 (2026-10-08) to 20700, a Writer start shows "Совет дня: 1/224",
+focused (vbox screenshot); the HUD answers 0 while it has the focus and 4
+after OK closes it (`logs/04-tipoftheday.txt`). It came back in boot 2
+because the profile change of boot 1 was not written before the reboot
+(INFERENCE: LibreOffice was killed by the reboot).
+
+## Result
+
+The symptom of this task, "the HUD is empty although the window is
+known, on the first Writer start after a boot", has two causes, and
+neither is a hud defect:
+
+1. **The Tip of the Day dialog has the focus.** On the first start of a
+   day (and after a profile reset) LibreOffice shows it a few seconds after
+   the document window. The HUD searches the focused window, the dialog has
+   no menu, so the answer is empty; it is right again once the dialog is
+   closed. Our measurement scripts (`lo4.sh`, `lo7.sh`) chose the window by
+   its title, not by the focus, and so counted these runs as "the window is
+   known, the HUD is empty". This also fits the -029 logs/06 boot 4
+   (answered, then empty 5 s later: the dialog came up between the two
+   queries) and round 1 boot 1 here (a second focused window).
+2. **A query in the first seconds after the window appears** comes while
+   hud-service is still importing the window's menu over `org.gtk.Menus`
+   (round 2: about 82 Start calls, usually done within about 5 s, once
+   about 15 s; round 1 boot 4, with one LibreOffice window, was empty at
+   both queries, about 8 and 13 s after the window appeared). The answer is
+   what has arrived so far; an open query fills in by itself when the rest
+   arrives (round 3: 8 of 8 boots without the dialog, by +2 to +5 s), as
+   the code says (`QueryImpl::refresh` on the token's `changed`). A HUD
+   opened in those seconds shows no results at first and then shows them,
+   without being reopened. Why the import sometimes takes about 15 s
+   (LibreOffice answering slowly on its first start, or the two clients
+   walking at once) was not measured.
+
+Proposed terminal state: NOT_APPLICABLE (correct behaviour, measured);
+the decision is the coordinator's. No code is proposed. The window-number
+application id (UNITY-20260929-001) was present in all boots and is not a
+factor here.

@@ -9,7 +9,12 @@ n=${1:-10}; out=${2:?outdir}; mkdir -p "$out"
 for b in $(seq "$n"); do
   ssh target2 'sudo -n systemctl reboot' 2>/dev/null
   sleep 40
-  until ssh -o ConnectTimeout=5 -o BatchMode=yes target2 'pgrep -x hud-service >/dev/null && pgrep -x window-stack-br >/dev/null' 2>/dev/null; do sleep 5; done
+  t=0
+  until ssh -o ConnectTimeout=5 -o BatchMode=yes target2 'pgrep -x hud-service >/dev/null && pgrep -x window-stack-br >/dev/null' 2>/dev/null; do
+    sleep 5; t=$((t+5))
+    # a guest that is not back after 5 minutes (a Guru Meditation on 2026-10-08) stops the loop
+    [ $t -ge 300 ] && { echo "boot $b: guest not back after 300 s, stop ($(date -u +%FT%TZ))"; exit 2; }
+  done
   sleep 20
   ssh target2 'bash -s' > "$out/boot-$b.txt" 2>&1 <<'EOS'
 export DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
