@@ -1,0 +1,13 @@
+== UNITY-20260927-052 by UNITY-20260927-012: gate sha ok True, published manifest sha ok True, record artifacts = published manifest True
+   (1) bytes equal: True
+   VERDICT: PASS by bytes
+== UNITY-20260928-020 by UNITY-20260927-027: gate sha ok True, published manifest sha ok True, record artifacts = published manifest True
+   (1) bytes equal: False
+   on-disk copy for build: /home/claude/work/b/nux027/out-020-3/nux_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.buildinfo
+   on-disk copy for build-gated: /home/claude/work/b/unity-distro-027/packages/nux_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.buildinfo
+   (2) buildinfo_identical: NO: Installed-Build-Depends
+   VERDICT: FAIL
+== UNITY-20261002-011 by UNITY-20261002-003: gate sha ok True, published manifest sha ok True, record artifacts = published manifest True
+   (1) bytes equal: False
+   (2) buildinfo_identical: yes
+   VERDICT: PASS by buildinfo_identical

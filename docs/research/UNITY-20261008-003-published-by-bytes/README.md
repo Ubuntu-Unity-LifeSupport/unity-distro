@@ -157,3 +157,50 @@ committed together with the manifest.
   - accept name equality again;
   - skip the `Installed-Build-Depends` comparison;
   - accept an uncommitted `.buildinfo`.
+
+## 6. Design review
+
+The Design Challenger, a temporary subagent, reviewed the design in two
+rounds.
+- **Round 1: REVISE.** It required six changes:
+  - put the evidence files where their manifests name them;
+  - read the gate the same way the `PUBLISHED` code does;
+  - place the gate check before the snapshot checks and add one to the
+    publisher;
+  - update section 6;
+  - remove the stale comments;
+  - rewrite the tests of the old rule.
+- **Round 2: APPROVE.**
+
+## 7. Results (branch `a/UNITY-20261008-003`)
+
+- **`runs/02-past-closures-new-code.txt`.** The real `covering_record`
+  and `check_own_build` of this branch ran on the real evidence and the
+  write-once publish records:
+  - UNITY-20260927-052 through -012: **accepted**, by bytes.
+  - UNITY-20261002-011 through -003: **accepted**, by
+    `buildinfo_identical`. Its two `.buildinfo` files are now committed.
+  - UNITY-20260928-020 through UNITY-20260927-027: **refused**. Its
+    `.buildinfo` is not committed.
+- **`runs/01-probe-past.txt`.** With the on-disk copy of that file, -020
+  still fails, because `Installed-Build-Depends` differ. It stays `DONE`
+  by C's decision (`docs/DECISIONS.md`, 2026-10-08). The new code does not
+  re-check a past `DONE`.
+- **`runs/03-suite.txt`.** `scripts/tests` gives 325 passed, 1 skipped and
+  682 subtests passed. `test_tested_build.py` is unchanged.
+- **`runs/04-mutations.txt`.** Each mutation was run in a scratch copy of
+  `scripts/`, and each was caught:
+
+  | Mutation | Tests that fail |
+  |---|---|
+  | rule 1 by names | 15 |
+  | `Installed-Build-Depends` comparison skipped | the -020 case, plus subtests in `test_tested_build.py` |
+  | uncommitted `.buildinfo` accepted | 4: published_by both sides, the gate and the publisher |
+  | gate sha check skipped | its test |
+  | gate `task_id` check skipped | its test |
+  | commit comparison skipped | the ancestor and tree tests |
+  | gate `.buildinfo` check removed | the gate test |
+
+- `docs/research/UNITY-20260929-023-published-by/real-020.py` is a tool of
+  the old rule. It is left unchanged as a historical record and would now
+  refuse.
