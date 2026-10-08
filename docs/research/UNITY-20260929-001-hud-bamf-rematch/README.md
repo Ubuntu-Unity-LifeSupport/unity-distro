@@ -13,7 +13,7 @@ task_id: UNITY-20260929-001
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - follow-up of UNITY-20260927-029
-status: INVESTIGATING
+status: TARGET_VERIFIED (2026-10-08), independent verification next
 source_version: 14.10+17.10.20170619-0ubuntu6+unity3 (published 2026-10-02)
 observed: >
   The window stack lists the LibreOffice Writer document window with its
@@ -24,6 +24,12 @@ observed: >
 expected: >
   every window of an application gets that application's id
   (libreoffice-writer), as the dialog does.
+user_effect: >
+  hud records the HUD commands used in Writer under the window number, a
+  new key at every start, so the "most used" list of the empty HUD never
+  carries over to the next Writer start. The HUD icon on the panel is not
+  affected (Unity takes it from bamf); the "no icon" of the -029 card was
+  not reproduced and is closed as not this defect.
 ```
 
 ## Reading the code (hud +unity3)
@@ -323,8 +329,8 @@ Remarks, taken into the target plan:
 ## Implementation (2026-10-08)
 
 hud source `Ubuntu-Unity-LifeSupport/hud`, branch `b/UNITY-20260929-001`
-(pushed): `551a798` (the bridge and the tests) and `cc0a279` (+unity4) on
-the published +unity3 (`9e7c093`).
+(pushed): `551a798` (the bridge and the tests), `cc0a279` (+unity4) and
+`b0c2444` (one more test) on the published +unity3 (`9e7c093`).
 
 - `BamfWindow::resolveApplicationId` (one place for `Parents()` ->
   `DesktopFile()`; outcomes: Parents error, DesktopFile error, no parent,
@@ -339,22 +345,93 @@ the published +unity3 (`9e7c093`).
   the reported focus, Destroyed(old). `m_windows.value()` instead of
   `operator[]` in the two focus lookups, so an unknown path does not insert
   an empty entry.
-- Tests: 9 in TestBamfWindowStack (the moves, the no-op cases, the later
-  signals, the startup focus, focus over an unknown window), 1 in
+- Tests: 10 in TestBamfWindowStack (the moves, the no-op cases, the later
+  signals, the startup focus, focus over an unknown window, a window opened
+  while its first application is already gone: the regression for the
+  ChildRemoved/ChildAdded sequence with no ViewOpened for the window), 1 in
   TestApplicationList (Created, Focused, Destroyed leaves the new
   application focused and no old id).
 
 **Builds** (`build_sbuild.py`, chroot 20261008T083223Z; logs/04):
 
-- +unity4 (`cc0a279`): 6 of 6 suites; window-stack-bridge 22 tests,
+- +unity4 (`b0c2444`): 6 of 6 suites; window-stack-bridge 23 tests,
   service 45.
-- control (`5252964`: the new tests on the +unity3 bridge, a local branch
-  only): the window-stack-bridge suite fails 5 tests, exactly the moves
+- control (`5e1f77f`: the new tests on the +unity3 bridge, a local branch
+  only): the window-stack-bridge suite fails 6 tests, exactly the moves
   (FocusedWindowMovedToItsApplication,
   StartupFocusedWindowMovedWithoutActiveWindowChanged,
   UnfocusedWindowMovedWithoutFocus, MovedWindowKeepsNewIdInLaterSignals,
-  FocusKeptOverUnknownActiveWindow); the 4 no-op tests and the service
-  test pass there too, as they should.
+  WindowOpenedDuringMoveIsCorrected, FocusKeptOverUnknownActiveWindow);
+  17 pass, among them the 4 no-op tests; the service test passes there
+  too, as it should.
 - +unity3 against +unity4 (logs/05): every package has the same file list
   and the same exported symbols; the binaries differ in bytes (the newer
-  chroot), the source only in the bridge.
+  chroot), the source only in the bridge. That comparison is of the
+  `cc0a279` build; `b0c2444` adds only a test.
+
+## Target check (target2, 2026-10-08, logs/06)
+
+Clean-2 restored and confirmed from inside the guest (no `~/.dirty`, no
+work directories, hud `0ubuntu6`, NTP synchronized), then `apt
+full-upgrade` to the live publication `unity-resolute-20261002-003-r2`
+(InRelease Date 2026-10-08 03:05:41 UTC) the usual way, no drop-ins, no
+test environment. hud `+unity4` from a file repository on top (`apt
+full-upgrade` upgraded only hud). Every measurement follows a plain
+`systemctl reboot`; `versions` shows the running bridge and hud-service
+from the installed binaries (no `(deleted)` mappings).
+
+**Before / after** (the defect: hud records LibreOffice's commands under
+the window number, so its "most used" list never carries over to the next
+Writer start):
+
+| | published +unity3 | +unity4 |
+|---|---|---|
+| stack id of the Writer window | the window number (`'56623243'`, `'58720292'`), 4 of 4 starts | `libreoffice-writer`, 10 of 10 cold starts (+1 after the bamf kill) |
+| stack id of the Calc window | the window number, 1 of 1 | `libreoffice-calc`, 3 of 3 |
+| usage row for HUD "Сохранить" | `('58720292', 'Файл\|\|Сохранить')` | `('libreoffice-writer', 'Файл\|\|Сохранить')` (`libreoffice-calc` from Calc) |
+| bridge signals for the window | Created(xid, xid), Focused(xid, xid) only | Created(xid, xid) [Focused(xid, xid)], Created(xid, new), Focused(xid, new), Destroyed(xid, xid) |
+
+C's points:
+
+- (а) commands recorded under libreoffice-writer: the usage row above.
+  The target check: an empty HUD query in a fresh Writer start before any
+  Writer use lists only the window actions; after one HUD "Сохранить" in
+  run 1, Writer killed and started again (run 2), the empty query lists
+  "Сохранить (Файл)" first.
+- (б) no duplicates or dangling windows: in every start the old id gets
+  exactly one Destroyed, and the stack lists the window once, with the new
+  id.
+- (в) focus: the stack's focus flag is true for the moved window in every
+  start; Focused(new) comes either before Destroyed(old) (the window was
+  the reported focus at the move) or after it (focus reported later, by
+  `ActiveWindowChanged`, already with the new id). Both orders end with the
+  new application focused; hud-service answers HUD queries for it.
+- (г) both sides of the race: starts where the bridge saw the window first
+  under the temporary application (Created(xid, xid), then the move) and
+  starts where the bridge's lookup already got libreoffice-writer
+  (Created(xid, libreoffice-writer) only: starts 3, 6, 7) both end with
+  the right id.
+
+Other checks (design review point 9):
+
+- Live query: a CreateQuery opened as soon as the Writer window shows, not
+  reopened: 0 rows at +0/+1 s, 5 rows with (Файл) from +2 s (the menu
+  import), the query follows the move.
+- Start Center, then ctrl+n: the same window goes from
+  `libreoffice-startcenter` to `libreoffice-writer` (Created(new),
+  Focused(new), Destroyed(startcenter)); HUD "Сохранить" gives 4 results
+  from Файл.
+- Terminal: Created/Focused at open, Destroyed at close, no move. Its id
+  is `org` (from `org.gnome.Terminal.desktop`): `QFileInfo::baseName()`
+  stops at the first dot. That is the +unity3 code, unchanged here, and
+  outside this task.
+- window-stack-bridge killed with SIGKILL: systemd restarts it (restart
+  counter 1); the Start Center check above passes again with the new
+  process.
+- bamfdaemon killed: it is started again by D-Bus activation, the bridge
+  keeps running, the stack and a later Writer start give
+  libreoffice-writer.
+
+The leftover `'58720292'` row from the before run stays in the usage
+table: numeric rows from +unity3 are not removed by +unity4 (design review
+round 3).

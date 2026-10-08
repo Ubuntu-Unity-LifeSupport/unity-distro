@@ -5,8 +5,8 @@
   "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity4",
   "target_series": "resolute",
   "source_repo": "/home/claude/work/b/unity-distro-001/packages/hud",
-  "source_commit": "cc0a2792d5b3ac1b9852093b52def9f3e9bf1a46",
-  "source_tree_hash": "980dd28f6766ea341aeb7b95bf08774ab02af29e",
+  "source_commit": "b0c2444561557bb91d4b045bac73f1b6b5f0f6f4",
+  "source_tree_hash": "0c508a43c6550c54e4d6b3276a4e34cda86e1d11",
   "build_command": [
     "sbuild",
     "-d",
@@ -18,17 +18,17 @@
     "--chroot-mode=unshare",
     "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
   ],
-  "build_started": "2026-10-08T08:44:28.865581+00:00",
-  "build_finished": "2026-10-08T09:08:04.411165+00:00",
+  "build_started": "2026-10-08T09:42:46.734098+00:00",
+  "build_finished": "2026-10-08T10:12:47.787578+00:00",
   "result": "PASS",
   "log": {
     "file": "UNITY-20260929-001-hud-14.10+17.10.20170619-0ubuntu6+unity4-sbuild.log",
-    "sha256": "f564d35ed4dc891fe74e2cd50043ab46dd1bd6b3fe90a205801043d65d13d293"
+    "sha256": "b055e8f6a3c7eb6f2483d58c4f42dbda2944ab5cd3b0837abbe52923ae06c1bc"
   },
   "artifacts": [
     {
       "file": "hud_14.10+17.10.20170619-0ubuntu6+unity4.dsc",
-      "sha256": "eab3200808cac2519397a047ddcf5c372f676f018df2c824c834704949803241",
+      "sha256": "9f73d10266a343c3cb5a523425f70239c597ddae1aaf0f107ef819e472307f0d",
       "size": 2435,
       "kind": "source",
       "package": "hud",
@@ -36,7 +36,7 @@
     },
     {
       "file": "hud_14.10+17.10.20170619-0ubuntu6+unity4_amd64.changes",
-      "sha256": "abb845adb9352af4acd6dd1bfaca9995aaf48d8fa7bb00530be38380ca7b2cad",
+      "sha256": "155defffb6cb1f3dc181e6d666e7f3d00d376248061a2fe807ec7ad04af503dd",
       "size": 9223,
       "kind": "changes"
     },
@@ -50,8 +50,8 @@
     },
     {
       "file": "hud_14.10+17.10.20170619-0ubuntu6+unity4.diff.gz",
-      "sha256": "27ea55f0ae88287e2637eb48dbd1752e9074865cf50122dbef62260b8ca809af",
-      "size": 19714,
+      "sha256": "357c40db85303f7eccc34f5514eaa7f5590687cb855665630c27ff2a53b3fa7c",
+      "size": 19964,
       "kind": "source_file",
       "package": "hud",
       "version": "14.10+17.10.20170619-0ubuntu6+unity4"
@@ -112,7 +112,7 @@
     },
     {
       "file": "hud_14.10+17.10.20170619-0ubuntu6+unity4_amd64.buildinfo",
-      "sha256": "128c0f4ab22525c140266552d673c53f23394417403364484d329c12bf5b5e96",
+      "sha256": "c5a7203960d5e0cfc3613d99de23fa87bf76c9cf196573631ad93e051d076184",
       "size": 31894,
       "kind": "buildinfo"
     },

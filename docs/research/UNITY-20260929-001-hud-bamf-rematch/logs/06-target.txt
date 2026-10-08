@@ -1,0 +1,114 @@
+# UNITY-20260929-001 target2 (Clean-2 restored and confirmed inside 2026-10-08 09:33Z; apt full-upgrade to the live
+# publication unity-resolute-20261002-003-r2, InRelease Date Thu, 8 Oct 2026 03:05:41 UTC; no drop-ins; reboots by systemctl reboot).
+# Scripts: target.sh, usage.py, frequent.py, ../UNITY-20260929-002-hud-empty-known-window/livequery.py.
+
+## BEFORE: published hud +unity3, after reboot 09:58Z (target.sh versions; writer 3; calc 1; writer 1; use)
+writer start 1: window 56623243; stack: (56623243, '56623243', false
+   bridge: WindowCreated(56623243, 56623243) FocusedWindowChanged(56623243, 56623243) 
+writer start 2: window 58720292; stack: (58720292, '58720292', false
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) 
+writer start 3: window 58720292; stack: (58720292, '58720292', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) 
+calc start 1: window 58720292; stack: (58720292, '58720292', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) 
+writer start 1: window 58720292; stack: (58720292, '58720292', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) 
+first result: ['30', 'Сохранить', '[(0, 9)]']
+usage rows (application, entry, count): [('58720292', 'Файл||Сохранить', 1)]
+
+## AFTER: hud +unity4 from a file repository (apt full-upgrade, only hud upgraded), reboot 10:14Z
+## (apt list --upgradable, then versions; writer 10; calc 3)
+ 13:16:53 up 1 min,  2 users,  load average: 4,55, 1,91, 0,71
+dnsmasq-base libmp3lame0 openssh-client openssh-server openssh-sftp-server python3-software-properties shotwell-common shotwell software-properties-common software-properties-gtk 
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity4
+libreoffice-writer	4:26.2.6.3-0ubuntu0.26.04.2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+dpkg-query: шаблону libhud2 не соответствует ни один пакет
+window-stack-br pid 2148 exe /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge sha256 47701985ff1cb260 deleted 0
+hud-service pid 3670 exe /usr/lib/x86_64-linux-gnu/hud/hud-service sha256 785979af07d6ffda deleted 0
+writer start 1: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) FocusedWindowChanged(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) 
+writer start 2: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) FocusedWindowChanged(62914596, libreoffice-writer) 
+writer start 3: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) 
+writer start 4: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) FocusedWindowChanged(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) 
+writer start 5: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) FocusedWindowChanged(62914596, libreoffice-writer) 
+writer start 6: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) 
+writer start 7: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) 
+writer start 8: window 65011748; stack: (65011748, 'libreoffice-writer', true
+   bridge: WindowCreated(65011748, 65011748) FocusedWindowChanged(65011748, 65011748) WindowCreated(65011748, libreoffice-writer) FocusedWindowChanged(65011748, libreoffice-writer) WindowDestroyed(65011748, 65011748) 
+writer start 9: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) FocusedWindowChanged(62914596, libreoffice-writer) 
+writer start 10: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) FocusedWindowChanged(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) 
+calc start 1: window 62914596; stack: (62914596, 'libreoffice-calc', true
+   bridge: WindowCreated(62914596, 62914596) FocusedWindowChanged(62914596, 62914596) WindowCreated(62914596, libreoffice-calc) FocusedWindowChanged(62914596, libreoffice-calc) WindowDestroyed(62914596, 62914596) 
+calc start 2: window 62914596; stack: (62914596, 'libreoffice-calc', true
+   bridge: WindowCreated(62914596, 62914596) WindowCreated(62914596, libreoffice-calc) WindowDestroyed(62914596, 62914596) FocusedWindowChanged(62914596, libreoffice-calc) 
+calc start 3: window 62914596; stack: (62914596, 'libreoffice-calc', true
+   bridge: WindowCreated(62914596, 62914596) FocusedWindowChanged(62914596, 62914596) WindowCreated(62914596, libreoffice-calc) FocusedWindowChanged(62914596, libreoffice-calc) WindowDestroyed(62914596, 62914596) 
+
+## use (no Writer window open: the last step was Calc, so the command ran in Calc); frequent; live; startcenter; terminal
+There are no windows in the stack
+Invalid window '%1'
+Usage: windowactivate [options] [window=%1]
+--sync    - only exit once the window is active (is visible + active)
+If no window is given, %1 is used. See WINDOW STACK in xdotool(1)
+first result: ['28', 'Сохранить', '[(0, 9)]']
+usage rows (application, entry, count): [('58720292', 'Файл||Сохранить', 1), ('libreoffice-calc', 'Файл||Сохранить', 1)]
+== frequent (run 2)
+window 62914596; stack: (62914596, 'libreoffice-writer', true
+empty query, first results: 
+== live
+   0.02 legacy StartQuery: 0 suggestions, 0 with Файл
+   0.09 +0s: synchronized=True rows=0 with Файл=0
+   1.09 +1s: synchronized=True rows=0 with Файл=0
+   2.13 +2s: synchronized=True rows=5 with Файл=5
+   5.11 +5s: synchronized=True rows=5 with Файл=5
+  10.13 +10s: synchronized=True rows=5 with Файл=5
+  20.04 +20s: synchronized=True rows=5 with Файл=5
+stack after: (65011748, 'libreoffice-writer', true 
+== startcenter
+start center window 62914596 (LibreOffice); stack: (62914596, 'libreoffice-startcenter', true 
+after ctrl+n: window 62914596 (Без имени 1 — LibreOffice Writer); stack: (62914596, 'libreoffice-writer', true 
+   bridge for 62914596: WindowCreated(62914596, libreoffice-startcenter) FocusedWindowChanged(62914596, libreoffice-startcenter) WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) WindowDestroyed(62914596, libreoffice-startcenter) 
+   HUD for the focused window: 4 results with (Файл)
+== terminal
+terminal window 65011718 (mike@target2: ~); stack: (65011718, 'org', true
+   bridge for 65011718: WindowCreated(65011718, org) FocusedWindowChanged(65011718, org) WindowDestroyed(65011718, org) 
+
+## the target check: two Writer runs (frequent.py replaced the legacy StartQuery '', which returns no rows)
+== frequent before any Writer use
+window 62914596; stack: (62914596, 'libreoffice-writer', true
+empty query, 20 rows, first: Свернуть Window actions | Восстановить прежний размер Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+== run 1: Writer, HUD command
+writer start 1: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, 62914596) WindowCreated(62914596, libreoffice-writer) WindowDestroyed(62914596, 62914596) FocusedWindowChanged(62914596, libreoffice-writer) 
+first result: ['30', 'Сохранить', '[(0, 9)]']
+usage rows (application, entry, count): [('58720292', 'Файл||Сохранить', 1), ('libreoffice-calc', 'Файл||Сохранить', 1), ('libreoffice-writer', 'Файл||Сохранить', 1)]
+== run 2: Writer restarted, empty HUD
+window 62914596; stack: (62914596, 'libreoffice-writer', true
+empty query, 20 rows, first: Сохранить Файл | Свернуть Window actions | Восстановить прежний размер Window actions | Переместить Window actions | Изменить размер Window actions
+
+## bridge-restart (SIGKILL), bamf-kill, then one more Writer start
+== bridge-restart
+stack before: (62914596, 'libreoffice-writer', true 
+window-stack-bridge: old pid 2148, now 8281 (active)
+start center window 62914596 (LibreOffice); stack: (62914596, 'libreoffice-startcenter', true 
+after ctrl+n: window 62914596 (Без имени 1 — LibreOffice Writer); stack: (62914596, 'libreoffice-writer', true 
+   bridge for 62914596: WindowCreated(62914596, libreoffice-startcenter) FocusedWindowChanged(62914596, libreoffice-startcenter) WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) WindowDestroyed(62914596, libreoffice-startcenter) 
+   HUD for the focused window: 4 results with (Файл)
+== bamf-kill
+bamfdaemon: old pid 2131, now 8512; window-stack-bridge: 8281
+stack: (62914596, 'libreoffice-writer', true 
+жов 08 13:24:44 target2 systemd[1225]: window-stack-bridge.service: Scheduled restart job, restart counter is at 1.
+жов 08 13:24:44 target2 systemd[1225]: Started window-stack-bridge.service - Window Stack Bridge.
+after 10 s: bamfdaemon 8512, bridge 8281
+writer start 1: window 62914596; stack: (62914596, 'libreoffice-writer', true
+   bridge: WindowCreated(62914596, libreoffice-writer) FocusedWindowChanged(62914596, libreoffice-writer) 
