@@ -13,7 +13,7 @@ task_id: UNITY-20260929-001
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - follow-up of UNITY-20260927-029
-status: TARGET_VERIFIED (2026-10-08), independent verification next
+status: VERIFIED (2026-10-08), publication next
 source_version: 14.10+17.10.20170619-0ubuntu6+unity3 (published 2026-10-02)
 observed: >
   The window stack lists the LibreOffice Writer document window with its
@@ -386,7 +386,7 @@ Writer start):
 
 | | published +unity3 | +unity4 |
 |---|---|---|
-| stack id of the Writer window | the window number (`'56623243'`, `'58720292'`), 4 of 4 starts | `libreoffice-writer`, 10 of 10 cold starts (+1 after the bamf kill) |
+| stack id of the Writer window | the window number (`'56623243'`, `'58720292'`), 4 of 4 starts | `libreoffice-writer`, 10 of 10 Writer starts in a row within one boot (+1 after the bamf kill) |
 | stack id of the Calc window | the window number, 1 of 1 | `libreoffice-calc`, 3 of 3 |
 | usage row for HUD "Сохранить" | `('58720292', 'Файл\|\|Сохранить')` | `('libreoffice-writer', 'Файл\|\|Сохранить')` (`libreoffice-calc` from Calc) |
 | bridge signals for the window | Created(xid, xid), Focused(xid, xid) only | Created(xid, xid) [Focused(xid, xid)], Created(xid, new), Focused(xid, new), Destroyed(xid, xid) |
@@ -435,3 +435,53 @@ Other checks (design review point 9):
 The leftover `'58720292'` row from the before run stays in the usage
 table: numeric rows from +unity3 are not removed by +unity4 (design review
 round 3).
+
+## Verification (independent Verifier, 2026-10-08): PASS
+
+The Verifier did not write the fix. Its checks:
+
+- **Code review** of `9e7c093..b0c2444` against the design:
+  - `WindowAdded` is connected before `WindowPaths()`;
+  - `m_activeWindowPath` is handled at all four places;
+  - the order is Created(new), Focused(new) only for the reported focus, then Destroyed(old);
+  - the id is kept on every bamf error;
+  - unknown and already-closed windows return early;
+  - a second move re-resolves from bamf.
+- **hud-service side:** `ApplicationListImpl` keeps windows per application, so Created(new) followed by Destroyed(old) cannot drop the new entry.
+- **Builds:**
+  - +unity4: 6 of 6 suites (bridge 23 tests);
+  - control `5e1f77f`: its tests are equal to `b0c2444`'s, and it fails exactly the 6 move tests;
+  - the bridge and hud-service in the .deb equal the running binaries on target2, and the .deb on target2 is the built one.
+- **target2 state:**
+  - apt history shows the full-upgrade to the live publication, then only hud +unity4;
+  - no unit drop-ins, environment overrides or `/etc/ld.so.preload` (the only `LD_PRELOAD` is the distro's gtk-nocsd).
+- **Its own two-run check** with other commands: HUD "Линейки (Вид)" and "Строка состояния (Вид)" in one Writer run. In the next Writer start the empty HUD lists them first, and the window number changed between the runs.
+- **C's points:** (а) to (г) hold, and the card's numbers match logs/06.
+
+Remarks (not blocking; the follow-ups are separate tasks):
+
+- hud-service accumulates deleted 128 KiB `/tmp/#…` shared mappings: about
+  60 per Writer start, about 72 with a move, about 3 per HUD query. On
+  target2 they went from 525 to 1161 in one boot, and RSS from 64 to 79 MB.
+  Starts without a move go through code this change does not touch.
+  Follow-up UNITY-20261008-013 (first a comparison on +unity3).
+- The `(deleted)` count in `target.sh versions` includes those `/tmp`
+  mappings; none of them is a library or the binary.
+- The return value of the `WindowAdded` connect is not checked or logged;
+  `GetWindowStack`'s loop still uses `m_windows[path]`, which inserts an
+  empty entry for an unknown path (harmless here, the move uses `value()`).
+  Two tests from design round 1 are missing: a `WindowAdded` from another
+  bus name, and a sender that differs from the `Parents()` answer.
+  Follow-up UNITY-20261008-014.
+- The bridge's id cut at the first dot (`org` for `org.gnome.Terminal`) is
+  +unity3 code: follow-up UNITY-20261008-011.
+
+## Known gaps
+
+| gap | where it is covered |
+|---|---|
+| The unit tests emit only bamf's `WindowAdded`, not the whole re-match sequence (ChildRemoved/WindowRemoved, ViewClosed(app), ViewOpened(app), ChildAdded). The bridge listens only to `WindowAdded`, so the tests reach every path of the new code. | the real sequence from bamf on target2: logs/01 (the signal order), logs/06 (the moves seen by the bridge) |
+| No test for a `WindowAdded` from another bus name, nor for a sender that differs from the `Parents()` answer (design round 1). | UNITY-20261008-014 |
+| hud-service mapping and RSS growth, partly on the move path (the menu re-import accepted in design point 6). | UNITY-20261008-013 |
+| Numeric usage rows written by +unity3 stay in users' usage tables; +unity4 does not migrate them. | accepted in design round 3 |
+| The ids of applications with reverse-DNS desktop files are cut at the first dot. | UNITY-20261008-011 |
