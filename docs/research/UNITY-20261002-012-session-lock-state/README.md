@@ -21,6 +21,27 @@ The target is the published stack plus unity-settings-daemon +unity12.
 - In an unlocked session the helper mounts no worse than +unity11.
 - A medium present at login is mounted.
 
+Target record: `gate/target-test.txt`. tested_build: this_build.
+
+## Verification
+
+- **Design and code review** (Design Challenger, temporary subagent):
+  APPROVE after the reviewer asked for two changes:
+  - presence of a lock provider is unknown until the bus-name watchers
+    report;
+  - a provider that vanishes re-checks the queue.
+- **Verifier** (independent temporary subagent): PASS, review status
+  REVIEWED. It checked:
+  - the code against the design;
+  - the build provenance (manifest, chroot, artifact hashes, source tarball
+    equal to `git archive b116af2`);
+  - the target results above.
+- **Follow-ups on the board:**
+  - UNITY-20261008-009: unit tests for the unlocked-only check, covering
+    the locked and unknown states;
+  - UNITY-20261008-010: a lock-provider proxy that is replaced before it
+    is ready is not freed.
+
 ## Not changed / known limits
 
 - Under cinnamon-session the automount helper does not mount on hotplug at
