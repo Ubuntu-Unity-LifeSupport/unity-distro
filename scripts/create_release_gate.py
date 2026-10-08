@@ -88,6 +88,10 @@ def main():
     # UNITY-20260929-013: extra build dependencies, only when the build had any.
     dependency_error = manifest_error(manifest, args.build_manifest.parent)
     if dependency_error: parser.error(dependency_error)
+    # UNITY-20261008-003: the build's .buildinfo is committed with its manifest,
+    # so a later published_by can compare a covered build with this one.
+    _buildinfo, buildinfo_error = tested_build.manifest_buildinfo(root, manifest, args.build_manifest.parent, "gated build's")
+    if buildinfo_error: parser.error(buildinfo_error)
     # UNITY-20260929-020: what the target test installed is this build or
     # equivalent to it (ENGINEERING-PROCESS section 6).
     tested, tested_error = tested_build.check(record, manifest, args.build_manifest.parent, root)

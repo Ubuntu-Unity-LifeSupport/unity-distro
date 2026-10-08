@@ -236,7 +236,6 @@ def confirm_live_publication(record, distribution, prefix, run=run_aptly_read):
 # publication (same package version, one publish record under that task).
 _TASK_ID = re.compile(r"^UNITY-\d{8}-\d{3}$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
-_COMMIT = re.compile(r"^[0-9a-f]{40}$")
 
 
 def read_publish_record(path, expected_sha256=None):
@@ -282,9 +281,14 @@ def covering_record(data, task_id, records_dir):
 
 
 def check_own_build(data, task_id, record, repo):
-    """The task's own gated build proves its change is in the published source:
-    same package version, its commit equal to or an ancestor of the record's,
-    and the same source and binary artifacts by name."""
+    """The task's own build_sbuild manifest proves its change is in the
+    published bytes (UNITY-20261008-003): the same package version, and either
+    (1) its source and binary artifacts equal the publish record by file and
+    sha256, or (2) it is buildinfo_identical to the published build, which is
+    reached through the record's gate: the same source commit and tree, extra
+    build dependencies, .buildinfo identity and Installed-Build-Depends, both
+    .buildinfo files committed. A commit that is only an ancestor of the
+    published one proves nothing about the bytes and is refused."""
     # Verifier round 1: the covered task's own review and build are bound here,
     # because the gate the PUBLISHED check reads is the publishing task's.
     if data.get("task_id") != task_id:
@@ -297,7 +301,7 @@ def check_own_build(data, task_id, record, repo):
         raise ValueError("published_by requires the task's own build_manifest")
     if str(Path(__file__).resolve().parent) not in sys.path:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from tested_build import committed
+    from tested_build import buildinfo_identity_error, committed, dependency_identity, manifest_buildinfo
     path, _rel, _digest, error = committed(repo, ref, "the task's build_manifest")
     if error:
         raise ValueError(error)
@@ -310,29 +314,61 @@ def check_own_build(data, task_id, record, repo):
     for key in ("package", "candidate_version"):
         if manifest.get(key) != record.get(key):
             raise ValueError(f"the task's build_manifest {key} differs from the publish record")
-    own, published = manifest.get("source_commit"), record.get("source_commit")
-    if not (isinstance(own, str) and _COMMIT.match(own) and isinstance(published, str) and _COMMIT.match(published)):
-        raise ValueError("build manifest and publish record must name full 40-hex source commits")
-    source = Path(str(manifest.get("source_repo") or "")).expanduser()
-    if not source.is_absolute():
-        source = Path(repo) / source
-    git = lambda *args: subprocess.run(["git", "-C", str(source), *args], capture_output=True, text=True, check=False)
-    if not source.is_dir() or git("rev-parse", "--git-dir").returncode:
-        raise ValueError(f"the build manifest's source_repo {source} is not a git repository")
-    if git("cat-file", "-e", f"{published}^{{commit}}").returncode:
-        raise ValueError(f"the published commit {published} is not in {source}")
-    if own != published:
-        ancestor = git("merge-base", "--is-ancestor", own, published).returncode
-        if ancestor == 1:
-            raise ValueError(f"this task's commit {own} is not in the published source {published}")
-        if ancestor:
-            raise ValueError(f"cannot compare {own} with {published} in {source}")
-    key = lambda a: tuple(json.dumps(a.get(k), sort_keys=True) for k in ("file", "package", "version", "architecture"))
-    wanted = {key(a) for a in manifest.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")}
-    shipped = {key(a) for a in record.get("artifacts") or [] if isinstance(a, dict) and a.get("kind") in ("source", "binary")}
-    if not wanted or wanted != shipped:
-        raise ValueError(f"the task's source and binary artifacts differ from the publish record's: "
-                         f"missing {sorted(wanted - shipped)}, extra {sorted(shipped - wanted)}")
+
+    # rule 1: the same bytes
+    pairs = lambda m: {(a.get("file"), a.get("sha256")) for a in m.get("artifacts") or []
+                       if isinstance(a, dict) and a.get("kind") in ("source", "binary")
+                       and isinstance(a.get("file"), str) and isinstance(a.get("sha256"), str)}
+    own, shipped = pairs(manifest), pairs(record)
+    if not own:
+        raise ValueError("the task's build_manifest lists no source or binary artifacts")
+    if own == shipped:
+        return
+    byte_reason = f"missing {sorted(own - shipped)}, extra {sorted(shipped - own)}"
+
+    # rule 2: buildinfo_identical to the published build, read through the record's gate
+    def refuse(reason):
+        raise ValueError("the task's artifacts are not the published bytes (" + byte_reason + ") and its build is not "
+                         "buildinfo_identical to the published build: " + reason)
+    gate_path, _g, gate_digest, error = committed(repo, record.get("gate_file"), "the publish record's gate_file")
+    if error:
+        refuse(error)
+    if gate_digest != record.get("gate_sha256"):
+        refuse("the release gate does not match the publish record's gate_sha256")
+    try:
+        gate = json.loads(gate_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        refuse(f"cannot read the release gate: {exc}")
+    if not isinstance(gate, dict) or gate.get("task_id") != record.get("task_id"):
+        refuse("the release gate belongs to another task than the publish record")
+    build_ref = gate.get("build_manifest")
+    if not isinstance(build_ref, dict):
+        refuse("the release gate lacks a build manifest reference")
+    pub_path, _p, pub_digest, error = committed(repo, build_ref.get("file"), "the published build manifest")
+    if error:
+        refuse(error)
+    if pub_digest != build_ref.get("sha256"):
+        refuse("the published build manifest does not match the release gate")
+    try:
+        published = json.loads(pub_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        refuse(f"cannot read the published build manifest: {exc}")
+    if not isinstance(published, dict):
+        refuse("the published build manifest is not a JSON object")
+    for label, a, b in (("source_commit", manifest.get("source_commit"), published.get("source_commit")),
+                        ("source_tree_hash", manifest.get("source_tree_hash"), published.get("source_tree_hash")),
+                        ("build_dependencies", dependency_identity(manifest), dependency_identity(published))):
+        if a != b or (label != "build_dependencies" and not a):
+            refuse(f"the two builds differ in {label}")
+    own_text, error = manifest_buildinfo(repo, manifest, path.parent, "task's")
+    if error:
+        refuse(error)
+    pub_text, error = manifest_buildinfo(repo, published, pub_path.parent, "published")
+    if error:
+        refuse(error)
+    error = buildinfo_identity_error(own_text, pub_text, "task's", "published")
+    if error:
+        refuse(error)
 
 
 def require_authorization(data):
@@ -465,7 +501,7 @@ def require_evidence(target, data, task_id, kind=None, state=None):
             if record.get(key) != gate.get(key):
                 raise ValueError(f"publish record and task evidence must match gate field {key}")
             # A covered task has its own task id and may record its commit as
-            # text; check_own_build proved its commit is in the published one.
+            # text; check_own_build tied its build to the published bytes.
             if covered_by and key in ("task_id", "source_commit"):
                 continue
             if data.get(key) != gate.get(key):
