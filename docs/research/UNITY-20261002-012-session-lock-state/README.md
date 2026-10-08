@@ -118,7 +118,7 @@ Target record: `gate-015/target-test.txt`.
   (`gate-015/snapshot-diff.txt`).
 - **Version safety:** SAFE (`gate-015/version-check.json`,
   `gate-015/version-safety.json`).
-- **Peer notice:** agent B.
+- **Peer notice:** agent B, ACK.
 
 **Verification.**
 - Design and code review: APPROVE after one change. A switch from legacy
