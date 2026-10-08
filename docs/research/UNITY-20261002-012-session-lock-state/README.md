@@ -107,6 +107,19 @@ stack after the update from the live repository (unity-settings-daemon
 
 Target record: `gate-015/target-test.txt`.
 
+**Publication (slot 2).**
+- **Database backup:** `/home/claude/backups/UNITY-20261008-015-20261008T201654Z`.
+  18 files, complete, equal to live; list sha256
+  `177978b69e86e0dfb61960fd54a4f3a0c0758dc4487b144faacaa07bd1f0ce79`.
+- **Repository:** 11 records added to `unity-resolute` (the source, 7 .deb
+  and 3 .ddeb). The sha256 of every pool file matches the manifest.
+- **Snapshot:** `unity-resolute-20261008-015`, which is the live
+  `unity-resolute-20261008-011` plus these 11 records
+  (`gate-015/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate-015/version-check.json`,
+  `gate-015/version-safety.json`).
+- **Peer notice:** agent B.
+
 **Verification.**
 - Design and code review: APPROVE after one change. A switch from legacy
   mode back to Unity's lockscreen no longer writes "no" over another
