@@ -156,3 +156,129 @@ from a file repository, a cold cycle):
   Dash;
 - running processes use the new library: no `(deleted)` libcolumbus
   mapping in hud-service.
+
+### Design review, round 1: REVISE (all points taken)
+
+The Design Challenger (an independent subagent) confirmed the diagnosis
+and the layer:
+- `~Trie` is the only leak.
+- `Trie.cc` is the only place with a mapping or a tmpfile.
+- 128 KiB is the 1 KiB start size doubled seven times, so 3 × 128 KiB per
+  query is ~0.4 MB.
+- The Tries really are destroyed when a query closes: `WindowImpl` keeps a
+  weak pointer to its token, and each activation builds a new token,
+  ItemStore and Matcher.
+- The ABI is safe: `TriePrivate` lives in `Trie.cc`, `Trie.hh` is not
+  installed, and no Trie symbol is exported (`libcolumbus.map` ends in
+  `local: *`).
+
+Its points:
+
+1. **`expand()` leaves `MAP_FAILED`, not `nullptr`, when `mmap` fails.**
+   `p->h` is then dangling too, and the next `expand()` would take the
+   "first time" branch and truncate the file to 1 KiB. Revised: the old
+   mapping stays valid until the new one exists, so a failure changes
+   nothing.
+2. **`mapSize` and the header cannot differ after a successful expand.**
+   `mapSize` is still kept, for the state after a failure.
+3. **The order of `munmap` and `fclose` does not matter** for a `MAP_SHARED`
+   O_TMPFILE: the inode goes when both the fd and the mapping are gone.
+4. **Exception safety** is cheap hardening and has no double free. It is
+   structured once: `TriePrivate` gets a destructor (unmap, close) and the
+   constructor holds it in a `unique_ptr` until it is complete.
+   `~Trie` becomes `delete p`. The try scope covers `addNewNode(0)`, which
+   can call `expand()`. No new exported symbol (with
+   `DPKG_GENSYMBOLS_CHECK_LEVEL=4`, a new symbol under the wildcard
+   exports would fail the build): the cleanup stays file-local.
+5. **The test could pass without proving anything.** In this sbuild,
+   `/proc` is mounted with "or warn". If `/proc/self/maps` cannot be read,
+   0 = 0 passes, on the control too.
+   - The test asserts the file opened.
+   - It checks liveness: while a Trie lives, the count is baseline + 1
+     (+3 for an indexed Matcher), and after destruction it is back to
+     baseline.
+   - It counts every `(deleted)` line, not only `/tmp/#`: in the chroot
+     `/tmp` is ext4, which supports O_TMPFILE, but glibc's fallback names
+     the file `/tmp/tmpfXXXXXX`.
+6. **The expand test proves expand ran:** the live mapping spans more than
+   1 KiB. The Matcher test calls `index()` with two fields: without
+   `index()` only the WordStore Trie exists, and two fields give hud's
+   three Tries.
+7. **hud stays as it is.** One Matcher per query is hud's design; after the
+   fix it costs CPU, not memory.
+8. **unity-lens-applications** (C's addition) does not leak per search. It
+   runs in the long-lived `unity-scope-loader` with long-lived Matchers.
+   It leaks when the application menu is re-indexed: `app_menu.changed`
+   after a 5 s timeout builds a new searcher and frees the old one, so
+   +3 Tries each time. Its search behaviour is unchanged, because the fix
+   touches only destruction and no pointer into the mapping leaves the
+   Trie. The target plan measures that re-index.
+9. **Target:** a liveness check (a query open: +3; after CloseQuery:
+   baseline), and no "(deleted)" libcolumbus mapping in both processes
+   after the cold cycle.
+10. **Version:** `1.1.0+15.10.20150806-0ubuntu39+unity1` sorts above
+    `0ubuntu39` and `0ubuntu39build1`, and below `0ubuntu39.1` or
+    `0ubuntu40`. An Ubuntu upload of either would replace the fix without
+    it: the usual risk of a carried package, noted here.
+
+Remark, left alone: `madvise(MADV_RANDOM | MADV_WILLNEED)` combines two
+advice values with `|`, which is not valid (it ends up as
+`MADV_WILLNEED`). It is pre-existing and harmless.
+
+## Design, revised after round 1
+
+**`src/Trie.cc`** (no header, export or symbols change):
+
+- **`TriePrivate`** gains `TrieOffset mapSize` and a destructor: if `map`
+  is set (never `MAP_FAILED`, see below) `munmap(map, mapSize)`, logging a
+  failure to stderr; then `fclose(f)` if open.
+- **`Trie::Trie()`** builds `TriePrivate` in a `std::unique_ptr`:
+  `tmpfile()` (throws as now), `expand()`, the header,
+  `addNewNode(0)`, then `p = holder.release()`. On any throw, the
+  `unique_ptr` cleans up.
+- **`Trie::~Trie()`** is `delete p`.
+- **`expand()`:**
+  1. `newSize` (1024, or twice `mapSize`);
+  2. `ftruncate(newSize)` (throws on failure, with the old map unchanged);
+  3. `mmap` into a local variable; on `MAP_FAILED` it throws, with the old
+     map, `h` and `mapSize` unchanged;
+  4. the old map is unmapped (a failure is logged);
+  5. `map`, `h` and `mapSize` are assigned, then the header's `totalSize`
+     and `madvise` as now.
+
+**Tests (`test/`, run by ctest in the build):**
+
+- a helper `deletedMappings()`: opens `/proc/self/maps` (asserts it
+  opened) and counts the lines ending in `(deleted)`;
+- `TrieTest`:
+  - `testNoMappingLeft`: baseline; while a Trie lives, baseline + 1;
+    after 50 create/destroy cycles, baseline;
+  - `testNoMappingLeftAfterExpand`: a Trie with enough distinct words for
+    several expansions; while alive, its mapping is larger than 1 KiB
+    (read from the maps line); after destruction, baseline;
+- `MatcherTest` (the existing `testCorpus()` helper, or an inline corpus
+  with two fields, then `index()`): while one indexed Matcher lives,
+  baseline + 3; after 20 create, index and destroy cycles, baseline;
+- **control:** the same tests on the unpatched source fail (the trie test
+  compiles `Trie.cc` directly, the matcher test links the in-tree
+  library).
+
+**Target check** (Clean-2 + the live publication, then libcolumbus +unity1
+from a file repository, a cold cycle; before and after):
+
+- **hud-service:**
+  - `leak.sh`: +0 deleted files per 10 queries (now +30), and RSS per
+    query close to 0 after the first queries;
+  - liveness: while a query is open, +3; after CloseQuery, the baseline;
+  - the HUD answers as before: Writer "Сохранить", Terminal "Создать окно".
+- **unity-lens-applications:**
+  - `unity-scope-loader` running the applications scope (`pgrep -x
+    unity-scope-loa`, then `applications` in `/proc/PID/cmdline`);
+  - its deleted mappings before and after K re-indexes: add and remove a
+    desktop file in `~/.local/share/applications`, waiting more than 5 s
+    each time;
+  - expected +3 per re-index before the fix and +0 after;
+  - the Dash still finds an application (its scope over D-Bus, or a
+    screenshot).
+- **Both processes** have no "(deleted)" libcolumbus mapping after the
+  cold cycle.
