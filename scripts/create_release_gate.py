@@ -113,6 +113,9 @@ def main():
     if verdict.get("result") != "SAFE": parser.error(f"version check is not SAFE: {verdict.get('reasons')}")
     if (verdict.get("snapshot") or {}).get("name") != args.snapshot:
         parser.error("the version check measured another snapshot than the gate names")
+    # UNITY-20261008-005: the snapshot's content (keys and per-package sha256), not only its names.
+    if not (verdict.get("snapshot") or {}).get("content_sha256"):
+        parser.error("the version check does not record the snapshot's content_sha256: measure it again with apt_view.py")
     if record.get("decision_required") is True and not isinstance(evidence_paths.get("decision_record"), str):
         parser.error("decision_record evidence is required when a material design decision was made")
     evidence_manifest = {"schema": 1, "task_id": record["task_id"], "package": record["package"],

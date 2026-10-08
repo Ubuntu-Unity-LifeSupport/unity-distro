@@ -7,6 +7,7 @@ Run: python3 -m unittest discover -s scripts/tests
 """
 
 from datetime import datetime, timezone
+import hashlib
 import importlib.util
 import json
 import os
@@ -31,6 +32,7 @@ def load(name):
 version_safety = load("version_safety")
 publish_aptly = load("publish_aptly")
 taskctl = load("taskctl")
+apt_view_module = load("apt_view")
 
 
 def manifest(version="1:1.0+unity1", binaries=(("demo-bin", None, "amd64"), ("demo-data", None, "all"))):
@@ -116,7 +118,7 @@ class ComparatorTest(unittest.TestCase):
 
 
 class CompareViewsTest(unittest.TestCase):
-    base = {"snapshot": {"name": "s", "list_sha256": "a",
+    base = {"snapshot": {"name": "s", "list_sha256": "a", "content_sha256": "c",
                          "model_release": {"Origin": ". resolute", "Label": ". resolute", "Suite": "resolute", "Codename": "resolute"}},
             "sources_sha256": "src", "preferences": {"ubuntu-pro-esm-apps": "p1"},
             "releases": [{"file": "arch_resolute_InRelease", "Date": "Sat, 26 Sep 2026 18:00:00 UTC"},
@@ -136,6 +138,22 @@ class CompareViewsTest(unittest.TestCase):
     def test_other_snapshot_content(self):
         f = self.fresh(snapshot={"name": "s", "list_sha256": "b"})
         self.assertIn("package list differs", publish_aptly.compare_views(self.base, f, self.now))
+
+    def test_same_names_other_content(self):
+        """UNITY-20261008-005: a snapshot recreated under the same name with other bytes."""
+        f = self.fresh(snapshot=dict(self.base["snapshot"], content_sha256="other"))
+        self.assertIn("content (aptly keys and package sha256) differs",
+                      publish_aptly.compare_views(self.base, f, self.now))
+
+    def test_gate_view_without_content_refused(self):
+        for value in (None, ""):
+            with self.subTest(value=value):
+                gate = json.loads(json.dumps(self.base))
+                if value is None:
+                    del gate["snapshot"]["content_sha256"]
+                else:
+                    gate["snapshot"]["content_sha256"] = value
+                self.assertIn("regenerate the gate", publish_aptly.compare_views(gate, self.fresh(), self.now))
 
     def test_release_went_backwards(self):
         f = self.fresh(releases=[{"file": "arch_resolute_InRelease", "Date": "Fri, 25 Sep 2026 18:00:00 UTC"}])
@@ -275,6 +293,12 @@ class AptViewIntegrationTest(unittest.TestCase):
         self.assertEqual({b["package"]: b["apt_candidate"] for b in v["binaries"]},
                          {"demo-bin": "1:1.0+unity1", "demo-data": "1:1.0+unity1"})
         self.assertEqual(version_safety.decide(v, m)["result"], "SAFE")
+        # UNITY-20261008-005: the view's content_sha256 is the hash of the identity lines, not of the names
+        lines = apt_view_module.snapshot_identity_lines(str(conf), "s")
+        self.assertEqual(len(lines), v["snapshot"]["packages"])
+        self.assertEqual(v["snapshot"]["content_sha256"],
+                         hashlib.sha256(("\n".join(lines) + "\n").encode()).hexdigest())
+        self.assertNotEqual(v["snapshot"]["content_sha256"], v["snapshot"]["list_sha256"])
         models = [r for r in v["releases"] if r.get("model")]
         self.assertEqual([r["file"] for r in models], ["<model>_Release"])
         self.assertTrue(all("apt-view-" not in r["file"] for r in v["releases"]))
