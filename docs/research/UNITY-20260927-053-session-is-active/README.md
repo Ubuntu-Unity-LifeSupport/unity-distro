@@ -102,7 +102,10 @@ Unity session:
 - Target test before publication: PASS, record in `gate/target-test.txt`.
 - Independent verification: PASS (the Verifier reviewed the diff, the
   build record and the runtime records; it did not reproduce on its own).
-- Check on the target after publication: pending.
+- Check on the target after publication: PASS. Published 2026-10-08
+  22:44:52Z as `unity-resolute-20260927-053`; the target updated from the
+  live repository, cold boot: `SessionIsActive` true, an inserted medium
+  is mounted (`gate/target-verification.txt`).
 
 ## Publication
 
