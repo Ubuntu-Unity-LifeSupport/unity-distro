@@ -25,3 +25,12 @@ hud 14.10+17.10.20170619-0ubuntu6+unity4, hud-service pid 3692, up       00:30
 6 Writer closed, 60 s idle         tmp-maps    60 files   60 rss_kB   43708 fds   15
 
 # +unity5: not measured - the VM aborted on the cold start after 'apt-get install hud=...+unity5' (2026-10-08 ~21:08Z; diagnose_vm: aborted, no VM process, VBoxSVC idle)
+
+# +unity5, after the VM log was saved: Clean-2 restored (safe_to_snapshot=true before restore and before start), confirmed inside 21:33:51Z (no ~/.dirty, ~/b013, our sources, usage table; hud 0ubuntu6); apt full-upgrade to the live publication of that moment (hud +unity5, unity +unity13, light-locker +unity3, u-s-d +unity12: a newer stack than the runs above), xdotool; cold cycle (poweroff 21:46:27Z, safe_to_snapshot=true, start_vm)
+hud 14.10+17.10.20170619-0ubuntu6+unity5, hud-service pid 3638, up       00:32
+1 baseline                         tmp-maps     0 files    0 rss_kB   30332 fds   13
+2 after 10 queries (desktop)       tmp-maps    30 files   30 rss_kB   34800 fds   15
+3 after 10 Mines starts            tmp-maps    30 files   30 rss_kB   34816 fds   15
+4 after 10 Writer starts           tmp-maps    30 files   30 rss_kB   39536 fds   15
+5 after 10 queries (Writer)        tmp-maps    60 files   60 rss_kB   43532 fds   15
+6 Writer closed, 60 s idle         tmp-maps    60 files   60 rss_kB   43484 fds   15
