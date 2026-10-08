@@ -1,0 +1,22 @@
+== none: 41 passed, 28 subtests passed
+== compare list_sha256 only: 1 failed, 40 passed, 28 subtests passed
+   FAILED CompareViewsTest::test_same_names_other_content
+== missing field accepted: 2 failed, 41 passed, 26 subtests passed
+== binary SHA256 dropped: 2 failed, 39 passed, 28 subtests passed
+   FAILED SnapshotContentScratchTest::test_quilt_source_lists_every_file_and_query_matches_all
+   FAILED SnapshotContentUnitTest::test_lines
+== source checksums dropped: 2 failed, 39 passed, 28 subtests passed
+   FAILED SnapshotContentScratchTest::test_quilt_source_lists_every_file_and_query_matches_all
+   FAILED SnapshotContentUnitTest::test_lines
+== key cross-check skipped: 1 failed, 40 passed, 28 subtests passed
+   FAILED SnapshotContentUnitTest::test_source_keys_differ_between_searches_refused
+== bare Name query: 8 failed, 35 passed, 26 subtests passed
+   FAILED AptViewIntegrationTest::test_full_view_selects_snapshot_binaries
+   FAILED AptViewIntegrationTest::test_snapshot_older_than_archive_is_unsafe
+   FAILED SnapshotContentScratchTest::test_binary_recreated_with_other_bytes
+   FAILED SnapshotContentScratchTest::test_debs_only_snapshot
+   FAILED SnapshotContentScratchTest::test_quilt_source_lists_every_file_and_query_matches_all
+   FAILED SnapshotContentScratchTest::test_source_recreated_with_other_bytes
+== lines not sorted: 1 failed, 40 passed, 28 subtests passed
+   FAILED SnapshotContentUnitTest::test_lines
+== gate check removed: 2 failed, 41 passed, 26 subtests passed

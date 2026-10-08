@@ -59,6 +59,46 @@ def snapshot_model(config, snapshot):
     return listed, debs
 
 
+# Every record: a bare "Name" also matches only a package called "name" when lowercased.
+ALL_PACKAGES = "Name (% *)"
+
+
+def snapshot_content(config, snapshot):
+    """Sorted per-package identity lines of the snapshot (UNITY-20261008-005).
+    Binaries: "<aptly key>|<sha256 of the file>". Sources: "<aptly key>|<the
+    .dsc's Checksums-Sha256 entries, sorted>". Unlike the names, these change
+    when a record is replaced by other bytes under the same name and version."""
+    lines, source_keys = [], set()
+    for line in aptly(config, "snapshot", "search", "-format", '{{.Key}}|{{index . "SHA256"}}',
+                      snapshot, ALL_PACKAGES).splitlines():
+        if not line.strip():
+            continue
+        key, _, digest = line.strip().rpartition("|")
+        if key.startswith("Psource "):
+            source_keys.add(key)
+        elif not key or not digest:
+            raise RuntimeError(f"snapshot {snapshot}: binary record {line.strip()!r} has no SHA256")
+        else:
+            lines.append(f"{key}|{digest}")
+    if source_keys:  # a search without results exits 1, so only when there are sources
+        blocks, key = {}, None
+        for line in aptly(config, "snapshot", "search", "-format", '{{.Key}}{{"\\n"}}{{index . "Checksums-Sha256"}}',
+                          snapshot, "$Architecture (source)").splitlines():
+            if line and not line[0].isspace():
+                key = line.strip()
+                blocks.setdefault(key, [])
+            elif line.strip() and key is not None:
+                blocks[key].append(" ".join(line.split()))
+        if set(blocks) != source_keys:
+            raise RuntimeError(f"snapshot {snapshot}: the source records differ between the two searches "
+                               f"({sorted(source_keys ^ set(blocks))})")
+        for key, entries in sorted(blocks.items()):
+            if not entries:
+                raise RuntimeError(f"snapshot {snapshot}: source record {key!r} has no Checksums-Sha256")
+            lines.append(f"{key}|{','.join(sorted(entries))}")
+    return sorted(lines)
+
+
 def write_model_repo(directory, debs, release, marker):
     stanzas = []
     for entry in debs:
@@ -161,8 +201,10 @@ def main():
                 (t / "preferences.d" / pref.name).write_text(pref.read_text(encoding="utf-8"), encoding="utf-8")
         if full:
             listed, debs = snapshot_model(args.aptly_config, args.snapshot)
+            content = snapshot_content(args.aptly_config, args.snapshot)
             view["snapshot"] = {"name": args.snapshot, "packages": len(listed),
                                 "list_sha256": sha256_bytes(("\n".join(listed) + "\n").encode()),
+                                "content_sha256": sha256_bytes(("\n".join(content) + "\n").encode()),
                                 "model_entries": len(debs)}
             write_model_repo(t / "model", debs, release, marker)
             view["snapshot"]["model_release"] = release

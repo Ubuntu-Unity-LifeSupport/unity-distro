@@ -116,7 +116,7 @@ class ComparatorTest(unittest.TestCase):
 
 
 class CompareViewsTest(unittest.TestCase):
-    base = {"snapshot": {"name": "s", "list_sha256": "a",
+    base = {"snapshot": {"name": "s", "list_sha256": "a", "content_sha256": "c",
                          "model_release": {"Origin": ". resolute", "Label": ". resolute", "Suite": "resolute", "Codename": "resolute"}},
             "sources_sha256": "src", "preferences": {"ubuntu-pro-esm-apps": "p1"},
             "releases": [{"file": "arch_resolute_InRelease", "Date": "Sat, 26 Sep 2026 18:00:00 UTC"},
@@ -136,6 +136,22 @@ class CompareViewsTest(unittest.TestCase):
     def test_other_snapshot_content(self):
         f = self.fresh(snapshot={"name": "s", "list_sha256": "b"})
         self.assertIn("package list differs", publish_aptly.compare_views(self.base, f, self.now))
+
+    def test_same_names_other_content(self):
+        """UNITY-20261008-005: a snapshot recreated under the same name with other bytes."""
+        f = self.fresh(snapshot=dict(self.base["snapshot"], content_sha256="other"))
+        self.assertIn("content (aptly keys and package sha256) differs",
+                      publish_aptly.compare_views(self.base, f, self.now))
+
+    def test_gate_view_without_content_refused(self):
+        for value in (None, ""):
+            with self.subTest(value=value):
+                gate = json.loads(json.dumps(self.base))
+                if value is None:
+                    del gate["snapshot"]["content_sha256"]
+                else:
+                    gate["snapshot"]["content_sha256"] = value
+                self.assertIn("regenerate the gate", publish_aptly.compare_views(gate, self.fresh(), self.now))
 
     def test_release_went_backwards(self):
         f = self.fresh(releases=[{"file": "arch_resolute_InRelease", "Date": "Fri, 25 Sep 2026 18:00:00 UTC"}])

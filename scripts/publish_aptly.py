@@ -69,6 +69,11 @@ def compare_views(gate_view, fresh_view, now):
     if not gate_snap.get("list_sha256") or gate_snap.get("name") != fresh_snap.get("name") \
             or gate_snap.get("list_sha256") != fresh_snap.get("list_sha256"):
         return "the snapshot's package list differs from the one measured at gate time"
+    # UNITY-20261008-005: the names hold no bytes; a snapshot recreated under the same name shows here.
+    if not gate_snap.get("content_sha256"):
+        return "the gate-time view does not record the snapshot's content_sha256: regenerate the gate"
+    if gate_snap.get("content_sha256") != fresh_snap.get("content_sha256"):
+        return "the snapshot's content (aptly keys and package sha256) differs from the one measured at gate time"
     if gate_snap.get("model_release") != fresh_snap.get("model_release"):
         return "the model repository's Release identity differs from the gate-time view"
     for key in ("sources_sha256", "preferences"):

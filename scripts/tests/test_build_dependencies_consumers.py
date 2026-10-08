@@ -300,6 +300,40 @@ class TestedBuildEndToEndTest(ConsumersEndToEndTest):
                 self.assertIn(message, result.stderr)
                 self.assertNotIn("matching source and binary artifacts", result.stderr)
 
+    def test_gate_requires_snapshot_content_in_the_view(self):
+        """UNITY-20261008-005: the gate refuses a version_check view without content_sha256."""
+        base = {"schema": 1, "tool": "apt_view.py", "mode": "full", "source_package": PACKAGE,
+                "measured_at": "2099-01-01T00:00:00Z", "pockets": {}, "in_archive": False,
+                "snapshot": {"name": "s", "list_sha256": "x", "content_sha256": "c"},
+                "binaries": [{"package": PACKAGE, "version": VERSION, "architecture": "amd64", "apt_candidate": VERSION}]}
+        for case, content, message in (("present", "c", "evidence file is missing"),
+                                       ("missing", None, "does not record the snapshot's content_sha256"),
+                                       ("empty", "", "does not record the snapshot's content_sha256")):
+            with self.subTest(case=case):
+                self.tearDown(); self.setUp()
+                view = json.loads(json.dumps(base))
+                if content is None:
+                    del view["snapshot"]["content_sha256"]
+                else:
+                    view["snapshot"]["content_sha256"] = content
+                (self.root / "rec" / "view.json").write_text(json.dumps(view))
+                self.record_extra = dict(self.record_extra, version_check="rec/view.json",
+                                         evidence={"evidence_card": "rec/card.md", "verification_record": "rec/v.md",
+                                                   "patch_record": "rec/p.md"})
+                manifest = self.write_manifest([self.entry])
+                record = self.root / "rec" / "record.json"
+                record.write_text(json.dumps({"task_id": TASK, "package": PACKAGE, "target_series": SERIES,
+                                              "candidate_version": VERSION, "source_commit": self.commit,
+                                              "verification_result": "PASS", "peer_notice": "ACK",
+                                              "patch_and_decision_docs": "docs", "source_provenance": "PUSHED",
+                                              **self.record_extra}))
+                self.board("REVIEW")
+                result = self.run_script("scripts/create_release_gate.py", "--record", str(record), "--build-manifest",
+                                         str(manifest), "--snapshot", "s", "--distribution", "resolute",
+                                         "--output", str(self.root / "rec" / "gate-out.json"))
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn(message, result.stderr)
+
     def untrack_buildinfo(self):
         """The file stays on disk, with its sha256, but is no longer in git."""
         with (self.root / ".gitignore").open("a") as f:

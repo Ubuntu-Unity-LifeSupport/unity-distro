@@ -318,7 +318,10 @@ local repository whose Release has our publication's Origin, Label, Suite and
 Codename (pass `--release` for the gate's prefix and distribution; the
 publisher passes the same, and refuses a different model identity). It records the source package's highest version per pocket
 (`Sources` indices), apt's candidate for every binary of the build manifest
-(with an empty dpkg status), the snapshot's name and package-list hash, and
+(with an empty dpkg status), the snapshot's name and package-list hash, its
+content hash (`content_sha256`: every record's aptly key with the binary's
+sha256 or the source's `Checksums-Sha256`, so a snapshot recreated under the
+same name with other bytes shows; UNITY-20261008-005), and
 each fetched Release's hash and Date; any fetch failure refuses.
 Multi-Arch and Provides are not modelled: the target is single-arch amd64 and
 only concrete package names are checked.
@@ -373,7 +376,9 @@ versions appear in the named snapshot, requires the gate-time apt view (the
 release record's `version_check`) to be no older than four hours, to measure
 the gate's snapshot and to be `SAFE`, and immediately before the switch runs
 `apt_view.py` and `version_safety.py` again. It refuses unless that
-switch-time view is `SAFE`, has the same snapshot package-list hash, no
+switch-time view is `SAFE`, has the same snapshot package-list and content
+hashes (a gate-time view without `content_sha256` is refused, and the gate
+refuses to record one), no
 archive Release older than at gate time or past its Valid-Until, or
 other apt inputs (`docs/apt/`, which must be committed and clean) than at gate
 time; the switch-time view goes into the publication record. It executes the fixed `publish switch`, checks `aptly
