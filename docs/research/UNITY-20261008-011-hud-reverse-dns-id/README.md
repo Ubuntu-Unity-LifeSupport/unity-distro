@@ -520,8 +520,8 @@ Remarks:
 | gap | where it is covered |
 |---|---|
 | Desktop files in subdirectories keep the base name (`kde4/foo` → `foo`), not the XDG desktop file id `kde4-foo`; hud-service then finds no icon for them. | none on the reference target (no such files); out of scope by design |
-| User desktop files (`~/.local/share/applications`, `XDG_DATA_HOME`) get the right id but no icon: `desktopPath()` reads only `XDG_DATA_DIRS`. | pre-existing; not in scope |
+| User desktop files (`~/.local/share/applications`, `XDG_DATA_HOME`) get the right id but no icon: `desktopPath()` reads only `XDG_DATA_DIRS`. | pre-existing; follow-up UNITY-20261008-017 |
 | The failed-connect warning is untested (a session-bus connect cannot be made to fail through the mock). | by inspection only |
 | The Unity HUD's on-screen icon after the fix is not seen. | by the code it follows the selected result's icon, which the legacy StartQuery now gives as `org.gnome.Terminal` (logs/05) |
 | Old usage rows under the cut ids (`org`, `io`, `python3`) stay until hud's 30-day expiry. | harmless (logs/05: no effect in Disks' empty HUD) |
-| The `org.ayatana.bamf` owner warning of the first bridge instance (remark 7) is not explained. | seen once, not again after the restart |
+| The `org.ayatana.bamf` owner warning of the first bridge instance (remark 7) is not explained. | seen once, not again after the restart; follow-up UNITY-20261008-018 |
