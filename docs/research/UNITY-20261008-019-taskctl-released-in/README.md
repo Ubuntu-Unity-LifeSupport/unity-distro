@@ -14,7 +14,8 @@ observed: >
   needs the task's own publish record or published_by, and published_by
   needs the task's own build_sbuild manifest (task_id = the task), which
   -014 does not have. DUPLICATE is reachable only from BACKLOG or
-  INVESTIGATING. UNITY-20261002-013 (light-locker) is the same case.
+  INVESTIGATING. (UNITY-20261002-013 was named as the same case; it is
+  not: it has no code of its own and spans two packages, see round 1.)
 expected: >
   a package task whose change is part of another task's published build
   can reach PUBLISHED, then DONE, with evidence that ties its change to
@@ -80,3 +81,171 @@ expected: >
      - a package task REVIEW → DONE;
      - READY_TO_PUBLISH → PUBLISHED unchanged (the existing tests);
      - `published_by` unchanged (the existing tests).
+
+### Design review, round 1: REVISE (all points taken)
+
+The Design Challenger (an independent subagent) kept the shape: a package
+task reaches PUBLISHED through another task's write-once record, then DONE,
+and "DONE only after PUBLISHED" stays. Its points, as applied in the
+revised design below:
+
+1. **A BLOCKED route to PUBLISHED already exists, with no condition.**
+   BLOCKED lists PUBLISHED, and `resume_state` only has to name a state.
+   Every `published_by` task got there that way (UNITY-20260927-052,
+   -20260928-020 and -20261002-011 have `resume_state: "PUBLISHED"`).
+   Adding a NEXT entry alone would not restrict anything. The condition goes
+   into `require_evidence` (it already receives the `state`), and the
+   `released_in` checks are equally strong from every state.
+2. **The PUBLISHED identity loop compares `task_id`, `package`,
+   `candidate_version` and `source_commit` with the gate.** The design now
+   says which keys `released_in` skips, and that `release_gate` and
+   `build_manifest`, when present, must equal the releasing task's.
+   `released_in` also becomes a package marker.
+3. **The ancestry proof:**
+   - **A deletable source repository.** `gate.source_repo` is a task
+     worktree, and `/packages/` is git-ignored in base. An optional
+     `released_in.source_repo` is accepted when its tree of
+     `record.source_commit` equals `gate.source_tree_hash`.
+   - **Commits that shipped before.** On hud, `b0c2444` is an ancestor of
+     `db26b0d` but shipped in +unity4. Change commits must not be
+     ancestors of an earlier publish record's source commit of the same
+     package.
+   - **Merges and empty commits.** These are refused: a commit must have
+     one parent and change at least one file.
+   - **Reverts are not checked in code.** A "change still present" test
+     would refuse -014 itself: `1fc54e1` does not reverse-apply on
+     `db26b0d`. The target record must exercise the change, and rule R
+     says so.
+   - **Over-engineering, not done:** parsing PATCHES.md, and requiring the
+     task id in the commit message (light-locker `40843ef` names no task).
+4. **UNITY-20261002-013 is not this case.** It has no code of its own and
+   two packages (unity, light-locker, via -015 and -016), and it cannot
+   honestly reach REVIEW. It is out of scope here and is closer to
+   ALREADY_FIXED (FIXED_LOCAL) from INVESTIGATING. C decides. The card's
+   `observed` is corrected.
+5. **The releasing task's board state** is read from the rows `main`
+   already read under the board lock, with no second read or write. Its
+   Verifier result is taken from the pinned gate (`verification_result:
+   PASS`), not from its mutable evidence.
+6. **The record sha256 pin is enough.** The record pins the gate, and the
+   gate pins the manifest. "Committed" is dropped from 3f.
+   `read_publish_record`'s message becomes neutral. The ordinary path
+   reads its own record without the write-once checks: a follow-up for C.
+7. **The pass test could not run as written.** The PUBLISHED branch uses
+   `Path.home()`, `parents[1]` and a real `aptly`. The harness is specified
+   below, and the missing tests are added.
+8. **Documentation:**
+   - Rule P's "an ancestor is refused" is reworded "for `published_by`".
+   - Section 1's path line, steps 9 and 12, and the BLOCKED route all get
+     a line.
+
+## Design, revised after round 1
+
+**Transitions:**
+- **NEXT:** REVIEW gains PUBLISHED. Nothing else changes.
+- **`require_evidence(PUBLISHED, …)`:**
+  - From REVIEW: refused unless the evidence has `released_in`. A
+    `published_by` task keeps its present route; letting it use REVIEW →
+    PUBLISHED as well, which would retire the BLOCKED workaround, is a
+    question for C.
+  - From READY_TO_PUBLISH: `released_in` is refused, because that task has
+    its own gate.
+  - From BLOCKED: unchanged (its own record or `published_by`). With
+    `released_in`, all the checks below apply.
+  - `released_in` together with `published_by` is refused.
+- **PACKAGE_MARKERS** gains `released_in`, so a tool or operation kind with
+  it fails at `resolve_kind`.
+
+**`released_in = {task_id, record_sha256, change_commits[, source_repo]}`**
+(a new `check_released_in(data, task_id, rows, records_dir, repo)`):
+
+1. **Shape:**
+   - `task_id`: a full id, not the task itself;
+   - `record_sha256`: 64 hex;
+   - `change_commits`: a non-empty list of distinct 40-hex ids;
+   - `source_repo`: an optional absolute path.
+2. **The record:** `read_publish_record(records/<task_id>.json, record_sha256)`
+   (no symlink, read-only, sha256 and JSON from the same bytes), and its
+   `task_id` is the releasing task.
+3. **The board:** the releasing task's row exists (from `rows`) and is
+   PUBLISHED or DONE.
+4. **The task's own review:** `verification_record` is present,
+   `verification_result` is PASS, and `review_status` is REVIEWED or
+   INDEPENDENTLY_REPRODUCED, as required for REVIEW. If
+   `independent_reproduction_required`, it must be INDEPENDENTLY_REPRODUCED.
+5. **Identity with the record and the gate:**
+   - `package` and `candidate_version` are equal.
+   - `source_commit` is absent or equal to the record's.
+   - `release_gate` is absent or equal to `record.gate_file`.
+   - `build_manifest` is absent or equal to the gate's manifest file.
+   - In the PUBLISHED identity loop only `task_id` is skipped.
+6. **The gate chain**, by the existing PUBLISHED code with the gate from the
+   record:
+   - its sha256 equals the record's;
+   - `gate.task_id` is the releasing task;
+   - `gate.verification_result` is PASS;
+   - the manifest hash and the record's artifacts match;
+   - the switch-time evidence;
+   - `confirm_live_publication`.
+7. **The repository:** `source_repo` or else `gate.source_repo`. It must
+   exist, and `git rev-parse <record.source_commit>^{tree}` must equal
+   `gate.source_tree_hash`. Otherwise the transition is refused.
+8. **Every change commit:**
+   - it is a commit there, with exactly one parent and a non-empty
+     `git diff-tree --name-only -r`;
+   - it is an ancestor of, or equal to, `record.source_commit`;
+   - it is **not** an ancestor of, nor equal to, the `source_commit` of
+     any other publish record of the same package with an earlier
+     `published_at`. If such an earlier commit is unknown in the
+     repository, the transition is refused.
+9. **The target:** `target_verified` and `target_verification_record`, as
+   for every PUBLISHED. By rule R, the record must exercise this task's
+   change on the published version; taskctl does not read its content.
+
+**Documentation (ENGINEERING-PROCESS):**
+- **Rule R** describes `released_in`, when to use it rather than P, the
+  REVIEW → PUBLISHED edge, the BLOCKED route, the target record, and
+  running taskctl from a checkout that holds the releasing task's gate
+  (main, after C's merge).
+- **Rule P:** "an ancestor is refused" now applies "for `published_by`".
+- **Section 1** gets the path line, and **step 12** says that the
+  releasing task's branch is the one C merged.
+
+**Tests** (`scripts/tests/test_taskctl_released_in.py`):
+- **The harness:** each test copies `taskctl.py` and `tested_build.py`
+  into a temporary repository (the gate, the manifest, the evidence) and
+  makes a temporary hud-like git repository with commits. It imports that
+  copy, sets `HOME` to a temporary home (publish records written 0444,
+  `TASKCTL_BOARD`), and replaces `confirm_live_publication` in the
+  imported module. No new environment override is added to taskctl.
+  Transitions run through `main()`.
+- **Accepted:**
+  - REVIEW → PUBLISHED → DONE;
+  - REVIEW → BLOCKED (`resume_state` PUBLISHED) → PUBLISHED with
+    `released_in`;
+  - a change commit equal to `record.source_commit`;
+  - an alternative `source_repo` with the right tree.
+- **Refused:**
+  - REVIEW → PUBLISHED without `released_in`;
+  - BLOCKED → PUBLISHED with neither field and no own record;
+  - READY_TO_PUBLISH + `released_in`;
+  - REVIEW + `released_in` → DONE (DONE only after PUBLISHED);
+  - a tool kind or tool kind lock with `released_in`;
+  - `released_in` together with `published_by`;
+  - the task's own id;
+  - a wrong record sha256, a writable record, a symlinked record;
+  - the releasing row missing, or in READY_TO_PUBLISH or BLOCKED;
+  - another package or version;
+  - `release_gate`, `source_commit` or `build_manifest` that differ;
+  - a short hash, an empty list, duplicates;
+  - a merge commit, an empty commit;
+  - a commit that is not an ancestor, an unknown commit;
+  - a commit that is an ancestor of an earlier record of the same package;
+  - a missing repository, and an alternative repository with another tree;
+  - the live check failing;
+  - no target record;
+  - the gate's `verification_result` not PASS.
+- **Unchanged:**
+  - BLOCKED → PUBLISHED with the task's own record;
+  - READY_TO_PUBLISH → PUBLISHED;
+  - the existing `published_by` and live-snapshot tests.
