@@ -26,7 +26,8 @@ NEXT = {
     "READY_FOR_FIX": {"IMPLEMENTING", "BLOCKED", "DEFERRED"},
     "IMPLEMENTING": {"VERIFYING", "BLOCKED"},
     "VERIFYING": {"REVIEW", "READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED", "DONE"},
-    "REVIEW": {"READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED", "DONE"},
+    # REVIEW -> PUBLISHED only with released_in (require_evidence; UNITY-20261008-019)
+    "REVIEW": {"READY_TO_PUBLISH", "PUBLISHED", "IMPLEMENTING", "BLOCKED", "DONE"},
     "READY_TO_PUBLISH": {"PUBLISHED", "BLOCKED"},
     "PUBLISHED": {"DONE", "BLOCKED"},
     "BLOCKED": {"CLAIMED", "INVESTIGATING", "READY_FOR_FIX", "IMPLEMENTING", "VERIFYING", "REVIEW", "READY_TO_PUBLISH", "PUBLISHED"},
@@ -38,7 +39,7 @@ NEXT = {
 # applies in this order.
 KINDS = ("package", "tool", "operation", "documentation")
 # Evidence that only a package task carries: any of these forces "package".
-PACKAGE_MARKERS = ("build_manifest", "release_gate", "candidate_version", "version_safety")
+PACKAGE_MARKERS = ("build_manifest", "release_gate", "candidate_version", "version_safety", "released_in")
 # From READY_FOR_FIX on, every transition needs a resolved kind.
 KIND_STATES = {"READY_FOR_FIX", "IMPLEMENTING", "VERIFYING", "REVIEW", "READY_TO_PUBLISH", "PUBLISHED", "DONE"}
 
@@ -255,7 +256,7 @@ def read_publish_record(path, expected_sha256=None):
             raise ValueError(f"publish record {path} is writable; the publisher writes it read-only")
         raw = stream.read()
     if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
-        raise ValueError(f"publish record {path} does not have the sha256 named in published_by")
+        raise ValueError(f"publish record {path} does not have the sha256 named in published_by or released_in")
     try:
         return json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -375,6 +376,246 @@ def check_own_build(data, task_id, record, repo):
         refuse(error)
 
 
+# UNITY-20261008-019: a package task whose change is part of another task's
+# published build (no build of its own, unlike published_by). Its change
+# commits must be in the published source commit's history and in no earlier
+# publication of the package; the published build itself is proved by the
+# releasing task's record, gate and manifest.
+_HEX40 = re.compile(r"^[0-9a-f]{40}$")
+_RECORD_NAME = re.compile(r"^UNITY-\d{8}-\d{3}\.json$")
+RELEASED_IN_KEYS = {"task_id", "record_sha256", "change_commits"}
+
+
+def released_in_record(data, task_id, rows, records_dir):
+    """(record, releasing task) named by released_in, after the checks that
+    need no repository: shape, the releasing task's board state, the
+    write-once record, the task's own review and its package version."""
+    released = data.get("released_in")
+    if (not isinstance(released, dict) or not RELEASED_IN_KEYS <= set(released)
+            or set(released) - RELEASED_IN_KEYS - {"source_repo"}):
+        raise ValueError("released_in must be {task_id, record_sha256, change_commits[, source_repo]}")
+    other, digest, commits = released["task_id"], released["record_sha256"], released["change_commits"]
+    if not isinstance(other, str) or not _TASK_ID.match(other):
+        raise ValueError("released_in.task_id must be a full UNITY-YYYYMMDD-NNN task id")
+    if other == task_id:
+        raise ValueError("released_in must name another task")
+    if not isinstance(digest, str) or not _HEX64.match(digest):
+        raise ValueError("released_in.record_sha256 must be 64 hex characters")
+    if (not isinstance(commits, list) or not commits
+            or not all(isinstance(c, str) and _HEX40.match(c) for c in commits) or len(set(commits)) != len(commits)):
+        raise ValueError("released_in.change_commits must be a non-empty list of distinct full 40-hex commit ids")
+    repo = released.get("source_repo")
+    if repo is not None and (not isinstance(repo, str) or not Path(repo).is_absolute()):
+        raise ValueError("released_in.source_repo must be an absolute path")
+    if rows is None or other not in rows:
+        raise ValueError(f"the releasing task {other} is not on the task board")
+    other_state = rows[other][1][4]
+    if other_state not in ("PUBLISHED", "DONE"):
+        raise ValueError(f"the releasing task {other} is {other_state}, not PUBLISHED or DONE")
+    record = read_publish_record(Path(records_dir) / f"{other}.json", digest)
+    if not isinstance(record, dict) or record.get("task_id") != other:
+        raise ValueError(f"publish record of {other} does not belong to {other}")
+    # The checks REVIEW makes, again: BLOCKED hides the state a task came from.
+    if not data.get("verification_record") or data.get("verification_result") != "PASS" or \
+            data.get("review_status") not in {"REVIEWED", "INDEPENDENTLY_REPRODUCED"}:
+        raise ValueError("released_in requires this task's own verification_record, verification_result PASS "
+                         "and review_status")
+    if data.get("independent_reproduction_required") is True and data.get("review_status") != "INDEPENDENTLY_REPRODUCED":
+        raise ValueError("this task requires independent before/after reproduction")
+    for key in ("package", "candidate_version"):
+        if data.get(key) != record.get(key):
+            raise ValueError(f"released_in: the task's {key} differs from the publish record of {other}")
+    return record, other
+
+
+# The repository is the evidence's or the gate's, a working tree anyone can
+# change: only object hashes are trusted. Git's history overrides (replace
+# refs, grafts, a commit-graph file, inherited GIT_* settings) are switched
+# off, a shallow repository is refused (check_released_commits), and the
+# history is walked here, not by git: every commit on the way is read raw and
+# its sha1 checked against its id, so a forged object under a real id, loose,
+# packed or behind alternates, is refused (VerifiedHistory). Git must not run
+# anything the repository's config names: no lazy fetch (a partial clone is
+# refused as well), no fsmonitor, no transport; only rev-parse and cat-file
+# are called.
+GIT_TRUSTED = ["git", "--no-replace-objects", "-c", "core.commitGraph=false", "-c", "core.fsmonitor=false",
+               "-c", "protocol.allow=never", "-c", "core.hooksPath=/nonexistent/taskctl-no-hooks"]
+
+
+def git_env():
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    env.update({"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": "/nonexistent/taskctl-no-grafts",
+                "GIT_CONFIG_NOSYSTEM": "1", "GIT_NO_LAZY_FETCH": "1", "GIT_TERMINAL_PROMPT": "0"})
+    return env
+
+
+# taskctl holds the board lock while it checks: no git call may hang it
+# (a named pipe in the repository would block a read).
+GIT_TIMEOUT = 120
+
+
+def git_out(repo, *args):
+    try:
+        result = subprocess.run(GIT_TRUSTED + ["-C", str(repo)] + list(args), check=False, capture_output=True,
+                                text=True, env=git_env(), timeout=GIT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        raise ValueError(f"released_in: git {args[0]} in {repo} did not finish in {GIT_TIMEOUT} s")
+    return result.returncode, result.stdout.strip()
+
+
+class VerifiedHistory:
+    """Commits of one repository read through `git cat-file --batch`, each
+    one's sha1 checked against its id before its tree and parents are used."""
+
+    def __init__(self, repo):
+        self.repo = repo
+        self.commits = {}
+        self.process = subprocess.Popen(GIT_TRUSTED + ["-C", str(repo), "cat-file", "--batch"],
+                                        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                                        env=git_env())
+        # A blocked read ends when the watchdog kills cat-file: the read then
+        # sees end of file and the commit is refused.
+        import threading
+        self.watchdog = threading.Timer(GIT_TIMEOUT, self.process.kill)
+        self.watchdog.daemon = True
+        self.watchdog.start()
+
+    def close(self):
+        self.watchdog.cancel()
+        try:
+            if self.process.stdin:
+                self.process.stdin.close()
+        except BrokenPipeError:
+            pass
+        self.process.kill()
+        self.process.wait()
+
+    def commit(self, commit_id):
+        """(tree, parents) of a verified commit."""
+        if commit_id in self.commits:
+            return self.commits[commit_id]
+        if not isinstance(commit_id, str) or not _HEX40.match(commit_id):
+            raise ValueError(f"released_in: {commit_id!r} is not a full commit id")
+        try:
+            self.process.stdin.write(commit_id.encode() + b"\n")
+            self.process.stdin.flush()
+        except BrokenPipeError:
+            raise ValueError(f"released_in: git cat-file in {self.repo} stopped (killed after {GIT_TIMEOUT} s?)")
+        header = self.process.stdout.readline().split()
+        if len(header) != 3 or header[0].decode() != commit_id or header[1] != b"commit":
+            raise ValueError(f"released_in: {commit_id} is not a commit in {self.repo}")
+        size = int(header[2])
+        body = self.process.stdout.read(size)
+        self.process.stdout.read(1)
+        if len(body) != size or hashlib.sha1(b"commit %d\0" % size + body).hexdigest() != commit_id:
+            raise ValueError(f"released_in: the object stored as {commit_id} in {self.repo} does not hash to its "
+                             "id (corrupt or forged)")
+        # As git reads a commit: "tree" first, then only consecutive "parent"
+        # lines, then "author".
+        lines = body.split(b"\n")
+        header = lines[:lines.index(b"")] if b"" in lines else lines
+        tree = header[0][5:].decode("ascii", "replace") if header and header[0].startswith(b"tree ") else None
+        parents, index = [], 1
+        while index < len(header) and header[index].startswith(b"parent "):
+            parents.append(header[index][7:].decode("ascii", "replace"))
+            index += 1
+        well_formed = (tree is not None and _HEX40.match(tree) and all(_HEX40.match(parent) for parent in parents)
+                       and index < len(header) and header[index].startswith(b"author ")
+                       and not any(line.startswith((b"tree ", b"parent ")) for line in header[index:]))
+        if not well_formed:
+            raise ValueError(f"released_in: commit {commit_id} in {self.repo} is not a well-formed commit")
+        self.commits[commit_id] = (tree, parents)
+        return tree, parents
+
+    def is_ancestor(self, ancestor, descendant):
+        """ancestor is descendant, or reachable from it through verified parents."""
+        self.commit(ancestor)
+        seen, todo = set(), [descendant]
+        while todo:
+            current = todo.pop()
+            if current == ancestor:
+                return True
+            if current in seen:
+                continue
+            seen.add(current)
+            todo.extend(self.commit(current)[1])
+        return False
+
+
+def git_commit(history, ref, what):
+    """A full commit id, verified through history (no revision parsing by git)."""
+    if not isinstance(ref, str) or not _HEX40.match(ref):
+        raise ValueError(f"released_in: {what} {ref!r} is not a full 40-hex commit id")
+    try:
+        history.commit(ref)
+    except ValueError as exc:
+        raise ValueError(f"released_in: {what} {ref}: {exc}")
+    return ref
+
+
+def check_released_commits(data, record, gate, records_dir):
+    """The task's change commits are in the published source and in no earlier
+    publication of the same package (fail closed)."""
+    released = data["released_in"]
+    repo = released.get("source_repo") or gate.get("source_repo")
+    if not isinstance(repo, str) or not Path(repo).is_dir():
+        raise ValueError(f"released_in: the source repository {repo!r} is not available")
+    code, shallow = git_out(repo, "rev-parse", "--is-shallow-repository")
+    if code or shallow != "false":
+        raise ValueError(f"released_in: the source repository {repo} is shallow or unreadable; its history is "
+                         "incomplete")
+    code, promisor = git_out(repo, "config", "--get-regexp", r"^(extensions\.partialclone|remote\..*\.promisor)$")
+    if code not in (0, 1) or promisor:
+        raise ValueError(f"released_in: the source repository {repo} is a partial clone; its history is incomplete")
+    history = VerifiedHistory(repo)
+    try:
+        check_released_history(released, record, gate, records_dir, repo, history)
+    finally:
+        history.close()
+
+
+def check_released_history(released, record, gate, records_dir, repo, history):
+    shipped = git_commit(history, record.get("source_commit"), "the published source commit")
+    tree, _ = history.commit(shipped)
+    if tree != gate.get("source_tree_hash"):
+        raise ValueError("released_in: the repository's tree of the published source commit is not the gate's "
+                         "source_tree_hash")
+    try:
+        this_time = datetime.fromisoformat(str(record.get("published_at")).replace("Z", "+00:00"))
+    except ValueError:
+        raise ValueError("released_in: the publish record has no valid published_at")
+    earlier = []
+    for path in sorted(Path(records_dir).iterdir()):
+        if not _RECORD_NAME.match(path.name):
+            continue
+        other = read_publish_record(path)
+        if not isinstance(other, dict):
+            raise ValueError(f"publish record {path} is not a JSON object")
+        if other.get("task_id") == record.get("task_id") or other.get("package") != record.get("package"):
+            continue
+        try:
+            when = datetime.fromisoformat(str(other.get("published_at")).replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError(f"publish record {path} has no valid published_at")
+        if when.tzinfo is None or this_time.tzinfo is None:
+            raise ValueError(f"publish record {path} or the releasing record has a published_at without a timezone")
+        if when <= this_time:
+            earlier.append(git_commit(history, other.get("source_commit"), f"the source commit of {path.name}"))
+    for commit in released["change_commits"]:
+        full = git_commit(history, commit, "change commit")
+        tree, parents = history.commit(full)
+        if len(parents) != 1:
+            raise ValueError(f"released_in: change commit {commit} must have exactly one parent")
+        if history.commit(parents[0])[0] == tree:
+            raise ValueError(f"released_in: change commit {commit} changes no file")
+        if not history.is_ancestor(full, shipped):
+            raise ValueError(f"released_in: change commit {commit} is not in the published source commit {shipped}")
+        for before in earlier:
+            if history.is_ancestor(full, before):
+                raise ValueError(f"released_in: change commit {commit} was already in an earlier publication "
+                                 f"of {record.get('package')} ({before})")
+
+
 def require_authorization(data):
     """An operation acts on shared infrastructure: who approved it, where
     that approval is recorded, and what it covers."""
@@ -386,7 +627,7 @@ def require_authorization(data):
     non_placeholder(auth, "reference", "scope")
 
 
-def require_evidence(target, data, task_id, kind=None, state=None):
+def require_evidence(target, data, task_id, kind=None, state=None, rows=None):
     if kind is None:
         kind = resolve_kind(data)
     if target in ("READY_TO_PUBLISH", "PUBLISHED") and kind != "package":
@@ -466,8 +707,17 @@ def require_evidence(target, data, task_id, kind=None, state=None):
     if target == "PUBLISHED":
         records_dir = Path.home() / "coordinator/publish-records"
         repo = Path(__file__).resolve().parents[1]
-        covered_by = None
-        if "published_by" in data:
+        covered_by = released_by = None
+        if "released_in" in data:
+            if "published_by" in data:
+                raise ValueError("released_in and published_by exclude each other")
+            if state == "READY_TO_PUBLISH":
+                raise ValueError("a task with its own release gate is published by its own record, not released_in")
+            record, released_by = released_in_record(data, task_id, rows, records_dir)
+        elif state == "REVIEW":
+            raise ValueError("REVIEW -> PUBLISHED needs released_in (the task's change shipped in another task's "
+                             "build and publication)")
+        elif "published_by" in data:
             record, covered_by = covering_record(data, task_id, records_dir)
             check_own_build(data, task_id, record, repo)
         else:
@@ -479,10 +729,11 @@ def require_evidence(target, data, task_id, kind=None, state=None):
         if not isinstance(record, dict) or record.get("schema") != 1:
             raise ValueError("publish record has unsupported schema")
         gate_ref = data.get("release_gate")
-        if covered_by:
+        if covered_by or released_by:
             # The gate is the publishing task's, named by its record.
             if gate_ref and gate_ref != record.get("gate_file"):
-                raise ValueError("release_gate and published_by name different gates")
+                raise ValueError("release_gate and the publish record of " + (covered_by or released_by)
+                                 + " name different gates")
             gate_ref = record.get("gate_file")
         if not isinstance(gate_ref, str):
             raise ValueError("PUBLISHED evidence must point to the release_gate")
@@ -508,10 +759,23 @@ def require_evidence(target, data, task_id, kind=None, state=None):
             # text; check_own_build tied its build to the published bytes.
             if covered_by and key in ("task_id", "source_commit"):
                 continue
+            # A released task has its own task id; its source_commit, when it
+            # names one, is the published one.
+            if released_by and (key == "task_id" or (key == "source_commit" and not data.get(key))):
+                continue
             if data.get(key) != gate.get(key):
                 raise ValueError(f"publish record and task evidence must match gate field {key}")
         if covered_by and gate.get("task_id") != covered_by:
             raise ValueError("the release gate named by the publish record belongs to another task")
+        if released_by:
+            if gate.get("task_id") != released_by:
+                raise ValueError("the release gate named by the publish record belongs to another task")
+            if gate.get("verification_result") != "PASS":
+                raise ValueError(f"the release gate of {released_by} has no Verifier PASS")
+            gate_manifest = (gate.get("build_manifest") or {}).get("file")
+            if data.get("build_manifest") and data.get("build_manifest") != gate_manifest:
+                raise ValueError(f"build_manifest and the release gate of {released_by} name different manifests")
+            check_released_commits(data, record, gate, records_dir)
         publish = gate.get("publish")
         if not isinstance(publish, dict):
             raise ValueError("release gate has no publish configuration")
@@ -698,7 +962,7 @@ def main():
                         return fail(f"{target} requires task_kind ({', '.join(KINDS)}) or package_change=true in the evidence")
                     if kind is not None and data.get("package_change") is not None and data.get("package_change") != (kind == "package"):
                         return fail(f"package_change contradicts the task's kind {kind}")
-                    require_evidence(target, data, args.task_id, kind, state)
+                    require_evidence(target, data, args.task_id, kind, state, rows)
                     if locked is None and kind is not None and target in KIND_STATES:
                         write_kind_lock(lock, kind)
                     cols[4], cols[7] = target, stamp()

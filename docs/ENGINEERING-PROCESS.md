@@ -58,6 +58,9 @@ BACKLOG → CLAIMED → INVESTIGATING → READY_FOR_FIX → IMPLEMENTING
          → VERIFYING → REVIEW → READY_TO_PUBLISH → PUBLISHED → DONE
 ```
 
+A package task whose change shipped in another task's build goes
+`REVIEW → PUBLISHED → DONE` through `released_in` (section 6, rule R).
+
 An investigation can close as `ALREADY_FIXED`, `NOT_REPRODUCED`, `DEFERRED`,
 `NOT_APPLICABLE`, `BLOCKED`, `REJECTED`, or `DUPLICATE`. During `VERIFYING`,
 the physical task owner completes and records the regression test, relevant
@@ -759,7 +762,9 @@ caused it.
     - `taskctl` requires `target_verified: true` and an existing
       `target_verification_record` file. It does not check their content.
 12. **`PUBLISHED`, then `DONE`.** `DONE` requires that all records are
-    committed and pushed, and that C has merged the task branch.
+    committed and pushed, and that C has merged the task branch. For a
+    task closed by `released_in` (rule R), the releasing task's branch is
+    merged as well.
 
 Rules used by these steps:
 
@@ -799,8 +804,55 @@ Rules used by these steps:
        `Installed-Build-Depends`. Both `.buildinfo` files must be
        committed.
 
-  A commit that is only an ancestor of the published one is refused. So is
-  a task whose version was not published.
+  For `published_by`, a commit that is only an ancestor of the published
+  one is refused, because P claims the task's own bytes shipped. So is a
+  task whose version was not published. A task without a build of its own
+  takes rule R.
+- **R. `released_in`.** A package task whose change is part of another
+  task's published build, with no build of its own, closes through
+  `released_in: {task_id, record_sha256, change_commits[, source_repo]}`
+  (UNITY-20261008-019). An example is UNITY-20261008-014, released in
+  UNITY-20261008-011's hud +unity5. Use P instead when the task has its
+  own build of the published version. **[tool]**
+  - **The route.** REVIEW → PUBLISHED, which `taskctl` allows only with
+    `released_in`. BLOCKED → PUBLISHED applies the same checks.
+    READY_TO_PUBLISH with `released_in` is refused, because that task has
+    its own gate. `DONE` still comes only after PUBLISHED.
+  - **The releasing task.** It is PUBLISHED or DONE on the board. Its
+    write-once publish record has the named sha256. The record's gate,
+    manifest, switch-time check and live publication hold as for every
+    PUBLISHED, and the gate's `verification_result` is PASS.
+  - **The task itself.** It has the same `package` and
+    `candidate_version`, its own verification record with PASS and a
+    `review_status`, and `target_verified` with a target record. Its
+    `source_commit`, `release_gate` and `build_manifest` are absent or
+    equal to the releasing task's.
+  - **The change commits.** Each is a full commit id in the gate's
+    `source_repo`, or in `released_in.source_repo`, whose tree of the
+    published source commit must equal the gate's `source_tree_hash`.
+    Each has exactly one parent and changes at least one file. Each is in
+    the published source commit's history. Each is in no earlier
+    publication of the same package: it must not be an ancestor of the
+    source commit of any older publish record. A record or a commit that
+    cannot be read refuses the transition.
+  - **What is trusted in the repository.** Only object hashes are
+    trusted. `taskctl` walks the history itself: it reads every commit on
+    the way raw, checks its sha1 against its id, and takes the tree and the
+    parents only from verified commits, parsed as git parses them. It runs
+    git with replace refs, grafts, the commit-graph file and inherited
+    `GIT_*` settings switched off. It refuses a shallow repository and a
+    partial clone. Git runs nothing the repository's config names: there
+    is no lazy fetch, no fsmonitor and no transport, and only `rev-parse`,
+    `config` and `cat-file` are called.
+  - **Limits.** Versions published before publish records existed are not
+    checked. A later revert of the change is not detected. A change commit
+    is not tied to the task: any commit of the published source that did
+    not ship earlier passes, and the task's Verifier checks that the
+    commits are its own. The target record must therefore exercise this
+    task's change on the published version. `taskctl` does not read its
+    content. **[process]**
+  - Run `taskctl` from a checkout that holds the releasing task's gate,
+    which is `main` after C's merge.
 - **K. Known gaps.** A gap known before the gate goes on the board as its
   own task first. It does not wait for the publication or for May. A gap is
   a case not covered, a related bug or a follow-up. **[process]**
