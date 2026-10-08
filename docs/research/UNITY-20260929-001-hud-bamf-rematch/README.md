@@ -13,7 +13,7 @@ task_id: UNITY-20260929-001
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - follow-up of UNITY-20260927-029
-status: VERIFIED (2026-10-08), publication next
+status: PUBLISHED (2026-10-08 11:04:20Z), target verified on the publication
 source_version: 14.10+17.10.20170619-0ubuntu6+unity3 (published 2026-10-02)
 observed: >
   The window stack lists the LibreOffice Writer document window with its
@@ -497,3 +497,20 @@ Slot from C (no other publication in progress).
 - **Version safety:** SAFE (gate/version-check.json, gate/version-safety.txt, at 10:52:43Z). The pre-build ordering check is in gate/prebuild-version-safety.txt.
 - **Peer notice:** A ACK (gate/peer-notice.txt).
 - **Patch record:** docs/PATCHES.md.
+- **Switch:** May confirmed in B's session, after C had checked the gate. `publish_aptly.py` switched `./resolute` to `unity-resolute-20260929-001` at 11:04:20 UTC. Write-once record: `~/coordinator/publish-records/UNITY-20260929-001.json`. The files under `/srv/aptly/public` show hud +unity4 and Release Date 11:04:20 UTC.
+
+## Target verification of the publication (2026-10-08)
+
+Result: **PASS** (logs/07).
+
+- **Restore:** target2 was rolled back to Clean-2 and checked from inside the guest. There was no `~/.dirty`, no `~/b001` and none of our apt sources; hud was 0ubuntu6, there was no usage table yet, and NTP was synchronised.
+- **Upgrade:** through our repository by the normal path (the key, `unity-distro.sources`, `apt-get full-upgrade`), with no file repository.
+- **The .deb:** apt's candidate for hud was +unity4 from 8080. The .deb apt fetched is the gated one (sha256 `b936d26d…`), and `dpkg -V hud` is clean.
+- **Boot:** a cold cycle (poweroff, then start). The session booted with no drop-ins or test configuration of ours. The running bridge and hud-service are the files of that .deb, with no "(deleted)" mapping.
+- **Stack:** `libreoffice-writer` in 4 of 4 Writer starts.
+- **Focus flag:** true in 3 of the 4 starts. It was false when the stack was read 6 s after start 2; +unity3 showed the same thing in 2 of 4 starts.
+- **History key:**
+  - Before any Writer use, the empty HUD lists only the window actions.
+  - One HUD "Сохранить" is recorded as `('libreoffice-writer', 'Файл||Сохранить')`.
+  - After Writer was killed and started again, the empty HUD lists "Сохранить (Файл)" first.
+- After the check target2 was rolled back to Clean-2 (poweroff at 11:31:02Z, restore, start) and checked from inside at 11:33:32Z: no `~/.dirty`, no `~/b001`, no `unity-distro.sources`, no usage table, hud 0ubuntu6, NTP synchronised.

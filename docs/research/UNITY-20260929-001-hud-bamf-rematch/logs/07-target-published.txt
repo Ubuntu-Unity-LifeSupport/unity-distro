@@ -1,0 +1,38 @@
+# UNITY-20260929-001 target verification of the publication (target2, 2026-10-08)
+# 11:04:36Z poweroff over ssh, Clean-2 restored, started; confirmed inside at 11:07:02Z: no ~/.dirty, no ~/b001, no b001-local.list, no unity-distro.sources,
+# hud 14.10+17.10.20170619-0ubuntu6, libreoffice-writer 4:26.2.5.2, no ~/.cache/indicator-appmenu (no usage table yet), NTPSynchronized=yes.
+# Then the usual path: our key + unity-distro.sources (http://192.168.56.10:8080/ resolute main), apt-get update, apt-get full-upgrade (fu=0), xdotool (test helper).
+# apt-cache policy hud: candidate 14.10+17.10.20170619-0ubuntu6+unity4 from http://192.168.56.10:8080 resolute/main (live ./resolute = unity-resolute-20260929-001, Release Date 11:04:20 UTC); no file repository.
+# /var/cache/apt/archives/hud_14.10+17.10.20170619-0ubuntu6+unity4_amd64.deb sha256 b936d26dcc84de41cc617edbec3ed506265a3de8a2a9a673236b2af37319cf5c (= the gated manifest); dpkg -V hud clean; sources.list.d: ubuntu.sources, unity-distro.sources.
+# Cold cycle: 11:24:34Z systemctl poweroff, powered off, start_vm; boot into the auto-login session; no drop-ins or test configuration of ours.
+# Scripts in ~/b001: target.sh, usage.py, frequent.py (test helpers, run over ssh; nothing installed into the session).
+
+11:26:53Z
+ 14:26:53 up 1 min,  2 users,  load average: 4,24, 1,24, 0,43
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity4
+libreoffice-writer	4:26.2.6.3-0ubuntu0.26.04.2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+dpkg-query: шаблону libhud2 не соответствует ни один пакет
+window-stack-br pid 2164 exe /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge sha256 47701985ff1cb260 deleted 0
+hud-service pid 3746 exe /usr/lib/x86_64-linux-gnu/hud/hud-service sha256 785979af07d6ffda deleted 0
+== writer 3
+writer start 1: window 54526093; stack: (54526093, 'libreoffice-writer', true
+   bridge: WindowCreated(54526093, 54526093) FocusedWindowChanged(54526093, 54526093) WindowCreated(54526093, libreoffice-writer) FocusedWindowChanged(54526093, libreoffice-writer) WindowDestroyed(54526093, 54526093) 
+writer start 2: window 56623140; stack: (56623140, 'libreoffice-writer', false
+   bridge: WindowCreated(56623140, 56623140) FocusedWindowChanged(56623140, 56623140) WindowCreated(56623140, libreoffice-writer) FocusedWindowChanged(56623140, libreoffice-writer) WindowDestroyed(56623140, 56623140) 
+writer start 3: window 56623140; stack: (56623140, 'libreoffice-writer', true
+   bridge: WindowCreated(56623140, 56623140) FocusedWindowChanged(56623140, 56623140) WindowCreated(56623140, libreoffice-writer) FocusedWindowChanged(56623140, libreoffice-writer) WindowDestroyed(56623140, 56623140) 
+== frequent before any Writer use
+window 56623140; stack: (56623140, 'libreoffice-writer', true
+empty query, 20 rows, first: Свернуть Window actions | Восстановить прежний размер Window actions | Переместить Window actions | Изменить размер Window actions | Всегда наверху Window actions
+== run 1: HUD command
+writer start 1: window 56623140; stack: (56623140, 'libreoffice-writer', true
+   bridge: WindowCreated(56623140, libreoffice-writer) FocusedWindowChanged(56623140, libreoffice-writer) 
+first result: ['30', 'Сохранить', '[(0, 9)]']
+usage rows (application, entry, count): [('libreoffice-writer', 'Файл||Сохранить', 1)]
+== run 2: Writer restarted, empty HUD
+window 56623140; stack: (56623140, 'libreoffice-writer', true
+empty query, 20 rows, first: Сохранить Файл | Свернуть Window actions | Восстановить прежний размер Window actions | Переместить Window actions | Изменить размер Window actions
+
+# 11:31:02Z poweroff, Clean-2 restored, started; checked inside at 11:33:32Z: no ~/.dirty, no ~/b001, no unity-distro.sources, no ~/.cache/indicator-appmenu, hud 14.10+17.10.20170619-0ubuntu6, libreoffice-writer 4:26.2.5.2, NTPSynchronized=yes
