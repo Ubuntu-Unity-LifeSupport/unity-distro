@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -19,7 +20,8 @@ import textwrap
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from chroot_fixtures import make_chroot  # noqa: E402
+from chroot_fixtures import make_chroot, stamp_days_ago  # noqa: E402
+import sbuild_chroot  # noqa: E402
 
 # BUILD_SBUILD lets the same tests run against another copy of the script
 # (UNITY-20260928-007 ran them against the pre-fix version to show them fail).
@@ -484,7 +486,11 @@ class BuildSbuildTest(unittest.TestCase):
         r2, m2, w2, o2 = self.build("demo", "1.0+unity1", [["demo", "amd64"]], chroot_args=["--tested-with", str(tested)])
         self.assertEqual(r2.returncode, 0, r2.stderr)
         self.assertEqual(m2["chroot"]["tested_with"]["chroot_sha256"], m["chroot"]["sha256"])
-        other = make_chroot(self.base / "other")
+        # UNITY-20261002-001: another snapshot stamp, so the content differs whatever the clock
+        # (with the same stamp, two tarballs made in one second were byte-identical)
+        other = make_chroot(self.base / "other", stamp=stamp_days_ago(2))
+        self.assertNotEqual(hashlib.sha256(other.read_bytes()).hexdigest(), m["chroot"]["sha256"],
+                            "fixture error: the other chroot has the tested chroot's bytes")
         for p in (self.base / "work", self.base / "out"):
             subprocess.run(["rm", "-rf", "--", str(p)], check=True)
         (self.base / "sbuild-argv.json").unlink()
@@ -494,6 +500,29 @@ class BuildSbuildTest(unittest.TestCase):
         self.assertIn("the tested build used another chroot", r3.stderr)
         self.assertIsNone(m3)
         self.assertIsNone(self.sbuild_argv())
+
+    def test_tested_with_same_bytes_elsewhere(self):
+        """UNITY-20261002-001: --tested-with compares the chroot's content, not its path: a
+        byte-identical copy of the tested chroot in another directory is accepted."""
+        r, m, w, o = self.build("demo", "1.0+unity1", [["demo", "amd64"]])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        tested = self.base / "tested-manifest.json"
+        tested.write_text(json.dumps(m))
+        copy = self.base / "copy" / self.chroot.name
+        copy.parent.mkdir()
+        shutil.copy2(self.chroot, copy)
+        shutil.copy2(sbuild_chroot.sidecar_path(self.chroot), sbuild_chroot.sidecar_path(copy))
+        for p in (self.base / "work", self.base / "out"):
+            subprocess.run(["rm", "-rf", "--", str(p)], check=True)
+        (self.base / "sbuild-argv.json").unlink()
+        chroot_args = ["--tested-with", str(tested)]
+        r2, m2, w2, o2 = self.build("demo", "1.0+unity1", [["demo", "amd64"]], chroot=copy, chroot_args=chroot_args)
+        self.assertNotIn("--allow-old-chroot", chroot_args)
+        self.assertEqual(r2.returncode, 0, r2.stderr)
+        self.assertEqual(m2["chroot"]["tarball"], str(copy.resolve()))
+        self.assertNotEqual(m2["chroot"]["tarball"], m["chroot"]["tarball"])
+        self.assertEqual(m2["chroot"]["sha256"], m["chroot"]["sha256"])
+        self.assertEqual(m2["chroot"]["tested_with"]["chroot_sha256"], m["chroot"]["sha256"])
 
     def make_deb(self, directory, package, version, arch="amd64", source=None, package_type=None, filename=None):
         root = self.base / f".deb-{package}-{arch}-{len(list(self.base.iterdir()))}"
