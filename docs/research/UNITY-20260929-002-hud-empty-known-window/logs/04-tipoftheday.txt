@@ -1,0 +1,3 @@
+dialog focused (Совет дня: 1/224): HUD 0
+after closing it (Совет дня: 1/224): HUD 0
+after OK in the dialog (Без имени 1 — LibreOffice Writer): HUD 4

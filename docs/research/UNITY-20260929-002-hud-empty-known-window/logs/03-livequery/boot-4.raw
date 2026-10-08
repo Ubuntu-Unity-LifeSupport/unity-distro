@@ -1,0 +1,1107 @@
+signal time=1791444129.442190 sender=org.freedesktop.DBus -> destination=:1.95 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.95"
+signal time=1791444129.442232 sender=org.freedesktop.DBus -> destination=:1.95 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.95"
+signal time=1791444130.825610 sender=:1.50 -> destination=(null destination) serial=52 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=WindowCreated
+   uint32 58720257
+   string "58720257"
+method call time=1791444130.830332 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=33 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowBusAddress
+   uint32 58720257
+method call time=1791444130.855520 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=39 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowProperties
+   uint32 58720257
+   string "58720257"
+   array [
+      string "_GTK_UNIQUE_BUS_NAME"
+      string "_GTK_APP_MENU_OBJECT_PATH"
+      string "_GTK_MENUBAR_OBJECT_PATH"
+      string "_GTK_APPLICATION_OBJECT_PATH"
+      string "_GTK_WINDOW_OBJECT_PATH"
+      string "_UNITY_OBJECT_PATH"
+   ]
+signal time=1791444136.266039 sender=:1.50 -> destination=(null destination) serial=61 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=WindowDestroyed
+   uint32 58720257
+   string "58720257"
+signal time=1791444137.270707 sender=:1.50 -> destination=(null destination) serial=65 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=WindowCreated
+   uint32 60817444
+   string "60817444"
+signal time=1791444137.270730 sender=:1.50 -> destination=(null destination) serial=66 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=FocusedWindowChanged
+   uint32 60817444
+   string "60817444"
+   uint32 0
+method call time=1791444137.278531 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=43 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowBusAddress
+   uint32 60817444
+method call time=1791444137.565962 sender=:1.88 -> destination=:1.96 serial=387 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 0
+   ]
+method call time=1791444137.573327 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=49 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowProperties
+   uint32 60817444
+   string "60817444"
+   array [
+      string "_GTK_UNIQUE_BUS_NAME"
+      string "_GTK_APP_MENU_OBJECT_PATH"
+      string "_GTK_MENUBAR_OBJECT_PATH"
+      string "_GTK_APPLICATION_OBJECT_PATH"
+      string "_GTK_WINDOW_OBJECT_PATH"
+      string "_UNITY_OBJECT_PATH"
+   ]
+method call time=1791444137.597274 sender=:1.93 -> destination=:1.96 serial=11 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 0
+   ]
+method call time=1791444137.599538 sender=:1.93 -> destination=:1.96 serial=19 path=/org/appmenu/gtk/window/2; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 0
+   ]
+method call time=1791444138.304321 sender=:1.97 -> destination=com.canonical.hud serial=4 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "Сохранить"
+   int32 5
+method call time=1791444138.508908 sender=:1.97 -> destination=com.canonical.hud serial=6 path=/com/canonical/hud; interface=com.canonical.hud; member=CreateQuery
+   string "Сохранить"
+signal time=1791444138.815937 sender=:1.96 -> destination=(null destination) serial=118 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 0
+         uint32 2
+         uint32 0
+         uint32 0
+         array [
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-1"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-1"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "_Файл"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 1
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-63"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-63"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "_Правка"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 2
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-129"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-129"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "_Вид"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 3
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-184"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-184"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Вст_авка"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 4
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-266"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-266"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Фо_рмат"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 5
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-435"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-435"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "С_тили"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 6
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-466"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-466"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Та_блица"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 7
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-518"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-518"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Фор_ма"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 8
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-566"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-566"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "С_ервис"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 9
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-638"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-638"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "_Окно"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 10
+                        uint32 0
+                     }
+               )
+            ]
+            array [
+               dict entry(
+                  string "submenu-action"
+                  variant                      string "win.window-108675736920960-642"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675736920960-642"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "_Справка"
+               )
+               dict entry(
+                  string ":submenu"
+                  variant                      struct {
+                        uint32 11
+                        uint32 0
+                     }
+               )
+            ]
+         ]
+      }
+   ]
+signal time=1791444138.818029 sender=:1.96 -> destination=(null destination) serial=119 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 0
+         uint32 1
+         uint32 0
+         uint32 0
+         array [
+            array [
+               dict entry(
+                  string ":section"
+                  variant                      struct {
+                        uint32 0
+                        uint32 2
+                     }
+               )
+            ]
+         ]
+      }
+   ]
+signal time=1791444138.818080 sender=:1.96 -> destination=(null destination) serial=120 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 0
+         uint32 0
+         uint32 0
+         uint32 0
+         array [
+            array [
+               dict entry(
+                  string ":section"
+                  variant                      struct {
+                        uint32 0
+                        uint32 1
+                     }
+               )
+            ]
+         ]
+      }
+   ]
+method call time=1791444138.821611 sender=:1.88 -> destination=:1.96 serial=411 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 11
+   ]
+method call time=1791444138.821898 sender=:1.88 -> destination=:1.96 serial=412 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 10
+   ]
+method call time=1791444138.823676 sender=:1.88 -> destination=:1.96 serial=413 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 9
+   ]
+method call time=1791444138.823693 sender=:1.88 -> destination=:1.96 serial=414 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 8
+   ]
+method call time=1791444138.823698 sender=:1.88 -> destination=:1.96 serial=415 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 7
+   ]
+method call time=1791444138.823703 sender=:1.88 -> destination=:1.96 serial=416 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 6
+   ]
+method call time=1791444138.823707 sender=:1.88 -> destination=:1.96 serial=417 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 5
+   ]
+method call time=1791444138.823712 sender=:1.88 -> destination=:1.96 serial=418 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 4
+   ]
+method call time=1791444138.826038 sender=:1.88 -> destination=:1.96 serial=419 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 3
+   ]
+method call time=1791444138.826059 sender=:1.88 -> destination=:1.96 serial=420 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 2
+   ]
+method call time=1791444138.826064 sender=:1.88 -> destination=:1.96 serial=421 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 1
+   ]
+method call time=1791444138.826661 sender=:1.93 -> destination=:1.96 serial=66 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 1
+   ]
+method call time=1791444138.828949 sender=:1.93 -> destination=:1.96 serial=67 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 2
+   ]
+method call time=1791444138.828967 sender=:1.93 -> destination=:1.96 serial=68 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 3
+   ]
+method call time=1791444138.828972 sender=:1.93 -> destination=:1.96 serial=69 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 4
+   ]
+method call time=1791444138.828984 sender=:1.93 -> destination=:1.96 serial=70 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 5
+   ]
+method call time=1791444138.832538 sender=:1.93 -> destination=:1.96 serial=71 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 6
+   ]
+method call time=1791444138.832560 sender=:1.93 -> destination=:1.96 serial=72 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 7
+   ]
+method call time=1791444138.832565 sender=:1.93 -> destination=:1.96 serial=73 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 8
+   ]
+method call time=1791444138.832570 sender=:1.93 -> destination=:1.96 serial=74 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 9
+   ]
+method call time=1791444138.832574 sender=:1.93 -> destination=:1.96 serial=75 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 10
+   ]
+method call time=1791444138.832579 sender=:1.93 -> destination=:1.96 serial=76 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 11
+   ]
+method call time=1791444140.193414 sender=:1.88 -> destination=:1.96 serial=425 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 13
+   ]
+method call time=1791444140.193453 sender=:1.88 -> destination=:1.96 serial=426 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 12
+   ]
+method call time=1791444140.193459 sender=:1.88 -> destination=:1.96 serial=427 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 16
+   ]
+method call time=1791444140.194638 sender=:1.88 -> destination=:1.96 serial=428 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 15
+   ]
+method call time=1791444140.194997 sender=:1.88 -> destination=:1.96 serial=429 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 14
+   ]
+method call time=1791444140.195685 sender=:1.88 -> destination=:1.96 serial=430 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 18
+   ]
+method call time=1791444140.197393 sender=:1.88 -> destination=:1.96 serial=431 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 17
+   ]
+method call time=1791444140.201023 sender=:1.88 -> destination=:1.96 serial=432 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 23
+   ]
+method call time=1791444140.202137 sender=:1.88 -> destination=:1.96 serial=433 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 22
+   ]
+method call time=1791444140.202156 sender=:1.88 -> destination=:1.96 serial=434 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 21
+   ]
+method call time=1791444140.202516 sender=:1.88 -> destination=:1.96 serial=435 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 20
+   ]
+method call time=1791444140.203207 sender=:1.88 -> destination=:1.96 serial=436 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 19
+   ]
+method call time=1791444140.210336 sender=:1.88 -> destination=:1.96 serial=437 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 36
+   ]
+method call time=1791444140.211604 sender=:1.88 -> destination=:1.96 serial=438 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 35
+   ]
+method call time=1791444140.211635 sender=:1.88 -> destination=:1.96 serial=439 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 34
+   ]
+method call time=1791444140.212192 sender=:1.88 -> destination=:1.96 serial=440 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 33
+   ]
+method call time=1791444140.212209 sender=:1.88 -> destination=:1.96 serial=441 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 32
+   ]
+method call time=1791444140.212602 sender=:1.88 -> destination=:1.96 serial=442 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 26
+   ]
+method call time=1791444140.215076 sender=:1.88 -> destination=:1.96 serial=443 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 25
+   ]
+method call time=1791444140.216098 sender=:1.88 -> destination=:1.96 serial=444 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 24
+   ]
+method call time=1791444140.216114 sender=:1.88 -> destination=:1.96 serial=445 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 27
+   ]
+method call time=1791444140.216119 sender=:1.88 -> destination=:1.96 serial=446 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 28
+   ]
+method call time=1791444140.216124 sender=:1.88 -> destination=:1.96 serial=447 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 31
+   ]
+method call time=1791444140.216462 sender=:1.88 -> destination=:1.96 serial=448 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 30
+   ]
+method call time=1791444140.219066 sender=:1.88 -> destination=:1.96 serial=449 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 29
+   ]
+method call time=1791444140.219092 sender=:1.88 -> destination=:1.96 serial=450 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 42
+   ]
+method call time=1791444140.220136 sender=:1.88 -> destination=:1.96 serial=451 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 41
+   ]
+method call time=1791444140.222681 sender=:1.88 -> destination=:1.96 serial=452 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 37
+   ]
+method call time=1791444140.223308 sender=:1.88 -> destination=:1.96 serial=453 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 46
+   ]
+method call time=1791444140.225379 sender=:1.88 -> destination=:1.96 serial=454 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 45
+   ]
+method call time=1791444140.232514 sender=:1.88 -> destination=:1.96 serial=455 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 44
+   ]
+method call time=1791444140.236394 sender=:1.88 -> destination=:1.96 serial=456 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 43
+   ]
+method call time=1791444140.237177 sender=:1.88 -> destination=:1.96 serial=457 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 40
+   ]
+method call time=1791444140.237202 sender=:1.88 -> destination=:1.96 serial=458 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 39
+   ]
+method call time=1791444140.237676 sender=:1.88 -> destination=:1.96 serial=459 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 38
+   ]
+method call time=1791444140.242210 sender=:1.88 -> destination=:1.96 serial=460 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 51
+   ]
+method call time=1791444140.242767 sender=:1.88 -> destination=:1.96 serial=461 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 50
+   ]
+method call time=1791444140.242789 sender=:1.88 -> destination=:1.96 serial=462 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 49
+   ]
+method call time=1791444140.242794 sender=:1.88 -> destination=:1.96 serial=463 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 47
+   ]
+method call time=1791444140.243596 sender=:1.88 -> destination=:1.96 serial=464 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 52
+   ]
+method call time=1791444140.245036 sender=:1.88 -> destination=:1.96 serial=465 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 48
+   ]
+method call time=1791444140.247277 sender=:1.88 -> destination=:1.96 serial=466 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 58
+   ]
+method call time=1791444140.248094 sender=:1.88 -> destination=:1.96 serial=467 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 57
+   ]
+method call time=1791444140.248596 sender=:1.88 -> destination=:1.96 serial=468 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 56
+   ]
+method call time=1791444140.249149 sender=:1.88 -> destination=:1.96 serial=469 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 55
+   ]
+method call time=1791444140.249672 sender=:1.88 -> destination=:1.96 serial=470 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 54
+   ]
+method call time=1791444140.251213 sender=:1.88 -> destination=:1.96 serial=471 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 53
+   ]
+method call time=1791444140.254151 sender=:1.88 -> destination=:1.96 serial=472 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 64
+   ]
+method call time=1791444140.255193 sender=:1.88 -> destination=:1.96 serial=473 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 63
+   ]
+method call time=1791444140.256589 sender=:1.88 -> destination=:1.96 serial=474 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 60
+   ]
+method call time=1791444140.257225 sender=:1.88 -> destination=:1.96 serial=475 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 59
+   ]
+method call time=1791444140.258056 sender=:1.88 -> destination=:1.96 serial=476 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 65
+   ]
+method call time=1791444140.259481 sender=:1.88 -> destination=:1.96 serial=477 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 62
+   ]
+method call time=1791444140.259757 sender=:1.88 -> destination=:1.96 serial=478 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 61
+   ]
+method call time=1791444140.265526 sender=:1.88 -> destination=:1.96 serial=479 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 68
+   ]
+method call time=1791444140.266574 sender=:1.88 -> destination=:1.96 serial=480 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 67
+   ]
+method call time=1791444140.267400 sender=:1.88 -> destination=:1.96 serial=481 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 66
+   ]
+method call time=1791444140.280528 sender=:1.93 -> destination=:1.96 serial=78 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 63
+   ]
+method call time=1791444140.283738 sender=:1.93 -> destination=:1.96 serial=79 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 64
+   ]
+method call time=1791444140.287317 sender=:1.93 -> destination=:1.96 serial=80 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 59
+   ]
+method call time=1791444140.289508 sender=:1.93 -> destination=:1.96 serial=81 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 60
+   ]
+method call time=1791444140.289581 sender=:1.93 -> destination=:1.96 serial=82 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 65
+   ]
+method call time=1791444140.291641 sender=:1.93 -> destination=:1.96 serial=83 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 61
+   ]
+method call time=1791444140.291722 sender=:1.93 -> destination=:1.96 serial=84 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 62
+   ]
+method call time=1791444140.294728 sender=:1.93 -> destination=:1.96 serial=85 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 54
+   ]
+method call time=1791444140.298700 sender=:1.93 -> destination=:1.96 serial=86 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 55
+   ]
+method call time=1791444140.298723 sender=:1.93 -> destination=:1.96 serial=87 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 56
+   ]
+method call time=1791444140.298728 sender=:1.93 -> destination=:1.96 serial=88 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 57
+   ]
+method call time=1791444140.298733 sender=:1.93 -> destination=:1.96 serial=89 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 58
+   ]
+method call time=1791444140.301611 sender=:1.93 -> destination=:1.96 serial=90 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 53
+   ]
+method call time=1791444140.304738 sender=:1.93 -> destination=:1.96 serial=91 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 49
+   ]
+method call time=1791444140.304761 sender=:1.93 -> destination=:1.96 serial=92 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 50
+   ]
+method call time=1791444140.304766 sender=:1.93 -> destination=:1.96 serial=93 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 51
+   ]
+method call time=1791444140.307397 sender=:1.93 -> destination=:1.96 serial=94 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 47
+   ]
+method call time=1791444140.311369 sender=:1.93 -> destination=:1.96 serial=95 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 52
+   ]
+method call time=1791444140.311389 sender=:1.93 -> destination=:1.96 serial=96 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 48
+   ]
+method call time=1791444140.315273 sender=:1.93 -> destination=:1.96 serial=97 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 41
+   ]
+method call time=1791444140.318351 sender=:1.93 -> destination=:1.96 serial=98 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 42
+   ]
+method call time=1791444140.320072 sender=:1.93 -> destination=:1.96 serial=99 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 37
+   ]
+method call time=1791444140.320123 sender=:1.93 -> destination=:1.96 serial=100 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 45
+   ]
+method call time=1791444140.320594 sender=:1.93 -> destination=:1.96 serial=101 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 46
+   ]
+method call time=1791444140.323562 sender=:1.93 -> destination=:1.96 serial=102 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 43
+   ]
+method call time=1791444140.323672 sender=:1.93 -> destination=:1.96 serial=103 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 44
+   ]
+method call time=1791444140.324375 sender=:1.93 -> destination=:1.96 serial=104 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 38
+   ]
+method call time=1791444140.324391 sender=:1.93 -> destination=:1.96 serial=105 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 39
+   ]
+method call time=1791444140.324395 sender=:1.93 -> destination=:1.96 serial=106 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 40
+   ]
+method call time=1791444140.324400 sender=:1.93 -> destination=:1.96 serial=107 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 32
+   ]
+method call time=1791444140.324404 sender=:1.93 -> destination=:1.96 serial=108 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 33
+   ]
+method call time=1791444140.324409 sender=:1.93 -> destination=:1.96 serial=109 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 34
+   ]
+method call time=1791444140.324414 sender=:1.93 -> destination=:1.96 serial=110 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 35
+   ]
+method call time=1791444140.324418 sender=:1.93 -> destination=:1.96 serial=111 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 36
+   ]
+method call time=1791444140.324423 sender=:1.93 -> destination=:1.96 serial=112 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 24
+   ]
+method call time=1791444140.324427 sender=:1.93 -> destination=:1.96 serial=113 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 25
+   ]
+method call time=1791444140.324432 sender=:1.93 -> destination=:1.96 serial=114 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 26
+   ]
+method call time=1791444140.326218 sender=:1.93 -> destination=:1.96 serial=115 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 27
+   ]
+method call time=1791444140.328243 sender=:1.93 -> destination=:1.96 serial=116 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 28
+   ]
+method call time=1791444140.329078 sender=:1.93 -> destination=:1.96 serial=117 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 29
+   ]
+method call time=1791444140.329223 sender=:1.93 -> destination=:1.96 serial=118 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 30
+   ]
+method call time=1791444140.329286 sender=:1.93 -> destination=:1.96 serial=119 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 31
+   ]
+method call time=1791444140.341729 sender=:1.93 -> destination=:1.96 serial=120 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 23
+   ]
+method call time=1791444140.341866 sender=:1.93 -> destination=:1.96 serial=121 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 19
+   ]
+method call time=1791444140.342367 sender=:1.93 -> destination=:1.96 serial=122 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 20
+   ]
+method call time=1791444140.342432 sender=:1.93 -> destination=:1.96 serial=123 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 21
+   ]
+method call time=1791444140.342483 sender=:1.93 -> destination=:1.96 serial=124 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 22
+   ]
+method call time=1791444140.345250 sender=:1.93 -> destination=:1.96 serial=125 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 17
+   ]
+method call time=1791444140.347609 sender=:1.93 -> destination=:1.96 serial=126 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 18
+   ]
+method call time=1791444140.347741 sender=:1.93 -> destination=:1.96 serial=127 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 13
+   ]
+method call time=1791444140.354432 sender=:1.93 -> destination=:1.96 serial=128 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 12
+   ]
+method call time=1791444140.354458 sender=:1.93 -> destination=:1.96 serial=129 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 16
+   ]
+method call time=1791444140.354463 sender=:1.93 -> destination=:1.96 serial=130 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 14
+   ]
+method call time=1791444140.354468 sender=:1.93 -> destination=:1.96 serial=131 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 15
+   ]
+method call time=1791444140.455287 sender=:1.88 -> destination=:1.96 serial=482 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 69
+   ]
+method call time=1791444140.544484 sender=:1.88 -> destination=:1.96 serial=483 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 70
+   ]
+method call time=1791444140.547598 sender=:1.88 -> destination=:1.96 serial=484 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 72
+   ]
+method call time=1791444140.547679 sender=:1.88 -> destination=:1.96 serial=485 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 71
+   ]
+method call time=1791444140.568299 sender=:1.88 -> destination=:1.96 serial=486 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 80
+   ]
+method call time=1791444140.568592 sender=:1.88 -> destination=:1.96 serial=487 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 79
+   ]
+method call time=1791444140.569044 sender=:1.88 -> destination=:1.96 serial=488 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 78
+   ]
+method call time=1791444140.576517 sender=:1.88 -> destination=:1.96 serial=489 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 77
+   ]
+method call time=1791444140.578174 sender=:1.88 -> destination=:1.96 serial=490 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 76
+   ]
+method call time=1791444140.613077 sender=:1.88 -> destination=:1.96 serial=491 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 75
+   ]
+method call time=1791444140.613103 sender=:1.88 -> destination=:1.96 serial=492 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 74
+   ]
+method call time=1791444140.613108 sender=:1.88 -> destination=:1.96 serial=493 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 73
+   ]
+method call time=1791444140.613112 sender=:1.88 -> destination=:1.96 serial=494 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 81
+   ]
+method call time=1791444140.613117 sender=:1.93 -> destination=:1.96 serial=134 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 71
+   ]
+method call time=1791444140.613121 sender=:1.93 -> destination=:1.96 serial=135 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 72
+   ]
+method call time=1791444140.613126 sender=:1.93 -> destination=:1.96 serial=136 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 81
+   ]
+method call time=1791444140.613130 sender=:1.93 -> destination=:1.96 serial=137 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 73
+   ]
+method call time=1791444140.613135 sender=:1.93 -> destination=:1.96 serial=138 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 74
+   ]
+method call time=1791444140.613139 sender=:1.93 -> destination=:1.96 serial=139 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 75
+   ]
+method call time=1791444140.613144 sender=:1.93 -> destination=:1.96 serial=140 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 76
+   ]
+method call time=1791444140.613148 sender=:1.93 -> destination=:1.96 serial=141 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 77
+   ]
+method call time=1791444140.613153 sender=:1.93 -> destination=:1.96 serial=142 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 78
+   ]
+method call time=1791444140.613157 sender=:1.93 -> destination=:1.96 serial=143 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 79
+   ]
+method call time=1791444140.613162 sender=:1.93 -> destination=:1.96 serial=144 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 80
+   ]
+method call time=1791444140.613173 sender=:1.93 -> destination=:1.96 serial=145 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 70
+   ]
+method call time=1791444140.613178 sender=:1.93 -> destination=:1.96 serial=146 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 66
+   ]
+method call time=1791444140.613183 sender=:1.93 -> destination=:1.96 serial=147 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 67
+   ]
+method call time=1791444140.613187 sender=:1.93 -> destination=:1.96 serial=148 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 68
+   ]
+method call time=1791444140.613192 sender=:1.93 -> destination=:1.96 serial=149 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Start
+   array [
+      uint32 69
+   ]
+signal time=1791444141.889554 sender=:1.96 -> destination=(null destination) serial=468 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 1
+         uint32 9
+         uint32 0
+         uint32 1
+         array [
+            array [
+               dict entry(
+                  string "action"
+                  variant                      string "win.window-108675737061952-62"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675737061952-62"
+               )
+               dict entry(
+                  string "accel"
+                  variant                      string "<Primary>q"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Выйти из LibreOffice"
+               )
+            ]
+         ]
+      }
+   ]
+signal time=1791444141.903745 sender=:1.96 -> destination=(null destination) serial=470 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 1
+         uint32 4
+         uint32 1
+         uint32 1
+         array [
+            array [
+               dict entry(
+                  string "action"
+                  variant                      string "win.window-108675737061952-21"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675737061952-21"
+               )
+               dict entry(
+                  string "accel"
+                  variant                      string "<Primary><Shift>s"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Сохранить как…"
+               )
+            ]
+         ]
+      }
+   ]
+signal time=1791444141.906970 sender=:1.96 -> destination=(null destination) serial=471 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 1
+         uint32 4
+         uint32 0
+         uint32 1
+         array [
+            array [
+               dict entry(
+                  string "action"
+                  variant                      string "win.window-108675737061952-20"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675737061952-20"
+               )
+               dict entry(
+                  string "accel"
+                  variant                      string "<Primary>s"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Сохранить"
+               )
+            ]
+         ]
+      }
+   ]
+signal time=1791444141.918200 sender=:1.96 -> destination=(null destination) serial=472 path=/org/libreoffice/window/60817444/menus/menubar; interface=org.gtk.Menus; member=Changed
+   array [
+      struct {
+         uint32 1
+         uint32 4
+         uint32 3
+         uint32 1
+         array [
+            array [
+               dict entry(
+                  string "action"
+                  variant                      string "win.window-108675737061952-23"
+               )
+               dict entry(
+                  string "command"
+                  variant                      string "window-108675737061952-23"
+               )
+               dict entry(
+                  string "label"
+                  variant                      string "Сохранить копию…"
+               )
+            ]
+         ]
+      }
+   ]
+method call time=1791444150.523500 sender=:1.97 -> destination=com.canonical.hud serial=15 path=/com/canonical/hud/query/1; interface=com.canonical.hud.query; member=UpdateQuery
+   string "Сохранит"
+method call time=1791444151.047590 sender=:1.97 -> destination=com.canonical.hud serial=16 path=/com/canonical/hud/query/1; interface=com.canonical.hud.query; member=UpdateQuery
+   string "Сохранить"
+method call time=1791444159.136713 sender=:1.97 -> destination=com.canonical.hud serial=17 path=/com/canonical/hud/query/1; interface=com.canonical.hud.query; member=CloseQuery
