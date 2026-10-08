@@ -456,8 +456,8 @@ Remarks:
 
 | gap | where it is covered |
 |---|---|
-| A legacy `StartQuery` without `CloseQuery` keeps its query and its three Tries for the life of hud-service (hud, not libcolumbus). | follow-up candidate (ID from C) |
+| A legacy `StartQuery` without `CloseQuery` keeps its query and its three Tries for the life of hud-service (hud, not libcolumbus). | follow-up UNITY-20261008-025 |
 | The 2 GiB guard is not exercised by a test. | review only; far beyond any real Trie (128 KiB in hud) |
 | HUD results with the archive library and with +unity1 are not compared on the target. | the fix touches only the destruction and growth of a Trie; the Verifier's Writer queries and the Dash search give the expected results |
-| An Ubuntu upload of `0ubuntu39.1` or `0ubuntu40` would replace +unity1 without the fix. | the usual risk of a carried package; resolute has libcolumbus only in its release pocket today |
+| An Ubuntu upload of `0ubuntu39.1` or `0ubuntu40` would replace +unity1 without the fix. | the usual risk of a carried package (resolute has libcolumbus only in its release pocket today); by the rule for carried packages, +unity1 is rebased onto any such Ubuntu update |
 | A failed `munmap` of the old map during growth leaves that map. | logged; by design |
