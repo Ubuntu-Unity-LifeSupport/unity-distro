@@ -1,0 +1,52 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 6.4.2-1+unity4 is newer than resolute 6.4.2-1",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "cinnamon-session",
+  "source_commit": "54ab973182c8e18a03bcf189875cb7a56e851f0a",
+  "candidate_source_version": "6.4.2-1+unity4",
+  "pockets": {
+    "resolute": "6.4.2-1"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-08T22:27:03Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "cinnamon-session-common",
+      "version": "6.4.2-1+unity4",
+      "architecture": "all",
+      "apt_candidate": "6.4.2-1+unity4"
+    },
+    {
+      "package": "cinnamon-session-dbgsym",
+      "version": "6.4.2-1+unity4",
+      "architecture": "amd64",
+      "apt_candidate": "6.4.2-1+unity4"
+    },
+    {
+      "package": "cinnamon-session",
+      "version": "6.4.2-1+unity4",
+      "architecture": "amd64",
+      "apt_candidate": "6.4.2-1+unity4"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-053",
+    "packages": 482,
+    "list_sha256": "6c47a41e1ac461d44928a8ff159c2069c147c5a24531950f203289c3ffd988ec",
+    "content_sha256": "efbdb634003a16a878d703e9bd83336f6f84f2ef64ed22dfae5c81fc648c758e",
+    "model_entries": 435,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "8cbe7ba96a64ed0c3ce1be927b13fc34233417a636aca21123fef2c9d402f9fa"
+}

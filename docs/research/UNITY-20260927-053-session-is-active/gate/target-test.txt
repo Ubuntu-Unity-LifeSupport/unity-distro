@@ -1,0 +1,42 @@
+UNITY-20260927-053: target test of cinnamon-session 6.4.2-1+unity4
+
+Target: target-desktop. Base: the published stack of 2026-10-08, restored (confirmed inside the guest), updated
+the ordinary way from the live repository (unity-settings-daemon +unity12, unity +unity13, light-locker +unity3,
+hud +unity5), then the debs below from this build (build/) installed with apt, then a cold boot.
+
+Installed debs (sha256 equal to build/ and the build manifest):
+  4226330d39c9a0ae54faf34a1efe840647e8e1170f8f6b7e97b8e9da221d4281  cinnamon-session_6.4.2-1+unity4_amd64.deb
+  d3b04f91c2549f2e5d75e508f3356b80b49cfb8a569180eed23f86d1a610aeab  cinnamon-session-common_6.4.2-1+unity4_all.deb
+
+Results:
+  SessionIsActive (org.gnome.SessionManager): (<true>,) after boot; logind Active=yes.
+  Switch to VT 1 and back, without a lock: (<false>,) with logind Active=no, then (<true>,);
+    PropertiesChanged with SessionIsActive false and then true captured on the session bus.
+    5 cycles: false/true every time.
+  Journal: "Could not get session id" 0, "active_v != NULL" (color) 0; the same after a logout and a new
+    login in the same boot (new logind session, SessionIsActive (<true>,)).
+  Medium (an ISO image in the optical drive) inserted into the unlocked session: mounted; also in the new
+    session after the logout.
+  Session locked (light-locker, the published locker): GetActive true, LockedHint "yes".
+    A medium inserted while locked: not mounted.
+    After the user logged in again (the tester typed nothing): SessionIsActive true, LockedHint "no",
+    GetActive false; the medium inserted while locked was still not mounted; a medium inserted after the
+    login was mounted.
+  Autorun: org.gnome.desktop.media-handling autorun-never is true by default, so no dialog.
+    Outside the published configuration, with autorun-never=false, the autorun dialog appeared for an
+    inserted medium; the setting was reset afterwards.
+  Idle: logind IdleAction "ignore"; power schema sleep-inactive-ac-timeout=0. On this virtual machine the
+    power plugin's idle handling is off by design (virtual machine detected), so dim/blank/idle hint were
+    not observable; no suspend occurred.
+  cinnamon-session presence idle: org.cinnamon.desktop.session idle-delay set to 30, cold boot, no input.
+    The debug log shows "adding idle watch (1) for 30 secs" at the RUNNING phase; no idle inhibitors.
+    After the X server's idle time (XScreenSaver and the XSync IDLETIME counter) passed 150 s:
+    presence status 0 (available), logind IdleHint "no", IdleSinceHint 0.
+    Cause: the idle monitor in libcinnamon-desktop4t64 is a client of org.cinnamon.Muffin.IdleMonitor;
+    that name has no owner and is not activatable in the Unity session (org.gnome.Mutter.IdleMonitor is
+    owned by unity-settings-daemon). Its GetIdletime stays 0 while the X idle time grows.
+    The same name is absent with cinnamon-session +unity3. idle-delay was reset to 900 afterwards.
+
+Result: PASS (power plugin idle path: not observable on a virtual machine; presence idle: never fires in
+  the Unity session, unchanged by this version).
+tested_build: this_build (the debs above are this gate's build).

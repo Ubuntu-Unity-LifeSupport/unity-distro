@@ -1,0 +1,5 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | cinnamon-session-common                  | -                                        | 6.4.2-1+unity4                          
++ amd64  | cinnamon-session                         | -                                        | 6.4.2-1+unity4                          
++ amd64  | cinnamon-session-dbgsym                  | -                                        | 6.4.2-1+unity4                          
++ source | cinnamon-session                         | -                                        | 6.4.2-1+unity4                          
