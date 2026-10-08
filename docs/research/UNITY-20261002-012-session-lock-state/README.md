@@ -42,6 +42,20 @@ Target record: `gate/target-test.txt`. tested_build: this_build.
   - UNITY-20261008-010: a lock-provider proxy that is replaced before it
     is ready is not freed.
 
+## Publication (slot 1)
+
+- **Database backup:** `/home/claude/backups/UNITY-20261002-012-20261008T180458Z`.
+  18 files, complete, equal to live; list sha256
+  `06d522cf38023ae3fab6ccf30395b05d556da5cf003960ba91e505e9ca3222b6`.
+- **Repository:** 8 records added to `unity-resolute` (the source, 5 .deb
+  and 2 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261002-012-usd`, which is the live
+  `unity-resolute-20260929-001` plus these 8 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
+
 ## Not changed / known limits
 
 - Under cinnamon-session the automount helper does not mount on hotplug at
