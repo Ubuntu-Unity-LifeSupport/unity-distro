@@ -75,6 +75,27 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-08 ~11:35Z: UNITY-20260929-001 PUBLISHED, waiting for C's merge.**
+- hud 14.10+17.10.20170619-0ubuntu6+unity4 (window-stack-bridge follows
+  bamf's re-match: LibreOffice's window gets libreoffice-writer, HUD usage
+  carries over between Writer runs). Live `./resolute` =
+  `unity-resolute-20260929-001` since 11:04:20Z. C checked the gate, and
+  May confirmed the switch in B's session.
+- Branch `b/UNITY-20260929-001` @ 5ff2eee, worktree `~/work/b/unity-distro-001`,
+  card `research/UNITY-20260929-001-hud-bamf-rematch/`.
+  - Verifier PASS.
+  - Target check before publication (logs/06) and on the publication
+    (logs/07, Clean-2, the normal upgrade, a cold cycle) both PASS.
+- Next, assigned by C: UNITY-20261008-011 together with
+  UNITY-20261008-014. -011 is the bridge id cut at the first dot
+  (`org.gnome.Terminal` gives "org"); -014 is the missing tests and the
+  small points in the bridge. Also open: UNITY-20261008-013, hud-service
+  /tmp mapping and RSS growth; compare on +unity3 first.
+- Earlier on 2026-10-08: UNITY-20260929-002 closed (the empty HUD is
+  LibreOffice's first-start dialog or a query during the menu import; no
+  hud defect).
+- Nothing running: no tmux, sbuild or loop of B's.
+
 **2026-10-03: STOPPED (May stops all agents, through C).**
 - UNITY-20260929-002 (hud: HUD empty although the window is known) is
   INVESTIGATING, branch `b/UNITY-20260929-002` @ f18f35c, worktree
@@ -419,6 +440,12 @@ Proposed next, none started - May decides: whether to report the two
 gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
+
+**At `Clean-2` since 2026-10-08 11:33Z** (rolled back after the UNITY-20260929-001
+publication check; checked inside: no `~/.dirty`, no `~/b001`, no
+`unity-distro.sources`, hud 0ubuntu6, NTP synchronised). Restarts before
+measurements: a cold cycle (poweroff over ssh, then start_vm), not a reboot
+from inside the guest.
 
 **Rolled back to `Clean-2` again on 2026-09-28 ~14:55Z**, after
 UNITY-20260927-024 (unity-greeter, indicator-keyboard stock/+unity3, a test
