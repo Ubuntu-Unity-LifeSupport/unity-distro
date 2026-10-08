@@ -13,7 +13,7 @@
     "resolute": "15.04.1+21.10.20220802-0ubuntu6"
   },
   "in_archive": true,
-  "checked_at": "2026-10-08T02:31:48Z",
+  "checked_at": "2026-10-08T03:01:03Z",
   "mode": "full",
   "binaries": [
     {
@@ -60,7 +60,7 @@
     }
   ],
   "snapshot": {
-    "name": "unity-resolute-20261002-003",
+    "name": "unity-resolute-20261002-003-r2",
     "packages": 416,
     "list_sha256": "7fa11a8ad4bbf4c363aabade744748987a3d7fa1202487ac6941d822bb8ca55b",
     "model_entries": 375,
@@ -71,5 +71,5 @@
       "Codename": "resolute"
     }
   },
-  "view_sha256": "dc69fc829634a084d6af0dd8befcb5451018f780e994792eee7e951d0f26f796"
+  "view_sha256": "f6d40bccc30b6d54543289818eaaaf3cddcaa7be3c5af9871e64f63a524c5f85"
 }

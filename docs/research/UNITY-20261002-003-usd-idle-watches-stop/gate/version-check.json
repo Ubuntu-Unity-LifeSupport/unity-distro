@@ -4,7 +4,7 @@
   "tool_version": 1,
   "mode": "full",
   "source_package": "unity-settings-daemon",
-  "measured_at": "2026-10-08T02:31:48Z",
+  "measured_at": "2026-10-08T03:01:03Z",
   "sources_file": "/home/claude/work/a/unity-distro-003/docs/apt/target.sources",
   "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
   "preferences": {
@@ -12,7 +12,7 @@
     "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
   },
   "snapshot": {
-    "name": "unity-resolute-20261002-003",
+    "name": "unity-resolute-20261002-003-r2",
     "packages": 416,
     "list_sha256": "7fa11a8ad4bbf4c363aabade744748987a3d7fa1202487ac6941d822bb8ca55b",
     "model_entries": 375,
@@ -26,43 +26,43 @@
   "releases": [
     {
       "file": "<model>_Release",
-      "sha256": "1f500f5d994ed70953f9a9cc5f65a2a6c8a5a8413effc252f695578f3f5b5f1e",
+      "sha256": "347f788c146954ac37ae77cb726e8dc86f4fb5a9756a7e7e0fc1f0d70d50801a",
       "model": true,
       "Codename": "resolute",
-      "Date": "Thu, 08 Oct 2026 02:31:48 +0000",
+      "Date": "Thu, 08 Oct 2026 03:01:04 +0000",
       "Label": ". resolute",
       "Origin": ". resolute",
       "Suite": "resolute"
     },
     {
       "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
-      "sha256": "4cfcf09e7e967a69c76fea49858469a9c48642fed873d59256782a37a7e156bc",
+      "sha256": "85fa521de522f0118fe75c400a958340e0a9afd821c2ac83a9336a7a78b3b3ea",
       "model": false,
       "Origin": "Ubuntu",
       "Label": "Ubuntu",
       "Suite": "resolute-backports",
       "Codename": "resolute",
-      "Date": "Tue, 06 Oct 2026 16:59:24 UTC"
+      "Date": "Wed, 07 Oct 2026 21:11:53 UTC"
     },
     {
       "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
-      "sha256": "f5ebd1bfd369fcb00420eebfea2e20faa588d0fe1069411875165c97b4d23338",
+      "sha256": "610d9dfbaa5f217508e82465e18fa056270a5689ac69c03148bf580209ec14d2",
       "model": false,
       "Origin": "Ubuntu",
       "Label": "Ubuntu",
       "Suite": "resolute-proposed",
       "Codename": "resolute",
-      "Date": "Wed, 07 Oct 2026 18:03:30 UTC"
+      "Date": "Wed, 07 Oct 2026 21:11:27 UTC"
     },
     {
       "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
-      "sha256": "709918b151aaaac9a0dc99ba157b9cf7fbbf8dcfd52f8acf36ccde0e020374b8",
+      "sha256": "957accd93536bdddcf78a7e59dcda5e8f28296f930411869dd2a799700575406",
       "model": false,
       "Origin": "Ubuntu",
       "Label": "Ubuntu",
       "Suite": "resolute-updates",
       "Codename": "resolute",
-      "Date": "Wed, 07 Oct 2026 18:02:46 UTC"
+      "Date": "Wed, 07 Oct 2026 21:10:50 UTC"
     },
     {
       "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",

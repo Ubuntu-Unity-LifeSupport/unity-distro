@@ -22,11 +22,13 @@
       "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity11_all.deb": "5447a543cbc05e9bcbd336780bc9d87a1a902418f25bc9088c89b5e611b01e33"
     }
   },
-  "tested_build": "this_build",
+  "tested_build": "buildinfo_identical",
   "evidence": {
     "evidence_card": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/README.md",
     "verification_record": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/README.md",
     "patch_record": "docs/PATCHES.md",
     "decision_record": "docs/DECISIONS.md"
-  }
+  },
+  "tested_manifest": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/build/UNITY-20261002-003-unity-settings-daemon-build-manifest.json",
+  "tested_buildinfo": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/build/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity11_amd64.buildinfo"
 }

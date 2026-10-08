@@ -214,6 +214,18 @@ place for that day).
 The runs 03-05 used a changed environment (F2 installed, `gnome.is_vm=0`)
 to make the idle path reachable; they are recorded as such.
 
+## Build for the gate (2026-10-08)
+
+The +unity11 build that was tested (`build/`) was made in another worktree,
+and its manifest names that checkout; `create_release_gate.py` accepts only
+a package checkout under this repository's `packages/`. So the gate uses a
+rebuild in this task's worktree (`build-gate/`): the same commit `89648a3`,
+the same pinned chroot 20260929T201245Z with `--allow-old-chroot` (C,
+2026-10-08: reproduction of the tested build; a new tarball would give other
+bytes), and it must be byte-identical to `build/` (the debs in the snapshot
+and on target come from `build/`). Lesson (C): build for the gate in the
+worktree of the task that carries the publication.
+
 ## Evidence card
 
 ```yaml
