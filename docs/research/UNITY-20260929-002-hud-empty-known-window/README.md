@@ -255,9 +255,41 @@ neither is a hud defect:
    arrives (round 3: 8 of 8 boots without the dialog, by +2 to +5 s), as
    the code says (`QueryImpl::refresh` on the token's `changed`). A HUD
    opened in those seconds shows no results at first and then shows them,
-   without being reopened. Why the import sometimes takes about 15 s
-   (LibreOffice answering slowly on its first start, or the two clients
-   walking at once) was not measured.
+   without being reopened.
+
+Counting note: "5 results with Файл" is the live Dee model of
+`CreateQuery`; the one-shot legacy `StartQuery "Сохранить" 5` counts 4
+occurrences of "(Файл)" for the same window (`logs/04`, `lo7.sh`).
+
+## Verification: PASS (REVIEWED)
+
+An independent Verifier set target2 up again itself (Clean-2, our
+repository by `full-upgrade`, `xdotool`, a reboot; hud `+unity3`, unity
+`+unity12`, gtk-nocsd `4.8-1+unity3`, LibreOffice 26.2.6.3) and used its
+own scripts:
+
+1. **Tip of the Day:** 3 trials. With "Совет дня: N/224" focused the HUD
+   gave 0 at every query (8, 7 and 4 queries over up to 16 s); after OK
+   (vbox Enter, `xdotool` Return) 4 at every query.
+2. **A query in the first seconds:** 5 of 5 (3 warm starts, 2 after a
+   cold boot): the `CreateQuery` results were empty until +1 to +3 s and
+   had the File rows from +1.7 to +3.9 s on, without reopening or
+   updating the query; the document window kept the focus.
+
+Remarks, applied: on a fresh profile the very first start shows
+LibreOffice's **Welcome dialog** ("Добро пожаловать в LibreOffice.")
+instead of the tip; it has the focus and the HUD gives 0 until it is
+closed, then 4. So cause 1 is "a LibreOffice first-start dialog (Welcome
+on a new profile, Tip of the Day once a day) has the focus". The two
+counts (4 and 5) are labelled above. A single empty reading can also fall
+in the moment between two windows. The Verifier saw no slow import (all
+fills within 1.7-3.9 s).
+
+**Open observation (no task ID unless it recurs):** the menu import took
+about 15 s instead of about 5 once (round 2 boot 6), and round 1 boot 4
+was still empty about 13 s after the window appeared. Why (LibreOffice
+answering slowly on its first start, the two clients walking the menu at
+once, or something else) was not measured.
 
 Proposed terminal state: NOT_APPLICABLE (correct behaviour, measured);
 the decision is the coordinator's. No code is proposed. The window-number
