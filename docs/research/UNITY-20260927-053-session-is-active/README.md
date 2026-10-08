@@ -83,12 +83,17 @@ record: `gate/target-test.txt`.
 
 ## Release note
 
-With this version the following work on real hardware for the first time
-in the Unity session:
+With this version the following are expected to work on real hardware (not
+observable on the test virtual machine):
 
 - unity-settings-daemon's power idle handling: dim, blank, and suspend on
   battery (the schema defaults; no suspend on AC);
-- the screen blanks when the session locks;
+- the screen blanks when the session locks (with light-locker the session
+  is inactive under the lock; to be confirmed on real hardware).
+
+Measured on the test virtual machine, working for the first time in the
+Unity session:
+
 - automount of inserted media;
 - autorun, if the user has enabled it (off by default).
 
