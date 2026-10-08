@@ -85,7 +85,7 @@ UNITY-20260927-034. Files in `logs/`.
 | Papers, started with a PDF | the document menu (Print, Fullscreen, Presentation, ...) | the same items |
 | Console (kgx) | its own menu: New Window, Show All Tabs, Fullscreen, Preferences, Shortcuts, About | the same 6 items |
 | Pinta 3.1.2, 3 starts | its menubar, 6 top menus (File, Edit, Layers, Add-ins, Window, Help), 39 items, 0 MISSING, 3/3 | the same, 3/3; with `GROUP=2` the same 6 top menus |
-| GTK3, 10 apps with a menu button | 0 of 10 export a menu (`g3-S-on`) | 9 of 10 (`g3-U-on`); variable off 0 of 10; gnome-taquin exports an empty menubar |
+| GTK3, 10 apps with a menu button | 0 of 10 export a menu (`g3-S-on`) | 9 of 10 (`g3-U-on`); variable off 0 of 10; nothing for gnome-taquin (see the notes) |
 | GTK3 shape | - | default: one holder in 9 of 9; `GROUP=2`: flat, 3 to 7 entries |
 | the types bug (`typesorder`, gdb) | reproduces: with the early GObject `GTKNoCSDGTKWindow=0` at exit; control fetches the type | reproduces, the same counts (`typesorder.txt`) |
 
@@ -106,16 +106,70 @@ Notes on the table:
   (libhandy), gnome-taquin, gnome-tetravex, four-in-a-row, five-or-more,
   hitori, gnome-klotski. Their session also loads `appmenu-gtk-module`
   through `GTK_MODULES`; the audit reads only the `_GTK_*` properties and
-  the `org.gtk.Menus` export.
-- **Crash reports** appeared during the two debug runs for showtime (a
-  Python `TypeError` in its MPRIS code, as in UNITY-20260927-034) and
-  Apostrophe (a pickling error in its own `multiprocessing` use). Both are
-  in the applications' Python code.
+  the `org.gtk.Menus` export. The 9 apps U exports for use their own menu
+  path (e.g. gnome-tetravex `/org/gnome/Tetravex/menus/menubar`, 24 items).
+  For gnome-taquin U exports nothing; the window's
+  `_GTK_MENUBAR_OBJECT_PATH` is `/org/appmenu/gtk/window/0`, which belongs
+  to appmenu-gtk-module, and `org.gtk.Menus Start` on it returns no items.
+  Under S all 10 windows carry that same empty appmenu-gtk-module menubar
+  (found by the Verifier).
+
+## Crash reports during the runs
+
+The runs left crash reports for showtime and Apostrophe (six apport
+dialogs on the display afterwards). Both are Python exceptions caught by
+apport's hook, not core dumps, and apport keeps one report per executable
+and overwrites it, so the files alone do not say which run produced them.
+`crash081.sh` (`logs/crashes.txt`) starts each app as the audit does
+(session environment, `audit.py` after 7 s, then SIGTERM) and looks for a
+traceback in the app's own stderr:
+
+| condition | showtime: traceback | Apostrophe: traceback |
+|---|---|---|
+| no preload (`LD_PRELOAD` empty) | 0/3, then 2/5 | 2/3 |
+| the packaged library (4.8-1+unity3) | 0/3, then 5/5 | 2/3 |
+| S, variable off | 2/5 | - |
+| S, `GTK_NOCSD_GLOBAL_MENU=1` | 3/3, then 5/5 | 2/3 |
+| U, variable off | 1/3, then 4/5 | 3/3 |
+| U, `GTK_NOCSD_MENU=1` | 3/3, then 5/5 | 2/3 |
+
+- showtime: `TypeError: Argument 0 does not allow None as a value` in
+  `showtime/mpris.py:209` (`_on_method_call`, building the reply variant
+  of an MPRIS call), as in UNITY-20260927-034.
+- Apostrophe: `TypeError: cannot pickle 'ApostropheTextView' object` (its
+  own `multiprocessing` use).
+- Both occur without any preload, so they are the applications' own
+  errors; neither build causes them, and S and U show them alike. How
+  often showtime hits it varies between runs (0/3 and 2/5 without a
+  preload).
 
 target2 after the runs: the packaged `libgtk-nocsd.so.0` is back
 (`dpkg -V libgtk-nocsd0` clean); the applications, dev packages, gdb,
 dotnet-sdk-10.0 and the Pinta build stay installed; not rolled back
-(no VirtualBox control).
+(no VirtualBox control). The audit's `pkill -x` did not catch Fragments
+(it runs as `ld-linux-x86-64`, the library started as the loader), so one
+Fragments with its `transmission-daemon` per variant and Apostrophe's
+`multiprocessing` helpers were left running; they were killed by PID
+afterwards. The system `transmission-daemon` service (installed with
+Fragments) keeps running.
+
+## Verification: PASS (REVIEWED)
+
+An independent Verifier re-measured four figures on target2 (04:39-04:52Z):
+
+1. U with only `GTK_NOCSD_GLOBAL_MENU=1`: 0 of 43 (the full audit); the
+   positive control with `GTK_NOCSD_MENU=1` exported menus for Text Editor,
+   Nautilus and Calculator.
+2. GTK3: U 9 of 10, S 0 of 10; gnome-taquin as in the notes above.
+3. Mnemonic underscores on three apps: S 27 labels, U 0; explained by the
+   `pango_parse_markup(..., '_', ...)` call at GTK-NoCSD.c:3927-3938.
+4. typesorder on U: early `GTKNoCSDGTKWindow=0`, control the GtkWindow
+   type, as in `logs/typesorder.txt` (the breakpoint hit counts differ by a
+   few calls, the values at exit match).
+
+Remarks, applied: the gnome-taquin wording (U exports nothing; the empty
+menubar is appmenu-gtk-module's); the leftover processes above. The crash
+attribution was added after the round, at the coordinator's request.
 
 ## Alt mnemonics on the Unity panel: not tested
 
