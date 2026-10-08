@@ -137,7 +137,64 @@ libreoffice-writer, and the bridge sent nothing more. Afterwards:
   same id (:295, :334). So for LibreOffice the "most used" list shown when
   the HUD opens does not learn across starts.
 
+**How often** (logs/03, `freq.sh`: Writer or Calc started again and again
+in one session, the previous instance killed; the window stack's id
+against bamf's application and whether bamf moved the window):
+
+| | window number as id | libreoffice-writer/-calc | bamf moved the window |
+|---|---|---|---|
+| Writer, 10 starts | 9 | 1 (start 1) | 9 (all but start 1) |
+| Calc, 3 starts | 2 | 1 (start 3) | 3 |
+
+Calc start 3 was moved and still got the right id: the bridge's
+`Parents()` call was answered after the move. So the result is a race
+between the bridge's two calls and bamf's re-match, which the bridge loses
+most of the time; when bamf does not move the window (Writer start 1) the
+id is right from the start.
+
 Reproduction: PASS.
+
+## Design (for the Design Challenger)
+
+Invariant: **the bridge's application id for a window is the id of the
+application bamf has the window under, also after bamf moves it.**
+
+Facts the design rests on:
+
+- bamf announces the move only with the applications' `ChildRemoved` /
+  `ChildAdded` (and `WindowRemoved` / `WindowAdded`); the window's path
+  stays the same.
+- hud-service keys windows by application id; `WindowDestroyed(id, old)`
+  removes the window and drops an application left empty, and if it was
+  the focused application, sets the focus to none
+  (`ApplicationListImpl::removeWindow`); `WindowCreated(id, new)` creates
+  the window again (its collectors re-import the menu).
+
+Candidates:
+
+- **(A) Follow the children.** One QtDBus match for `ChildAdded` on
+  `org.ayatana.bamf.view` from bamf on any path (the sender path is the
+  application). For a known window path whose stored id differs from the
+  new application's id (desktop file base name, or the window number if
+  it has none): store the new id, emit `WindowDestroyed(xid, old)`,
+  `WindowCreated(xid, new)`, and, if the window is bamf's active window,
+  `FocusedWindowChanged(xid, new, MAIN)`. `GetWindowStack` and later
+  `ActiveWindowChanged` then use the new id. This is Unity's own pattern
+  (BamfApplicationManager follows child-added).
+- **(B) Re-resolve lazily** (indicator-appmenu's pattern) in
+  `GetWindowStack`/`ActiveWindowChanged`, and emit the same three signals
+  when the answer differs. Simpler to wire, but the move is only noticed on
+  the next focus change or stack query; hud-service's keyed state stays
+  wrong until then.
+- **(C) Wait before announcing:** hold `WindowCreated` of a window with a
+  window-number id for some hundred milliseconds in case bamf moves it.
+  Rejected: a timing guess, and still wrong when the move comes later.
+
+Proposed: (A). To measure: the order of hud-service's own state after the
+three signals (the HUD keeps answering for the window; the usage history
+goes under libreoffice-writer); no extra windows or applications left
+behind; other applications unchanged (a window that bamf never moves gets
+no signal); bamf restarts (the existing name-owner handling).
 
 ## Plan (before the Design Challenger)
 
