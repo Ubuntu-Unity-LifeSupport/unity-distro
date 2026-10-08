@@ -7,7 +7,7 @@ task_id: UNITY-20261008-013
 package: libcolumbus (the symptom is in hud-service; the correct layer is libcolumbus)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: TARGET_VERIFIED (2026-10-09), independent verification next
+status: VERIFIED (2026-10-09), publication next
 observed: >
   hud-service holds more and more deleted 128 KiB "/tmp/#<inode>" shared
   mappings (files opened with O_TMPFILE) over a session, and its RSS grows
@@ -389,3 +389,75 @@ control, stopped there.
   application name and executable name), as round 1 predicted.
 - **Both processes** map the installed `libcolumbus.so.1.1.0`, with no
   `(deleted)` library mapping after the cold cycle.
+
+## Verification (independent Verifier, 2026-10-09): PASS
+
+The Verifier did not write the fix. Its checks (review status INDEPENDENTLY_REPRODUCED):
+
+- **The code** (`9a24f85..3da4d89`) matches the round-3 design:
+  - every mapping is unmapped exactly once, and `MAP_FAILED` is never kept;
+  - nothing is read through `p->h` after an unmap;
+  - the guard runs before `ftruncate`;
+  - the constructor's `unique_ptr` releases the file and mapping on a throw;
+  - no header change: the exported and undefined symbols, `DT_NEEDED` and
+    SONAME are all equal to the archive's.
+- **Fault injection with ASan** (its own harness, `--wrap` on `mmap`,
+  `ftruncate` and `tmpfile`):
+  - every failure in the constructor and during growth throws cleanly;
+  - the Trie keeps working afterwards;
+  - mappings and fds return to the baseline, and ASan reports nothing;
+  - the archive `Trie.cc` in the same harness segfaults after a failed
+    growth: the dangling map this change removes.
+- **Build files** (C's question): apart from the one `cmake_minimum_required`
+  line, no build file changed. The task branch differs from `unity/resolute`
+  in `CMakeLists.txt` (that line), `debian/changelog`, `src/Trie.cc` and the
+  two tests. `unity/resolute` equals a fresh `dpkg-source -x` of the archive
+  `.dsc`.
+- **Tests:**
+  - they cannot pass vacuously: there is no NDEBUG, the open of
+    `/proc/self/maps` is asserted, and every count is relative to a
+    baseline;
+  - it reproduced `TrieTest` itself;
+  - a mutant without the unmap of the old map in `expand()` fails
+    `testNoMappingLeftAfterExpand`.
+- **Provenance:**
+  - the manifest's commit and tree equal the git tree, and all artifact
+    sha256s match;
+  - the `.dsc` source equals `git archive 3da4d89`;
+  - `payload.sh` rerun gives the same result.
+- **target2:**
+  - the installed `.so` is the +unity1 build's;
+  - both processes map the installed library;
+  - `liveness.py` gives +3 while a query is open and back to the baseline
+    after it closes;
+  - queries keep the count and the RSS flat;
+  - `lens.sh 3` keeps 5, and the inodes of the searcher's Tries change on
+    each re-index, which proves the old ones were unmapped;
+  - Writer HUD queries, misspelt ones included, give sensible fuzzy
+    results.
+- **The card's numbers** match the logs.
+
+Remarks:
+
+- **A hud behaviour older than this task:** a legacy `StartQuery` whose
+  sender never calls `CloseQuery` keeps its query in `m_legacyQueries` for
+  the life of hud-service (`HudServiceImpl.cpp`), so its Matcher's three
+  Tries stay mapped. The 6 deleted mappings the Verifier found at its start
+  were the two legacy queries of `repro.sh icon`, which ran after logs/06.
+  This is not a libcolumbus leak, and a follow-up candidate for C.
+- **Not run:**
+  - the 2 GiB "Trie too large" path (review only);
+  - HUD results compared with the archive library on the target (that
+    would need a downgrade).
+- **Accepted by the design:** a failed `munmap` of the old map in `expand()`
+  is logged and that map stays mapped.
+
+## Known gaps
+
+| gap | where it is covered |
+|---|---|
+| A legacy `StartQuery` without `CloseQuery` keeps its query and its three Tries for the life of hud-service (hud, not libcolumbus). | follow-up candidate (ID from C) |
+| The 2 GiB guard is not exercised by a test. | review only; far beyond any real Trie (128 KiB in hud) |
+| HUD results with the archive library and with +unity1 are not compared on the target. | the fix touches only the destruction and growth of a Trie; the Verifier's Writer queries and the Dash search give the expected results |
+| An Ubuntu upload of `0ubuntu39.1` or `0ubuntu40` would replace +unity1 without the fix. | the usual risk of a carried package; resolute has libcolumbus only in its release pocket today |
+| A failed `munmap` of the old map during growth leaves that map. | logged; by design |
