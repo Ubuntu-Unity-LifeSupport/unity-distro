@@ -1,0 +1,3 @@
+1. repo create started under our shared lock; after 3 s: running=True, db files unchanged=True
+   released at 3.0 s; the same call finished 6.2 s later with rc 0; repos now ['first', 'second']
+2. while serve runs (idle): our shared lock is TAKEN - serve holds no lock between requests
