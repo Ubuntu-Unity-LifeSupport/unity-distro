@@ -26,7 +26,8 @@ NEXT = {
     "READY_FOR_FIX": {"IMPLEMENTING", "BLOCKED", "DEFERRED"},
     "IMPLEMENTING": {"VERIFYING", "BLOCKED"},
     "VERIFYING": {"REVIEW", "READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED", "DONE"},
-    "REVIEW": {"READY_TO_PUBLISH", "IMPLEMENTING", "BLOCKED", "DONE"},
+    # REVIEW -> PUBLISHED only with released_in (require_evidence; UNITY-20261008-019)
+    "REVIEW": {"READY_TO_PUBLISH", "PUBLISHED", "IMPLEMENTING", "BLOCKED", "DONE"},
     "READY_TO_PUBLISH": {"PUBLISHED", "BLOCKED"},
     "PUBLISHED": {"DONE", "BLOCKED"},
     "BLOCKED": {"CLAIMED", "INVESTIGATING", "READY_FOR_FIX", "IMPLEMENTING", "VERIFYING", "REVIEW", "READY_TO_PUBLISH", "PUBLISHED"},
@@ -38,7 +39,7 @@ NEXT = {
 # applies in this order.
 KINDS = ("package", "tool", "operation", "documentation")
 # Evidence that only a package task carries: any of these forces "package".
-PACKAGE_MARKERS = ("build_manifest", "release_gate", "candidate_version", "version_safety")
+PACKAGE_MARKERS = ("build_manifest", "release_gate", "candidate_version", "version_safety", "released_in")
 # From READY_FOR_FIX on, every transition needs a resolved kind.
 KIND_STATES = {"READY_FOR_FIX", "IMPLEMENTING", "VERIFYING", "REVIEW", "READY_TO_PUBLISH", "PUBLISHED", "DONE"}
 
@@ -255,7 +256,7 @@ def read_publish_record(path, expected_sha256=None):
             raise ValueError(f"publish record {path} is writable; the publisher writes it read-only")
         raw = stream.read()
     if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
-        raise ValueError(f"publish record {path} does not have the sha256 named in published_by")
+        raise ValueError(f"publish record {path} does not have the sha256 named in published_by or released_in")
     try:
         return json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -375,6 +376,126 @@ def check_own_build(data, task_id, record, repo):
         refuse(error)
 
 
+# UNITY-20261008-019: a package task whose change is part of another task's
+# published build (no build of its own, unlike published_by). Its change
+# commits must be in the published source commit's history and in no earlier
+# publication of the package; the published build itself is proved by the
+# releasing task's record, gate and manifest.
+_HEX40 = re.compile(r"^[0-9a-f]{40}$")
+_RECORD_NAME = re.compile(r"^UNITY-\d{8}-\d{3}\.json$")
+RELEASED_IN_KEYS = {"task_id", "record_sha256", "change_commits"}
+
+
+def released_in_record(data, task_id, rows, records_dir):
+    """(record, releasing task) named by released_in, after the checks that
+    need no repository: shape, the releasing task's board state, the
+    write-once record, the task's own review and its package version."""
+    released = data.get("released_in")
+    if (not isinstance(released, dict) or not RELEASED_IN_KEYS <= set(released)
+            or set(released) - RELEASED_IN_KEYS - {"source_repo"}):
+        raise ValueError("released_in must be {task_id, record_sha256, change_commits[, source_repo]}")
+    other, digest, commits = released["task_id"], released["record_sha256"], released["change_commits"]
+    if not isinstance(other, str) or not _TASK_ID.match(other):
+        raise ValueError("released_in.task_id must be a full UNITY-YYYYMMDD-NNN task id")
+    if other == task_id:
+        raise ValueError("released_in must name another task")
+    if not isinstance(digest, str) or not _HEX64.match(digest):
+        raise ValueError("released_in.record_sha256 must be 64 hex characters")
+    if (not isinstance(commits, list) or not commits
+            or not all(isinstance(c, str) and _HEX40.match(c) for c in commits) or len(set(commits)) != len(commits)):
+        raise ValueError("released_in.change_commits must be a non-empty list of distinct full 40-hex commit ids")
+    repo = released.get("source_repo")
+    if repo is not None and (not isinstance(repo, str) or not Path(repo).is_absolute()):
+        raise ValueError("released_in.source_repo must be an absolute path")
+    if rows is None or other not in rows:
+        raise ValueError(f"the releasing task {other} is not on the task board")
+    other_state = rows[other][1][4]
+    if other_state not in ("PUBLISHED", "DONE"):
+        raise ValueError(f"the releasing task {other} is {other_state}, not PUBLISHED or DONE")
+    record = read_publish_record(Path(records_dir) / f"{other}.json", digest)
+    if not isinstance(record, dict) or record.get("task_id") != other:
+        raise ValueError(f"publish record of {other} does not belong to {other}")
+    # The checks REVIEW makes, again: BLOCKED hides the state a task came from.
+    if not data.get("verification_record") or data.get("verification_result") != "PASS" or \
+            data.get("review_status") not in {"REVIEWED", "INDEPENDENTLY_REPRODUCED"}:
+        raise ValueError("released_in requires this task's own verification_record, verification_result PASS "
+                         "and review_status")
+    if data.get("independent_reproduction_required") is True and data.get("review_status") != "INDEPENDENTLY_REPRODUCED":
+        raise ValueError("this task requires independent before/after reproduction")
+    for key in ("package", "candidate_version"):
+        if data.get(key) != record.get(key):
+            raise ValueError(f"released_in: the task's {key} differs from the publish record of {other}")
+    return record, other
+
+
+def git_out(repo, *args):
+    result = subprocess.run(["git", "-C", str(repo)] + list(args), check=False, capture_output=True, text=True)
+    return result.returncode, result.stdout.strip()
+
+
+def git_commit(repo, ref, what):
+    code, out = git_out(repo, "rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}")
+    if code or not _HEX40.match(out):
+        raise ValueError(f"released_in: {what} {ref} is not a commit in {repo}")
+    return out
+
+
+def git_is_ancestor(repo, ancestor, descendant):
+    code, _ = git_out(repo, "merge-base", "--is-ancestor", ancestor, descendant)
+    if code not in (0, 1):
+        raise ValueError(f"released_in: git merge-base --is-ancestor {ancestor} {descendant} failed in {repo}")
+    return code == 0
+
+
+def check_released_commits(data, record, gate, records_dir):
+    """The task's change commits are in the published source and in no earlier
+    publication of the same package (fail closed)."""
+    released = data["released_in"]
+    repo = released.get("source_repo") or gate.get("source_repo")
+    if not isinstance(repo, str) or not Path(repo).is_dir():
+        raise ValueError(f"released_in: the source repository {repo!r} is not available")
+    shipped = git_commit(repo, record.get("source_commit"), "the published source commit")
+    code, tree = git_out(repo, "rev-parse", f"{shipped}^{{tree}}")
+    if code or not tree or tree != gate.get("source_tree_hash"):
+        raise ValueError("released_in: the repository's tree of the published source commit is not the gate's "
+                         "source_tree_hash")
+    try:
+        this_time = datetime.fromisoformat(str(record.get("published_at")).replace("Z", "+00:00"))
+    except ValueError:
+        raise ValueError("released_in: the publish record has no valid published_at")
+    earlier = []
+    for path in sorted(Path(records_dir).iterdir()):
+        if not _RECORD_NAME.match(path.name):
+            continue
+        other = read_publish_record(path)
+        if not isinstance(other, dict):
+            raise ValueError(f"publish record {path} is not a JSON object")
+        if other.get("task_id") == record.get("task_id") or other.get("package") != record.get("package"):
+            continue
+        try:
+            when = datetime.fromisoformat(str(other.get("published_at")).replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError(f"publish record {path} has no valid published_at")
+        if when.tzinfo is None or this_time.tzinfo is None:
+            raise ValueError(f"publish record {path} or the releasing record has a published_at without a timezone")
+        if when < this_time:
+            earlier.append(git_commit(repo, other.get("source_commit"), f"the source commit of {path.name}"))
+    for commit in released["change_commits"]:
+        full = git_commit(repo, commit, "change commit")
+        code, parents = git_out(repo, "rev-list", "--parents", "-n", "1", full)
+        if code or len(parents.split()) != 2:
+            raise ValueError(f"released_in: change commit {commit} must have exactly one parent")
+        code, files = git_out(repo, "diff-tree", "--no-commit-id", "--name-only", "-r", full)
+        if code or not files:
+            raise ValueError(f"released_in: change commit {commit} changes no file")
+        if not git_is_ancestor(repo, full, shipped):
+            raise ValueError(f"released_in: change commit {commit} is not in the published source commit {shipped}")
+        for before in earlier:
+            if git_is_ancestor(repo, full, before):
+                raise ValueError(f"released_in: change commit {commit} was already in an earlier publication "
+                                 f"of {record.get('package')} ({before})")
+
+
 def require_authorization(data):
     """An operation acts on shared infrastructure: who approved it, where
     that approval is recorded, and what it covers."""
@@ -386,7 +507,7 @@ def require_authorization(data):
     non_placeholder(auth, "reference", "scope")
 
 
-def require_evidence(target, data, task_id, kind=None, state=None):
+def require_evidence(target, data, task_id, kind=None, state=None, rows=None):
     if kind is None:
         kind = resolve_kind(data)
     if target in ("READY_TO_PUBLISH", "PUBLISHED") and kind != "package":
@@ -466,8 +587,17 @@ def require_evidence(target, data, task_id, kind=None, state=None):
     if target == "PUBLISHED":
         records_dir = Path.home() / "coordinator/publish-records"
         repo = Path(__file__).resolve().parents[1]
-        covered_by = None
-        if "published_by" in data:
+        covered_by = released_by = None
+        if "released_in" in data:
+            if "published_by" in data:
+                raise ValueError("released_in and published_by exclude each other")
+            if state == "READY_TO_PUBLISH":
+                raise ValueError("a task with its own release gate is published by its own record, not released_in")
+            record, released_by = released_in_record(data, task_id, rows, records_dir)
+        elif state == "REVIEW":
+            raise ValueError("REVIEW -> PUBLISHED needs released_in (the task's change shipped in another task's "
+                             "build and publication)")
+        elif "published_by" in data:
             record, covered_by = covering_record(data, task_id, records_dir)
             check_own_build(data, task_id, record, repo)
         else:
@@ -479,10 +609,11 @@ def require_evidence(target, data, task_id, kind=None, state=None):
         if not isinstance(record, dict) or record.get("schema") != 1:
             raise ValueError("publish record has unsupported schema")
         gate_ref = data.get("release_gate")
-        if covered_by:
+        if covered_by or released_by:
             # The gate is the publishing task's, named by its record.
             if gate_ref and gate_ref != record.get("gate_file"):
-                raise ValueError("release_gate and published_by name different gates")
+                raise ValueError("release_gate and the publish record of " + (covered_by or released_by)
+                                 + " name different gates")
             gate_ref = record.get("gate_file")
         if not isinstance(gate_ref, str):
             raise ValueError("PUBLISHED evidence must point to the release_gate")
@@ -508,10 +639,23 @@ def require_evidence(target, data, task_id, kind=None, state=None):
             # text; check_own_build tied its build to the published bytes.
             if covered_by and key in ("task_id", "source_commit"):
                 continue
+            # A released task has its own task id; its source_commit, when it
+            # names one, is the published one.
+            if released_by and (key == "task_id" or (key == "source_commit" and not data.get(key))):
+                continue
             if data.get(key) != gate.get(key):
                 raise ValueError(f"publish record and task evidence must match gate field {key}")
         if covered_by and gate.get("task_id") != covered_by:
             raise ValueError("the release gate named by the publish record belongs to another task")
+        if released_by:
+            if gate.get("task_id") != released_by:
+                raise ValueError("the release gate named by the publish record belongs to another task")
+            if gate.get("verification_result") != "PASS":
+                raise ValueError(f"the release gate of {released_by} has no Verifier PASS")
+            gate_manifest = (gate.get("build_manifest") or {}).get("file")
+            if data.get("build_manifest") and data.get("build_manifest") != gate_manifest:
+                raise ValueError(f"build_manifest and the release gate of {released_by} name different manifests")
+            check_released_commits(data, record, gate, records_dir)
         publish = gate.get("publish")
         if not isinstance(publish, dict):
             raise ValueError("release gate has no publish configuration")
@@ -698,7 +842,7 @@ def main():
                         return fail(f"{target} requires task_kind ({', '.join(KINDS)}) or package_change=true in the evidence")
                     if kind is not None and data.get("package_change") is not None and data.get("package_change") != (kind == "package"):
                         return fail(f"package_change contradicts the task's kind {kind}")
-                    require_evidence(target, data, args.task_id, kind, state)
+                    require_evidence(target, data, args.task_id, kind, state, rows)
                     if locked is None and kind is not None and target in KIND_STATES:
                         write_kind_lock(lock, kind)
                     cols[4], cols[7] = target, stamp()
