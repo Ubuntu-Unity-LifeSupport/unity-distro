@@ -3,7 +3,7 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-10-08 03:25Z) - waiting for vbox
+## Now (2026-10-08 06:30Z) - waiting for vbox
 
 Done today:
 - **UNITY-20261002-003** (u-s-d power: idle watches end in stop()) and
@@ -11,6 +11,22 @@ Done today:
   u-s-d +unity11 published 2026-10-08 03:05Z (snapshot
   `unity-resolute-20261002-003-r2`), target verified over ssh, merged by the
   coordinator, DONE.
+- Tool and docs tasks while vbox is down, each merged by the coordinator
+  and DONE:
+  - **UNITY-20261002-001**: the `test_tested_with` fixture no longer
+    collides within one second.
+  - **UNITY-20260929-009**: section 6 publication sequence with
+    `[tool]`/`[process]` rules.
+  - **UNITY-20261008-002**: the publisher checks every binary's sha256 in
+    the gated snapshot.
+  - **UNITY-20261008-003**: `published_by` compares bytes or buildinfo
+    identity, and the gate and publisher require a committed `.buildinfo`.
+  - **UNITY-20261008-004**: canonical `scripts/backup_aptly_db.py`. Its one
+    live run left the backup
+    `~/backups/UNITY-20261008-004-20261008T050534Z`, kept as a rollback
+    point.
+  - **UNITY-20261008-005**: the apt view identifies the snapshot by
+    content (`content_sha256`).
 
 Next, by C's plan: **UNITY-20261002-012** (SECURITY, details private), only
 once the vbox MCP server is back (its tests need snapshots and rollbacks).
