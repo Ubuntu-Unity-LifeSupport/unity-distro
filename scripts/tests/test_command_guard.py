@@ -201,6 +201,9 @@ ALLOWED = [
     # a commit next to a non-reader: the body is read as a script, for the aptly rules only
     "python3 scripts/safe_git.py stage --repo . a.txt && git commit -m \"$(cat <<'EOF'\nscripts: don't push --force; git add -A is blocked\nEOF\n)\"",
     "python3 scripts/publish_aptly.py --help",
+    # UNITY-20261008-004: the repository database backup (a directory name ending in /aptly is denied)
+    "python3 scripts/backup_aptly_db.py --task UNITY-20261008-004",
+    "python3 scripts/backup_aptly_db.py ~/backups/repo-20261008-004",
     "cat ~/.aptly.conf",
     "git commit -m 'scripts: publish_aptly.py records the switch'",
     "echo publish",

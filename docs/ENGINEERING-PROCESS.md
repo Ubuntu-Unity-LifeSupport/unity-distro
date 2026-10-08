@@ -601,13 +601,32 @@ caused it.
    - A build made in another task's worktree therefore cannot be gated.
      Rebuild in this worktree and tie the rebuild to the tested build with
      `tested_build` (rule B). **[tool]**
-3. **Database backup.** **[process]**
-   - With no aptly process running, copy the live `db/` to a new directory
-     under `~/backups/`.
-   - Compare the sha256 list of the copy with the live one.
-   - Record the backup path in the card.
-   - There is no canonical script yet. Tasks copy `tools/backup-db.py`
-     from the previous task.
+3. **Database backup.** Run `python3 scripts/backup_aptly_db.py --task
+   UNITY-YYYYMMDD-NNN` (UNITY-20261008-004). **[tool]**
+   - **What it does.** It copies the live `db/` to
+     `~/backups/<task>-<UTC stamp>/` (mode 0700), with a shared flock held
+     on `db/LOCK` for the copy and the comparison. Next to the copy it
+     writes `db.sha256` and `backup.json`.
+   - **When it refuses** with exit 2 and creates nothing:
+     - `db/` or `db/LOCK` is missing;
+     - the lock is busy;
+     - a repository tool process is running;
+     - the target exists or lies inside the live root.
+
+     If the target cannot be created, it also refuses with exit 2, but
+     the parent directories it made before the failure may remain.
+   - **Exit codes.** 0 means a complete copy equal to the live db. 1 means
+     the copy failed or differs; it is left in place for inspection, and
+     you must not go on. 2 is a refusal.
+   - **Scope.** The copy covers `db/` only. That is enough for steps 4 and
+     5, which change only `db/`. It is not a backup for `publish switch` or
+     `db cleanup`, which change `public/` and the pool.
+   - **Guard.** It denies a target path that ends in `/aptly`, so leave the
+     default name or choose another.
+   - **Record.** Put the backup path and its `list_sha256` in the card.
+     **[process]**
+   - The `tools/backup-db.py` copies in older task cards are records of
+     those tasks.
 4. **Repository and snapshot.** **[process]**
    - `aptly repo add unity-resolute <files>`: exactly the artifacts of the
      gated build's manifest. That is the `.dsc`, which carries its source
@@ -633,7 +652,7 @@ caused it.
 5. **Replacing unpublished records (`-r2`)** when the records in the
    repository are not the bytes to be published, for example after a
    rebuild:
-   1. take a fresh database backup;
+   1. take a fresh database backup (`scripts/backup_aptly_db.py`, step 3);
    2. `aptly repo remove` those records, with a dry run first;
    3. `aptly snapshot drop` the unpublished snapshot;
    4. `aptly repo add` the new build's artifacts, then check the pool
@@ -798,7 +817,8 @@ tmux new-session -d -s UNITY-YYYYMMDD-NNN-build \
   "python3 scripts/build_sbuild.py --task-id UNITY-YYYYMMDD-NNN \
   --source-repo packages/<package> --target-series resolute \
   --output-dir $D/build-gate"
-# slot from C and db backup, then (step 4):
+# slot from C, then the db backup (step 3; exit 0 required), then step 4:
+python3 scripts/backup_aptly_db.py --task UNITY-YYYYMMDD-NNN
 aptly repo add unity-resolute <the manifest's .dsc, .deb and .ddeb files>
 aptly snapshot create unity-resolute-YYYYMMDD-NNN from repo unity-resolute
 aptly snapshot diff <live snapshot> unity-resolute-YYYYMMDD-NNN > $D/gate/snapshot-diff.txt
