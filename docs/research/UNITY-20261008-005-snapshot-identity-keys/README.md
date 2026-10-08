@@ -39,7 +39,7 @@ None. Result: `NOT_FIXED`. Issue search: `NOT_FOUND` (internal tool).
 
 ## 4. Change
 
-1. **`apt_view.py`: new `snapshot_content(config, snapshot)`.** The full
+1. **`apt_view.py`: new `snapshot_identity_lines(config, snapshot)`.** The full
    view records its result as `snapshot.content_sha256`. It is the sha256
    of a sorted list with one entry per package of the snapshot:
    - **Binary packages** (`.deb`, `.ddeb`, `.udeb`): `<aptly key>|<SHA256>`.
@@ -122,8 +122,8 @@ rounds.
   recreated under the same name with a deb of other bytes. The names, and
   so `list_sha256`, stay equal, while the aptly keys differ.
 - **After the change, `runs/02-repro-branch.txt`.** In the same case
-  `snapshot_content`, the input of `content_sha256`, differs.
-- **New tests, `scripts/tests/test_apt_view_snapshot_content.py`.** There
+  `snapshot_identity_lines`, the input of `content_sha256`, differs.
+- **New tests, `scripts/tests/test_apt_view_snapshot_identity.py`.** There
   are 9 tests.
   - Unit tests with a fake `aptly()`:
     - the lines produced;
@@ -157,3 +157,46 @@ rounds.
   - a lowercase `name` query;
   - the lines left unsorted;
   - the gate check removed.
+
+## 8. Verification
+
+### Round 1 (`754d8d9`): FAIL
+
+The independent Verifier, a temporary subagent, confirmed the following:
+- **Reproduction.** On main the names stay equal; on the branch the
+  identity lines differ.
+- **Parsing.** Keys cannot hold `|`. Blocks split as aptly prints them.
+  The template reaches aptly as `{{"\n"}}`.
+- **"No results".** The second search is skipped only when there are no
+  sources. Any other failure is raised.
+- **A realistic scratch snapshot** holding a native source, a quilt
+  source, a deb, a ddeb, an arch-all deb and a binNMU gave 6 lines for 6
+  records, with a stable hash.
+- **Suite.** 352 passed.
+- **Mutations.** Six of its own were caught.
+- **Compatibility.** `taskctl` reads only the snapshot name in publish
+  records, and no task is in `READY_TO_PUBLISH`.
+
+One mutation survived the whole suite: `main()` hashing the names
+(`listed`) instead of the identity lines into `content_sha256`. The
+protection could have fallen back to names silently.
+
+Changes made after round 1:
+- **Fix.** `test_full_view_selects_snapshot_binaries` (`apt_view.py` run
+  for real against a scratch snapshot) now asserts three things:
+  - the view's `content_sha256` equals the sha256 of
+    `snapshot_identity_lines`;
+  - the number of lines equals the number of records;
+  - it differs from `list_sha256`.
+
+  `runs/04-mutations.txt` now includes "view hashes the names (Verifier
+  M5)", and this test catches it.
+- **Rename.** At the Verifier's note, `apt_view.snapshot_content` became
+  `snapshot_identity_lines`, because `publish_aptly.py` already has an
+  unrelated `snapshot_content`. The test file was renamed to
+  `test_apt_view_snapshot_identity.py`.
+- `runs/02` and `runs/03` were taken again: 352 passed, 1 skipped.
+
+### Round 2
+
+Pending: the Verifier's re-check of the change.

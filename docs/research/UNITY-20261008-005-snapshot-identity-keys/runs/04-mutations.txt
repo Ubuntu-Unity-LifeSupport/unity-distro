@@ -19,4 +19,6 @@
    FAILED SnapshotContentScratchTest::test_source_recreated_with_other_bytes
 == lines not sorted: 1 failed, 40 passed, 28 subtests passed
    FAILED SnapshotContentUnitTest::test_lines
+== view hashes the names (Verifier M5): 1 failed, 40 passed, 28 subtests passed
+   FAILED AptViewIntegrationTest::test_full_view_selects_snapshot_binaries
 == gate check removed: 2 failed, 41 passed, 26 subtests passed

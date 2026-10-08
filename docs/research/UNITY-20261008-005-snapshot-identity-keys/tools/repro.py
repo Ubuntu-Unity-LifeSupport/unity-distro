@@ -28,18 +28,18 @@ name = "unity-resolute-20990101-001"
 run("repo", "create", "r1"); run("repo", "add", "r1", str(deb(t / "a", "gated")))
 run("snapshot", "create", name, "from", "repo", "r1")
 listed1, _ = av.snapshot_model(str(conf), name)
-ident1 = av.snapshot_content(str(conf), name) if hasattr(av, "snapshot_content") else None
+ident1 = av.snapshot_identity_lines(str(conf), name) if hasattr(av, "snapshot_identity_lines") else None
 keys1 = run("snapshot", "search", "-format", "{{.Key}}", name, "Name").split("\n")
 run("snapshot", "drop", name)
 run("repo", "create", "r2"); run("repo", "add", "r2", str(deb(t / "b", "rebuilt")))
 run("snapshot", "create", name, "from", "repo", "r2")
 listed2, _ = av.snapshot_model(str(conf), name)
-ident2 = av.snapshot_content(str(conf), name) if hasattr(av, "snapshot_content") else None
+ident2 = av.snapshot_identity_lines(str(conf), name) if hasattr(av, "snapshot_identity_lines") else None
 keys2 = run("snapshot", "search", "-format", "{{.Key}}", name, "Name").split("\n")
 h = lambda xs: hashlib.sha256(("\n".join(xs) + "\n").encode()).hexdigest()[:12]
 print("names before/after:", listed1, listed2)
 print("list_sha256 (names) before", h(listed1), "after", h(listed2), "equal:", listed1 == listed2)
 print("aptly keys before", [k for k in keys1 if k], "after", [k for k in keys2 if k], "equal:", keys1 == keys2)
 if ident1 is not None:
-    print("snapshot_content (content_sha256 input) equal:", ident1 == ident2)
+    print("snapshot_identity_lines (content_sha256 input) equal:", ident1 == ident2)
 subprocess.run(["rm", "-rf", "--", str(t)], check=True)

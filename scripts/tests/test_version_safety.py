@@ -7,6 +7,7 @@ Run: python3 -m unittest discover -s scripts/tests
 """
 
 from datetime import datetime, timezone
+import hashlib
 import importlib.util
 import json
 import os
@@ -31,6 +32,7 @@ def load(name):
 version_safety = load("version_safety")
 publish_aptly = load("publish_aptly")
 taskctl = load("taskctl")
+apt_view_module = load("apt_view")
 
 
 def manifest(version="1:1.0+unity1", binaries=(("demo-bin", None, "amd64"), ("demo-data", None, "all"))):
@@ -291,6 +293,12 @@ class AptViewIntegrationTest(unittest.TestCase):
         self.assertEqual({b["package"]: b["apt_candidate"] for b in v["binaries"]},
                          {"demo-bin": "1:1.0+unity1", "demo-data": "1:1.0+unity1"})
         self.assertEqual(version_safety.decide(v, m)["result"], "SAFE")
+        # UNITY-20261008-005: the view's content_sha256 is the hash of the identity lines, not of the names
+        lines = apt_view_module.snapshot_identity_lines(str(conf), "s")
+        self.assertEqual(len(lines), v["snapshot"]["packages"])
+        self.assertEqual(v["snapshot"]["content_sha256"],
+                         hashlib.sha256(("\n".join(lines) + "\n").encode()).hexdigest())
+        self.assertNotEqual(v["snapshot"]["content_sha256"], v["snapshot"]["list_sha256"])
         models = [r for r in v["releases"] if r.get("model")]
         self.assertEqual([r["file"] for r in models], ["<model>_Release"])
         self.assertTrue(all("apt-view-" not in r["file"] for r in v["releases"]))

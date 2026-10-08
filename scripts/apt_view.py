@@ -63,7 +63,7 @@ def snapshot_model(config, snapshot):
 ALL_PACKAGES = "Name (% *)"
 
 
-def snapshot_content(config, snapshot):
+def snapshot_identity_lines(config, snapshot):
     """Sorted per-package identity lines of the snapshot (UNITY-20261008-005).
     Binaries: "<aptly key>|<sha256 of the file>". Sources: "<aptly key>|<the
     .dsc's Checksums-Sha256 entries, sorted>". Unlike the names, these change
@@ -201,7 +201,7 @@ def main():
                 (t / "preferences.d" / pref.name).write_text(pref.read_text(encoding="utf-8"), encoding="utf-8")
         if full:
             listed, debs = snapshot_model(args.aptly_config, args.snapshot)
-            content = snapshot_content(args.aptly_config, args.snapshot)
+            content = snapshot_identity_lines(args.aptly_config, args.snapshot)
             view["snapshot"] = {"name": args.snapshot, "packages": len(listed),
                                 "list_sha256": sha256_bytes(("\n".join(listed) + "\n").encode()),
                                 "content_sha256": sha256_bytes(("\n".join(content) + "\n").encode()),

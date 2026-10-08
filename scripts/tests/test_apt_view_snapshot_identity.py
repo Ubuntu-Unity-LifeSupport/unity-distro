@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""UNITY-20261008-005: apt_view.snapshot_content identifies a snapshot by aptly
+"""UNITY-20261008-005: apt_view.snapshot_identity_lines identifies a snapshot by aptly
 keys and per-package sha256, so a snapshot recreated under the same name with
 other bytes changes content_sha256 while list_sha256 (names) stays equal.
 
@@ -26,7 +26,7 @@ TOOL = "apt" + "ly"
 
 
 class FakeSearch:
-    """Answers the two snapshot searches snapshot_content makes."""
+    """Answers the two snapshot searches snapshot_identity_lines makes."""
 
     def __init__(self, binaries, sources):
         self.binaries, self.sources, self.calls = binaries, sources, []
@@ -45,7 +45,7 @@ class SnapshotContentUnitTest(unittest.TestCase):
         saved = apt_view.aptly
         apt_view.aptly = fake
         try:
-            return apt_view.snapshot_content(None, "s")
+            return apt_view.snapshot_identity_lines(None, "s")
         finally:
             apt_view.aptly = saved
 
@@ -137,7 +137,7 @@ class SnapshotContentScratchTest(unittest.TestCase):
 
     def identity(self, name):
         listed, _ = apt_view.snapshot_model(str(self.conf), name)
-        return listed, apt_view.snapshot_content(str(self.conf), name)
+        return listed, apt_view.snapshot_identity_lines(str(self.conf), name)
 
     def recreated(self, before_files, after_files):
         self.snapshot("s", *before_files)
