@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-012",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity12",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1002-012/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20261002-012",
+  "source_commit": "b116af20655212040b4a9c1d436b16a9a1bd7d3d",
+  "source_tree_hash": "c6ac8b9befc6af92cddccebdcf48b30d98d5a755",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261002-012-usd"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261002-012-session-lock-state/build-usd/UNITY-20261002-012-unity-settings-daemon-build-manifest.json",
+    "sha256": "b8971f9e7986f910b3374d190d0471f4e46a9214b9d3c8dcab8a44e446361ed9"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261002-012-session-lock-state/gate/evidence-manifest.json",
+    "sha256": "1faed047cb7d3d87f51d2e5e038b61854074f5e25ba022c486720b3c0086d8c7"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261002-012-session-lock-state/gate/target-test.txt",
+        "sha256": "e699c487de231ebeb984f1ef035c53834717dad0431e1f74414bc418a76730d5"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity12_amd64.deb": "073c3b9aeebbefd5e2d737241c8f5a8f39e6e689122de370f538b48360d7e936",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity12_all.deb": "93a8a0a503ad3e86b05d5c3915cd2509f88d201a1ecb1e6666e8e9c538953dcb",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity12_amd64.deb": "f0433b31431871356e008483b63de56933bc3c868f2c9ba4218925491d1a37e5"
+      }
+    }
+  }
+}
