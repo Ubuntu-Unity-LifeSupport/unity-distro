@@ -57,6 +57,88 @@ Consequences named in the -029 card: the HUD shows no application icon and
 name for such a window, and its usage history is kept under the window
 number, so it starts empty at every LibreOffice start.
 
+## Existing-fix discovery (subagent, read-only, 2026-10-08)
+
+Sources: git.launchpad.net/bamf (HEAD 9183645, 0.5.7; our archive has
+0.5.6, line numbers may differ), git.launchpad.net/unity (7.7.0+23.04),
+git.launchpad.net/ubuntu/+source/indicator-appmenu
+(15.02.0+20.10.20260311), git.launchpad.net/ubuntu/+source/hud
+(0ubuntu6).
+
+- **How bamf moves a window.** `handle_raw_window` connects
+  "class-changed" to `on_raw_window_class_changed` (src/bamf-matcher.c
+  l.2204): `bamf_view_remove_child(old_app, win)` (l.2229), register the
+  new application if needed, `bamf_view_add_child(new_app, win)` (l.2236).
+  The window object and its D-Bus path (`/org/ayatana/bamf/window/<xid>`)
+  stay the same. On the bus: old application `ChildRemoved` +
+  `WindowRemoved`; if it is now empty and closes, matcher
+  `ViewClosed(old app)` and its `Closed`; if new, matcher
+  `ViewOpened(new app, "application")`; new application `ChildAdded` +
+  `WindowAdded`. **No `ViewOpened`/`ViewClosed` for the window itself**, so
+  the bridge, which listens only to those, never sees the move. (The other
+  re-match path, `bamf_legacy_window_reopen`, fakes a close and reopen of
+  the window and is already handled by the bridge.)
+- **libbamf:** no "parent changed" on a window; applications re-emit
+  "window-added"/"window-removed"; `bamf_matcher_get_application_for_xid`
+  answers the current application.
+- **Unity 7** (`unity-shared/BamfApplicationManager.cpp`) connects every
+  application's child-added/child-removed (l.367, l.380), and
+  `AppWindow::application()` (l.242) asks bamf again on every call.
+  **indicator-appmenu** does not track the move and looks the application
+  up again on each use (`get_entries`, `ensure_menus`).
+- **No later fix:** hud 0ubuntu1..0ubuntu6 changes are rebuilds and build
+  fixes; no fork carries a change to window-stack-bridge. UNKNOWN: old bzr
+  branches other than trunk, the upstream history of the bridge.
+
+Existing fix: NOT_FIXED. Issue search: no report of this specific cause
+found (the symptom of a missing HUD icon/name was not searched for
+separately: UNKNOWN beyond LP #1771173, which is about an empty HUD).
+
+## Reproduction (2026-10-08, logs/01, logs/02)
+
+target2: Clean-2 + our repository by `full-upgrade` (hud `+unity3`, unity
+`+unity12`, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6, LibreOffice
+26.2.6.3) + `xdotool` (set up by the UNITY-20260929-002 Verifier).
+`repro.sh` starts Writer under a dbus-monitor capture of bamf and the
+bridge.
+
+The order on the bus for the document window 62914596 (logs/01):
+
+| t (s) | sender | signal |
+|---|---|---|
+| .7890 | bamf | matcher `ViewOpened(window/62914596, window)` |
+| .8070 | bamf | matcher `ViewOpened(application/0x…621950, application)`; that application `ChildAdded`/`WindowAdded(window/62914596)` |
+| .8938 | bridge | `WindowCreated(62914596, "62914596")`, `FocusedWindowChanged(62914596, "62914596")` |
+| .9020 | bamf | application/0x…621950 `ChildRemoved`/`WindowRemoved(window/62914596)`; matcher `ViewClosed(application/0x…621950)` |
+| .9021 | bamf | matcher `ViewOpened(application/746707297, application)`; it `ChildAdded`/`WindowAdded(window/62914596)` |
+
+The temporary application had no desktop file, so the bridge took the
+window number; 8 ms after its `WindowCreated` bamf moved the window to
+libreoffice-writer, and the bridge sent nothing more. Afterwards:
+
+- the window stack: `(62914596, '62914596', true)`;
+- bamf itself: `ApplicationForXid 62914596` -> application/746707297,
+  `DesktopFile` `/usr/share/applications/libreoffice-writer.desktop`.
+
+**What it changes for the user** (logs/02, vbox screenshots):
+
+- The HUD on the panel shows the Writer icon even so: Unity takes the
+  icon from bamf itself. The "no icon" of the -029 card is not seen here.
+- **The usage history:** executing one HUD result (`CreateQuery`, the
+  first result, `ExecuteCommand`, as Enter in the HUD does) recorded it in
+  `~/.cache/indicator-appmenu/hud-usage-log.sqlite` as
+  `('62914596', 'Файл||Сохранить')`. hud ranks results by that history per
+  application id, and the next Writer window has another number (54525988,
+  62914596, 65011748 in earlier boots), so Writer's HUD history is split by
+  window number and mostly not found again. Where the history is used:
+  `ItemStore::search` with an empty query (the HUD just opened, nothing
+  typed) lists up to 20 items ordered by `usage(m_applicationId, entry)`
+  (service/ItemStore.cpp:183-200), and `execute` marks the use under the
+  same id (:295, :334). So for LibreOffice the "most used" list shown when
+  the HUD opens does not learn across starts.
+
+Reproduction: PASS.
+
 ## Plan (before the Design Challenger)
 
 1. Reproduction on Clean-2 + the published stack: window stack, the
