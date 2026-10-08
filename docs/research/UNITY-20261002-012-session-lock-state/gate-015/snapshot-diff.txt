@@ -1,0 +1,12 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | unity-autopilot                          | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ all    | unity-schemas                            | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ all    | unity-uwidgets                           | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | libunity-core-6.0-9                      | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | libunity-core-6.0-9-dbgsym               | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | libunity-core-6.0-dev                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | unity                                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | unity-dbgsym                             | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | unity-services                           | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ amd64  | unity-services-dbgsym                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
++ source | unity                                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity13   
