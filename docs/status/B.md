@@ -75,6 +75,27 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-08 ~20:25Z: UNITY-20260929-001 and UNITY-20261008-011 DONE; next UNITY-20261008-013.**
+- **hud +unity5:** UNITY-20261008-011 with UNITY-20261008-014. The
+  window-stack-bridge application id is now the whole desktop file name
+  (org.gnome.Terminal, no longer "org"); there are also no null map entries
+  and the WindowAdded connect is checked.
+  - Live `./resolute` = `unity-resolute-20261008-011` since 19:56:14Z;
+    C merged it in main cd9b7f6.
+  - Card `research/UNITY-20261008-011-hud-reverse-dns-id/`.
+  - -014 is in REVIEW: taskctl lets package tasks reach DONE only after
+    PUBLISHED, and -014 has no build of its own. C decides.
+- **Follow-ups on the board:**
+  - UNITY-20261008-017: no icon for `XDG_DATA_HOME` desktop files;
+  - UNITY-20261008-018: the `org.ayatana.bamf` owner warning in the bridge;
+  - UNITY-20261008-013 (next): hud-service /tmp mappings and RSS. Start by
+    comparing +unity3, +unity4 and +unity5; no code before the DC.
+- **Since the builder restart:** the scratchpad is lost. The repository key
+  for target2 comes from `/srv/aptly/public/unity-distro-archive.asc`
+  (fingerprint 29A893E03970066F2DD287D47BF3F77FC27B152C). Copy it with a
+  script file, because the guard refuses the path in a shell command.
+- **Nothing running.**
+
 **2026-10-08 ~11:35Z: UNITY-20260929-001 PUBLISHED, waiting for C's merge.**
 - hud 14.10+17.10.20170619-0ubuntu6+unity4 (window-stack-bridge follows
   bamf's re-match: LibreOffice's window gets libreoffice-writer, HUD usage
@@ -441,7 +462,7 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**At `Clean-2` since 2026-10-08 11:33Z** (rolled back after the UNITY-20260929-001
+**At `Clean-2`, powered off, since 2026-10-08 20:21Z** (rolled back after the UNITY-20261008-011
 publication check; checked inside: no `~/.dirty`, no `~/b001`, no
 `unity-distro.sources`, hud 0ubuntu6, NTP synchronised). Restarts before
 measurements: a cold cycle (poweroff over ssh, then start_vm), not a reboot
