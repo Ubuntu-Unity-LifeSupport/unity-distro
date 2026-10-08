@@ -56,8 +56,65 @@ Target record: `gate/target-test.txt`. tested_build: this_build.
   `gate/version-safety.json`).
 - **Peer notice:** agent B, ACK.
 
+## Slot 2: unity +unity13 (UNITY-20261008-015)
+
+| package | version | change |
+|---|---|---|
+| unity | 7.7.1+26.04.20260306-0ubuntu3+unity13 | `GetActive` on `org.gnome.ScreenSaver` answers true while the session is locked, not only while the screen is blanked. `ActiveChanged` is sent once per change of that value. While Unity's own lockscreen is the session's locker, the lock is reported to logind with `SetLockedHint`. In legacy mode (screen reader or on-screen keyboard enabled) the hint is left to the other locker. |
+
+**Build.** Built with `scripts/build_sbuild.py` from the unity package
+branch `a/UNITY-20261002-012` at c5339fc6 (tree 8b742c7b), in chroot snapshot
+T=20261008T083223Z. The published nux 4.0.8+18.10.20180623-0ubuntu15+unity3
+was passed as an extra package, as for the previous unity build. The
+manifest is in `build-unity/`.
+
+The same tree had already been built and tested under the commit 80d5fc4e,
+whose messages were later rewritten (the tree is unchanged). Comparing the
+two builds:
+
+- 8 of the 10 packages are byte-identical;
+- in `unity` and `unity-dbgsym` only `libunityshell.so` differs, and only in
+  `.note.gnu.build-id` and `.gnu_debuglink`, which follow the debug
+  information;
+- code and data sections are identical.
+
+The gated build of this slot was tested on the target in its own right
+(this_build).
+
+**Checks (properties measured on the target).** The target is the published
+stack after the update from the live repository (unity-settings-daemon
++unity12, hud +unity4) plus unity +unity13.
+
+- In the published configuration another locker owns the ScreenSaver names
+  and locks the session. Unity is not locked, and it reports that: its
+  `GetActive` is false, `LockedHint` stays "no", and Unity sends no
+  `ActiveChanged` and calls no `SetLockedHint`.
+- With Unity's lockscreen as the locker (a run outside the published
+  configuration, with the other locker kept out of the session, then
+  restored):
+  - while locked, `GetActive` is true and `LockedHint` is "yes", with one
+    `ActiveChanged(true)` and one `SetLockedHint(true)`, both from Unity;
+  - after the unlock both are false and "no", with one `ActiveChanged(false)`
+    and one `SetLockedHint(false)`.
+- **Unit tests** (the session manager and the ScreenSaver D-Bus manager
+  suites, built with tests enabled from the same tree, outside the package
+  build, which has tests disabled):
+  - with the fix, all 52 + 12 tests pass;
+  - with the fix's logic reverted, exactly the four new tests fail.
+
+Target record: `gate-015/target-test.txt`.
+
+**Verification.**
+- Design and code review: APPROVE after one change. A switch from legacy
+  mode back to Unity's lockscreen no longer writes "no" over another
+  locker's hint.
+- Verifier: PASS, review status REVIEWED.
+
 ## Not changed / known limits
 
 - Under cinnamon-session the automount helper does not mount on hotplug at
   all, because `org.gnome.SessionManager` has no `SessionIsActive`
   (UNITY-20261008-008).
+- The installed header `UnityCore/SessionManager.h` changes layout (a new
+  property) without a soname bump. The only consumer in our repository is
+  unity, which depends on libunity-core-6.0-9 with the exact version.

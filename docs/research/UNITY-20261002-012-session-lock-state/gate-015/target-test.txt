@@ -1,0 +1,36 @@
+UNITY-20261008-015 (slot 2 of UNITY-20261002-012): target test of unity 7.7.1+26.04.20260306-0ubuntu3+unity13
+
+Target: target-desktop. Base: the published stack of 2026-10-08, restored, then updated the ordinary way
+from the live repository (unity-settings-daemon +unity12, hud 14.10+17.10.20170619-0ubuntu6+unity4,
+cinnamon-session 6.4.2-1+unity3, the other locker as published). On top of that, the debs below
+from this build (build-unity/, task UNITY-20261008-015, source c5339fc6) were installed. Then a cold boot
+(power off, power on). Each run started from a fresh restore, confirmed inside the guest.
+
+Installed debs (sha256 equal to build-unity/ and the build manifest):
+  c18ada26a2e4f5fcf91a7ee9c74125fb04621a2f4e8f693da938353fb35c6592  libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity13_amd64.deb
+  c481bdc639ef7d05764ecaddd6ff2fc35a71a30a8e4b6e15aeba2fff47212e10  unity_7.7.1+26.04.20260306-0ubuntu3+unity13_amd64.deb
+  6d55044e0713c0774fe3fedbcc6c193ef0969836559324eb36e1d4bf95302872  unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity13_all.deb
+  31775a2298ee3f5097b25d8e6ee4b29d3e347dcab8c58c687abb0dc835abeb50  unity-services_7.7.1+26.04.20260306-0ubuntu3+unity13_amd64.deb
+  c06d7c1ce73c652215caf50146d9d4f72e83aaf5216b70c15f567a7877b64e66  unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity13_all.deb
+sha256 of /usr/lib/x86_64-linux-gnu/compiz/libunityshell.so on the target =
+  a5fa7aff2521ab938594aace5cbf68227ae99c819bee1339a0d4314d71c510d4 = the file in the built unity deb.
+
+Run 1, published configuration (the gate):
+  Another locker owns org.gnome.ScreenSaver and org.freedesktop.ScreenSaver. compiz waits in the queue
+  and exports Unity's ScreenSaver object on its unique bus name.
+  Lock requested through logind: the other locker locks the session; Unity is not locked.
+    5 samples: Unity's GetActive (asked on compiz's unique name) false, logind LockedHint "no".
+    ActiveChanged from compiz: none. SetLockedHint calls on the system bus: none.
+  After the unlock request: LockedHint "no", no signal, no call.
+
+Run 2, outside the published configuration (supporting; the other locker kept out of the session for one
+boot, then the target restored):
+  compiz owns org.gnome.ScreenSaver.
+  Lock requested through logind: Unity's lockscreen is shown.
+    5 samples: GetActive true, LockedHint "yes".
+    ActiveChanged(true) x1 from compiz; SetLockedHint(true) x1 from compiz's system-bus name.
+  Unlock requested through logind: GetActive false, LockedHint "no";
+    ActiveChanged(false) x1; SetLockedHint(false) x1; nothing else.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build).
