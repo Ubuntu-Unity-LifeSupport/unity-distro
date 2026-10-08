@@ -1,0 +1,24 @@
+UNITY-20261008-015 (slot 2 of UNITY-20261002-012): target verification of the publication
+
+Published: ./resolute = unity-resolute-20261008-015, 2026-10-08T20:28:47Z (publish record
+~/coordinator/publish-records/UNITY-20261008-015.json; switch-time version check SAFE).
+
+Target: target-desktop, restored to the published stack of 2026-10-08 (confirmed inside the guest: uptime
+1 min, the snapshot's marker file, unity +unity12 installed). Updated the ordinary way from the live
+repository (apt-get update, apt-get full-upgrade from http://192.168.56.10:8080 resolute):
+  apt candidate unity: 7.7.1+26.04.20260306-0ubuntu3+unity13
+  installed: unity, libunity-core-6.0-9 7.7.1+26.04.20260306-0ubuntu3+unity13 (with unity-settings-daemon
+  +unity12 and hud +unity5 from the same publication chain)
+
+Cold boot (power off, power on):
+  sha256 /usr/lib/x86_64-linux-gnu/compiz/libunityshell.so =
+    a5fa7aff2521ab938594aace5cbf68227ae99c819bee1339a0d4314d71c510d4 = the gated build.
+  Lock requested through logind, with the other locker (as published) owning the ScreenSaver names:
+    6 samples: Unity's GetActive false, LockedHint "no"; no ActiveChanged from Unity, no SetLockedHint.
+  This is the same as the gate's target test.
+
+The gate was created and the publisher run from the worktree whose packages/ holds the source the
+build was made from. Before the gate, the build's ignored artifacts (debs, .changes, build dependencies)
+were restored byte for byte, each checked against the sha256 in the build manifest.
+
+Result: PASS.
