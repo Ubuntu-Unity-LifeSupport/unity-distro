@@ -2077,3 +2077,14 @@ Open: one `test-eds-ics-all-day-events` failure in the superseded control build 
 - it arrives in the same publication as -003, so there is no window with the idle policy live and without the override.
 
 **Test bench.** u-s-d does no idle transition on a virtual machine. Our idle tests therefore run with `gnome.is_vm=0` on the kernel command line, recorded as a changed test condition and removed afterwards. The gate's target test is a boot in the users' environment.
+
+
+## 2026-10-08 - UNITY-20261002-003: the release gate is created after the last edit of the card, from the worktree of the publishing task (agent A, decision by C)
+
+**What happened.** The u-s-d +unity11 build that was tested was made in another task's worktree, and its manifest names that checkout. `create_release_gate.py` accepts only a package checkout under the repository's own `packages/`, so the gate needed a rebuild in the publishing task's worktree. The rebuild had the same commit and chroot. Its payload was identical: file lists, control fields and md5sums matched, and the ddebs were byte-identical. The container bytes differed, because the source tarball takes its mtimes from the checkout. C chose `tested_build: buildinfo_identical`: the snapshot was recreated with the rebuild's records, and `.buildinfo` was committed with `git add -f`.
+
+Then the card was committed after the gate. `publish_aptly.py` refused at the switch on the card's hash, after May had already confirmed. The gate was regenerated, C re-checked it, and May confirmed again.
+
+**Decision.**
+- The build for a gate is made in the worktree of the task that carries the publication.
+- The release gate is created after the last edit of the evidence files. A later edit means regenerating the gate and having it re-checked before May is asked.
