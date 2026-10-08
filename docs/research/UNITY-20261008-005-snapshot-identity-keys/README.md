@@ -197,6 +197,17 @@ Changes made after round 1:
   `test_apt_view_snapshot_identity.py`.
 - `runs/02` and `runs/03` were taken again: 352 passed, 1 skipped.
 
-### Round 2
+### Round 2 (`7affa15`): PASS
 
-Pending: the Verifier's re-check of the change.
+- **The fix.** The rename is complete; no call to the old name remains.
+  The test now catches the mutation that survived round 1.
+- **Mutations.** M5 (the view hashes the names) is caught by
+  `test_full_view_selects_snapshot_binaries`. M1-M4, M6 and M7 are still
+  caught. Each ran on a fresh copy of the commit.
+- **Full suite.** 352 passed, 1 skipped.
+- **Reproduction.** It shows the identity lines differing on the branch,
+  while on main `list_sha256` stays equal.
+- **Realistic snapshot.** Run again: 6 lines for 6 packages, stable across
+  runs. An empty or missing snapshot raises.
+- **Note.** The unit test class keeps the name `SnapshotContentUnitTest`.
+  This is cosmetic.
