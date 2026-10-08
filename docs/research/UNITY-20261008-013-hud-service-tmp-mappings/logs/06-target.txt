@@ -1,0 +1,82 @@
+# UNITY-20261008-013 target check, target2 2026-10-08/09
+# Clean-2 restored (safe_to_snapshot), confirmed inside 22:54:09Z (no ~/.dirty, ~/b013, our sources, usage table; hud 0ubuntu6, libcolumbus1v5 0ubuntu39); key + unity-distro.sources, apt full-upgrade to the live unity-resolute-20260927-053 (hud +unity5, unity +unity13, cinnamon-session +unity4, libcolumbus 0ubuntu39 from the archive, unity-lens-applications 0ubuntu8), xdotool; cold cycle (poweroff 23:05:36Z, start_vm)
+
+## BEFORE: archive libcolumbus 0ubuntu39
+== liveness
+hud-service 3547 baseline 0
+query open 3
+query closed 3
+== leak.sh
+hud 14.10+17.10.20170619-0ubuntu6+unity5, hud-service pid 3547, up       00:35
+1 baseline                         tmp-maps     3 files    3 rss_kB   33764 fds   15
+2 after 10 queries (desktop)       tmp-maps    33 files   33 rss_kB   35032 fds   15
+3 after 10 Mines starts            tmp-maps    33 files   33 rss_kB   35048 fds   15
+4 after 10 Writer starts           tmp-maps    33 files   33 rss_kB   39728 fds   15
+5 after 10 queries (Writer)        tmp-maps    63 files   63 rss_kB   43688 fds   15
+6 Writer closed, 60 s idle         tmp-maps    63 files   63 rss_kB   43640 fds   15
+== liveness after
+hud-service 3547 baseline 63
+query open 66
+query closed 66
+== lens
+libcolumbus1v5 1.1.0+15.10.20150806-0ubuntu39, unity-scope-loader (applications) pid 6217
+libcolumbus mapping: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+start                        deleted-maps    5 tmp-maps    5 rss_kB   33740
+re-index 1 (added)           deleted-maps    8 tmp-maps    8 rss_kB   35900
+re-index 2 (removed)         deleted-maps   11 tmp-maps   11 rss_kB   36104
+re-index 3 (added)           deleted-maps   14 tmp-maps   14 rss_kB   37320
+re-index 4 (removed)         deleted-maps   17 tmp-maps   17 rss_kB   37496
+re-index 5 (added)           deleted-maps   20 tmp-maps   20 rss_kB   37672
+re-index 6 (removed)         deleted-maps   23 tmp-maps   23 rss_kB   37844
+test file removed            deleted-maps   23 tmp-maps   23 rss_kB   37844
+
+# libcolumbus +unity1 from a file repository (~/b013/repo = build/*.deb; libcolumbus1v5 .deb sha256 65773439ef292b3c...): unattended-upgrade held the dpkg lock at 02:16 local (it removed linux-tools-7.0.0-14 only), then apt-get -y full-upgrade at 02:26:42 local upgraded exactly libcolumbus1-common and libcolumbus1v5 0ubuntu39 -> 0ubuntu39+unity1; cold cycle (poweroff 23:26:50Z, start_vm)
+
+## AFTER: libcolumbus +unity1
+Start-Date: 2026-10-09  02:16:57
+Commandline: /usr/bin/unattended-upgrade
+Remove: linux-tools-7.0.0-14:amd64 (7.0.0-14.14)
+Start-Date: 2026-10-09  02:26:42
+Commandline: apt-get -y full-upgrade
+Upgrade: libcolumbus1-common:amd64 (1.1.0+15.10.20150806-0ubuntu39, 1.1.0+15.10.20150806-0ubuntu39+unity1), libcolumbus1v5:amd64 (1.1.0+15.10.20150806-0ubuntu39, 1.1.0+15.10.20150806-0ubuntu39+unity1)
+hud-service libcolumbus: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+== liveness
+hud-service 3654 baseline 0
+query open 3
+query closed 0
+== leak.sh
+hud 14.10+17.10.20170619-0ubuntu6+unity5, hud-service pid 3654, up       00:35
+1 baseline                         tmp-maps     0 files    0 rss_kB   33656 fds   15
+2 after 10 queries (desktop)       tmp-maps     0 files    0 rss_kB   34984 fds   15
+3 after 10 Mines starts            tmp-maps     0 files    0 rss_kB   35000 fds   15
+4 after 10 Writer starts           tmp-maps     0 files    0 rss_kB   39652 fds   15
+5 after 10 queries (Writer)        tmp-maps     0 files    0 rss_kB   41684 fds   15
+6 Writer closed, 60 s idle         tmp-maps     0 files    0 rss_kB   41636 fds   15
+== liveness after
+hud-service 3654 baseline 0
+query open 3
+query closed 0
+== lens
+libcolumbus1v5 1.1.0+15.10.20150806-0ubuntu39+unity1, unity-scope-loader (applications) pid 5967
+libcolumbus mapping: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+start                        deleted-maps    5 tmp-maps    5 rss_kB   33708
+re-index 1 (added)           deleted-maps    5 tmp-maps    5 rss_kB   35752
+re-index 2 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   35824
+re-index 3 (added)           deleted-maps    5 tmp-maps    5 rss_kB   36904
+re-index 4 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   36956
+re-index 5 (added)           deleted-maps    5 tmp-maps    5 rss_kB   37008
+re-index 6 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   37056
+test file removed            deleted-maps    5 tmp-maps    5 rss_kB   37056
+
+## AFTER: 50 more empty HUD queries (rss-queries.sh 50)
+after   0 more queries: rss_kB   41636 deleted-maps   0
+after  10 more queries: rss_kB   41684 deleted-maps   0
+after  20 more queries: rss_kB   41688 deleted-maps   0
+after  30 more queries: rss_kB   41688 deleted-maps   0
+after  40 more queries: rss_kB   41688 deleted-maps   0
+after  50 more queries: rss_kB   41688 deleted-maps   0
+
+## AFTER: the HUD still answers (Terminal 'Создать окно', -011's repro.sh)
+Terminal 62914566: ('Создать окно', [('<b>Создать окно</b> (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 7>), ('Создать вкладку (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 6>), ('Закрыть окно (Файл)', 'org.gnome.Terminal', '', '', '', <uint64 12>)], <'/com/canonical/
+
+## AFTER: the Dash (applications lens) search 'gnome-t' lists Терминал first, then Reboot, Shutdown, Диски (vbox screenshot 2026-10-09 02:39:59 local)

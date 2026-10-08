@@ -7,7 +7,7 @@ task_id: UNITY-20261008-013
 package: libcolumbus (the symptom is in hud-service; the correct layer is libcolumbus)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: INVESTIGATING
+status: TARGET_VERIFIED (2026-10-09), independent verification next
 observed: >
   hud-service holds more and more deleted 128 KiB "/tmp/#<inode>" shared
   mappings (files opened with O_TMPFILE) over a session, and its RSS grows
@@ -314,7 +314,7 @@ users never get near that size.
 
 The overflow guard's bound is exact (`mapSize` is a power of two from 1024, so the largest value let through, 2^30, doubles to 2^31, which still fits in `uint32_t`). It runs before `ftruncate`, so "Trie too large" leaves everything unchanged. `append()` cannot overflow below it. The first expand is unchanged. Code can go into the task branch.
 
-## Implementation (2026-10-08, in progress)
+## Implementation (2026-10-08)
 
 The libcolumbus source is a local git tree (`packages/libcolumbus`). It was imported from the archive's
 `.dsc` with `gbp import-dsc`: `upstream` at `da1042c`, and `unity/resolute` at `9a24f85` for
@@ -345,3 +345,47 @@ control, stopped there.
   `control/UNITY-20261008-013`): the archive, the tests (`27955c8`) and the
   same build fix (`c6359e8`), without the Trie fix. A control without the
   build fix would not build at all, so it would prove nothing.
+
+**Builds** (`build_sbuild.py`, chroot 20261008T083223Z; logs/04, logs/05):
+
+- +unity1 (`3da4d89`): 18 of 18 tests, the symbols check passes.
+- **The control:** the archive, the tests and the build fix, without the
+  Trie fix. It fails exactly `trie` (`TrieTest.cc:108`) and `matcher`
+  (`MatcherTest.cc:338`), each at its "after destruction" assertion. The
+  liveness assertions before them (+1, +3) pass, so the counter does see
+  the Tries' mappings.
+- **Against the archive `0ubuntu39` .debs** (`payload.sh`): all four
+  packages (libcolumbus1v5, -dev, -common, python3-columbus) have the same
+  file list, and `libcolumbus.so.1` exports the same 196 symbols.
+
+## Target check (target2, 2026-10-08/09, logs/06)
+
+**Setup:**
+1. Clean-2 restored and checked from inside the guest (22:54Z).
+2. The live publication `unity-resolute-20260927-053` by the usual path,
+   no drop-ins. This stack has hud +unity5, unity +unity13 and
+   cinnamon-session +unity4, and the archive libcolumbus `0ubuntu39`.
+3. A cold cycle, then **before**.
+4. libcolumbus +unity1 from a file repository: `apt full-upgrade`
+   upgraded exactly libcolumbus1v5 and libcolumbus1-common.
+   unattended-upgrades ran first and held the dpkg lock; it removed only
+   an old linux-tools package.
+5. A cold cycle, then **after** with the same scripts.
+
+| step | archive 0ubuntu39 | +unity1 |
+|---|---|---|
+| hud-service: one HUD query open, then closed (`liveness.py`) | 0 → 3 → **3** | 0 → 3 → **0** |
+| hud-service: deleted `/tmp` files after 10 desktop queries, 10 Mines and 10 Writer starts, 10 Writer queries (`leak.sh`) | 3 → 33 → 33 → 33 → **63** | 0 → 0 → 0 → 0 → **0** |
+| hud-service RSS over 50 more queries (`rss-queries.sh`) | (+~0.4 MB per query, logs/01) | 41 636 → 41 688 kB |
+| unity-scope-loader (applications lens): deleted mappings over 6 re-indexes of the application menu (`lens.sh`) | 5 → 8 → 11 → 14 → 17 → 20 → **23** | **5** at every step |
+| the HUD: Terminal "Создать окно" | — | the same 3 results from Файл, icon `org.gnome.Terminal` |
+| the Dash: "gnome-t" | — | Терминал first (screenshot) |
+
+- **hud-service:** the RSS a query still adds goes to the first queries
+  only (the caches of a session). After them it stays flat: +52 kB over
+  50 queries.
+- **The lens's 5 mappings** are the live Tries of its long-lived searchers.
+  Before the fix every re-index added 3 (the freed searcher's WordStore,
+  application name and executable name), as round 1 predicted.
+- **Both processes** map the installed `libcolumbus.so.1.1.0`, with no
+  `(deleted)` library mapping after the cold cycle.
