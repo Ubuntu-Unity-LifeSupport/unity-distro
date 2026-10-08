@@ -10,7 +10,7 @@ task_id: UNITY-20261008-011 (+ UNITY-20261008-014)
 package: hud (window-stack-bridge)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: INVESTIGATING
+status: IMPLEMENTING (stopped 2026-10-08 ~13:15Z, resume point below)
 source_version: 14.10+17.10.20170619-0ubuntu6+unity4 (published 2026-10-08)
 observed: >
   window-stack-bridge gives every application whose desktop file has a
@@ -405,3 +405,43 @@ implementation:
    `Foo.DESKTOP`.
 3. **The control:** exactly the six D-Bus tests listed above fail on
    +unity4. Its output goes into the card next to the table.
+
+## Implementation (2026-10-08, in progress)
+
+hud source `Ubuntu-Unity-LifeSupport/hud`, branch `b/UNITY-20261008-011`
+(pushed), on the published +unity4 (`b0c2444`):
+
+- `1fc54e1`: the bridge (`applicationIdFromDesktopFile`, `value()` in
+  `GetWindowStack`/`GetWindowProperties`/`GetWindowBusAddress`, checked
+  connect) and the tests of the revised design;
+- `b1b8c7b`: +unity5;
+- `db26b0d`: the tests' fix. A string literal converted to `bool` and
+  called `createApplication(uint, bool)`, so the new id tests created
+  `appid-0`.
+
+The control is a local branch, `packages/hud-control`
+`control/UNITY-20261008-011`: `b749260` (b0c2444 plus the D-Bus tests,
+without the helper test), then `d5a32c2` (the same test fix).
+
+**First builds** (12:3x-13:0xZ, before `db26b0d`, so not results):
+- +unity5 failed 6 tests, and the control 7, all through that helper bug.
+  On +unity5 `SubdirectoryDesktopFileGivesBaseName` failed, which no rule
+  explains.
+- The tests that did not use the overload behaved as predicted:
+  `UnknownPathsLeaveNoEntries` failed on the control and passed on +unity5;
+  both -014 tests passed on both; the service suite had 46 tests passing
+  on both.
+
+**Resume point** (stopped by C on 2026-10-08 ~13:15Z for the VBoxSVC
+restart):
+1. Rebuild both, `build/` from `db26b0d` and `build-control/` from
+   `d5a32c2`, with `build_sbuild.py`.
+2. Expected: +unity5 6/6 suites. The control fails exactly
+   `ReverseDnsDesktopFileGivesFullId`, `MultiDotDesktopFileGivesFullId`,
+   `DesktopFileWithoutSuffixKeepsName`,
+   `DesktopFileNamedOnlySuffixGivesWindowNumber`,
+   `WindowMovedToReverseDnsApplication` and `UnknownPathsLeaveNoEntries`.
+3. After the restart, restore target2 to Clean-2 and confirm from inside
+   the guest. It was powered off dirty at 13:06:31Z (live publication +
+   hud +unity4 + the reproduction session).
+4. Then the target plan above.
