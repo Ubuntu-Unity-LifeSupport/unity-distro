@@ -309,3 +309,7 @@ would truncate the file to 0 under the live mapping, and the next access
 would raise SIGBUS. Taken into the design: before `ftruncate`, `expand()`
 throws `runtime_error("Trie too large")` if `mapSize > UINT32_MAX / 2`. Our
 users never get near that size.
+
+### Design review, round 3: APPROVE
+
+The overflow guard's bound is exact (`mapSize` is a power of two from 1024, so the largest value let through, 2^30, doubles to 2^31, which still fits in `uint32_t`). It runs before `ftruncate`, so "Trie too large" leaves everything unchanged. `append()` cannot overflow below it. The first expand is unchanged. Code can go into the task branch.
