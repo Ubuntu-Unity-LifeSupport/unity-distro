@@ -57,7 +57,8 @@ end: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3617
 ===== reading
 -025: +unity5 keeps one query object per one-off StartQuery client for the life of the service (5, still 5
 10 s later; 8 at the end, the extra 3 from the one-off icon() calls of step 3). +unity6: 0 at every step, the
-same hud-service process throughout, no coredump. The CloseQuery and ExecuteQuery clients were already
+same hud-service process throughout (the PID; the "coredumps ... 0" line proves nothing, because
+coredumpctl is not installed on target2 and the script discards its error). The CloseQuery and ExecuteQuery clients were already
 released on +unity5 and still are.
 -017: the user-only desktop file (B017) now gives its Icon; a user override of a system desktop file wins over
 it (b017-override); a system-only application (Writer) is unchanged.

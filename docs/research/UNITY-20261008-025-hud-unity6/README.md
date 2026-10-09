@@ -54,7 +54,10 @@ The setup: Clean-2, the live publication (hud +unity5, libcolumbus
 - **UNITY-20261008-025, reproduced.**
   - Five one-off `gdbus call … StartQuery "сохр" 3` clients, each its own
     bus connection that exits without `CloseQuery`, take hud-service from 0
-    to 15 deleted mappings (5 × 3 Tries) and its RSS from 30.2 to 38.9 MB.
+    to 15 deleted mappings and its RSS from 30.2 to 38.9 MB. (The deleted
+    mappings are only a side signal; they are not 5 × 3 Tries per query.
+    The target check counts the exported query objects instead, see
+    logs/02.)
     10 s later nothing is released.
   - A client that calls `StartQuery` and `CloseQuery` and stays 5 s is
     closed by the 2 s timer: no change.
@@ -445,7 +448,7 @@ installed binary (sha256 `3471e07f522bfd36`, no `(deleted)` mappings).
 | the same 10 s later | 5 | 0 |
 | query objects at the end of the run | 8 | 0 |
 | `StartQuery` + `CloseQuery` client, `StartQuery` + `ExecuteQuery` client | released | released |
-| hud-service restarts, coredumps | none | none |
+| hud-service restarts (the same PID through the run) | none (3690) | none (3617) |
 | icon of a user-only desktop file (B017) | `''` | `utilities-terminal` |
 | icon of Terminal with a user override `Icon=b017-override` | `org.gnome.Terminal` | `b017-override` |
 | icon of Writer (system desktop file only) | `libreoffice-writer` | `libreoffice-writer` |
@@ -461,7 +464,9 @@ installed binary (sha256 `3471e07f522bfd36`, no `(deleted)` mappings).
   - after more than 2 s a reopening gets a new one (query/10 → query/11).
 - Enter: `ExecuteQuery` releases the query. Unity's `CloseQuery` right
   after it changes nothing, and no query objects are left.
-- In 4 runs hud-service never restarted.
+- hud-service kept its PID through each +unity6 run: 3910 in run 2, and
+  3757 in run 4 together with the regression steps. Run 1 followed
+  `target025.sh` in the same boot. Run 3 is the base package.
 
 **Regressions (UNITY-20260929-001 `target.sh` on +unity6, logs/03):**
 
@@ -480,3 +485,101 @@ for gnome-terminal through the HUD opens no window:
 - the same happens on the Ubuntu base `0ubuntu6`, with the same calls and
   the same hud-service log lines;
 - the legacy `ExecuteQuery` path is not in this diff.
+
+## Verification (independent Verifier, 2026-10-09): PASS
+
+The Verifier did not write the fix. Review status:
+INDEPENDENTLY_REPRODUCED, on target2 with hud +unity6.
+
+- **The code against the round-2 design** (`git diff db26b0d 1369d9e`):
+  - **Scope:** exactly five files changed: the two sources, the two test
+    files and `debian/changelog`.
+  - **`closeQuery`:** the query is held until return. The loop compares
+    the path and stops the timer, then erases and breaks; nothing touches
+    the erased iterator afterwards. At most one entry can match, since
+    paths are unique.
+  - **`value()` and `find()`:** `value()` in `StartQuery` and `find()` in
+    `CloseQuery` behave as designed.
+  - **`ExecuteQuery` and `legacyTimeout`:** both take the entry before they
+    call `closeQuery`. There is no double stop and no early release.
+  - **A sender leaving the bus:** `QueryImpl::serviceUnregistered` →
+    `closeQuery` destroys the query inside its watcher's signal, as
+    new-API queries already did. In Qt 5.15 that is the last emission, and
+    hud-service survived a live client that left with its 2 s timer
+    pending.
+  - **The desktop-file lookup:**
+    - `QStandardPaths::locate(ApplicationsLocation)`, read in the Qt 5.15
+      source, searches `XDG_DATA_HOME` first, then `XDG_DATA_DIRS`, with
+      the spec's defaults;
+    - empty and relative `XDG_DATA_DIRS` entries are dropped, so the
+      working directory is never searched;
+    - a grep of the whole tree finds no other runtime desktop-file lookup.
+- **Tests:**
+  - The control fails exactly the 5 new tests (service 46/51, every other
+    suite passes), each with the expected message. None passes vacuously.
+  - +unity6 passes 6/6 (service 51).
+  - The control is also the "no erase in `closeQuery`" mutant. Reverting
+    `find()` in `CloseQuery` is caught by
+    `CloseQueryWithoutLegacyQueryAddsNothing`.
+  - `ScopedEnv` restores the environment. The new tests set
+    `XDG_DATA_HOME` themselves; sbuild's `HOME` is `/sbuild-nonexistent`.
+- **Provenance:**
+  - the manifest's commit and tree equal `1369d9e`, and all 24 artifacts
+    match their sha256 and size;
+  - `dpkg-source -x` of the `.dsc` equals `git archive 1369d9e`. The only
+    extra is an empty locale directory tree in the orig tarball, which git
+    cannot track;
+  - the changelog trailer is in UTC, with author NeiroNext and no
+    `Signed-off-by`;
+  - `hud-service` from the built `.deb` has sha256 `3471e07f522bfd36`.
+- **target2:**
+  - **The running binary:** the running hud-service (PID 3757) is the
+    installed file, which is the build's (`dpkg --verify` clean, 0
+    `(deleted)` mappings).
+  - **-025:** 8 one-off `StartQuery` clients leave 0 query objects (the
+    ids advanced by 8: created and released). Adversarial clients, each on
+    its own connection:
+    - one leaving inside its 2 s timer;
+    - one bare `CloseQuery`;
+    - reuse, then `CloseQuery` on the query object, then a new path;
+    - two senders at once, each erased on its own;
+    - the timer releasing a query.
+    All ended at 0 objects, with the same PID throughout.
+  - **-017:** a desktop file only in `~/.local/share/applications` gives
+    the window its id, its icon and its `DesktopPath`.
+  - **The usage table's timeline** (dpkg.log, journal, hudmon) confirms
+    that the `org` row was written by the base package only.
+- **The card's numbers** match logs/01-03 and the hudmon captures.
+
+Remarks:
+
+1. Qt 5.15 does not reject a relative `XDG_DATA_HOME`. With one,
+   `desktopPath()` could return a path relative to the working directory;
+   the spec says such a value is ignored. The session does not set
+   `XDG_DATA_HOME`. Follow-up UNITY-20261009-005.
+2. "coredumps 0" in `target025.sh` proved nothing (coredumpctl is not
+   installed on target2). The evidence is the unchanged PID; the card says
+   so now.
+3. The deleted mappings are only a side signal (not 5 × 3 Tries per
+   query); the card now says so.
+4. Two existing tests, `ReverseDnsIdPathAndIcon` and
+   `DBusInterfaceIsExported`, now also look in
+   `$HOME/.local/share/applications`. This is harmless under sbuild
+   (`HOME=/sbuild-nonexistent`).
+5. The unit tests use one sender, so an erase of the wrong sender's entry
+   would pass them. The live two-sender client on target2 covers that
+   case.
+
+Not run: a rebuild, or a local run of the unit tests (the sbuild logs were
+used instead); a real Alt in the Unity 7 HUD (logs/03 was used instead);
+the base reproduction of UNITY-20261009-004; the -018 bamfdaemon restart.
+
+## Known gaps
+
+| gap | where it is covered |
+|---|---|
+| bamf and hud-service can still pick different desktop files: bamf always scans `~/.local/share/applications` even when `XDG_DATA_HOME` points elsewhere, reads `XDG_DATA_DIRS` in reverse and searches subdirectories. | design review round 2, point 5; not a regression, both differ from Qt the same way as before |
+| A relative `XDG_DATA_HOME` is not ignored by Qt 5.15. | UNITY-20261009-005; not set in the Unity session |
+| Two crash paths of the legacy `ExecuteQuery`: a key that is not an integer, and no focused window. | UNITY-20261009-003 (older than this revision) |
+| The Unity 7 HUD command «Создать окно» for gnome-terminal opens no window; the same on the Ubuntu base. | UNITY-20261009-004 |
+| An Ubuntu upload of hud would replace +unity6 without these fixes. | the usual risk of a carried package; hud upstream inactive since 2020 |
