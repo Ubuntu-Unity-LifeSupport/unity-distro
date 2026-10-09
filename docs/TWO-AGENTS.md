@@ -207,12 +207,19 @@ python3 ~/unity-distro/scripts/install_command_guard.py --check
 
 It must print `command_guard wiring: OK`. Then run the probe
 `pgrep -f unity-guard-probe-zzz` once: the hook must deny it. If either
-fails, stop and tell C; do not work around a missing guard. The handler lives
-in `~/.claude/settings.json` (every session of user `claude`, any cwd) and,
-byte-identical, in `.claude/settings.json` here; only May approves a change to
-the user file (`--diff` shows it, `--apply` writes it). The handler always
-runs the guard of this base checkout, so a guard change on a task branch takes
-effect only after it is merged to `main` and the base is pulled.
+fails, stop and tell C; do not work around a missing guard. The handler and
+the permissions block (a deny belt, and `ask` rules that make the Edit and
+Write tools prompt May for the trusted files: the settings, the hook, the
+publication tools, shell profiles, keys and identities) live in
+`~/.claude/settings.json` (every session of user `claude`, any cwd) and,
+byte-identical, in `.claude/settings.json` here. Only May approves a change
+to the user file: `install_command_guard.py --diff` shows it, `--propose`
+writes `~/.claude/settings.json.proposed`, and the live file is written with
+the Write tool, which asks him; the installer itself never writes the live
+file, and the guard refuses shell writes into the trusted files ("edit it
+with the Edit tool"). The handler always runs the guard of this base
+checkout, so a guard change on a task branch takes effect only after it is
+merged to `main` and the base is pulled.
 
 ### Inbox acknowledgement
 

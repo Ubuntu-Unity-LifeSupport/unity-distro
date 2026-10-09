@@ -376,6 +376,69 @@ class AptlyPublishGuardTest(unittest.TestCase):
                 with self.subTest(denied=command[:50]):
                     self.assertEqual(run_hook(command).returncode, 2)
 
+    def test_phase3_trusted_file_writes(self):
+        """Permission model phase 3, guard rules 1 and 3: shell writes into
+        the trusted files (the set is the installer's) are denied with "use
+        Edit"; reads and writes elsewhere are unchanged; sudoers writes and
+        visudo are denied in every spelling. Strings are data."""
+        home = os.path.expanduser("~")
+        denied = {
+            "redirect": "echo x >> ~/.claude/settings.json",
+            "redirect-absolute": f"echo x > {home}/.claude/settings.json",
+            "redirect-home-var": "echo x > $HOME/.claude/settings.json",
+            "redirect-proposal": "echo x > ~/.claude/settings.json.proposed",
+            "tee": "echo x | tee -a $HOME/.bashrc",
+            "cp-destination": "cp /tmp/s.json ~/.claude/settings.json",
+            "cp-into-directory": "cp settings.json ~/.claude/",
+            "mv-source": "mv ~/.claude/settings.json /tmp/x",
+            "rm": "rm ~/.claude/settings.json",
+            "rm-r-ancestor": "rm -r ~/.claude",
+            "sed-i": "sed -i s/a/b/ ~/.gitconfig",
+            "gzip": "gzip ~/.claude/settings.json",
+            "curl-o": "curl -o ~/.claude/settings.json https://example.invalid/y",
+            "ln-hard": "ln -f /tmp/x ~/.claude/settings.json",
+            "python-c-open-w": "python3 -c \"open('" + home + "/.claude/settings.json','w').write('x')\"",
+            "python-heredoc-open-w": "python3 - <<'EOF'\nopen('" + home + "/.claude/settings.json','w').write('x')\nEOF",
+            "python-heredoc-shutil": "python3 - <<'EOF'\nimport shutil\nshutil.copy('/tmp/x', '" + home + "/.claude/settings.json')\nEOF",
+            "ssh-key": "cp /tmp/k ~/.ssh/id_ed25519",
+            "base-script": "cp x.py ~/unity-distro/scripts/taskctl.py",
+            "base-hook-dir": "cp x.py ~/unity-distro/.claude/hooks/command_guard.py",
+            "skills": "cp x.md ~/.claude/skills/x/SKILL.md",
+            "shell-body": "bash <<'EOF'\ncp /tmp/s.json ~/.claude/settings.json\nEOF",
+            "visudo": "sudo visudo -c",
+            "visudo-bare": "visudo",
+            "sudoers-tee": "echo x | sudo tee /etc/sudoers.d/x",
+            "sudoers-cp": "sudo cp f /etc/sudoers.d/",
+            "sudoers-rm": "sudo rm /etc/sudoers.d/x",
+        }
+        allowed = {
+            "cat": "cat ~/.claude/settings.json",
+            "grep": "grep -n hooks ~/.claude/settings.json",
+            "diff": "diff ~/.claude/settings.json /tmp/x",
+            "cp-source": "cp ~/.claude/settings.json /tmp/backup.json",
+            "python-read-report": "python3 - <<'EOF'\ns=open('" + home + "/.claude/settings.json').read()\nopen('/tmp/report.txt','w').write(s)\nEOF",
+            "sudoers-cat": "sudo cat /etc/sudoers.d/99-claude-nopasswd",
+            "worktree-settings": "echo x >> ~/work/b/unity-distro/.claude/settings.json",
+            "worktree-script": "cp x.py ~/work/a/unity-distro/scripts/taskctl.py",
+            "ssh-config": "echo host >> ~/.ssh/config",
+            "docs": "cp x.md ~/unity-distro/docs/research/notes.md",
+            "cp-into-docs-dir": "cp new.py ~/unity-distro/docs/",
+            "installer-check": "python3 ~/unity-distro/scripts/install_command_guard.py --check",
+            "installer-propose": "python3 scripts/install_command_guard.py --propose",
+            "git-add-installer": "git add scripts/install_command_guard.py",
+            "pycache-cleanup": "rm -r -- ~/unity-distro/.claude/hooks/__pycache__",
+            "chmod-trusted": "chmod g-w ~/.aptly.conf",
+        }
+        for key, command in sorted(denied.items()):
+            with self.subTest(denied=key):
+                result = run_hook(command)
+                self.assertEqual(result.returncode, 2, f"{key} allowed")
+                self.assertIn("trusted file" if "sudo" not in key else "sudoers", result.stderr)
+        for key, command in sorted(allowed.items()):
+            with self.subTest(allowed=key):
+                result = run_hook(command)
+                self.assertEqual(result.returncode, 0, f"{key} denied: {result.stderr}")
+
     def test_other_rules_unchanged(self):
         for command in ("git add -A", "git push --force origin x", "xwd -root",
                         "pkill -f compiz", "rm -rf $X/y", "true\ngit push --force origin x",

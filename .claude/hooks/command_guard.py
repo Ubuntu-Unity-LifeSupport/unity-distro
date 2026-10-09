@@ -9,6 +9,7 @@ mention of aptly passes only in a command made of plain readers.
 """
 
 import codecs
+import fnmatch
 import json
 import os
 import re
@@ -31,6 +32,8 @@ DENY_MESSAGES = {
     "xwd": "xwd is blocked; use the assigned desktop screenshot procedure.",
     "process": "Pattern-based process matching is blocked; identify the exact PID.",
     "remove": "Recursive forced removal with a glob or unguarded variable is blocked.",
+    "trusted": "trusted file {path}: edit it with the Edit tool, which asks May.",
+    "sudoers": "sudoers is May's own change; the shell may not write under /etc/sudoers.",
 }
 
 SUBST = "__SUBST__"
@@ -1407,6 +1410,225 @@ def _check_live(command: str, session_id: str | None, tool_name: str | None, bac
     _log_live(command, session_id, tool_name, marker, marker_sha, list_sha)
 
 
+# --- trusted files (permission model phase 3) -------------------------------------
+#
+# The trusted set lives once, in scripts/install_command_guard.py, which also
+# writes the Edit/Write ask rules for it. A shell write into one of those
+# files by a listed form is refused here; the Edit tool is the way, and it
+# asks May. sudoers writes and visudo are refused outright. Design:
+# docs/research/permission-model-2026-10-09/phase3-permissions-block.md
+
+_TRUSTED = None
+
+
+def _trusted_set():
+    """(files, dirs, globs, sudoers) from the installer next to this guard's checkout.
+    An import failure raises and fails the hook closed."""
+    global _TRUSTED
+    if _TRUSTED is None:
+        import importlib.util
+        installer = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                                 "scripts", "install_command_guard.py")
+        spec = importlib.util.spec_from_file_location("install_command_guard_trusted", installer)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        _TRUSTED = (tuple(module.TRUSTED_FILES), tuple(module.TRUSTED_DIRS), tuple(module.TRUSTED_GLOBS),
+                    tuple(module.SUDOERS_PATHS))
+    return _TRUSTED
+
+
+_HOME_VAR = re.compile(r"^\$(HOME|\{HOME\})(?=/|$)")
+_COPIERS_DEST = {"cp", "mv", "install", "rsync", "ln"}
+_REMOVERS = {"rm", "shred", "unlink", "truncate", "gzip", "bzip2", "xz", "zstd"}
+# a bytecode cache under a trusted directory is not trusted state
+_CACHE_PATH = re.compile(r"(/__pycache__(/|$)|\.pyc$)")
+_FETCHERS = {"curl": ("-o", "--output"), "wget": ("-O", "--output-document", "-P", "--directory-prefix")}
+_INTERP_WORD = re.compile(r"^(python[0-9.]*|perl|ruby|node|php)$")
+_WRITE_IDIOMS = re.compile(
+    r"(?:\bopen\s*\(([^()]*)\))|(?:\bPath\s*\(([^()]*)\)\s*\.\s*write_(?:text|bytes))|"
+    r"(?:\b(?:shutil\.(?:copy\w*|move)|os\.(?:replace|rename|link|symlink))\s*\(([^()]*)\))")
+_MODE_WRITE = re.compile(r"['\"](?:w|a|w\+|a\+|wb|ab|wt|at)['\"]")
+
+
+def _resolve_path(token: str):
+    """Absolute, normalised candidates for a token that may name a file; None
+    when the token is not a resolvable literal (another variable, a substitution)."""
+    if not token or SUBST in token or "`" in token:
+        return None
+    home = os.path.expanduser("~")
+    text = token
+    if text == "~" or text.startswith("~/"):
+        text = home + text[1:]
+    text = _HOME_VAR.sub(home, text)
+    if "$" in text:
+        return None
+    absolute = os.path.normpath(os.path.join(os.getcwd(), text))
+    try:
+        real = os.path.realpath(absolute)
+    except OSError:
+        real = absolute
+    return {absolute, real}
+
+
+def _is_trusted_path(path: str, include_sudoers: bool = True):
+    files, dirs, globs, sudoers = _trusted_set()
+    if _CACHE_PATH.search(path):
+        return None
+    if path in files or any(fnmatch.fnmatchcase(path, g) for g in globs):
+        return "trusted"
+    if any(path == d or path.startswith(d + "/") for d in dirs):
+        return "trusted"
+    if include_sudoers and any(path == d or path.startswith(d + "/") for d in sudoers):
+        return "sudoers"
+    return None
+
+
+def _is_trusted_ancestor(path: str):
+    """A directory whose removal or move takes a trusted file with it."""
+    files, dirs, globs, sudoers = _trusted_set()
+    candidates = list(files) + list(dirs) + [os.path.dirname(g) for g in globs] + list(sudoers)
+    for candidate in candidates:
+        if candidate != path and candidate.startswith(path.rstrip("/") + "/") and path not in ("/", os.path.expanduser("~")):
+            return "sudoers" if candidate in sudoers or any(candidate.startswith(d + "/") for d in sudoers) else "trusted"
+    return None
+
+
+def _classify_targets(tokens: list[str], ancestors: bool = False):
+    for token in tokens:
+        resolved = _resolve_path(token)
+        if not resolved:
+            continue
+        for path in resolved:
+            kind = _is_trusted_path(path) or (_is_trusted_ancestor(path) if ancestors else None)
+            if kind:
+                return kind, path
+    return None
+
+
+def _write_targets(group: list[str]):
+    """(kind, path) of the first trusted file this group writes by a listed form, else None."""
+    tokens = _unwrap(group)
+    if not tokens:
+        return None
+    word = os.path.basename(tokens[0])
+    args = [t for t in tokens[1:] if t != HEREDOC]
+    redirects = _redirect_targets(group)
+    if redirects:
+        found = _classify_targets([t for t in redirects if t != "/dev/null"])
+        if found:
+            return found
+    if word == "visudo":
+        return "sudoers", "visudo"
+    operands = [a for a in args if not a.startswith("-") and not _REDIRECT.match(a)]
+    if word == "tee":
+        return _classify_targets(operands)
+    if word in _COPIERS_DEST:
+        if "-t" in args:
+            index = args.index("-t")
+            dest = args[index + 1] if index + 1 < len(args) else None
+            sources = [o for o in operands if o != dest]
+        elif len(operands) >= 2:
+            dest, sources = operands[-1], operands[:-1]
+        else:
+            return _classify_targets(operands, ancestors=word == "mv")
+        found = _classify_targets(sources, ancestors=word == "mv")  # a trusted source moved away
+        if found and word == "mv":
+            return found
+        resolved = _resolve_path(dest) if dest else None
+        if not resolved:
+            return None
+        candidates = []
+        for path in resolved:
+            if dest.endswith("/") or os.path.isdir(path):
+                candidates += [os.path.join(path, os.path.basename(src.rstrip("/"))) for src in sources]
+            candidates.append(path)
+        for path in candidates:
+            kind = _is_trusted_path(path)
+            if kind:
+                return kind, path
+        return None
+    if word == "dd":
+        return _classify_targets([a.split("=", 1)[1] for a in args if a.startswith("of=")])
+    if word == "sed" and any(a == "-i" or a.startswith("-i") and not a.startswith("--") and "i" in a[1:]
+                            or a.startswith("--in-place") for a in args if a.startswith("-")):
+        return _classify_targets(operands)
+    if word in _REMOVERS:
+        return _classify_targets(operands, ancestors=True)
+    if word in _FETCHERS:
+        flags = _FETCHERS[word]
+        targets = []
+        for n, a in enumerate(args):
+            if a in flags and n + 1 < len(args):
+                targets.append(args[n + 1])
+            elif any(a.startswith(f + "=") for f in flags if f.startswith("--")):
+                targets.append(a.split("=", 1)[1])
+        return _classify_targets(targets)
+    if word == "tar" and any(a.startswith("-") and "x" in a.lstrip("-") for a in args) and "-C" in args:
+        index = args.index("-C")
+        return _classify_targets([args[index + 1]] if index + 1 < len(args) else [], ancestors=True) \
+            or _classify_targets([os.path.join(args[index + 1], "x")] if index + 1 < len(args) else [])
+    if word == "unzip" and "-d" in args:
+        index = args.index("-d")
+        return _classify_targets([os.path.join(args[index + 1], "x")] if index + 1 < len(args) else [])
+    return None
+
+
+def _interpreter_writes(text: str):
+    """A trusted literal next to a write idiom in interpreter code (a heredoc body or a -c string)."""
+    for match in _WRITE_IDIOMS.finditer(text):
+        kind = "open" if match.group(1) is not None else "path" if match.group(2) is not None else "shutil"
+        inside = match.group(1) or match.group(2) or match.group(3) or ""
+        if kind == "open" and not _MODE_WRITE.search(inside):
+            continue
+        for literal in re.findall(r"""['"]([^'"]+)['"]""", inside):
+            resolved = _resolve_path(literal)
+            if not resolved:
+                continue
+            for path in resolved:
+                found = _is_trusted_path(path)
+                if found:
+                    return found, path
+    return None
+
+
+def _trusted_rules(levels: list, command: str) -> str | None:
+    """Permission model phase 3, rules 1 and 3, over every executed group and
+    over interpreter code; readers of trusted files are untouched."""
+    for level in levels:
+        if level.blob:
+            continue
+        for group in level.groups:
+            found = _write_targets(group)
+            if found:
+                kind, path = found
+                return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
+            tokens = _unwrap(group)
+            if tokens and _INTERP_WORD.match(os.path.basename(tokens[0])):
+                for n, token in enumerate(tokens[1:], 1):
+                    if token in ("-c", "-e") and n + 1 < len(tokens):
+                        found = _interpreter_writes(tokens[n + 1])
+                        if found:
+                            kind, path = found
+                            return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
+    # interpreter heredoc bodies (the scanner's raw bodies; _levels keeps only process-starting blobs)
+    try:
+        scanner = _Scanner(command)
+        outer = scanner.run()
+        groups, seps = _lex(outer)
+    except (ScanError, ValueError):
+        return None
+    owners = [(group, sep) for group, sep in zip(groups, seps) for token in group if token == HEREDOC]
+    for n, body in enumerate(scanner.bodies):
+        group = owners[n][0] if n < len(owners) else []
+        tokens = _unwrap(group)
+        if tokens and _INTERP_WORD.match(os.path.basename(tokens[0])):
+            found = _interpreter_writes(body.text)
+            if found:
+                kind, path = found
+                return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
+    return None
+
+
 _PARSE_MESSAGE = "Command guard could not parse shell quoting; tool call blocked."
 _GLOB_CHARS = re.compile(r"[*?\[]")
 
@@ -1478,7 +1700,13 @@ def _fallback_floor(command: str) -> str | None:
 
 
 def inspect(command: str, session_id: str | None = None, tool_name: str | None = "Bash",
-            background: bool = False) -> str | None:
+            background: bool = False, cwd: str | None = None) -> str | None:
+    # Relative paths resolve against the session's directory (permission model phase 3).
+    if cwd and os.path.isdir(cwd):
+        try:
+            os.chdir(cwd)
+        except OSError:
+            pass
     # Live phase: only an exact reviewed string, checked before the floor.
     if command.startswith(LIVE_PREFIX):
         try:
@@ -1497,7 +1725,8 @@ def inspect(command: str, session_id: str | None = None, tool_name: str | None =
         levels = _levels(command, fallback=fallback)
     except ScanError:
         return _PARSE_MESSAGE
-    rest = _group_rules(group for level in levels if not level.body for group in level.groups)
+    rest = _group_rules(group for level in levels if not level.body for group in level.groups) \
+        or _trusted_rules(levels, command)
     if _rehearsal_candidate(command):
         try:
             _check_rehearsal(command, session_id)
@@ -1569,9 +1798,11 @@ def main() -> int:
     try:
         session = payload.get("session_id")
         tool_name = payload.get("tool_name")
+        cwd = payload.get("cwd")
         message = inspect(command, session if isinstance(session, str) else None,
                           tool_name if isinstance(tool_name, str) else None,
-                          tool_input.get("run_in_background") not in (None, False))
+                          tool_input.get("run_in_background") not in (None, False),
+                          cwd if isinstance(cwd, str) else None)
     except Exception as error:  # fail closed on any bug in the guard itself
         message = f"Command guard failed ({type(error).__name__}); tool call blocked."
     if message:

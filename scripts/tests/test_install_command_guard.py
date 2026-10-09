@@ -132,7 +132,19 @@ class ProjectSettingsTests(unittest.TestCase):
     def test_project_handler_is_the_installer_handler(self):
         data = json.loads(PROJECT_SETTINGS.read_text(encoding="utf-8"))
         self.assertEqual(icg.settings_problems(data, Path(DEPLOYED), "project"), [])
-        self.assertEqual(data, icg.installed({}, Path(DEPLOYED)))
+        self.assertEqual(data, icg.proposal({}, Path(DEPLOYED)))
+
+    def test_permissions_block_forms(self):
+        """Permission model phase 3: every rule is an exact command, a ' *' prefix or an absolute path rule."""
+        self.assertEqual(icg.rule_form_problems(), [])
+        self.assertEqual(icg.PERMISSIONS.get("allow"), None)
+        self.assertIn("Bash(aptly publish *)", icg.PERMISSIONS["deny"])
+        self.assertIn(f"Edit(//{icg.HOME.lstrip('/')}/.claude/settings.json)", icg.PERMISSIONS["ask"])
+        self.assertIn(f"Write(//{icg.HOME.lstrip('/')}/.claude/settings.json.proposed)", icg.PERMISSIONS["ask"])
+        self.assertNotIn("Bash(gh repo view *)", icg.PERMISSIONS["ask"])
+        for rule in icg.PERMISSIONS["deny"] + icg.PERMISSIONS["ask"]:
+            if rule.startswith("Bash("):
+                self.assertNotRegex(rule, r"\S\*\)$", f"glued wildcard: {rule}")
 
     def test_no_project_dir_placeholder(self):
         self.assertNotIn("CLAUDE_PROJECT_DIR", project_handler())
@@ -150,9 +162,11 @@ class InstallerTests(unittest.TestCase):
         self.base = self.tmp / "base"
         (self.base / ".claude" / "hooks").mkdir(parents=True)
         shutil.copy(GUARD, self.base / ".claude" / "hooks" / "command_guard.py")
-        (self.base / ".claude" / "settings.json").write_text(icg.dump(icg.installed({}, self.base)))
+        (self.base / "scripts").mkdir()
+        shutil.copy(INSTALLER, self.base / "scripts" / "install_command_guard.py")  # the guard imports the trusted set from it
+        (self.base / ".claude" / "settings.json").write_text(icg.dump(icg.proposal({}, self.base)))
         git(self.base, "init", "-q", "-b", "main")
-        git(self.base, "add", ".claude")
+        git(self.base, "add", ".claude", "scripts")
         git(self.base, "commit", "-q", "-m", "base")
         self.settings = self.tmp / "home" / "settings.json"
         self.settings.parent.mkdir()
@@ -272,6 +286,84 @@ class InstallerTests(unittest.TestCase):
         self.settings.symlink_to(real)
         self.assertEqual(self.installer("--apply").returncode, 1)
         self.assertTrue(self.settings.is_symlink())
+
+    # ---- permission model phase 3 ----------------------------------------------
+    def test_propose_writes_the_proposal_and_not_the_settings(self):
+        before = self.settings.read_text()
+        result = self.installer("--propose")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        proposed = self.settings.with_name(self.settings.name + icg.PROPOSED_SUFFIX)
+        self.assertTrue(proposed.is_file())
+        self.assertEqual(oct(proposed.stat().st_mode & 0o777), "0o600")
+        self.assertEqual(json.loads(proposed.read_text()), icg.proposal(json.loads(before), self.base))
+        self.assertEqual(self.settings.read_text(), before)
+        self.assertIn("+  \"permissions\"", result.stdout)
+        self.assertIn("Write tool", result.stdout)
+
+    def test_propose_without_the_block(self):
+        self.installer("--apply")
+        result = self.installer("--propose", "--remove-permissions")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        proposed = json.loads(self.settings.with_name(self.settings.name + icg.PROPOSED_SUFFIX).read_text())
+        self.assertNotIn("permissions", proposed)
+        self.assertIn("hooks", proposed)
+
+    def test_apply_refuses_the_live_user_file(self):
+        """The installer never writes ~/.claude/settings.json; a path that resolves to it is refused."""
+        for spelling in (icg.USER_SETTINGS, Path(str(icg.USER_SETTINGS).replace("/.claude/", "/./.claude/"))):
+            with self.subTest(spelling=str(spelling)):
+                result = subprocess.run([sys.executable, str(INSTALLER), "--apply", "--settings", str(spelling),
+                                         "--base", str(self.base)], capture_output=True, text=True, timeout=60)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn("live user settings", result.stderr)
+        self.assertRaises(PermissionError, icg.write_atomic, icg.USER_SETTINGS, "x")
+
+    def test_apply_writes_the_block_to_a_temporary_file(self):
+        self.assertEqual(self.installer("--apply").returncode, 0)
+        self.assertEqual(self.data()["permissions"], icg.PERMISSIONS)
+        self.assertEqual(self.data()["theme"], "dark")
+
+    def test_abbreviated_options_are_refused(self):
+        result = self.installer("--app")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("one of the arguments --check --diff --propose --apply is required", result.stderr)
+        self.assertEqual(self.settings.read_text().count("permissions"), 0)
+
+    def test_check_detects_missing_or_altered_block(self):
+        self.installer("--apply")
+        data = self.data()
+        del data["permissions"]
+        self.settings.write_text(json.dumps(data))
+        self.assert_check_fails("permissions block is missing")
+        data["permissions"] = dict(icg.PERMISSIONS, deny=icg.PERMISSIONS["deny"][1:])
+        self.settings.write_text(json.dumps(data))
+        self.assert_check_fails("permissions block is missing or differs")
+
+    def test_check_detects_allow_rules_and_modes(self):
+        self.installer("--apply")
+        data = self.data()
+        data["permissions"] = dict(icg.PERMISSIONS, allow=["Bash(ls *)"])
+        self.settings.write_text(json.dumps(data))
+        self.assert_check_fails("permissions.allow is not empty")
+        data["permissions"] = dict(icg.PERMISSIONS, defaultMode="acceptEdits")
+        self.settings.write_text(json.dumps(data))
+        self.assert_check_fails("defaultMode")
+
+    def test_check_detects_local_settings(self):
+        self.installer("--apply")
+        self.settings.with_name("settings.local.json").write_text("{}")
+        self.assert_check_fails("settings.local.json")
+
+    def test_check_runs_the_trusted_write_probe(self):
+        self.installer("--apply")
+        result = self.installer("--check")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        guard = self.base / ".claude" / "hooks" / "command_guard.py"
+        text = guard.read_text()
+        guard.write_text(text.replace("return DENY_MESSAGES[\"sudoers\"] if kind == \"sudoers\" else DENY_MESSAGES[\"trusted\"].format(path=path)\n            tokens = _unwrap(group)",
+                                      "pass\n            tokens = _unwrap(group)", 1))
+        git(self.base, "commit", "-qam", "weaken rule 1")
+        self.assert_check_fails("trusted-write probe")
 
     def test_check_detects_project_mismatch(self):
         self.installer("--apply")
