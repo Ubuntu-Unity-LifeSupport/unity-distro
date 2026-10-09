@@ -70,6 +70,7 @@ TRUSTED_FILES = tuple(str(p) for p in (
     USER_SETTINGS.with_name(USER_SETTINGS.name + BACKUP_SUFFIX),
     Path(HOME) / ".bashrc", Path(HOME) / ".profile", Path(HOME) / ".bash_profile", Path(HOME) / ".bash_aliases",
     Path(HOME) / ".gitconfig", Path(HOME) / ".ssh" / "authorized_keys", Path(HOME) / ".aptly.conf",
+    Path(HOME) / ".claude.json",  # Claude Code's own state: MCP servers, trust, per-project history
     BASE / "docs" / "ENGINEERING-PROCESS.md",
     BASE / "scripts" / "publish_aptly.py", BASE / "scripts" / "approval_record.py", BASE / "scripts" / "taskctl.py",
     BASE / "scripts" / "safe_git.py", BASE / "scripts" / "install_command_guard.py",
@@ -83,17 +84,28 @@ TRUSTED_DIRS = tuple(str(p) for p in (
     BASE / ".claude", BASE / "signer",
 ))
 TRUSTED_GLOBS = (str(Path(HOME) / ".ssh" / "id_*"),)
-# sudoers is May's own change: the Edit/Write tools are denied, and the guard
-# refuses every shell write (rule 3).
+# sudoers is May's own change: the Edit tool is denied, and the guard refuses
+# every shell write (rule 3).
 SUDOERS_PATHS = ("/etc/sudoers", "/etc/sudoers.d")
+# Files no built-in tool may read: a Read deny rule also blocks the Edit and
+# Write tools on the path and the file commands Claude Code recognises in Bash
+# (cat, head, tail, sed, tee) and redirections.
+DENY_READ = (str(Path(HOME) / ".gnupg" / "private-keys-v1.d" / "**"),
+             str(Path(HOME) / ".claude" / ".credentials.json"))
 
 
 def _rule_path(path):
     return "//" + path.lstrip("/")
 
 
-def _edit_write(pattern):
-    return [f"Edit({pattern})", f"Write({pattern})"]
+def _edit(pattern):
+    """One Edit rule per path. Claude Code checks file permissions against
+    Edit(path) and Read(path) rules only; Edit rules apply to all built-in tools
+    that edit files, and a Write(path) rule is accepted but never consulted
+    (docs "Configure permissions", requirement v2.1.210+; measured on the
+    installed 2.1.278 under bypassPermissions: an Edit(path) ask rule stops the
+    Write tool, a Write(path) ask rule does not)."""
+    return [f"Edit({pattern})"]
 
 
 def permissions_block():
@@ -103,16 +115,16 @@ def permissions_block():
         "Bash(aptly api)", "Bash(aptly api *)",
         "Bash(git push --force)", "Bash(git push --force *)", "Bash(git push -f)", "Bash(git push -f *)",
         "Bash(xwd)", "Bash(xwd *)",
-        *_edit_write(_rule_path("/etc/sudoers")), *_edit_write(_rule_path("/etc/sudoers.d/**")),
-        f"Read({_rule_path(HOME + '/.gnupg/private-keys-v1.d/**')})",
+        *_edit(_rule_path("/etc/sudoers")), *_edit(_rule_path("/etc/sudoers.d/**")),
+        *[f"Read({_rule_path(path)})" for path in DENY_READ],
     ]
     ask = []
     for path in TRUSTED_FILES:
-        ask += _edit_write(_rule_path(path))
+        ask += _edit(_rule_path(path))
     for path in TRUSTED_DIRS:
-        ask += _edit_write(_rule_path(path + "/**"))
+        ask += _edit(_rule_path(path + "/**"))
     for pattern in TRUSTED_GLOBS:
-        ask += _edit_write(_rule_path(pattern))
+        ask += _edit(_rule_path(pattern))
     ask += [
         # external writes (write subcommands only; reads stay unasked)
         "Bash(gh issue create *)", "Bash(gh issue comment *)", "Bash(gh issue close *)", "Bash(gh issue edit *)",
@@ -139,11 +151,12 @@ def permissions_block():
 
 
 PERMISSIONS = permissions_block()
-_RULE_FORM = re.compile(r"^(Bash\([^*]+( \*)?\)|(Edit|Write|Read)\(//[^ ]+\))$")
+_RULE_FORM = re.compile(r"^(Bash\([^*]+( \*)?\)|(Edit|Read)\(//[^ ]+\))$")
 
 
 def rule_form_problems():
-    """Every Bash rule is an exact command or a prefix ending in ' *'; every path rule is absolute."""
+    """Every Bash rule is an exact command or a prefix ending in ' *'; every path
+    rule is an absolute Edit or Read rule (a Write(path) rule is never consulted)."""
     return [f"rule not in the documented form: {rule}" for rule in PERMISSIONS["deny"] + PERMISSIONS["ask"]
             if not _RULE_FORM.match(rule)]
 

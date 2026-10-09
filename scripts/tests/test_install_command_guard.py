@@ -166,7 +166,14 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertEqual(icg.PERMISSIONS.get("allow"), None)
         self.assertIn("Bash(aptly publish *)", icg.PERMISSIONS["deny"])
         self.assertIn(f"Edit(//{icg.HOME.lstrip('/')}/.claude/settings.json)", icg.PERMISSIONS["ask"])
-        self.assertIn(f"Write(//{icg.HOME.lstrip('/')}/.claude/settings.json.proposed)", icg.PERMISSIONS["ask"])
+        self.assertIn(f"Edit(//{icg.HOME.lstrip('/')}/.claude/settings.json.proposed)", icg.PERMISSIONS["ask"])
+        # May's corrections (2026-10-09): no Write(path) rule anywhere (Claude Code never
+        # consults one), ~/.claude.json asks, the credentials file is unreadable.
+        self.assertEqual([r for r in icg.PERMISSIONS["deny"] + icg.PERMISSIONS["ask"] if r.startswith("Write(")], [])
+        self.assertIn(f"Edit(//{icg.HOME.lstrip('/')}/.claude.json)", icg.PERMISSIONS["ask"])
+        self.assertIn(f"Read(//{icg.HOME.lstrip('/')}/.claude/.credentials.json)", icg.PERMISSIONS["deny"])
+        self.assertIn(f"Edit(//{icg.HOME.lstrip('/')}/.claude/settings.json)", icg.PERMISSIONS["ask"])
+        self.assertIn("Edit(//etc/sudoers.d/**)", icg.PERMISSIONS["deny"])
         self.assertNotIn("Bash(gh repo view *)", icg.PERMISSIONS["ask"])
         for rule in icg.PERMISSIONS["deny"] + icg.PERMISSIONS["ask"]:
             if rule.startswith("Bash("):

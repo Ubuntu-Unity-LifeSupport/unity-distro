@@ -59,8 +59,8 @@ guard rule; the belt covers the `Bash` tool only, `Monitor` is the guard's):
   "Bash(aptly api)", "Bash(aptly api *)",
   "Bash(git push --force)", "Bash(git push --force *)", "Bash(git push -f)", "Bash(git push -f *)",
   "Bash(xwd)", "Bash(xwd *)",
-  "Edit(//etc/sudoers)", "Write(//etc/sudoers)",
-  "Edit(//etc/sudoers.d/**)", "Write(//etc/sudoers.d/**)",
+  "Edit(//etc/sudoers)",
+  "Edit(//etc/sudoers.d/**)",
   "Read(//home/claude/.gnupg/private-keys-v1.d/**)"
 ]
 ```
@@ -81,37 +81,37 @@ ordinary task work, brought into effect only by C's merge and the phase-4
 tool-blob check, so it is not asked):
 
 ```json
-"Edit(//home/claude/.claude/settings.json)", "Write(//home/claude/.claude/settings.json)",
-"Edit(//home/claude/.claude/settings.local.json)", "Write(//home/claude/.claude/settings.local.json)",
-"Edit(//home/claude/.claude/settings.json.proposed)", "Write(//home/claude/.claude/settings.json.proposed)",
-"Edit(//home/claude/.claude/settings.json.bak-UNITY-20260928-012)", "Write(//home/claude/.claude/settings.json.bak-UNITY-20260928-012)",
-"Edit(//home/claude/.claude/plugins/**)", "Write(//home/claude/.claude/plugins/**)",
-"Edit(//home/claude/.claude/skills/**)", "Write(//home/claude/.claude/skills/**)",
-"Edit(//home/claude/.claude/agents/**)", "Write(//home/claude/.claude/agents/**)",
-"Edit(//home/claude/.claude/commands/**)", "Write(//home/claude/.claude/commands/**)",
-"Edit(//home/claude/.claude/shell-snapshots/**)", "Write(//home/claude/.claude/shell-snapshots/**)",
-"Edit(//home/claude/.bashrc)", "Write(//home/claude/.bashrc)",
-"Edit(//home/claude/.profile)", "Write(//home/claude/.profile)",
-"Edit(//home/claude/.bash_profile)", "Write(//home/claude/.bash_profile)",
-"Edit(//home/claude/.bash_aliases)", "Write(//home/claude/.bash_aliases)",
-"Edit(//home/claude/.gitconfig)", "Write(//home/claude/.gitconfig)",
-"Edit(//home/claude/.ssh/authorized_keys)", "Write(//home/claude/.ssh/authorized_keys)",
-"Edit(//home/claude/.ssh/id_*)", "Write(//home/claude/.ssh/id_*)",
-"Edit(//home/claude/.config/gh/**)", "Write(//home/claude/.config/gh/**)",
-"Edit(//home/claude/.gnupg/**)", "Write(//home/claude/.gnupg/**)",
-"Edit(//home/claude/.config/aptly-signer/**)", "Write(//home/claude/.config/aptly-signer/**)",
-"Edit(//home/claude/.aptly.conf)", "Write(//home/claude/.aptly.conf)",
-"Edit(//home/claude/unity-distro/.claude/**)", "Write(//home/claude/unity-distro/.claude/**)",
-"Edit(//home/claude/unity-distro/signer/**)", "Write(//home/claude/unity-distro/signer/**)",
-"Edit(//home/claude/unity-distro/docs/ENGINEERING-PROCESS.md)", "Write(//home/claude/unity-distro/docs/ENGINEERING-PROCESS.md)",
-"Edit(//home/claude/unity-distro/scripts/publish_aptly.py)", "Write(//home/claude/unity-distro/scripts/publish_aptly.py)",
-"Edit(//home/claude/unity-distro/scripts/approval_record.py)", "Write(//home/claude/unity-distro/scripts/approval_record.py)",
-"Edit(//home/claude/unity-distro/scripts/taskctl.py)", "Write(//home/claude/unity-distro/scripts/taskctl.py)",
-"Edit(//home/claude/unity-distro/scripts/safe_git.py)", "Write(//home/claude/unity-distro/scripts/safe_git.py)",
-"Edit(//home/claude/unity-distro/scripts/install_command_guard.py)", "Write(//home/claude/unity-distro/scripts/install_command_guard.py)",
-"Edit(//home/claude/unity-distro/scripts/create_release_gate.py)", "Write(//home/claude/unity-distro/scripts/create_release_gate.py)",
-"Edit(//home/claude/unity-distro/scripts/signer_client.py)", "Write(//home/claude/unity-distro/scripts/signer_client.py)",
-"Edit(//home/claude/unity-distro/scripts/gpg_standin.py)", "Write(//home/claude/unity-distro/scripts/gpg_standin.py)"
+"Edit(//home/claude/.claude/settings.json)",
+"Edit(//home/claude/.claude/settings.local.json)",
+"Edit(//home/claude/.claude/settings.json.proposed)",
+"Edit(//home/claude/.claude/settings.json.bak-UNITY-20260928-012)",
+"Edit(//home/claude/.claude/plugins/**)",
+"Edit(//home/claude/.claude/skills/**)",
+"Edit(//home/claude/.claude/agents/**)",
+"Edit(//home/claude/.claude/commands/**)",
+"Edit(//home/claude/.claude/shell-snapshots/**)",
+"Edit(//home/claude/.bashrc)",
+"Edit(//home/claude/.profile)",
+"Edit(//home/claude/.bash_profile)",
+"Edit(//home/claude/.bash_aliases)",
+"Edit(//home/claude/.gitconfig)",
+"Edit(//home/claude/.ssh/authorized_keys)",
+"Edit(//home/claude/.ssh/id_*)",
+"Edit(//home/claude/.config/gh/**)",
+"Edit(//home/claude/.gnupg/**)",
+"Edit(//home/claude/.config/aptly-signer/**)",
+"Edit(//home/claude/.aptly.conf)",
+"Edit(//home/claude/unity-distro/.claude/**)",
+"Edit(//home/claude/unity-distro/signer/**)",
+"Edit(//home/claude/unity-distro/docs/ENGINEERING-PROCESS.md)",
+"Edit(//home/claude/unity-distro/scripts/publish_aptly.py)",
+"Edit(//home/claude/unity-distro/scripts/approval_record.py)",
+"Edit(//home/claude/unity-distro/scripts/taskctl.py)",
+"Edit(//home/claude/unity-distro/scripts/safe_git.py)",
+"Edit(//home/claude/unity-distro/scripts/install_command_guard.py)",
+"Edit(//home/claude/unity-distro/scripts/create_release_gate.py)",
+"Edit(//home/claude/unity-distro/scripts/signer_client.py)",
+"Edit(//home/claude/unity-distro/scripts/gpg_standin.py)"
 ```
 
 `~/.ssh/config` and `known_hosts` stay unasked (appending VM hosts is
@@ -769,3 +769,38 @@ the rollout section).
 
 Implementation accepted for merge: five Verifier rounds, each FAIL closed by
 one consolidated change; 148 phase-3 guard forms and 12 installer tests.
+
+## Proposal corrections before the rollout (May, 2026-10-09)
+
+May accepted P3 as complete and asked for two corrections to the proposal
+only, with no new design round:
+
+1. **`Write(path)` rules removed.** The documentation ("Configure
+   permissions", section Read and Edit) states: "`Edit` rules apply to all
+   built-in tools that edit files" and "Claude Code checks file permissions
+   against `Edit(path)` and `Read(path)` rules only. If you write a path rule
+   for `Write`, `NotebookEdit`, `Glob`, or the legacy `MultiEdit` tool instead,
+   Claude Code accepts the rule but never consults it, and warns at startup
+   ... Requires Claude Code v2.1.210 or later." The installed CLI is 2.1.278
+   on PATH and 2.1.284 in the desktop sessions. Measured on 2.1.278 under
+   `bypassPermissions` with a throwaway `--settings` file (fresh haiku `-p`
+   session, live settings untouched, scratchpad `p3-measure-2/`): a path with
+   only an `Edit(path)` ask rule stopped the Write tool ("requested
+   permissions to write"); a path with only a `Write(path)` ask rule was
+   written without a prompt; a `Read(path)` deny rule refused the Read tool
+   ("denied by your permission settings") and `cat` of the file in Bash.
+   The block now holds one `Edit` rule per path (33 `Write` rules
+   dropped); the form check rejects any `Write(path)` rule.
+2. **Two paths added.** `~/.claude.json` (Claude Code's own state) joins the
+   trusted set, so the proposal gains `Edit(//home/claude/.claude.json)` in
+   `ask` and the guard refuses shell writes into it like any trusted file.
+   `Read(//home/claude/.claude/.credentials.json)` joins `deny`: no built-in
+   tool reads the credentials file, and by the documented semantics the same
+   rule also blocks the Edit and Write tools on that path and the recognised
+   file commands in Bash. May's message spelled the path
+   `//home/claude/.credentials.json`; that file does not exist, the
+   credentials live at `~/.claude/.credentials.json`, and the rule names the
+   existing file.
+
+The repository copy `.claude/settings.json` was regenerated from the
+installer. The live `~/.claude/settings.json` stays unchanged until May's GO.
