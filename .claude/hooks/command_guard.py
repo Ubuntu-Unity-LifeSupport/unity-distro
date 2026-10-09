@@ -1778,22 +1778,41 @@ def _trusted_rules(levels: list, command: str, base=None, depth: int = 0) -> str
         return None
     cwd = _Cwd(base)
     owners = []
-    for group, sep in zip(groups, seps):
-        tokens = _unwrap_writer(group)
+    unwrapped = [_unwrap_writer(group) for group in groups]
+    for n, (group, sep) in enumerate(zip(groups, seps)):
+        tokens = unwrapped[n]
         cwd.step(tokens, sep)
-        owners += [(tokens, cwd.here) for token in group if token == HEREDOC]
+        runner = _body_runner(group, tokens)
+        if runner is None and _pipes(sep) and n + 1 < len(groups):
+            runner = _body_runner(groups[n + 1], unwrapped[n + 1])  # cat <<EOF | bash
+        owners += [(runner, cwd.here) for token in group if token == HEREDOC]
         cwd.end_group(sep)
     for n, body in enumerate(scanner.bodies):
-        tokens, here = owners[n] if n < len(owners) else ([], base)
-        word = os.path.basename(tokens[0]) if tokens else ""
-        if _INTERP_WORD.match(word):
+        runner, here = owners[n] if n < len(owners) else (None, base)
+        if runner == "interpreter":
             found = _interpreter_writes(body.text, here)
             if found:
                 return _deny_trusted(found)
-        elif word in _SHELLS or (tokens and tokens[0] in _SHELL_WORDS):
+        elif runner == "shell":
             message = _nested_shell(body.text, here, depth)
             if message:
                 return message
+    return None
+
+
+def _body_runner(group: list[str], tokens: list[str]) -> str | None:
+    """How a command runs text handed to it: "shell" (sh, bash, su, a leading
+    shell word, or sudo -s / sudo -i with no command), "interpreter", or None (data)."""
+    tokens = [t for t in tokens if t != HEREDOC]
+    word = os.path.basename(tokens[0]) if tokens else ""
+    if _INTERP_WORD.match(word):
+        return "interpreter"
+    if word in _SHELLS or word in _SHELL_WORDS:
+        return "shell"
+    if not tokens:
+        rest = [t for t in group if t not in _SHELL_WORDS and t != HEREDOC]
+        if rest and os.path.basename(rest[0]) == "sudo":
+            return "shell"
     return None
 
 

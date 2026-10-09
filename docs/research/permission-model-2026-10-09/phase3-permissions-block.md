@@ -695,3 +695,30 @@ Measured after the fix: the Verifier's 372 case strings (rounds 1 and 2)
 0 mismatches; full suite 485 OK (1 skipped; 132 phase-3 guard forms); transcript
 replay of 11337 commands against main: 0 deny->allow, the same 5 allow->deny.
 Verification round 3 requested.
+
+## Verification round 3 (2026-10-09)
+
+Verifier on f665da4: **FAIL (narrow)**. The three round-2 findings closed in
+every spelling and near variant (`su -l/-s/-lc`, `sudo -u root su -c`, nested
+heredocs, `env -i bash <<EOF`, `<<-'EOF'`, two heredocs); rounds 1-2 strings
+0 of 372 mismatched; no new false positives among `cat`/`tee` heredocs as
+data, `ssh … <<EOF` remote bodies, `git commit -F -` messages; one wrong
+denial of cb21821 gone (`cd ~/work/… && bash <<EOF echo x > .claude/settings.json`);
+fail-closed and bytecode checks hold; 485 tests OK; 440 corpus commands
+unchanged against main. One regression against cb21821 (still additive
+against main): the round-2 rewrite walked a body only when its *owner* was a
+shell or interpreter, so `cat <<EOF | bash`, `cat <<EOF | sudo bash`,
+`cat <<EOF | sh -s`, `sudo -s <<EOF` and `sudo -i <<EOF` were allowed.
+
+Fix: a body is walked by its *runner* (`_body_runner`): the owner when it is a
+shell, an interpreter, a leading shell word or `sudo -s`/`-i` with no command;
+otherwise the next command of the pipeline the owner feeds. Data sinks
+(`cat <<EOF | grep`, `cat <<EOF > file`, `ssh host bash <<EOF`,
+`git commit -F -`) stay data. Residual as stated: `su --command=`,
+`runuser -c`, two-call `cat > x.sh` then `bash x.sh`, `eval`, `xargs sh -c`,
+`find -exec sh -c`, a negated `cd` (`if ! cd …`) followed anyway.
+
+Measured after the fix: the Verifier's 473 case strings (rounds 1-3)
+0 mismatches; full suite OK (145 phase-3 guard forms); transcript replay
+against main: 0 deny->allow, the same 5 allow->deny. Verification round 4
+requested.

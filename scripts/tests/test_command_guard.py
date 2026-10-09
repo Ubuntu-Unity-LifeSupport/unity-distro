@@ -534,6 +534,25 @@ class AptlyPublishGuardTest(unittest.TestCase):
             "cat-heredoc-data": ("cat > /tmp/x <<'EOF'\necho x > ~/.claude/settings.json\nEOF", None),
             "fd-dup-in-claude": ("ls 2>&1 | head", home + "/.claude"),
         })
+        # Verifier round 3: a body is walked by its runner - the owner, sudo -s/-i
+        # alone, or the next command of a pipeline - never as data.
+        denied.update({
+            "cat-pipe-bash": ("cat <<'EOF' | bash\necho x > ~/.claude/settings.json\nEOF", None),
+            "cat-pipe-sudo-bash-sudoers": ("cat <<'EOF' | sudo bash\necho x > /etc/sudoers.d/x\nEOF", None),
+            "cat-pipe-sh-s": ("cat <<'EOF' | sh -s\ncp /tmp/x ~/.claude/settings.json\nEOF", None),
+            "sudo-s-heredoc-sudoers": ("sudo -s <<'EOF'\necho x > /etc/sudoers.d/x\nEOF", None),
+            "sudo-i-heredoc-sudoers": ("sudo -i <<'EOF'\necho x > /etc/sudoers.d/x\nEOF", None),
+            "cat-pipe-python": ("cat <<'EOF' | python3\nopen('" + home + "/.claude/settings.json','w').write('x')\nEOF", None),
+            "cd-cat-pipe-bash": ("cd ~/.claude && cat <<'EOF' | bash\necho x > settings.json\nEOF", None),
+        })
+        allowed.update({
+            "cat-pipe-grep-data": ("cat <<'EOF' | grep settings\necho x > ~/.claude/settings.json\nEOF", None),
+            "cat-to-file-data": ("cat <<'EOF' > /tmp/notes.txt\nsudo -s\necho x > /etc/sudoers.d/x\nEOF", None),
+            "cat-pipe-bash-reader": ("cat <<'EOF' | bash\ncat ~/.claude/settings.json\nEOF", None),
+            "cat-pipe-ssh-remote": ("cat <<'EOF' | ssh target bash\necho x > /etc/sudoers.d/x\nEOF", None),
+            "git-commit-F-message": ("git commit -F - <<'EOF'\nfix: stop writing ~/.claude/settings.json from the shell\nEOF", None),
+            "cd-work-bash-heredoc-relative": ("cd ~/work/b/unity-distro && bash <<'EOF'\necho x > .claude/settings.json\nEOF", home),
+        })
         for key, command in sorted(denied.items()):
             command, cwd = command if isinstance(command, tuple) else (command, None)
             with self.subTest(denied=key):
