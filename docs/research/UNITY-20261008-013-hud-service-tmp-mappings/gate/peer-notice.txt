@@ -1,0 +1,3 @@
+# UNITY-20261008-013 peer notice (ENGINEERING-PROCESS section 6 step 7)
+2026-10-08 23:55Z B -> A: libcolumbus 1.1.0+15.10.20150806-0ubuntu39+unity1 (new package), 7 records, snapshot unity-resolute-20261008-013 (= live unity-resolute-20260927-053 + 7, nothing removed or changed), version_safety SAFE, src/Trie.cc only (+ cmake_minimum_required 3.10), switch after C and May
+2026-10-08 23:55Z A -> B: A ACK UNITY-20261008-013, no conflict; nothing of A's unpublished in unity-resolute (newest u-s-d there is the published +unity12); no repo add, snapshot or slot on A's side; A's u-s-d +unity13 builds are scratch only; target-desktop does not depend on libcolumbus

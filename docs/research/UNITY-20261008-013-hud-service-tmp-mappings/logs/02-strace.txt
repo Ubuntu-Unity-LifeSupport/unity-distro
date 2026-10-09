@@ -1,0 +1,53 @@
+# UNITY-20261008-013 strace -f -k -e trace=openat,memfd_create,mmap,ftruncate,fallocate on hud-service (+unity5, pid 3638) during one HUD query (frequent.py: CreateQuery "" + CloseQuery), target2 2026-10-08 22:02Z
+# grep O_TMPFILE: exactly three opens in the query
+9:3638  01:02:26.673313 openat(AT_FDCWD, "/tmp", O_RDWR|O_EXCL|O_TMPFILE, 0600) = 15
+211:3638  01:02:26.781495 openat(AT_FDCWD, "/tmp", O_RDWR|O_EXCL|O_TMPFILE, 0600) = 16
+400:3638  01:02:26.880904 openat(AT_FDCWD, "/tmp", O_RDWR|O_EXCL|O_TMPFILE, 0600) = 17
+
+# the stack of the first one (the others are the same up to hud-service)
+3638  01:02:26.673313 openat(AT_FDCWD, "/tmp", O_RDWR|O_EXCL|O_TMPFILE, 0600) = 15
+ > /usr/lib/x86_64-linux-gnu/libc.so.6(__syscall_cancel_arch+0x32) [0xac802]
+ > /usr/lib/x86_64-linux-gnu/libc.so.6(__syscall_cancel+0x5c) [0xa039c]
+ > /usr/lib/x86_64-linux-gnu/libc.so.6(__libc_open64+0x57) [0x1279e7]
+ > /usr/lib/x86_64-linux-gnu/libc.so.6(__new_tmpfile+0x2f) [0x6b00f]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0() [0x24aef]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0(Columbus::WordStore::WordStore()+0x2e) [0x24c2e]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0(Columbus::Matcher::Matcher()+0x351) [0x16911]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x3be19]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x2fdd9]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x2fb5d]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x4aa18]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x43bec]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x4424a]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x44bba]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x3054a]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x36f33]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x37288]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x4e4fa]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x4eb60]
+ > /usr/lib/x86_64-linux-gnu/hud/hud-service() [0x4eea2]
+ > /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5.15.18() [0x27ee8]
+ > /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5.15.18() [0x2c10d]
+ > /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5.15.18() [0x2c9e1]
+ > /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5.15.18() [0x2ed84]
+ > /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.18(QObject::event(QEvent*)+0x2b3) [0x31dc03]
+ > /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.15.18() [0x16cbd7]
+ > /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.18() [0x2edc98]
+ > /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.18() [0x2f122e]
+ > /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.18() [0x34d3cf]
+ > /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0() [0x60c1b]
+ > /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8800.0() [0x62257]
+
+# the second and third opens (lines 211, 400): libcolumbus Columbus::LevenshteinIndex::LevenshteinIndex()
+3638  01:02:26.781495 openat(AT_FDCWD, "/tmp", O_RDWR|O_EXCL|O_TMPFILE, 0600) = 16
+ > /usr/lib/x86_64-linux-gnu/libc.so.6(__new_tmpfile+0x2f) [0x6b00f]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0() [0x24aef]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0(Columbus::LevenshteinIndex::LevenshteinIndex()+0xde) [0x1494e]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0() [0x15545]
+
+3638  01:02:26.880904 openat(AT_FDCWD, "/tmp", O_RDWR|O_EXCL|O_TMPFILE, 0600) = 17
+ > /usr/lib/x86_64-linux-gnu/libc.so.6(__new_tmpfile+0x2f) [0x6b00f]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0() [0x24aef]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0(Columbus::LevenshteinIndex::LevenshteinIndex()+0xde) [0x1494e]
+ > /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0() [0x15545]
+
