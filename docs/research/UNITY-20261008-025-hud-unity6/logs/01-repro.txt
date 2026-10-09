@@ -1,0 +1,36 @@
+# hud +unity6 reproduction on target2, 2026-10-09: Clean-2 restored and confirmed inside 00:55:58Z; key + unity-distro.sources, apt full-upgrade to the live publication (hud +unity5, libcolumbus +unity1, unity +unity13, u-s-d +unity13, bamfdaemon 0ubuntu6), xdotool; cold cycle (poweroff 01:10:20Z, safe_to_snapshot, start_vm); repro.sh 30 s after hud-service and compiz are up
+
+== 018 (boot 1)
+this boot: 1
+жов 09 04:12:35 target2 window-stack-bridge[2168]: QDBusConnection: name 'org.ayatana.bamf' had owner '' but we thought it was ':1.36'
+== 025
+hud 14.10+17.10.20170619-0ubuntu6+unity5, libcolumbus 1.1.0+15.10.20150806-0ubuntu39+unity1
+before: deleted-maps 0 rss_kB 30224
+after 5 one-off StartQuery clients: deleted-maps 15 rss_kB 38852
+10 s later: deleted-maps 15 rss_kB 38980
+after a StartQuery + CloseQuery client that stayed 5 s: deleted-maps 15 rss_kB 39048
+== 017
+window 56623107: (56623107, 'org.example.B017'
+legacy StartQuery icons: '<b>Свер</b>нуть (Window actions)', '', '', '', '' 
+
+## -018: the journal of this boot around the warning (journalctl --user -b -o short-precise)
+жов 09 04:12:28.560923 target2 systemd[1233]: Starting bamfdaemon.service - BAMF Application Matcher Framework...
+жов 09 04:12:28.632865 target2 systemd[1233]: Started window-stack-bridge.service - Window Stack Bridge.
+жов 09 04:12:32.519042 target2 dbus-daemon[1268]: [session uid=1000 pid=1268 pidfd=5] Activating via systemd: service name='org.ayatana.bamf' unit='bamfdaemon.service' requested by ':1.59' (uid=1000 pid=2168 comm="/usr/lib/x86_64-linux-gnu/hud/window-stack-bridge" label="unconfined")
+жов 09 04:12:33.304455 target2 at-spi-bus-launcher[2396]: dbus-daemon[2396]: Activating service name='org.a11y.atspi.Registry' requested by ':1.11' (uid=1000 pid=2156 comm="/usr/lib/x86_64-linux-gnu/bamf/bamfdaemon" label="unconfined")
+жов 09 04:12:34.705798 target2 systemd[1233]: Started bamfdaemon.service - BAMF Application Matcher Framework.
+жов 09 04:12:35.175364 target2 window-stack-bridge[2168]: QDBusConnection: name 'org.ayatana.bamf' had owner '' but we thought it was ':1.36'
+жов 09 04:14:37.483813 target2 dbus-daemon[1268]: [session uid=1000 pid=1268 pidfd=5] Activating via systemd: service name='org.ayatana.bamf' unit='bamfdaemon.service' requested by ':1.91' (uid=1000 pid=2736 comm="/usr/bin/compiz" label="unconfined")
+жов 09 04:14:37.490012 target2 systemd[1233]: Starting bamfdaemon.service - BAMF Application Matcher Framework...
+
+## -018: who is :1.36
+# busctl --user list taken in the same boot BEFORE the 018-bamf kill (~04:14 local, from the owner's session):
+#   :1.36  2156 bamfdaemon mike :1.36 user@1000.service
+#   org.ayatana.bamf  2156 bamfdaemon mike :1.36 user@1000.service
+# the lines below were taken AFTER the kill (bamfdaemon restarted as pid 4262, :1.120):
+org.ayatana.bamf                             4262 bamfdaemon      mike :1.120        user@1000.service -       -
+
+## -018: bamfdaemon killed while the bridge runs (repro.sh 018-bamf; the 04:14:37 'Activating ... requested by compiz' lines in the journal above belong to this kill), then the stack (a raw GetWindowStack: only compiz windows were open, so it does not show the bridge tracking a new window) and the count of warnings in this boot
+bamfdaemon 2156 -> 4262, bridge 2168 -> 2168
+(52428802, 'compiz' (52428803, 'compiz' (52428804, 'compiz' 
+1

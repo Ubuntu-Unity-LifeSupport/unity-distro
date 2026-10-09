@@ -1,0 +1,38 @@
+== versions
+dpkg-query: шаблону libhud2 не соответствует ни один пакет
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity6
+libreoffice-writer	4:26.2.6.3-0ubuntu0.26.04.2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+window-stack-br pid 2156 exe /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge sha256 10f66c4b8a30ca09 deleted 0
+hud-service pid 3757 exe /usr/lib/x86_64-linux-gnu/hud/hud-service sha256 3471e07f522bfd36 deleted 0
+== writer 10
+writer start 1: window 58720292; stack: (58720292, 'libreoffice-writer', false
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) FocusedWindowChanged(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) 
+writer start 2: window 58720292; stack: (58720292, 'libreoffice-writer', false
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) FocusedWindowChanged(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) 
+writer start 3: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) FocusedWindowChanged(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) 
+writer start 4: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) FocusedWindowChanged(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) 
+writer start 5: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) FocusedWindowChanged(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) 
+writer start 6: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) FocusedWindowChanged(58720292, libreoffice-writer) 
+writer start 7: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) FocusedWindowChanged(58720292, libreoffice-writer) 
+writer start 8: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) FocusedWindowChanged(58720292, libreoffice-writer) 
+writer start 9: window 58720292; stack: (58720292, 'libreoffice-writer', true
+   bridge: WindowCreated(58720292, 58720292) FocusedWindowChanged(58720292, 58720292) WindowCreated(58720292, libreoffice-writer) FocusedWindowChanged(58720292, libreoffice-writer) WindowDestroyed(58720292, 58720292) 
+writer start 10: window 56623140; stack: (56623140, 'libreoffice-writer', true
+   bridge: WindowCreated(56623140, 56623140) WindowCreated(56623140, libreoffice-writer) WindowDestroyed(56623140, 56623140) FocusedWindowChanged(56623140, libreoffice-writer) 
+== use
+first result: ['30', 'Сохранить', '[(0, 9)]']
+usage rows (application, entry, count): [('libreoffice-writer', 'Файл||Сохранить', 1), ('org', 'Файл||Создать окно', 1)]
+== frequent
+window 58720292; stack: (58720292, 'libreoffice-writer', true
+empty query, 20 rows, first: Сохранить Файл | Свернуть Window actions | Восстановить прежний размер Window actions | Переместить Window actions | Изменить размер Window actions
+== terminal
+terminal window 62914566 (mike@target2: ~/b001); stack: (62914566, 'org.gnome.Terminal', true
+   bridge for 62914566: WindowCreated(62914566, org.gnome.Terminal) FocusedWindowChanged(62914566, org.gnome.Terminal) WindowDestroyed(62914566, org.gnome.Terminal) 

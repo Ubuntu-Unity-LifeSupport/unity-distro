@@ -1,0 +1,3 @@
+# UNITY-20261008-025 peer notice (ENGINEERING-PROCESS section 6)
+2026-10-09 04:02Z B -> A: hud 14.10+17.10.20170619-0ubuntu6+unity6 (with UNITY-20261008-017), 20 records, snapshot unity-resolute-20261008-025 (= live unity-resolute-20261008-024 + 20, nothing removed or changed), version_safety SAFE 04:01:13Z, service/HudServiceImpl.cpp and service/ApplicationImpl.cpp only (+ tests), switch after C and May
+2026-10-09 04:02Z A -> B: A ACK UNITY-20261008-025, no conflict; every record in unity-resolute not in the live unity-resolute-20261008-024 is hud's (20 records), none of A's; A's last records (cinnamon-session +unity5) live since 01:34:01Z; no repo add, snapshot or slot on A's side; A idle, target-desktop powered off

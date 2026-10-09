@@ -1,0 +1,20 @@
+signal time=1791514915.095709 sender=org.freedesktop.DBus -> destination=:1.102 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.102"
+signal time=1791514915.095745 sender=org.freedesktop.DBus -> destination=:1.102 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.102"
+method call time=1791514924.725234 sender=:1.87 -> destination=:1.92 serial=1007 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "о"
+   int32 6
+method call time=1791514924.865426 sender=:1.87 -> destination=:1.92 serial=1008 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "ок"
+   int32 6
+method call time=1791514924.992664 sender=:1.87 -> destination=:1.92 serial=1009 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/0"
+method call time=1791514924.992679 sender=:1.87 -> destination=:1.92 serial=1010 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "окн"
+   int32 6
+method call time=1791514934.354358 sender=:1.87 -> destination=:1.92 serial=1054 path=/com/canonical/hud; interface=com.canonical.hud; member=ExecuteQuery
+   variant       uint64 7
+   uint32 180707
+method call time=1791514934.354372 sender=:1.87 -> destination=:1.92 serial=1055 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/0"
