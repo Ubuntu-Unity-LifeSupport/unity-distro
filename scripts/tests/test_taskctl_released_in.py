@@ -60,11 +60,16 @@ class ReleasedInTest(unittest.TestCase):
         self.meta = self.t / "meta"
         (self.meta / "scripts").mkdir(parents=True)
         shutil.copy(SCRIPTS / "taskctl.py", self.meta / "scripts" / "taskctl.py")
+        shutil.copy(SCRIPTS / "approval_record.py", self.meta / "scripts" / "approval_record.py")  # imported by taskctl
         spec = importlib.util.spec_from_file_location("taskctl_released_in_copy", self.meta / "scripts" / "taskctl.py")
         self.taskctl = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(self.taskctl)
         self.live = None
         self.taskctl.confirm_live_publication = lambda record, distribution, prefix, run=None: self.live
+        # These fixtures exercise released_in; the publication-approval check
+        # (permission model phase 4) has its own tests and one integration
+        # test below, so the cut-over is moved past the fixture dates here.
+        self.taskctl.AUTHORIZATION_REQUIRED_SINCE = "2200-01-01T00:00:00Z"
         self.target_record = self.t / "target.txt"
         self.target_record.write_text("the change exercised on the published version\n")
         self.write_releasing_build()
@@ -206,6 +211,32 @@ class ReleasedInTest(unittest.TestCase):
         self.assertEqual(2, code, f"accepted, expected a refusal with {fragment!r}")
         self.assertIn(fragment, err)
         self.assertEqual(state, self.state())
+
+    def test_released_in_needs_the_releasing_tasks_approval_after_the_cutover(self):
+        """Permission model phase 4: a releasing record dated after the cut-over
+        must name C's consumed approval; the released task closes through it."""
+        self.taskctl.AUTHORIZATION_REQUIRED_SINCE = "2000-01-01T00:00:00Z"
+        ar = self.taskctl.approval_record
+        ar.ROOT = self.coordinator / "publication-approvals"
+        self.write_earlier(self.c0)
+        self.refused("PUBLISHED", self.evidence(), "no publication approval by C")
+        import datetime
+        now = datetime.datetime(2099, 1, 1, tzinfo=datetime.timezone.utc)
+        ar.write({"schema": 1, "kind": ar.KIND, "task_id": OTHER, "approved_by": "C",
+                  "approved_at": ar.stamp(now), "not_after": ar.stamp(now + ar.WINDOW), "branch": "b/" + OTHER,
+                  "gate_file": "rec/gate.json", "gate_sha256": "a" * 64, "gate_commit": "b" * 40,
+                  "package": "demo", "candidate_version": VERSION, "source_repo": "packages/demo",
+                  "source_commit": self.shipped, "source_tree_hash": "d" * 40, "snapshot": "snap-001",
+                  "distribution": "resolute", "prefix": ".", "build_manifest_sha256": "e" * 64,
+                  "evidence_manifest_sha256": "f" * 64,
+                  "artifacts": [{"file": "x.deb", "sha256": "1" * 64, "kind": "binary"}],
+                  "known_gaps": [], "first_publication": False, "may_reference": ""})
+        _, sha_, raw = ar.read(OTHER, now)
+        used, _ = ar.consume(OTHER, raw, sha_, "started", now)
+        used_sha = ar.set_outcome(used, OTHER, "published")
+        authorization = {"file": str(Path(used).relative_to(ar.ROOT)), "sha256": used_sha, "approved_by": "C"}
+        self.record_sha = self.write_record(OTHER, authorization=authorization)
+        self.accepted("PUBLISHED", self.evidence())
 
     # accepted
     def test_review_published_done(self):
