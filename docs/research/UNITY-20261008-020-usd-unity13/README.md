@@ -54,6 +54,20 @@ gcm-self-test PASS. The manifest is in `build/`.
   its own).
 - Check on the target after publication: pending.
 
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261008-020-20261009T003518Z`.
+  19 files, complete, equal to live; list sha256
+  `b4e7f8be7a9ca443f081c59a2f7c3b98190f25fe4f82ba36147906a490bf0c40`.
+- **Repository:** 8 records added to `unity-resolute` (the source, 5 .deb
+  and 2 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261008-020`, which is the live
+  `unity-resolute-20261008-013` plus these 8 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
+
 ## Not changed / known limits
 
 - Autorun after an unlock was not tested on the target (it needs a login at
