@@ -1,0 +1,73 @@
+UNITY-20261008-025 - the Unity 7 HUD as a user drives it, and the -001 regression steps, on target2.
+
+The HUD is opened with a real Alt tap from outside the guest (vbox send_keys: make/break scancodes 38 b8);
+the query is typed in the guest with xdotool (the VirtualBox console cannot type Cyrillic); Enter and Escape
+are vbox send_keys again. Unity's calls are captured with dbus-monitor "interface=com.canonical.hud".
+Script: hud-alt.sh (prep / type / report). Times are D-Bus timestamps (s).
+
+===== run 1: hud +unity6, after the target025.sh run (same boot)
+387.957705 StartQuery    "a" 6                              (Alt, "a")
+393.644827 CloseQuery    /com/canonical/hud/query/10       (Escape)
+393.644841 StartQuery    "" 6                              (Unity resets the HUD to the empty query)
+413.922373 CloseQuery    /com/canonical/hud/query/10       (Alt + Escape: the HUD was opened and closed again)
+434.112128 StartQuery    "о" 6                             (Alt, "оно" typed; more than 2 s after the last
+                                                            CloseQuery: query/10 is gone, a new query/11)
+434.366973 CloseQuery    /com/canonical/hud/query/11
+434.367065 StartQuery    "он" 6                            (within 2 s of the CloseQuery: the same query/11)
+434.469739 CloseQuery    /com/canonical/hud/query/11
+434.471926 StartQuery    "оно" 6
+445.112439 ExecuteQuery  uint64 7                          (Enter on "Создать окно (Файл)")
+445.112451 CloseQuery    /com/canonical/hud/query/11       (Unity closes after ExecuteQuery has released it)
+query objects after the run: none. hud-service the same process.
+
+===== run 2: hud +unity6, a cold boot, nothing else run before
+661.271187 StartQuery    "о" 6
+661.395186 StartQuery    "ок" 6
+661.620180 CloseQuery    /com/canonical/hud/query/0
+661.620194 StartQuery    "око" 6
+668.883245 ExecuteQuery  uint64 7                          (Enter on "Создать окно (Файл)")
+668.883259 CloseQuery    /com/canonical/hud/query/0
+query objects after the run: none. hud-service pid 3910 throughout.
+
+===== reading
+- One legacy query per sender at any time; a reopening within 2 s of CloseQuery keeps its path (query/11 for
+  "о" -> "он" -> "оно"), a reopening after more than 2 s gets a new one (query/10 -> query/11).
+- Enter: ExecuteQuery releases the query, the CloseQuery that Unity sends right after it finds no legacy
+  query for the sender and changes nothing (CloseQueryWithoutLegacyQueryAddsNothing); no query objects left.
+
+===== observed, not caused by this change: "Создать окно" from the HUD opens no Terminal window
+Runs 1 and 2: the item is found and ExecuteQuery is sent, but no second Terminal window appears.
+Control on Clean-2 with the Ubuntu base hud 14.10+17.10.20170619-0ubuntu6 (none of our patches), the same
+steps: 2 Terminal windows before Enter (60817414 60817496), the same 2 after; the same calls:
+924.725234 StartQuery "о" / 924.865426 StartQuery "ок" / 924.992664 CloseQuery query/0 / StartQuery "окн" /
+934.354358 ExecuteQuery uint64 7 / 934.354372 CloseQuery query/0
+and the same hud-service lines on every run, base and +unity6:
+  DBusMenuImporter::slotGetLayoutFinished: no interface "com.canonical.dbusmenu" on
+  /org/ayatana/bamf/window/<id>; QCoreApplication::postEvent: Unexpected null receiver
+The usage table after the base run records the command as ('org', 'Файл||Создать окно', 1) - application
+"org", not "org.gnome.Terminal". The legacy ExecuteQuery path is not changed by this task's diff. Reported as
+UNITY-20261009-004; the HUD command on Writer ("Сохранить", below) works.
+
+run 4, hud +unity6 (the full live stack, -011 included), the same boot as the -001 steps below: Alt, "окно",
+Enter on "Создать окно (Файл)". Query/2 kept through "о" -> "ок" -> "окн" -> "окно", ExecuteQuery uint64 7,
+CloseQuery; no query objects left; still 1 Terminal window (62914566), no new window. The usage table
+(usage-rows.py, rows in insertion order):
+  ('org', 'Файл||Создать окно', '2026-10-09')               <- the base 0ubuntu6 run, before the upgrade
+  ('libreoffice-writer', 'Файл||Сохранить', '2026-10-09')   <- +unity6, the -001 "use" step
+  ('org.gnome.Terminal', 'Файл||Создать окно', '2026-10-09') <- +unity6, run 4
+So the "org" id is the base package only; on our stack the Unity 7 legacy path records the full id. The
+missing window is independent of the id (UNITY-20261009-004).
+
+===== the -001 regression steps (UNITY-20260929-001 target.sh), hud +unity6, a cold boot after a restore
+hud	14.10+17.10.20170619-0ubuntu6+unity6
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+window-stack-br pid 2156 sha256 10f66c4b8a30ca09 deleted 0
+hud-service pid 3757 sha256 3471e07f522bfd36 deleted 0
+writer 10: the window stack gives 'libreoffice-writer' for the document window on all 10 starts
+  (window 58720292 on starts 1-9, 56623140 on start 10)
+use: first result ['30', 'Сохранить', '[(0, 9)]']; usage rows ('libreoffice-writer', 'Файл||Сохранить', 1)
+  (and the base run's ('org', 'Файл||Создать окно', 1), see above)
+frequent: Writer restarted, empty HUD query: first row "Сохранить Файл"
+terminal: window 62914566 -> 'org.gnome.Terminal'; bridge WindowCreated/FocusedWindowChanged/WindowDestroyed
+  with org.gnome.Terminal
+Full output: 03-target-unity7-hud.raw.

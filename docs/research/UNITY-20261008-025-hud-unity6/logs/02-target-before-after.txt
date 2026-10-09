@@ -1,0 +1,64 @@
+UNITY-20261008-025 / UNITY-20261008-017 - target2, target025.sh, the same steps on +unity5 and on +unity6.
+
+Each run starts from a cold boot of target2 (Clean-2, the live archive's stack installed with a full-upgrade).
+The "after" run installs hud +unity6 from a file repo of this task's build (hud .deb sha256 9fafa7227344aa06...)
+before the cold boot; the same full-upgrade also pulled cinnamon-session 6.4.2-1+unity5 from the live archive.
+
+state(): query-objects = exported /com/canonical/hud/query/N objects (gdbus introspect); OpenQueries = the
+property, which lists m_queries only, so a legacy query is never in it; deleted-maps = "(deleted)" lines in
+hud-service's maps (WindowTokens/Matchers per window, not per query - a side signal only).
+
+===== before: hud 14.10+17.10.20170619-0ubuntu6+unity5
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity5
+libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity1
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+hud-service pid 3690 sha256 f081d11724459f67 deleted-libs 0
+== 2 -025
+start: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3690
+after 5 one-off StartQuery clients: query-objects 5 OpenQueries 0 deleted-maps 3 pid 3690
+10 s later: query-objects 5 OpenQueries 0 deleted-maps 3 pid 3690
+after a StartQuery + CloseQuery client that exited at once: query-objects 5 OpenQueries 0 deleted-maps 3 pid 3690
+  ExecuteQuery item: <b>Свернуть</b> (Window actions) int 0
+after a StartQuery + ExecuteQuery client: query-objects 5 OpenQueries 0 deleted-maps 15 pid 3690
+coredumps of hud-service this boot: 0
+== 3 -017
+B017 window: legacy icon ''
+Terminal with a user override (Icon=b017-override): legacy icon 'org.gnome.Terminal'
+Writer: legacy icon 'libreoffice-writer'
+== 4 -018
+bamfdaemon 2177 -> 4511, bridge 2206; Terminal window 65011718 opened after the restart: (65011718, 'org.gnome.Terminal'
+end: query-objects 8 OpenQueries 0 deleted-maps 24 pid 3690
+
+===== after: hud 14.10+17.10.20170619-0ubuntu6+unity6
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity6
+libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity1
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+hud-service pid 3617 sha256 3471e07f522bfd36 deleted-libs 0
+== 2 -025
+start: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3617
+after 5 one-off StartQuery clients: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3617
+10 s later: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3617
+after a StartQuery + CloseQuery client that exited at once: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3617
+  ExecuteQuery item: <b>Свернуть</b> (Window actions) int 0
+after a StartQuery + ExecuteQuery client: query-objects 0 OpenQueries 0 deleted-maps 2 pid 3617
+coredumps of hud-service this boot: 0
+== 3 -017
+B017 window: legacy icon 'utilities-terminal'
+Terminal with a user override (Icon=b017-override): legacy icon 'b017-override'
+Writer: legacy icon 'libreoffice-writer'
+== 4 -018
+bamfdaemon 2135 -> 4362, bridge 2155; Terminal window 65011718 opened after the restart: (65011718, 'org.gnome.Terminal'
+end: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3617
+
+===== reading
+-025: +unity5 keeps one query object per one-off StartQuery client for the life of the service (5, still 5
+10 s later; 8 at the end, the extra 3 from the one-off icon() calls of step 3). +unity6: 0 at every step, the
+same hud-service process throughout, no coredump. The CloseQuery and ExecuteQuery clients were already
+released on +unity5 and still are.
+-017: the user-only desktop file (B017) now gives its Icon; a user override of a system desktop file wins over
+it (b017-override); a system-only application (Writer) is unchanged.
+-018 (NOT_APPLICABLE): the window opened after the bamfdaemon restart gets its id on both.

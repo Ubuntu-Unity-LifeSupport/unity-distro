@@ -1,0 +1,32 @@
+signal time=1791514308.898950 sender=org.freedesktop.DBus -> destination=:1.130 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.130"
+signal time=1791514308.899195 sender=org.freedesktop.DBus -> destination=:1.130 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.130"
+method call time=1791514387.957705 sender=:1.90 -> destination=:1.92 serial=1419 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "a"
+   int32 6
+method call time=1791514393.644827 sender=:1.90 -> destination=:1.92 serial=1420 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/10"
+method call time=1791514393.644841 sender=:1.90 -> destination=:1.92 serial=1421 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string ""
+   int32 6
+method call time=1791514413.922373 sender=:1.90 -> destination=:1.92 serial=1422 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/10"
+method call time=1791514434.112128 sender=:1.90 -> destination=:1.92 serial=1461 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "о"
+   int32 6
+method call time=1791514434.366973 sender=:1.90 -> destination=:1.92 serial=1462 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/11"
+method call time=1791514434.367065 sender=:1.90 -> destination=:1.92 serial=1463 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "он"
+   int32 6
+method call time=1791514434.469739 sender=:1.90 -> destination=:1.92 serial=1464 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/11"
+method call time=1791514434.471926 sender=:1.90 -> destination=:1.92 serial=1465 path=/com/canonical/hud; interface=com.canonical.hud; member=StartQuery
+   string "оно"
+   int32 6
+method call time=1791514445.112439 sender=:1.90 -> destination=:1.92 serial=1503 path=/com/canonical/hud; interface=com.canonical.hud; member=ExecuteQuery
+   variant       uint64 7
+   uint32 367452
+method call time=1791514445.112451 sender=:1.90 -> destination=:1.92 serial=1504 path=/com/canonical/hud; interface=com.canonical.hud; member=CloseQuery
+   variant       variant          string "/com/canonical/hud/query/11"
