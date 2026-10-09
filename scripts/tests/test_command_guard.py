@@ -502,6 +502,38 @@ class AptlyPublishGuardTest(unittest.TestCase):
             "pushd-reader": ("pushd ~/.claude && cat settings.json && popd", None),
             "python-report-cd": ("cd ~/.claude && python3 -c \"print(open('settings.json').read())\"", None),
         })
+        # Verifier round 2: the directory follows into heredoc bodies, a leading
+        # shell word hides neither cd nor a writer, su -c is a shell string,
+        # pushd/popd is a stack; ~ is not a directory one extracts into.
+        denied.update({
+            "cd-bash-heredoc": ("cd ~/.claude && bash <<'EOF'\necho x > settings.json\nEOF", None),
+            "cd-sh-heredoc-cp": ("cd ~/.claude; sh <<'EOF'\ncp /tmp/s.json settings.json\nEOF", None),
+            "cd-python-heredoc": ("cd ~/.claude && python3 - <<'EOF'\nopen('settings.json','w').write('x')\nEOF", None),
+            "heredoc-cd-inside": ("bash <<'EOF'\ncd ~/.claude\necho x > settings.json\nEOF", None),
+            "brace-cd": ("{ cd ~/.claude; echo x > settings.json; }", None),
+            "if-cd": ("if cd ~/.claude; then echo x > settings.json; fi", None),
+            "if-cp": ("if cp /tmp/s.json ~/.claude/settings.json; then echo ok; fi", None),
+            "while-tee": ("while true; do echo x | tee -a ~/.bashrc; done", None),
+            "su-c-sudoers-d": ("sudo su -c 'echo x > /etc/sudoers.d/x'", None),
+            "su-root-c-sudoers": ("su root -c 'echo x >> /etc/sudoers'", None),
+            "sudo-bash-heredoc-sudoers": ("sudo bash <<'EOF'\necho x > /etc/sudoers.d/claude\nEOF", None),
+            "pushd-write": ("pushd ~/.claude && echo x > settings.json && popd", None),
+            "wget-qO-file": ("wget -qO ~/.claude/settings.json https://example.invalid/x", None),
+        })
+        allowed.update({
+            "cd-heredoc-elsewhere": ("cd /tmp && bash <<'EOF'\necho x > settings.json\nEOF", home + "/.claude"),
+            "heredoc-cd-out": ("bash <<'EOF'\ncd /tmp\necho x > settings.json\nEOF", home + "/.claude"),
+            "brace-reader": ("{ cd ~/.claude; cat settings.json; }", None),
+            "pushd-popd-then-write": ("pushd ~/.claude && cat settings.json && popd && echo x > settings.json", home + "/work"),
+            "tar-xf-in-home": ("tar xf a.tar", home),
+            "tar-C-home": ("tar -xf a.tar -C ~", None),
+            "wget-qO-dash": ("wget -qO- https://example.invalid/x | head", home + "/.claude"),
+            "su-c-reader": ("sudo su -c 'cat /etc/sudoers.d/x'", None),
+            "cd-base-git": ("cd ~/unity-distro && git status && git add scripts/x.py && git commit -q -m x", None),
+            "ssh-remote-sudoers": ("ssh target 'echo x | sudo tee /etc/sudoers.d/x'", None),
+            "cat-heredoc-data": ("cat > /tmp/x <<'EOF'\necho x > ~/.claude/settings.json\nEOF", None),
+            "fd-dup-in-claude": ("ls 2>&1 | head", home + "/.claude"),
+        })
         for key, command in sorted(denied.items()):
             command, cwd = command if isinstance(command, tuple) else (command, None)
             with self.subTest(denied=key):

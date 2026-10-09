@@ -1432,7 +1432,7 @@ def _check_live(command: str, session_id: str | None, tool_name: str | None, bac
 _TRUSTED = None
 _UNKNOWN_DIR = object()  # the working directory after a cd that is not a literal
 _FD_DUP = re.compile(r"^&(\d+|-)$")  # "2>&1" reaches rule 1 as the target "&1": no file is written
-_SHELLS = {"sh", "bash", "dash", "zsh", "ksh"}
+_SHELLS = {"sh", "bash", "dash", "zsh", "ksh", "su"}  # su -c runs its string through a shell
 # Wrappers Claude Code strips before matching its own permission rules.
 _WRAPPERS = {"timeout", "nice", "nohup", "stdbuf", "time", "setsid", "ionice"}
 _WRAPPER_VALUE_OPTIONS = {"timeout": {"-s", "--signal", "-k", "--kill-after"}, "nice": {"-n", "--adjustment"},
@@ -1470,7 +1470,10 @@ _MODE_WRITE = re.compile(r"['\"](?:w|a|w\+|a\+|wb|ab|wt|at)['\"]")
 
 
 def _unwrap_writer(tokens: list[str]) -> list[str]:
-    """_unwrap, then the wrappers Claude Code itself strips (timeout 5 cp ... is cp ...)."""
+    """Leading shell words ({ if then while ! time ...), _unwrap, then the wrappers
+    Claude Code itself strips (timeout 5 cp ... is cp ...)."""
+    while tokens and tokens[0] in _SHELL_WORDS:
+        tokens = tokens[1:]
     tokens = _unwrap(tokens)
     while tokens:
         word = os.path.basename(tokens[0])
@@ -1539,6 +1542,8 @@ def _is_trusted_parent(path: str):
     kind = _is_trusted_path(path)
     if kind:
         return kind, path
+    if path.rstrip("/") in ("", os.path.expanduser("~")):
+        return None  # as _is_trusted_ancestor: the home itself is not a trusted directory
     files, dirs, globs, sudoers = _trusted_set()
     for candidate in list(files) + list(globs) + list(sudoers):
         if os.path.dirname(candidate) == path.rstrip("/"):
@@ -1644,7 +1649,11 @@ def _write_targets(group: list[str], base=None):
             return _classify_directory(".", names, base) if names else None
         return None
     if word == "wget":
-        outputs = _option_values(args, ("-O", "--output-document"))
+        outputs = _option_values(args, ("--output-document",))
+        for n, a in enumerate(args):
+            if a.startswith("-") and not a.startswith("--") and "O" in a[1:]:
+                rest = a[a.index("O") + 1:]
+                outputs.append(rest if rest else args[n + 1] if n + 1 < len(args) else "-")
         if outputs:
             return _classify_targets([o for o in outputs if o != "-"], base=base)
         names = [_url_name(o) for o in operands if "://" in o or "." in o]
@@ -1702,63 +1711,99 @@ def _option_string(tokens: list[str], letter: str) -> str | None:
     return None
 
 
+class _Cwd:
+    """The working directory while walking one level's groups: a leading cd moves
+    it, pushd/popd keep a stack, a ")" ends a subshell's cd."""
+
+    def __init__(self, base):
+        self.base, self.here, self.stack = base, base, []
+
+    def step(self, tokens: list[str], sep: str):
+        word = os.path.basename(tokens[0]) if tokens else ""
+        if word in ("cd", "pushd"):
+            targets = [t for t in tokens[1:] if not t.startswith("-") or t == "-"]
+            if word == "pushd":
+                self.stack.append(self.here)
+            if not targets:
+                self.here = os.path.expanduser("~") if word == "cd" else self.here
+            else:
+                resolved = _resolve_path(targets[0], self.here) if targets[0] != "-" else None
+                self.here = resolved[0] if resolved else _UNKNOWN_DIR
+        elif word == "popd":
+            self.here = self.stack.pop() if self.stack else _UNKNOWN_DIR
+        return word
+
+    def end_group(self, sep: str):
+        if ")" in sep:
+            self.here, self.stack = self.base, []
+
+
 def _trusted_rules(levels: list, command: str, base=None, depth: int = 0) -> str | None:
-    """Permission model phase 3, rules 1 and 3, over every executed group of every
-    level, following a leading cd, into shell -c strings and interpreter code;
-    readers of trusted files are untouched."""
+    """Permission model phase 3, rules 1 and 3, over every executed group of the
+    outer and substitution levels, following a leading cd, into shell -c strings,
+    heredoc bodies (with the directory current at their owner) and interpreter
+    code; readers of trusted files are untouched."""
+    if depth > MAX_DEPTH:
+        return None
     for level in levels:
-        if level.blob:
-            continue
-        here = base
+        if level.blob or level.body:
+            continue  # bodies are walked below with the directory current at their owner
+        cwd = _Cwd(base)
         for group, sep in zip(level.groups, level.seps):
             tokens = _unwrap_writer(group)
-            word = os.path.basename(tokens[0]) if tokens else ""
-            if word in ("cd", "pushd"):
-                targets = [t for t in tokens[1:] if not t.startswith("-") or t == "-"]
-                if not targets:
-                    here = os.path.expanduser("~")
-                else:
-                    resolved = _resolve_path(targets[0], here) if targets[0] != "-" else None
-                    here = resolved[0] if resolved else _UNKNOWN_DIR
-            else:
-                found = _write_targets(group, here)
+            word = cwd.step(tokens, sep)
+            if word not in ("cd", "pushd", "popd"):
+                found = _write_targets(group, cwd.here)
                 if found:
                     return _deny_trusted(found)
-                if word in _SHELLS and depth < MAX_DEPTH:
+                if word in _SHELLS:
                     text = _option_string(tokens, "c")
                     if text:
-                        text = text.replace(QUOTED_GT, ">")  # the scanner marked the quoted > as text
-                        try:
-                            nested = _levels(text)
-                        except ScanError:
-                            nested = []  # a string the shell itself rejects runs nothing
-                        message = _trusted_rules(nested, text, here, depth + 1)
+                        message = _nested_shell(text.replace(QUOTED_GT, ">"), cwd.here, depth)
                         if message:
                             return message
                 if _INTERP_WORD.match(word):
                     for letter in ("c", "e"):
                         text = _option_string(tokens, letter)
-                        found = _interpreter_writes(text, here) if text else None
+                        found = _interpreter_writes(text, cwd.here) if text else None
                         if found:
                             return _deny_trusted(found)
-            if ")" in sep:
-                here = base  # the subshell's cd ends with it
-    # interpreter heredoc bodies (the scanner's raw bodies; _levels keeps only process-starting blobs)
+            cwd.end_group(sep)
+    # heredoc bodies: the scanner's raw bodies, each at its owner's directory
     try:
         scanner = _Scanner(command)
         outer = scanner.run()
         groups, seps = _lex(outer)
     except (ScanError, ValueError):
         return None
-    owners = [(group, sep) for group, sep in zip(groups, seps) for token in group if token == HEREDOC]
-    for n, body in enumerate(scanner.bodies):
-        group = owners[n][0] if n < len(owners) else []
+    cwd = _Cwd(base)
+    owners = []
+    for group, sep in zip(groups, seps):
         tokens = _unwrap_writer(group)
-        if tokens and _INTERP_WORD.match(os.path.basename(tokens[0])):
-            found = _interpreter_writes(body.text, base)
+        cwd.step(tokens, sep)
+        owners += [(tokens, cwd.here) for token in group if token == HEREDOC]
+        cwd.end_group(sep)
+    for n, body in enumerate(scanner.bodies):
+        tokens, here = owners[n] if n < len(owners) else ([], base)
+        word = os.path.basename(tokens[0]) if tokens else ""
+        if _INTERP_WORD.match(word):
+            found = _interpreter_writes(body.text, here)
             if found:
                 return _deny_trusted(found)
+        elif word in _SHELLS or (tokens and tokens[0] in _SHELL_WORDS):
+            message = _nested_shell(body.text, here, depth)
+            if message:
+                return message
     return None
+
+
+def _nested_shell(text: str, here, depth: int) -> str | None:
+    """Rule 1 over shell text run by a shell -c string or a shell heredoc."""
+    try:
+        nested = _levels(text)
+    except ScanError:
+        return None  # a text the shell itself rejects runs nothing
+    return _trusted_rules(nested, text, here, depth + 1)
 
 
 _PARSE_MESSAGE = "Command guard could not parse shell quoting; tool call blocked."

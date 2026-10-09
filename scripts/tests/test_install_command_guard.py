@@ -386,8 +386,8 @@ class InstallerTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout)
         guard = self.base / ".claude" / "hooks" / "command_guard.py"
         text = guard.read_text()
-        self.assertEqual(text.count("found = _write_targets(group, here)"), 1)
-        guard.write_text(text.replace("found = _write_targets(group, here)", "found = None", 1))
+        self.assertEqual(text.count("found = _write_targets(group, cwd.here)"), 1)
+        guard.write_text(text.replace("found = _write_targets(group, cwd.here)", "found = None", 1))
         git(self.base, "commit", "-qam", "weaken rule 1")
         self.assert_check_fails("trusted-write probe")
 

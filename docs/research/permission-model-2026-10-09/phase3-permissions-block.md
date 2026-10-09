@@ -667,3 +667,31 @@ and installer tests OK, full suite 485 OK (1 skipped); transcript replay of
 stand-in writes and the scratchpad heredoc as before, plus `cd ~/unity-distro
 && cat > .claude/skills/…/SKILL.md`, a write into the base `.claude/` that the
 Write tool is for). Verification round 2 requested on the fixed commit.
+
+## Verification round 2 (2026-10-09)
+
+Verifier on cb21821: **FAIL (narrow)**. All five round-1 classes closed in
+every listed spelling and near variants (round-1 strings 0 of 202 mismatched;
+50 ordinary forms no new false positives; fail-closed and source-text import
+hold against a renamed, broken, unreadable installer and hostile bytecode;
+485 tests OK; 440 corpus commands unchanged against main). Three second-order
+variants of the same forms remained:
+
+| # | Finding | Fix |
+|---|---------|-----|
+| 1 | the directory of a leading `cd` did not reach heredoc bodies (`cd ~/.claude && bash <<EOF … > settings.json`) | bodies are walked once, each at the directory current at its owner; shell owners (`bash`, `sh`, …, also after `sudo`) are lexed as nested commands, interpreter owners through the write idioms |
+| 2 | a leading shell word hid the `cd` or the writer (`{ cd ~/.claude; … }`, `if cp … ~/.claude/settings.json; then`) | `{ ! time if then elif else while until do` are stripped before rule 1 looks at the word |
+| 3 | `su -c` was not a shell string (`sudo su -c 'echo x > /etc/sudoers.d/x'`) | `su` joins the `-c` shells |
+
+Remarks taken: `pushd`/`popd` is a stack (`pushd … && popd && echo x >
+settings.json` no longer over-denies); `~` and `/` are not directories one
+extracts into (code now matches the round-1 text: `tar xf a.tar` in the home
+root and `-C ~` are allowed, as `rm -rf ~` stays with the older rule);
+`wget -qO-` is stdout and `-qO FILE` a target. Left as the stated residual:
+`eval`, `xargs sh -c`, `find -exec sh -c`, `sh -c "$(…)"`, `bash script.sh`,
+csh-style `>& file`, a `cd` in a pipeline or before `&` (over-approximated).
+
+Measured after the fix: the Verifier's 372 case strings (rounds 1 and 2)
+0 mismatches; full suite 485 OK (1 skipped; 132 phase-3 guard forms); transcript
+replay of 11337 commands against main: 0 deny->allow, the same 5 allow->deny.
+Verification round 3 requested.
