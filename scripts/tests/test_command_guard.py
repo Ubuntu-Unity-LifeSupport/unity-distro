@@ -298,6 +298,84 @@ class AptlyPublishGuardTest(unittest.TestCase):
                 elif not key.startswith("ctl-"):
                     self.assertEqual(result.returncode, 2, f"{key} allowed")
 
+    def test_phase1_false_positive_cases(self):
+        """Permission model phase 1 (UNITY-20260929-003): the Design Challenger
+        probes of rounds 1-8 and the corpus RC1/RC1b minimal forms, each with
+        its verdict under the phase-1 guard (data file; strings never pass
+        through a shell). Nothing the guard denied before may be allowed except
+        the enumerated RC1/RC1b/RC4 forms and the three recorded harmless cases."""
+        data = json.loads((Path(__file__).parent / "data" / "command_guard_003_cases.json").read_text())
+        self.assertGreaterEqual(len(data["allowed"]), 100)
+        self.assertGreaterEqual(len(data["denied"]), 130)
+        for key, command in sorted(data["denied"].items()):
+            with self.subTest(denied=key):
+                self.assertEqual(run_hook(command).returncode, 2, f"{key} allowed")
+        for key, command in sorted(data["allowed"].items()):
+            with self.subTest(allowed=key):
+                result = run_hook(command)
+                self.assertEqual(result.returncode, 0, f"{key} denied: {result.stderr}")
+
+    def test_phase1_apostrophe_heredoc_bodies(self):
+        """RC1: a quoted-delimiter heredoc body with an apostrophe is decided,
+        not refused; the rules still see the lines of the body."""
+        allowed = [
+            "cat > /tmp/notes.md <<'EOF'\nIt's a note about May's decision.\nEOF",
+            "python3 - <<'EOF'\nprint(\"it's fine\")\nEOF",
+            "git commit -F - <<'EOF'\ndocs: it's done\n\nA commit message with an apostrophe.\nEOF",
+            "git -c user.name=x commit -F - -q -s <<'EOF'\nit's\nEOF",
+        ]
+        denied = [
+            "bash <<'EOF'\necho it's\npkill -f compiz\nEOF",
+            "sh <<'EOF'\necho it's\nrm -rf $X/y\nEOF",
+            "cat <<'EOF'\nit's\ngit add -A\nEOF",
+            "bash <<'EOF'\necho it's\necho '\"' && pkill -f x && echo '\"'\nEOF",
+            "bash <<'EOF'\necho it's\nrm -rf /tmp/a \";$X/y\"\nEOF",
+            "bash <<'EOF'\necho it's\ngit add \";-A\"\nEOF",
+            "cat <<'EOF'\nit's\n\"unterminated\nEOF",
+        ]
+        for command in allowed:
+            with self.subTest(allowed=command[:40]):
+                result = run_hook(command)
+                self.assertEqual(result.returncode, 0, result.stderr)
+        for command in denied:
+            with self.subTest(denied=command[:40]):
+                self.assertEqual(run_hook(command).returncode, 2)
+
+    def test_phase1_git_commit_stdin_message_is_text(self):
+        """RC1b: a message read from stdin is never run by git, so a line that
+        names a blocked operation is text; an editor, template or -a keeps it a script."""
+        body = "\n".join(["docs: note", "", "Never run: aptly publish list", "nor pkill -f x", "EOF"])
+        self.assertEqual(run_hook("git commit -F - <<'EOF'\n" + body).returncode, 0)
+        self.assertEqual(run_hook("git commit --file=- --no-verify <<'EOF'\n" + body).returncode, 0)
+        for form in ("git commit -F - -e <<'EOF'\n", "git commit -a -F - <<'EOF'\n",
+                     "git -c core.editor=vi commit -F - <<'EOF'\n", "git commit -F - -t tmpl <<'EOF'\n"):
+            with self.subTest(form=form):
+                self.assertEqual(run_hook(form + body).returncode, 2)
+
+    def test_phase1_sed_substitution_is_a_reader(self):
+        """RC4: one s/// script on an existing file is a read-only tool for
+        the aptly rules; e, w, -e, -i.bak and the aptly binary as operand are not."""
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "notes.md"
+            target.write_text("a\n")
+            # corpus record 11's shape: a reader writes a line that mentions aptly
+            # into a file, then sed edits that file. With sed a reader, nothing runs.
+            write = f"printf '%s\\n' '- note: aptly repo show' >> {target} && "
+            allowed = [write + f"sed -i 's/a/b/' {target}", write + f"sed -i -E 's/a (b)/\\1/g' {target}",
+                       write + f"sed -n 's|x|y|p' {target}"]
+            denied = [write + f"sed -e 's/a/b/' {target}", write + f"sed -i.bak 's/a/b/' {target}",
+                      write + f"sed 's/a/b/w {tmp}/f' {target}", write + f"sed -i 's/x/y/e' {target}",
+                      write + f"sed -i 's/a/aptly/' {target}",
+                      f"printf '%s\\n' '- note: aptly repo show' >> {tmp}/missing && sed -i 's/a/b/' {tmp}/missing",
+                      "sed -i 's/a/b/' /usr/bin/aptly"]
+            for command in allowed:
+                with self.subTest(allowed=command[:50]):
+                    result = run_hook(command)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+            for command in denied:
+                with self.subTest(denied=command[:50]):
+                    self.assertEqual(run_hook(command).returncode, 2)
+
     def test_other_rules_unchanged(self):
         for command in ("git add -A", "git push --force origin x", "xwd -root",
                         "pkill -f compiz", "rm -rf $X/y", "true\ngit push --force origin x",
