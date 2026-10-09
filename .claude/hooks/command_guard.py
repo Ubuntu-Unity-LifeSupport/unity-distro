@@ -428,6 +428,11 @@ _READERS = {"grep", "egrep", "fgrep", "ls", "stat", "file", "sha256sum", "sha1su
             "for", "in", "done", "fi", "esac", "}", "break", "continue", "return", "exit",
             "case", "local", "export", "unset", "shift", "wait", "read", "declare", ":"}
 _SED_SCRIPT = re.compile(r"^([0-9$]+(,[0-9$]+)?|/[^/]*/(,/[^/]*/)?)?[pd=]$")
+# Permission model phase 1 (UNITY-20260929-003 RC4): one substitution script,
+# any one-character delimiter that is not alphanumeric, backslash, newline or
+# whitespace; flags g, I, i, p and a number only (no e, w, m).
+_SED_SUBST = re.compile(r"^s(?P<d>[^\w\\\n\s])(?:\\.|(?!(?P=d))[^\\\n])*(?P=d)(?:\\.|(?!(?P=d))[^\\\n])*(?P=d)[gIip0-9]*$")
+_SED_OPTIONS = ("-n", "-E", "-r", "-i", "-s", "-z", "-u", "--quiet")
 # Non-shell programs that read a heredoc body as their own language.
 _INTERPRETERS = re.compile(r"^(python[0-9.]*|perl|ruby|node|php|lua|tclsh|cat|tee)$")
 # Project scripts that never hand their arguments to a shell or to aptly.
@@ -589,10 +594,18 @@ def _is_reader(group: list[str], aptly: str | None) -> bool:
     if word == "printf":
         return "-v" not in args
     if word == "sed":
-        # Only printing scripts (sed -n 5,9p file); s///e, e and w run or write.
-        return all(a in ("-n", "-E", "-r", "--quiet") or _SED_SCRIPT.match(a)
+        # Printing scripts (sed -n 5,9p file) and, since phase 1 (RC4), one
+        # substitution script without the aptly word or publish/task/api (a
+        # sed -i write is not followed by _exposed); s///e, e and w run or
+        # write. Operands are existing files that are not the aptly binary.
+        scripts = [a for a in args if _SED_SCRIPT.match(a) or _SED_SUBST.match(a)]
+        if any(_SED_SUBST.match(a) and ("aptly" in a or _DENIED_WORD.search(a)) for a in scripts):
+            return False  # the written text must not carry the words at all
+        if len([a for a in scripts if _SED_SUBST.match(a)]) > 1:
+            return False
+        return all(a in _SED_OPTIONS or a in scripts
                    or (not a.startswith("-") and not any(c.isspace() for c in a) and "/" in a
-                       and not _SED_SCRIPT.match(a) and os.path.exists(os.path.expanduser(a)))
+                       and os.path.isfile(os.path.expanduser(a)) and not _same_as_aptly(a, aptly, False))
                    for a in args)
     if word == "apt-cache":
         return not any(a.startswith(("-o", "-c", "--option", "--config-file")) for a in args)
@@ -678,6 +691,58 @@ def _text_blockers(level: Level, levels: list[Level], owner: list[str] | None = 
     return not (compound or piped or expands or forced), forced
 
 
+_GIT_COMMIT_STDIN = {"-F-", "--file=-"}
+_GIT_COMMIT_TEXT_FLAGS = {"-q", "--quiet", "-s", "--signoff", "--no-verify", "--amend", "--allow-empty"}
+_GIT_COMMIT_TEXT_PREFIXES = ("--author=", "--date=")
+
+
+def _git_commit_stdin_message(group: list[str]) -> bool:
+    """Permission model phase 1 (UNITY-20260929-003 RC1b): `git commit` reading
+    its message from stdin (-F -, -F-, --file=-, --file -) with only operands
+    git never runs: a few flags, --author=/--date= values, pathspecs after --.
+    Global git options are walked as _is_reader does; an unsafe -c, an editor
+    or template option, -a or anything else keeps the body SCRIPT."""
+    tokens = [t for t in group if t != HEREDOC and not _REDIRECT.match(t)]
+    if not tokens or os.path.basename(tokens[0]) != "git":
+        return False
+    args = tokens[1:]
+    i = 0
+    while i < len(args) and args[i].startswith("-"):
+        if args[i] == "-c" or args[i].startswith("-c"):
+            setting = args[i][2:] or (args[i + 1] if i + 1 < len(args) else "")
+            if setting.split("=", 1)[0].lower() not in _GIT_SAFE_CONFIG:
+                return False
+            i += 1 if args[i][2:] else 2
+            continue
+        if args[i] in ("-C", "--git-dir", "--work-tree"):
+            i += 2
+        elif args[i].startswith(("--git-dir=", "--work-tree=")):
+            i += 1
+        else:
+            return False
+    if i >= len(args) or args[i] != "commit":
+        return False
+    rest = args[i + 1:]
+    stdin = False
+    j = 0
+    while j < len(rest):
+        token = rest[j]
+        if token == "--":
+            break  # pathspecs: read, never run
+        if token in ("-F", "--file") and j + 1 < len(rest) and rest[j + 1] == "-":
+            stdin = True
+            j += 2
+            continue
+        if token in _GIT_COMMIT_STDIN:
+            stdin = True
+        elif token in _GIT_COMMIT_TEXT_FLAGS or token.startswith(_GIT_COMMIT_TEXT_PREFIXES):
+            pass
+        else:
+            return False
+        j += 1
+    return stdin
+
+
 def _classify_body(body: Body, group: list[str], sep: str, level: Level, other_tokens: list[str],
                    everything_reads: bool, text_ok: bool = True) -> str:
     """TEXT (never runs), BLOB (another language: one token) or SCRIPT (shell)."""
@@ -686,6 +751,8 @@ def _classify_body(body: Body, group: list[str], sep: str, level: Level, other_t
     keyword = word in ("done", "fi", "esac", "}")
     if keyword and not everything_reads:
         return "SCRIPT"
+    if text_ok and level.sink_safe and not _pipes(sep) and _git_commit_stdin_message(group):
+        return "TEXT"  # RC1b: git only reads the message
     if text_ok and (keyword or _is_reader(group, None)) and level.sink_safe and not _pipes(sep):
         # An unquoted body's $(...) and `...` are collected separately; the rest is text.
         targets = _redirect_targets(group) or []
@@ -700,8 +767,11 @@ def _classify_body(body: Body, group: list[str], sep: str, level: Level, other_t
     return "SCRIPT"
 
 
-def _levels(command: str) -> list[Level]:
-    """All levels of the command, heredoc bodies classified and added."""
+def _levels(command: str, fallback: bool = False) -> list[Level]:
+    """All levels of the command, heredoc bodies classified and added. With
+    fallback (the whole-text floor failed to lex and the fallback decided), a
+    SCRIPT body that fails to scan becomes a forced blob, so its words are
+    checked without a runner (permission model phase 1, RC1)."""
     levels: list[Level] = []
     _collect(command, 0, levels)
     seen = 0
@@ -729,7 +799,7 @@ def _levels(command: str) -> list[Level]:
                 try:
                     _collect(body.text, 1, part, body=True)
                 except ScanError:
-                    part = [Level([[body.text]], [""], body=True, blob=True, forced=forced)]
+                    part = [Level([[body.text]], [""], body=True, blob=True, forced=forced or fallback)]
                 levels.extend(part)
         level.bodies = []
     return levels
@@ -1337,6 +1407,76 @@ def _check_live(command: str, session_id: str | None, tool_name: str | None, bac
     _log_live(command, session_id, tool_name, marker, marker_sha, list_sha)
 
 
+_PARSE_MESSAGE = "Command guard could not parse shell quoting; tool call blocked."
+_GLOB_CHARS = re.compile(r"[*?\[]")
+
+
+def _unguarded(token: str) -> bool:
+    stripped = _GUARDED_PARAMETER.sub("", token)
+    return bool(_VARIABLE_EXPANSION.search(stripped)) or bool(_GLOB_CHARS.search(stripped))
+
+
+def _rm_recursive_forced(tokens: list[str]) -> tuple[bool, list[str]]:
+    options = [t for t in tokens[1:] if t.startswith("-") and t != "--"]
+    paths = [t for t in tokens[1:] if not t.startswith("-")]
+    return (any(_is_option(t, "rR", "--recursive") for t in options)
+            and any(_is_option(t, "f", "--force") for t in options)), paths
+
+
+def _dash_f_like(token: str) -> bool:
+    return token == "-" or token == "--full" or (token.startswith("-") and not token.startswith("--") and "f" in token[1:])
+
+
+def _fallback_refusals(groups: list[list[str]], second: bool) -> str | None:
+    """Permission model phase 1, RC1 steps 5 and 6: forms a quote-hidden
+    separator can produce on the fallback path. Step 5 (second lexing only):
+    an rm -rf without a path, or pkill/pgrep with a lone dash. Step 6 (both
+    lexings): rm -rf, pkill/pgrep, git add and git push judged together with
+    the first token of the following group, the one the separator orphaned."""
+    for n, group in enumerate(groups):
+        tokens = _unwrap(group)
+        if not tokens:
+            continue
+        base = os.path.basename(tokens[0])
+        following = groups[n + 1][0] if n + 1 < len(groups) and groups[n + 1] else None
+        if base == "rm":
+            dangerous, paths = _rm_recursive_forced(tokens)
+            if dangerous and second and not paths:
+                return _PARSE_MESSAGE
+            if dangerous and following is not None and _unguarded(following):
+                return DENY_MESSAGES["remove"]
+        if base in ("pkill", "pgrep"):
+            if second and any(t == "-" for t in tokens[1:]):
+                return _PARSE_MESSAGE
+            if following is not None and _dash_f_like(following):
+                return DENY_MESSAGES["process"]
+        if base == "git" and len(tokens) > 1 and following is not None:
+            if tokens[1] == "add" and following in ("-A", "--all", ".", "docs", "docs/"):
+                return DENY_MESSAGES["stage"]
+            if tokens[1] == "push" and (_is_option(following, "f", "--force")
+                                        or following.startswith("--force-with-lease") or following.startswith("+")):
+                return DENY_MESSAGES["push"]
+    return None
+
+
+def _fallback_floor(command: str) -> str | None:
+    """Permission model phase 1 (UNITY-20260929-003 RC1): when the whole-text
+    floor cannot lex the command (an apostrophe in a quoted heredoc body or a
+    prose line), the text is lexed twice with the guard's own lexer, once
+    without apostrophes and once without apostrophes, double quotes and
+    backslashes; a text that does not lex in either form is refused as before;
+    every group rule, and the step-5/6 refusals, apply to both lexings.
+    Design: docs/research/permission-model-2026-10-09/phase1-guard-false-positives.md"""
+    joined = command.replace("\\\n", "")
+    try:
+        first, _ = _lex(joined.replace("'", ""))
+        second, _ = _lex(joined.replace("'", "").replace('"', "").replace("\\", ""))
+    except ValueError:
+        return _PARSE_MESSAGE
+    return (_group_rules(first) or _group_rules(second)
+            or _fallback_refusals(first, False) or _fallback_refusals(second, True))
+
+
 def inspect(command: str, session_id: str | None = None, tool_name: str | None = "Bash",
             background: bool = False) -> str | None:
     # Live phase: only an exact reviewed string, checked before the floor.
@@ -1347,13 +1487,16 @@ def inspect(command: str, session_id: str | None = None, tool_name: str | None =
             return f"aptly live command not allowed: {error}"
         return None
     # The earlier tokenisation stays as a floor: UNITY-20260927-058 only adds denials.
-    message = _group_rules(_legacy_groups(command))
+    # When it cannot lex the text, the phase-1 fallback decides instead of refusing.
+    legacy = _legacy_groups(command)
+    fallback = legacy == [["<parse-error>"]]
+    message = _fallback_floor(command) if fallback else _group_rules(legacy)
     if message:
         return message
     try:
-        levels = _levels(command)
+        levels = _levels(command, fallback=fallback)
     except ScanError:
-        return "Command guard could not parse shell quoting; tool call blocked."
+        return _PARSE_MESSAGE
     rest = _group_rules(group for level in levels if not level.body for group in level.groups)
     if _rehearsal_candidate(command):
         try:
