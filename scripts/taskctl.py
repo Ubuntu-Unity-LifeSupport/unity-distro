@@ -476,7 +476,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import approval_record  # noqa: E402
 
 # Set at the merge of phase 4: records published before it carry no approval.
-AUTHORIZATION_REQUIRED_SINCE = "2026-10-10T00:00:00Z"
+AUTHORIZATION_REQUIRED_SINCE = "2026-10-09T10:49:00Z"
 LIVE_PUBLIC = Path("/srv/aptly/public")
 
 
