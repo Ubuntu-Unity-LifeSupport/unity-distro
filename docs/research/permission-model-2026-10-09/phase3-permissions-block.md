@@ -858,3 +858,48 @@ Sequence, as agreed:
 
 Phase 3 is rolled out. P2, P5 and P6 are not started; the next step waits
 for May.
+
+## Interactive control test and closure (2026-10-09, May's last acceptance item)
+
+May accepted the rollout and asked for one control in a real interactive
+session: does the permission dialog appear for a harmless ASK operation, and
+does a refusal keep the command from running.
+
+Method: a fresh interactive `claude` (v2.1.278, haiku) in a tmux
+pseudo-terminal, started in the base checkout with `--permission-mode
+bypassPermissions` (the agents' mode) and the live user settings; the
+dialogs were driven by key presses and every screen was captured
+(scratchpad `p3-measure-4/`). Request: run once, never retry,
+`sudo usermod --help && touch <marker>`.
+
+Observed, with the status line showing `bypass permissions on`:
+
+```
+ Bash command
+   │ sudo usermod --help && touch .../p3-measure-4/marker-ran
+ Permission rule Bash(sudo usermod *) requires confirmation for this command.
+ /permissions to update rules
+ Do you want to proceed?
+ ❯ 1. Yes
+   2. Yes, and don't ask again for: touch .../marker-ran
+   3. No
+ Esc to cancel · Tab to amend
+```
+
+Esc was pressed. The transcript then showed `Interrupted · What should
+Claude do instead?`; the marker file was never created; the session was
+closed with `/exit`. The prompt therefore appears in an interactive
+session in the agents' mode, names the rule, and a refusal stops the call.
+
+Side effect to know: on accepting the interactive bypass-mode warning,
+Claude Code itself rewrote `~/.claude/settings.json` (its own write, not a
+tool call): the keys were reordered and `"skipDangerousModePermissionPrompt":
+true` was added. The `permissions` block and the hook entry are unchanged
+(verified equal to the approved proposal; `--check` OK; `settings_problems`
+empty); the live file is otherwise the approved content plus that flag.
+Accepting the workspace trust dialog likewise added the base checkout to
+`~/.claude.json`. Neither write went through the Edit/Write tools or the
+shell, so no rule applied; both are reported, not reverted (reverting
+would be another write of the live file, which is May's call).
+
+**Phase 3 closed.** P2, P5 and P6 await May's separate GO.
