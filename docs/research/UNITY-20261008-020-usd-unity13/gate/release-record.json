@@ -1,0 +1,31 @@
+{
+  "task_id": "UNITY-20261008-020",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+  "source_commit": "5a0a30078ceb5dc75754104395605616c1e14016",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261008-020",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261008-020-usd-unity13/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261008-020-usd-unity13/gate/target-test.txt",
+    "debs": {
+      "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity13_amd64.deb": "b4d5fdc8cd13ff10067064575e0d44673a6ac4191c6012c93abfb89b4528e1bf",
+      "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity13_all.deb": "0b025eb66b61bfd60cd40a7004f63f877c71a010424fb2c021a1236f488e38a0",
+      "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity13_amd64.deb": "1f4ff38a185aacd62f82accfad77bf8ddcc269da31d8451848392724d5b10d2a"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261008-020-usd-unity13/README.md",
+    "verification_record": "docs/research/UNITY-20261008-020-usd-unity13/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

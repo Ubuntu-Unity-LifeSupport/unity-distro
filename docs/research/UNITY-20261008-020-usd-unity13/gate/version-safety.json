@@ -1,0 +1,76 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 15.04.1+21.10.20220802-0ubuntu7+unity13 is newer than resolute 15.04.1+21.10.20220802-0ubuntu6",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity-settings-daemon",
+  "source_commit": "5a0a30078ceb5dc75754104395605616c1e14016",
+  "candidate_source_version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+  "pockets": {
+    "resolute": "15.04.1+21.10.20220802-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-09T00:35:43Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "libunity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    },
+    {
+      "package": "libunity-settings-daemon1-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    },
+    {
+      "package": "libunity-settings-daemon1",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    },
+    {
+      "package": "unity-settings-daemon-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    },
+    {
+      "package": "unity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    },
+    {
+      "package": "unity-settings-daemon-schemas",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "all",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    },
+    {
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity13"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261008-020",
+    "packages": 497,
+    "list_sha256": "212b5bea053016033187bffbb0d507836c57c65cf96d6fb5fceec3f6fce912f7",
+    "content_sha256": "124f694c6e140114c5b2bbbe59ae8e5f96ae4232bb5d703074f49397ab8328b1",
+    "model_entries": 448,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "2c18ba5e38e4ad68a6d71dd63dcae740d8e00d4e92ec3d85f0023aee53c9afa4"
+}
