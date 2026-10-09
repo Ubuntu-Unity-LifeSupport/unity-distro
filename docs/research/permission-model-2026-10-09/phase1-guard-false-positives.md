@@ -371,3 +371,24 @@ Measurements before the merge (`dc_impl_check.py`, `replay_guard.py`):
 - replay of every distinct transcript command (11216): 0 allow->deny;
   257 deny->allow, of which 254 were "could not parse" refusals (RC1) and 3
   were `git commit -q -F -` messages denied as aptly mentions (RC1b).
+
+## Verification (2026-10-09)
+
+Independent Verifier (ephemeral subagent): **PASS, INDEPENDENTLY_REPRODUCED**.
+Own drivers: 251 probe strings (0 allow->deny; deny->allow only RC1/RC1b/RC4
+forms and X3, K22, A4); 195 existing test commands unchanged; the new data
+file 0 wrong; own transcript replay of 11233 commands (0 allow->deny; 254
+RC1 and 3 RC1b deny->allow); 25 adversarial strings of its own plus the
+round-8 orphan probes executed in a sandbox with rm, pkill, pgrep, git and
+the repository binary shadowed by argument loggers: no allowed form executes
+a guarded operation. Fail-closed confirmed for malformed input, a missing
+command and a text that does not lex after the fallback. Full suite 472 OK.
+
+Clarification taken from its remark: the enumeration "RC1/RC1b forms plus
+X3, K22, A4" is not exhaustive of every string whose verdict changes. An
+apostrophe heredoc body inherits every gap the whole-text floor already has
+for its no-apostrophe sibling (the round-8 orphan forms, ANSI-C and IFS
+spellings); each such change is from refusal to the sibling's verdict, and
+none executes a guarded operation. The invariant is "nothing executable that
+was denied becomes allowed", measured, not "the list of changed strings is
+closed".
