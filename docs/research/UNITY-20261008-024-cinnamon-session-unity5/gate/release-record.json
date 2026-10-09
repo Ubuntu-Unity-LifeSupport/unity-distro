@@ -1,0 +1,30 @@
+{
+  "task_id": "UNITY-20261008-024",
+  "package": "cinnamon-session",
+  "target_series": "resolute",
+  "candidate_version": "6.4.2-1+unity5",
+  "source_commit": "44343b48c7a9e06bcd43c56dc439a6a4de37e73d",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261008-024",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/gate/target-test.txt",
+    "debs": {
+      "cinnamon-session_6.4.2-1+unity5_amd64.deb": "6b545e9eb0900774ae703c0893887506db1a77195452ef00a86b65af8a73da0f",
+      "cinnamon-session-common_6.4.2-1+unity5_all.deb": "9deaf578609a21e16f60807b700b12cc6b1882efea7ab53184052b682c9ea883"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/README.md",
+    "verification_record": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

@@ -71,6 +71,20 @@ pristine-tar. The manifest is in `build/`.
   build record and the runtime records; it did not reproduce on its own).
 - Check on the target after publication: pending.
 
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261008-024-20261009T013135Z`.
+  19 files, complete, equal to live; list sha256
+  `2fa0932447459621a4b895bf7f17fa8a6ee66f00d0657303f1990e4a5f70e729`.
+- **Repository:** 4 records added to `unity-resolute` (the source, 2 .deb
+  and 1 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261008-024`, which is the live
+  `unity-resolute-20261008-020` plus these 4 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
+
 ## Not changed / known limits
 
 - The paths without any logind session (the switch-user query, the idle
