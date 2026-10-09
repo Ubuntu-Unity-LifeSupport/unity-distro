@@ -1,0 +1,19 @@
+UNITY-20261008-024 (with UNITY-20261008-022): target verification of the publication
+
+Published: ./resolute = unity-resolute-20261008-024, 2026-10-09T01:34:01Z (publish record
+~/coordinator/publish-records/UNITY-20261008-024.json; switch-time version check SAFE).
+
+Target: target-desktop, the published stack of 2026-10-08 restored (confirmed inside the guest:
+cinnamon-session +unity3 before the update), then updated the ordinary way from the live repository
+(apt-get update, apt-get full-upgrade):
+  installed: cinnamon-session and cinnamon-session-common 6.4.2-1+unity5, unity-settings-daemon +unity13,
+  unity +unity13, light-locker +unity3, hud +unity5, libcolumbus1v5 +unity1
+  sha256 /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary =
+  b7e714438edc6f40fbe2e017aa173dd4d768324f438c3cecb5b91bf5b9be66f4 = the same file in the gated build's deb.
+
+Cold boot (power off, power on):
+  cinnamon-session runs from the new binary (no "(deleted)" mappings).
+  SessionIsActive (<true>,); the display session 4 is x11, class user, active.
+  Journal: "Could not get session id" 0, "was removed" 0, no cinnamon-session crash.
+
+Result: PASS.
