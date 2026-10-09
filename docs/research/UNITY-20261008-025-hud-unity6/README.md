@@ -325,3 +325,55 @@ repository, a cold cycle; before and after):
   stack with its id.
 - **Regressions:** 10 Writer starts (the -001 move), Terminal's id
   (UNITY-20261008-011).
+
+### Design review, round 2: APPROVE
+
+The revised design holds for all three tasks. Taken into the implementation:
+
+1. **The -025 change is correct.**
+   - `value()` in `StartQuery` is safe: its `else` branch only changes the
+     objects the pointers point to.
+   - `find()` in `CloseQuery` behaves as before for an existing entry and
+     inserts nothing for a missing one.
+   - `closeQuery` taking the query into a local, skipping null queries,
+     stopping the timer and erasing has no re-entrancy problem.
+   - A side benefit: a legacy client that calls `CloseQuery` on the query
+     object itself now also removes its legacy entry.
+2. **`LegacyQueryReleasedWhenSenderLeaves`:**
+   - the mock built in the `Invoke` gets `ON_CALL(path())` and
+     `ON_CALL(results())` with `ReturnRef` to objects that outlive it
+     (`StartQuery` calls both, and a reference-returning mock has no
+     default);
+   - the second query has another path (`/path/query1`), so "new query" is
+     seen in `openQueries()` too.
+3. **`CloseQueryWithoutLegacyQueryAddsNothing`** must see the map itself:
+   with `find()` a null entry never exists, and the null-skip in
+   `closeQuery` would hide a regression. A test subclass exposes the size
+   of the protected `m_legacyQueries`, which must be 0 after a bare
+   `CloseQuery` and 0 after `ExecuteQuery` + `CloseQuery`.
+4. **`NoCwdLookupWithoutDataDirs`** sets `XDG_DATA_HOME` explicitly, so the
+   sbuild `HOME` is never used.
+5. **bamf's scan order**, as the card states it, is correct. The final
+   order is the Desktop folder, `~/.local/share/applications`,
+   `$XDG_DATA_HOME`, `/usr/local/share`, `/usr/share`, then the
+   `XDG_DATA_DIRS` entries, with subdirectories after their parent. Two
+   more divergences from Qt, both known gaps and not regressions:
+   - bamf reads `XDG_DATA_DIRS` in reverse order (`bamf-matcher.c:1120-1126`
+     prepends each), so for an id in two system directories bamf and hud
+     may pick different files;
+   - bamf always scans `~/.local/share/applications`, even when
+     `XDG_DATA_HOME` points elsewhere; Qt looks only in `$XDG_DATA_HOME`.
+6. **`dbus-monitor "interface='com.canonical.hud'"` drops method returns**,
+   and with them the query key in `StartQuery`'s reply. The query path is
+   taken from Unity's `CloseQuery` argument (`UnityCore/Hud.cpp:190-193`) or
+   from the `OpenQueries` property.
+7. **The "StartQuery + ExecuteQuery" client:**
+   - it must use an integer key from its own suggestions, with a window
+     focused, and a harmless item;
+   - two existing paths through `ExecuteQuery` could crash hud-service: a
+     key that is not an integer (`QueryImpl::ExecuteCommand` calls
+     `sendErrorReply` outside a D-Bus call) and no focused window
+     (`m_windowToken` null, `QueryImpl.cpp:134`);
+   - both are older than this revision and are not part of -025: a
+     follow-up candidate for C.
+8. **The rest of the target plan is enough.**
