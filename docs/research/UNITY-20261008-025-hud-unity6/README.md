@@ -113,7 +113,8 @@ The setup: Clean-2, the live publication (hud +unity5, libcolumbus
   (default `/usr/local/share:/usr/share`).
 - **A behaviour change, per the spec:** a user's desktop file overrides a
   system one with the same id, so the HUD icon follows the user's override.
-  This is what bamf, the launcher and the Dash already do.
+  (Round 1: the claim about bamf, the launcher and the Dash is reduced to
+  what bamf's code shows.)
 - **Tests (`TestApplication`):**
   - a desktop file only under a temporary `XDG_DATA_HOME` is found, with
     its icon;
@@ -150,3 +151,177 @@ from a file repository, a cold cycle; the same `repro.sh` before and after):**
     query reused while Unity is connected);
   - a Writer HUD query;
   - the -001 move and the -011 ids (10 Writer starts, Terminal).
+
+### Design review, round 1: REVISE (all points taken)
+
+The Design Challenger (an independent subagent) confirmed the direction for
+all three tasks. Its points, as applied below:
+
+**UNITY-20261008-025:**
+
+1. **`closeQuery(path)` is the path** taken when a legacy sender leaves.
+   - The sender is the caller's unique name (`HudServiceImpl.cpp:91-97`).
+   - The watcher is built before `StartQuery` replies.
+   - `"local"` occurs only in tests, with mock queries.
+2. **Null entries.**
+   - `StartQuery` and `CloseQuery` read `m_legacyQueries[sender]` with
+     `operator[]`, which inserts an empty `{null, null}` entry.
+   - That happens at every Unity HUD activation that ends in an item:
+     `ExecuteQuery` takes the entry, then Unity's hide sends `CloseQuery`
+     (`unity hud/HudController.cpp:506`, `UnityCore/Hud.cpp:105-113`).
+   - A search "by the query's path" that calls `path()` on such an entry
+     would crash hud-service, and one-off senders that call `CloseQuery`
+     without a query grow the map.
+   - Revised: `CloseQuery` uses `find()` and inserts nothing, `StartQuery`
+     uses `value()`, and the search in `closeQuery` skips null queries.
+   - `closeQuery` keeps a strong reference to the query (`m_queries.take`
+     into a local) while it removes the legacy entry.
+   - Erasing the entry deletes its timer and any pending timer event. A
+     `QTimer` deleted after its own `timeout` already happens today (the
+     local `entry` in `legacyTimeout`).
+   - **New for legacy queries:** they are now destroyed inside their own
+     watcher's signal, as new-API queries already are. The target check
+     shows hud-service survives it.
+3. **Unity 7 is unaffected.**
+   - Its `hud::Controller` and proxy live as long as compiz, on compiz's
+     shared session connection, so its unique name stays the same.
+   - It sends `CloseQuery` before every `StartQuery` (`UnityCore/Hud.cpp:217-225`).
+     That is the timer's pattern, not `closeQuery`'s.
+4. **The planned test could not pass.** `WillOnce(Return(query))` keeps a
+   copy of the pointer in the expectation, so a weak pointer never expires.
+   Revised:
+   - the mock is created in an `Invoke` that keeps only a weak pointer (or
+     `Return(ByMove(…))`), and the second `StartQuery` has its own mock;
+   - one more case pins point 2: `ExecuteQuery`, then `CloseQuery` (it used
+     to insert a null entry), then `StartQuery` and `closeQuery(path)`. No
+     crash, and `openQueries()` is empty.
+   - `TestQuery.CloseWhenSenderDies` already pins `QueryImpl` →
+     `closeQuery(path)`.
+
+**UNITY-20261008-017:**
+
+5. **Qt 5.15 `QStandardPaths::locate(ApplicationsLocation)`:**
+   - `$XDG_DATA_HOME` (else `$HOME/.local/share`) `/applications` first,
+     then each XDG data dir (`/usr/local/share:/usr/share` when the variable
+     is empty; empty and relative entries dropped);
+   - the first regular file wins; no subdirectories; no caching; test mode
+     is not enabled anywhere in hud.
+   - **The card's claim that bamf, the launcher and the Dash "already do
+     this" had no evidence.** Checked now in bamf 0.5.6 (`src/bamf-matcher.c:1142-1170`):
+     it scans `XDG_DATA_HOME` and `~/.local/share/applications` before the
+     system directories. Which of two files with the same id it finally
+     picks also depends on its later matching (`:1736-1748`), so the card
+     claims only the scan order.
+   - **Where bamf's path and hud-service's lookup can still disagree:**
+     bamf's `_BAMF_DESKTOP_FILE` hint and `--desktop_file_hint` (a path
+     outside the XDG dirs), desktop files in subdirectories (`kde4-foo`),
+     and a user file with `Hidden=true`. Asking the bridge for the path
+     would change the WindowStack interface; these are known gaps.
+6. **The tests are feasible.**
+   - `qputenv`/`qunsetenv` work in-process because nothing is cached.
+   - The old code really is cwd-relative when `XDG_DATA_DIRS` is unset, and
+     a user service starts in `$HOME`, so it could read `~/applications`.
+   - The cwd test sets `XDG_DATA_HOME` to an empty temporary directory, uses
+     an id that cannot exist in the chroot, restores the working directory,
+     and uses a fresh `ApplicationImpl` per case.
+
+**UNITY-20261008-018:**
+
+7. **NOT_APPLICABLE is right**, with corrected evidence:
+   - **No signal is missed.** Qt 5.15 `serviceOwnerChangedNoLock` prints the
+     message and then sets the cache to the new owner, which is the right
+     one. Signal filtering uses that cache.
+   - **What shows it:** the B017 window, opened after the warning, is in the
+     stack. `m_windows` is filled only by `WindowPaths` at construction and
+     by `ViewOpened`/`WindowAdded` (`BamfWindowStack.cpp:186-205`,
+     `:240-246`), so bamf's signals arrived.
+   - **The activation** comes from the bridge's explicit
+     `isServiceRegistered`/`startService` (`BamfWindowStack.cpp:163-167`), not
+     from "its first bamf call".
+   - **The log:**
+     - the 04:14:37 activation lines belong to the 018-bamf kill;
+     - the `busctl` lines in logs/01 were taken after it, and the pre-kill
+       ones (`:1.36` = pid 2156 bamfdaemon, the owner) are now recorded with
+       that label;
+     - the post-restart stack showed only compiz windows, so it does not
+       prove the bridge kept working. The target check opens a window after
+       a bamf restart.
+   - **`After=`/`Wants=` is worse:** it would hold the bridge, and with it
+     hud-service's window data, for the ~6 s bamf took to start, to remove
+     one log line, and `Wants=` would pull in a static, D-Bus-activated
+     unit.
+   - **The existing report:** LP #1297471 (hud, Low, Confirmed, no fix),
+     the same message with `':1.6'`.
+
+**Existing fixes** (the DC also searched lp:hud r420 of 2020-03-16, which
+our base includes; Ubuntu 0ubuntu1..6; GitLab and Lomiri; Debian, which has
+no hud):
+
+| task | existing fix | issue search |
+|---|---|---|
+| -025 | none | none; older hud-service memory reports (LP #967879, #1645186) name other causes |
+| -017 | none | none |
+| -018 | none, in hud or in Qt 5.15 | LP #1297471 |
+
+8. **The target plan gets more steps** (below).
+
+## Design, revised after round 1
+
+**-025 (`service/HudServiceImpl.cpp`):**
+
+- `StartQuery`: `m_legacyQueries.value(sender)`, so a missing entry is not
+  inserted; the new query is stored as before.
+- `CloseQuery`: `find(sender)`, so no entry is created. A found entry
+  behaves as before: `UpdateQuery("")`, then the 2 s timer.
+- `closeQuery(path)`:
+  1. `Query::Ptr query(m_queries.take(path))`;
+  2. then the `m_legacyQueries` entry whose query is non-null and has this
+     path is erased, with its timer stopped first;
+  3. return `query`.
+
+**-017 (`service/ApplicationImpl.cpp`):** `desktopPath()` =
+`QStandardPaths::locate(QStandardPaths::ApplicationsLocation, id + ".desktop")`.
+
+**-018:** no code change; closed as NOT_APPLICABLE, citing LP #1297471.
+
+**Tests:**
+
+- `TestHudService`:
+  - `LegacyQueryReleasedWhenSenderLeaves` (a weak pointer expires after
+    `closeQuery`; the next `StartQuery` builds a new query);
+  - `CloseQueryWithoutLegacyQueryAddsNothing` (`ExecuteQuery`, `CloseQuery`,
+    `StartQuery`, `closeQuery`: no crash, `openQueries()` empty);
+  - the existing `LegacyQuery` unchanged.
+- `TestApplication`:
+  - `DesktopFileInDataHome` (found, icon);
+  - `DataHomeOverridesDataDirs`;
+  - `NoCwdLookupWithoutDataDirs`.
+
+**Target check** (Clean-2 + the live publication, then +unity6 from a file
+repository, a cold cycle; before and after):
+
+- **025:**
+  - `OpenQueries` and the deleted mappings before and after five one-off
+    `StartQuery` clients, then 10 s later;
+  - a client with `StartQuery` + `CloseQuery` that exits inside the 2 s;
+  - a client with `StartQuery` + `ExecuteQuery` that exits;
+  - hud-service keeps its PID, and there is no coredump.
+- **Unity 7's HUD:**
+  - opened with a real Alt tap (vbox `send_keys`), with
+    `dbus-monitor "interface='com.canonical.hud'"` running to see compiz's
+    sender and the query key;
+  - opened again within 2 s: the same query path; after more than 2 s: a
+    new one;
+  - an item run with Enter, then the HUD opened again: the
+    `ExecuteQuery` + `CloseQuery` sequence of point 2;
+  - `OpenQueries` holds at most one legacy path at a time.
+- **017:**
+  - the B017 window's legacy icon: `''` before, `utilities-terminal` after;
+  - an override (a copy of `org.gnome.Terminal.desktop` in
+    `~/.local/share/applications` with another `Icon=`): the HUD icon
+    follows it, then the copy is removed;
+  - Writer's icon is unchanged.
+- **018:** after a bamfdaemon restart, a window opened then appears in the
+  stack with its id.
+- **Regressions:** 10 Writer starts (the -001 move), Terminal's id
+  (UNITY-20261008-011).
