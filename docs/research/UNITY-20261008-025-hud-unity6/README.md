@@ -613,3 +613,25 @@ The slot came from C. -017 ships in this build; it closes through
     +unity6 sorts above it.
 - **Peer notice:** A ACK at 04:02Z (gate/peer-notice.txt).
 - **Patch record:** docs/PATCHES.md.
+- **C's gate review:** OK. **May's confirmation:** in B's session.
+- **Switch:** `scripts/publish_aptly.py --gate` at 05:40:24Z, `./resolute`
+  → `unity-resolute-20261008-025`. Write-once record:
+  `~/coordinator/publish-records/UNITY-20261008-025.json`.
+
+## Target verification of the publication (2026-10-09, logs/05)
+
+- **Setup:** Clean-2 restored and confirmed from inside the guest: no
+  `~/.dirty`, no work directories, only `ubuntu.sources`, hud `0ubuntu6`.
+  The live archive was added the usual way, with no drop-ins. Then
+  `apt full-upgrade` from `unity-resolute-20261008-025` (InRelease Date
+  05:40:24 UTC), which left nothing to upgrade. Then a cold cycle.
+- **The binary:** apt's candidate and the installed version are +unity6
+  from our archive. The running hud-service is the gated build (sha256
+  `3471e07f522bfd36`, no `(deleted)` mappings).
+- **-025:** query objects stay at 0 after 5 one-off `StartQuery` clients,
+  10 s later and at the end. hud-service keeps PID 3693 throughout.
+- **-017:** the user-only desktop file gives `utilities-terminal`, and the
+  user override gives `b017-override`. Writer stays `libreoffice-writer`.
+- **-018:** a Terminal opened after a bamfdaemon restart gets
+  `org.gnome.Terminal`.
+- Every result equals the pre-publication +unity6 run (logs/02).

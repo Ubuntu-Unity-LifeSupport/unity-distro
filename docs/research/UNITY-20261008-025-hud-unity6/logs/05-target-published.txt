@@ -1,0 +1,34 @@
+UNITY-20261008-025 / -017 - target verification of the publication (target2, 2026-10-09)
+Clean-2 restored and confirmed from inside the guest (no ~/.dirty, no ~/b025 or ~/b001, only ubuntu.sources, hud 0ubuntu6); the live archive added the usual way (key + unity-distro.sources, no drop-ins), apt full-upgrade from the live publication unity-resolute-20261008-025 (InRelease Date 05:40:24 UTC): 206 packages configured, nothing left to upgrade; xdotool installed for the test; a cold cycle (systemctl poweroff over ssh, start_vm). Then target025.sh, unchanged.
+
+2026-10-09T05:56:03Z
+Date: Fri, 9 Oct 2026 05:40:24 UTC
+hud-service exe sha256 3471e07f522bfd36, installed 3471e07f522bfd36, deleted 0
+  Установлен: 14.10+17.10.20170619-0ubuntu6+unity6
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity6
+  Таблица версий:
+ *** 14.10+17.10.20170619-0ubuntu6+unity6 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity6
+libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity1
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+hud-service pid 3693 sha256 3471e07f522bfd36 deleted-libs 0
+== 2 -025
+start: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3693
+after 5 one-off StartQuery clients: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3693
+10 s later: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3693
+after a StartQuery + CloseQuery client that exited at once: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3693
+  ExecuteQuery item: <b>Свернуть</b> (Window actions) int 0
+after a StartQuery + ExecuteQuery client: query-objects 0 OpenQueries 0 deleted-maps 2 pid 3693
+coredumps of hud-service this boot: 0
+== 3 -017
+B017 window: legacy icon 'utilities-terminal'
+Terminal with a user override (Icon=b017-override): legacy icon 'b017-override'
+Writer: legacy icon 'libreoffice-writer'
+== 4 -018
+bamfdaemon 2057 -> 4800, bridge 2081; Terminal window 62914566 opened after the restart: (62914566, 'org.gnome.Terminal'
+end: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3693
+
+reading: the published hud is the gated build (hud-service sha256 3471e07f522bfd36 = the build's, no (deleted) mappings, apt candidate +unity6 from 192.168.56.10); every -025 and -017 result equals the pre-publication +unity6 run in logs/02 (query objects 0 at every step, the same hud-service PID 3693 throughout; the user-only and the override icons right, Writer unchanged).
