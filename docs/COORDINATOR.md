@@ -52,6 +52,11 @@ external.
   starts; never reuse it; keep one owner and one allowed state from
   `docs/ENGINEERING-PROCESS.md`; confirm the previous owner is idle before
   reassignment.
+- **Approves routine publications**: after checking the gate, records the
+  approval with `scripts/taskctl.py approve-publication`. The approval is
+  single-use and bound to the gate; the owner's `publish_aptly.py` refuses
+  without it. May is asked only for a first publication of a source package
+  and for the exceptional operations of ENGINEERING-PROCESS section 6a.
 
 ## What the coordinator does not do
 

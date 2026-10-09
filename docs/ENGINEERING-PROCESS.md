@@ -282,7 +282,12 @@ PATCH_TOO_BROAD
 ```
 
 `PASS` corresponds to `PATCH_CORRECT`.
-Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. A `PASS` review
+Only `PASS` advances a behavior fix to `READY_TO_PUBLISH`. A **first
+publication of a source package** (one absent from the live publication)
+additionally needs a Design Challenger round on the packaging, the
+Verifier's `INDEPENDENTLY_REPRODUCED`, and May's reference in C's
+publication approval (section 6, step 10); an update of an established
+package needs the verification this section already describes. A `PASS` review
 without an independently reproduced result must say `REVIEWED`; it must not
 claim independent reproduction. `INCOMPLETE` names
 the missing proof; it is not a pass. Run the verifier in a separate, ephemeral
@@ -600,6 +605,14 @@ caused it.
    - One publication runs at a time. The repository `unity-resolute` is
      shared, so a snapshot carries every record in it, including another
      task's unpublished ones. **[process]**
+   - Before the gate, merge `origin/main` into the task branch (section 10
+     permits the merge, never a rebase), so that the publication tools of
+     the worktree are current. `taskctl.py approve-publication` and
+     `publish_aptly.py` refuse a worktree whose `scripts/publish_aptly.py`,
+     `approval_record.py`, `tested_build.py`, `build_dependencies.py`,
+     `version_safety.py`, `apt_view.py` or `taskctl.py` differ from
+     `origin/main`. A task that changes one of those tools never also
+     publishes a package. **[tool]**
 2. **Gated build** in the worktree of the task that carries the
    publication.
    - `--source-repo` must be `packages/<source>` under the repository the
@@ -712,8 +725,8 @@ caused it.
      verification, patch and release records, the version check, and a
      decision record when the task requires one. `publish_aptly.py` recomputes every one of them.
    - Any later edit to a pinned file refuses the publication, even one line
-     in the card. Regenerate the gate and have C check it again before May
-     is asked. **[tool]**
+     in the card. Regenerate the gate and have C check it again before C's
+     approval is asked. **[tool]**
    - Record the gate path in the task evidence. Commit and push the gate.
 9. **`READY_TO_PUBLISH`.**
    - Run `taskctl.py` from the task worktree, so that its repository is the
@@ -726,10 +739,36 @@ caused it.
      be inside this repository"). **[tool]**
    - Append a `START` line to `~/AGENTS-LOG.md` with the package and the
      full candidate version.
-10. **Publish.** C checks the gate, and May confirms directly in the
-    owner's session. Then run `scripts/publish_aptly.py --gate <gate>` and
-    nothing else. **[tool]**
-    - The publisher refuses unless the gate, the evidence manifest, the
+10. **Publish.** C checks the gate and records the approval:
+    `python3 scripts/taskctl.py approve-publication UNITY-YYYYMMDD-NNN
+    --actor C --repo <task worktree> --branch <task branch> [--gaps ID,...]`.
+    The owner then runs `scripts/publish_aptly.py --gate <gate>` and nothing
+    else. May's confirmation is needed only for a first publication of a
+    source package (the approval then carries his reference in
+    `--may-reference`) and for the exceptional operations of section 6a.
+    **[tool]**
+    - The approval (`~/coordinator/publication-approvals/<task>.json`,
+      written by C, mode 0600) binds the task, the task branch, the gate
+      commit, the gate's sha256, the source commit and tree, the snapshot,
+      and the artifact list copied from the build manifest. It is valid for
+      four hours and is used once: the publisher moves it to `used/` with
+      an outcome before aptly runs, so a failed or interrupted switch needs
+      a new approval. A refusal returns to step 8 and needs a new approval.
+      `taskctl.py revoke-publication` withdraws one.
+    - The publisher refuses unless its repository HEAD is the approved gate
+      commit and is in `origin/<task branch>`, the gate bytes are the
+      approved ones, and the publication tools of the worktree equal
+      `origin/main` and are unmodified.
+    - A first publication is computed from the live publication's
+      `Packages` index (a file read): a source name absent from it needs
+      May's reference. A package removed from the live publication (section
+      6a) is new again.
+    - The approval is a workflow record of one OS user; it does not
+      authenticate C. The signing key is the boundary (UNITY-20260929-019).
+    - If the publisher reports success but the consumed approval still says
+      `started` (its outcome could not be written), `PUBLISHED` refuses;
+      recovery is manual, as for a missing publish record.
+    - The publisher also refuses unless the gate, the evidence manifest, the
       build manifest and log, the release record, the review evidence and
       the parent repository commit are pushed, tracked, committed and
       clean.
@@ -761,8 +800,14 @@ caused it.
       version, the target state, which path was used, and the limitations.
     - `taskctl` requires `target_verified: true` and an existing
       `target_verification_record` file. It does not check their content.
-12. **`PUBLISHED`, then `DONE`.** `DONE` requires that all records are
-    committed and pushed, and that C has merged the task branch. For a
+12. **`PUBLISHED`, then `DONE`.** `PUBLISHED` requires, for every record
+    written after the approval became mandatory, that the publish record
+    names C's consumed approval under `publication-approvals/used/` with its
+    sha256 and the outcome `published`. `DONE` requires that all records are
+    committed and pushed, and that C has merged the task branch. C writes
+    nothing at the end of a run: the publisher's write-once record and the
+    consumed approval are the record of the publication, and C's merge is
+    its closing. For a
     task closed by `released_in` (rule R), the releasing task's branch is
     merged as well.
 
@@ -891,9 +936,26 @@ python3 scripts/create_release_gate.py --record $D/gate/release-record.json \
 # commit and push the gate, then:
 python3 scripts/taskctl.py transition UNITY-YYYYMMDD-NNN READY_TO_PUBLISH \
   --actor A --evidence ~/coordinator/evidence/UNITY-YYYYMMDD-NNN.json
-# after C's check and May's confirmation:
+# after C's approve-publication (a first publication also needs May's reference):
 python3 scripts/publish_aptly.py --gate $D/gate/release-gate.json
 ```
+
+## 6a. Exceptional operations
+
+These keep May's separate GO; the routine publication of section 6 does not
+cover them, and no tool automates them:
+
+- **Rollback** to an earlier publication: C prepares the plan (the target
+  snapshot, the expected diff, the backup), the Verifier checks the expected
+  result, then May gives the GO. The automatic policy is not extended to
+  rollbacks.
+- **Removal** of a package from the live publication. The package is new
+  again afterwards: its next publication needs May's reference.
+- **The first live migration** to the signer, **key generation and
+  rotation**, and **changes to the signer's trust policy** (its
+  `policy.json`).
+- **Changes to the global Claude Code settings** (`~/.claude/settings.json`):
+  the exact diff is shown to May first.
 
 ## 7. Canonical fix examples
 

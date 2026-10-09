@@ -15,6 +15,11 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_dependencies import manifest_error  # noqa: E402
 import tested_build  # noqa: E402
+import approval_record  # noqa: E402
+
+# The live publication the first-publication rule reads (a file read, never
+# an aptly command); the test harness points this at a temporary tree.
+LIVE_PUBLIC = Path("/srv/aptly/public")
 
 
 def fail(message):
@@ -45,6 +50,115 @@ def tracked_clean(repo, path):
 
 def run_aptly(args):
     return subprocess.run(["aptly", *args], check=False, capture_output=True, text=True)
+
+
+def git_quiet(repo, *args):
+    result = subprocess.run(["git", "-C", str(repo), *args], check=False, capture_output=True, text=True)
+    return result.returncode, result.stdout.strip()
+
+
+def check_approval_early(root, root_head, gate, gate_path, now=None):
+    """C's publication approval (permission model phase 4), part 1, before any
+    manifest is read: the record exists and is valid, HEAD is the approved gate
+    commit and is in the approved task branch, the publication tools equal
+    origin/main's and are unmodified, the gate bytes and fields are the
+    approved ones. Returns ((record, sha256, raw), None) or (None, error)."""
+    task_id = gate.get("task_id")
+    try:
+        record, sha, raw = approval_record.read(task_id, now)
+    except approval_record.ApprovalError as exc:
+        return None, f"publication approval: {exc}"
+    if root_head != record["gate_commit"]:
+        return None, ("the repository HEAD differs from the approved gate commit; every commit after the approval "
+                      "needs a new approval from C")
+    code, remotes = git_quiet(root, "branch", "-r", "--contains", root_head)
+    branches = {line.strip().split(" ")[0] for line in remotes.splitlines()}
+    if code != 0 or f"origin/{record['branch']}" not in branches:
+        return None, f"HEAD is not in origin/{record['branch']}, the approved task branch"
+    for tool in approval_record.PUBLICATION_TOOLS:
+        code_a, here = git_quiet(root, "rev-parse", "--verify", "-q", f"HEAD:{tool}")
+        code_b, main = git_quiet(root, "rev-parse", "--verify", "-q", f"origin/main:{tool}")
+        if code_b != 0 or not main or code_a != 0 or here != main:
+            return None, (f"publication tools are older than main or missing ({tool}): merge origin/main into the "
+                          "task branch; regenerate the gate only if the merge touched a pinned file")
+    code, dirty = git_quiet(root, "status", "--porcelain", "--", *approval_record.PUBLICATION_TOOLS)
+    if code != 0 or dirty:
+        return None, "a publication tool is modified in the working tree; restore it before publishing"
+    if record["gate_sha256"] != sha256(gate_path) or record["gate_file"] != str(gate_path.relative_to(root)):
+        return None, "the approval names another release gate (file or sha256)"
+    for key in ("package", "candidate_version", "source_commit", "source_tree_hash", "source_repo"):
+        if record[key] != gate.get(key):
+            return None, f"the approval and the gate differ in {key}"
+    publish = gate.get("publish")
+    if not isinstance(publish, dict):
+        return None, "the release gate has no publish configuration"
+    for key in ("snapshot", "distribution", "prefix"):
+        if record[key] != publish.get(key, "." if key == "prefix" else None):
+            return None, f"the approval and the gate differ in publish.{key}"
+    for name in ("build_manifest", "evidence_manifest"):
+        ref = gate.get(name)
+        if not isinstance(ref, dict) or record[f"{name}_sha256"] != ref.get("sha256"):
+            return None, f"the approval names another {name} than the gate"
+    return (record, sha, raw), None
+
+
+def check_approval_artifacts(record, artifacts, package, distribution, prefix, public_dir=None):
+    """Part 2, once the build manifest is validated: the approved artifact
+    list equals the manifest's, and a first publication carries May's
+    reference. Returns an error string or None."""
+    expected = sorted((a["file"], a["sha256"]) for a in artifacts)
+    if sorted((a["file"], a["sha256"]) for a in record["artifacts"]) != expected:
+        return "the approval's artifact list differs from the build manifest"
+    try:
+        known = approval_record.known_sources(public_dir or LIVE_PUBLIC, distribution, prefix)
+    except approval_record.ApprovalError as exc:
+        return f"first-publication check: {exc}"
+    if package not in known and not record["may_reference"].strip():
+        return f"{package} is not in the live publication: a first publication needs May's reference in the approval"
+    return None
+
+
+def consume_and_switch(task_id, approval, command, show_args, snapshot, package, version,
+                       run=None, show=None, log=None):
+    """Consume C's approval, then run the switch and the publish-show check,
+    recording the outcome on the consumed copy. Returns
+    (used_path, used_sha, None) on success or (used_path, used_sha, (rc, message)).
+    rc is the exit status to return; message None means return rc silently."""
+    run = run or subprocess.run
+    show = show or run_aptly
+    log = log or log_event
+    approval_rec, approval_sha, approval_raw = approval
+    try:
+        used_path, used_sha = approval_record.consume(task_id, approval_raw, approval_sha, "started")
+    except (approval_record.ApprovalError, OSError) as exc:
+        try: log("FAIL(approval)", package, version, task_id)
+        except OSError: pass
+        return None, None, (2, f"could not consume the publication approval; nothing was published: {exc}")
+
+    def outcome(value):
+        nonlocal used_sha
+        try: used_sha = approval_record.set_outcome(used_path, task_id, value)
+        except (approval_record.ApprovalError, OSError): pass
+
+    try: result = run(command, check=False)
+    except OSError as exc:
+        outcome("failed(start)")
+        try: log("FAIL(127)", package, version, task_id)
+        except OSError: pass
+        return used_path, used_sha, (2, f"could not start aptly: {exc}")
+    if result.returncode:
+        outcome(f"failed(aptly rc {result.returncode})")
+        try: log(f"FAIL({result.returncode})", package, version, task_id)
+        except OSError: pass
+        return used_path, used_sha, (result.returncode, None)
+    published = show(show_args)
+    if published.returncode or not re.search(rf"(?m)^\s*\w+:\s+{re.escape(snapshot)}\s+\[snapshot\]", published.stdout):
+        outcome("failed(post-publication check)")
+        try: log("FAIL(post-publication verification)", package, version, task_id)
+        except OSError: pass
+        return used_path, used_sha, (2, "aptly returned success but publish show does not name the gated snapshot")
+    outcome("published")
+    return used_path, used_sha, None
 
 
 def parse_timestamp(value):
@@ -379,6 +493,11 @@ def main():
     gate_evidence_path = Path(task_evidence.get("release_gate", ""))
     if not gate_evidence_path.is_absolute(): gate_evidence_path = root / gate_evidence_path
     if gate_evidence_path.resolve() != gate_path: return fail("taskctl evidence points to a different release gate")
+    # C's approval (permission model phase 4), part 1: before any manifest is read.
+    approval, approval_error = check_approval_early(root, root_head, gate, gate_path)
+    if approval_error:
+        return fail(approval_error)
+    approval_rec = approval[0]
 
     source_repo = Path(gate.get("source_repo", ""))
     if not source_repo.is_absolute(): source_repo = root / source_repo
@@ -510,6 +629,10 @@ def main():
 
     if (gate_view.get("snapshot") or {}).get("name") != snapshot:
         return fail("the gate-time version check measured another snapshot")
+    # C's approval, part 2: the artifacts and the first-publication rule.
+    approval_error = check_approval_artifacts(approval_rec, artifacts, package, distribution, prefix)
+    if approval_error:
+        return fail(approval_error)
     snapshot_error = check_gated_snapshot(snapshot, expected_snapshot_names, artifacts)
     if snapshot_error: return fail(snapshot_error)
 
@@ -538,21 +661,16 @@ def main():
     command = ["aptly", "publish", "switch", distribution]
     if prefix != ".": command.append(prefix)
     command.append(snapshot)
-    try: result = subprocess.run(command, check=False)
-    except OSError as exc:
-        try: log_event("FAIL(127)", package, version, task_id)
-        except OSError: pass
-        return fail(f"could not start aptly: {exc}")
-    if result.returncode:
-        try: log_event(f"FAIL({result.returncode})", package, version, task_id)
-        except OSError: pass
-        return result.returncode
-    published = run_aptly(["publish", "show", distribution, prefix] if prefix != "." else ["publish", "show", distribution])
-    if published.returncode or not re.search(rf"(?m)^\s*\w+:\s+{re.escape(snapshot)}\s+\[snapshot\]", published.stdout):
-        try: log_event("FAIL(post-publication verification)", package, version, task_id)
-        except OSError: pass
-        return fail("aptly returned success but publish show does not name the gated snapshot")
+    show_args = ["publish", "show", distribution, prefix] if prefix != "." else ["publish", "show", distribution]
+    used_path, used_sha, error = consume_and_switch(task_id, approval, command, show_args, snapshot, package, version)
+    if error:
+        rc, message = error
+        return fail(message) if message else rc
     record = {
+        "authorization": {"file": str(Path(used_path).relative_to(approval_record.root())), "sha256": used_sha,
+                          "approved_by": approval_rec["approved_by"], "approved_at": approval_rec["approved_at"],
+                          "first_publication": approval_rec["first_publication"],
+                          "may_reference": approval_rec["may_reference"]},
         "schema": 1,
         "task_id": task_id,
         "package": package,
