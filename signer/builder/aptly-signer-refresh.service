@@ -1,0 +1,11 @@
+[Unit]
+Description=aptly-signer cadence refresh of the live Release trio (permission model phase 5)
+# Installed by May as a user unit of claude: ~/.config/systemd/user/, then
+#   systemctl --user enable --now aptly-signer-refresh.timer
+# and `loginctl enable-linger claude` so that it runs without a login.
+# Reads ~/.config/aptly-signer/client.json; a failure leaves
+# ~/coordinator/publish-records/cadence.refresh-failed and a REFRESH-FAILED line.
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 %h/unity-distro/scripts/signer_client.py refresh --task cadence --current

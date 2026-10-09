@@ -573,6 +573,134 @@ class SignerEndToEndTest(unittest.TestCase):
             aptly_signer.control_members(b"!<arch>\ncontrol.tar.gz  0           0     0     100644  10        `\nnotgzip!!!")
 
 
+class RoutinePolicyEndToEndTest(SignerEndToEndTest):
+    """Permission model phase 5 through the real service: the policy file next
+    to the template, script maps read from the .debs sent in /propose, the
+    console's view of automatic approvals, adopt-live and the re-sign cut-over."""
+
+    def setUp(self):
+        super().setUp()
+        self.policy = self.base / "policy.json"
+        self.policy.write_text(json.dumps({"schema": 1, "auto_approve": True, "max_sources": 1, "max_binary_records": 40,
+                                           "min_interval_seconds": 600, "max_per_utc_day": 6}))
+        self.config["policy"] = str(self.policy)
+
+    def go_live(self, raw):
+        """propose (console approval when not automatic), switch, refresh, /live."""
+        answer = signer_client.propose_answer(self.client, self.rehearsal(raw), TASK)
+        if answer["status"] != "approved":
+            out = io.StringIO()
+            self.assertEqual(aptly_signer.console(self.config, ["approve", answer["proposal"]], out=out, confirm=lambda _: "approve"), 0)
+        self.aptly_switch(raw, date=datetime.now(timezone.utc) + timedelta(minutes=len(self.history)))
+        self.history.append(raw)
+        self.assertEqual(signer_client.refresh(self.client, TASK, switch=True), 0)
+        self.assertTrue(signer_client.call(self.client, "POST", "/live", {})["ok"])
+        return answer
+
+    def new_version(self, name, version, postinst=False, source="demo"):
+        root = self.base / f".deb-{name}-{version}"
+        (root / "DEBIAN").mkdir(parents=True)
+        (root / "DEBIAN" / "control").write_text(
+            f"Package: {name}\nVersion: {version}\nArchitecture: amd64\nSource: {source}\nMaintainer: t <t@example.com>\nDescription: t\n")
+        if postinst:
+            (root / "DEBIAN" / "postinst").write_text("#!/bin/sh\nexit 0\n")
+            os.chmod(root / "DEBIAN" / "postinst", 0o755)
+        rel = f"pool/main/d/demo/{name}_{version}_amd64.deb"
+        path = self.public / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["dpkg-deb", "--root-owner-group", "--build", str(root), str(path)], check=True, capture_output=True)
+        data = path.read_bytes()
+        return (f"Package: {name}\nVersion: {version}\nArchitecture: amd64\nSource: {source}\nMaintainer: t <t@example.com>\n"
+                f"Filename: {rel}\nSize: {len(data)}\nSHA256: {hashlib.sha256(data).hexdigest()}\nDescription: t\n")
+
+    def test_routine_upgrade_is_automatic_after_the_first_signing(self):
+        self.history = []
+        base = self.packages()  # demo (postinst) and libdemo1, both without a Source field: source = the name
+        first = self.go_live(base)
+        self.assertEqual(first["status"], "pending")  # rule 1/11: the first publication is May's
+        self.assertIn("empty repository", " ".join(first["reasons"]))
+        # one known source (demo), one version up, scripts unchanged: routine
+        upgrade = base.decode() + "\n" + self.new_version("demo", "1.0+unity2", postinst=True, source="demo")
+        answer = signer_client.propose_answer(self.client, self.rehearsal(upgrade.encode()), "UNITY-20261009-001")
+        self.assertEqual((answer["status"], answer["approved_by"]), ("approved", "policy"), answer)
+        out = io.StringIO()
+        aptly_signer.console(self.config, ["list"], out=out)
+        text = out.getvalue()
+        self.assertIn("auto-approved", text)
+        self.assertIn("UNITY-20261009-001", text)
+        self.assertIn("added    demo amd64", text)
+        self.assertIn("policy: auto_approve on", text)
+        out = io.StringIO()
+        aptly_signer.console(self.config, ["list"], out=out)
+        self.assertNotIn("auto-approved", out.getvalue())  # shown once
+        self.aptly_switch(upgrade.encode(), date=datetime.now(timezone.utc) + timedelta(minutes=5))
+        self.assertEqual(signer_client.refresh(self.client, "UNITY-20261009-001", switch=True), 0)
+        self.assertTrue(signer_client.call(self.client, "POST", "/live", {})["ok"])
+        # a new source waits for the console, with the reason
+        extra = upgrade + "\n" + self.new_version("other", "2.0", source="other")
+        answer = signer_client.propose_answer(self.client, self.rehearsal(extra.encode()), "UNITY-20261009-002")
+        self.assertEqual(answer["status"], "pending")
+        self.assertTrue(any("other" in r and "not in last-live" in r for r in answer["reasons"]), answer)
+        out = io.StringIO()
+        aptly_signer.console(self.config, ["show", answer["proposal"]], out=out)
+        self.assertIn("policy: not routine", out.getvalue())
+        aptly_signer.console(self.config, ["reject", answer["proposal"]], out=io.StringIO())
+        # a changed maintainer script waits: libdemo1 gains a postinst
+        changed = upgrade + "\n" + self.new_version("libdemo1", "1.0+unity3", postinst=True, source="libdemo1")
+        answer = signer_client.propose_answer(self.client, self.rehearsal(changed.encode()), "UNITY-20261009-003")
+        self.assertEqual(answer["status"], "pending")
+        self.assertTrue(any("maintainer scripts of libdemo1 amd64 differ" in r for r in answer["reasons"]), answer)
+        # the kill switch
+        self.policy.write_text(json.dumps({"schema": 1, "auto_approve": False, "max_sources": 1, "max_binary_records": 40,
+                                           "min_interval_seconds": 600, "max_per_utc_day": 6}))
+        routine = upgrade + "\n" + self.new_version("demo", "1.0+unity3", postinst=True, source="demo")
+        answer = signer_client.propose_answer(self.client, self.rehearsal(routine.encode()), "UNITY-20261009-004")
+        self.assertEqual(answer["status"], "pending")
+        self.assertIn("automatic approval is off", " ".join(answer["reasons"]))
+        self.policy.unlink()  # a missing file approves nothing and says so
+        answer = signer_client.propose_answer(self.client, self.rehearsal(routine.encode()), "UNITY-20261009-004")
+        self.assertEqual(answer["status"], "pending")
+        self.assertTrue(any("cannot read policy.json" in r for r in answer["reasons"]), answer)
+
+    def test_adopt_live_and_the_resign_cutover(self):
+        self.history = []
+        raw = self.packages()
+        files = self.index_set(raw)
+        self.write_tree(self.dist, files)
+        (self.dist / "Release").write_bytes(b"\n".join(l for l in core.build_release(TEMPLATE, files, datetime.now(timezone.utc)).split(b"\n")
+                                                     if not l.startswith(b"Valid-Until:")))
+        out = io.StringIO()
+        self.assertEqual(aptly_signer.console(self.config, ["adopt-live"], out=out, confirm=lambda _: "no"), 1)
+        self.assertIn("2 entries, 2 .debs read, sources: demo, libdemo1", out.getvalue())
+        self.assertIn("not adopted", out.getvalue())
+        out = io.StringIO()
+        self.assertEqual(aptly_signer.console(self.config, ["adopt-live"], out=out, confirm=lambda _: "adopt"), 0)
+        self.assertIn("adopted", out.getvalue())
+        self.assertIn("1 with scripts", out.getvalue())
+        with self.assertRaises(core.Refused):  # /current: nothing signed yet
+            signer_client.call(self.client, "GET", "/current")
+        # rule 11: a routine upgrade is not automatic before the first signing
+        upgrade = raw.decode() + "\n" + self.new_version("demo", "1.0+unity2", postinst=True, source="demo")
+        answer = signer_client.propose_answer(self.client, self.rehearsal(upgrade.encode()), "UNITY-20261009-005")
+        self.assertEqual(answer["status"], "pending")
+        self.assertIn("nothing signed by this signer has gone live yet", " ".join(answer["reasons"]))
+        aptly_signer.console(self.config, ["reject", answer["proposal"]], out=io.StringIO())
+        # May's cut-over path (a): re-sign the adopted content, install it on builder
+        aptly_signer.resign_command(self.config, now=datetime.now(timezone.utc))
+        self.assertEqual(signer_client.refresh(self.client, "cadence", switch=False), 0)
+        self.assertTrue(self.gpgv(self.dist / "Release.gpg", self.dist / "Release"))
+        out = self.base / "inrelease.out"
+        self.assertTrue(self.gpgv("--output", out, self.dist / "InRelease"))
+        self.assertIn(b"Valid-Until:", out.read_bytes())
+        # now the same routine upgrade is automatic, and goes through the ordinary flow
+        answer = signer_client.propose_answer(self.client, self.rehearsal(upgrade.encode()), "UNITY-20261009-006")
+        self.assertEqual((answer["status"], answer["approved_by"]), ("approved", "policy"), answer)
+        self.aptly_switch(upgrade.encode(), date=datetime.now(timezone.utc) + timedelta(minutes=5))
+        self.assertEqual(signer_client.refresh(self.client, "UNITY-20261009-006", switch=True), 0)
+        self.assertTrue(signer_client.call(self.client, "POST", "/live", {})["ok"])
+        self.assertTrue(self.gpgv(self.dist / "Release.gpg", self.dist / "Release"))
+
+
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass

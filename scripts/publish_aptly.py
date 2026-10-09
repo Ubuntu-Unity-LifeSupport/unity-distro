@@ -3,12 +3,14 @@
 
 import argparse
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 
@@ -16,10 +18,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_dependencies import manifest_error  # noqa: E402
 import tested_build  # noqa: E402
 import approval_record  # noqa: E402
+import signer_client  # noqa: E402
 
 # The live publication the first-publication rule reads (a file read, never
 # an aptly command); the test harness points this at a temporary tree.
 LIVE_PUBLIC = Path("/srv/aptly/public")
+# Permission model phase 5 (UNITY-20260929-024): the signer mode is on when
+# May's client configuration exists (a trusted directory: Edit asks him, the
+# shell may not write it); without it the publisher signs as before.
+SIGNER_CLIENT_CONFIG = Path.home() / ".config" / "aptly-signer" / "client.json"
+LIVE_APTLY_CONFIG = Path.home() / ".aptly.conf"
+PROPOSAL_ROOT = Path("/var/tmp/aptly-rehearsal")
+PENDING_EXIT = 3  # "waiting for May on the signer console"
 
 
 def fail(message):
@@ -119,7 +129,7 @@ def check_approval_artifacts(record, artifacts, package, distribution, prefix, p
 
 
 def consume_and_switch(task_id, approval, command, show_args, snapshot, package, version,
-                       run=None, show=None, log=None):
+                       run=None, show=None, log=None, env=None):
     """Consume C's approval, then run the switch and the publish-show check,
     recording the outcome on the consumed copy. Returns
     (used_path, used_sha, None) on success or (used_path, used_sha, (rc, message)).
@@ -140,7 +150,7 @@ def consume_and_switch(task_id, approval, command, show_args, snapshot, package,
         try: used_sha = approval_record.set_outcome(used_path, task_id, value)
         except (approval_record.ApprovalError, OSError): pass
 
-    try: result = run(command, check=False)
+    try: result = run(command, check=False, env=env) if env is not None else run(command, check=False)
     except OSError as exc:
         outcome("failed(start)")
         try: log("FAIL(127)", package, version, task_id)
@@ -159,6 +169,172 @@ def consume_and_switch(task_id, approval, command, show_args, snapshot, package,
         return used_path, used_sha, (2, "aptly returned success but publish show does not name the gated snapshot")
     outcome("published")
     return used_path, used_sha, None
+
+
+# ---- the signer steps (permission model phase 5) ----------------------------------
+
+def signer_mode(config_path=None):
+    return Path(config_path or SIGNER_CLIENT_CONFIG).is_file()
+
+
+def repository_state(public_dir, distribution, now):
+    """(error, notes) of the served distribution before a signer-mode switch:
+    an expired InRelease is an error (the cadence refresh failed or was refused,
+    -021 R3); leftover *.tmp files are reported, never deleted (-021 (d))."""
+    dist = Path(public_dir) / "dists" / distribution
+    notes = []
+    inrelease = dist / "InRelease"
+    if inrelease.is_file():
+        for line in inrelease.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line.startswith("Valid-Until:"):
+                try:
+                    until = parsedate_to_datetime(line.split(":", 1)[1].strip())
+                except (TypeError, ValueError):
+                    return "the served InRelease has an unreadable Valid-Until", notes
+                if until < now:
+                    return (f"the repository has expired (Valid-Until {line.split(':', 1)[1].strip()} passed): the cadence "
+                            "refresh did not run or was refused; see the refresh marker before publishing", notes)
+                break
+    leftovers = sorted(str(p.relative_to(dist)) for p in dist.rglob("*.tmp*") if p.is_file()) if dist.is_dir() else []
+    if leftovers:
+        notes.append("the last switch was refused; aptly leaves *.tmp files that the next switch overwrites: "
+                     + ", ".join(leftovers[:6]) + (" ..." if len(leftovers) > 6 else ""))
+    return None, notes
+
+
+def live_architectures(public_dir, distribution):
+    release = Path(public_dir) / "dists" / distribution / "Release"
+    for line in release.read_text(encoding="utf-8", errors="replace").splitlines():
+        if line.startswith("Architectures:"):
+            return line.split(":", 1)[1].split()
+    raise ValueError("the live Release names no Architectures")
+
+
+def proposal_config(live_config, task_id, tree):
+    """The live aptly configuration plus one filesystem endpoint for this task."""
+    config = dict(live_config)
+    endpoints = dict(config.get("FileSystemPublishEndpoints") or {})
+    endpoints[f"proposal-{task_id}"] = {"rootDir": str(Path(tree) / "public"), "linkMethod": "copy"}
+    config["FileSystemPublishEndpoints"] = endpoints
+    return config
+
+
+def proposal_commands(config_path, task_id, snapshot, distribution, prefix, architectures):
+    endpoint = f"filesystem:proposal-{task_id}:{prefix}"
+    publish = ["aptly", f"-config={config_path}", "publish", "snapshot", "-skip-signing", "-skip-contents",
+               f"-architectures={','.join(architectures)}", f"-distribution={distribution}", "-component=main",
+               snapshot, endpoint]
+    drop = ["aptly", f"-config={config_path}", "publish", "drop", distribution, endpoint]
+    return publish, drop
+
+
+def publish_proposal(task_id, snapshot, distribution, prefix, run=None, live_config_path=None, public_dir=None,
+                     proposal_root=None):
+    """The gated snapshot published from the live database into this task's
+    proposal tree (never into the live public tree). Returns (public dir, None)
+    or (None, error). An earlier publication of this task is dropped first."""
+    run = run or subprocess.run
+    tree = Path(proposal_root or PROPOSAL_ROOT) / task_id
+    try:
+        live_config = json.loads(Path(live_config_path or LIVE_APTLY_CONFIG).read_text(encoding="utf-8"))
+        architectures = live_architectures(public_dir or LIVE_PUBLIC, distribution)
+    except (OSError, ValueError) as exc:
+        return None, f"proposal publication: {exc}"
+    tree.mkdir(parents=True, exist_ok=True)
+    config_path = tree / "aptly.conf"
+    config_path.write_text(json.dumps(proposal_config(live_config, task_id, tree), indent=1) + "\n", encoding="utf-8")
+    publish, drop = proposal_commands(config_path, task_id, snapshot, distribution, prefix, architectures)
+    if (tree / "public").exists():
+        run(drop, check=False, capture_output=True, text=True)
+        shutil.rmtree(tree / "public", ignore_errors=True)
+    result = run(publish, check=False, capture_output=True, text=True)
+    if result.returncode:
+        return None, f"proposal publication failed (aptly rc {result.returncode}): {(result.stderr or '').strip()[:400]}"
+    for path in [tree] + list(tree.rglob("*")):
+        try:
+            os.chmod(path, os.stat(path).st_mode & ~0o022)
+        except OSError:
+            pass
+    return tree / "public", None
+
+
+def drop_proposal(task_id, distribution, prefix, run=None, proposal_root=None):
+    """Drops this task's proposal publication and removes its tree (a copy)."""
+    run = run or subprocess.run
+    tree = Path(proposal_root or PROPOSAL_ROOT) / task_id
+    config_path = tree / "aptly.conf"
+    if config_path.is_file():
+        _publish, drop = proposal_commands(config_path, task_id, "-", distribution, prefix, [])
+        run(drop, check=False, capture_output=True, text=True)
+    shutil.rmtree(tree, ignore_errors=True)
+
+
+def signer_env(root, task_id, proposal_root=None):
+    """aptly's environment at the switch: the gpg stand-in of this checkout first
+    on PATH, through the publisher's own env (-021 amendment (c))."""
+    bindir = Path(proposal_root or PROPOSAL_ROOT) / task_id / "bin"
+    bindir.mkdir(parents=True, exist_ok=True)
+    link = bindir / "gpg"
+    if link.is_symlink() or link.exists():
+        link.unlink()
+    link.symlink_to(Path(root) / "scripts" / "gpg_standin.py")
+    return dict(os.environ, PATH=f"{bindir}:{os.environ.get('PATH', '')}")
+
+
+def after_switch(client, task_id, refresh=None, live=None):
+    """The refresh of the switch-time trio, then /live whether or not the
+    refresh succeeded (phase 5, S3). Returns {"refresh": ..., "live": ...}."""
+    refresh = refresh or signer_client.refresh
+    live = live or (lambda: signer_client.call(client, "POST", "/live", {})["last_live"])
+    outcome = {}
+    try:
+        refresh(client, task_id, True)
+        outcome["refresh"] = "OK"
+    except (signer_client.core.Refused, OSError, ValueError, KeyError) as exc:
+        outcome["refresh"] = f"FAILED: {signer_client.core.printable(exc)}"
+    try:
+        outcome["live"] = f"OK {live()}"
+    except (signer_client.core.Refused, OSError, ValueError, KeyError) as exc:
+        outcome["live"] = f"FAILED: {signer_client.core.printable(exc)}"
+    return outcome
+
+
+def signer_prepare(root, task_id, snapshot, distribution, prefix, out=None, public_dir=None, now=None):
+    """The signer steps before C's approval is consumed: repository state, the
+    proposal publication, the signer's answer. Returns (signer_info, env,
+    client, rc): rc is None to go on with the switch, else the exit status
+    (every message already printed). Nothing of C's approval is touched here."""
+    out = out or sys.stderr
+    if not signer_mode():
+        return {"mode": "legacy"}, None, None, None
+    state_error, notes = repository_state(public_dir or LIVE_PUBLIC, distribution, now or datetime.now(timezone.utc))
+    if state_error:
+        return None, None, None, fail(state_error)
+    for note in notes:
+        print(f"publish-aptly: note: {note}", file=out)
+    try:
+        client = signer_client.load_config()
+    except signer_client.core.Refused as exc:
+        return None, None, None, fail(str(exc))
+    proposal_public, proposal_error = publish_proposal(task_id, snapshot, distribution, prefix)
+    if proposal_error:
+        drop_proposal(task_id, distribution, prefix)
+        return None, None, None, fail(proposal_error)
+    try:
+        answer = signer_client.propose_answer(client, proposal_public, task_id)
+    except signer_client.core.Refused as exc:
+        drop_proposal(task_id, distribution, prefix)
+        return None, None, None, fail(f"signer: {exc}")
+    if answer["status"] != "approved":
+        drop_proposal(task_id, distribution, prefix)
+        print(f"publish-aptly: waiting for May on the signer console (proposal {answer['proposal']}); rerun after "
+              "approval; the proposal and C's approval stay valid while the base is last-live and the window is open",
+              file=out)
+        for reason in answer["reasons"]:
+            print(f"publish-aptly:   {reason}", file=out)
+        return None, None, None, PENDING_EXIT
+    info = {"mode": "signer", "proposal": answer["proposal"], "approved_by": answer["approved_by"]}
+    return info, signer_env(root, task_id), client, None
 
 
 def parse_timestamp(value):
@@ -656,16 +832,30 @@ def main():
     if view_error:
         return fail(view_error)
 
+    # Permission model phase 5: the signer's approval of exactly this content, before C's approval is consumed.
+    signer_info, env, client, rc = signer_prepare(root, task_id, snapshot, distribution, prefix)
+    if rc is not None:
+        return rc
     try: log_event("START", package, version, task_id)
     except OSError as exc: return fail(f"cannot append publication START event: {exc}")
-    command = ["aptly", "publish", "switch", distribution]
+    command = ["aptly", "publish", "switch"]
+    if env is not None: command.append("-skip-contents")
+    command.append(distribution)
     if prefix != ".": command.append(prefix)
     command.append(snapshot)
     show_args = ["publish", "show", distribution, prefix] if prefix != "." else ["publish", "show", distribution]
-    used_path, used_sha, error = consume_and_switch(task_id, approval, command, show_args, snapshot, package, version)
+    used_path, used_sha, error = consume_and_switch(task_id, approval, command, show_args, snapshot, package, version, env=env)
     if error:
+        if env is not None: drop_proposal(task_id, distribution, prefix)
         rc, message = error
         return fail(message) if message else rc
+    if env is not None:
+        signer_info.update(after_switch(client, task_id))
+        try:
+            signer_info["inrelease_sha256"] = sha256(LIVE_PUBLIC / "dists" / distribution / "InRelease")
+        except OSError:
+            signer_info["inrelease_sha256"] = None
+        drop_proposal(task_id, distribution, prefix)
     record = {
         "authorization": {"file": str(Path(used_path).relative_to(approval_record.root())), "sha256": used_sha,
                           "approved_by": approval_rec["approved_by"], "approved_at": approval_rec["approved_at"],
@@ -684,6 +874,7 @@ def main():
         "published_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "aptly_result": "PASS",
         "post_publish_check": "PASS",
+        "signer": signer_info,
         "version_evidence_checked_at": version_result.get("checked_at"),
         **publication_evidence(fresh_result, fresh_view),
         "artifacts": [{"file": item["file"], "sha256": item["sha256"], "kind": item["kind"],
@@ -699,6 +890,10 @@ def main():
     try: log_event("DONE", package, version, task_id)
     except OSError as exc: return fail(f"publication succeeded but final activity log failed: {exc}")
     print(f"published {package} {version}; write-once record: {record_path}")
+    failed = [f"{k}: {v}" for k, v in signer_info.items() if isinstance(v, str) and v.startswith("FAILED")]
+    if failed:
+        return fail("published, but the signer steps after the switch failed (" + "; ".join(failed)
+                    + "); the record carries it; recover with scripts/signer_client.py (refresh --switch / live)")
     return 0
 
 

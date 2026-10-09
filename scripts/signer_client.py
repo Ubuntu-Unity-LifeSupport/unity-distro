@@ -46,18 +46,29 @@ import signer_core as core  # noqa: E402
 
 CONFIG = os.environ.get("APTLY_SIGNER_CLIENT_CONFIG",
                         str(Path.home() / ".config" / "aptly-signer" / "client.json"))
-TASK_RE = re.compile(r"UNITY-[0-9]{8}-[0-9]{3}")
+TASK_RE = re.compile(r"UNITY-[0-9]{8}-[0-9]{3}|cadence")  # "cadence": the timer's refresh (phase 5)
 SIGNED_FILES = re.compile(r"[a-z0-9-]+/(binary-[a-z0-9-]+/(Packages(\.gz|\.bz2|\.xz)?|Release)"
                           r"|source/(Sources(\.gz|\.bz2|\.xz)?|Release))")
 
 
-def load_config():
-    config = json.loads(Path(CONFIG).read_text(encoding="utf-8"))
+REQUIRED_KEYS = ("url", "public_root", "keyring", "store", "marker_dir", "log")
+
+
+def load_config(path=None):
+    """May's client configuration; a missing key refuses (phase 5, N8)."""
+    try:
+        config = json.loads(Path(path or CONFIG).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise core.Refused(f"client configuration: {exc}")
+    if not isinstance(config, dict):
+        raise core.Refused("client configuration: not an object")
+    missing = [key for key in REQUIRED_KEYS if not isinstance(config.get(key), str) or not config[key]]
+    if missing:
+        raise core.Refused("client configuration: missing " + ", ".join(missing))
     config.setdefault("distribution", "resolute")
     config.setdefault("timeout", 120)
-    for key in ("store", "marker_dir", "log"):
-        if key in config:
-            config[key] = os.path.expanduser(config[key])
+    for key in ("public_root", "keyring", "store", "marker_dir", "log"):
+        config[key] = os.path.expanduser(config[key])
     return config
 
 
@@ -90,7 +101,7 @@ def packages_entries(dist_dir):
     return found
 
 
-def propose(config, public_dir, task):
+def _index_files(config, public_dir):
     dist = Path(public_dir) / "dists" / config["distribution"]
     files = {}
     for path in sorted(dist.rglob("*")):
@@ -101,6 +112,11 @@ def propose(config, public_dir, task):
             files[rel] = base64.b64encode(path.read_bytes()).decode()
     if not files:
         raise core.Refused("no index files found")
+    return files
+
+
+def _new_debs(config, public_dir):
+    dist = Path(public_dir) / "dists" / config["distribution"]
     live_dist = Path(config["public_root"]) / "dists" / config["distribution"]
     live = {e.get("SHA256") for e in packages_entries(live_dist)} if live_dist.exists() else set()
     debs = {}
@@ -112,8 +128,20 @@ def propose(config, public_dir, task):
         if ".." in name.split("/") or name.startswith("/") or deb.is_symlink() or not deb.is_file():
             raise core.Refused(f"the proposal's pool lacks {core.printable(name)}")
         debs[name] = base64.b64encode(deb.read_bytes()).decode()
-    answer = call(config, "POST", "/propose", {"task_id": task, "files": files, "debs": debs})
-    return answer["proposal"]
+    return debs
+
+
+def propose(config, public_dir, task):
+    return propose_answer(config, public_dir, task)["proposal"]
+
+
+def propose_answer(config, public_dir, task):
+    """The signer's whole answer: proposal, status (approved | pending),
+    approved_by, reasons (phase 5)."""
+    answer = call(config, "POST", "/propose", {"task_id": task, "files": _index_files(config, public_dir),
+                                               "debs": _new_debs(config, public_dir)})
+    return {"proposal": answer["proposal"], "status": answer.get("status", "pending"),
+            "approved_by": answer.get("approved_by"), "reasons": [core.printable(r) for r in answer.get("reasons", [])]}
 
 
 def gpgv(keyring, args):
@@ -223,7 +251,10 @@ def main():
     config = load_config()
     try:
         if args.command == "propose":
-            print(propose(config, args.public_dir, args.task))
+            answer = propose_answer(config, args.public_dir, args.task)
+            print(f"{answer['proposal']} {answer['status']}" + (f" by {answer['approved_by']}" if answer["approved_by"] else ""))
+            for reason in answer["reasons"]:
+                print(f"  {reason}")
         elif args.command == "refresh":
             refresh(config, args.task, args.switch)
         else:

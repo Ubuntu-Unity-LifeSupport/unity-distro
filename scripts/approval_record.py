@@ -40,7 +40,9 @@ MAX_SIZE = 256 * 1024
 # Their blobs at the approved commit must equal origin/main's (design, round 3-5).
 PUBLICATION_TOOLS = ("scripts/publish_aptly.py", "scripts/approval_record.py", "scripts/tested_build.py",
                      "scripts/build_dependencies.py", "scripts/version_safety.py", "scripts/apt_view.py",
-                     "scripts/taskctl.py")
+                     "scripts/taskctl.py",
+                     # permission model phase 5: the publisher runs these at the switch
+                     "scripts/signer_client.py", "scripts/gpg_standin.py", "signer/signer_core.py")
 
 
 class ApprovalError(ValueError):

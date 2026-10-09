@@ -415,5 +415,251 @@ class SignerCoreTest(unittest.TestCase):
         self.assertEqual(self.state["proposals"], {})
 
 
+POLICY = {"schema": 1, "auto_approve": True, "max_sources": 1, "max_binary_records": 40,
+          "min_interval_seconds": 600, "max_per_utc_day": 6}
+SCRIPTS_A = {"postinst": "1" * 64}
+
+
+def stanza(name, version, sha, source=None, arch="amd64", size=1000):
+    src = f"Source: {source}\n" if source else ""
+    return (f"Package: {name}\nVersion: {version}\nArchitecture: {arch}\n{src}Maintainer: t <t@example.com>\n"
+            f"Filename: pool/main/d/demo/{name}_{version}_{arch}.deb\nSize: {size}\nSHA256: {sha}\nDescription: {name}\n")
+
+
+class MappedDebs:
+    """A deb checker returning (text, map) per package name, like the service's scanner."""
+    def __init__(self, maps):
+        self.maps = maps
+
+    def __call__(self, fields):
+        found = self.maps.get(fields["Package"], {})
+        return ("scripts: " + ",".join(sorted(found)) if found else "no scripts"), found
+
+
+class RoutinePolicyTest(unittest.TestCase):
+    """Permission model phase 5: May's decision 4 as code. The base is a live
+    set of demo 1.0+unity1 (postinst) and libdemo1 1.0+unity1 (no scripts),
+    both from source demo, whose script maps the signer recorded."""
+
+    def setUp(self):
+        self.state = core.new_state()
+        self.backend = FakeBackend()
+        self.base_text = stanza("demo", "1.0+unity1", "a" * 64, "demo") + "\n" + stanza("libdemo1", "1.0+unity1", "b" * 64, "demo")
+        pid = core.propose(self.state, TEMPLATE, files_for(self.base_text), "UNITY-20260929-021",
+                           MappedDebs({"demo": SCRIPTS_A}), T0)
+        core.approve(self.state, pid)
+        trio = core.sign(self.state, TEMPLATE, aptly_release(files_for(self.base_text)), files_for(self.base_text), self.backend, T0)
+        core.live(self.state, trio["inrelease"])
+        self.assertEqual(core.live_scripts(self.state)[("main/binary-amd64/Packages", "demo", "1.0+unity1", "amd64")], SCRIPTS_A)
+        self.now = T0 + timedelta(hours=1)
+
+    def upgrade(self, version="1.0+unity2", demo_sha="c" * 64, lib_sha="d" * 64, demo_scripts=SCRIPTS_A, lib_scripts=None,
+                keep_old=True, extra="", task="UNITY-20261009-001", policy=POLICY, now=None, source="demo"):
+        text = stanza("demo", version, demo_sha, source) + "\n" + stanza("libdemo1", version, lib_sha, source)
+        if keep_old:
+            text = self.base_text + "\n" + text
+        text += extra
+        maps = {"demo": demo_scripts or {}, "libdemo1": lib_scripts or {}}
+        return core.propose(self.state, TEMPLATE, files_for(text), task, MappedDebs(maps), now or self.now, policy=policy)
+
+    def assert_console(self, pid, *fragments):
+        self.assertIn(pid, self.state["proposals"], "the proposal was approved although it is not routine")
+        reasons = " | ".join(self.state["proposals"][pid]["policy"]["reasons"])
+        for fragment in fragments:
+            self.assertIn(fragment, reasons)
+        return reasons
+
+    def test_routine_upgrade_is_approved_by_policy(self):
+        pid = self.upgrade()
+        self.assertIn(pid, self.state["approvals"])
+        self.assertEqual(self.state["approvals"][pid]["approved_by"], "policy")
+        self.assertEqual(core.proposal_status(self.state, pid)["status"], "approved")
+        self.assertEqual(len(self.state["auto_signed"]), 1)
+        self.assertIn("auto-approved by policy", self.state["log"][-1])
+        self.assertIn("UNITY-20261009-001 demo 1.0+unity2 (2 binaries)", self.state["log"][-1])
+        lines = core.auto_approval_lines(self.state)
+        self.assertTrue(any("auto-approved" in l and "UNITY-20261009-001" in l for l in lines))
+        self.assertTrue(any("added    demo amd64" in l for l in lines))
+        self.assertEqual(core.auto_approval_lines(self.state), [])  # shown once
+        # the approval signs and goes live like May's; the new script maps are now on record
+        files = files_for(self.base_text + "\n" + stanza("demo", "1.0+unity2", "c" * 64, "demo") + "\n" + stanza("libdemo1", "1.0+unity2", "d" * 64, "demo"))
+        trio = core.sign(self.state, TEMPLATE, aptly_release(files, self.now), files, self.backend, self.now)
+        core.live(self.state, trio["inrelease"])
+        self.assertEqual(core.live_scripts(self.state)[("main/binary-amd64/Packages", "demo", "1.0+unity2", "amd64")], SCRIPTS_A)
+        self.assertEqual(core.live_scripts(self.state)[("main/binary-amd64/Packages", "libdemo1", "1.0+unity2", "amd64")], {})
+
+    def test_rule_1_empty_repository(self):
+        state = core.new_state()
+        pid = core.propose(state, TEMPLATE, files_for(self.base_text), "UNITY-20261009-001", MappedDebs({"demo": SCRIPTS_A}), T0, policy=POLICY)
+        self.assertIn(pid, state["proposals"])
+        self.assertIn("empty repository", " ".join(state["proposals"][pid]["policy"]["reasons"]))
+
+    def test_rule_2_removal_and_change(self):
+        pid = self.upgrade(keep_old=False)  # the old versions vanish
+        self.assert_console(pid, "not only additions", "removed")
+        changed = self.base_text.replace("a" * 64, "f" * 64)  # same name/version/arch, other bytes
+        pid = core.propose(self.state, TEMPLATE, files_for(changed), "UNITY-20261009-002", MappedDebs({"demo": SCRIPTS_A}), self.now, policy=POLICY)
+        self.assert_console(pid, "not only additions", "changed")
+
+    def test_rule_3_new_source_and_two_sources(self):
+        other = stanza("other", "2.0", "e" * 64, "other")
+        pid = core.propose(self.state, TEMPLATE, files_for(self.base_text + "\n" + other), "UNITY-20261009-003",
+                           MappedDebs({}), self.now, policy=POLICY)
+        self.assert_console(pid, "source other is not in last-live")
+        pid = self.upgrade(extra="\n" + other, task="UNITY-20261009-004")
+        self.assert_console(pid, "more than 1 source package")
+        pid = self.upgrade(source="unreadable source (x", task="UNITY-20261009-005")
+        self.assert_console(pid, "cannot read")
+
+    def test_rule_4_downgrade_equal_and_new_binary(self):
+        pid = self.upgrade(version="1.0+unity0", task="UNITY-20261009-006")
+        self.assert_console(pid, "not newer than every live version")
+        core.reject(self.state, pid)
+        # a new binary of a known source
+        pid = self.upgrade(extra="\n" + stanza("demo-extra", "1.0+unity2", "e" * 64, "demo"), task="UNITY-20261009-008")
+        self.assert_console(pid, "demo-extra amd64 is not in last-live under that name and architecture")
+        # arch all vs amd64 is another binary
+        pid = self.upgrade(extra="\n" + stanza("demo", "1.0+unity2", "e" * 64, "demo", arch="all"), task="UNITY-20261009-009")
+        self.assert_console(pid, "demo all is not in last-live")
+
+    def test_rule_5_source_versions_agree(self):
+        text = self.base_text + "\n" + stanza("demo", "1.0+unity2", "c" * 64, "demo (1.0+unity2)") + "\n" + stanza("libdemo1", "1.0+unity2", "d" * 64, "demo (1.0+unity3)")
+        pid = core.propose(self.state, TEMPLATE, files_for(text), "UNITY-20261009-010", MappedDebs({"demo": SCRIPTS_A}), self.now, policy=POLICY)
+        self.assert_console(pid, "several versions")
+
+    def test_rule_6_binary_limit(self):
+        policy = dict(POLICY, max_binary_records=1)
+        pid = self.upgrade(policy=policy)
+        self.assert_console(pid, "2 binary records exceed the limit of 1")
+
+    def test_rule_7_maintainer_scripts(self):
+        pid = self.upgrade(demo_scripts={"postinst": "2" * 64}, task="UNITY-20261009-011")  # changed hash
+        self.assert_console(pid, "maintainer scripts of demo amd64 differ from 1.0+unity1")
+        pid = self.upgrade(demo_scripts={}, demo_sha="5" * 64, task="UNITY-20261009-012")  # script removed
+        self.assert_console(pid, "differ")
+        pid = self.upgrade(lib_scripts={"preinst": "3" * 64}, lib_sha="6" * 64, task="UNITY-20261009-013")  # script added
+        self.assert_console(pid, "maintainer scripts of libdemo1 amd64 differ")
+        # a live entry without a recorded map (content from before this phase) is never routine
+        del self.state["last_live"]["scripts"][json.dumps(["main/binary-amd64/Packages", "demo", "1.0+unity1", "amd64"])]
+        pid = self.upgrade(demo_sha="7" * 64, task="UNITY-20261009-014")
+        self.assert_console(pid, "not on record")
+        # a checker without maps (an older service) gives no map: not routine
+        text = self.base_text + "\n" + stanza("demo", "1.0+unity2", "8" * 64, "demo") + "\n" + stanza("libdemo1", "1.0+unity2", "9" * 64, "demo")
+        pid = core.propose(self.state, TEMPLATE, files_for(text), "UNITY-20261009-015", deb_ok, self.now, policy=POLICY)
+        self.assert_console(pid, "were not read")
+
+    def test_rule_4b_binary_moved_between_sources(self):
+        """A binary that last-live lists under another source (a name takeover)."""
+        other = stanza("other", "1.0", "e" * 64, "other")  # a second known source goes live first
+        pid = core.propose(self.state, TEMPLATE, files_for(self.base_text + "\n" + other), "UNITY-20261009-040",
+                           MappedDebs({}), self.now, policy=None)
+        core.approve(self.state, pid)
+        files = files_for(self.base_text + "\n" + other)
+        core.live(self.state, core.sign(self.state, TEMPLATE, aptly_release(files, self.now), files, self.backend, self.now)["inrelease"])
+        pid = self.upgrade(source="other", version="1.0+unity2", demo_sha="e" * 64, lib_sha="f" * 64,
+                           demo_scripts={}, task="UNITY-20261009-041", now=self.now + timedelta(hours=1))
+        self.assert_console(pid, "built from another source")
+
+    def test_rule_11_nothing_signed_yet(self):
+        """Decision 8: after adopt-live, nothing is automatic until the signer has
+        signed content that went live (the first publication or the re-sign of
+        the adopted set is May's)."""
+        state = core.new_state()
+        files = files_for(self.base_text)
+        core.adopt_live(state, TEMPLATE, files, aptly_release(files), MappedDebs({"demo": SCRIPTS_A}), T0)
+        self.state = state
+        pid = self.upgrade()
+        self.assert_console(pid, "nothing signed by this signer has gone live yet")
+        core.reject(self.state, pid)
+        core.resign(state, TEMPLATE, self.backend, self.now)  # May's cut-over: the adopted set re-signed under the new key
+        self.assertTrue(state["current"])
+        pid = self.upgrade(now=self.now + timedelta(minutes=1))
+        self.assertIn(pid, state["approvals"])
+
+    def test_rule_8_interval_and_day_limit(self):
+        first = self.upgrade()
+        self.assertIn(first, self.state["approvals"])
+        pid = self.upgrade(version="1.0+unity3", demo_sha="e" * 64, lib_sha="f" * 64, task="UNITY-20261009-016",
+                           now=self.now + timedelta(seconds=599))
+        self.assert_console(pid, "less than 600 s since the last automatic approval")
+        core.reject(self.state, pid)
+        self.state["auto_signed"] = [{"at": (self.now + timedelta(minutes=i)).isoformat(), "task_id": f"UNITY-20261009-9{i:02d}",
+                                      "pid": "x", "set_id": "s", "shown": True} for i in range(6)]
+        pid = self.upgrade(version="1.0+unity3", demo_sha="e" * 64, lib_sha="f" * 64, task="UNITY-20261009-017",
+                           now=self.now + timedelta(minutes=30))
+        self.assert_console(pid, "6 automatic approvals today reach the limit of 6")
+        core.reject(self.state, pid)
+        # the day boundary (UTC): the same history the next day is no longer counted
+        next_day = datetime(T0.year, T0.month, T0.day, tzinfo=timezone.utc) + timedelta(days=1, hours=1)
+        pid = self.upgrade(version="1.0+unity3", demo_sha="e" * 64, lib_sha="f" * 64, task="UNITY-20261009-018", now=next_day)
+        self.assertIn(pid, self.state["approvals"])
+
+    def test_rule_9_task_id(self):
+        pid = self.upgrade(task="not-a-task")
+        self.assert_console(pid, "no valid task id")
+        core.reject(self.state, pid)
+        first = self.upgrade(task="UNITY-20261009-020")
+        self.assertIn(first, self.state["approvals"])
+        pid = self.upgrade(version="1.0+unity3", demo_sha="e" * 64, lib_sha="f" * 64, task="UNITY-20261009-020",
+                           now=self.now + timedelta(hours=1))
+        self.assert_console(pid, "UNITY-20261009-020 was already signed automatically once")
+
+    def test_rule_10_policy_missing_malformed_or_off(self):
+        for label, policy in (("off", dict(POLICY, auto_approve=False)), ("no schema", dict(POLICY, schema=2)),
+                              ("max_sources 2", dict(POLICY, max_sources=2)), ("bool number", dict(POLICY, max_per_utc_day=True)),
+                              ("unreadable", {"schema": 1, "auto_approve": False, "_problem": "policy: cannot read policy.json"}),
+                              ("not an object", [1])):
+            with self.subTest(policy=label):
+                pid = self.upgrade(policy=policy, task=f"UNITY-20261009-0{30 + len(label) % 10}")
+                self.assert_console(pid, "policy")
+                core.reject(self.state, pid)
+        # no policy at all (the service of phase 4): nothing automatic, no verdict stored
+        pid = self.upgrade(policy=None)
+        self.assertIn(pid, self.state["proposals"])
+        self.assertNotIn("policy", self.state["proposals"][pid])
+
+    def test_proposals_are_idempotent(self):
+        pid = self.upgrade(policy=dict(POLICY, auto_approve=False))
+        again = self.upgrade(policy=dict(POLICY, auto_approve=False), now=self.now + timedelta(minutes=1))
+        self.assertEqual(pid, again)
+        self.assertEqual(len(self.state["proposals"]), 1)
+        core.approve(self.state, pid)
+        self.assertEqual(self.upgrade(now=self.now + timedelta(minutes=2)), pid)  # the approval is returned
+        self.assertEqual(core.proposal_status(self.state, pid), {"status": "approved", "approved_by": "May", "reasons": []})
+
+    def test_version_compare_against_dpkg(self):
+        table = json.loads((ROOT / "scripts" / "tests" / "data" / "dpkg_version_order.json").read_text())
+        self.assertGreater(len(table["pairs"]), 3000)
+        for a, b, verdict in table["pairs"]:
+            r = core.version_compare(a, b)
+            self.assertEqual("lt" if r < 0 else "eq" if r == 0 else "gt", verdict, f"{a} vs {b}")
+
+    def test_adopt_live(self):
+        state = core.new_state()
+        files = files_for(self.base_text)
+        served = aptly_release(files)
+        with self.assertRaises(core.Refused):  # a .deb reader without maps
+            core.adopt_live(state, TEMPLATE, files, served, deb_ok, T0)
+        with self.assertRaises(core.Refused):  # a Release the signer would not build
+            core.adopt_live(state, TEMPLATE, files, served.replace(b"Suite: resolute", b"Suite: other"), MappedDebs({}), T0)
+        summary = core.adopt_live(state, TEMPLATE, files, served, MappedDebs({"demo": SCRIPTS_A}), T0)
+        self.assertEqual((summary["entries"], summary["with_scripts"], summary["sources"]), (2, 1, ["demo"]))
+        self.assertEqual(core.live_scripts(state)[("main/binary-amd64/Packages", "demo", "1.0+unity1", "amd64")], SCRIPTS_A)
+        with self.assertRaises(core.Refused):  # once
+            core.adopt_live(state, TEMPLATE, files, served, MappedDebs({"demo": SCRIPTS_A}), T0)
+        with self.assertRaises(core.Refused):  # nothing signed yet
+            core.current_trio(state)
+        # the re-sign of the adopted set works (May's cut-over under the new key); until it, nothing is automatic
+        self.state = state
+        pid = self.upgrade()
+        self.assert_console(pid, "nothing signed by this signer has gone live yet")
+        core.reject(state, pid)
+        trio = core.resign(state, TEMPLATE, self.backend, self.now)
+        self.assertIsNone(core.compare_release(served, trio["release"]))
+        self.assertEqual(core.current_trio(state), trio)
+        pid = self.upgrade(now=self.now + timedelta(minutes=1))
+        self.assertIn(pid, state["approvals"])
+
+
 if __name__ == "__main__":
     unittest.main()

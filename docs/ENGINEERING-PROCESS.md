@@ -400,6 +400,23 @@ traceability evidence; they do not cryptographically prove that a human
 assertion is true. Direct `aptly publish` forms are also blocked by the Bash
 hook as a best-effort safety net.
 
+With the aptly-signer deployed (permission model phase 5; signer mode is on
+when May's `~/.config/aptly-signer/client.json` exists), `publish_aptly.py`
+first publishes the gated snapshot from the live database into
+`/var/tmp/aptly-rehearsal/<task>/` (never into the live tree) and proposes
+that index set to the signer. The signer's routine policy (`signer/policy.json`,
+May's decision 4) approves an upgrade of one already-known source package
+with at most 40 binary records, unchanged maintainer scripts and within the
+rate limits; anything else, a new package always, waits for May on the
+signer console: the publisher prints "waiting for May on the signer
+console" and exits 3 before C's approval is consumed; the owner reruns it
+after May's approval (the proposal and C's approval stay valid while the
+base is last-live and the 4-hour window is open). After the switch the
+publisher installs the signer's trio and reports the switch to the signer;
+the publish record carries a `signer` block (`mode`, `proposal`,
+`approved_by`, `refresh`, `live`). The first publication under a new key and
+the policy file are May's (decisions 7 and 8).
+
 Aptly freeze. A freeze protects the live publication state and
 /srv/aptly.
 

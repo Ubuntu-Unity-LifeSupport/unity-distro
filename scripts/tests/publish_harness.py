@@ -52,10 +52,15 @@ class PublishHarness(unittest.TestCase):
                         GIT_CONFIG_NOSYSTEM="1", TASKCTL_BOARD=str(self.home / "coordinator" / "TASKS.md"))
         self.assertEqual(shutil.which("aptly", path=self.env["PATH"]), str(bindir / "aptly"))
 
-        # scripts/, with the pool and the live public tree redirected in the copy only
+        # scripts/ and signer/ (the publisher imports the signer client, phase 5), with the
+        # pool and the live public tree redirected in the copy only
         (self.root / "scripts").mkdir(parents=True)
         for script in SCRIPTS.glob("*.py"):
             shutil.copy2(script, self.root / "scripts" / script.name)
+        (self.root / "signer").mkdir()
+        for module in (SCRIPTS.parent / "signer").glob("*.py"):
+            shutil.copy2(module, self.root / "signer" / module.name)
+        shutil.copy2(SCRIPTS.parent / "signer" / "release-template.json", self.root / "signer" / "release-template.json")
         self.redirect(self.root / "scripts" / "build_dependencies.py",
                       'POOL_ROOT = Path("/srv/aptly/public/pool")', f"POOL_ROOT = Path({str(self.pool)!r})")
         for name in ("publish_aptly.py", "taskctl.py"):

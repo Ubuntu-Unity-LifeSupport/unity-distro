@@ -1,0 +1,9 @@
+{
+  "comment": "Permission model phase 5 (May's decision 4): the routine policy of the aptly-signer. Installed on the signer next to the template by May; a change is a trust-policy change. auto_approve false is the kill switch. The code accepts max_sources 1 only.",
+  "schema": 1,
+  "auto_approve": true,
+  "max_sources": 1,
+  "max_binary_records": 40,
+  "min_interval_seconds": 600,
+  "max_per_utc_day": 6
+}

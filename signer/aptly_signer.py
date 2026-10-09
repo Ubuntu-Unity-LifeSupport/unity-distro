@@ -4,7 +4,7 @@ design UNITY-20260929-019 with the -021 amendment). Standard library only.
 
   aptly_signer.py --config FILE serve          HTTP API on the host-only address
   aptly_signer.py --config FILE console CMD    May's console, on the signer's TTY:
-        init | template-hash | list | show ID | approve ID | reject ID | log
+        init | template-hash | list | show ID | approve ID | reject ID | log | adopt-live
   aptly_signer.py --config FILE resign         scheduled re-sign of last-live
 
 The logic is in signer_core.py. This file keeps the state (one JSON file,
@@ -64,6 +64,7 @@ def load_config(path):
     for key in ("bind", "state", "template", "gnupghome", "fingerprint", "keyring", "repo_base"):
         if not config.get(key):
             raise SystemExit(f"config: {key} is required")
+    config.setdefault("policy", str(Path(config["template"]).with_name("policy.json")))
     for key in ("gpg", "gpgv"):
         if not Path(config[key]).is_absolute():
             raise SystemExit(f"config: {key} must be an absolute path")
@@ -229,7 +230,11 @@ def control_name(name):
 
 
 def control_tar_names(plain):
-    """The member names of a control tar, read from its raw 512-byte headers,
+    return [name for name, _ in control_tar_members(plain)]
+
+
+def control_tar_members(plain):
+    """The (name, bytes) of a control tar's regular files, read from its raw 512-byte headers,
     not through tarfile: Python's tarfile and GNU tar (dpkg) pick different
     names when pax or GNU long-name headers precede a member (Verifier round
     3). Only plain ustar headers pass: typeflag '0'/NUL (a regular file) and
@@ -268,14 +273,18 @@ def control_tar_names(plain):
             if name not in ("./", ".") or size:
                 raise core.Refused(f"the control archive holds a directory {core.printable(name)}")
         elif kind in (b"0", b"\0"):
-            names.append(control_name(name))
+            names.append((control_name(name), plain[i + 512:i + 512 + size]))
         else:
             raise core.Refused(f"the control archive holds a member of type {core.printable(kind)} ({core.printable(name)})")
         i += 512 + ((size + 511) // 512) * 512
 
 
 def control_members(deb, limit=16 * 1024 * 1024):
-    """The member names of a .deb's control archive (ar, control.tar.{gz,xz,zst}),
+    return [name for name, _ in control_files(deb, limit)]
+
+
+def control_files(deb, limit=16 * 1024 * 1024):
+    """The (name, bytes) of a .deb's control archive (ar, control.tar.{gz,xz,zst}),
     read in memory with a decompression cap; nothing is extracted."""
     if not deb.startswith(b"!<arch>\n"):
         raise core.Refused("not an ar archive")
@@ -291,16 +300,34 @@ def control_members(deb, limit=16 * 1024 * 1024):
         if len(body) != size:
             raise core.Refused("truncated ar member")
         if name.startswith("control.tar"):
-            return control_tar_names(bounded_decompress(name, body, limit))
+            return control_tar_members(bounded_decompress(name, body, limit))
         pos += 60 + size + (size % 2)
     raise core.Refused("no control archive in the .deb")
 
 
 def script_scanner(config):
+    """scan(bytes) -> (console text, {script name: sha256}); the map feeds the
+    routine policy (phase 5, rule 7)."""
     def scan(data):
-        found = sorted(set(control_members(data, config.get("max_control", DEFAULTS["max_control"]))) & set(SCRIPTS))
-        return "scripts: " + ",".join(found) if found else "no scripts"
+        members = control_files(data, config.get("max_control", DEFAULTS["max_control"]))
+        found = {name: hashlib.sha256(body).hexdigest() for name, body in members if name in SCRIPTS}
+        text = "scripts: " + ",".join(sorted(found)) if found else "no scripts"
+        return text, found
     return scan
+
+
+def load_policy(config):
+    """The routine policy, read at every proposal. A missing or unusable file
+    gives a policy that approves nothing, with the reasons (fail closed)."""
+    path = Path(config.get("policy") or Path(config["template"]).with_name("policy.json"))
+    try:
+        policy = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return {"schema": 1, "auto_approve": False, "_problem": f"policy: cannot read {path.name}: {exc}"}
+    problems = core.check_policy(policy)
+    if problems:
+        return {"schema": 1, "auto_approve": False, "_problem": "; ".join(problems)}
+    return policy
 
 
 # ---- the API -----------------------------------------------------------------
@@ -353,10 +380,14 @@ def make_handler(config, store, template, backend):
                 request = self.body()
                 if self.path == "/propose":
                     debs = core.DebSet(decode_files(request.get("debs", {})), script_scanner(config))
+                    policy = load_policy(config)
                     with store.locked() as state:
                         pid = core.propose(state, template, decode_files(request.get("files")),
-                                           request.get("task_id"), debs, now)
-                    return self.reply(200, {"ok": True, "proposal": pid})
+                                           request.get("task_id"), debs, now, policy=policy)
+                        status = core.proposal_status(state, pid)
+                        if "_problem" in policy and status["status"] == "pending":
+                            status["reasons"] = [core.printable(policy["_problem"])] + status["reasons"]
+                    return self.reply(200, {"ok": True, "proposal": pid, **status})
                 if self.path == "/sign":
                     release = base64.b64decode(request.get("release", ""), validate=True)
                     with store.locked() as state:
@@ -418,9 +449,20 @@ def console(config, argv, out=sys.stdout, confirm=input):
     with store.locked() as state:
         if command == "list":
             for pid, p in sorted(state["proposals"].items()):
-                print(core.printable(f"{pid}  {p['received']}  {len(p['diff'])} changes"), file=out)
+                verdict = p.get("policy")
+                note = "" if not verdict else "  [routine]" if verdict["routine"] else "  [console: " + "; ".join(verdict["reasons"][:2]) + "]"
+                print(core.printable(f"{pid}  {p['received']}  {len(p['diff'])} changes{note}"), file=out)
+            for line in core.auto_approval_lines(state):
+                print(line, file=out)
             live = state.get("last_live") or {}
             print(core.printable(f"last-live: {live.get('set_id') or '(none)'}"), file=out)
+            policy = load_policy(config)
+            print(core.printable("policy: " + (policy["_problem"] if "_problem" in policy else
+                                               f"auto_approve {'on' if policy['auto_approve'] else 'off'}")), file=out)
+        elif command == "adopt-live":
+            summary = adopt_live(config, state, template, out, confirm)
+            if summary is None:
+                return 1
         elif command == "show":
             for line in core.console_lines(state, argv[1]):
                 print(line, file=out)
@@ -442,6 +484,39 @@ def console(config, argv, out=sys.stdout, confirm=input):
             print("unknown command", file=out)
             return 2
     return 0
+
+
+def adopt_live(config, state, template, out, confirm):
+    """May's cut-over (phase 5): fetch the served index set, Release and every
+    listed .deb from the repository, show the summary, adopt after "adopt"."""
+    base, timeout = config["repo_base"], config["timeout"]
+    dist = f"dists/{config['distribution']}"
+    files = {}
+    for rel in core.allowed_paths(template):
+        try:
+            files[rel] = fetch(base, f"{dist}/{rel}", core.MAX_INDEX, timeout)
+        except core.Refused:
+            continue  # a variant the repository does not serve
+    served = fetch(base, f"{dist}/Release", 1024 * 1024, timeout)
+    content = core.check_index_set(template, files)
+    found = core.entries(content)
+    debs = {}
+    for key, fields in found.items():
+        if key[0].endswith("Packages") and fields["Filename"] not in debs:
+            debs[fields["Filename"]] = fetch(base, fields["Filename"], int(fields["Size"]), timeout)
+    checker = core.DebSet(debs, script_scanner(config))
+    now = datetime.now(timezone.utc)
+    preview = {"entries": len(found), "debs": len(debs),
+               "sources": sorted({core.source_of(k, v)[0] or "?" for k, v in found.items()})}
+    print(core.printable(f"served Release Date: {core.release_date(served.decode('utf-8', 'replace')) or '?'}"), file=out)
+    print(core.printable(f"{preview['entries']} entries, {preview['debs']} .debs read, sources: {', '.join(preview['sources'])}"), file=out)
+    print(core.printable(f"content id: {core.set_id(content)}"), file=out)
+    if confirm("type 'adopt' to make exactly this served content last-live (no signature): ").strip() != "adopt":
+        print("not adopted", file=out)
+        return None
+    summary = core.adopt_live(state, template, files, served, checker, now)
+    print(core.printable(f"adopted {summary['set_id']}: {summary['entries']} entries, {summary['with_scripts']} with scripts"), file=out)
+    return summary
 
 
 def resign_command(config, backend=None, now=None):
