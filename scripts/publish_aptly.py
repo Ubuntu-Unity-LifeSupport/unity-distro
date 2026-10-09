@@ -191,6 +191,8 @@ def repository_state(public_dir, distribution, now):
                     until = parsedate_to_datetime(line.split(":", 1)[1].strip())
                 except (TypeError, ValueError):
                     return "the served InRelease has an unreadable Valid-Until", notes
+                if until.tzinfo is None:
+                    until = until.replace(tzinfo=timezone.utc)
                 if until < now:
                     return (f"the repository has expired (Valid-Until {line.split(':', 1)[1].strip()} passed): the cadence "
                             "refresh did not run or was refused; see the refresh marker before publishing", notes)
@@ -313,7 +315,7 @@ def signer_prepare(root, task_id, snapshot, distribution, prefix, out=None, publ
     for note in notes:
         print(f"publish-aptly: note: {note}", file=out)
     try:
-        client = signer_client.load_config()
+        client = signer_client.load_config(SIGNER_CLIENT_CONFIG)  # the file that switched the mode on
     except signer_client.core.Refused as exc:
         return None, None, None, fail(str(exc))
     proposal_public, proposal_error = publish_proposal(task_id, snapshot, distribution, prefix)
@@ -335,6 +337,22 @@ def signer_prepare(root, task_id, snapshot, distribution, prefix, out=None, publ
         return None, None, None, PENDING_EXIT
     info = {"mode": "signer", "proposal": answer["proposal"], "approved_by": answer["approved_by"]}
     return info, signer_env(root, task_id), client, None
+
+
+def signer_finish(signer_info, client, task_id, distribution, prefix, public_dir=None):
+    """After a successful switch in signer mode: refresh and /live, the served
+    InRelease's sha256 into the record's signer block, the proposal tree dropped."""
+    signer_info.update(after_switch(client, task_id))
+    try:
+        signer_info["inrelease_sha256"] = sha256(Path(public_dir or LIVE_PUBLIC) / "dists" / distribution / "InRelease")
+    except OSError:
+        signer_info["inrelease_sha256"] = None
+    drop_proposal(task_id, distribution, prefix)
+    return signer_info
+
+
+def signer_failures(signer_info):
+    return [f"{k}: {v}" for k, v in signer_info.items() if isinstance(v, str) and v.startswith("FAILED")]
 
 
 def parse_timestamp(value):
@@ -850,12 +868,7 @@ def main():
         rc, message = error
         return fail(message) if message else rc
     if env is not None:
-        signer_info.update(after_switch(client, task_id))
-        try:
-            signer_info["inrelease_sha256"] = sha256(LIVE_PUBLIC / "dists" / distribution / "InRelease")
-        except OSError:
-            signer_info["inrelease_sha256"] = None
-        drop_proposal(task_id, distribution, prefix)
+        signer_finish(signer_info, client, task_id, distribution, prefix)
     record = {
         "authorization": {"file": str(Path(used_path).relative_to(approval_record.root())), "sha256": used_sha,
                           "approved_by": approval_rec["approved_by"], "approved_at": approval_rec["approved_at"],
@@ -890,7 +903,7 @@ def main():
     try: log_event("DONE", package, version, task_id)
     except OSError as exc: return fail(f"publication succeeded but final activity log failed: {exc}")
     print(f"published {package} {version}; write-once record: {record_path}")
-    failed = [f"{k}: {v}" for k, v in signer_info.items() if isinstance(v, str) and v.startswith("FAILED")]
+    failed = signer_failures(signer_info)
     if failed:
         return fail("published, but the signer steps after the switch failed (" + "; ".join(failed)
                     + "); the record carries it; recover with scripts/signer_client.py (refresh --switch / live)")

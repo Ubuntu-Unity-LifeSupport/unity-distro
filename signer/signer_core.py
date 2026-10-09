@@ -407,10 +407,23 @@ def live_scripts(state):
 
 
 def script_flag(result):
-    """A deb checker's answer is the console text, or (text, {name: sha256})."""
+    """A deb checker's answer is the console text, or (text, {name: sha256}),
+    or (text, map, control fields of the .deb)."""
     if isinstance(result, tuple):
-        return result[0], dict(result[1])
-    return result, None
+        return result[0], dict(result[1]), (dict(result[2]) if len(result) > 2 and result[2] is not None else None)
+    return result, None, None
+
+
+def check_control(key, fields, control):
+    """The .deb's own control must describe the Packages row that names it
+    (Verifier R1): Package, Version, Architecture and the source name."""
+    for name in ("Package", "Version", "Architecture"):
+        if control.get(name) != fields.get(name):
+            raise Refused(f"the .deb of {printable(fields['Package'])} {printable(fields['Version'])} says "
+                          f"{name} {printable(control.get(name))}: the Packages row does not describe it")
+    if source_of(key, control)[0] != source_of(key, fields)[0]:
+        raise Refused(f"the .deb of {printable(fields['Package'])} names source {printable(source_of(key, control)[0])}, "
+                      f"the Packages row {printable(source_of(key, fields)[0])}")
 
 
 def store_entries(found):
@@ -488,7 +501,9 @@ def propose(state, template, files, task_id, deb_checker, now, max_pending=8, po
         key = (row["index"], row["package"], row["version"], row["arch"])
         fields = found[key]
         if fields["SHA256"] not in live_shas:
-            row["maintainer_scripts"], found_map = script_flag(deb_checker(fields))
+            row["maintainer_scripts"], found_map, control = script_flag(deb_checker(fields))
+            if control is not None:
+                check_control(key, fields, control)
             if found_map is not None:
                 scripts[key] = found_map
     extra = deb_checker.unused() if hasattr(deb_checker, "unused") else []
@@ -501,6 +516,8 @@ def propose(state, template, files, task_id, deb_checker, now, max_pending=8, po
         "diff": changes, "entries": store_entries(found), "scripts": store_entries(scripts),
         "received": format_date(now)}
     log(state, f"proposal {pid}: {len(changes)} changes")
+    state["auto_signed"] = [h for h in (state.get("auto_signed") or [])
+                            if (now - datetime.fromisoformat(h["at"])).total_seconds() <= 2 * 86400]  # rules 8-9: 2 days
     if policy is not None:
         ok, reasons = routine(state, pid, policy, now)
         state["proposals"][pid]["policy"] = {"routine": ok, "reasons": reasons}
@@ -834,9 +851,11 @@ def adopt_live(state, template, files, served_release, deb_checker, now):
     scripts, flagged = {}, 0
     for key, fields in found.items():
         if key[0].endswith("Packages"):
-            text, found_map = script_flag(deb_checker(fields))
+            text, found_map, control = script_flag(deb_checker(fields))
             if found_map is None:
                 raise Refused("the .deb reader gives no script map")
+            if control is not None:
+                check_control(key, fields, control)
             scripts[key] = found_map
             flagged += bool(found_map)
     extra = deb_checker.unused() if hasattr(deb_checker, "unused") else []

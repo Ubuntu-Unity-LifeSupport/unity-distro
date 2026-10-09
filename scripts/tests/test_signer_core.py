@@ -627,6 +627,36 @@ class RoutinePolicyTest(unittest.TestCase):
         self.assertEqual(self.upgrade(now=self.now + timedelta(minutes=2)), pid)  # the approval is returned
         self.assertEqual(core.proposal_status(self.state, pid), {"status": "approved", "approved_by": "May", "reasons": []})
 
+    def test_deb_control_must_describe_its_row(self):
+        """Verifier R1: a .deb whose own control names another package, version,
+        architecture or source refuses the proposal (and adopt-live)."""
+        def checker_with(control):
+            def check(fields):
+                found = SCRIPTS_A if fields["Package"] == "demo" else {}
+                return ("scripts: postinst" if found else "no scripts"), found, dict(
+                    {"Package": fields["Package"], "Version": fields["Version"], "Architecture": fields["Architecture"]}, **control)
+            return check
+        text = self.base_text + "\n" + stanza("demo", "1.0+unity2", "c" * 64, "demo") + "\n" + stanza("libdemo1", "1.0+unity2", "d" * 64, "demo")
+        for label, control in (("package", {"Package": "evil"}), ("version", {"Version": "9"}),
+                               ("architecture", {"Architecture": "all"}), ("source", {"Source": "other"})):
+            with self.subTest(case=label):
+                with self.assertRaises(core.Refused):
+                    core.propose(self.state, TEMPLATE, files_for(text), "UNITY-20261009-050",
+                                 checker_with(control), self.now, policy=POLICY)
+        pid = core.propose(self.state, TEMPLATE, files_for(text), "UNITY-20261009-051", checker_with({"Source": "demo"}), self.now, policy=POLICY)
+        self.assertIn(pid, self.state["approvals"])
+        state = core.new_state()
+        with self.assertRaises(core.Refused):
+            core.adopt_live(state, TEMPLATE, files_for(self.base_text), aptly_release(files_for(self.base_text)),
+                            checker_with({"Package": "evil"}), T0)
+
+    def test_auto_signed_history_is_pruned_after_two_days(self):
+        self.state["auto_signed"] = [{"at": (self.now - timedelta(days=3)).isoformat(), "task_id": "UNITY-20261001-001",
+                                      "pid": "x", "set_id": "s", "shown": True}]
+        pid = self.upgrade(task="UNITY-20261001-001")  # the same id, three days later: history pruned, routine
+        self.assertIn(pid, self.state["approvals"])
+        self.assertEqual([h["task_id"] for h in self.state["auto_signed"]], ["UNITY-20261001-001"])
+
     def test_version_compare_against_dpkg(self):
         table = json.loads((ROOT / "scripts" / "tests" / "data" / "dpkg_version_order.json").read_text())
         self.assertGreater(len(table["pairs"]), 3000)

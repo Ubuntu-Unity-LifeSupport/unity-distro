@@ -247,7 +247,7 @@ def main():
     sub.add_parser("live")
     args = parser.parse_args()
     if getattr(args, "task", None) and not TASK_RE.fullmatch(args.task):
-        parser.error("task must be UNITY-YYYYMMDD-NNN")
+        parser.error("task must be UNITY-YYYYMMDD-NNN (or cadence for the timer's refresh)")
     config = load_config()
     try:
         if args.command == "propose":

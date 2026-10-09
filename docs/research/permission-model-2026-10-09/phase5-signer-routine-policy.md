@@ -373,9 +373,17 @@ with `removed` rows, which the policy sends to the console.
    targets verifies it; or (b) the first package publication through
    `publish_aptly.py`, which rule 11 sends to the console, where May
    approves it. After either, routine proposals are automatic.
+   A proposal left pending for a transient reason (the interval, the day
+   quota, an unreadable policy) is returned unchanged by every rerun; to
+   have the policy evaluate it again, reject it on the console and rerun.
 5. The cadence timers (builder and signer), installed last: a timer-driven
    `resign` on the signer sets `current` just as May's manual one does, so
    the timers come only after the cut-over. Then the rotation per -019.
+
+Rule 5 is checked against the `.deb` too: the control file of every
+`.deb` read in a proposal (and at `adopt-live`) must carry the Package,
+Version, Architecture and source name of the Packages row that names it
+(Verifier R1).
 
 ## 11. Design Challenger round 1: REVISE, and the consolidated revision
 
@@ -395,3 +403,38 @@ listed and validated. **N10** `-skip-contents` on the switch. **N12**
 linger and the signer's timer. Not taken: verifying the served InRelease
 with the old public key at `adopt-live` (May reads the summary; the old
 key is on its way out). Round 2 asked on this revision.
+
+## 12. Verification (2026-10-09)
+
+Independent Verifier on efdd4ee: **PASS**, INDEPENDENTLY_REPRODUCED. It ran
+the suite (539 OK), the 33 new tests against main's code (all fail there),
+36 adversarial policy cases on the pure core (every shape decision 4 sends
+to the console stayed pending; the positive case signed and went live with
+its script maps), the real service with a throwaway key (script maps equal
+`dpkg-deb -e` across gzip, xz, zstd and uncompressed control archives; the
+crafted-`.deb` refusals unchanged; `/propose` fields; printable console;
+`adopt-live` refusals), the publisher with injected fakes, a 600-pair
+`version_compare` fuzz against dpkg (0 mismatches), and an old state file
+from main's code (reads as "no map known", not routine). No shape of "only
+additions of one known source" hid a composition change decision 4 names.
+
+Remarks, all taken in one change (`signer_core`, `aptly_signer`,
+`publish_aptly`, `signer_client`, tests): **R1** the `.deb`'s own control
+must carry the Package, Version, Architecture and source name of the row
+that names it (proposal and `adopt-live`; an added row whose bytes are
+already live under another name is not read and stays not routine);
+**R2** a naive `Valid-Until` is read as UTC; **R3** the runbook says to
+reject a proposal pending for a transient reason before a rerun; **R4**
+the automatic-approval history is pruned after 2 days, as designed;
+**R5** `adopt-live` fetches `Release` first and exactly the files it
+lists, refusing a listed file the template does not allow (today's
+`Contents` lines, with the `-skip-contents` precondition named); **R6** the
+policy problem appears once in the reasons; **R7** the publisher reads the
+client configuration from the file that switched the mode on; **R8** the
+tail of `main()` after the switch is `signer_finish`/`signer_failures`,
+tested; **R9** the usage text names `cadence`. Theoretical variations
+stated by the Verifier and left: a Sources-only upload of a known source is
+routine; dpkg-invalid version spellings that `VERSION_RE` accepts compare
+as "not newer"; dependency fields of an added row are unconstrained
+(residual risk 1); the compression variants present are invisible to the
+policy (`set_id` is over decompressed content).

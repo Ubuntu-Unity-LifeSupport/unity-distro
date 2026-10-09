@@ -657,10 +657,46 @@ class RoutinePolicyEndToEndTest(SignerEndToEndTest):
         answer = signer_client.propose_answer(self.client, self.rehearsal(routine.encode()), "UNITY-20261009-004")
         self.assertEqual(answer["status"], "pending")
         self.assertIn("automatic approval is off", " ".join(answer["reasons"]))
+        aptly_signer.console(self.config, ["reject", answer["proposal"]], out=io.StringIO())  # a pending one is returned as is
         self.policy.unlink()  # a missing file approves nothing and says so
         answer = signer_client.propose_answer(self.client, self.rehearsal(routine.encode()), "UNITY-20261009-004")
         self.assertEqual(answer["status"], "pending")
         self.assertTrue(any("cannot read policy.json" in r for r in answer["reasons"]), answer)
+
+    def test_deb_control_disagreeing_with_its_row_is_refused(self):
+        """Verifier R1 through the service: a row that names a known binary but
+        carries the bytes of another .deb."""
+        self.history = []
+        base = self.packages()
+        self.go_live(base)
+        # a live .deb's bytes under a new row: not read again, hence not routine (pending)
+        other = (self.public / self.debs["libdemo1"]).read_bytes()
+        rel = "pool/main/d/demo/demo_1.0+unity2_amd64.deb"
+        (self.public / rel).write_bytes(other)
+        row = (f"Package: demo\nVersion: 1.0+unity2\nArchitecture: amd64\nMaintainer: t <t@example.com>\n"
+               f"Filename: {rel}\nSize: {len(other)}\nSHA256: {hashlib.sha256(other).hexdigest()}\nDescription: t\n")
+        answer = signer_client.propose_answer(self.client, self.rehearsal(base + b"\n" + row.encode()), "UNITY-20261009-007")
+        self.assertEqual(answer["status"], "pending")
+        self.assertTrue(any("were not read" in r for r in answer["reasons"]), answer)
+        aptly_signer.console(self.config, ["reject", answer["proposal"]], out=io.StringIO())
+        # a new .deb whose own control says another package: refused outright
+        evil = self.new_version("evil", "1.0+unity2", source="demo").replace("Package: evil\n", "Package: demo\n")
+        with self.assertRaises(core.Refused) as caught:
+            signer_client.propose_answer(self.client, self.rehearsal(base + b"\n" + evil.encode()), "UNITY-20261009-008")
+        self.assertIn("does not describe it", str(caught.exception))
+
+    def test_adopt_live_refuses_a_release_listing_contents(self):
+        raw = self.packages()
+        files = self.index_set(raw)
+        self.write_tree(self.dist, files)
+        own = core.build_release(TEMPLATE, files, datetime.now(timezone.utc)).decode()
+        lines = [l for l in own.split("\n") if not l.startswith("Valid-Until:")]
+        i = lines.index("SHA256:") + 1
+        lines.insert(i, " " + "0" * 64 + "       10 main/Contents-amd64.gz")
+        (self.dist / "Release").write_text("\n".join(lines))
+        with self.assertRaises(core.Refused) as caught:
+            aptly_signer.console(self.config, ["adopt-live"], out=io.StringIO(), confirm=lambda _: "adopt")
+        self.assertIn("republish with -skip-contents", str(caught.exception))
 
     def test_adopt_live_and_the_resign_cutover(self):
         self.history = []

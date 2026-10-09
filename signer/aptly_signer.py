@@ -312,7 +312,16 @@ def script_scanner(config):
         members = control_files(data, config.get("max_control", DEFAULTS["max_control"]))
         found = {name: hashlib.sha256(body).hexdigest() for name, body in members if name in SCRIPTS}
         text = "scripts: " + ",".join(sorted(found)) if found else "no scripts"
-        return text, found
+        controls = [body for name, body in members if name == "control"]
+        if len(controls) != 1:
+            raise core.Refused("the .deb's control archive holds no single control file")
+        try:
+            stanzas = core.parse_stanzas(controls[0].decode("utf-8"), "control")
+        except UnicodeDecodeError:
+            raise core.Refused("the .deb's control file is not UTF-8")
+        if len(stanzas) != 1:
+            raise core.Refused("the .deb's control file is not one stanza")
+        return text, found, stanzas[0]
     return scan
 
 
@@ -385,8 +394,6 @@ def make_handler(config, store, template, backend):
                         pid = core.propose(state, template, decode_files(request.get("files")),
                                            request.get("task_id"), debs, now, policy=policy)
                         status = core.proposal_status(state, pid)
-                        if "_problem" in policy and status["status"] == "pending":
-                            status["reasons"] = [core.printable(policy["_problem"])] + status["reasons"]
                     return self.reply(200, {"ok": True, "proposal": pid, **status})
                 if self.path == "/sign":
                     release = base64.b64decode(request.get("release", ""), validate=True)
@@ -491,13 +498,19 @@ def adopt_live(config, state, template, out, confirm):
     listed .deb from the repository, show the summary, adopt after "adopt"."""
     base, timeout = config["repo_base"], config["timeout"]
     dist = f"dists/{config['distribution']}"
-    files = {}
-    for rel in core.allowed_paths(template):
-        try:
-            files[rel] = fetch(base, f"{dist}/{rel}", core.MAX_INDEX, timeout)
-        except core.Refused:
-            continue  # a variant the repository does not serve
     served = fetch(base, f"{dist}/Release", 1024 * 1024, timeout)
+    listed, inside = [], False
+    for line in served.decode("utf-8", "replace").splitlines():
+        if line and not line[0].isspace():
+            inside = line.startswith("SHA256:")
+        elif inside and line.strip():
+            listed.append(line.split()[-1])
+    allowed = core.allowed_paths(template)
+    foreign = [rel for rel in listed if rel not in allowed]
+    if foreign:
+        raise core.Refused("the served Release lists files the signer does not sign (republish with -skip-contents first): "
+                           + ", ".join(core.printable(f) for f in foreign[:4]))
+    files = {rel: fetch(base, f"{dist}/{rel}", core.MAX_INDEX, timeout) for rel in listed}
     content = core.check_index_set(template, files)
     found = core.entries(content)
     debs = {}

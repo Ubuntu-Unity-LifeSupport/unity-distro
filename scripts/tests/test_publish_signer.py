@@ -76,6 +76,8 @@ class SignerStepsTest(unittest.TestCase):
         (self.dist / "InRelease").write_text("Valid-Until: Thu, 08 Oct 2026 10:00:00 UTC\n")
         error, _ = publish_aptly.repository_state(self.public, "resolute", NOW)
         self.assertIn("the repository has expired", error)
+        (self.dist / "InRelease").write_text("Valid-Until: Thu, 08 Oct 2026 10:00:00 -0000\n")  # naive (Verifier R2)
+        self.assertIn("the repository has expired", publish_aptly.repository_state(self.public, "resolute", NOW)[0])
         (self.dist / "InRelease").write_text("Valid-Until: not a date\n")
         self.assertIn("unreadable", publish_aptly.repository_state(self.public, "resolute", NOW)[0])
         (self.dist / "InRelease").write_text("Valid-Until: Sat, 10 Oct 2026 10:00:00 UTC\n")
@@ -180,6 +182,20 @@ class SignerStepsTest(unittest.TestCase):
         outcome = publish_aptly.after_switch(client, TASK, refresh=refresh_ok, live=live_bad)
         self.assertEqual(outcome["live"], "FAILED: not the signer's InRelease")
 
+    def test_signer_finish_records_and_drops(self):
+        from unittest import mock
+        (self.dist / "InRelease").write_bytes(b"signed")
+        calls = []
+        with mock.patch.object(publish_aptly, "after_switch", return_value={"refresh": "OK", "live": "FAILED: x"}), \
+                mock.patch.object(publish_aptly, "drop_proposal", side_effect=lambda *a, **k: calls.append("drop")):
+            info = publish_aptly.signer_finish({"mode": "signer", "proposal": "p1", "approved_by": "policy"},
+                                               {"url": "u"}, TASK, "resolute", ".", public_dir=self.public)
+        self.assertEqual(info["inrelease_sha256"], __import__("hashlib").sha256(b"signed").hexdigest())
+        self.assertEqual(info["live"], "FAILED: x")
+        self.assertEqual(calls, ["drop"])
+        self.assertEqual(publish_aptly.signer_failures(info), ["live: FAILED: x"])
+        self.assertEqual(publish_aptly.signer_failures({"mode": "legacy"}), [])
+
     def test_client_config_validation(self):
         path = self.base / "client.json"
         path.write_text(json.dumps({"url": "http://x", "public_root": "/p"}))
@@ -234,7 +250,7 @@ class SignerPrepareTest(unittest.TestCase):
                    mock.patch.object(mod, "drop_proposal", side_effect=lambda *a, **k: self.calls.append("drop")),
                    mock.patch.object(mod, "PROPOSAL_ROOT", self.base / "rehearsal"),
                    mock.patch.object(mod.signer_client, "load_config",
-                                     side_effect=config or (lambda path=None: {"url": "u"}))]
+                                     side_effect=config or (lambda path=None: self.calls.append(("config", str(path))) or {"url": "u"}))]
         if isinstance(answer, Exception):
             patches.append(mock.patch.object(mod.signer_client, "propose_answer", side_effect=answer))
         else:
@@ -265,19 +281,19 @@ class SignerPrepareTest(unittest.TestCase):
     def test_failed_proposal_publication(self):
         info, env, client, rc = self.prepare(publish=(None, "proposal publication failed (aptly rc 1): boom"))
         self.assertEqual(rc, 2)
-        self.assertEqual(self.calls, ["drop"])
+        self.assertEqual(self.calls[1:], ["drop"])
 
     def test_signer_refusal(self):
         info, env, client, rc = self.prepare(answer=signer_client.core.Refused("the signer refused: the proposal lacks the .deb"))
         self.assertEqual(rc, 2)
-        self.assertEqual(self.calls, ["drop"])
+        self.assertEqual(self.calls[1:], ["drop"])
 
     def test_pending_exits_3_after_dropping_and_touches_no_approval(self):
         info, env, client, rc = self.prepare(answer={"proposal": "p1", "status": "pending", "approved_by": None,
                                                    "reasons": ["source x is not in last-live: a new package is never routine"]})
         self.assertEqual(rc, publish_aptly.PENDING_EXIT)
         self.assertEqual(rc, 3)
-        self.assertEqual(self.calls, [("propose", "/x/public", TASK), "drop"])
+        self.assertEqual(self.calls[1:], [("propose", "/x/public", TASK), "drop"])
         self.assertIn("waiting for May on the signer console (proposal p1)", self.out.getvalue())
         self.assertIn("never routine", self.out.getvalue())
         self.assertIsNone(info)
@@ -290,7 +306,7 @@ class SignerPrepareTest(unittest.TestCase):
         bindir = self.base / "rehearsal" / TASK / "bin"
         self.assertTrue(env["PATH"].startswith(str(bindir) + ":"))
         self.assertEqual(os.readlink(bindir / "gpg"), str(self.base / "repo" / "scripts" / "gpg_standin.py"))
-        self.assertEqual(self.calls, [("propose", "/x/public", TASK)])  # the tree stays for the switch
+        self.assertEqual(self.calls, [("config", str(publish_aptly.SIGNER_CLIENT_CONFIG)), ("propose", "/x/public", TASK)])  # the tree stays for the switch
 
 
 if __name__ == "__main__":
