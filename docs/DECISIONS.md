@@ -2162,3 +2162,76 @@ Accepting only an open, graphical, class=user session is UNITY-20261008-024.
 **Known and unchanged.** cinnamon-session's own presence idle does not work in the Unity session, because `org.cinnamon.Muffin.IdleMonitor` is missing there (UNITY-20261008-023).
 
 Record: `docs/research/UNITY-20260927-053-session-is-active/`.
+
+
+## 2026-10-09 - Permission model, phase 0: May's decisions on the architecture review
+
+**Context.** May asked for a read-only review of the permission and command-guard
+architecture (hooks, `command_guard.py`, the installer, `safe_git.py`,
+`taskctl.py`, the registry, the publication gate, the signer design, the
+Aptly freeze policy and the false-positive evidence of UNITY-20260929-003).
+The review was made on main 96122ab; the record is
+`docs/research/permission-model-2026-10-09/README.md`. The review's
+findings and recommendations are its own; what May decided is listed below,
+as he stated it.
+
+**Decision (May, 2026-10-09).**
+
+1. The architecture is accepted as a whole: the phased rollout, the
+   independent Verifier, routine publication automated through C, and a
+   separate signer. The guard is not weakened until the signer is ready and
+   integrated.
+2. Publication run: the task owner runs `scripts/publish_aptly.py` in the
+   task worktree on C's GO. C checks all gates, issues the authorization,
+   supervises the run and writes the final record. May's separate
+   confirmation of each ordinary release is not required. The authorization
+   is bound to the specific task, branch, commit, gate and publication
+   artifacts.
+3. Guard relaxation comes after phase 5, when the signer is deployed,
+   integrated and verified. Until then the current confirmed prohibitions
+   stay; only necessary defects are fixed, without widening allowed actions.
+4. Routine policy, initial conservative configuration: one already-known
+   source package; at most 40 binary records; no new or changed maintainer
+   scripts relative to the approved version; at most one automatic
+   signature per 10 minutes; at most six automatic signatures per day. The
+   signer must verify the exact composition, versions, architectures,
+   checksums and provenance of the artifacts. On any mismatch, on anything
+   it cannot verify, or outside the policy limits: no automatic signature
+   and a separate review. New packages are not routine merely because they
+   fit the numeric limits.
+5. Rollback is an exceptional operation: C prepares the plan, the Verifier
+   checks the expected result, then May's separate GO is required. The
+   automatic rollback policy is not extended in this rollout.
+6. GitHub: `main` gets protection against force-push and deletion; builder
+   uses a fine-grained token without admin rights, with the minimal rights
+   the normal workflow needs. Before rollout, compatibility with all
+   existing operations is checked and a clear path to restore access is
+   kept.
+7. May keeps: the first live migration, key rotation, changes to
+   `policy.json` and to the global `~/.claude/settings.json`. An Upstream
+   Liaison is wanted as a specialised role for research, patch preparation
+   and message drafts; external sends remain under the current approval
+   policy for now.
+8. UNITY-20260929-019 is unblocked and implementation continues per the
+   approved phases: development, testing and deployment preparation are
+   allowed; the separate GO for the first live migration, key
+   generation/rotation and the other actions reserved above stays.
+
+General rules May set: work in phases with separate tasks, tests,
+independent verification and rollback; never combine the false-positive
+fixes, the permission-policy change and the signer integration into one
+inseparable change; show the diff before any global-settings change; after
+a protection change, prove it works in new sessions. The goal is the
+coordinator's autonomy for routine publication, with May's control over
+exceptional operations and trust-boundary changes.
+
+**Phase order chosen by the architecture session under decision 3:**
+0 (this record) -> 1 (UNITY-20260929-003) and 4 (publication authority) ->
+3 (permissions block) -> 5 (signer) -> 2 (guard narrowing) -> 6 (cleanup).
+
+**Why (from the review).** Nine publications in fifteen hours on
+2026-10-08/09 each needed May's confirmation in the owner's session; 31 of
+44 guard refusals in the corpus and 9 recorded cases of 2026-10-08/09 were
+false positives on data. Every control on builder runs as one OS user, so
+only the signing key and May's own channels are boundaries; the guard is
+accident prevention.
