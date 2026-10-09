@@ -722,3 +722,24 @@ Measured after the fix: the Verifier's 473 case strings (rounds 1-3)
 0 mismatches; full suite OK (145 phase-3 guard forms); transcript replay
 against main: 0 deny->allow, the same 5 allow->deny. Verification round 4
 requested.
+
+## Verification round 4 (2026-10-09)
+
+Verifier on 7e26503: **FAIL (narrow, one form)**. The five round-3 forms
+closed in every spelling and near variant (`| sudo -s`, `| sudo -u root
+bash`, `| timeout 30 bash`, `|& bash`, `| python3 -`, bodies with `cd` or
+`sh -c` inside, two heredocs with either piped); data sinks allowed; rounds
+1-3 strings 0 of 473 mismatched; every cb21821->HEAD deny->allow in the case
+files is a documented wrong denial; 485 tests OK; corpus unchanged against
+main. One form lost against cb21821: a passthrough between the heredoc and
+the shell (`cat <<EOF | tee /tmp/s.sh | bash`), because the runner was looked
+for one pipe hop only.
+
+Fix: the walk follows the pipeline past non-runners until a runner or its
+end. Residual as stated: `cat <<EOF | xargs -0 sh -c`, `sudo -s 'string'`,
+two-call `cat > x.sh && bash x.sh`.
+
+Measured after the fix: the Verifier's case strings of rounds 1-4
+0 mismatches; full suite OK (148 phase-3 guard forms); transcript replay
+against main: 0 deny->allow, the same 5 allow->deny. Verification round 5
+requested.

@@ -1783,8 +1783,10 @@ def _trusted_rules(levels: list, command: str, base=None, depth: int = 0) -> str
         tokens = unwrapped[n]
         cwd.step(tokens, sep)
         runner = _body_runner(group, tokens)
-        if runner is None and _pipes(sep) and n + 1 < len(groups):
-            runner = _body_runner(groups[n + 1], unwrapped[n + 1])  # cat <<EOF | bash
+        m = n
+        while runner is None and _pipes(seps[m]) and m + 1 < len(groups):
+            m += 1  # cat <<EOF | tee /tmp/s.sh | bash: the runner is anywhere down the pipeline
+            runner = _body_runner(groups[m], unwrapped[m])
         owners += [(runner, cwd.here) for token in group if token == HEREDOC]
         cwd.end_group(sep)
     for n, body in enumerate(scanner.bodies):

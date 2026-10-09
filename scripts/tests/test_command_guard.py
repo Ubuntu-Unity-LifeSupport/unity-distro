@@ -544,6 +544,9 @@ class AptlyPublishGuardTest(unittest.TestCase):
             "sudo-i-heredoc-sudoers": ("sudo -i <<'EOF'\necho x > /etc/sudoers.d/x\nEOF", None),
             "cat-pipe-python": ("cat <<'EOF' | python3\nopen('" + home + "/.claude/settings.json','w').write('x')\nEOF", None),
             "cd-cat-pipe-bash": ("cd ~/.claude && cat <<'EOF' | bash\necho x > settings.json\nEOF", None),
+            # Verifier round 4: a passthrough between the heredoc and the shell
+            "cat-pipe-tee-pipe-bash": ("cat <<'EOF' | tee /tmp/s.sh | bash\ncp /tmp/x ~/.claude/settings.json\nEOF", None),
+            "cat-pipe-sed-pipe-sudo-bash": ("cat <<'EOF' | sed s/X/x/ | sudo bash\necho X > /etc/sudoers.d/x\nEOF", None),
         })
         allowed.update({
             "cat-pipe-grep-data": ("cat <<'EOF' | grep settings\necho x > ~/.claude/settings.json\nEOF", None),
@@ -552,6 +555,7 @@ class AptlyPublishGuardTest(unittest.TestCase):
             "cat-pipe-ssh-remote": ("cat <<'EOF' | ssh target bash\necho x > /etc/sudoers.d/x\nEOF", None),
             "git-commit-F-message": ("git commit -F - <<'EOF'\nfix: stop writing ~/.claude/settings.json from the shell\nEOF", None),
             "cd-work-bash-heredoc-relative": ("cd ~/work/b/unity-distro && bash <<'EOF'\necho x > .claude/settings.json\nEOF", home),
+            "cat-pipe-tee-pipe-grep": ("cat <<'EOF' | tee /tmp/s.sh | grep x\ncp /tmp/x ~/.claude/settings.json\nEOF", None),
         })
         for key, command in sorted(denied.items()):
             command, cwd = command if isinstance(command, tuple) else (command, None)
