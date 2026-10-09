@@ -213,10 +213,14 @@ ALLOWED = [
 ]
 
 
+# Relative paths in the corpus resolve against this directory, never against the
+# checkout the suite runs from: from the base checkout, .claude/hooks/x.py is a
+# trusted write by design (permission model phase 3).
+NEUTRAL_CWD = tempfile.gettempdir()
+
+
 def run_hook(command, env=None, cwd=None):
-    payload = {"tool_name": "Bash", "tool_input": {"command": command}}
-    if cwd:
-        payload["cwd"] = cwd
+    payload = {"tool_name": "Bash", "tool_input": {"command": command}, "cwd": cwd or NEUTRAL_CWD}
     payload = json.dumps(payload)
     return subprocess.run([sys.executable, str(HOOK)], input=payload, capture_output=True,
                           text=True, env=env)
