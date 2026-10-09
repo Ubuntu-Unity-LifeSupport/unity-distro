@@ -356,3 +356,7 @@ Remarks taken: the compared set is the six scripts the publisher executes or imp
 this phase when it is merged; every existing publish record (24, the latest
 2026-10-09T05:40:24Z) is earlier, every record the new publisher writes is
 later.
+
+## Verification (2026-10-09)
+
+Independent Verifier (ephemeral subagent, REVIEWED; it ran the full suite in the worktree: 455 tests OK, 1 skipped, and probed `check_approval_artifacts` with its own fixtures): **PASS**, with one FIX_PARTIAL on the tests: the publisher's part-2 check and several publisher-side refusals (expired, future-dated, another branch, another task's file name, a used-only copy, a symlink, a changed manifest hash) rested on review only. Taken before the merge: `PublisherSideRefusalsTest` (8 cases through the real publisher) and `ArtifactsAndFirstPublicationCheckTest` (5 cases on the function); a gate without `publish.distribution` is now a refusal instead of a traceback; step 10 says what happens when the outcome write fails (`PUBLISHED` refuses, manual recovery). Remarks noted: the validity window is checked at the early check only; `AUTHORIZATION_REQUIRED_SINCE` is set to the merge time in the merge preparation commit. Counterexamples tried by the Verifier and refused by the code: revoke or re-approve during a run (the publisher holds the lock), a rewrite between read and consume (byte compare), a `used/` path escape, a gate without prefix.

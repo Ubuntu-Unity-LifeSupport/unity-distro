@@ -156,6 +156,118 @@ class ApprovalEndToEndTest(PublishHarness):
         self.assertIn("mode 0600", result.stderr)
 
 
+class PublisherSideRefusalsTest(PublishHarness):
+    """Refusals the publisher makes on the approval file itself (the reader
+    is unit-tested in test_approval_record.py; these go through the real
+    publish_aptly.py)."""
+
+    def approved_gate(self):
+        gate = self.write_gate([self.entry])
+        self.assertEqual(self.approve().returncode, 0)
+        return gate, self.home / "coordinator" / "publication-approvals" / f"{TASK}.json"
+
+    def rewrite(self, path, **changes):
+        record = json.loads(path.read_text())
+        record.update(changes)
+        path.write_text(json.dumps(record))
+        os.chmod(path, 0o600)
+
+    def test_expired(self):
+        gate, path = self.approved_gate()
+        self.rewrite(path, approved_at="2020-01-01T00:00:00Z", not_after="2020-01-01T04:00:00Z")
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("expired", result.stderr)
+
+    def test_future_dated(self):
+        gate, path = self.approved_gate()
+        self.rewrite(path, approved_at="2099-01-01T00:00:00Z", not_after="2099-01-01T04:00:00Z")
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("future", result.stderr)
+
+    def test_another_branch(self):
+        gate, path = self.approved_gate()
+        self.rewrite(path, branch="a/other")
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("origin/a/other", result.stderr)
+
+    def test_file_of_another_task(self):
+        gate, path = self.approved_gate()
+        self.rewrite(path, task_id="UNITY-20990101-002")
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("another task", result.stderr)
+
+    def test_only_a_used_copy(self):
+        gate, path = self.approved_gate()
+        used = path.parent / "used"
+        used.mkdir(mode=0o700)
+        path.rename(used / f"{TASK}-20990101T000000Z.json")
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("no publication approval by C", result.stderr)
+
+    def test_symlink(self):
+        gate, path = self.approved_gate()
+        other = path.parent / "elsewhere.json"
+        path.rename(other)
+        path.symlink_to(other)
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("not a link", result.stderr)
+
+    def test_manifest_hash_in_the_gate_changed_after_approval(self):
+        gate, path = self.approved_gate()
+        self.rewrite(path, build_manifest_sha256="0" * 64)
+        result = self.run_script("scripts/publish_aptly.py", "--gate", str(gate))
+        self.assertIn("another build_manifest", result.stderr)
+
+    def test_gate_without_distribution_is_a_refusal(self):
+        self.gate_extra = {"publish": {"operation": "switch", "prefix": ".", "snapshot": "s"}}
+        self.write_gate([self.entry])
+        result = self.approve()
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("publish.distribution", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+
+class ArtifactsAndFirstPublicationCheckTest(unittest.TestCase):
+    """publish_aptly.check_approval_artifacts, the publisher's part 2 (the
+    harness fixtures stop before it, at the evidence manifest)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.pa = load("publish_aptly")
+        self.public = Path(self.tmp.name) / "public"
+        dist = self.public / "dists" / "resolute"
+        (dist / "main" / "binary-amd64").mkdir(parents=True)
+        (dist / "Release").write_text("Components: main\nArchitectures: amd64\n")
+        (dist / "main" / "binary-amd64" / "Packages").write_text("Package: demo-bin\nSource: demo (0.9)\nVersion: 0.9\n")
+        self.artifacts = [{"file": "a.deb", "sha256": "1" * 64, "kind": "binary"},
+                          {"file": "a.buildinfo", "sha256": "2" * 64, "kind": "buildinfo"}]
+        self.record = {"artifacts": list(self.artifacts), "may_reference": ""}
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def check(self, record, package="demo"):
+        return self.pa.check_approval_artifacts(record, self.artifacts, package, "resolute", ".", self.public)
+
+    def test_same_set_passes(self):
+        self.assertIsNone(self.check(self.record))
+
+    def test_subset_refused(self):
+        self.assertIn("artifact list differs", self.check({"artifacts": self.artifacts[:1], "may_reference": ""}))
+
+    def test_other_sha_refused(self):
+        other = [dict(self.artifacts[0], sha256="9" * 64), self.artifacts[1]]
+        self.assertIn("artifact list differs", self.check({"artifacts": other, "may_reference": ""}))
+
+    def test_new_package_needs_reference(self):
+        self.assertIn("first publication needs", self.check(self.record, package="newpkg"))
+        self.assertIsNone(self.check({"artifacts": list(self.artifacts), "may_reference": "May: GO"}, package="newpkg"))
+
+    def test_unreadable_live_index_refused(self):
+        (self.public / "dists" / "resolute" / "main" / "binary-amd64" / "Packages").unlink()
+        self.assertIn("first-publication check", self.check(self.record))
+
+
 class FirstPublicationTest(PublishHarness):
     live_sources = ("other",)
 

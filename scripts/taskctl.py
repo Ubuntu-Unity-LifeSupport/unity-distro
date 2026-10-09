@@ -617,7 +617,10 @@ def approve_publication(args, cols, public_dir=LIVE_PUBLIC):
     for key in ("source_commit", "source_tree_hash", "package", "candidate_version", "source_repo"):
         if not isinstance(gate.get(key), str) or not gate[key]:
             raise ValueError(f"the release gate lacks {key}")
-    known = approval_record.known_sources(public_dir, publish.get("distribution"), publish.get("prefix", "."))
+    for key in ("snapshot", "distribution"):
+        if not isinstance(publish.get(key), str) or not publish[key]:
+            raise ValueError(f"the release gate must name publish.{key}")
+    known = approval_record.known_sources(public_dir, publish["distribution"], publish.get("prefix", "."))
     first = gate["package"] not in known
     reference = (args.may_reference or "").strip()
     if first and not reference:

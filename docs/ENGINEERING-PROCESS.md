@@ -765,6 +765,9 @@ caused it.
       6a) is new again.
     - The approval is a workflow record of one OS user; it does not
       authenticate C. The signing key is the boundary (UNITY-20260929-019).
+    - If the publisher reports success but the consumed approval still says
+      `started` (its outcome could not be written), `PUBLISHED` refuses;
+      recovery is manual, as for a missing publish record.
     - The publisher also refuses unless the gate, the evidence manifest, the
       build manifest and log, the release record, the review evidence and
       the parent repository commit are pushed, tracked, committed and
