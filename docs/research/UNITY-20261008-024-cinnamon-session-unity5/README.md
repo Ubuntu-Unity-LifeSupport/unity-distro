@@ -69,7 +69,11 @@ pristine-tar. The manifest is in `build/`.
 - Target test before publication: PASS (`gate/target-test.txt`).
 - Independent verification: PASS (the Verifier reviewed the patches, the
   build record and the runtime records; it did not reproduce on its own).
-- Check on the target after publication: pending.
+- Check on the target after publication: PASS. Published 2026-10-09
+  01:34:01Z as `unity-resolute-20261008-024`; the target updated from the
+  live repository, cold boot: cinnamon-session runs the published binary,
+  `SessionIsActive` is true, no session warning
+  (`gate/target-verification.txt`).
 
 ## Publication
 
