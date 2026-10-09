@@ -375,5 +375,108 @@ The revised design holds for all three tasks. Taken into the implementation:
      `sendErrorReply` outside a D-Bus call) and no focused window
      (`m_windowToken` null, `QueryImpl.cpp:134`);
    - both are older than this revision and are not part of -025: a
-     follow-up candidate for C.
+     follow-up candidate for C (now UNITY-20261009-003).
 8. **The rest of the target plan is enough.**
+
+## Implementation (2026-10-09)
+
+hud source `packages/hud`, branch `b/UNITY-20261008-025` (pushed), on the
+published +unity5 (`db26b0d`):
+
+- `327ddb9`, the tests:
+  - `TestHudService`: `LegacyQueryReleasedWhenSenderLeaves` (the query of a
+    vanished sender is released and a new `StartQuery` gets a new query on
+    another path) and `CloseQueryWithoutLegacyQueryAddsNothing` (through a
+    test subclass that exposes the size of `m_legacyQueries`: 0 after a bare
+    `CloseQuery`, 0 after `ExecuteQuery` + `CloseQuery`);
+  - `TestApplication`: `DesktopFileInDataHome`, `DataHomeOverridesDataDirs`,
+    `NoCwdLookupWithoutDataDirs` (each with its own `XDG_DATA_HOME` and
+    `XDG_DATA_DIRS`, never the build's `HOME`).
+- `ffa23e3`, -025: `HudServiceImpl::closeQuery` also removes the legacy
+  entry whose query has that path, stopping its timer. That is the path
+  `QueryImpl` takes when its sender leaves the bus. `StartQuery` reads the
+  map with `value()` and `CloseQuery` with `find()`, so a sender without a
+  query no longer gets an empty entry.
+- `68a61fe`, -017: `ApplicationImpl::desktopPath` uses
+  `QStandardPaths::locate(ApplicationsLocation, <id>.desktop)`, the XDG
+  search with `XDG_DATA_HOME` first.
+- `1369d9e`: changelog `14.10+17.10.20170619-0ubuntu6+unity6`.
+
+-018 is NOT_APPLICABLE (see Reproduction), so it has no code.
+
+**Builds** (`build_sbuild.py`, chroot 20261008T083223Z; logs/04):
+
+- +unity6 (`1369d9e`): 6 of 6 suites pass; the service suite has 51 tests,
+  among them the 5 new ones.
+- control (`327ddb9`: the tests only, on the +unity5 code, a local branch
+  `control/UNITY-20261008-025`): the service suite fails exactly the 5 new
+  tests (46 of 51 pass), and the other 5 suites pass:
+  - the 3 `TestApplication` tests give an empty desktop path, the system
+    icon over the user override, and `./applications/...` found relative to
+    the working directory;
+  - the 2 `TestHudService` tests keep one legacy entry, after the sender
+    left and after a bare `CloseQuery`.
+
+  The first control attempt never reached the tests: snapshot.ubuntu.com
+  answered 502/503 while the build dependencies were being installed. It
+  was rerun the same day, once the same URL answered 200.
+
+## Target check (target2, 2026-10-09, logs/02, logs/03)
+
+Each measurement starts from a cold boot (`systemctl poweroff` over ssh,
+then `start_vm`), never a reboot from inside the guest. Clean-2 was restored
+and confirmed from inside the guest before each stack:
+
+- no `~/.dirty`;
+- no work directories;
+- only `ubuntu.sources`;
+- hud `0ubuntu6`.
+
+Then came `apt full-upgrade` from the live archive, and for "after", hud
++unity6 from this task's build (the .deb sha256 `9fafa7227344aa06...`;
+`apt` upgraded only hud). The running `hud-service` was checked against the
+installed binary (sha256 `3471e07f522bfd36`, no `(deleted)` mappings).
+
+**-025 and -017, the same script before and after (`target025.sh`, logs/02):**
+
+| | +unity5 | +unity6 |
+|---|---|---|
+| query objects after 5 one-off `StartQuery` clients | 5 | 0 |
+| the same 10 s later | 5 | 0 |
+| query objects at the end of the run | 8 | 0 |
+| `StartQuery` + `CloseQuery` client, `StartQuery` + `ExecuteQuery` client | released | released |
+| hud-service restarts, coredumps | none | none |
+| icon of a user-only desktop file (B017) | `''` | `utilities-terminal` |
+| icon of Terminal with a user override `Icon=b017-override` | `org.gnome.Terminal` | `b017-override` |
+| icon of Writer (system desktop file only) | `libreoffice-writer` | `libreoffice-writer` |
+| -018: id of a Terminal opened after a bamfdaemon restart | `org.gnome.Terminal` | `org.gnome.Terminal` |
+
+**The Unity 7 HUD, driven like a user (`hud-alt.sh`, logs/03):**
+
+- Alt is a real keyboard event (vbox `send_keys`). The query is typed with
+  xdotool, and Unity's calls are captured with dbus-monitor.
+- There is one legacy query per sender:
+  - a reopening within 2 s of `CloseQuery` keeps its path (query/11 for
+    "о" → "он" → "оно");
+  - after more than 2 s a reopening gets a new one (query/10 → query/11).
+- Enter: `ExecuteQuery` releases the query. Unity's `CloseQuery` right
+  after it changes nothing, and no query objects are left.
+- In 4 runs hud-service never restarted.
+
+**Regressions (UNITY-20260929-001 `target.sh` on +unity6, logs/03):**
+
+- Writer started 10 times: the window stack gives `libreoffice-writer` every
+  time.
+- «Сохранить» through the HUD is recorded under `libreoffice-writer`, and it
+  is the first row of the empty HUD after a restart.
+- A Terminal gets `org.gnome.Terminal` from the bridge.
+- The usage table records the Unity 7 HUD's Terminal command under
+  `org.gnome.Terminal`; the base `0ubuntu6` recorded it under `org`.
+
+**Seen, not caused by this revision (UNITY-20261009-004):** «Создать окно»
+for gnome-terminal through the HUD opens no window:
+
+- the item is found, and Unity sends `ExecuteQuery` and `CloseQuery`;
+- the same happens on the Ubuntu base `0ubuntu6`, with the same calls and
+  the same hud-service log lines;
+- the legacy `ExecuteQuery` path is not in this diff.
