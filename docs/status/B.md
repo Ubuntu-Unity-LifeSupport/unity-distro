@@ -75,6 +75,28 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-09 ~06:05Z: UNITY-20261008-025 and -017 PUBLISHED (hud +unity6); waiting for C's merge, then
+idle (permission-model freeze).**
+- **hud +unity6:**
+  - hud-service releases a legacy query when its sender leaves the bus
+    (-025).
+  - Desktop files are found with the XDG search, the user's directory
+    first (-017).
+  - Live `./resolute` is `unity-resolute-20261008-025` since 05:40:24Z.
+  - The publication is verified on target2.
+  - Card: `research/UNITY-20261008-025-hud-unity6/`, meta branch
+    `b/UNITY-20261008-025` (82a41f4) for C to merge.
+- **UNITY-20261008-018 is NOT_APPLICABLE:** the bridge's bamf owner warning
+  is a benign QtDBus startup race.
+- **Follow-ups on the board (BACKLOG, after the freeze):**
+  - UNITY-20261009-003: the legacy `ExecuteQuery` crash paths;
+  - UNITY-20261009-004: the Unity 7 HUD's Terminal command opens no window,
+    also on the Ubuntu base;
+  - UNITY-20261009-005: a relative `XDG_DATA_HOME` is not ignored.
+- **Not started, by C's instruction:** UNITY-20261009-002 and -003.
+
+Earlier:
+
 **2026-10-08 ~20:25Z: UNITY-20260929-001 and UNITY-20261008-011 DONE; next UNITY-20261008-013.**
 - **hud +unity5:** UNITY-20261008-011 with UNITY-20261008-014. The
   window-stack-bridge application id is now the whole desktop file name
@@ -462,9 +484,10 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**At `Clean-2`, powered off, since 2026-10-08 20:21Z** (rolled back after the UNITY-20261008-011
-publication check; checked inside: no `~/.dirty`, no `~/b001`, no
-`unity-distro.sources`, hud 0ubuntu6, NTP synchronised). Restarts before
+**At `Clean-2`, powered off, since 2026-10-09 06:01Z.** It was rolled back
+after the UNITY-20261008-025 publication check. Checked inside: no
+`~/.dirty`, no `~/b025` or `~/b001`, only `ubuntu.sources`, hud 0ubuntu6,
+NTP synchronised. Restarts before
 measurements: a cold cycle (poweroff over ssh, then start_vm), not a reboot
 from inside the guest.
 
