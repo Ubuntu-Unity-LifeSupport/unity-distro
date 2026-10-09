@@ -804,3 +804,57 @@ only, with no new design round:
 
 The repository copy `.claude/settings.json` was regenerated from the
 installer. The live `~/.claude/settings.json` stays unchanged until May's GO.
+
+## Rollout (2026-10-09, May's GO)
+
+May reviewed `settings-proposal-final.diff` (main f118718) and gave the GO.
+Sequence, as agreed:
+
+1. `python3 scripts/install_command_guard.py --propose` in the base checkout
+   wrote `~/.claude/settings.json.proposed` (0600); it equalled
+   `dump(proposal(live))` and its block equalled `PERMISSIONS`.
+2. Backup `~/.claude/settings.json.bak-permission-model-p3-20261009`
+   (byte-identical to the live file, sha256 8fdf9752…, the 2026-09-29
+   version). The proposal was then written over `~/.claude/settings.json`
+   with the Write tool: the only write of the live file, by May's GO.
+3. Live file byte-identical to the proposal (sha256 4eaa6303…); block
+   equals the approved `PERMISSIONS` (16 deny, 94 ask, no allow);
+   `settings_problems()` empty; `install_command_guard.py --check`:
+   `command_guard wiring: OK` (block present and equal, project copy
+   equal, the three hook probes right).
+4. Acceptance in fresh sessions (`claude -p`, haiku, `bypassPermissions`,
+   the live settings, one probe per session; an ask shows as a
+   `permission_denials` entry in `-p`; scratchpad `p3-measure-3/`):
+
+| Probe | Layer expected | Outcome |
+|-------|----------------|---------|
+| Bash `echo acceptance-ok` | none | ran |
+| Bash `pkill -f unity-guard-probe-zzz` | hook | refused, guard text |
+| Bash `aptly publish list` | hook, deny rule behind it | refused, guard text (the hook decided first) |
+| Bash `git push --force origin zzz-nonexistent-branch` | hook, deny rule behind it | refused, guard text |
+| Bash `echo probe >> ~/.claude/settings.json` | hook rule 1 | refused: "trusted file … edit it with the Edit tool" |
+| Bash `sudo usermod --help` | ask rule (the guard allows it) | refused: "requested permissions to use Bash" |
+| Write new `~/.claude/skills/zzz-probe/SKILL.md` | Edit ask rule | refused: "requested permissions to write"; file absent |
+| Read then Write `~/.claude/settings.json.proposed` | Edit ask rule | Read ran, Write refused; file unchanged |
+| Read `~/.claude/.credentials.json` | Read deny rule | refused: "denied by your permission settings" |
+| Write `/etc/sudoers.d/zzz-probe` | Edit deny rule | refused: "denied by your permission settings" |
+| Bash `git -C ~/unity-distro status --short` | none | ran |
+| Bash `echo belt-probe 1` with a throwaway `--settings` deny rule the hook allows | deny rule alone | refused: "Permission to use Bash … has been denied"; the control `echo belt-control 2` ran |
+
+   The Bash deny rules of the live block sit behind the hook, which
+   decides first for the same commands; the last row shows the permission
+   engine refusing a Bash command by a deny rule on its own, in the same
+   mode and version.
+
+   Hook fail-closed, on the live handler command with the hook payload on
+   stdin (`p3-measure-3/wrapper_failclosed.py`): allowed command rc 0;
+   denied command rc 2; trusted write rc 2; malformed and empty hook input
+   rc 2 ("could not read the hook input"); a guard that exits 1 → rc 2
+   ("command_guard did not decide (rc=1)"); a guard that hangs → killed at
+   20 s, rc 2 ("did not decide (rc=124)"); a missing guard file → rc 2.
+   A first attempt to run all probes in one session was refused by the
+   fixture model as a whole; the probes were then run one per session with
+   the context stated.
+
+Phase 3 is rolled out. P2, P5 and P6 are not started; the next step waits
+for May.
