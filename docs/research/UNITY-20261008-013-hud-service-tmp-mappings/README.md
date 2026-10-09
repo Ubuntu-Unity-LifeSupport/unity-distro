@@ -7,7 +7,7 @@ task_id: UNITY-20261008-013
 package: libcolumbus (the symptom is in hud-service; the correct layer is libcolumbus)
 target_series: resolute
 issue: local - found in UNITY-20260929-001
-status: VERIFIED (2026-10-09), publication next
+status: PUBLISHED (2026-10-09 00:21:51Z), target verified on the publication
 observed: >
   hud-service holds more and more deleted 128 KiB "/tmp/#<inode>" shared
   mappings (files opened with O_TMPFILE) over a session, and its RSS grows
@@ -476,3 +476,28 @@ The slot came from C. libcolumbus is a new package in our repository.
   - before the build, resolute has libcolumbus only in its release pocket (0ubuntu39), with nothing in -updates, -security, -proposed or -backports (gate/prebuild-version-safety.txt).
 - **Peer notice:** A ACK (gate/peer-notice.txt).
 - **Patch record:** docs/PATCHES.md.
+- **Switch:** May confirmed in B's session, after C had checked the gate.
+  - `publish_aptly.py` switched `./resolute` to `unity-resolute-20261008-013` at 00:21:51 UTC.
+  - Write-once record: `~/coordinator/publish-records/UNITY-20261008-013.json`.
+  - The files under `/srv/aptly/public` show all four libcolumbus packages at +unity1.
+
+## Target verification of the publication (2026-10-09)
+
+Result: **PASS** (logs/07).
+
+- **Restore:** target2 was rolled back to Clean-2 and checked from inside the
+  guest. There was no `~/.dirty`, no work directory and none of our sources;
+  libcolumbus was the archive's `0ubuntu39`.
+- **Upgrade:** through our repository by the normal path, with no file
+  repository. apt's candidate was +unity1 from 8080. The libcolumbus1v5 and
+  libcolumbus1-common .debs apt fetched are the gated ones, and `dpkg -V` is
+  clean.
+- **The stack:** the live -013 publication, with u-s-d still +unity12,
+  before A's next publication.
+- **Boot:** a cold cycle. hud-service and the applications scope map the
+  installed `libcolumbus.so.1.1.0`.
+- **hud-service:** one query open then closed gives 0 → 3 → 0. `leak.sh`
+  shows 0 deleted files at every step, after 20 queries and 20 application
+  starts.
+- **The lens:** the deleted mappings stay at a constant 5 over 4 re-indexes
+  of the application menu.
