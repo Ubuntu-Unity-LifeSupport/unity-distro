@@ -583,3 +583,33 @@ the base reproduction of UNITY-20261009-004; the -018 bamfdaemon restart.
 | Two crash paths of the legacy `ExecuteQuery`: a key that is not an integer, and no focused window. | UNITY-20261009-003 (older than this revision) |
 | The Unity 7 HUD command «Создать окно» for gnome-terminal opens no window; the same on the Ubuntu base. | UNITY-20261009-004 |
 | An Ubuntu upload of hud would replace +unity6 without these fixes. | the usual risk of a carried package; hud upstream inactive since 2020 |
+
+## Publication (2026-10-09)
+
+The slot came from C. -017 ships in this build; it closes through
+`released_in` this task (rule R).
+
+- **Source:** `b/UNITY-20261008-025` is pushed to
+  `Ubuntu-Unity-LifeSupport/hud` at `1369d9e`.
+- **Gated build:** `build/` (hud `1369d9e`, chroot 20261008T083223Z). This
+  is the build tested on target2, so `tested_build` is this_build. The hud
+  .deb installed there is this build's (sha256 `9fafa722…`, logs/03). No
+  other binary of the source is installed on target2.
+- **Database backup:** `~/backups/UNITY-20261008-025-20261009T040041Z` (19
+  files, equal to live), list_sha256
+  `0e285960d9e74c3ad7bfc3d3ef0ae7677dc0535e08121b0b5d1326038792d4d3`.
+- **repo add:** the manifest's artifacts went to unity-resolute at
+  04:00:46Z, 20 records (source, 14 .deb, 5 .ddeb), 501 → 521. Each pool
+  file's sha256 equals the manifest's (22 of 22).
+- **Snapshot:** `unity-resolute-20261008-025`. `snapshot diff` against the
+  live `unity-resolute-20261008-024` shows only these 20 records added, all
+  +unity6, nothing removed or changed (gate/snapshot-diff.txt).
+- **Version safety:**
+  - SAFE at 04:01:13Z (gate/version-check.json, gate/version-safety.txt):
+    apt's candidate is +unity6 for every binary.
+  - The ordering-only check (gate/prebuild-version-safety.txt, UNKNOWN as
+    such a check always is) was run only at the gate, after the build. It
+    shows resolute has hud only in its release pocket (0ubuntu6), so
+    +unity6 sorts above it.
+- **Peer notice:** A ACK at 04:02Z (gate/peer-notice.txt).
+- **Patch record:** docs/PATCHES.md.

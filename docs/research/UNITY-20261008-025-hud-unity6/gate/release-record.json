@@ -1,0 +1,29 @@
+{
+ "task_id": "UNITY-20261008-025",
+ "package": "hud",
+ "target_series": "resolute",
+ "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity6",
+ "source_commit": "1369d9eb675a48b02f994d4047aa53e4d18260d7",
+ "source_provenance": "PUSHED",
+ "source_remote_ref": "origin/b/UNITY-20261008-025",
+ "version_safety": "SAFE",
+ "version_check": "docs/research/UNITY-20261008-025-hud-unity6/gate/version-check.json",
+ "verification_result": "PASS",
+ "verification_scope": "",
+ "verification_reason": "",
+ "peer_notice": "ACK",
+ "patch_and_decision_docs": true,
+ "decision_required": false,
+ "target_test": {
+  "record": "docs/research/UNITY-20261008-025-hud-unity6/logs/03-target-unity7-hud.txt",
+  "debs": {
+   "hud_14.10+17.10.20170619-0ubuntu6+unity6_amd64.deb": "9fafa7227344aa06b8606e45c89c5e853b08feb8530e580d53de5a1859147a00"
+  }
+ },
+ "tested_build": "this_build",
+ "evidence": {
+  "evidence_card": "docs/research/UNITY-20261008-025-hud-unity6/README.md",
+  "verification_record": "docs/research/UNITY-20261008-025-hud-unity6/README.md",
+  "patch_record": "docs/PATCHES.md"
+ }
+}

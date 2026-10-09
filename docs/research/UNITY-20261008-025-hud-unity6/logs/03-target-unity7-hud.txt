@@ -71,3 +71,7 @@ frequent: Writer restarted, empty HUD query: first row "Сохранить Фа�
 terminal: window 62914566 -> 'org.gnome.Terminal'; bridge WindowCreated/FocusedWindowChanged/WindowDestroyed
   with org.gnome.Terminal
 Full output: 03-target-unity7-hud.raw.
+
+===== the tested .deb (read on target2 2026-10-09 ~04:02Z, nothing changed there)
+installed: hud 14.10+17.10.20170619-0ubuntu6+unity6 (apt-get install ./debs/hud_..._amd64.deb), dpkg -V clean; no other binary of the hud source is installed on target2
+hud_14.10+17.10.20170619-0ubuntu6+unity6_amd64.deb sha256 9fafa7227344aa06b8606e45c89c5e853b08feb8530e580d53de5a1859147a00 (equal to build/ and the manifest)
