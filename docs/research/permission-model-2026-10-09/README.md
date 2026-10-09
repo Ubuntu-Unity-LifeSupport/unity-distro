@@ -40,7 +40,7 @@ Kind: `infra` (documentation only). Phase 0 of the permission-model change. The 
    `policy.json` and to the global `~/.claude/settings.json`. An Upstream
    Liaison is wanted as a specialised role for research, patch preparation
    and message drafts; external sends remain under the current approval
-   policy.
+   policy for now.
 8. UNITY-20260929-019 is unblocked and implementation continues per the
    approved phases: development, testing and deployment preparation are
    allowed; the separate GO for the first live migration, key
@@ -57,7 +57,7 @@ exceptional operations and trust-boundary changes.
 
 ## Phase order (architecture session, under decision 3)
 
-0 (this record) -> 1 (UNITY-20260929-003) and 4 (publication authority) -> 3 (permissions block) -> 5 (signer) -> 2 (guard narrowing) -> 6 (cleanup). Each phase is its own task with tests, independent verification, a rollback and a fresh-session proof.
+0 (this record) -> 1 (UNITY-20260929-003) and 4 (publication authority) -> 3 (permissions block) -> 5 (signer) -> 2 (guard narrowing) -> 6 (cleanup). Each phase is its own branch and registry entry (not a task on the coordinator's board), with tests, independent verification, a rollback and, for a protection change, a fresh-session proof.
 
 ## The review as delivered (2026-10-09 01:55Z)
 
