@@ -743,3 +743,29 @@ Measured after the fix: the Verifier's case strings of rounds 1-4
 0 mismatches; full suite OK (148 phase-3 guard forms); transcript replay
 against main: 0 deny->allow, the same 5 allow->deny. Verification round 5
 requested.
+
+## Verification round 5 (2026-10-09): PASS
+
+Verifier on fcc6ea6: **PASS** (INDEPENDENTLY_REPRODUCED). The round-4 form and
+its variants (up to four passthroughs, chains ending in `sudo -s`/`-i`,
+`timeout 30 bash`, `sudo su`, `python3 -`, `|&` chains, `cd` before and
+inside) denied; chains ending in `ssh`, `grep`, `tee`, a file, `git commit
+-F -` or `jq` allowed; 533 case strings of rounds 1-4 0 mismatches; every
+cb21821->HEAD deny->allow a documented wrong denial or the stated residual;
+485 tests OK; 440 corpus commands unchanged against main; fail-closed and
+source-text import hold; the guard's trusted set equals the installer's.
+The live `~/.claude/settings.json` was unchanged across all five rounds
+(sha256 8fdf9752…c7da, inode 3317598, mtime 2026-09-29).
+
+Remarks left as the stated residual (all allowed on main as well): a file
+written for a later runner (`cat <<EOF | tee /tmp/s.sh; bash /tmp/s.sh`),
+`xargs`, a subshell as the pipeline's runner, `sudo -s '<string>'`, `su
+--command=`, `runuser -c`, `eval`, `find -exec sh -c`, `git config --global`,
+`ssh-keygen -f`, `perl -pi`, `sort -o`, `gawk -i inplace`, expanded literals
+in interpreter code, `rm -rf ~`, a negated or backgrounded `cd`. The Verifier
+also notes that `~/.claude.json` and `~/.claude/.credentials.json` are outside
+the trusted set: adding them is a trusted-set change for May's decision (see
+the rollout section).
+
+Implementation accepted for merge: five Verifier rounds, each FAIL closed by
+one consolidated change; 148 phase-3 guard forms and 12 installer tests.
