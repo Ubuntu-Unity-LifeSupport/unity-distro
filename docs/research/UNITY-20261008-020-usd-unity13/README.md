@@ -52,7 +52,10 @@ gcm-self-test PASS. The manifest is in `build/`.
 - Independent verification: PASS (the Verifier reviewed the diff, the
   tests, the build record and the runtime records; it did not reproduce on
   its own).
-- Check on the target after publication: pending.
+- Check on the target after publication: PASS. Published 2026-10-09
+  00:38:37Z as `unity-resolute-20261008-020`; the target updated from the
+  live repository, cold boot: the helper runs the published binary, an
+  inserted medium is mounted (`gate/target-verification.txt`).
 
 ## Publication
 
