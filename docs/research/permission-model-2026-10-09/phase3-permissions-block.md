@@ -626,3 +626,44 @@ in Residual risks and Acceptance; table rows 12-13 added.
   bytecode-cache removal under `.claude/` - since exempted -, and one
   scratchpad script whose heredoc body carried a write-idiom string as
   data, the form the project's own rule says to avoid).
+
+## Verification round 1 (2026-10-09)
+
+Independent Verifier on df364bc: **FAIL** (INDEPENDENTLY_REPRODUCED). The installer
+held in 25 argument combinations against a fake home (the live file's inode and
+bytes never changed; symlinks refused; `allow_abbrev=False` effective); 150 of
+166 expected forms were right; 485 tests OK; 440 corpus commands unchanged.
+Five classes of rule-1 forms were missed:
+
+| # | Finding | Fix |
+|---|---------|-----|
+| 1 | `sh -c` / `bash -c` strings were one token, never lexed (`sudo sh -c 'echo x >> /etc/sudoers'` allowed) | the string is lexed as a nested command (quoted `>` restored) and rule 1 runs over it, depth-limited; `-ec` clusters count |
+| 2 | a leading `cd` was not followed (`cd ~/.claude && echo x > settings.json`) | rule 1 tracks `cd`/`pushd` per level (literal targets; `cd -` or a variable makes relative paths unresolvable; a `)` ends a subshell's `cd`) |
+| 3 | `>|` lexed as `>` plus a pipe | `>|` is one token and the first redirect operator tried |
+| 4 | `curl -O` into the session directory | `-O`/`--remote-name`: the URL's basename in the working directory |
+| 5 | `wget -P DIR`, `unzip -d DIR`, `tar xf … -C DIR`, `--directory=` classified the directory as a file | downloads: DIR/basename(URL); archives: the directory counts when it is trusted, inside a trusted directory or holds a trusted file; `tar` extraction is a single-dash cluster with `x`, `--extract`/`--get` or an old-style first operand, so `--exclude` no longer counts |
+
+Remarks taken with the same change: the wrappers Claude Code strips before its
+own rules (`timeout`, `nice`, `nohup`, `stdbuf`, `time`, `setsid`, `ionice`) are
+unwrapped by rule 1 only; `sed` option clusters (`-Ei`, `-ri`, `-i.bak`); the
+trusted set is executed from the installer's source text, never from a
+bytecode cache; the set is loaded on every call, so a missing installer fails
+even `true` closed (two tests). Declined: `rm -rf ~` and `/` stay with the
+older rule; `~` as an extraction target is not denied; `perl -pi`, `sort -o`,
+`gawk -i inplace`, `git config --global` and expanded literals in interpreter
+code remain the documented residual class (`--check` detects, the Edit path
+prevents).
+
+One lexer defect found on the way is **not** fixed here: the inherited redirect
+regex reads `2>&1` as `>` to a file named `&1`, which is what made the P4 merge
+command (a commit message with the word "publish" and a `$(...)`) a rule-A
+denial on main. Correcting the operator order allows that command, i.e.
+relaxes the guard, which May reserved for phase 2; phase 3 stays additive and
+rule 1 merely ignores `&N` targets. Recorded for P2.
+
+Measured after the fix: the Verifier's 244 case strings 0 mismatches; 54 guard
+and installer tests OK, full suite 485 OK (1 skipped); transcript replay of
+11328 commands against main: 0 deny->allow, 5 allow->deny (the three -021
+stand-in writes and the scratchpad heredoc as before, plus `cd ~/unity-distro
+&& cat > .claude/skills/…/SKILL.md`, a write into the base `.claude/` that the
+Write tool is for). Verification round 2 requested on the fixed commit.

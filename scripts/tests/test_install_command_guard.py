@@ -11,6 +11,7 @@ writes the real ~/.claude/settings.json.
 Run: python3 -m unittest discover -s scripts/tests
 """
 
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -60,8 +61,33 @@ class HandlerTests(unittest.TestCase):
         return subprocess.run(["/bin/sh", "-c", command], input=stdin, capture_output=True, text=True,
                               env=env or self.env, timeout=timeout)
 
-    def real_guard(self):
+    def real_guard(self, with_installer=True):
         shutil.copy(GUARD, self.guard)
+        if with_installer:  # the guard loads the trusted set from the installer beside its checkout
+            (self.tmp / "scripts").mkdir(exist_ok=True)
+            shutil.copy(INSTALLER, self.tmp / "scripts" / "install_command_guard.py")
+
+    def test_guard_fails_closed_without_the_installer(self):
+        """Permission model phase 3: the trusted set is loaded on every call; no
+        installer (or an unreadable one) blocks even a harmless command."""
+        self.real_guard(with_installer=False)
+        result = self.run_handler(json.dumps({"tool_name": "Bash", "tool_input": {"command": "true"}}))
+        self.assert_blocked(result, "Command guard failed (FileNotFoundError)")
+
+    def test_guard_loads_the_trusted_set_from_the_installer_source(self):
+        """One source: the guard's set equals the installer's, read from the source
+        text (a stale bytecode cache beside the installer is never used)."""
+        self.real_guard()
+        cache = self.tmp / "scripts" / "__pycache__"
+        cache.mkdir()
+        (cache / "install_command_guard.cpython-314.pyc").write_bytes(b"not bytecode")
+        probe = json.dumps({"tool_name": "Bash", "tool_input": {"command": icg.PROBE_TRUSTED_WRITE}})
+        self.assert_blocked(self.run_handler(probe), "trusted file")
+        spec = importlib.util.spec_from_file_location("guard_under_test", self.guard)
+        guard = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(guard)
+        self.assertEqual(guard._trusted_set(), (tuple(icg.TRUSTED_FILES), tuple(icg.TRUSTED_DIRS),
+                                                tuple(icg.TRUSTED_GLOBS), tuple(icg.SUDOERS_PATHS)))
 
     def stub(self, source):
         self.guard.write_text(source, encoding="utf-8")
@@ -360,8 +386,8 @@ class InstallerTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout)
         guard = self.base / ".claude" / "hooks" / "command_guard.py"
         text = guard.read_text()
-        guard.write_text(text.replace("return DENY_MESSAGES[\"sudoers\"] if kind == \"sudoers\" else DENY_MESSAGES[\"trusted\"].format(path=path)\n            tokens = _unwrap(group)",
-                                      "pass\n            tokens = _unwrap(group)", 1))
+        self.assertEqual(text.count("found = _write_targets(group, here)"), 1)
+        guard.write_text(text.replace("found = _write_targets(group, here)", "found = None", 1))
         git(self.base, "commit", "-qam", "weaken rule 1")
         self.assert_check_fails("trusted-write probe")
 

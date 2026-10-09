@@ -213,8 +213,11 @@ ALLOWED = [
 ]
 
 
-def run_hook(command, env=None):
-    payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+def run_hook(command, env=None, cwd=None):
+    payload = {"tool_name": "Bash", "tool_input": {"command": command}}
+    if cwd:
+        payload["cwd"] = cwd
+    payload = json.dumps(payload)
     return subprocess.run([sys.executable, str(HOOK)], input=payload, capture_output=True,
                           text=True, env=env)
 
@@ -429,14 +432,86 @@ class AptlyPublishGuardTest(unittest.TestCase):
             "pycache-cleanup": "rm -r -- ~/unity-distro/.claude/hooks/__pycache__",
             "chmod-trusted": "chmod g-w ~/.aptly.conf",
         }
+        # Verifier findings on the first implementation (2026-10-09): shell -c
+        # strings, a leading cd, >|, downloads and archives into a directory,
+        # the wrappers Claude Code strips, sed option clusters. (command, cwd)
+        denied.update({
+            "sh-c-sudoers": ("sudo sh -c 'echo x >> /etc/sudoers'", None),
+            "bash-c-sudoers-d": ("sudo bash -c \"echo 'claude ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/claude\"", None),
+            "sh-c-settings": ("sh -c 'echo x > ~/.claude/settings.json'", None),
+            "bash-ec-cp": ("bash -ec 'cp /tmp/s.json ~/.claude/settings.json'", None),
+            "sh-c-nested": ("sh -c 'sh -c \"echo x > ~/.claude/settings.json\"'", None),
+            "cd-redirect": ("cd ~/.claude && echo x > settings.json", None),
+            "cd-cp": ("cd ~/.claude && cp /tmp/s.json settings.json", None),
+            "cd-subshell": ("(cd ~/.claude && echo x > settings.json)", None),
+            "cd-semicolon-sed": ("cd ~/.claude; sed -i s/a/b/ settings.json", None),
+            "cd-relative-chain": ("cd unity-distro && cd scripts && cp /tmp/x taskctl.py", home),
+            "cwd-relative": ("echo x >> settings.json", home + "/.claude"),
+            "cwd-dotdot": ("cp /tmp/x ../.claude/settings.json", home + "/.ssh"),
+            "clobber": ("echo x >| ~/.claude/settings.json", None),
+            "clobber-fd": ("echo x 1>| ~/.claude/settings.json", None),
+            "curl-O-cwd": ("curl -O https://example.invalid/settings.json", home + "/.claude"),
+            "curl-sLO-cwd": ("curl -sLO https://example.invalid/settings.json", home + "/.claude"),
+            "curl-remote-name-cd": ("cd ~/.claude && curl --remote-name https://example.invalid/settings.json", None),
+            "wget-P-dir": ("wget -P ~/.claude https://example.invalid/settings.json", None),
+            "wget-cwd": ("wget https://example.invalid/settings.json", home + "/.claude"),
+            "wget-P-skills": ("wget -P ~/.claude/skills/x https://example.invalid/SKILL.md", None),
+            "unzip-d": ("unzip -d ~/.claude a.zip", None),
+            "unzip-d-plugins": ("unzip a.zip -d ~/.claude/plugins", None),
+            "unzip-cwd": ("unzip a.zip", home + "/.claude"),
+            "tar-old-style-C": ("tar xf a.tar -C ~/.claude", None),
+            "tar-directory-eq": ("tar -xf a.tar --directory=$HOME/.claude", None),
+            "tar-extract-directory": ("tar --extract -f a.tar --directory ~/.gnupg", None),
+            "tar-x-C": ("tar -x -f a.tar -C ~/.claude", None),
+            "tar-cwd": ("tar xzf a.tgz", home + "/.claude"),
+            "timeout-cp": ("timeout 5 cp /tmp/x ~/.claude/settings.json", None),
+            "timeout-s-cp": ("timeout -s KILL 20 cp /tmp/x ~/.claude/settings.json", None),
+            "nice-tee": ("echo x | nice -n 10 tee ~/.bashrc", None),
+            "nohup-sh-c": ("nohup sh -c 'echo x > ~/.claude/settings.json' &", None),
+            "sed-Ei": ("sed -Ei 's/a/b/' ~/.gitconfig", None),
+            "sed-ri": ("sed -ri 's/a/b/' ~/.gitconfig", None),
+            "sed-i-suffix": ("sed -i.bak s/a/b/ ~/.gitconfig", None),
+            "python-c-cd": ("cd ~/.claude && python3 -c \"open('settings.json','w').write('x')\"", None),
+            "python-Bc": ("python3 -Bc \"open('" + home + "/.claude/settings.json','a').write('x')\"", None),
+        })
+        allowed.update({
+            "cd-elsewhere": ("cd ~/work && echo x > settings.json", None),
+            "cd-subshell-ends": ("(cd ~/.claude && cat settings.json); echo x > settings.json", home + "/work"),
+            "cd-unknown-var": ("cd $D && echo x > settings.json", None),
+            "cd-dash": ("cd - && echo x > settings.json", home + "/.claude"),
+            "cd-home-then-work": ("cd && cd work && echo x > settings.json", None),
+            "sh-c-reader": ("sh -c 'cat ~/.claude/settings.json'", None),
+            "sh-c-elsewhere": ("bash -c 'echo x > /tmp/out.txt'", None),
+            "sh-c-apostrophe": ("bash -c 'echo \"it'\"'\"'s fine\"'", None),
+            "clobber-elsewhere": ("echo x >| /tmp/out.txt", None),
+            "curl-O-elsewhere": ("curl -O https://example.invalid/settings.json", home + "/work"),
+            "curl-O-in-base": ("curl -sO https://example.invalid/x.tar.gz", home + "/unity-distro"),
+            "wget-elsewhere": ("wget -P /tmp https://example.invalid/settings.json", None),
+            "wget-stdout-pipe": ("wget -O - https://example.invalid/x | tar xz -C /tmp", None),
+            "tar-create-exclude-C": ("tar -czf /tmp/b.tgz --exclude=cache -C ~/.claude .", None),
+            "tar-list": ("tar tf a.tar", None),
+            "tar-extract-in-base": ("tar xf a.tar", home + "/unity-distro"),
+            "tar-extract-in-packages": ("tar xJf a.tar.xz -C packages/compiz", home + "/unity-distro"),
+            "unzip-elsewhere": ("unzip -d /tmp/x a.zip", None),
+            "unzip-in-worktree": ("unzip a.zip", home + "/work/b/unity-distro"),
+            "timeout-reader": ("timeout 5 cat ~/.claude/settings.json", None),
+            "timeout-cp-elsewhere": ("timeout -s KILL 20 cp /tmp/x /tmp/y", None),
+            "sed-E-stdout": ("sed -E 's/a/b/' ~/.gitconfig", None),
+            "sed-n-p": ("sed -n 1,5p ~/.gitconfig", None),
+            "git-status-in-claude": ("git status", home + "/.claude"),
+            "pushd-reader": ("pushd ~/.claude && cat settings.json && popd", None),
+            "python-report-cd": ("cd ~/.claude && python3 -c \"print(open('settings.json').read())\"", None),
+        })
         for key, command in sorted(denied.items()):
+            command, cwd = command if isinstance(command, tuple) else (command, None)
             with self.subTest(denied=key):
-                result = run_hook(command)
+                result = run_hook(command, cwd=cwd)
                 self.assertEqual(result.returncode, 2, f"{key} allowed")
                 self.assertIn("trusted file" if "sudo" not in key else "sudoers", result.stderr)
         for key, command in sorted(allowed.items()):
+            command, cwd = command if isinstance(command, tuple) else (command, None)
             with self.subTest(allowed=key):
-                result = run_hook(command)
+                result = run_hook(command, cwd=cwd)
                 self.assertEqual(result.returncode, 0, f"{key} denied: {result.stderr}")
 
     def test_other_rules_unchanged(self):

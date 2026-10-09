@@ -287,6 +287,9 @@ class _Scanner:
         return "".join(out)
 
 
+_BARE_GT = re.compile(r"^\d*>$")
+
+
 def _lex(text: str) -> tuple[list[list[str]], list[str]]:
     """Command groups and the separator after each (";", "|", "&&", newline, ...)."""
     lexer = shlex.shlex(text, posix=True, punctuation_chars=";&|\n()")
@@ -308,6 +311,11 @@ def _lex(text: str) -> tuple[list[list[str]], list[str]]:
         if token == "&" and n + 1 < len(raw) and raw[n + 1].startswith(">"):
             merged.append("&" + raw[n + 1])
             n += 2
+            continue
+        # ">|file": the clobbering redirection, not a pipe (permission model phase 3).
+        if token == "|" and merged and _BARE_GT.match(merged[-1]):
+            merged[-1] += "|"
+            n += 1
             continue
         merged.append(token)
         n += 1
@@ -454,7 +462,10 @@ _STARTS_PROCESS = re.compile(r"\bsubprocess\b|\bsystem\s*\(|\bpopen\b|\bexec[lv]
                              r"__import__|\beval\s*\(|\bimportlib\b|\bctypes\b|\bgetattr\s*\(|"
                              r"\bfork\s*\(|\bexecSync\b|\bchild_process\b|\bqx\b|"
                              r"\bopen\s*\(\s*['\"]\s*\||\bos\.exec", re.I)
-_REDIRECT = re.compile(r"^(\d*|&)(>>?|>\||>&)(.*)$")
+# ">|" before ">": the clobbering redirection is not ">" to the file "|" (permission
+# model phase 3). ">&" still reads as ">" to "&N" as it always did: correcting that
+# would allow commands main denies, which is phase-2 work (guard narrowing).
+_REDIRECT = re.compile(r"^(\d*|&)(>\||>>?|>&)(.*)$")
 
 
 class AptlyCall:
@@ -1419,21 +1430,30 @@ def _check_live(command: str, session_id: str | None, tool_name: str | None, bac
 # docs/research/permission-model-2026-10-09/phase3-permissions-block.md
 
 _TRUSTED = None
+_UNKNOWN_DIR = object()  # the working directory after a cd that is not a literal
+_FD_DUP = re.compile(r"^&(\d+|-)$")  # "2>&1" reaches rule 1 as the target "&1": no file is written
+_SHELLS = {"sh", "bash", "dash", "zsh", "ksh"}
+# Wrappers Claude Code strips before matching its own permission rules.
+_WRAPPERS = {"timeout", "nice", "nohup", "stdbuf", "time", "setsid", "ionice"}
+_WRAPPER_VALUE_OPTIONS = {"timeout": {"-s", "--signal", "-k", "--kill-after"}, "nice": {"-n", "--adjustment"},
+                          "ionice": {"-c", "--class", "-n", "--classdata", "-p"}, "stdbuf": {"-i", "-o", "-e"},
+                          "time": {"-f", "--format", "-o", "--output"}, "nohup": set(), "setsid": set()}
 
 
 def _trusted_set():
-    """(files, dirs, globs, sudoers) from the installer next to this guard's checkout.
-    An import failure raises and fails the hook closed."""
+    """(files, dirs, globs, sudoers) from the installer next to this guard's checkout,
+    executed from its source text (never a bytecode cache). A failure raises and
+    fails the hook closed."""
     global _TRUSTED
     if _TRUSTED is None:
-        import importlib.util
         installer = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                                  "scripts", "install_command_guard.py")
-        spec = importlib.util.spec_from_file_location("install_command_guard_trusted", installer)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        _TRUSTED = (tuple(module.TRUSTED_FILES), tuple(module.TRUSTED_DIRS), tuple(module.TRUSTED_GLOBS),
-                    tuple(module.SUDOERS_PATHS))
+        with open(installer, "rb") as handle:
+            source = handle.read()
+        namespace = {"__name__": "install_command_guard_trusted", "__file__": installer}
+        exec(compile(source, installer, "exec"), namespace)
+        _TRUSTED = (tuple(namespace["TRUSTED_FILES"]), tuple(namespace["TRUSTED_DIRS"]),
+                    tuple(namespace["TRUSTED_GLOBS"]), tuple(namespace["SUDOERS_PATHS"]))
     return _TRUSTED
 
 
@@ -1442,7 +1462,6 @@ _COPIERS_DEST = {"cp", "mv", "install", "rsync", "ln"}
 _REMOVERS = {"rm", "shred", "unlink", "truncate", "gzip", "bzip2", "xz", "zstd"}
 # a bytecode cache under a trusted directory is not trusted state
 _CACHE_PATH = re.compile(r"(/__pycache__(/|$)|\.pyc$)")
-_FETCHERS = {"curl": ("-o", "--output"), "wget": ("-O", "--output-document", "-P", "--directory-prefix")}
 _INTERP_WORD = re.compile(r"^(python[0-9.]*|perl|ruby|node|php)$")
 _WRITE_IDIOMS = re.compile(
     r"(?:\bopen\s*\(([^()]*)\))|(?:\bPath\s*\(([^()]*)\)\s*\.\s*write_(?:text|bytes))|"
@@ -1450,9 +1469,26 @@ _WRITE_IDIOMS = re.compile(
 _MODE_WRITE = re.compile(r"['\"](?:w|a|w\+|a\+|wb|ab|wt|at)['\"]")
 
 
-def _resolve_path(token: str):
-    """Absolute, normalised candidates for a token that may name a file; None
-    when the token is not a resolvable literal (another variable, a substitution)."""
+def _unwrap_writer(tokens: list[str]) -> list[str]:
+    """_unwrap, then the wrappers Claude Code itself strips (timeout 5 cp ... is cp ...)."""
+    tokens = _unwrap(tokens)
+    while tokens:
+        word = os.path.basename(tokens[0])
+        if word not in _WRAPPERS:
+            return tokens
+        i = 1
+        while i < len(tokens) and tokens[i].startswith("-"):
+            i += 2 if tokens[i] in _WRAPPER_VALUE_OPTIONS[word] else 1
+        if word == "timeout":
+            i += 1  # the duration
+        tokens = _unwrap(tokens[i:])
+    return tokens
+
+
+def _resolve_path(token: str, base=None):
+    """[absolute, real] candidates for a token that may name a file, resolved
+    against base (the session directory, moved by a leading cd); None when the
+    token is not a resolvable literal (another variable, a substitution)."""
     if not token or SUBST in token or "`" in token:
         return None
     home = os.path.expanduser("~")
@@ -1462,12 +1498,16 @@ def _resolve_path(token: str):
     text = _HOME_VAR.sub(home, text)
     if "$" in text:
         return None
-    absolute = os.path.normpath(os.path.join(os.getcwd(), text))
+    if not os.path.isabs(text):
+        if base is _UNKNOWN_DIR:
+            return None
+        text = os.path.join(base or os.getcwd(), text)
+    absolute = os.path.normpath(text)
     try:
         real = os.path.realpath(absolute)
     except OSError:
         real = absolute
-    return {absolute, real}
+    return [absolute] if real == absolute else [absolute, real]
 
 
 def _is_trusted_path(path: str, include_sudoers: bool = True):
@@ -1493,35 +1533,75 @@ def _is_trusted_ancestor(path: str):
     return None
 
 
-def _classify_targets(tokens: list[str], ancestors: bool = False):
+def _is_trusted_parent(path: str):
+    """A directory into which files of unknown names land (an archive, a download):
+    a trusted directory, inside one, or the directory holding a trusted file."""
+    kind = _is_trusted_path(path)
+    if kind:
+        return kind, path
+    files, dirs, globs, sudoers = _trusted_set()
+    for candidate in list(files) + list(globs) + list(sudoers):
+        if os.path.dirname(candidate) == path.rstrip("/"):
+            return ("sudoers" if candidate in sudoers else "trusted"), candidate
+    return None
+
+
+def _classify_targets(tokens: list[str], ancestors: bool = False, base=None):
     for token in tokens:
-        resolved = _resolve_path(token)
-        if not resolved:
-            continue
-        for path in resolved:
+        for path in _resolve_path(token, base) or ():
             kind = _is_trusted_path(path) or (_is_trusted_ancestor(path) if ancestors else None)
             if kind:
                 return kind, path
     return None
 
 
-def _write_targets(group: list[str]):
+def _classify_directory(directory, names: list[str], base=None):
+    """Files named `names` written into `directory`; unknown names (empty list)
+    count when the directory is trusted or holds a trusted file."""
+    for path in _resolve_path(directory, base) or ():
+        for name in names:
+            kind = _is_trusted_path(os.path.join(path, name))
+            if kind:
+                return kind, os.path.join(path, name)
+        if not names:
+            found = _is_trusted_parent(path)
+            if found:
+                return found
+    return None
+
+
+def _url_name(url: str) -> str:
+    path = url.split("://", 1)[-1].split("?", 1)[0].split("#", 1)[0]
+    return os.path.basename(path.rstrip("/")) or "index.html"
+
+
+def _option_values(args: list[str], flags: tuple) -> list[str]:
+    values = []
+    for n, a in enumerate(args):
+        if a in flags and n + 1 < len(args):
+            values.append(args[n + 1])
+        elif any(a.startswith(f + "=") for f in flags if f.startswith("--")):
+            values.append(a.split("=", 1)[1])
+    return values
+
+
+def _write_targets(group: list[str], base=None):
     """(kind, path) of the first trusted file this group writes by a listed form, else None."""
-    tokens = _unwrap(group)
+    tokens = _unwrap_writer(group)
     if not tokens:
         return None
     word = os.path.basename(tokens[0])
     args = [t for t in tokens[1:] if t != HEREDOC]
     redirects = _redirect_targets(group)
     if redirects:
-        found = _classify_targets([t for t in redirects if t != "/dev/null"])
+        found = _classify_targets([t for t in redirects if t != "/dev/null" and not _FD_DUP.match(t)], base=base)
         if found:
             return found
     if word == "visudo":
         return "sudoers", "visudo"
     operands = [a for a in args if not a.startswith("-") and not _REDIRECT.match(a)]
     if word == "tee":
-        return _classify_targets(operands)
+        return _classify_targets(operands, base=base)
     if word in _COPIERS_DEST:
         if "-t" in args:
             index = args.index("-t")
@@ -1530,11 +1610,11 @@ def _write_targets(group: list[str]):
         elif len(operands) >= 2:
             dest, sources = operands[-1], operands[:-1]
         else:
-            return _classify_targets(operands, ancestors=word == "mv")
-        found = _classify_targets(sources, ancestors=word == "mv")  # a trusted source moved away
+            return _classify_targets(operands, ancestors=word == "mv", base=base)
+        found = _classify_targets(sources, ancestors=word == "mv", base=base)  # a trusted source moved away
         if found and word == "mv":
             return found
-        resolved = _resolve_path(dest) if dest else None
+        resolved = _resolve_path(dest, base) if dest else None
         if not resolved:
             return None
         candidates = []
@@ -1548,32 +1628,53 @@ def _write_targets(group: list[str]):
                 return kind, path
         return None
     if word == "dd":
-        return _classify_targets([a.split("=", 1)[1] for a in args if a.startswith("of=")])
-    if word == "sed" and any(a == "-i" or a.startswith("-i") and not a.startswith("--") and "i" in a[1:]
-                            or a.startswith("--in-place") for a in args if a.startswith("-")):
-        return _classify_targets(operands)
+        return _classify_targets([a.split("=", 1)[1] for a in args if a.startswith("of=")], base=base)
+    if word == "sed" and any(a.startswith("-") and not a.startswith("--") and "i" in a[1:]
+                            or a.startswith("--in-place") for a in args):
+        return _classify_targets(operands, base=base)
     if word in _REMOVERS:
-        return _classify_targets(operands, ancestors=True)
-    if word in _FETCHERS:
-        flags = _FETCHERS[word]
-        targets = []
-        for n, a in enumerate(args):
-            if a in flags and n + 1 < len(args):
-                targets.append(args[n + 1])
-            elif any(a.startswith(f + "=") for f in flags if f.startswith("--")):
-                targets.append(a.split("=", 1)[1])
-        return _classify_targets(targets)
-    if word == "tar" and any(a.startswith("-") and "x" in a.lstrip("-") for a in args) and "-C" in args:
-        index = args.index("-C")
-        return _classify_targets([args[index + 1]] if index + 1 < len(args) else [], ancestors=True) \
-            or _classify_targets([os.path.join(args[index + 1], "x")] if index + 1 < len(args) else [])
-    if word == "unzip" and "-d" in args:
-        index = args.index("-d")
-        return _classify_targets([os.path.join(args[index + 1], "x")] if index + 1 < len(args) else [])
+        return _classify_targets(operands, ancestors=True, base=base)
+    if word == "curl":
+        found = _classify_targets(_option_values(args, ("-o", "--output")), base=base)
+        if found:
+            return found
+        if any(a in ("-O", "--remote-name", "--remote-name-all") or a.startswith("-") and not a.startswith("--")
+               and "O" in a[1:] for a in args):
+            names = [_url_name(o) for o in operands if "://" in o]
+            return _classify_directory(".", names, base) if names else None
+        return None
+    if word == "wget":
+        outputs = _option_values(args, ("-O", "--output-document"))
+        if outputs:
+            return _classify_targets([o for o in outputs if o != "-"], base=base)
+        names = [_url_name(o) for o in operands if "://" in o or "." in o]
+        prefixes = _option_values(args, ("-P", "--directory-prefix")) or ["."]
+        for prefix in prefixes:
+            found = _classify_directory(prefix, names, base)
+            if found:
+                return found
+        return None
+    if word == "tar":
+        extracting = any(a.startswith("-") and not a.startswith("--") and "x" in a[1:] or a in ("--extract", "--get")
+                         for a in args) or (operands and args and operands[0] == args[0] and "x" in operands[0])
+        if extracting:
+            directories = _option_values(args, ("-C", "--directory")) or ["."]
+            for directory in directories:
+                found = _classify_directory(directory, [], base)
+                if found:
+                    return found
+        return None
+    if word == "unzip":
+        directories = _option_values(args, ("-d",)) or ["."]
+        for directory in directories:
+            found = _classify_directory(directory, [], base)
+            if found:
+                return found
+        return None
     return None
 
 
-def _interpreter_writes(text: str):
+def _interpreter_writes(text: str, base=None):
     """A trusted literal next to a write idiom in interpreter code (a heredoc body or a -c string)."""
     for match in _WRITE_IDIOMS.finditer(text):
         kind = "open" if match.group(1) is not None else "path" if match.group(2) is not None else "shutil"
@@ -1581,35 +1682,67 @@ def _interpreter_writes(text: str):
         if kind == "open" and not _MODE_WRITE.search(inside):
             continue
         for literal in re.findall(r"""['"]([^'"]+)['"]""", inside):
-            resolved = _resolve_path(literal)
-            if not resolved:
-                continue
-            for path in resolved:
+            for path in _resolve_path(literal, base) or ():
                 found = _is_trusted_path(path)
                 if found:
                     return found, path
     return None
 
 
-def _trusted_rules(levels: list, command: str) -> str | None:
-    """Permission model phase 3, rules 1 and 3, over every executed group and
-    over interpreter code; readers of trusted files are untouched."""
+def _deny_trusted(found) -> str:
+    kind, path = found
+    return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
+
+
+def _option_string(tokens: list[str], letter: str) -> str | None:
+    """The argument of -c (a shell or interpreter string) or -e, also in a cluster such as -ec."""
+    for n, token in enumerate(tokens[1:], 1):
+        if token.startswith("-") and not token.startswith("--") and letter in token[1:] and n + 1 < len(tokens):
+            return tokens[n + 1]
+    return None
+
+
+def _trusted_rules(levels: list, command: str, base=None, depth: int = 0) -> str | None:
+    """Permission model phase 3, rules 1 and 3, over every executed group of every
+    level, following a leading cd, into shell -c strings and interpreter code;
+    readers of trusted files are untouched."""
     for level in levels:
         if level.blob:
             continue
-        for group in level.groups:
-            found = _write_targets(group)
-            if found:
-                kind, path = found
-                return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
-            tokens = _unwrap(group)
-            if tokens and _INTERP_WORD.match(os.path.basename(tokens[0])):
-                for n, token in enumerate(tokens[1:], 1):
-                    if token in ("-c", "-e") and n + 1 < len(tokens):
-                        found = _interpreter_writes(tokens[n + 1])
+        here = base
+        for group, sep in zip(level.groups, level.seps):
+            tokens = _unwrap_writer(group)
+            word = os.path.basename(tokens[0]) if tokens else ""
+            if word in ("cd", "pushd"):
+                targets = [t for t in tokens[1:] if not t.startswith("-") or t == "-"]
+                if not targets:
+                    here = os.path.expanduser("~")
+                else:
+                    resolved = _resolve_path(targets[0], here) if targets[0] != "-" else None
+                    here = resolved[0] if resolved else _UNKNOWN_DIR
+            else:
+                found = _write_targets(group, here)
+                if found:
+                    return _deny_trusted(found)
+                if word in _SHELLS and depth < MAX_DEPTH:
+                    text = _option_string(tokens, "c")
+                    if text:
+                        text = text.replace(QUOTED_GT, ">")  # the scanner marked the quoted > as text
+                        try:
+                            nested = _levels(text)
+                        except ScanError:
+                            nested = []  # a string the shell itself rejects runs nothing
+                        message = _trusted_rules(nested, text, here, depth + 1)
+                        if message:
+                            return message
+                if _INTERP_WORD.match(word):
+                    for letter in ("c", "e"):
+                        text = _option_string(tokens, letter)
+                        found = _interpreter_writes(text, here) if text else None
                         if found:
-                            kind, path = found
-                            return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
+                            return _deny_trusted(found)
+            if ")" in sep:
+                here = base  # the subshell's cd ends with it
     # interpreter heredoc bodies (the scanner's raw bodies; _levels keeps only process-starting blobs)
     try:
         scanner = _Scanner(command)
@@ -1620,12 +1753,11 @@ def _trusted_rules(levels: list, command: str) -> str | None:
     owners = [(group, sep) for group, sep in zip(groups, seps) for token in group if token == HEREDOC]
     for n, body in enumerate(scanner.bodies):
         group = owners[n][0] if n < len(owners) else []
-        tokens = _unwrap(group)
+        tokens = _unwrap_writer(group)
         if tokens and _INTERP_WORD.match(os.path.basename(tokens[0])):
-            found = _interpreter_writes(body.text)
+            found = _interpreter_writes(body.text, base)
             if found:
-                kind, path = found
-                return DENY_MESSAGES["sudoers"] if kind == "sudoers" else DENY_MESSAGES["trusted"].format(path=path)
+                return _deny_trusted(found)
     return None
 
 
@@ -1701,7 +1833,9 @@ def _fallback_floor(command: str) -> str | None:
 
 def inspect(command: str, session_id: str | None = None, tool_name: str | None = "Bash",
             background: bool = False, cwd: str | None = None) -> str | None:
-    # Relative paths resolve against the session's directory (permission model phase 3).
+    # Permission model phase 3: the trusted set must load (else fail closed) and
+    # relative paths resolve against the session's directory.
+    _trusted_set()
     if cwd and os.path.isdir(cwd):
         try:
             os.chdir(cwd)
