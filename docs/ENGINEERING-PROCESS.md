@@ -935,8 +935,15 @@ repository owner's history-removal process separately.
 
 ## 9. Shell command guard
 
-The project `.claude/settings.json` installs a `PreToolUse` guard for Claude
-Code's `Bash` and `Monitor` tools (both run shell text). It tokenizes shell
+A `PreToolUse` guard is installed for Claude Code's `Bash` and `Monitor`
+tools (both run shell text). The effective handler is the one in the user
+settings file `~/.claude/settings.json`: agent sessions are rooted at
+`/home/claude`, so that file is also their project settings, and the copy in
+this repository's `.claude/settings.json` is a byte-identical record of it
+(UNITY-20260928-012; `scripts/install_command_guard.py --check` verifies
+both). The guard is a safety net against accidents, not a security boundary:
+every session runs as one OS user and can edit the settings; the publication
+boundary is the signing key (UNITY-20260929-019). It tokenizes shell
 command lists (newlines, `$(...)`, backticks and heredocs included) and blocks
 common forms of broad staging, force pushes (including force refspecs), `aptly
 publish`, `xwd`, pattern-based process matches, and dangerous recursive
