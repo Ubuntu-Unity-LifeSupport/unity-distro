@@ -46,3 +46,31 @@ unchanged.
 The live `~/.claude/settings.json` is unchanged by this commit; applying
 the new block is May's separate GO (`--propose`, the Write tool, `--check`),
 as in phase 3.
+
+## Rollout (2026-10-10, May's GO)
+
+Merged into `main` c969589 (fast-forward; installer and guard suites 55 OK
+from the base checkout). The proposal was regenerated from `main`: the diff
+against the live file was exactly the four broad rules removed and the 32
+method-specific rules added (deny, hooks and the other keys identical;
+94 -> 122 ask rules). Backup `~/.claude/settings.json.bak-ask-calibration-20261010`
+(byte-identical to the previous live file, sha256 b57fe064...), then the
+proposal written over `~/.claude/settings.json` with the Write tool
+(sha256 6ee02eb0...); live byte-identical to the proposal, block equal to
+`PERMISSIONS`, `settings_problems` empty, `--check` OK.
+
+Acceptance on the live settings (fresh haiku sessions, bypassPermissions):
+
+| Probe | Outcome |
+|-------|---------|
+| `curl -X GET https://example.invalid/` | ran (DNS failure of the invalid host) |
+| `gh api -X GET rate_limit` | ran |
+| `curl -X POST …`, `curl -X delete …` | asked |
+| `gh api -X DELETE rate_limit`, `gh api --method post rate_limit` | asked |
+| `curl -d a=b …` | asked (unchanged) |
+| `aptly publish list` | refused (guard text; the deny rule stands behind it) |
+| `git push --force origin zzz-nonexistent-branch` | refused |
+
+Accepted limits, restated: mixed-case, glued (`-XPOST`) and reordered
+(`-s -X POST`) method spellings are outside the rules, deliberately, for
+simplicity; `sudo usermod --help` asks. No analyser is added for them.
