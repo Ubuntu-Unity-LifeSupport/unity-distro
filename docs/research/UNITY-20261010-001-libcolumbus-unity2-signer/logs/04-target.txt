@@ -92,3 +92,11 @@ libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb sha256 447d26d
 
 ===== reading
 Both libcolumbus users (hud-service and the applications scope) map the installed +unity2 library (inode 133074) with no deleted library mapping; a HUD query builds and frees its Matcher (0 -> 3 -> 0); leak.sh 0 deleted files at every step; the scope's deleted mappings stay at 5 over 4 re-indexes; the Dash finds Terminal exactly and misspelt. The same results as the +unity1 publication check of UNITY-20261008-013 (its logs/07).
+
+===== how step 3 was rerun (2026-10-10 ~17:15Z), on the builder:
+  cp build/*.deb into a scratch directory; apt-ftparchive packages . > Packages (4 Package entries)
+  scp Packages target2:b1010/repo/Packages
+on target2:
+  sudo apt-get update; apt-cache policy libcolumbus1v5 (candidate +unity2 from file:/home/mike/b1010/repo)
+  sudo apt-get install -y libcolumbus1-common=1.1.0+15.10.20150806-0ubuntu39+unity2 libcolumbus1v5=1.1.0+15.10.20150806-0ubuntu39+unity2
+  dpkg-query -W; dpkg -V; sha256sum of the two repo .debs (the output above)
