@@ -199,3 +199,35 @@ routine policy.
   gate/prebuild-version-safety.txt).
 - **Peer notice:** A ACK at 17:46Z (gate/peer-notice.txt).
 - **Patch record:** docs/PATCHES.md, one line "no-change rebuild"; no new patch.
+- **C's gate check:** OK. **C's approval:** `approve-publication`, recorded at 17:48:38Z, valid for 4 hours,
+  gaps UNITY-20261010-002.
+- **Switch:** `scripts/publish_aptly.py --gate` at 17:49:19Z, `./resolute` → `unity-resolute-20261010-001`.
+  The write-once record is `~/coordinator/publish-records/UNITY-20261010-001.json`. C's approval was consumed
+  into `publication-approvals/used/` (`first_publication: false`).
+- **The signer:** routine policy, signed without May. The record's `signer` block: `mode: signer`, proposal
+  `e5b0804e7bcebf2c`, `approved_by: policy`, `refresh: OK`, `live: OK`.
+- **The served files:**
+  - `InRelease` is signed at 17:49:18 UTC by the archive key `29A893E0…C27B152C`, and its sha256 is the
+    record's `inrelease_sha256`;
+  - `Packages` has 476 entries (470 + 6), with the four binaries at +unity2 and +unity1 kept.
+- **Release `Date`:** 17:44:18, five minutes before the signature. That is by design:
+  `signer_core.next_date` backdates `Date` by the template's `date_backdate_seconds` (300 s), because a client
+  with a slow clock refuses a Release dated in its future (target2 was 4.5 minutes behind).
+
+## Target verification of the publication (2026-10-10, logs/06)
+
+- **Setup:** Clean-2 restored after the switch and confirmed from inside. The live archive was added the
+  usual way, with no file repository and no drop-in. `apt full-upgrade` from `unity-resolute-20261010-001`
+  then left nothing to upgrade.
+- **apt and the files:** apt's candidate and the installed version are +unity2 from our archive. The
+  downloaded libcolumbus1v5 and libcolumbus1-common equal the gated manifest, and `dpkg -V` is clean.
+- **Test helpers:** xdotool and the -013 scripts, installed after the upgrade. The earlier test's helpers and
+  its file repository were gone with the restore.
+- **The session:** a cold cycle, then the natural boot into the auto-login session.
+- **Results:**
+  - hud-service and the applications scope map the installed library, with no deleted library mapping;
+  - a HUD query gives 0 → 3 → 0;
+  - `leak.sh` shows 0 at every step;
+  - the lens keeps a constant 5 over 4 re-indexes;
+  - the Dash finds Terminal for the misspelt "тирминал".
+- These are the same results as the pre-publication check.
