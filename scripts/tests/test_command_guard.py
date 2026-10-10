@@ -323,13 +323,15 @@ class AptlyPublishGuardTest(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, f"{key} denied: {result.stderr}")
 
     def test_phase2_narrowing_cases(self):
-        """Permission model phase 2: rule A's trigger is an expansion where the
-        command runs (its command word, or any argument of a program that
-        executes its arguments); interpreter -c/-e code strings are blobs only
-        when they can start a process; 2>&1 is a fd duplication. Strings are data."""
+        """Permission model phase 2 (reduced to (a) and (c); the interpreter
+        code-string relaxation (b) is deferred until the signer is live): rule A
+        counts an expansion only where a command may be built from it - a group
+        that runs something, or a reader whose output reaches a runner by a pipe,
+        a file a runner names, or a substitution an exposed command consumes; and
+        2>&1 is a fd duplication. Strings are data."""
         data = json.loads((Path(__file__).parent / "data" / "command_guard_p2_cases.json").read_text())
-        self.assertGreaterEqual(len(data["denied"]), 30)
-        self.assertGreaterEqual(len(data["allowed"]), 30)
+        self.assertGreaterEqual(len(data["denied"]), 90)
+        self.assertGreaterEqual(len(data["allowed"]), 15)
         for key, command in sorted(data["denied"].items()):
             with self.subTest(denied=key):
                 self.assertEqual(run_hook(command).returncode, 2, f"{key} allowed")

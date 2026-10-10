@@ -196,7 +196,7 @@ one). Pre-existing on main and unchanged (out of scope): `echo "${a}ly …"
 Challenger noted: `curl "…/api/v4/$P" | python3 -m json.tool` and `… |
 python3 -u scripts/taskctl.py list`.
 
-## 8. Out of scope (recorded, not changed)
+## 8. Out of scope at design time (recorded, not changed)
 
 Class F of the review: `ssh target 'command -v aptly'` (RC7),
 `grep aptly f | awk …` (RC6), `timeout 60 aptly repo list`, `dpkg -L aptly`;
@@ -205,29 +205,71 @@ tightening choice) and record 11 (a sed operand that must exist). The
 phase-1 floor gaps (P3/P4/P5/P16b, B5/B6) and the private guard-gap note
 stay for a separate tightening decision.
 
-## 9. Implementation and measurement (branch `arch/permission-model-phase2`)
+## 9. Verifier round 1: FAIL, and the reduction to (a) and (c)
 
-`.claude/hooks/command_guard.py`, inside `_aptly_rules` and two helpers:
-`expands_where_it_runs` (the three routes of section 2 (a)), `_takes_data`
-(the carve-out), `_code_string` (`-c`/`-e`/`-E` and clusters ending in
-them), `_CODE_WRITES`, `_PERL_RUBY_RUN`, `%x` in `_STARTS_PROCESS`; the
-`_REDIRECT` order. Nothing else in the guard moves.
+The first implementation (commit 713a6b6) carried all three changes. The
+Verifier reproduced eleven forms (F1-F11) that main denies, that the branch
+allowed, and that reach the publishing command: all go through change (b)
+or its interpreter carve-outs (the code-string helpers). The idiom lists
+are inherently incomplete -- a code string becomes "data" and is
+re-counted only on a known process-start or file-write pattern, so a print
+piped into a shell, a substitution of the output, a write through tee,
+option values read as a script operand, and several language-specific
+spawn/pipe idioms each slipped through.
+
+The architecture review's phase-2 row provides for exactly this: if the
+Challenger (or Verifier) finds a reachable publish form that (a) or (b)
+opens and the signer is not yet live, defer that half to after phase 5.
+The aptly-signer is merged but not deployed, so **(b) and every
+interpreter-specific carve-out are removed from this phase.** What ships is
+(a) and (c) only:
+
+- (a) rule A counts an expansion only where a command may be built from it
+  (`_expands_where_it_runs`): a group that runs something, or a reader
+  whose output reaches a runner by a pipe, by a file a runner names, or by
+  a substitution an exposed command consumes. No program lists, no
+  interpreter exception. Interpreter code strings keep main's behaviour
+  (their words count as tokens of a runner).
+- (c) `_REDIRECT` tries `>&` before `>`, so a fd duplication is not a
+  write.
+
+Against main, (a) only makes the trigger false in more cases (the new
+condition is a subset of "any expansion in the level") and (c) only drops
+a spurious write target: both can turn deny->allow, never allow->deny, so
+no form main denies for another reason is opened.
+
+## 10. Implementation and measurement (branch `arch/permission-model-phase2`)
+
+`.claude/hooks/command_guard.py`: `_expands_where_it_runs`, the
+`reach_expansion` call in `_aptly_rules`, the `_token_expands` helper, and
+the `_REDIRECT` order. Nothing else moves; the interpreter helpers of
+713a6b6 are gone.
 
 Tests: `test_phase2_narrowing_cases` reads
 `scripts/tests/data/command_guard_p2_cases.json`: 96 forms that must stay
-denied (every Design Challenger string of rounds 1-3 and the review's
-must-deny list) and 46 newly allowed forms by class (the -003 corpus
-records 3, 4, 9, 13, 15, 19, 26, 31, 34, 42, 43; the -003 additional cases
-1, 2, 3, 5, 6, 9; the P4 merge command; the URL and JSON-key shapes). The
+denied (shells and wrappers with an expanding argument; readers whose
+expansion is piped into a runner, including a shell, an interpreter reading
+stdin, make, busybox, an unknown program; a file written for a runner; a
+substitution into a runner; every -058 round-3 constructed-word form) and
+20 allowed forms, of which 6 are new narrowings (the -003 corpus records
+13, 15, 34, the two sed/echo argument-expansion shapes, and the P4 merge
+command with the fd duplication); the other 14 main already allowed. The
 -003 data file moves record 13 from DENIED to ALLOWED (class A); every
-other existing DENIED and ALLOWED entry is unchanged, the -018 data file
-is unchanged. Suite: 546 OK (1 skipped).
+other entry and the -018 file are unchanged.
 
-Transcript replay (11 548 distinct commands, main against the branch;
-each deny->allow re-run through three guards with one change switched off
-to attribute it): 22 deny->allow, all in the classes: B 16, A 2, A+B 2,
-B+C 1, A+B+C 1 (the P4 merge command: any one change allows it); 0
-allow->deny; 0 changed reasons.
+The interpreter false positives of the review (the RC2 class: an
+interpreter code string that names the words as data, JSON-key and URL
+shapes read by an interpreter) are **not** fixed by this phase; they stay
+denied until (b) is reconsidered when the signer is live. The parse-defect
+fixes that do ship are the RC3 class (an expansion in a reader that reaches
+no runner) and the fd-duplication fix.
 
-Still denied, by decision (section 8): corpus records 10 (`ssh target
-'command -v aptly'`), 11 and 30 (sed), 36 (`grep aptly | awk`).
+Measured with the reduced guard (strings as data through `inspect()`):
+- 96 must-deny: all denied, and all also denied by main (pure narrowing).
+- The Verifier's 95 boundary strings: every one that main denies, the
+  reduced guard also denies (0 regressions).
+- The Design Challenger strings of rounds 1-3 (73): same verdict as main.
+- The suite's DENIED (127), ALLOWED (45), the -018 file (23) and the -003
+  file: unchanged except record 13.
+
+## 11. Out of scope (recorded, not changed)
