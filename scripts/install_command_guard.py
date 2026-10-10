@@ -134,9 +134,16 @@ def permissions_block():
         "Bash(gh release create *)", "Bash(gh release edit *)", "Bash(gh release delete *)", "Bash(gh release upload *)",
         "Bash(gh repo create *)", "Bash(gh repo edit *)", "Bash(gh repo delete *)", "Bash(gh repo rename *)",
         "Bash(gh repo fork *)", "Bash(gh repo sync *)", "Bash(gh repo archive *)",
-        "Bash(gh api -X *)", "Bash(gh api --method *)", "Bash(gh api -F *)", "Bash(gh api -f *)",
+        # a method other than GET asks; GET (the default, or named) does not. gh accepts
+        # the method in any case, so the lower-case spellings are listed too (calibration
+        # 2026-10-09: mixed case such as "Delete" is an accepted gap, nobody types it by accident).
+        *[f"Bash(gh api {option} {method} *)" for option in ("-X", "--method")
+          for method in ("POST", "PUT", "PATCH", "DELETE", "post", "put", "patch", "delete")],
+        "Bash(gh api -F *)", "Bash(gh api -f *)",
         "Bash(gh api --field *)", "Bash(gh api --raw-field *)", "Bash(gh api --input *)",
-        "Bash(curl -X *)", "Bash(curl --request *)", "Bash(curl -d *)", "Bash(curl --data *)",
+        *[f"Bash(curl {option} {method} *)" for option in ("-X", "--request")
+          for method in ("POST", "PUT", "PATCH", "DELETE", "post", "put", "patch", "delete")],
+        "Bash(curl -d *)", "Bash(curl --data *)",
         "Bash(curl --data-binary *)", "Bash(curl --data-raw *)", "Bash(curl -F *)", "Bash(curl --form *)",
         "Bash(curl -T *)", "Bash(curl --upload-file *)",
         "Bash(wget --post-data *)", "Bash(wget --post-file *)",

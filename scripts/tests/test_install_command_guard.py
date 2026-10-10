@@ -160,6 +160,45 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertEqual(icg.settings_problems(data, Path(DEPLOYED), "project"), [])
         self.assertEqual(data, icg.proposal({}, Path(DEPLOYED)))
 
+    def test_ask_calibration_http_methods(self):
+        """Ask calibration (May, 2026-10-09): a GET through curl -X or gh api -X does
+        not ask; POST/PUT/PATCH/DELETE (upper and lower case) ask; data, form and
+        upload options and every deny rule are unchanged. The matcher below is the
+        documented prefix semantics measured on the installed CLI (case-sensitive,
+        the prefix followed by a space, at the start of the command)."""
+        ask, deny = icg.PERMISSIONS["ask"], icg.PERMISSIONS["deny"]
+
+        def asks(command):
+            for rule in ask:
+                body = rule[5:-1]
+                if rule.startswith("Bash(") and body.endswith(" *") and (command == body[:-2] or command.startswith(body[:-2] + " ")):
+                    return True
+            return False
+
+        for broad in ("Bash(curl -X *)", "Bash(curl --request *)", "Bash(gh api -X *)", "Bash(gh api --method *)"):
+            self.assertNotIn(broad, ask)
+        for command in ("curl -X GET https://example.invalid/", "curl --request GET https://example.invalid/",
+                        "gh api -X GET rate_limit", "gh api --method GET rate_limit", "gh api rate_limit",
+                        "curl -sSLo /tmp/x https://example.invalid/", "curl -I https://example.invalid/"):
+            self.assertFalse(asks(command), command)
+        for method in ("POST", "PUT", "PATCH", "DELETE", "post", "put", "patch", "delete"):
+            for command in (f"curl -X {method} https://example.invalid/", f"curl --request {method} https://example.invalid/",
+                            f"gh api -X {method} repos/x/y", f"gh api --method {method} repos/x/y"):
+                self.assertTrue(asks(command), command)
+        for command in ("curl -d a=b https://example.invalid/", "curl --data-binary @f https://example.invalid/",
+                        "curl -F f=@x https://example.invalid/", "curl -T x https://example.invalid/",
+                        "gh api -F a=b repos/x/y", "gh api -f a=b repos/x/y", "gh api --input f repos/x/y",
+                        "wget --post-data a=b https://example.invalid/"):
+            self.assertTrue(asks(command), command)
+        # the accepted residual: mixed case, glued and reordered spellings are outside the rules
+        for command in ("curl -X Delete https://example.invalid/", "curl -XPOST https://example.invalid/",
+                        "curl -s -X POST https://example.invalid/"):
+            self.assertFalse(asks(command), command)
+        self.assertEqual(len(deny), 16)
+        for rule in ("Bash(aptly publish *)", "Bash(git push --force *)", "Bash(xwd *)", "Edit(//etc/sudoers.d/**)",
+                     "Read(//home/claude/.claude/.credentials.json)"):
+            self.assertIn(rule, deny)
+
     def test_permissions_block_forms(self):
         """Permission model phase 3: every rule is an exact command, a ' *' prefix or an absolute path rule."""
         self.assertEqual(icg.rule_form_problems(), [])
