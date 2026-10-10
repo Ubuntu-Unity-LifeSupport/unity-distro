@@ -109,7 +109,8 @@
   "corpus-32-RC1-minimal": "cat > f <<'EOF'\nit's\nEOF",
   "corpus-33-RC1-minimal": "cat > f <<'EOF'\nit's\nEOF",
   "corpus-35-RC1b-minimal": "git commit -q -F - <<'EOF'\nit's\nEOF",
-  "corpus-41-RC1-minimal": "cat > f <<'EOF'\nit's\nEOF"
+  "corpus-41-RC1-minimal": "cat > f <<'EOF'\nit's\nEOF",
+  "P10-record13-minimal-phase2-class-A": "sed -i 's/a/task branch/' f; echo \"$(date)\""
  },
  "denied": {
   "A1-aptly-sep-publish": "bash <<'EOF'\necho it's\necho '\"'; aptly \";publish\" list; echo '\"'\nEOF",
@@ -192,7 +193,6 @@
   "K9n-sibling-no-apo": "echo '\"'\npkill -f x\necho '\"'",
   "P1-function-keyword-body": "function f { cat <<'E'\naptly -config=/x.conf publish list\nE\n}; f | sh",
   "P1-git-push-force-sep": "bash <<'EOF'\necho it's\necho '\"'; git push origin x \"--force;\"; echo '\"'\nEOF",
-  "P10-record13-minimal": "sed -i 's/a/task branch/' f; echo \"$(date)\"",
   "P11-commit-F-unquoted-sub": "git commit -F - <<EOF\n$(aptly -config=x publish list)\nEOF",
   "P12-commit-F-editor-env": "GIT_EDITOR=sh git commit -F - -e <<'EOF'\naptly publish list\nEOF",
   "P12b-commit-F-editor-c": "git -c core.editor=sh commit -F - -e <<'EOF'\naptly publish list\nEOF",

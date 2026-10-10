@@ -460,12 +460,11 @@ _GIT_SAFE_CONFIG = {"user.name", "user.email", "commit.gpgsign", "color.ui", "co
 # A heredoc body in another language counts only if it can start a process.
 _STARTS_PROCESS = re.compile(r"\bsubprocess\b|\bsystem\s*\(|\bpopen\b|\bexec[lv]?p?e?\s*\(|\bspawn|\bpty\b|"
                              r"__import__|\beval\s*\(|\bimportlib\b|\bctypes\b|\bgetattr\s*\(|"
-                             r"\bfork\s*\(|\bexecSync\b|\bchild_process\b|\bqx\b|"
+                             r"\bfork\s*\(|\bexecSync\b|\bchild_process\b|\bqx\b|%x\s*[\(\[\{]|"
                              r"\bopen\s*\(\s*['\"]\s*\||\bos\.exec", re.I)
-# ">|" before ">": the clobbering redirection is not ">" to the file "|" (permission
-# model phase 3). ">&" still reads as ">" to "&N" as it always did: correcting that
-# would allow commands main denies, which is phase-2 work (guard narrowing).
-_REDIRECT = re.compile(r"^(\d*|&)(>\||>>?|>&)(.*)$")
+# The longer operators first (phase 3: ">|" is not ">" to "|"; phase 2: "2>&1" is a
+# fd duplication, not a write to "&1").
+_REDIRECT = re.compile(r"^(\d*|&)(>&|>\||>>|>)(.*)$")
 
 
 class AptlyCall:
@@ -851,11 +850,102 @@ def _exposed(levels: list[Level], runners: set) -> set:
     return exposed
 
 
+# Permission model phase 2 (b): a code string that writes a file in its own language
+# (a later runner may run it) counts like one that starts a process (Design
+# Challenger D2); the shell-redirect case is covered by the group's targets.
+_CODE_WRITES = re.compile(r"\bopen\s*\([^()]*['\"](?:w|a|w\+|a\+|wb|ab|wt|at|>>?)['\"]|\.write_(?:text|bytes)\s*\(|"
+                          r"\bshutil\.(?:copy\w*|move)|\bos\.(?:replace|rename|link|symlink)|\bFile\.(?:write|open)\b|"
+                          r"\bwriteFile(?:Sync)?\b|\bfs\.(?:write|append)|\bopen\s*\([^()]*['\"]>")
+_STDIN_NAMES = {"-", "/dev/stdin", "/dev/fd/0", "/proc/self/fd/0"}
+# perl and ruby run a command without parentheses too (Design Challenger B1)
+_PERL_RUBY_RUN = re.compile(r"\b(system|exec|spawn|popen|fork)\b")
+# a short-option cluster whose last letter takes the code string: -c, -e, -E, -Bc, -ne, -pe
+_CODE_OPTION = re.compile(r"^-[A-Za-z]*[ceE]$")
+
+
+def _token_expands(token: str) -> bool:
+    return SUBST in token or "$" in token or any(c in token for c in "*?[") or bool(_BRACE.search(token))
+
+
+def _code_string(group: list[str]) -> str | None:
+    """The -c / -e code string of an interpreter group (python3 -c CODE, perl -e
+    CODE, clusters such as -Bc), else None."""
+    index = _command_index(group)
+    if index >= len(group) or not _INTERP_WORD.match(os.path.basename(group[index])):
+        return None
+    tokens = group[index:]
+    for n, token in enumerate(tokens[1:], 1):
+        if _CODE_OPTION.match(token) and n + 1 < len(tokens):
+            return tokens[n + 1]
+    return None
+
+
+def _takes_data(group: list[str]) -> bool:
+    """An interpreter whose program is already given (a code string or a script
+    file): what it reads on stdin is data. Everything else that runs something
+    may run its stdin (a shell, a wrapper around one, source, busybox, make, an
+    interpreter reading stdin or /dev/stdin, an unknown program)."""
+    index = _command_index(group)
+    if index >= len(group) or not _INTERP_WORD.match(os.path.basename(group[index])):
+        return False
+    if any(t in _STDIN_NAMES for t in group[index + 1:]):
+        return False  # stdin named anywhere: it may run it (python3 -W ignore -, perl -I lib -)
+    if _code_string(group) is not None:
+        return True
+    operands = [t for t in group[index + 1:] if t != HEREDOC and not t.startswith("-") and not _REDIRECT.match(t)]
+    return bool(operands)
+
+
 def _aptly_rules(levels: list[Level]) -> str | None:
     aptly = _which("aptly")
     commands = [level for level in levels if not level.blob]
     blobs = [token for level in levels if level.blob for group in level.groups for token in group]
-    tokens = [t for level in commands for group in level.groups for t in group] + blobs
+    # (b) interpreter code strings: out of the word and mention tests; a blob when they can
+    # start a process, or write a file (by a redirect or in their own language) while
+    # another runner exists (the -018 "forced" rule)
+    codes = {}
+    for level in commands:
+        for group in level.groups:
+            code = _code_string(group)
+            if code is not None:
+                codes[id(group)] = code
+    runner_groups = [g for level in commands for g in level.groups if not _is_reader(g, aptly)]
+    for level in commands:
+        for group in level.groups:
+            code = codes.get(id(group))
+            if code is None:
+                continue
+            owner = os.path.basename(group[_command_index(group)])
+            targets = _redirect_targets(group)
+            writes = targets is None or any(t != "/dev/null" for t in targets) or bool(_CODE_WRITES.search(code))
+            forced = writes and any(g is not group for g in runner_groups)
+            if forced or _STARTS_PROCESS.search(code) or \
+                    (owner in ("perl", "ruby", "php") and ("`" in code or _PERL_RUBY_RUN.search(code))):
+                blobs.append(code)
+    def visible(group):
+        code = codes.get(id(group))
+        return [t for t in group if t != code]
+
+    def expands_where_it_runs(level, n, group, runners, runner_tokens, exposed):
+        """The group's expansion can build a command: the group runs something, or
+        it is a reader whose output reaches a program that may run it."""
+        if not any(_token_expands(t) for t in visible(group)):
+            return False
+        if id(group) in runners:
+            return True
+        targets = [t for t in (_redirect_targets(group) or []) if t != "/dev/null"]
+        if any(os.path.basename(t) in rt for t in targets for rt in runner_tokens):
+            return True  # a file written for a runner
+        if level.consumer is not None and id(level.consumer) in exposed:
+            return True  # a substitution whose output becomes an exposed command's arguments
+        m = n
+        while m < len(level.groups) - 1 and _pipes(level.seps[m]):
+            m += 1
+            downstream = level.groups[m]
+            if id(downstream) in runners and not _takes_data(downstream):
+                return True  # piped into something that may run it
+        return False
+    tokens = [t for level in commands for group in level.groups for t in visible(group)] + blobs
     expansion = any(level.expansion for level in levels)
     if not expansion and not any(_is_aptly(token, aptly) for token in tokens):
         return None
@@ -878,10 +968,13 @@ def _aptly_rules(levels: list[Level]) -> str | None:
     if not runners and not any(level.forced for level in levels):
         return None  # readers and literal aptly commands only: nothing else runs
     exposed = _exposed(commands, runners)
+    runner_tokens = [t for level in commands for g in level.groups if id(g) in runners for t in g]
     reach = [t for level in commands for g in level.groups
-             if id(g) in exposed and id(g) not in literal for t in g] + blobs
-    reach_expansion = bool(blobs) or any(level.expansion and any(id(g) in exposed for g in level.groups)
-                                         for level in commands)
+             if id(g) in exposed and id(g) not in literal for t in visible(g)] + blobs
+    # (a) the expansion counts where a command may be built from it, not anywhere in the level
+    reach_expansion = bool(blobs) or any(level.expansion and id(g) in exposed and id(g) not in literal
+                                         and expands_where_it_runs(level, n, g, runners, runner_tokens, exposed)
+                                         for level in commands for n, g in enumerate(level.groups))
     words = any(_DENIED_WORD.search(t) for t in reach)
     mentions = [t for t in reach if _is_aptly(t, aptly)]
     if words and (mentions or reach_expansion):
