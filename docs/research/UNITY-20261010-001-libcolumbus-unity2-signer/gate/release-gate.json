@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261010-001",
+  "package": "libcolumbus",
+  "target_series": "resolute",
+  "candidate_version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-1010-001/packages/libcolumbus",
+  "source_remote_ref": "origin/b/UNITY-20261010-001",
+  "source_commit": "63c6950fb6cfd418869463c67a792faf7914531b",
+  "source_tree_hash": "abf34302b3db00122af8204fafe017144b170e98",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261010-001"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/build/UNITY-20261010-001-libcolumbus-build-manifest.json",
+    "sha256": "801a5ef7683ce22eb9f4b953396184b954b97245e871c43c3a87bcd4ad03d994"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/gate/evidence-manifest.json",
+    "sha256": "666d16c133448f30ce553b21bbf7783119e7364a5027e38fc064d68633c482fc"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/logs/04-target.txt",
+        "sha256": "b3e9c2e1b95b074bce104464b56881cdd6dfa1a57b6f1b0271d238bfb1209d1a"
+      },
+      "debs": {
+        "libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb": "447d26d510288373a3da823ff345d1e2591be13e99d5236ccc333440229ebcbc",
+        "libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb": "95c09ff88c5cf3ab2ccd348190ece85f2bd242098ce39b6b9fa24464905c3572"
+      }
+    }
+  }
+}

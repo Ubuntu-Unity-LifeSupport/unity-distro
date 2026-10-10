@@ -1,0 +1,70 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 1.1.0+15.10.20150806-0ubuntu39+unity2 is newer than resolute 1.1.0+15.10.20150806-0ubuntu39",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "libcolumbus",
+  "source_commit": "63c6950fb6cfd418869463c67a792faf7914531b",
+  "candidate_source_version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+  "pockets": {
+    "resolute": "1.1.0+15.10.20150806-0ubuntu39"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-10T17:46:05Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "libcolumbus1-common",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "all",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2"
+    },
+    {
+      "package": "libcolumbus1-dev",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2"
+    },
+    {
+      "package": "libcolumbus1v5-dbgsym",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2"
+    },
+    {
+      "package": "libcolumbus1v5",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2"
+    },
+    {
+      "package": "python3-columbus-dbgsym",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2"
+    },
+    {
+      "package": "python3-columbus",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261010-001",
+    "packages": 528,
+    "list_sha256": "a65fb571b903c355c49ec25ee12722c61d3bd29ff4079e9041b69cc69aaa229a",
+    "content_sha256": "794b8d1624d7f1a5fb990f9efa5fefae214413ca857d8a10a8e20bd4d4963657",
+    "model_entries": 476,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "a3d6066f1bfaaeade2da7855ba282265679b74f4ebb73f4b3121c8751cfbbc06"
+}

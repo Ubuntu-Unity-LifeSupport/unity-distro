@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "libcolumbus",
+  "measured_at": "2026-10-10T17:46:05Z",
+  "sources_file": "/home/claude/work/b/unity-distro-1010-001/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261010-001",
+    "packages": 528,
+    "list_sha256": "a65fb571b903c355c49ec25ee12722c61d3bd29ff4079e9041b69cc69aaa229a",
+    "content_sha256": "794b8d1624d7f1a5fb990f9efa5fefae214413ca857d8a10a8e20bd4d4963657",
+    "model_entries": 476,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "d5ea48f1e87c63b639b1f1cf4815cc5e28f6012075f3e9b474fc4b6aa5298109",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Sat, 10 Oct 2026 17:46:06 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "0f034d8b5e672aa32d6e7f82412054378f955465af4ac38ba9daf80649b20a92",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Sat, 10 Oct 2026  0:14:52 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "03831e2793a947c654e48955ce8534b6fc5da9ecf75cba72274d0ee03fe53cbf",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Sat, 10 Oct 2026 15:54:07 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "6d5bc27919996fe671a69a36372f25ffc59a3ea6f3bb6eef2609db23f585802e",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Sat, 10 Oct 2026 13:15:02 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "a26a066f41f5252fab95a265d88d3ee2147beac79849b452377136364b85039f",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Sat, 10 Oct 2026  3:48:18 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "1.1.0+15.10.20150806-0ubuntu39"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "libcolumbus1-common",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "all",
+      "file": "libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "policy": "libcolumbus1-common:\n  Installed: (none)\n  Candidate: 1.1.0+15.10.20150806-0ubuntu39+unity2\n  Version table:\n     1.1.0+15.10.20150806-0ubuntu39+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libcolumbus1-dev",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "file": "libcolumbus1-dev_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "policy": "libcolumbus1-dev:\n  Installed: (none)\n  Candidate: 1.1.0+15.10.20150806-0ubuntu39+unity2\n  Version table:\n     1.1.0+15.10.20150806-0ubuntu39+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libcolumbus1v5-dbgsym",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "file": "libcolumbus1v5-dbgsym_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.ddeb",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "policy": "libcolumbus1v5-dbgsym:\n  Installed: (none)\n  Candidate: 1.1.0+15.10.20150806-0ubuntu39+unity2\n  Version table:\n     1.1.0+15.10.20150806-0ubuntu39+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libcolumbus1v5",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "file": "libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "policy": "libcolumbus1v5:\n  Installed: (none)\n  Candidate: 1.1.0+15.10.20150806-0ubuntu39+unity2\n  Version table:\n     1.1.0+15.10.20150806-0ubuntu39+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "python3-columbus-dbgsym",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "file": "python3-columbus-dbgsym_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.ddeb",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "policy": "python3-columbus-dbgsym:\n  Installed: (none)\n  Candidate: 1.1.0+15.10.20150806-0ubuntu39+unity2\n  Version table:\n     1.1.0+15.10.20150806-0ubuntu39+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "python3-columbus",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "architecture": "amd64",
+      "file": "python3-columbus_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb",
+      "apt_candidate": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+      "policy": "python3-columbus:\n  Installed: (none)\n  Candidate: 1.1.0+15.10.20150806-0ubuntu39+unity2\n  Version table:\n     1.1.0+15.10.20150806-0ubuntu39+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1.1.0+15.10.20150806-0ubuntu39 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+UNITY-20261010-001 - target2: libcolumbus +unity2 (this task's build) on the live stack
+
+===== setup (target-setup.sh): Clean-2 restored at 17:06Z (target2 had been found running since 15:17Z with a GUI session, clean inside: no ~/.dirty, nothing of ours; powered off, restored, started headless)
+== 1 restore, checked inside at 2026-10-10T17:07:12Z, boot 2026-10-10 20:06:07
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b025': No such file or directory
+  ls: cannot access '/home/mike/b001': No such file or directory
+  ls: cannot access '/home/mike/b013': No such file or directory
+  sources.list.d: ubuntu.sources
+  dpkg-query: шаблону python3-columbus не соответствует ни один пакет
+  hud	14.10+17.10.20170619-0ubuntu6
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39
+  NTP yes
+== 2 live archive
+  update rc=0
+  Пол:1 http://192.168.56.10:8080 resolute InRelease [2 821 B]
+  Пол:2 http://192.168.56.10:8080 resolute/main amd64 Packages [106 kB]
+  Date: Sat, 10 Oct 2026 15:51:54 UTC
+  Valid-Until: Tue, 13 Oct 2026 15:51:54 UTC
+  full-upgrade rc=0
+  left to upgrade: 0
+  dpkg-query: шаблону python3-columbus не соответствует ни один пакет
+  hud	14.10+17.10.20170619-0ubuntu6+unity6
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39+unity1
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity1
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+== 3 +unity2 from the file repository
+  update rc=0
+  installing: libcolumbus1-common=1.1.0+15.10.20150806-0ubuntu39+unity2 libcolumbus1v5=1.1.0+15.10.20150806-0ubuntu39+unity2
+  install rc=100
+  dpkg-query: шаблону python3-columbus не соответствует ни один пакет
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39+unity1
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity1
+  dpkg -V rc=0
+  libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb sha256 447d26d510288373a3da823ff345d1e2591be13e99d5236ccc333440229ebcbc
+  libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb sha256 95c09ff88c5cf3ab2ccd348190ece85f2bd242098ce39b6b9fa24464905c3572
+
+[exited with code 0]
+== 3 rerun with the index from the builder
+libcolumbus1v5:
+  Установлен: 1.1.0+15.10.20150806-0ubuntu39+unity2
+  Кандидат:   1.1.0+15.10.20150806-0ubuntu39+unity2
+Распаковывается libcolumbus1v5:amd64 (1.1.0+15.10.20150806-0ubuntu39+unity2) на замену (1.1.0+15.10.20150806-0ubuntu39+unity1) …
+Распаковывается libcolumbus1-common (1.1.0+15.10.20150806-0ubuntu39+unity2) на замену (1.1.0+15.10.20150806-0ubuntu39+unity1) …
+Настраивается пакет libcolumbus1-common (1.1.0+15.10.20150806-0ubuntu39+unity2) …
+Настраивается пакет libcolumbus1v5:amd64 (1.1.0+15.10.20150806-0ubuntu39+unity2) …
+libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39+unity2
+libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity2
+dpkg -V rc=0
+libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb sha256 95c09ff88c5cf3ab2ccd348190ece85f2bd242098ce39b6b9fa24464905c3572
+libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb sha256 447d26d510288373a3da823ff345d1e2591be13e99d5236ccc333440229ebcbc
+
+===== test helpers: xdotool (apt), ~/b013/{leak.sh,lens.sh,liveness.py} (UNITY-20261008-013) and frequent.py (UNITY-20260929-001); then a cold cycle (systemctl poweroff over ssh at 17:19Z, start_vm headless), the auto-login session
+
+===== checks (target-check.sh)
+== 1 versions and mappings (2026-10-10T17:22:12Z, boot 2026-10-10 20:20:16)
+  hud	14.10+17.10.20170619-0ubuntu6+unity6
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39+unity2
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity2
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+  unity-lens-applications	7.1.0+16.10.20160927-0ubuntu8
+  installed /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0 inode 133074 sha256 d2232c631fb4c95d
+  hud-service pid 3758: 133074 /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0, deleted libraries 0
+  unity-scope-loader(applications) pid 4115: 133074 /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0, deleted libraries 0
+== 2 HUD query
+  empty query, 1 rows, first: Всегда наверху Window actions
+  hud-service 3758 baseline 0
+  query open 3
+  query closed 0
+== 3 leak.sh
+  hud 14.10+17.10.20170619-0ubuntu6+unity6, hud-service pid 3758, up       00:30
+  1 baseline                         tmp-maps     0 files    0 rss_kB   34756 fds   15
+  2 after 10 queries (desktop)       tmp-maps     0 files    0 rss_kB   35008 fds   15
+  3 after 10 Mines starts            tmp-maps     0 files    0 rss_kB   35032 fds   15
+  4 after 10 Writer starts           tmp-maps     0 files    0 rss_kB   39660 fds   15
+  5 after 10 queries (Writer)        tmp-maps     0 files    0 rss_kB   41652 fds   15
+  6 Writer closed, 60 s idle         tmp-maps     0 files    0 rss_kB   41604 fds   15
+== 4 lens.sh 4
+  libcolumbus1v5 1.1.0+15.10.20150806-0ubuntu39+unity2, unity-scope-loader (applications) pid 4115
+  libcolumbus mapping: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+  start                        deleted-maps    5 tmp-maps    5 rss_kB   33864
+  re-index 1 (added)           deleted-maps    5 tmp-maps    5 rss_kB   35768
+  re-index 2 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   35836
+  re-index 3 (added)           deleted-maps    5 tmp-maps    5 rss_kB   36920
+  re-index 4 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   36972
+  test file removed            deleted-maps    5 tmp-maps    5 rss_kB   36972
+== end: hud-service pid 3758 (was 3758), scope pid 4115 (was 4115)
+
+===== the Dash (super from vbox send_keys, the query typed with xdotool), screenshots dash-search.png and dash-search-misspelt.png
+"термин" -> Приложения: Терминал; "тирминал" (misspelt) -> Приложения: Терминал
+
+===== reading
+Both libcolumbus users (hud-service and the applications scope) map the installed +unity2 library (inode 133074) with no deleted library mapping; a HUD query builds and frees its Matcher (0 -> 3 -> 0); leak.sh 0 deleted files at every step; the scope's deleted mappings stay at 5 over 4 re-indexes; the Dash finds Terminal exactly and misspelt. The same results as the +unity1 publication check of UNITY-20261008-013 (its logs/07).
+
+===== how step 3 was rerun (2026-10-10 ~17:15Z), on the builder:
+  cp build/*.deb into a scratch directory; apt-ftparchive packages . > Packages (4 Package entries)
+  scp Packages target2:b1010/repo/Packages
+on target2:
+  sudo apt-get update; apt-cache policy libcolumbus1v5 (candidate +unity2 from file:/home/mike/b1010/repo)
+  sudo apt-get install -y libcolumbus1-common=1.1.0+15.10.20150806-0ubuntu39+unity2 libcolumbus1v5=1.1.0+15.10.20150806-0ubuntu39+unity2
+  dpkg-query -W; dpkg -V; sha256sum of the two repo .debs (the output above)
