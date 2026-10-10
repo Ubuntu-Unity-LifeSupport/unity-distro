@@ -32,7 +32,7 @@ NAME_RE = re.compile(r"[a-z0-9][a-z0-9+.-]+")
 VERSION_RE = re.compile(r"(?:[0-9]+:)?[0-9][A-Za-z0-9.+~-]*")
 ARCH_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
-FILENAME_RE = re.compile(r"pool/[A-Za-z0-9][A-Za-z0-9+._~/-]*\.deb")
+FILENAME_RE = re.compile(r"pool/[A-Za-z0-9][A-Za-z0-9+._~/-]*\.d?deb")  # .deb and .ddeb (debug symbols); .udeb stays excluded, as publish_aptly also rejects it
 TASK_RE = re.compile(r"UNITY-[0-9]{8}-[0-9]{3}")
 SCRIPT_NAMES = ("preinst", "postinst", "prerm", "postrm", "config")
 # The routine policy (permission model phase 5, May's decision 4): the numbers

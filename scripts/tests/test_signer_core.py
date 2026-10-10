@@ -217,6 +217,22 @@ class SignerCoreTest(unittest.TestCase):
                     with self.assertRaises(core.Refused):
                         core.check_index_set(TEMPLATE, files)
 
+    def test_ddeb_accepted_udeb_rejected(self):
+        """The live repo carries .ddeb debug-symbol packages; the signer accepts
+        them like .deb (publish_aptly already does). .udeb stays rejected."""
+        ddeb = ("Package: demo-dbgsym\nVersion: 1.0+unity1\nArchitecture: amd64\n"
+                "Maintainer: t <t@example.com>\nPackage-Type: ddeb\n"
+                "Filename: pool/main/d/demo/demo-dbgsym_1.0+unity1_amd64.ddeb\n"
+                "Size: 3000\nSHA256: %s\nDescription: debug symbols\n" % ("c" * 64))
+        found = core.entries(core.check_index_set(TEMPLATE, files_for(PKGS + "\n" + ddeb)))
+        self.assertIn(("main/binary-amd64/Packages", "demo-dbgsym", "1.0+unity1", "amd64"), found)
+        # .deb still accepted (the base fixture), and the source rule reads a .ddeb the same way
+        self.assertTrue(any(k[1] == "demo" for k in found))
+        # .udeb is still refused (no debian-installer index; publish_aptly rejects it too)
+        udeb = ddeb.replace("Package-Type: ddeb", "Package-Type: udeb").replace(".ddeb", ".udeb").replace("demo-dbgsym", "demo-udeb")
+        with self.assertRaises(core.Refused):
+            core.entries(core.check_index_set(TEMPLATE, files_for(PKGS + "\n" + udeb)))
+
     def test_paths_and_contents_refused(self):
         for path in ("Contents-amd64.gz", "main/Contents-amd64", "main/binary-amd64/../binary-amd64/Packages",
                      "/main/binary-amd64/Packages", "main/binary-amd64/Packages%2e", "main/binary-amd64/by-hash/SHA256/" + "a" * 64,
