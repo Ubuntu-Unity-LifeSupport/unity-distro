@@ -1,0 +1,3 @@
+# UNITY-20261010-001 peer notice (ENGINEERING-PROCESS section 6 step 7)
+2026-10-10 17:46Z B -> A: libcolumbus 1.1.0+15.10.20150806-0ubuntu39+unity2 (no-change rebuild, debian/changelog only on the published +unity1 3da4d89), 7 records, snapshot unity-resolute-20261010-001 (= live unity-resolute-20261008-025 + 7, nothing removed or changed), version_safety SAFE 17:46:05Z, switch after C's approve-publication through the signer
+2026-10-10 17:46Z A -> B: A ACK UNITY-20261010-001, no conflict; the only records in unity-resolute not in the live unity-resolute-20261008-025 are B's 7 libcolumbus records, none of A's; no repo add, snapshot or slot on A's side; A frozen and idle, target-desktop powered off

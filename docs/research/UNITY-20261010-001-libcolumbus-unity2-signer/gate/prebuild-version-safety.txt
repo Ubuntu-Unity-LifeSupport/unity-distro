@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 1.1.0+15.10.20150806-0ubuntu39+unity2 is newer than resolute 1.1.0+15.10.20150806-0ubuntu39",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "libcolumbus",
+  "source_commit": "63c6950fb6cfd418869463c67a792faf7914531b",
+  "candidate_source_version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+  "pockets": {
+    "resolute": "1.1.0+15.10.20150806-0ubuntu39"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-10T17:45:50Z",
+  "mode": "pockets",
+  "view_sha256": "0347a2ed5b504aee3119579e521708687c19e5967ae7b7e82ef65352b3e62e6c"
+}

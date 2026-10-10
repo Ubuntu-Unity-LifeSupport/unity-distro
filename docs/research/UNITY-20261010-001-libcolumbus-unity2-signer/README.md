@@ -172,3 +172,30 @@ brief); a rebuild; the signer, the gate and the publication.
 | The `.ddeb` debug files are not byte-identical to +unity1's (version strings in paths and LTO symbol names). | debug-only; compared with the version normalised |
 | The archive signer itself is what this publication tests; if its routine policy does not sign, the publisher waits for May on the signer console. | ENGINEERING-PROCESS section 6 (signer mode); the outcome goes into the publication record |
 | NOT_APPLICABLE + MECHANICAL_PACKAGING_ONLY cannot reach a gate in the current tools, so this task carries a real Verifier PASS. | UNITY-20261010-002 |
+
+## Publication (2026-10-10)
+
+The slot came from C. This is a routine publication (section 6 step 10): an upgrade of a source package
+already in the live publication, so it needs C's approval, not May's, and it goes through the archive signer's
+routine policy.
+
+- **Branches:** `origin/main` was merged into the meta branch before the gate. Main was still `fd280ee`, so the
+  merge changed nothing, and the 7 publication tools equal `origin/main`. libcolumbus `b/UNITY-20261010-001`
+  is pushed at `63c6950`.
+- **Gated build:** `build/` (libcolumbus `63c6950`, chroot 20261008T083223Z). It is the build tested on
+  target2, so `tested_build` is this_build. The libcolumbus1v5 and libcolumbus1-common .debs installed there
+  are this build's (logs/04).
+- **Database backup:** `~/backups/UNITY-20261010-001-20261010T174519Z` (19 files, equal to live), list_sha256
+  `f278579f64d28315dc520cb47b689554aa4202c375c268a94def1b3ac594eee9`.
+- **repo add:** the manifest's artifacts went to unity-resolute at 17:45:24Z, 7 records (source, 4 .deb, 2
+  .ddeb), 521 → 528. Each pool file's sha256 equals the manifest's (9 of 9).
+- **Snapshot:** `unity-resolute-20261010-001`.
+  - `snapshot diff` against the live `unity-resolute-20261008-025` shows only these 7 records added, nothing
+    removed or changed (gate/snapshot-diff.txt).
+  - The served files were republished at 2026-10-10 15:51:54Z during the signer deployment. They carry the
+    same 470 entries, as C verified.
+- **Version safety:** SAFE at 17:46:05Z (gate/version-check.json, gate/version-safety.txt). apt's candidate is
+  +unity2 for every binary, and resolute has libcolumbus only in its release pocket (0ubuntu39,
+  gate/prebuild-version-safety.txt).
+- **Peer notice:** A ACK at 17:46Z (gate/peer-notice.txt).
+- **Patch record:** docs/PATCHES.md, one line "no-change rebuild"; no new patch.
