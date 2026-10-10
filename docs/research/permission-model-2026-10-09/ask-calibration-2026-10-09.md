@@ -32,8 +32,9 @@ unchanged.
 
 ## Accepted residual (not to be closed by an analyser)
 
-- Mixed-case methods (`curl -X Delete`, `gh api -X Delete`) do not ask;
-  nobody types them by accident, and `gh` would execute them.
+- Mixed-case methods (`curl -X Delete`, `gh api -X Delete`) do not ask:
+  deliberately left outside the rules for simplicity; `gh` would execute
+  them.
 - Glued and reordered spellings (`curl -XPOST`, `curl -s -X POST`,
   `gh api -XDELETE`) do not ask; they were outside the broad rules too and
   are not extended here.

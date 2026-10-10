@@ -135,8 +135,9 @@ def permissions_block():
         "Bash(gh repo create *)", "Bash(gh repo edit *)", "Bash(gh repo delete *)", "Bash(gh repo rename *)",
         "Bash(gh repo fork *)", "Bash(gh repo sync *)", "Bash(gh repo archive *)",
         # a method other than GET asks; GET (the default, or named) does not. gh accepts
-        # the method in any case, so the lower-case spellings are listed too (calibration
-        # 2026-10-09: mixed case such as "Delete" is an accepted gap, nobody types it by accident).
+        # the method in any case, so the lower-case spellings are listed too. Mixed-case
+        # spellings ("Delete"), glued forms (-XPOST) and options placed before -X are
+        # deliberately left outside these rules for simplicity (ask calibration 2026-10-09).
         *[f"Bash(gh api {option} {method} *)" for option in ("-X", "--method")
           for method in ("POST", "PUT", "PATCH", "DELETE", "post", "put", "patch", "delete")],
         "Bash(gh api -F *)", "Bash(gh api -f *)",
