@@ -75,6 +75,20 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-10 ~18:16Z: UNITY-20261010-001 PUBLISHED (libcolumbus +unity2), waiting for C's merge, then idle
+(the permission-model freeze; May unfroze B for this one task only).**
+- **libcolumbus +unity2:**
+  - A no-change rebuild: debian/changelog only, on the published +unity1.
+  - It is the first routine publication through the archive signer. The signer signed it by routine policy
+    (`approved_by: policy`), on C's approve-publication.
+  - Live `./resolute` has been `unity-resolute-20261010-001` since 17:49:19Z, and the publication is
+    verified on target2.
+  - Card: `research/UNITY-20261010-001-libcolumbus-unity2-signer/`, meta branch `b/UNITY-20261010-001`.
+- **Tool gap seen on the way:** UNITY-20261010-002, NOT_APPLICABLE verification cannot reach a gate.
+- **Not to be touched until the freeze ends:** UNITY-20261009-002/-003/-004/-005, -023 and the like.
+
+Earlier:
+
 **2026-10-09 ~06:05Z: UNITY-20261008-025 and -017 PUBLISHED (hud +unity6); waiting for C's merge, then
 idle (permission-model freeze).**
 - **hud +unity6:**
@@ -484,10 +498,12 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**At `Clean-2`, powered off, since 2026-10-09 06:01Z.** It was rolled back
-after the UNITY-20261008-025 publication check. Checked inside: no
-`~/.dirty`, no `~/b025` or `~/b001`, only `ubuntu.sources`, hud 0ubuntu6,
-NTP synchronised. Restarts before
+**At `Clean-2`, powered off, since 2026-10-10 18:15Z.** It was rolled back
+after the UNITY-20261010-001 publication check. Checked inside: no
+`~/.dirty`, no `~/b1010` or `~/b013`, only `ubuntu.sources`, hud 0ubuntu6,
+libcolumbus 0ubuntu39, NTP synchronised. (On 2026-10-10 it was found running
+since 15:17Z with a GUI session, clean inside, most likely from the signer
+deployment; it was restored before use.) Restarts before
 measurements: a cold cycle (poweroff over ssh, then start_vm), not a reboot
 from inside the guest.
 
