@@ -273,3 +273,25 @@ Measured with the reduced guard (strings as data through `inspect()`):
   file: unchanged except record 13.
 
 ## 11. Out of scope (recorded, not changed)
+
+## 12. Verifier round 2: PASS
+
+Independent Verifier on the reduced commit 8120472: **PASS**,
+INDEPENDENTLY_REPRODUCED. It built its own boundary probes (38 must-deny
+for (a), 16 redirect probes for (c), 12 spot-checks), ran every registered
+fixture and the 546-test suite (OK, 1 skipped), and replayed 11576
+transcript commands: 0 allow->deny, 3 deny->allow, each a spurious trigger
+removed (a word that is literal text or another program's subcommand, with
+the expansion or the fd duplication reaching no command-building runner).
+No reachable publish path was opened; no proven regression.
+
+One pre-existing limitation it noted is identical on main and the branch,
+so out of scope for this diff: a reader's expansion written to a file by
+`tee` and then run by a separate `;`-separated command
+(`echo ... | tee f; bash f`) is allowed by both guards (the contiguous
+`| tee f | sh` form is denied by both). Recorded for a separate tightening
+decision; not changed here.
+
+Phase 2 (reduced to (a) and (c)) is accepted for merge. The interpreter
+code-string relaxation (b) and the RC2 false positives it was meant to fix
+remain for a later phase, once the signer is live.
