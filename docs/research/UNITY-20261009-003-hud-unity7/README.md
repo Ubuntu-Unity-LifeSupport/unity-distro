@@ -215,3 +215,133 @@ desktop path must be the `$HOME` one, absolute.
 - The usage table records a use even when the action did not run. That is old behaviour, and outside these tasks.
 - The two `operator[]` lookups in `ApplicationListImpl::FocusedWindowChanged` and `ApplicationImpl::window`.
   Candidate (ID from C) if the Design Challenger thinks they belong here.
+
+### Design review, round 1: REVISE (all points taken)
+
+The direction holds for the three tasks. Ten changes before code:
+
+1. **The -004 end-to-end test goes through the legacy API, in `tests/integration/TestHud.cpp`.**
+   - `QtGActionGroup` marks every action with a parameter type as parameterized, target or not
+     (`QtGActionGroup.cpp:131`, `:150-151`; `QtGMenuModel.cpp:184-193`). `HudClient::executeCommand` sends such rows
+     to `ExecuteParameterized` and never to `ExecuteCommand` (`libhud-client/HudClient.cpp:330-331`). So a test
+     copied from `TestHud.ExecuteGMenuAction` would fail with and without the fix.
+   - Unity 7 is not affected: the legacy `Suggestion` has no such flag (`HudServiceImpl.cpp:158-161`).
+   - The test drives `com.canonical.hud` `StartQuery`/`ExecuteQuery` as Unity 7 does. It uses a new menu fixture
+     `tests/menus/test-menu-input-model-target.c` with:
+     - an `(ss)` item with a target;
+     - an `s` radio item with a target;
+     - a stateful boolean without one;
+     - a parameterless action with a target, which must not activate.
+   - Not changed: new-API clients keep treating targeted items as parameterized (a candidate).
+2. **The decision table, compared with GTK** (`gtk_menu_tracker_item_action_added`:
+   `can_activate = (!target && !ptype) || (target && ptype && g_variant_is_of_type(target, ptype))`):
+   - **a target, but the action takes no parameter:** do not activate, and log it.
+   - **an unknown action:** `g_action_group_query_action` first, so it is told apart from "no parameter".
+   - **the string fallback:** "no target, string parameter → the action's name" is kept, and labelled as hud's own
+     compatibility rule.
+   - **radio items:** the card states that a radio item with a target changes on purpose: before, its value was
+     the action's name; now it is its target.
+3. **Check and radio items are not broken:** `checked` is unused (`QtGActionGroup.cpp:75-103`), no QAction is
+   checkable (`QtGMenuModel.cpp:394-469`), and a boolean toggle still gets `activate(NULL)`, so GLib toggles it.
+   Nothing starts calling `change_action_state`.
+4. **The target as text is acceptable.**
+   - Parse with `g_variant_parse(NULL, …)` and check the type with `g_variant_is_of_type` only afterwards.
+   - Unref both the attribute value and the parsed variant; `ActivationParameter` documents who owns the result.
+   - A parse failure counts as the "wrong type" case.
+5. **The signal change.**
+   - Every site is in libqtgmenu: `QtGMenuModel.h:67,75`, `QtGActionGroup.h:53`, the emit at `QtGMenuModel.cpp:169`,
+     and the string connections at `QtGMenuModel.cpp:385-386` and `QtGMenuImporterPrivate.cpp:129-130`.
+   - Switch these to function-pointer connections, with `qOverload` (the slot `ActionTriggered(bool)` overloads the
+     signal), so a mismatch fails at compile time.
+   - The dbusmenu path is untouched; toolbar items get the fix through `executeItem`.
+6. **`calledFromDBus()` is the right guard.** In Qt 5.15 the context is stored only on the object that received the
+   call: `HudServiceImpl` for Unity's `ExecuteQuery`, `QueryImpl` for a call on the query path. Add a test for the
+   second branch: a bad key over D-Bus on the query path gets `InvalidArgs`.
+7. **An unknown key changes the store.**
+   - `ItemStore::execute`, `executeParameterized` and `executeToolbar` use `m_items[...]` (`ItemStore.cpp:299`,
+     `:307`, `:339`), which inserts a null item.
+   - The next new-API `SHOW_SUGGESTIONS` search dereferences it (`:185-186`), and `toolbarItems()` lists a bogus
+     name (`:361-363`).
+   - Use `value()`, and add a TestItemStore test (an unknown id, then an empty `SHOW_SUGGESTIONS` search).
+   - A negative `'x'` key wraps to a huge id; it is now harmless.
+8. **No other unchecked `m_windowToken` use.** The string-key test needs a focused window and
+   `EXPECT_CALL(*windowToken, execute(_)).Times(0)`, otherwise it passes on +unity6. On +unity6 the structure-key and
+   no-window tests end in SIGSEGV, so the control runs each new test with its own `--gtest_filter`.
+9. **-005, tightened.**
+   - **When it applies:** `XDG_DATA_HOME` non-empty and not starting with `/` (decoded with `QFile::decodeName`).
+     Not `QDir::isAbsolutePath`, which calls `:/x` absolute. A `~/x` value is relative.
+   - **The lookup:** the default from `QDir::homePath()`, then `standardLocations(...).mid(1)` with a comment
+     (Qt prepends exactly one writable entry), checked with `QFileInfo::isFile`.
+   - **The test:** a scoped guard restores the working directory.
+   - The three +unity6 tests stay valid.
+10. **The control.**
+    - `ActivationParameter` does not exist on +unity6, so its unit test stays outside the control, in its own file
+      under `tests/unit/qtgmenu` without the disabled `TestQtGMenu` fixture.
+    - The control runs the TestHud target test, the TestQuery and TestItemStore tests and `RelativeDataHomeIgnored`.
+    - Why the qtgmenu tests are disabled is not recorded; no D-Bus test goes into that fixture.
+    - Scope is otherwise right: the icon and submenu paths lose no target.
+
+## Design, revised after round 1
+
+The parameter types the fix must handle are measured across applications in "Reach of -004" below.
+
+### -004
+
+- **The target travels:** `QtGMenuModel::CreateAction` reads `G_MENU_ATTRIBUTE_TARGET` and stores
+  `g_variant_print(target, TRUE)` as the property `actionTarget`; the attribute is unreffed.
+- **The signal carries it:** `ActionTriggered(QString name, bool checked, QString target)`. The three connections
+  use function pointers (`qOverload` where needed).
+- **`QtGActionGroup::ActivationParameter`** is static and pure. It takes `known` (from `g_action_group_query_action`),
+  the parameter type, the target text and the action name, and returns `{activate, GVariant *parameter}`, where the
+  parameter is owned by the caller:
+
+  | known | target | parameter type | result |
+  |---|---|---|---|
+  | no | any | - | no activation, log "unknown action" |
+  | yes | none | none | activate with `NULL` (toggles and plain actions as now) |
+  | yes | none | `s` | activate with the action name (hud's compatibility rule, kept) |
+  | yes | none | other | no activation (as now) |
+  | yes | parses, and is of the type | any | activate with the target (GTK) |
+  | yes | present | none | no activation, log (GTK: insensitive) |
+  | yes | wrong type or does not parse | any | no activation, log |
+
+- **`TriggerAction`** calls it, activates, and unrefs the parameter.
+
+### -003
+
+- **`QueryImpl::ExecuteCommand` and `ExecuteParameterized`:**
+  - reject when `!canConvert<qlonglong>()` or `toULongLong(&ok)` fails;
+  - when `m_windowToken` is null, return;
+  - in both cases `qWarning`, and `sendErrorReply` only when `calledFromDBus()`.
+- **`ItemStore::execute`, `executeParameterized`, `executeToolbar`:** `m_items.value(...)`, so an unknown id
+  inserts nothing.
+
+### -005
+
+- **`ApplicationImpl::desktopPath`:** when `XDG_DATA_HOME` is non-empty and its decoded value does not start with
+  `/`, search `QDir::homePath() + "/.local/share/applications"` first, then
+  `QStandardPaths::standardLocations(ApplicationsLocation).mid(1)`. The comment says why `mid(1)`. Take the first
+  `QFileInfo(dir + "/" + name).isFile()`. Otherwise use `QStandardPaths::locate` as in +unity6.
+
+### Tests
+
+- **Control (the tests on +unity6):**
+  - `TestHud`: the legacy target test with `test-menu-input-model-target.c`. The `(ss)` item runs with its target,
+    the `s` radio item gets its target, the boolean toggles, the parameterless action with a target does not run.
+  - `TestQuery`:
+    - a structure key outside D-Bus;
+    - a non-numeric string key with a focused window (`execute` never called);
+    - no focused window;
+    - a bad key over D-Bus on the query path (`InvalidArgs`, which already passes on +unity6);
+    - `ExecuteParameterized` with the same keys.
+  - `TestItemStore`: an unknown id, then an empty `SHOW_SUGGESTIONS` search.
+  - `TestApplication`: `RelativeDataHomeIgnored`.
+  - Each runs with its own `--gtest_filter` in the control log.
+- **Outside the control:** `tests/unit/qtgmenu/TestActivationParameter.cpp`, one test per table row.
+
+### Not changed (candidates, IDs from C)
+
+- New-API clients treat targeted items as parameterized.
+- The usage table records a use even when nothing ran.
+- The `operator[]` lookups in `ApplicationListImpl::FocusedWindowChanged` and `ApplicationImpl::window`. They give
+  null windows, which the -003 guard now handles.
