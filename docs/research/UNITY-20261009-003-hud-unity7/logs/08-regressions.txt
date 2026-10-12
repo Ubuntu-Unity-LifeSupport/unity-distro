@@ -1,0 +1,29 @@
+# +unity7: regressions (the same boot as logs/07)
+## UNITY-20261008-025 target025.sh, unchanged
+== 1 versions
+bamfdaemon	0.5.6+22.04.20220217-0ubuntu6
+hud	14.10+17.10.20170619-0ubuntu6+unity7
+libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity2
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+hud-service pid 3866 sha256 8df544f07dc58dc7 deleted-libs 0
+== 2 -025
+start: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3866
+after 5 one-off StartQuery clients: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3866
+10 s later: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3866
+after a StartQuery + CloseQuery client that exited at once: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3866
+  ExecuteQuery item: <b>Свернуть</b> (Window actions) int 0
+after a StartQuery + ExecuteQuery client: query-objects 0 OpenQueries 0 deleted-maps 2 pid 3866
+coredumps of hud-service this boot: 0
+== 3 -017
+B017 window: legacy icon 'utilities-terminal'
+Terminal with a user override (Icon=b017-override): legacy icon 'b017-override'
+Writer: legacy icon 'libreoffice-writer'
+== 4 -018
+bamfdaemon 2180 -> 5258, bridge 2203; Terminal window 65011718 opened after the restart: (65011718, 'org.gnome.Terminal'
+end: query-objects 0 OpenQueries 0 deleted-maps 0 pid 3866
+
+## the Unity 7 HUD with real keys: Alt (vbox send_keys 38 b8), 'окно' typed with xdotool, Enter (vbox 1c 9c), a focused Terminal (07-hud-real-alt.png: the HUD with 'Создать окно (Файл)' selected; an unrelated update-notifier dialog behind it)
+terminal windows before: 1
+terminal windows after: 2
+hud-service pid 3866
+usage rows: [('org.gnome.Calculator', 'Калькулятор||Научный', 2), ('org.gnome.Mines', 'Window actions||Свернуть', 1), ('org.gnome.Terminal', 'Window actions||Свернуть', 1), ('org.gnome.Terminal', 'Терминал||4. 132×43', 2), ('org.gnome.Terminal', 'Файл||Создать окно', 3)]

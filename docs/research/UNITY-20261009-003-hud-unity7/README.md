@@ -511,3 +511,53 @@ which ends the whole binary.
 
 All six suites pass on +unity7 there (`ctest`). The 23 compiler warnings are the same in both trees; none is in new
 code.
+
+## Builds (2026-10-12, logs/09)
+
+`scripts/build_sbuild.py`, chroot `resolute-amd64-20261008T083223Z` (4 days old, within the 7-day rule):
+
+- **+unity7** (`6893250`): PASS, 6 of 6 suites.
+  - integration: 7 tests, 6 + `LegacyExecuteUsesItemTarget`;
+  - qtgmenu: 8, the new `TestActivationParameter`;
+  - service: 60, 51 + 9 new;
+  - the other three suites unchanged.
+- **Control** (`06726fd`, the tests on +unity6): fails, as it must.
+  - integration: `TestHud.LegacyExecuteUsesItemTarget` FAILED, the other 6 pass.
+  - service: `TestApplication.RelativeDataHomeIgnored` FAILED. Then the binary ends without a summary in
+    `TestItemStore.ExecuteUnknownIdLeavesStoreUnchanged`, the SIGSEGV of logs/06, so the new TestQuery tests behind
+    it do not run in sbuild. logs/06 has each of them alone.
+  - The other four suites pass.
+
+## Target check (target2, 2026-10-12/13, logs/07, logs/08)
+
+**The setup:**
+
+- Clean-2 restored and confirmed from inside;
+- the live archive the usual way, Release Date 2026-10-12 16:54:02 UTC, and `apt full-upgrade`;
+- test helpers xdotool, x11-utils and gnome-calculator, plus libunity-gtk4-menu0, installed explicitly
+  (UNITY-20260927-037);
+- a cold cycle, then `hudtarget.sh` on +unity6;
+- hud +unity7 from a file repository of this build: the .deb sha256 equals the build's, `dpkg -V` is clean, and the
+  running hud-service is the installed binary;
+- a cold cycle, then the same script on +unity7.
+
+`hudtarget.sh` makes the calls Unity 7 makes (`hudexec.py`):
+
+| check | +unity6 | +unity7 |
+|---|---|---|
+| T1 Terminal "Создать окно" (`win.new-terminal`, target `('window','current')`) | 1 window before and after, 0 `org.gtk.Actions` calls | **2 windows**; `Activate("new-terminal", [<('window', 'current')>])` |
+| T2 Terminal "4. 132×43" (`win.size-to`, `(uu)`) | 654×434 before and after | **654×434 → 1070×722** |
+| T3 Calculator "Научный" (`win.number-format`, `s`, through libunity-gtk4-menu) | `automatic` before and after | **`automatic` → `scientific`** |
+| T4 a string key, then a structure key | the string key is taken as 0; the structure key: **SIGSEGV**, a new PID and a crash report | both refused with a log line ("invalid item key"); **the same PID, no crash report** |
+
+**Regressions, the same boot (logs/08):**
+
+- UNITY-20261008-025's `target025.sh`, unchanged, gives the +unity6 results of that task: 0 query objects at every
+  step, the icons of a user-only and of an overridden desktop file, Writer unchanged, the -018 step, and the same
+  PID throughout.
+- The Unity 7 HUD as a user drives it, with real keys: Alt from the host, "окно" typed, Enter on "Создать окно
+  (Файл)". Terminal goes from 1 to 2 windows; hud-service keeps its PID. Screenshots: `logs/07-hud-real-alt*.png`.
+- The usage table records the commands under `org.gnome.Terminal` and `org.gnome.Calculator`.
+
+-005 is not visible in the session: `XDG_DATA_HOME` is not set there. Its evidence is the unit test and the Qt probe
+of logs/04.
