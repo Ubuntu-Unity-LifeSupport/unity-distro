@@ -281,6 +281,56 @@ The direction holds for the three tasks. Ten changes before code:
     - Why the qtgmenu tests are disabled is not recorded; no D-Bus test goes into that fixture.
     - Scope is otherwise right: the icon and submenu paths lose no target.
 
+## Reach of -004 (2026-10-12, target2, logs/05)
+
+The survey covers the application set of UNITY-20261008-001 (43 GTK4 and 10 GTK3 applications) plus
+gnome-terminal and libunity-gtk4-menu0, 56 packages installed for it.
+
+- **Setup:** our packaged stack as a user has it: gtk-nocsd 4.8-1+unity3, libunity-gtk4-menu0 0.9 installed
+  explicitly, the session's own `LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`, after a cold cycle.
+- **Method** (`survey.sh`, `survey.py`): each application is started alone. Every GMenu it exports is walked
+  (`org.gtk.Menus` on `_GTK_MENUBAR_OBJECT_PATH` and `_GTK_APP_MENU_OBJECT_PATH`). For every item, the survey records
+  the target's GLib type and the action's parameter and state type (`org.gtk.Actions.Describe` on the application or
+  window group). That is the input of hud's libqtgmenu.
+- **`analyze.py`** applies +unity6's `TriggerAction` and the revised table to every item.
+
+55 applications were surveyed; 38 export menu items, 306 items with an action in all. One error: Showtime's menubar
+timed out, as in UNITY-20261008-001.
+
+| target type | parameter type | items | +unity6 | revised design |
+|---|---|---|---|---|
+| none | none | 243 | `activate(NULL)` | `activate(NULL)` |
+| `s` | `s` | 37 | **activates with the action's name** | activate with the target |
+| `(uu)` | `(uu)` | 4 | **nothing** | activate with the target |
+| `b` | `b` | 3 | **nothing** | activate with the target |
+| `x` | `x` | 3 | **nothing** | activate with the target |
+| `(ss)` | `(ss)` | 2 | **nothing** | activate with the target |
+| (no group for the prefix, or no such action) | - | 14 | nothing: no group matches the prefix | no activation (unknown) |
+
+- **In every targeted item, the target's type equals the action's parameter type.** No row "target but no parameter"
+  or "wrong type" occurs. So the fix needs no per-type code: it passes the target and checks the type.
+- **49 items in 14 applications are run wrongly or not at all by the HUD today.**
+  - The 12 non-string items are never activated:
+    - gnome-terminal: New Tab and New Window (`(ss)`), Reset and Reset and Clear (`b`), the four sizes (`(uu)`);
+    - celluloid: the video, audio and subtitle tracks (`x`);
+    - Text Editor: Discard Changes (`b`).
+  - The 37 string items get the action's name instead of their target:
+    - radio choices in Calculator (number format), Maps (measurement system), Weather (temperature unit), File Roller
+      (list mode), Swell Foop (colours, theme), Shortwave (sorting) and Amberol (ReplayGain);
+    - Terminal's copy and close variants;
+    - Celluloid's "load track" items.
+
+    The application gets a value it does not expect and ignores it or sets nothing. All of these are radio items or
+    selectors, so the result of the HUD command is wrong rather than harmful.
+- **Our own libunity-gtk4-menu is affected too.** Some affected items are its own `win.unity-gtk4-menu-*` actions:
+  Amberol ReplayGain, Shortwave sorting, Text Editor Discard Changes. The fix makes them work through the HUD.
+- **The 14 "unknown" items stay as they are.** They fall in two groups:
+  - actions whose group is not exported where the HUD looks: `ui.`, `game-view.`, `restore.`, Epiphany's;
+  - actions the window does not have: Terminal's save-contents, export, print, set-title.
+
+  +unity6 finds no group and does nothing; the revised design logs them and does nothing. They match the
+  "MISSING" items of UNITY-20261008-001.
+
 ## Design, revised after round 1
 
 The parameter types the fix must handle are measured across applications in "Reach of -004" below.
