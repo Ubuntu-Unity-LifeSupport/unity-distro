@@ -53,3 +53,17 @@ gcm-self-test PASS. The manifest is in `build/`.
 - Mount prompts on the target (a medium that asks for a password, a busy
   unmount) were not produced on the target; they are covered by the test
   suite.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261009-001-20261012T225412Z`.
+  19 files, complete, equal to live; list sha256
+  `c72069f9f78ac694fc6828e64b7f46ee83c90d242388d4ac3f164d3ec8024e12`.
+- **Repository:** 8 records added to `unity-resolute` (the source, 5 .deb
+  and 2 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261009-001`, which is the live
+  `unity-resolute-20261010-001` plus these 8 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
