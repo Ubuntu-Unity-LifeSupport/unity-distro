@@ -1,0 +1,14 @@
+nautilus b76f3fb: window "Домашняя папка"
+nautilus fd4b76a: window "Домашняя папка"
+gnome-text-editor b76f3fb: window "Новый документ (Черновик) - текстовый редактор"
+gnome-text-editor fd4b76a: window "Новый документ (Черновик) - текстовый редактор"
+gnome-calculator b76f3fb: window "Калькулятор"
+gnome-calculator fd4b76a: window "Калькулятор"
+gnome-clocks b76f3fb: window "Часы"
+gnome-clocks fd4b76a: window "Часы"
+loupe b76f3fb: window "Просмотрщик изображений"
+loupe fd4b76a: window "Просмотрщик изображений"
+baobab b76f3fb: window "Устройства и расположения"
+baobab fd4b76a: window "Устройства и расположения"
+headers.png (1290, 816)
+packaged library restored: 6fcf52bcc6d96440

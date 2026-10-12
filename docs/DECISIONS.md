@@ -2235,3 +2235,27 @@ exceptional operations and trust-boundary changes.
 false positives on data. Every control on builder runs as one OS user, so
 only the signing key and May's own channels are boundaries; the guard is
 accident prevention.
+
+
+## 2026-10-12 - build scratch space moves to a 54 GB SSD at /srv/build (C, May)
+
+**Decision.** May attached a 54 GB SSD to builder: `/dev/sdb1`, ext4, label
+`unity-build`, mounted at `/srv/build` through `/etc/fstab` by UUID with
+`noatime,nofail`. `~/.config/sbuild/config.pl` now sets
+`$unshare_tmpdir_template = '/srv/build/sbuild/sbuild-unshare-XXXXXX'`. That
+supersedes the `/var/tmp/sbuild-claude` path of 2026-09-22. The reasons of that
+entry still hold: the location stays outside `$HOME` and off the `/tmp` tmpfs.
+
+**Why.** builder writes most of the project's data: about 92 GB in 2.8 days,
+against about 3 GB a day on a target. Most of it is sbuild unpacking the chroot
+and building. The old directory had collected 16 GB of chroots left behind by
+interrupted builds.
+
+**Measured.** A test build of cinnamon-session +unity5 on the SSD was
+successful, and sbuild removed its own directory afterwards. The build itself
+took 29 s. The 7.5 minutes before it were spent downloading 157 MB of build
+dependencies from snapshot.ubuntu.com at about 530 kB/s. So that phase is
+limited by the network, not by the disk.
+
+**Rule.** Use `/srv/build` for heavy temporary work and clean it after
+yourself (CLAUDE.md, Conventions). Evidence stays in the task worktree.
