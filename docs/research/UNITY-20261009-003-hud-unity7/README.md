@@ -457,3 +457,57 @@ The parameter types the fix must handle are measured across applications in "Rea
 - The usage table records a use even when nothing ran.
 - The `operator[]` lookups in `ApplicationListImpl::FocusedWindowChanged` and `ApplicationImpl::window`. They give
   null windows, which the -003 guard now handles.
+
+## Implementation (2026-10-12)
+
+hud source `packages/hud`, branch `b/UNITY-20261009-003` (pushed), on the published +unity6 (`1369d9e`):
+
+- **`9644435`, the tests:**
+  - `tests/menus/test-menu-input-model-target.c`: a GMenu with:
+    - `(ss)` and `(uu)` items with targets;
+    - an `s` radio item;
+    - a boolean toggle;
+    - a parameterless action whose item has a target.
+
+    Every activation reports the action name and the parameter printed with its type.
+  - `TestHud.LegacyExecuteUsesItemTarget` drives `StartQuery`/`ExecuteQuery` as Unity 7 does.
+  - `TestQuery` gets seven tests: a structure key, a non-numeric and a numeric string key, no focused window, a bad
+    key over D-Bus, and `ExecuteParameterized` with bad keys and without a window.
+  - `TestItemStore.ExecuteUnknownIdLeavesStoreUnchanged` and `TestApplication.RelativeDataHomeIgnored`, with a
+    scoped working-directory guard.
+- **`652235c`, -003:**
+  - `QueryImpl::commandId` reads the key with `toULongLong(&ok)` and checks for a window token; it replies with an
+    error only when `calledFromDBus()`. `ExecuteCommand` and `ExecuteParameterized` use it.
+  - `ItemStore::execute`, `executeParameterized` and `executeToolbar` use `value()`.
+- **`9bfe9f8`, -005:** `ApplicationImpl::desktopPath` handles a non-empty `XDG_DATA_HOME` that does not start with
+  `/`. It searches `QDir::homePath()/.local/share/applications`, then `standardLocations(...).mid(1)`, and takes
+  the first `QFileInfo::isFile`.
+- **`35f17ab`, -004:**
+  - `QtGMenuModel::CreateAction` stores `g_variant_print(target, TRUE)` as the property `actionTarget`.
+  - `ActionTriggered(QString, bool, QString)` carries it, over function-pointer connections (`qOverload`).
+  - `QtGActionGroup::ActivationParameter` is the decision table, with non-floating results, and
+    `TriggerAction` uses `g_action_group_query_action`. `TriggerAction` is now a public slot, so that the
+    importer's function-pointer connection can reach it; libqtgmenu is an internal static library.
+  - `tests/unit/qtgmenu/TestActivationParameter.cpp` has 8 tests.
+- **`6893250`:** the changelog entry `14.10+17.10.20170619-0ubuntu6+unity7`.
+
+**The new tests one by one (logs/06).** On target2, from `git archive` of each tree, with `apt-get build-dep hud`,
+cmake and `make`. Each test runs alone with `--gtest_filter`, because on +unity6 several of them end in SIGSEGV,
+which ends the whole binary.
+
+| test | control (tests on +unity6, `06726fd`) | +unity7 (`6893250`) |
+|---|---|---|
+| `TestHud.LegacyExecuteUsesItemTarget` | FAILED: nothing invoked for "Window" | PASSED |
+| `TestQuery.ExecuteCommandWithStructureKeyOutsideDBus` | SIGSEGV | PASSED |
+| `TestQuery.ExecuteCommandWithNonNumericStringKey` | FAILED | PASSED |
+| `TestQuery.ExecuteCommandWithNumericStringKey` | PASSED (valid on both) | PASSED |
+| `TestQuery.ExecuteCommandWithoutFocusedWindow` | SIGSEGV | PASSED |
+| `TestQuery.ExecuteCommandWithBadKeyOverDBus` | PASSED (the branch the fix keeps) | PASSED |
+| `TestQuery.ExecuteParameterizedWithBadKeys` | SIGSEGV | PASSED |
+| `TestQuery.ExecuteParameterizedWithoutFocusedWindow` | SIGSEGV | PASSED |
+| `TestItemStore.ExecuteUnknownIdLeavesStoreUnchanged` | SIGSEGV | PASSED |
+| `TestApplication.RelativeDataHomeIgnored` | FAILED | PASSED |
+| `TestActivationParameter.*` | (not in the control) | 8 PASSED |
+
+All six suites pass on +unity7 there (`ctest`). The 23 compiler warnings are the same in both trees; none is in new
+code.
