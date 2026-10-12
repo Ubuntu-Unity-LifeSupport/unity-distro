@@ -62,3 +62,13 @@ fd4b76a gnome-text-editor pid 6121 window 58720260 (Новый документ 
    ok app.shortcuts _Комбинации клавиш
    ok app.about _О приложении
   menu labels: 11, with an underscore in the label: 9
+
+== the pkg run, audit.py's outcome line and the window's _GTK_* properties (read right after the run, 2026-10-12 ~13:40Z,
+   by: head -5 /tmp/audit.out; xprop -id 58720260 | grep _GTK_; output copied from the session)
+NO-MENUBAR bus=:1.121
+_GTK_THEME_VARIANT(UTF8_STRING) = 
+_GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta/window/1"
+_GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta"
+_GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.121"
+_GTK_APPLICATION_ID(UTF8_STRING) = "com.github.PintaProject.Pinta"
+(no _GTK_MENUBAR_OBJECT_PATH on the window)

@@ -75,8 +75,10 @@ The commits after `b76f3fb`:
   the brightness reading used there cannot tell the menu from the HUD.
 - The menus of the first starts were exported correctly (`audit.py`). INFERENCE: the panel takes up the menu of an
   application it sees for the first time only after a focus change. Not investigated further (UNITY-20261012-003).
-- logs/03-mnemonics-start.txt also has one Pinta run on our packaged stack: libunity-gtk4-menu is mapped but
-  exports no menu for Pinta (`NO-MENUBAR`, 0 labels). That is why our own series served as the control.
+- logs/03-mnemonics-start.txt also has one Pinta run on our packaged stack. libunity-gtk4-menu is mapped, but
+  `audit.py` reports `NO-MENUBAR` and 0 labels, and the window has no `_GTK_MENUBAR_OBJECT_PATH`. The outcome line
+  and the window properties were copied into that log from the session afterwards. So our own series served as the
+  control. Whether Pinta has a global menu in our packaged session at all is not examined here.
 - Pinta's items carry no mnemonic of their own. The guest's keyboard layouts (gb, us) cannot type Cyrillic item
   letters, so activating an item by its letter inside an open menu is not tested, as before.
 - A side note on UNITY-20261008-001: counted in the label column only, its logs give 228 labels with an underscore
