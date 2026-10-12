@@ -159,3 +159,39 @@ window title, so `b76f3fb` has no reason to hide the label there.
 - The types bug (`typesorder`) still reproduces on `fd4b76a`.
 - `52fa72e` and `5f5acae` behave as described in Unity; the hidden title comes back when its text changes.
 - Nothing to fix on our side from this re-check. Our packages do not use upstream's menu code.
+
+## Verification (independent Verifier, 2026-10-12): PASS
+
+Review status: REVIEWED. It took three rounds. The Verifier worked from the card, the logs, upstream's history
+and our pool files, without VM access.
+
+**Round 1: FAIL.** The main conclusions held, and four points were corrected:
+
+1. The (a) key timeline. The 16:42:34 Pinta window was a new process, started by a `start.sh` run whose output was
+   discarded, not the first-start window. One start was not observed. The first-start cases are now listed one
+   by one.
+2. The (d) `b76f3fb` "same" row stated a label visibility that the test does not read. It now gives what was
+   measured.
+3. The (b) gate wording: "contains `Unity`" (`strstr`), not "is Unity".
+4. The `2d50fe9` build had no log; its command and output were added to logs/01.
+
+**Round 2: FAIL** on one new line. The pkg run's `NO-MENUBAR` outcome was not in any log. It has been added.
+
+**Round 3: PASS.** The Verifier checked independently:
+
+- the build and tarball hashes against `git archive` and the pool;
+- `7f49f81` as the only change to label stripping;
+- our pool packages for `GTK_NOCSD_MENU`, menu export code and reverse dependencies on libunity-gtk4-menu0;
+- the `wanted_here()` gate in the unity-gtk4-menu 0.9 source;
+- the unchanged types condition;
+- the unreachable restore branch in `52fa72e`, and the headers image;
+- the method (`LD_PRELOAD` alone, the underscore count by label).
+
+Remarks:
+
+- **Written down afterwards:** some facts were taken from the live session after the run, with no raw file kept.
+  They are the pkg-run outcome line, the fd4b76a start at about 16:41:50 and the `2d50fe9` build output. They are
+  consistent with the file times, hashes and inode notes.
+- **Pinta on our packaged stack:** Pinta's window has no `_GTK_MENUBAR_OBJECT_PATH` while libunity-gtk4-menu is
+  mapped. That is outside this card. UNITY-20260927-034 describes Pinta's late menubar.
+- **Not run:** the vbox screenshots are on the Windows host, so they were not checked; the tests were not rerun.
