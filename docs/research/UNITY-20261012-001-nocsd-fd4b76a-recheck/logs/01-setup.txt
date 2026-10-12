@@ -90,3 +90,11 @@ advice.detachedHead в значение false
   -rwxr-xr-x 1 mike mike 72568 Oct 12 16:33 /home/mike/b1012/Pinta-3.1.2/build/bin/Pinta
 == 6 titletest
   titletest build rc=0 warnings 0
+
+# 2d50fe9 (our series as upstream carries it), built later as the control for (a), by one command from the builder
+# (2026-10-12 13:40:50Z): git archive --format=tar 2d50fe9 > src/2d50fe9.tar; scp to target2; on target2:
+#   rm -rf nocsd-2d50fe9; mkdir nocsd-2d50fe9; tar -xf src/2d50fe9.tar -C nocsd-2d50fe9; (cd nocsd-2d50fe9 && make > make-2d50fe9.log 2>&1)
+#   cp nocsd-2d50fe9/libgtk-nocsd.so.0 libgtk-nocsd-2d50fe9.so.0
+2d50fe9 NeiroNext Find menus added late and follow menu changes
+make rc=0 warnings 0
+4535bda5c2b81e0b  (sha256 of libgtk-nocsd-2d50fe9.so.0; = the S build of UNITY-20261008-001)
