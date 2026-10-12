@@ -15,7 +15,8 @@ corrections to the board titles (in the evidence):
 package: hud
 target_series: resolute
 source_version: 14.10+17.10.20170619-0ubuntu6+unity6 (published 2026-10-09)
-status: INVESTIGATING
+status: INVESTIGATING - the Design Challenger's round 2 was started and stopped (2026-10-12, work on builder);
+  it resumes from this card; no code yet
 ```
 
 ## Reading the code (hud +unity6, `1369d9e`)
