@@ -650,3 +650,28 @@ Not run:
 | -005 cannot be seen in the session, which does not set `XDG_DATA_HOME`. | unit test and Qt probe (logs/04) |
 | An item whose action group has not answered `DescribeAll` yet no longer runs (GTK's rule); +unity6 sent `Activate(NULL)` there. | by design; the window is short |
 | An Ubuntu upload of hud would replace +unity7 without these fixes. | the usual carried-package risk; hud 0ubuntu6 is the newest in every series |
+
+## Publication (2026-10-12/13)
+
+The slot came from C. This is a routine publication: an upgrade of hud, which is already live. It needs C's
+approval, and it goes through the archive signer's routine policy. -004 and -005 ship in this build and close
+through `released_in` this task (rule R).
+
+- **Branches:**
+  - `origin/main` was merged into the meta branch before the gate (`b5a5583`), and the 7 publication tools equal
+    `origin/main`.
+  - hud `b/UNITY-20261009-003` is pushed at `6893250`.
+- **Gated build:** `build/` (hud `6893250`, chroot 20261008T083223Z). It is the build tested on target2, so
+  `tested_build` is this_build. The hud .deb installed there is this build's (sha256 `ded65eb1…`, logs/07); no other
+  binary of the source is installed there.
+- **Database backup:** `~/backups/UNITY-20261009-003-20261012T231916Z` (20 files, equal to live), list_sha256
+  `99d830041ba34e09e5ca19147fc1b460033930e10774be946a0c753557f5d074`.
+- **repo add:** the manifest's artifacts went to unity-resolute at 23:19:21Z, 20 records (source, 14 .deb, 5 .ddeb),
+  536 → 556. Each pool file's sha256 equals the manifest's (22 of 22).
+- **Snapshot:** `unity-resolute-20261009-003`. `snapshot diff` against the live `unity-resolute-20261009-001` shows
+  only these 20 records added, all +unity7, nothing removed or changed (gate/snapshot-diff.txt).
+- **Version safety:** SAFE at 23:20:24Z (gate/version-check.json, gate/version-safety.txt). apt's candidate is
+  +unity7 for every binary, and resolute has hud only in its release pocket (0ubuntu6,
+  gate/prebuild-version-safety.txt).
+- **Peer notice:** A ACK at 23:21Z (gate/peer-notice.txt).
+- **Patch record:** docs/PATCHES.md, three rows.
