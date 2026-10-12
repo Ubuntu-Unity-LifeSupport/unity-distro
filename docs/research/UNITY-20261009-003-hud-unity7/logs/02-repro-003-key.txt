@@ -1,0 +1,40 @@
+# UNITY-20261009-003 path 1 (a non-integer key), repro.sh 003key: a string key, then a D-Bus structure key
+terminal windows: 2
+StartQuery 'Создать окно': target 'Создать окно', 3 suggestions, querykey '/com/canonical/hud/query/2'
+  'Создать окно\u2002(Файл)' 'org.gnome.Terminal' key 7
+  'Создать вкладку\u2002(Файл)' 'org.gnome.Terminal' key 6
+  'Закрыть окно\u2002(Файл)' 'org.gnome.Terminal' key 12
+ExecuteQuery with key 'not-a-number'
+  ExecuteQuery returned
+  CloseQuery returned
+after the string key: hud-service 4094
+StartQuery 'Создать окно': target 'Создать окно', 0 suggestions, querykey '/com/canonical/hud/query/3'
+ExecuteQuery with key ('not', 'a-number')
+  ExecuteQuery error: Timeout was reached
+  CloseQuery error: GDBus.Error:org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
+hud-service before 4094, after 
+жов 12 17:35:34 target2 hud-service[4094]: Failed to execute command - invalid item key QVariant(QDBusArgument, )
+жов 12 17:35:40 target2 update-notifier-crash[4829]: hud-service
+terminal windows: 2
+
+# the crash report: /var/crash/_usr_lib_x86_64-linux-gnu_hud_hud-service.1000.crash, ProblemType Crash, Signal 11 SIGSEGV
+
+# bt003.sh: the same under gdb attached to hud-service
+hud-service 5413 (14.10+17.10.20170619-0ubuntu6+unity6)
+StartQuery 'Создать окно': target 'Создать окно', 0 suggestions, querykey '/com/canonical/hud/query/1'
+ExecuteQuery with key ('not', 'a-number')
+  ExecuteQuery error: GDBus.Error:org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
+  CloseQuery returned
+Thread 1 "hud-service" received signal SIGSEGV, Segmentation fault.
+#0  0x00007662f8919447 in QDBusContext::message() const () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#1  0x00007662f8919484 in QDBusContext::setDelayedReply(bool) const () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#2  0x00007662f89195c3 in QDBusContext::sendErrorReply(QDBusError::ErrorType, QString const&) const () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#3  0x00005a28e54500b7 in ??? ()
+#4  0x00005a28e5443cf0 in ??? ()
+#5  0x00005a28e545b8e2 in ??? ()
+#6  0x00007662f88caee8 in ??? () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#7  0x00007662f88cf10d in ??? () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#8  0x00007662f88cf9e1 in ??? () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#9  0x00007662f88d1d84 in ??? () at /usr/lib/x86_64-linux-gnu/libQt5DBus.so.5
+#10 0x00007662f751dc03 in QObject::event(QEvent*) () at /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#11 0x00007662f816cbd7 in QApplicationPrivate::notify_helper(QObject*, QEvent*) () at /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5

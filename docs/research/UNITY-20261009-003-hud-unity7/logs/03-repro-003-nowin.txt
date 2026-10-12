@@ -1,0 +1,36 @@
+# UNITY-20261009-003 path 2 (no focused window), four tries, none reaches the null m_windowToken
+## repro.sh 003nowin (every window closed, the desktop focused)
+hud-service now 4978
+visible app windows: 2
+active window: 31457320 Рабочий стол
+StartQuery '': target '', 0 suggestions, querykey '/com/canonical/hud/query/0'
+ExecuteQuery with key uint64 0
+  ExecuteQuery returned
+  CloseQuery returned
+hud-service before 4978, after 4978
+жов 12 17:35:53 target2 sudo[4927]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/grep -aE ^(Signal|ExecutablePath|Package|ProblemType) /var/crash/_usr_lib_x86_64-linux-gnu_hud_hud-service.1000.crash
+жов 12 17:35:53 target2 sudo[4931]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/grep -a -A12 ^Stacktrace /var/crash/_usr_lib_x86_64-linux-gnu_hud_hud-service.1000.crash
+жов 12 17:36:02 target2 hud-service[4978]: void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher*): "Не существует интерфейса “com.canonical.dbusmenu” на объекте по пути /org/ayatana/bamf/window/58720344"
+жов 12 17:36:02 target2 hud-service[4978]: void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher*): "Не существует интерфейса “com.canonical.dbusmenu” на объекте по пути /org/ayatana/bamf/window/56623107"
+жов 12 17:36:04 target2 hud-service[4978]: QCoreApplication::postEvent: Unexpected null receiver
+
+## nowin2.sh A (window-stack-bridge killed), B (the only application window closed), C (the query that starts hud-service)
+== A: hud-service 4978, window-stack-bridge 2295
+StartQuery '': target '', 0 suggestions, querykey '/com/canonical/hud/query/1'
+ExecuteQuery with key uint64 0
+  ExecuteQuery returned
+  CloseQuery returned
+hud-service before 4978, after 4978; bridge now 5147
+== B: hud-service 4978, terminal window 60817414 the only application window
+StartQuery '': target '', 0 suggestions, querykey '/com/canonical/hud/query/2'
+ExecuteQuery with key uint64 0
+  ExecuteQuery returned
+  CloseQuery returned
+hud-service before 4978, after 4978
+== C: hud-service 4978 stopped; terminal window 60817414 focused
+StartQuery '': target '', 0 suggestions, querykey '/com/canonical/hud/query/0'
+ExecuteQuery with key uint64 0
+  ExecuteQuery returned
+  CloseQuery returned
+hud-service before 4978, after 5413
+жов 12 17:37:42 target2 hud-service[5413]: void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher*): "Не существует интерфейса “com.canonical.dbusmenu” на объекте по пути /org/ayatana/bamf/window/56623107"

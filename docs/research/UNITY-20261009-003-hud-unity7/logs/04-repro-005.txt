@@ -1,0 +1,9 @@
+# UNITY-20261009-005, repro.sh 005: qpaths.cpp (QStandardPaths, Qt 5.15.18+dfsg-1ubuntu1)
+qpaths build rc=0
+cwd /tmp/tmp.VF9NN3hh0a, ./rel/applications/x.desktop exists, XDG_DATA_DIRS=/tmp/tmp.VF9NN3hh0a/sys (no x.desktop there)
+XDG_DATA_HOME=rel XDG_DATA_DIRS=/tmp/tmp.VF9NN3hh0a/sys
+  standardLocations(ApplicationsLocation): rel/applications /tmp/tmp.VF9NN3hh0a/sys/applications
+  locate(x.desktop): "rel/applications/x.desktop"
+XDG_DATA_HOME=/tmp/tmp.VF9NN3hh0a/rel XDG_DATA_DIRS=/tmp/tmp.VF9NN3hh0a/sys
+  standardLocations(ApplicationsLocation): /tmp/tmp.VF9NN3hh0a/rel/applications /tmp/tmp.VF9NN3hh0a/sys/applications
+  locate(x.desktop): "/tmp/tmp.VF9NN3hh0a/rel/applications/x.desktop"
