@@ -3,36 +3,24 @@
 Test desktop: `target` (192.168.56.20, VM `target-desktop`, snapshot `Clean-updated-2026-09-23`)
 Build directory: `~/work/a`
 
-## Now (2026-10-08 06:30Z) - waiting for vbox
+## Now (2026-10-12 14:25Z)
 
-Done today:
-- **UNITY-20261002-003** (u-s-d power: idle watches end in stop()) and
-  **UNITY-20261002-011** (no suspend on AC: override in the schemas package):
-  u-s-d +unity11 published 2026-10-08 03:05Z (snapshot
-  `unity-resolute-20261002-003-r2`), target verified over ssh, merged by the
-  coordinator, DONE.
-- Tool and docs tasks while vbox is down, each merged by the coordinator
-  and DONE:
-  - **UNITY-20261002-001**: the `test_tested_with` fixture no longer
-    collides within one second.
-  - **UNITY-20260929-009**: section 6 publication sequence with
-    `[tool]`/`[process]` rules.
-  - **UNITY-20261008-002**: the publisher checks every binary's sha256 in
-    the gated snapshot.
-  - **UNITY-20261008-003**: `published_by` compares bytes or buildinfo
-    identity, and the gate and publisher require a committed `.buildinfo`.
-  - **UNITY-20261008-004**: canonical `scripts/backup_aptly_db.py`. Its one
-    live run left the backup
-    `~/backups/UNITY-20261008-004-20261008T050534Z`, kept as a rollback
-    point.
-  - **UNITY-20261008-005**: the apt view identifies the snapshot by
-    content (`content_sha256`).
+New session of A (2026-10-12), after the permission-model freeze was lifted.
 
-Next, by C's plan: **UNITY-20261002-012** (SECURITY, details private), only
-once the vbox MCP server is back (its tests need snapshots and rollbacks).
-On hold with it: UNITY-20260927-053 (cinnamon-session +unity4 built, not to
-be published) and UNITY-20261002-013. The meta branch
-`a/UNITY-20260927-053` stays local - do not push it.
+In progress:
+- **UNITY-20261009-001** (SECURITY, details private): unity-settings-daemon
+  `+unity14`, IMPLEMENTING. Local package and meta branches
+  `a/UNITY-20261009-001`, nothing pushed. Next: the gate build passes its
+  tests, then target, Verifier, publication slot.
+
+Queued for A after it:
+- **UNITY-20261008-023** (INVESTIGATING): cinnamon-session presence idle in
+  the Unity session (org.cinnamon.Muffin.IdleMonitor in u-s-d); May chose
+  idle blank+lock with the delay from `org.gnome.desktop.session idle-delay`.
+- **UNITY-20260928-008** (BLOCKED, waits for May): research for his decision.
+
+Finished since the last update (DONE): UNITY-20261002-012, UNITY-20260927-053,
+UNITY-20261008-024; UNITY-20261002-013 closed as ALREADY_FIXED.
 
 ## State of `target`
 
