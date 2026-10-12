@@ -1,0 +1,25 @@
+== session environment (compiz pid 3012)
+DESKTOP_SESSION=unity
+GTK_MODULES=appmenu-gtk-module:gail:atk-bridge
+LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu
+XDG_SESSION_DESKTOP=unity
+  GTK_NOCSD_* in systemd user env: 0
+
+typesorder build rc=0
+== b76f3fb, early GObject yes
+  GtkWindow type 93824992768448, window 0x5555558bfcc0
+  AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=0
+  GetReferences calls: 874
+== b76f3fb, early GObject no
+  GtkWindow type 93824992760848, window 0x5555558c5ce0
+  AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=93824992760848
+  GetReferences calls: 935
+== fd4b76a, early GObject yes
+  GtkWindow type 93824992768448, window 0x5555558bebe0
+  AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=0
+  GetReferences calls: 909
+== fd4b76a, early GObject no
+  GtkWindow type 93824992760848, window 0x5555558c6a90
+  AT EXIT: version=4 gottypes=1 GTKNoCSDGTKWindow=93824992760848
+  GetReferences calls: 913

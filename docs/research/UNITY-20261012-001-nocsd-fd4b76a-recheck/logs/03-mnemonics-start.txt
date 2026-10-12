@@ -1,0 +1,64 @@
+== a-pinta-fd4b76a
+installed fd4b76a: 03e751deadf6a8db
+fd4b76a pinta pid 4458 window 58720260 (Unsaved Image 1 - Pinta) active 58720260
+  preload in the process: LD_PRELOAD=libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0
+   - _File
+   ok app.new New...
+   ok app.NewScreenshot New Screenshot...
+   ok app.open Open...
+   ok app.save Save
+   ok app.saveAs Save As...
+   ok app.close Close
+   ok app.quit Quit
+   - _Edit
+   disabled app.undo Undo
+   disabled app.redo Redo
+   ok app.cut Cut
+   ok app.copy Copy
+   ok app.copymerged Copy Merged
+  menu labels: 39, with an underscore in the label: 0
+== a-pinta-2d50fe9
+installed 2d50fe9: 4535bda5c2b81e0b
+2d50fe9 pinta pid 5086 window 58720260 (Unsaved Image 1 - Pinta) active 58720260
+  preload in the process: LD_PRELOAD=libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0
+   - _File
+   ok app.new New...
+   ok app.NewScreenshot New Screenshot...
+   ok app.open Open...
+   ok app.save Save
+   ok app.saveAs Save As...
+   ok app.close Close
+   ok app.quit Quit
+   - _Edit
+   disabled app.undo Undo
+   disabled app.redo Redo
+   ok app.cut Cut
+   ok app.copy Copy
+   ok app.copymerged Copy Merged
+  menu labels: 39, with an underscore in the label: 0
+== a-pinta-pkg
+installed pkg: 6fcf52bcc6d96440
+pkg pinta pid 4755 window 58720260 (Unsaved Image 1 - Pinta) active 58720260
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  menu labels: 0, with an underscore in the label: 0
+== a-gte-fd4b76a
+installed fd4b76a: 03e751deadf6a8db
+fd4b76a gnome-text-editor pid 6121 window 58720260 (Новый документ (Черновик) - текстовый редактор) active 58720260
+  preload in the process: LD_PRELOAD=libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0
+   - Текстовый редактор
+   ok app.new-window _Создать окно
+   ok win.gtk-nocsd-page-save Со_хранить
+   ok win.gtk-nocsd-page-save-as Сохранить _как…
+   disabled win.gtk-nocsd-page-discard-changes _Отменить изменения…
+   ok win.gtk-nocsd-page-begin-search _Найти/Заменить…
+   ok win.gtk-nocsd-page-print _Печать…
+   ok win.gtk-nocsd-win-fullscreen Полноэкранный режим
+   disabled win.gtk-nocsd-win-unfullscreen Выйти из полноэкранного режима
+   ok win.gtk-nocsd-win-show-preferences _Параметры
+   ok app.shortcuts _Комбинации клавиш
+   ok app.about _О приложении
+  menu labels: 11, with an underscore in the label: 9

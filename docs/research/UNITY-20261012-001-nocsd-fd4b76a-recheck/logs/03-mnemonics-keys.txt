@@ -1,0 +1,39 @@
+UNITY-20261012-001 - Alt mnemonics on the Unity panel with real keys (vbox send_keys, scancodes in brackets),
+target2, 2026-10-12 (host times EEST). Each application started with start.sh (logs/03-mnemonics-start.txt):
+the build installed as libgtk-nocsd.so.0, LD_PRELOAD=libgtk-nocsd.so.0 only, the window focused. Read from vbox
+screenshots (the menu or the HUD is visible there); run 3 also from the brightness of the menu region.
+
+session 1 (cold boot 16:35)
+  16:39:32  fd4b76a  Pinta, 1st start in the session   Alt+F (38 21 a1 b8)   nothing opened
+  16:39:52  fd4b76a  same window                         Alt+F again           the HUD opened ("Введите команду")
+  16:41:33  2d50fe9  Pinta, fresh start                 Alt+F                 File menu opened on the panel
+                                                                               (New..., New Screenshot..., Open..., Save,
+                                                                               Save As..., Close, Quit)
+  16:42:34  fd4b76a  Pinta, the 1st-start window after minimise + activate (xdotool)
+                                                         Alt+F                 File menu opened
+            (the running Pinta maps the installed fd4b76a library: inode 131734 = the file, sha256 03e751deadf6a8db,
+             environment LD_PRELOAD=libgtk-nocsd.so.0 GTK_NOCSD_MENU=1)
+  16:43:23  fd4b76a  Pinta, fresh start (2nd)           Alt+F                 File menu opened
+  ~16:44    fd4b76a  Pinta, fresh start (3rd)           Alt+F                 a dark menu-sized region at the menu's place
+                                                                               (mean grey 37; screenshot not looked at)
+  16:44:32  b76f3fb  Pinta, fresh start                 Alt+F                 the HUD opened (labels "File", stripped):
+                                                                               the negative control, as in UNITY-20261008-001
+  16:45:00  fd4b76a  Text Editor, 1st start             Alt+F10 (38 44 c4 b8) nothing opened
+  16:45:06  fd4b76a  same window                         Alt+F10 again         nothing opened
+  16:45:19  fd4b76a  same window after minimise + activate
+                                                         Alt+F10               the holder "Текстовый редактор" opened, the
+                                                                               mnemonic letters underlined: Создать окно,
+                                                                               Сохранить (х), Сохранить как… (к), Найти/Заменить…,
+                                                                               Печать…, Параметры, Комбинации клавиш, О приложении
+  16:45:44  fd4b76a  Text Editor, fresh start (2nd)     Alt+F10               the holder opened, the same underlines
+
+session 2 (cold boot 16:46)
+  16:48:59  2d50fe9  Pinta, 1st start in the session   Alt+F                 nothing opened (our series, the same as fd4b76a's
+                                                                               first start)
+
+reading
+- fd4b76a keeps the mnemonic underscores (7f49f81): exported labels "_File", "_Edit", "Со_хранить", ... (9 of 11 Text
+  Editor items, Pinta's 6 top menus), and the panel uses them: Alt+F opens Pinta's File menu, the Text Editor holder
+  shows the underlined letters. b76f3fb strips them and Alt+F gives the HUD.
+- The first start of an application in a session does not react to the key until the window is focused again, with
+  fd4b76a and with our 2d50fe9 alike; later starts react at once. Not a difference between the builds.
