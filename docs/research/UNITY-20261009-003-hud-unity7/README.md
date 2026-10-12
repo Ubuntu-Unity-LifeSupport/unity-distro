@@ -15,8 +15,8 @@ corrections to the board titles (in the evidence):
 package: hud
 target_series: resolute
 source_version: 14.10+17.10.20170619-0ubuntu6+unity6 (published 2026-10-09)
-status: REVIEW - Design Challenger round 3 APPROVE (2026-10-12); built, target-checked, independent Verifier PASS
-  (2026-10-13)
+status: PUBLISHED - published 2026-10-12T23:23:41Z (unity-resolute-20261009-003); target check on the
+  publication PASS (logs/10). Design Challenger round 3 APPROVE (2026-10-12), independent Verifier PASS (2026-10-13)
 ```
 
 ## Reading the code (hud +unity6, `1369d9e`)
@@ -675,3 +675,25 @@ through `released_in` this task (rule R).
   gate/prebuild-version-safety.txt).
 - **Peer notice:** A ACK at 23:21Z (gate/peer-notice.txt).
 - **Patch record:** docs/PATCHES.md, three rows.
+- **Published:** 2026-10-12T23:23:41Z through publish_aptly.py --gate after C's approval. The live snapshot
+  changed from unity-resolute-20261009-001 to unity-resolute-20261009-003. The signer used the routine policy
+  (proposal 4049ab93443e0430), and its refresh and live checks passed. The served InRelease (sha256 92ae4292…) was
+  signed at 23:23:38 UTC with Release Date 23:18:38 UTC (the signer sets the date 300 s back).
+
+## Target verification of the publication (target2, 2026-10-12/13, logs/10)
+
+- target2 was restored to Clean-2. The restore was confirmed inside the guest: no ~/.dirty, no work
+  directories, only ubuntu.sources.
+- target-setup.sh live then ran against the published archive at 192.168.56.10:
+  - update and full-upgrade returned rc 0;
+  - the Release it fetched carries Date 23:18:38 UTC;
+  - apt shows hud 0ubuntu6+unity7 as both installed and candidate.
+- The downloaded `hud_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb` has sha256 `ded65eb1…`, the same as the
+  gated build. dpkg -V returned rc 0.
+- After a cold cycle, the running hud-service's binary equals the installed one (8df544f07dc58dc7, the same as in
+  logs/07), and no deleted mappings are present.
+- hudtarget.sh results:
+  - T1: 1 → 2 Terminal windows, with Activate("new-terminal", ('window','current'));
+  - T2: 654×434 → 1070×722;
+  - T3: automatic → scientific;
+  - T4: both bad keys are refused, and hud-service keeps the same PID with 0 crash reports.
