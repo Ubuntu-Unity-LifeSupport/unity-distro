@@ -1,0 +1,21 @@
+# UNITY-20261009-004 on target2, hud +unity6 (live stack, cold boot), repro.sh 004
+hud 14.10+17.10.20170619-0ubuntu6+unity6, hud-service pid 4094 sha256 3471e07f522bfd36
+terminal window 58720262 bus :1.99 menubar /org/gnome/Terminal/menus/menubar app /org/gnome/Terminal win /org/gnome/Terminal/window/1
+item group 1 menu 1: label 'Создать _окно' action 'win.new-terminal' target ('window', 'current')
+  action win.new-terminal on /org/gnome/Terminal/window/1: enabled True, parameter type '(ss)', state []
+terminal windows before: 1
+StartQuery 'Создать окно': target 'Создать окно', 3 suggestions, querykey '/com/canonical/hud/query/0'
+  'Создать окно\u2002(Файл)' 'org.gnome.Terminal' key 7
+  'Создать вкладку\u2002(Файл)' 'org.gnome.Terminal' key 6
+  'Закрыть окно\u2002(Файл)' 'org.gnome.Terminal' key 12
+ExecuteQuery with key uint64 7
+  ExecuteQuery returned
+  CloseQuery returned
+terminal windows after: 1
+org.gtk.Actions calls seen: 0
+hud-service pid 4094
+
+# control: the same action activated by hand with the item's target (gdbus, org.gtk.Actions.Activate new-terminal [<('window','current')>] {})
+before: 1
+()
+after: 2
