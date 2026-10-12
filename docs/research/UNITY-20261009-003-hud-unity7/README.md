@@ -15,8 +15,8 @@ corrections to the board titles (in the evidence):
 package: hud
 target_series: resolute
 source_version: 14.10+17.10.20170619-0ubuntu6+unity6 (published 2026-10-09)
-status: IMPLEMENTING - Design Challenger round 3 APPROVE (2026-10-12);
-  code follows the design "revised after rounds 1 and 2"
+status: REVIEW - Design Challenger round 3 APPROVE (2026-10-12); built, target-checked, independent Verifier PASS
+  (2026-10-13)
 ```
 
 ## Reading the code (hud +unity6, `1369d9e`)
@@ -380,7 +380,7 @@ Implementation can start.
 
 ## Design, revised after rounds 1 and 2
 
-The parameter types the fix must handle are measured across applications in "Reach of -004" below.
+The parameter types the fix must handle are measured across applications in "Reach of -004" above.
 
 ### -004
 
@@ -435,7 +435,8 @@ The parameter types the fix must handle are measured across applications in "Rea
     - the `(ss)` item runs with its target;
     - a `(uu)` item, as gnome-terminal's `size-to`, runs with its target, so a lost type annotation fails;
     - the `s` radio item gets its target;
-    - the boolean toggles;
+    - the boolean without a target runs with `NULL` (the fixture's own `activate` handler replaces GLib's default
+      toggle, so the toggling itself is not checked);
     - the parameterless action with a target does not run.
   - `TestQuery`:
     - a structure key outside D-Bus;
@@ -548,7 +549,7 @@ code.
 | T1 Terminal "Создать окно" (`win.new-terminal`, target `('window','current')`) | 1 window before and after, 0 `org.gtk.Actions` calls | **2 windows**; `Activate("new-terminal", [<('window', 'current')>])` |
 | T2 Terminal "4. 132×43" (`win.size-to`, `(uu)`) | 654×434 before and after | **654×434 → 1070×722** |
 | T3 Calculator "Научный" (`win.number-format`, `s`, through libunity-gtk4-menu) | `automatic` before and after | **`automatic` → `scientific`** |
-| T4 a string key, then a structure key | the string key is taken as 0; the structure key: **SIGSEGV**, a new PID and a crash report | both refused with a log line ("invalid item key"); **the same PID, no crash report** |
+| T4 a string key, then a structure key | the string key: the call returns (that it is taken as item 0 is from the code and the failing control unit test, not seen on the target); the structure key: **SIGSEGV**, a new PID and a crash report | both refused with a log line ("invalid item key"); **the same PID, no crash report** |
 
 **Regressions, the same boot (logs/08):**
 
@@ -561,3 +562,91 @@ code.
 
 -005 is not visible in the session: `XDG_DATA_HOME` is not set there. Its evidence is the unit test and the Qt probe
 of logs/04.
+
+Notes on the target check:
+
+- **The live stack.** It ran on the live stack of 2026-10-12 16:54:02 UTC (`unity-resolute-20261010-001`). Agent A
+  published unity-settings-daemon +unity14 at 22:58:56Z, after these runs. The publication check of this task runs
+  on the stack live then.
+- **T3 does not reset itself.** A second run in the same boot starts from `scientific`.
+
+## Verification (independent Verifier, 2026-10-13): PASS
+
+The Verifier did not write the fix. Review status: INDEPENDENTLY_REPRODUCED, on target2 with +unity7. It did not
+restore, reboot, install or remove anything there.
+
+- **The code** (`git diff 1369d9e 6893250`, 19 files, every hunk read) matches the approved design. Nothing outside
+  it changed.
+  - The three-argument `ActionTriggered` is the only signature left in the tree, with function-pointer
+    connections throughout.
+  - `ActivationParameter` is the 7-row table. Every activating parameter is non-floating and unreffed once.
+  - `g_action_group_query_action`'s parameter type is transfer none.
+  - `TriggerAction` being public does not matter: libqtgmenu is internal and static, and no qtgmenu file is in
+    any built package.
+  - `commandId` checks `canConvert`, then `toULongLong(&ok)`, then the window token, and replies only under
+    `calledFromDBus()`.
+  - `ItemStore` uses `value()`.
+  - `desktopPath` is the +unity6 code when `XDG_DATA_HOME` is unset, empty or absolute.
+- **Tests:**
+  - none passes vacuously;
+  - the "Plain" case would emit "plain NULL" on +unity6;
+  - the string-key test fails on +unity6 through `execute(0)`, as designed;
+  - the ItemStore test fails on +unity6 on the null item `operator[]` inserted;
+  - the guards restore the working directory and the environment in the right order;
+  - `TestActivationParameter` covers every row, the five types and the unannotated negatives.
+- **The control:**
+  - `06726fd` has the tree of `9644435`, exactly the tests on `1369d9e`;
+  - logs/06 matches the table row for row;
+  - both sbuild logs read: +unity7 successful, 6 of 6 suites (7/10/15/8/60/33); the control "attempted", 67%,
+    as the card says.
+- **Provenance:**
+  - the manifest's commit and tree equal git;
+  - all 24 artifacts and the log match;
+  - `dpkg-source -x` equals `git archive 6893250`, apart from the empty orig-tarball locale directory;
+  - the changelog trailer is UTC, NeiroNext, with no `Signed-off-by` anywhere.
+- **target2:**
+  - **The packages:** all 14 repository `.deb` files equal build/, `dpkg -V hud` is clean, and hud-service
+    (PID 3866) is the installed binary with no deleted mappings.
+  - **Its rerun of `hudtarget.sh`:**
+    - T1: 1→2 windows with `Activate("new-terminal", <('window','current')>)`;
+    - T2: 654×434→1070×722;
+    - T3 from known states: scientific → engineering → automatic → scientific;
+    - T4: both keys refused, the same PID, no new crash report.
+  - **An item the card did not try:** Terminal "Сброс и очистка" (`win.reset`, target `true`).
+    `Activate("reset", <true>)`, and the terminal was reset and cleared, as screenshots before and after show.
+- **The card's numbers:** a recount of the survey with its own script matches (306 items, 49 targeted in 10
+  applications, 14 unknown split 4/10), and so do the reproduction claims.
+
+Remarks:
+
+1. **The control's TestHud stops at its first ASSERT** ("Window"), so its later steps never ran against +unity6.
+   By the code, +unity6 would fail them too ("view 'view'", no `(uu)` activation, "plain NULL").
+2. **The "Bold" step checks `activate(NULL)` only:** the fixture's handler replaces GLib's toggle. The design's
+   wording is corrected above.
+3. **Card wording:** the status line and "below" → "above" are corrected.
+4. **"+unity6 takes the string key as 0" is not observed on the target.** It comes from the code and the failing
+   control unit test. Corrected in the table.
+5. **T3 is not self-resetting:** noted above.
+6. `ItemStore::addResult` keeps `m_items[id]`, with ids from the matcher; no action needed.
+
+Not run:
+
+- its own rebuild and `--gtest_filter` runs;
+- the +unity6 side on target2 (it would need a downgrade);
+- the HUD with real keys;
+- the no-window path live;
+- -005 in the session;
+- celluloid (not installed).
+
+## Known gaps
+
+| gap | where it is covered |
+|---|---|
+| New-API clients (`HudClient`) still treat items with a target as parameterized and send them to `ExecuteParameterized`. Unity 7's legacy path is not affected. | UNITY-20261012-011 |
+| The usage table records a use even when the action did not run. | UNITY-20261012-012 |
+| `ApplicationListImpl::FocusedWindowChanged` and `ApplicationImpl::window` use `operator[]` and can give null windows; the -003 guard now handles them. | UNITY-20261012-013 |
+| The first start of an application in a session ignores an Alt mnemonic until the window is focused again. | UNITY-20261012-003 |
+| libunity-gtk4-menu0, which the Calculator items go through, is not pulled in by an upgrade. | UNITY-20260927-037 |
+| -005 cannot be seen in the session, which does not set `XDG_DATA_HOME`. | unit test and Qt probe (logs/04) |
+| An item whose action group has not answered `DescribeAll` yet no longer runs (GTK's rule); +unity6 sent `Activate(NULL)` there. | by design; the window is short |
+| An Ubuntu upload of hud would replace +unity7 without these fixes. | the usual carried-package risk; hud 0ubuntu6 is the newest in every series |
