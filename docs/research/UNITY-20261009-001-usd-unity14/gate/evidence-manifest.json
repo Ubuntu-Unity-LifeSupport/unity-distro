@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261009-001",
+  "package": "unity-settings-daemon",
+  "source_commit": "dd209ecdda0958a2dd989db41dbff4340a3d9666",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261009-001-usd-unity14/README.md",
+      "sha256": "baa8c6efc5259710556313d968b372f122cfb7eba88ecdd57dce570d5378a023"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261009-001-usd-unity14/README.md",
+      "sha256": "baa8c6efc5259710556313d968b372f122cfb7eba88ecdd57dce570d5378a023"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "21ff6c88408e3e851526dbd7cc49d91db860c5f721030c8a95a4ad351d97c7ca"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261009-001-usd-unity14/gate/release-record.json",
+      "sha256": "bea5d9d48a4c85e8b51d0d5c6f08cb18ec51092f9afe7fd41710f9ed4a2bc24d"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261009-001-usd-unity14/gate/version-check.json",
+      "sha256": "ce34b73e22ac92ab8d5ef4d19ef12ef008086ef7767efcf3061545bc8d8e8b83"
+    }
+  }
+}

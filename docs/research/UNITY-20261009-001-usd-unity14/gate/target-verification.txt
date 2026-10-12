@@ -1,0 +1,23 @@
+UNITY-20261009-001: target verification of the publication of unity-settings-daemon
+15.04.1+21.10.20220802-0ubuntu7+unity14
+
+Published 2026-10-12 22:58:56Z as snapshot unity-resolute-20261009-001 (publish record
+~/coordinator/publish-records/UNITY-20261009-001.json: aptly PASS, post-publish check PASS; signer mode,
+approved by policy, refresh OK, live OK). On builder: /srv/aptly/public/dists/resolute/InRelease
+Date Mon, 12 Oct 2026 22:53:53 UTC, Valid-Until Thu, 15 Oct 2026 22:53:53 UTC, gpgv Good signature
+(29A893E03970066F2DD287D47BF3F77FC27B152C, the repository key); 7 binary records of +unity14 in
+main/binary-amd64/Packages.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: fresh boot,
+unity-settings-daemon +unity11), apt-get update from the live repository (InRelease accepted, candidate
++unity14), full-upgrade, then a cold boot (2026-10-12 23:07Z).
+  Installed: unity-settings-daemon, unity-settings-daemon-schemas, libunity-settings-daemon1
+  15.04.1+21.10.20220802-0ubuntu7+unity14; the downloaded unity-settings-daemon deb has sha256
+  c04425e35274d7cb0b7f66e6b098c923c8a589680f23a81cf8daa1daf17f958e, equal to the gated build.
+  unity-fallback-mount-helper runs from the published binary (no "(deleted)" mappings); the seat0
+  session is active, LockedHint=no.
+  A medium (an ISO image in the optical drive) inserted into the unlocked session: mounted; the helper
+  kept running.
+  The machine was powered off afterwards and the drive emptied.
+
+Result: PASS.
