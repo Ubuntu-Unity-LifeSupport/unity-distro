@@ -15,8 +15,8 @@ corrections to the board titles (in the evidence):
 package: hud
 target_series: resolute
 source_version: 14.10+17.10.20170619-0ubuntu6+unity6 (published 2026-10-09)
-status: INVESTIGATING - Design Challenger round 2 REVISE taken, round 3 (a check of the changes) next;
-  it resumes from this card; no code yet
+status: IMPLEMENTING - Design Challenger round 3 APPROVE (2026-10-12);
+  code follows the design "revised after rounds 1 and 2"
 ```
 
 ## Reading the code (hud +unity6, `1369d9e`)
@@ -328,8 +328,10 @@ timed out, as in UNITY-20261008-001.
 - **Our own libunity-gtk4-menu is affected too.** Some affected items are its own `win.unity-gtk4-menu-*` actions:
   Amberol ReplayGain, Shortwave sorting, Text Editor Discard Changes. The fix makes them work through the HUD.
 - **The 14 "unknown" items stay as they are.** They fall in two groups:
-  - actions whose group is not exported where the HUD looks: `ui.`, `game-view.`, `restore.`, Epiphany's;
-  - actions the window does not have: Terminal's save-contents, export, print, set-title.
+  - 4 actions whose group is not exported where the HUD looks: `ui.` ×2 (gnome-2048), `game-view.` (Sudoku),
+    `restore.` (Déjà Dup);
+  - 10 actions the exported group does not have: Epiphany's six (`win.fullscreen`, `app.uninstall-web-app`, …)
+    and Terminal's save-contents, export, print, set-title.
 
   For the first 4, +unity6 finds no group and does nothing. For the other 10 the group exists, but the action does
   not: `get_action_parameter_type` returns NULL, so +unity6 sends `Activate(name, [])` and the application rejects
@@ -359,6 +361,22 @@ for:
 
 Confirmed as revised: the legacy `TestHud` test, the decision table against GTK's `can_activate`, the parse and the
 type check, `ItemStore::value()`, the `TestQuery` tests, the -005 details and the control list.
+
+### Design review, round 3: APPROVE
+
+All five round-2 points are in the design. The Design Challenger checked them on `b7f24c1`:
+
+- `ActivationParameter` returns a non-floating reference or `nullptr`, the variant that ran cleanly in its round-2
+  test program;
+- the card's counts are right, and `analyze.py` regenerates the log;
+- the "known: no" row states the behaviour change;
+- the type annotations are pinned by `(uu)` and `x` tests;
+- the three connections use function pointers, `:466` with `qOverload<bool>`.
+
+One remark: a sentence on the unknown items still put Epiphany's six under "group not exported". They belong with
+Terminal's four under "no such action". This is corrected above.
+
+Implementation can start.
 
 ## Design, revised after rounds 1 and 2
 
