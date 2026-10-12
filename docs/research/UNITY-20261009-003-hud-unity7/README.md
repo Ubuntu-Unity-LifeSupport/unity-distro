@@ -15,7 +15,7 @@ corrections to the board titles (in the evidence):
 package: hud
 target_series: resolute
 source_version: 14.10+17.10.20170619-0ubuntu6+unity6 (published 2026-10-09)
-status: INVESTIGATING - the Design Challenger's round 2 was started and stopped (2026-10-12, work on builder);
+status: INVESTIGATING - Design Challenger round 2 REVISE taken, round 3 (a check of the changes) next;
   it resumes from this card; no code yet
 ```
 
@@ -306,11 +306,13 @@ timed out, as in UNITY-20261008-001.
 | `b` | `b` | 3 | **nothing** | activate with the target |
 | `x` | `x` | 3 | **nothing** | activate with the target |
 | `(ss)` | `(ss)` | 2 | **nothing** | activate with the target |
-| (no group for the prefix, or no such action) | - | 14 | nothing: no group matches the prefix | no activation (unknown) |
+| (no group for the prefix: 4; or the group exists but has no such action: 10) | - | 14 | 4: nothing (no group matches the prefix); 10: `Activate(name, [])`, which the application rejects | no activation (unknown) |
 
 - **In every targeted item, the target's type equals the action's parameter type.** No row "target but no parameter"
   or "wrong type" occurs. So the fix needs no per-type code: it passes the target and checks the type.
-- **49 items in 14 applications are run wrongly or not at all by the HUD today.**
+- **49 items in 10 applications are run wrongly or not at all by the HUD today:** gnome-terminal 12, swell-foop 9,
+  shortwave 7, celluloid 6, gnome-calculator 4, gnome-maps 3, amberol 3, file-roller 2, gnome-weather 2,
+  gnome-text-editor 1. (`analyze.py`'s "63 in 14 applications" also counts the 14 unknown items.)
   - The 12 non-string items are never activated:
     - gnome-terminal: New Tab and New Window (`(ss)`), Reset and Reset and Clear (`b`), the four sizes (`(uu)`);
     - celluloid: the video, audio and subtitle tracks (`x`);
@@ -329,10 +331,36 @@ timed out, as in UNITY-20261008-001.
   - actions whose group is not exported where the HUD looks: `ui.`, `game-view.`, `restore.`, Epiphany's;
   - actions the window does not have: Terminal's save-contents, export, print, set-title.
 
-  +unity6 finds no group and does nothing; the revised design logs them and does nothing. They match the
-  "MISSING" items of UNITY-20261008-001.
+  For the first 4, +unity6 finds no group and does nothing. For the other 10 the group exists, but the action does
+  not: `get_action_parameter_type` returns NULL, so +unity6 sends `Activate(name, [])` and the application rejects
+  it. The revised design logs all 14 and sends nothing. The user sees nothing happen before or after; only the
+  D-Bus traffic differs. They match the "MISSING" items of UNITY-20261008-001.
 
-## Design, revised after round 1
+### Design review, round 2: REVISE (all points taken)
+
+All ten round-1 points were taken correctly, and the survey changes nothing in the approach. The Design Challenger
+checked `GDBusActionGroup` and ownership with two GLib 2.88 programs on a private `dbus-run-session` bus. It asked
+for:
+
+1. **A crash in the compatibility row.** `g_variant_new_string(name)` is floating. The activation takes it over, and
+   the planned unref would then free it twice (`GLib-CRITICAL g_atomic_ref_count_dec`, exit 134 under
+   `G_DEBUG=fatal-criticals`). That row covers 37 items. `ActivationParameter` must always return a non-floating
+   reference, and the unit test asserts it.
+2. **Two facts in the card were wrong.**
+   - Of the 14 unknown items, only 4 have no group. For the other 10, +unity6 sends `Activate(name, [])`, which the
+     application rejects.
+   - The 49 items are in 10 applications, not 14.
+
+   Both are corrected above, and `analyze.py` and logs/05 are regenerated.
+3. **"Known: no" also covers a group whose `DescribeAll` reply has not arrived.** +unity6 sent `Activate(NULL)` in
+   that window; the revised design sends nothing. That is a behaviour change, now stated in the table.
+4. **A non-default numeric target in the tests**, `(uu)` and `x`, so that a lost type annotation fails a test.
+5. **`qOverload<bool>`** for the `QAction::triggered` connection at `QtGMenuModel.cpp:466`.
+
+Confirmed as revised: the legacy `TestHud` test, the decision table against GTK's `can_activate`, the parse and the
+type check, `ItemStore::value()`, the `TestQuery` tests, the -005 details and the control list.
+
+## Design, revised after rounds 1 and 2
 
 The parameter types the fix must handle are measured across applications in "Reach of -004" below.
 
@@ -340,15 +368,23 @@ The parameter types the fix must handle are measured across applications in "Rea
 
 - **The target travels:** `QtGMenuModel::CreateAction` reads `G_MENU_ATTRIBUTE_TARGET` and stores
   `g_variant_print(target, TRUE)` as the property `actionTarget`; the attribute is unreffed.
-- **The signal carries it:** `ActionTriggered(QString name, bool checked, QString target)`. The three connections
-  use function pointers (`qOverload` where needed).
+- **The signal carries it:** `ActionTriggered(QString name, bool checked, QString target)`. The connections use
+  function pointers: the signal-to-signal one at `QtGMenuModel.cpp:385-386`, the one at
+  `QtGMenuImporterPrivate.cpp:129-130`, and `QAction::triggered` to the slot `ActionTriggered(bool)` at
+  `QtGMenuModel.cpp:466`. That slot shares its name with the three-argument signal, so it needs `qOverload<bool>`
+  (round 2, point 5).
+- **The text keeps the type annotations:** `g_variant_print(target, TRUE)`. Without them, the survey's `(uu)` and
+  `x` targets would parse back as int32 and fall into the "wrong type" row.
 - **`QtGActionGroup::ActivationParameter`** is static and pure. It takes `known` (from `g_action_group_query_action`),
-  the parameter type, the target text and the action name, and returns `{activate, GVariant *parameter}`, where the
-  parameter is owned by the caller:
+  the parameter type, the target text and the action name, and returns `{activate, GVariant *parameter}`. The
+  parameter is always a **non-floating** reference owned by the caller (the parsed target as `g_variant_parse`
+  returns it; the compatibility string as `g_variant_ref_sink(g_variant_new_string(name))`), or `nullptr`.
+  `TriggerAction` unrefs it after `g_action_group_activate_action`. A floating value there would be taken over by
+  the activation and then unreffed a second time (round 2, point 1).
 
   | known | target | parameter type | result |
   |---|---|---|---|
-  | no | any | - | no activation, log "unknown action" |
+  | no | any | - | no activation, log "unknown action". This includes a group whose `DescribeAll` reply has not arrived yet: `g_action_group_query_action` gives FALSE for every action until then. +unity6 sent `Activate(NULL)` in that window, which worked for a parameterless action; the revised design sends nothing, as GTK keeps the item insensitive until `action-added`. Groups are built once per importer, so the window is short. |
   | yes | none | none | activate with `NULL` (toggles and plain actions as now) |
   | yes | none | `s` | activate with the action name (hud's compatibility rule, kept) |
   | yes | none | other | no activation (as now) |
@@ -377,8 +413,12 @@ The parameter types the fix must handle are measured across applications in "Rea
 ### Tests
 
 - **Control (the tests on +unity6):**
-  - `TestHud`: the legacy target test with `test-menu-input-model-target.c`. The `(ss)` item runs with its target,
-    the `s` radio item gets its target, the boolean toggles, the parameterless action with a target does not run.
+  - `TestHud`: the legacy target test with `test-menu-input-model-target.c`:
+    - the `(ss)` item runs with its target;
+    - a `(uu)` item, as gnome-terminal's `size-to`, runs with its target, so a lost type annotation fails;
+    - the `s` radio item gets its target;
+    - the boolean toggles;
+    - the parameterless action with a target does not run.
   - `TestQuery`:
     - a structure key outside D-Bus;
     - a non-numeric string key with a focused window (`execute` never called);
@@ -388,7 +428,10 @@ The parameter types the fix must handle are measured across applications in "Rea
   - `TestItemStore`: an unknown id, then an empty `SHOW_SUGGESTIONS` search.
   - `TestApplication`: `RelativeDataHomeIgnored`.
   - Each runs with its own `--gtest_filter` in the control log.
-- **Outside the control:** `tests/unit/qtgmenu/TestActivationParameter.cpp`, one test per table row.
+- **Outside the control:** `tests/unit/qtgmenu/TestActivationParameter.cpp`:
+  - one test per table row;
+  - targets of the types `s`, `b`, `x`, `(uu)` and `(ss)`, from their annotated text;
+  - for every row that activates, `!g_variant_is_floating(parameter)`.
 
 ### Not changed (candidates, IDs from C)
 

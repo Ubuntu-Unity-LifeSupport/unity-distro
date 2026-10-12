@@ -15,8 +15,10 @@ errors = [r for r in rows if 'error' in r]
 def unity6(it):
     """What +unity6 QtGActionGroup::TriggerAction does (QtGActionGroup.cpp:75-103)."""
     p = it.get('param')
-    if 'describe_error' in it or 'group' in it:
-        return 'unknown action (activate with NULL if the group answers NULL)'
+    if 'group' in it:
+        return 'unknown: no group for the prefix (nothing)'
+    if 'describe_error' in it:
+        return 'unknown: no such action (Activate(name, []), rejected)'
     if not p:
         return 'activate(NULL)'
     if p == 's':
@@ -59,8 +61,22 @@ print("\n+unity6 -> revised design:")
 c2 = collections.Counter((unity6(it), unity7(it)) for it in items)
 for (a, b), n in c2.most_common():
     print(f"  {n:4}  {a:45} -> {b}")
+known = [it for it in items if 'group' not in it and 'describe_error' not in it]
+targeted = [it for it in known if it.get('target_type')]
+print(f"\ntargeted items of known actions (+unity6 runs them wrongly or not at all): {len(targeted)} in "
+      f"{len(set(it['app'] for it in targeted))} applications: "
+      + ', '.join(f"{a} {n}" for a, n in collections.Counter(it['app'] for it in targeted).most_common()))
+unknown = [it for it in items if it not in known]
+print(f"unknown actions: {len(unknown)} ({sum(1 for it in unknown if 'group' in it)} without a group for the prefix, "
+      f"{sum(1 for it in unknown if 'describe_error' in it)} with a group but no such action)")
+for it in unknown:
+    print(f"  {it['app']}: {it['action']} [{it.get('target')}] {it.get('group') or it.get('describe_error')}")
+print("targeted items of known actions with a non-string target:")
+for it in targeted:
+    if it['target_type'] != 's':
+        print(f"  {it['app']}: {it['action']} target {it['target']} ({it['target_type']}), parameter {it.get('param')}")
 bad = [it for it in items if not correct(it)]
-print(f"\nitems +unity6 runs differently from GTK: {len(bad)} in "
+print(f"\nitems +unity6 runs differently from GTK, unknown ones included: {len(bad)} in "
       f"{len(set(it['app'] for it in bad))} applications")
 per_app = collections.defaultdict(list)
 for it in bad:
