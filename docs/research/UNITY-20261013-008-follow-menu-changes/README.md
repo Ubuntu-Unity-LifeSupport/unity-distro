@@ -122,3 +122,17 @@ Notes:
 - (7) the idle's priority.
 
 DESIGN.md round 3 answers them (its second table).
+
+## Design review round 3 (Design Challenger, 2026-10-13): APPROVE
+
+All seven round-2 findings are answered, the blocking one included: copies are recognised by a mark on the
+object, and recursion happens only if both sides are marked.
+
+Notes for the implementation:
+- seed the source's action names at the fill;
+- skip recursion when our link object and the new one are the same pointer (a self-referencing source below
+  depth 16);
+- a private mark key with `GINT_TO_POINTER(1)`;
+- a hard depth cap of 16 in `sync()`.
+
+The tests that guard the riskiest paths are 13, 14, 19, 22 and target 5, the last only after the oracle check.
