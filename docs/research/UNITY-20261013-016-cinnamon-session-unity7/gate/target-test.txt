@@ -1,0 +1,38 @@
+UNITY-20261013-016 (with UNITY-20261013-020, UNITY-20261013-022): target test of cinnamon-session 6.4.2-1+unity7
+(gate build of 7393f0e)
+
+Raw files: gate/target/ (times EEST on the target, UTC where marked).
+
+Target: target-desktop restored from Published-stack-2026-10-08 and updated from the live repository the same
+day (cinnamon-session +unity6, u-s-d +unity15, light-locker +unity3). Installed with apt, then a cold boot
+(01-install.txt): these debs of this gate build (build/)
+  65570d04a299bc7d905b001c566d65d7894f1dcd194adec82dae5a698617193e  cinnamon-session_6.4.2-1+unity7_amd64.deb
+  f3ee952b1cc51656cb7a5ae3024e25a821435395cc4d6f374a13e9bcdffb86d9  cinnamon-session-common_6.4.2-1+unity7_all.deb
+and, so that the presence's idle watch has a provider, unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16
+(build of UNITY-20261008-023, debs as in 01-install.txt). The running cinnamon-session-binary is this build's
+(02-boot-022-020.txt).
+
+-022 (02-boot-022-020.txt, before.*, after.*): after the boot the user dbus.service has OOMPolicy=continue
+(before: stop) and DropInPaths the drop-in; ManagedOOMPreference=none, NeedDaemonReload=no; no parse error.
+The filtered show diff (before.filtered taken before the install, after.filtered after the boot) has, besides
+OOMPolicy and DropInPaths, dependency lists that differ in content: RequiredBy= and Before= list the xdg
+desktop/document portal and permission-store units, which were loaded by the time of the second capture
+and not of the first; Requires= and After= are the same sets in another order. No other property differs. (The diff
+printed in 02-boot-022-020.txt left the dependency lines out.)
+
+-020 (03-020-rerun.txt): with one and then two clients holding session-manager suspend inhibitors (flags 4),
+cinnamon-session holds shutdown:sleep in block-weak mode, InhibitedActions u 4, and CanSuspend, CanReboot and
+CanPowerOff (asked from the user manager) stay "yes"; after the last release the lock is gone and
+InhibitedActions u 0. No Suspend/Reboot/PowerOff call was made. (The run in 02-boot-022-020.txt is not valid:
+the script did not find its client program, so no inhibitor was held.)
+
+-016 (04-016.txt, 06-relogin.txt, relogin-monitor.log): org.gnome.desktop.session idle-delay 60 and
+org.cinnamon.desktop.session idle-delay 600, last input 20:36:44: at t+80 s presence idle, IdleHint yes,
+LockedHint yes (which locker locked was not recorded). After a new login (LightDM restarted: new
+cinnamon-session and unity-settings-daemon processes), the new cinnamon-session sent one AddIdleWatch to
+org.cinnamon.Muffin.IdleMonitor, with 300000 ms (the gnome key's default). Keys reset afterwards.
+Method note: in this run a restart of unity-session.service (04-016.txt, 05-restarted-session.txt) left
+unity-settings-daemon stopped (not restarted), so no idle monitor was there to ask; that run is not used.
+
+Result: PASS.
+tested_build: this_build (the cinnamon-session debs above are this gate's build).

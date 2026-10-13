@@ -1,0 +1,4 @@
+== 20:41:30 new cinnamon-session 7233 (:1.231) started вт жов 13 20:40:53 2026; u-s-d 7234 started вт жов 13 20:40:53 2026
+AddIdleWatch from the new cinnamon-session: 1
+   uint64 300000
+21 1000 mike seat0 6088 user    - no -
