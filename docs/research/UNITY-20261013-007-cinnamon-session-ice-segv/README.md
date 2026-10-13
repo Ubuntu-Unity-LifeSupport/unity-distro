@@ -6,7 +6,7 @@ Owner: agent B (target2).
 task: UNITY-20261013-007
 package: cinnamon-session (6.4.2-1+unity5 installed from live)
 target_series: resolute
-status: INVESTIGATING - crash recorded and symbolized; recurrence check: none; analysis of the source next
+status: BLOCKED - cause not proven; waiting for a natural occurrence after compiz +unity3
 ```
 
 ## What happened (target2, 2026-10-13, logs/01)
@@ -58,10 +58,34 @@ Its analysis belongs with compiz (UNITY-20261013-004, agent A).
 libraries were replaced afterwards (gdb: build-id mismatch), so no frames can be resolved. It is recorded as a fact,
 with no task; a task follows only if it shows up outside an upgrade.
 
-## Not yet done
+## Analysis (2026-10-13)
 
-- whether +unity4/+unity5 changed anything near `csm-xsmp-server.c` or the ICE connection's lifetime;
-- the lifetime analysis: who else closes or frees the same IceConn (the client's disconnect and "died" paths,
-  libICE's IO error handler), and how gnome-session handled the same code;
-- a deterministic reproduction without the compiz race: a test XSMP client that breaks its socket;
-- the existing-fix check (cinnamon-session upstream, gnome-session, libice).
+- **Our patches:** none of +unity1 … +unity5 touches the code in the trace. They change `csm-manager.c`,
+  `csm-system.c`, `csm-systemd.c`, `meson.build` and the D-Bus interface XML. `csm-xsmp-server.c`,
+  `csm-xsmp-client.c` and the ICE handling are upstream 6.4.2.
+- **libICE 1.1.1:** libice6 2:1.1.1-1build1 carries no source patches. For a server connection still in its pending
+  phase:
+  - an IO error makes `IceProcessMessages` return `IceProcessMessagesIOError` without freeing the connection
+    (`misc.c:78-86`, `process.c:207-218`);
+  - `IceCloseConnection` then frees it once, synchronously, through the listen-object short-circuit
+    (`shutdown.c:115-121`);
+  - `ice_error_handler` runs only when the server receives an ICE_Error (`process.c:859`).
+
+  So the trace is a single close of an IceConn whose transport was already freed or corrupted. Where that came from
+  is not proven.
+- **Upstream:**
+  - cinnamon-session master `c038bb4` (2026-10-11) has `csm-xsmp-server.c` unchanged since 6.4.2.
+  - gnome-session's identical `ice_error_handler` was never changed (`75df2148`, 2008), and gnome-session removed
+    XSMP in `3f863880` (2025).
+  - mate-session-manager has the same code.
+  - No bug report was found for this server path. The nearest is libxfce4ui#99, a client-side close of an
+    already-closed ICE connection, with the same signature in Fedora retrace 396167 and 910898.
+- **Reproduction:** none. A deterministic reproduction with a test client was not done. Building it was stopped by a
+  safety check in the session, and the line was not pursued.
+
+## Status: BLOCKED
+
+The cause is not proven. The likely trigger in our stack is compiz losing file descriptors at start, which agent A
+is removing in compiz +unity3. After that is published, ordinary cold test sessions on target2 keep cinnamon-session
+debug logging and uprobes on `IceCloseConnection`, `_IceFreeConnection` and `_IceTransClose` on, where that does not
+disturb the main check, and record whether this signature appears again. No code.
