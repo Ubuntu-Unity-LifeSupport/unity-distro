@@ -1,0 +1,54 @@
+UNITY-20261012-007 (with UNITY-20261012-008, UNITY-20261012-009): target test of unity-settings-daemon
+15.04.1+21.10.20220802-0ubuntu7+unity15
+
+Target: target-desktop on the live stack of 2026-10-13 (restored from Published-stack-2026-10-08 for the
+compiz +unity3 verification and updated from the live repository then; apt full-upgrade has nothing left
+to install: unity-settings-daemon +unity14, compiz +unity3). The debs below from this build (build/)
+installed with apt, then a cold boot (2026-10-13 09:10Z).
+
+Installed debs (sha256 equal to build/ and the build manifest):
+  dffcfd37cb21d1b8c55aa6f5dfe06430058911112777bd2c90bbf05b51ade767  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+  0b5fecd88ce2e105e9641f748587e821fd4028ac506847453e4784e0a82aaf3f  unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity15_all.deb
+  409d285be9c0bcf178cac4fd362f0b597b71aee50c2561bbf86a96cb020d9bf6  libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+
+Versions on the target during the test:
+  cinnamon-session	6.4.2-1+unity5
+  compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+  libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity15
+  light-locker	1.8.0-3ubuntu4+unity3
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+  unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+  unity-settings-daemon-schemas	15.04.1+21.10.20220802-0ubuntu7+unity15
+
+Build: make check runs test-mount-guard, test-automount, test-autorun and gcm-self-test; all PASS in
+the build log (build/), test-mount-guard built and linked with -fsanitize=address.
+
+Observation: mounts with findmnt over ssh; the helper's windows with xdotool search --onlyvisible on
+DISPLAY=:0 over ssh (window title "Ubuntu-Unity 26.04 amd64", class unity-fallback-mount-helper), plus
+screenshots; dialog buttons pressed with xdotool.
+
+Run 1, published configuration (light-locker is the locker), unlocked session:
+  unity-fallback-mount-helper (pid 2177, started 12:12:01 EEST in the boot of 12:10:26) runs from the new
+  binary, no "(deleted)" mapping; the seat0 session is active, LockedHint=no.
+  A medium (an ISO image in the optical drive) inserted with autorun off (autorun-never=true, the
+  default on this machine): mounted, no visible dialog.
+  Autorun enabled (autorun-never=false), medium inserted again: mounted, the helper's autorun dialog
+  appears ("Ubuntu-Unity 26.04 amd64", with its Eject button).
+  Eject pressed in the dialog: the medium is unmounted, the dialog closes, no error dialog.
+  Medium inserted again, dialog up, medium unmounted from outside (gio mount -u): the dialog closes.
+  The helper kept running (same process) through all steps; no warnings from it in the journal.
+
+Run 2, same boot, published configuration:
+  Medium inserted, autorun dialog up; the session locked (loginctl lock-session; light-locker,
+  LockedHint=yes, the session stays active): the autorun dialog is gone. The helper kept running.
+  Then a power-off with the medium still mounted (the session ends and the helper stops), and a new boot:
+  no crash report and no core dump from the previous boot; /var/crash holds only the two old files from
+  the snapshot (light-locker and do-release-upgrade, 2026-10-08), which apport offered at login, as in
+  the +unity14 run; not related to this package. The new session is up with +unity15.
+
+Not tested on the target: prompts from a mount operation (they need a medium that asks for a password
+or a busy unmount) and the cleanup changed in this build, which runs only when the helper stops with a
+prompt pending; they are covered by the test suite.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build).

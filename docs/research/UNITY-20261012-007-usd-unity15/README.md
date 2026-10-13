@@ -1,0 +1,56 @@
+# UNITY-20261012-007, UNITY-20261012-008, UNITY-20261012-009: unity-settings-daemon +unity15 (automount helper)
+
+Agent A, target `target-desktop`.
+
+## What is fixed
+
+| package | version | change |
+|---|---|---|
+| unity-settings-daemon | 15.04.1+21.10.20220802-0ubuntu7+unity15 | Commits on the published +unity14 (`dd209ec`), branch `a/UNITY-20261012-007`, in `plugins/automount/`. |
+
+Follow-ups of +unity14 (UNITY-20261009-001):
+
+- `1e60f40` (-007): hardening in the mount guard's cleanup when the
+  helper stops.
+- `1291b85` (-007): a test of that cleanup (`test-mount-guard`, built
+  with AddressSanitizer in `make check`).
+- `d0b97ef` (-008): tests of the helper: its dialogs close when the
+  session locks or becomes inactive, `stop()` withdraws a pending prompt
+  and closes the dialogs, and a prompt is withdrawn when a screen locker
+  appears on the bus.
+- `bd62e81` (-009): `test-autorun` shows GTK's real question dialog for an
+  unmount and checks that it closes; the comment on the old stand-in is
+  gone with it.
+- `cacd400`: changelog. No change to `debian/control`.
+
+There is no library or ABI change, and no change in behaviour the user can
+see.
+
+## Build
+
+Built with `scripts/build_sbuild.py` from the package branch
+`a/UNITY-20261012-007` (`cacd400`), chroot snapshot T=20261008T083223Z.
+`make check`: test-mount-guard, test-automount, test-autorun and
+gcm-self-test PASS; test-mount-guard is compiled and linked with
+`-fsanitize=address`. The manifest is in `build/`.
+
+## Checks
+
+- **Tests:** on +unity14 with the new tests, the new test-mount-guard case
+  fails; the other new cases pass on both (they cover existing behaviour).
+  On +unity15 all pass.
+- **Target** (`gate/target-test.txt`), live stack plus +unity15: a medium
+  inserted into the unlocked session is mounted; with autorun enabled the
+  autorun dialog appears and its Eject button works; the dialog closes when
+  the medium is unmounted and when the session locks; after a power-off with
+  the medium mounted, no crash report.
+
+## Verification
+
+- Target test before publication: PASS (`gate/target-test.txt`).
+
+## Not changed / known limits
+
+- Mount prompts (a medium that asks for a password, a busy unmount) and
+  the changed cleanup are not produced on the target; they are covered by
+  the test suite.
