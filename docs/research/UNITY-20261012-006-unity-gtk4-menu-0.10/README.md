@@ -38,3 +38,23 @@ T=20261008T083223Z. Lintian: no error. `dpkg -c`:
   approved design, ran the script tests and the environment.d generator, and
   checked the build records and the target record against its raw outputs
   and screenshots).
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261012-006-20261013T002830Z`.
+  20 files, complete, equal to live; list sha256
+  `73b19a8f32e5941de0feb4cf37c72947de68ea564a981c8509955853cc5bf430`.
+- **Repository:** 3 records added to `unity-resolute` (the source, 1 .deb
+  and 1 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261012-006`, which is the live
+  `unity-resolute-20261012-005` (gtk-nocsd +unity4) plus these 3 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
+
+## Release note
+
+Log out and back in after the upgrade. Until then, privileged programs
+started from the running session print one dynamic loader message per
+library listed in the session's earlier value; the programs run normally.

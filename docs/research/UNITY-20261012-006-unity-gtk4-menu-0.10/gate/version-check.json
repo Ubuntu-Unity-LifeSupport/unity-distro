@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "unity-gtk4-menu",
+  "measured_at": "2026-10-13T00:28:48Z",
+  "sources_file": "/home/claude/work/a/unity-distro-1012-006/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261012-006",
+    "packages": 564,
+    "list_sha256": "ccfb7482f778fe536bd07b5cdd23517ca5aa51bd94a08378a3e70f2f7aee3dfa",
+    "content_sha256": "4c442fed4d163f15b5e48e52121819912270de883c552e40f31b935ae0ba2daf",
+    "model_entries": 508,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "7ddeae02ce8480a8844f062a32b6d8e2cd0578ce53293b3f2c7d520461bc51eb",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Tue, 13 Oct 2026 00:28:51 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "613aa26575ec24a8e9ed2d39d8b00e523e8ca5f62f03f90a5a42d34abde3cfda",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Mon, 12 Oct 2026  5:34:25 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "7ca84df3e227897869d47b638c8e1078106eaf4867302bd5e94d34a1b266fd97",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Mon, 12 Oct 2026  8:53:36 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "e41ba77425b945750f4fc5740f15cc179d18e6804039a6e4692646dd319a90f8",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Mon, 12 Oct 2026 19:43:48 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "67c9ade5c94b4c7a671f9de54762196ea717b6d3efbae959fd0388589ea2c414",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Mon, 12 Oct 2026 12:57:07 UTC"
+    }
+  ],
+  "pockets": {},
+  "in_archive": false,
+  "binaries": [
+    {
+      "package": "libunity-gtk4-menu0-dbgsym",
+      "version": "0.10",
+      "architecture": "amd64",
+      "file": "libunity-gtk4-menu0-dbgsym_0.10_amd64.ddeb",
+      "apt_candidate": "0.10",
+      "policy": "libunity-gtk4-menu0-dbgsym:\n  Installed: (none)\n  Candidate: 0.10\n  Version table:\n     0.10 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libunity-gtk4-menu0",
+      "version": "0.10",
+      "architecture": "amd64",
+      "file": "libunity-gtk4-menu0_0.10_amd64.deb",
+      "apt_candidate": "0.10",
+      "policy": "libunity-gtk4-menu0:\n  Installed: (none)\n  Candidate: 0.10\n  Version table:\n     0.10 500\n        500 file:<VIEW>/model ./ Packages\n     0.9 500\n        500 file:<VIEW>/model ./ Packages\n     0.8 500\n        500 file:<VIEW>/model ./ Packages\n     0.7 500\n        500 file:<VIEW>/model ./ Packages\n     0.6 500\n        500 file:<VIEW>/model ./ Packages\n     0.5 500\n        500 file:<VIEW>/model ./ Packages\n     0.4 500\n        500 file:<VIEW>/model ./ Packages\n     0.3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    }
+  ]
+}
