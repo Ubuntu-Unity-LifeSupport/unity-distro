@@ -1,7 +1,7 @@
 # UNITY-20261013-016, UNITY-20261013-020, UNITY-20261013-022: cinnamon-session +unity7
 
 Agent A, target `target-desktop`. Part of UNITY-20261008-023 (presence idle in
-the Unity session), published before light-locker +unity4
+the Unity session), to be published before light-locker +unity4
 (UNITY-20261013-018) and unity-settings-daemon +unity16 (UNITY-20261008-023).
 
 ## What is fixed
@@ -28,9 +28,10 @@ the Unity session), published before light-locker +unity4
     timeout.
   - A suspend the user asks for (Unity's dialog, the session indicator, the
     suspend key) is no longer refused while an application inhibits
-    suspend, as before systemd 257. Unity's Suspend button, the indicator's
-    restart and power off, and the critical battery action work again in
-    that case.
+    suspend, as before systemd 257: logind no longer answers "challenge" to
+    the session's CanSuspend, CanReboot and CanPowerOff in that case, which
+    Unity's Suspend button, the indicator's restart and power off, and the
+    critical battery action depend on.
 - `2f6694e` (-022), `debian/dbus-override.service.conf`: a drop-in for the
   user `dbus.service` with `OOMPolicy=continue`, as upstream 2605e63 and
   c038bb4, so that a kernel OOM kill of a program D-Bus started does not
@@ -45,7 +46,8 @@ changes the ConsoleKit backend only; the Unity session runs under logind.
 ## Checks
 
 - **-016 on target:** with the Control Center delay at 60 s and Cinnamon's at
-  600 s, the session went idle and locked after about 60 s; the delay set
+  600 s, the session was idle and locked (LockedHint) 80 s after the last
+  input, well before Cinnamon's 600 s; the delay set
   to 0 while running kept it from going idle; a new cinnamon-session start
   asks the idle monitor once.
 - **-020 on target:** with one or two applications holding suspend
