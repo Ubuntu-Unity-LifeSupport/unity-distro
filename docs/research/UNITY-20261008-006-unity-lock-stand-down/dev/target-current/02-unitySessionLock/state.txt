@@ -1,0 +1,26 @@
+== 23:32:06.371 before
+VT 7 LockedHint no Active yes IdleHint no
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 2740,)
+  timeout:  0    cycle:  0
+  Monitor is On
+== 23:32:06 trigger: gdbus call -e -d com.canonical.Unity -o /com/canonical/Unity/Session -m com.canonical.Unity.Session.Lock
+()
+== 23:32:08.591 t+2
+VT 7 LockedHint yes Active yes IdleHint no
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 2740,)
+  timeout:  0    cycle:  0
+  Monitor is On
+== 23:32:11.711 t+5
+VT 7 LockedHint yes Active yes IdleHint no
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 2740,)
+  timeout:  0    cycle:  0
+  Monitor is On
+== 23:32:18.859 t+12
+VT 7 LockedHint yes Active yes IdleHint no
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 2740,)
+  timeout:  0    cycle:  0
+  Monitor is On

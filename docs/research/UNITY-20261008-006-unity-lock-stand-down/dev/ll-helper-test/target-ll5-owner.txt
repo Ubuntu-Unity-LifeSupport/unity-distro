@@ -1,0 +1,6 @@
+boot 2026-10-14 00:54:48; light-locker 1.8.0-3ubuntu4+unity5 pid 3884; compiz pid 4054
+owner pid (uint32 3884,)
+queue ([':1.89', ':1.95'],)
+жов 14 00:56:25.627753 mike-virtualbox systemd[1242]: Started unity7.service - Unity Shell v7.
+жов 14 00:56:41.331912 mike-virtualbox compiz[4054]: WARN  2026-10-14 00:56:41 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'org.gnome.ScreenSaver'
+жов 14 00:56:43.214832 mike-virtualbox compiz[4054]: ERROR 2026-10-14 00:56:43 unity.glib.dbus.server GLibDBusServer.cpp:540 DBus name lost 'org.gnome.ScreenSaver'
