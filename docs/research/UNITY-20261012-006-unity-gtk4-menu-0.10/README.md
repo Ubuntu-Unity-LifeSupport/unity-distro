@@ -34,6 +34,11 @@ T=20261008T083223Z. Lintian: no error. `dpkg -c`:
 ## Verification
 
 - Target test before publication: PASS (`gate/target-test.txt`).
+- Check on the target after publication: PASS. Published 2026-10-13
+  01:46:53Z as `unity-resolute-20261012-006`; the target updated from the
+  live repository, cold boot: the session has the path form, both
+  libraries are loaded, privileged programs print nothing, and the GTK4
+  global menu is in the panel (`gate/target-verification.txt`).
 - Independent verification: PASS (the Verifier reviewed the diffs against the
   approved design, ran the script tests and the environment.d generator, and
   checked the build records and the target record against its raw outputs
