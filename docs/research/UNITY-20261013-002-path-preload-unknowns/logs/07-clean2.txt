@@ -1,0 +1,11 @@
+restore checked inside at 2026-10-13T06:14:17Z, boot 2026-10-13 09:13:07
+ls: cannot access '/home/mike/.dirty': No such file or directory
+ls: cannot access '/home/mike/b1302': No such file or directory
+ls: cannot access '/tmp/b1307': No such file or directory
+sources.list.d: ubuntu.sources
+dpkg-query: шаблону libc6-i386 не соответствует ни один пакет
+dpkg-query: шаблону libc6:i386 не соответствует ни один пакет
+dpkg-query: шаблону cinnamon-session-dbgsym не соответствует ни один пакет
+gcc-multilib	
+libgtk-nocsd0:amd64	3+0~20260321+0b77e1b-1
+ошибка: соответствующих запросу snap-пакетов не установлено
