@@ -9,12 +9,13 @@ pulseaudio memfds and a SysV shared memory segment).
 
 UNITY-20261013-016 (idle delay from the Control Center):
 - org.gnome.desktop.session idle-delay 60, org.cinnamon.desktop.session idle-delay 600, last input
-  17:50:16: at t+80 s presence idle, IdleHint yes, Unity's lock screen (03-gnome60.txt). The presence
-  follows the gnome key (with +unity6 it followed the cinnamon key: UNITY-20261008-023 dev/target-change1).
+  17:50:16: at t+80 s presence idle, IdleHint yes, LockedHint yes (03-gnome60.txt; which locker locked was
+  not recorded). The presence follows the gnome key (with +unity6 it followed the cinnamon key: UNITY-20261008-023 dev/target-change1).
 - The gnome key set to 0 while running: no idle after 150 s without input (04-gnome0-live.txt).
 - A new cinnamon-session start (systemctl --user restart unity-session.service) sends exactly one
   AddIdleWatch to org.cinnamon.Muffin.IdleMonitor, with the gnome key's 300000 ms (06-session-restart.txt,
-  restart-monitor.log; the other AddIdleWatch in the log came from the old process while it stopped).
+  restart-monitor.log; the other AddIdleWatch in the log, from :1.231 at 17:55:16, is not mapped to a
+  process in the raw files).
 - Keys reset afterwards (300 / 900).
 Method note: a first attempt restarted LightDM (05-relogin.txt) and checked before the new session had
 replaced the old process, so it counted a live re-add instead - not used. The next restart of
