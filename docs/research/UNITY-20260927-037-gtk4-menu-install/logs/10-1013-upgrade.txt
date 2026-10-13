@@ -22,3 +22,14 @@
   unity-session	49.4+unity2
   automatically installed: libunity-gtk4-menu0
   installed unity-session file sha256: ff1339f26e298026
+
+-- added after the Verifier's notes, 2026-10-13T16:01:58Z:
+  dpkg.log: 
+  -rw-r--r-- 1 root root       0 Oct 13 18:54 /var/log/dpkg.log
+  -rw-r--r-- 1 root root 1796722 Oct 13 18:55 /var/log/dpkg.log.1
+  dpkg -V unity-session libunity-gtk4-menu0: rc 0, 0 lines
+  installed: libunity-gtk4-menu0 0.12; unity-session 49.4+unity2; 
+  local repo file: ff1339f26e2980269083f385f2db0bac5e97a0d0bebf233fa05ca09c3820c8dd  b037/repo/unity-session_49.4+unity2_all.deb
+  dpkg.log.1 (rotated at 18:54 local): 2026-04-23 00:46:55 install unity-session:all <none> 49.4
+  dpkg.log.1 (rotated at 18:54 local): 2026-10-13 18:54:14 install libunity-gtk4-menu0:amd64 <none> 0.12
+  dpkg.log.1 (rotated at 18:54 local): 2026-10-13 18:54:23 upgrade unity-session:all 49.4 49.4+unity2

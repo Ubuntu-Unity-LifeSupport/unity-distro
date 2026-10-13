@@ -276,3 +276,20 @@ from a local file repository next to the live archive (`check-1013.sh`). The liv
 
 So an installation that takes Recommends, which is apt's default, gets the GTK 4 global menu from the upgrade on.
 One with Recommends turned off does not, as for every other Recommends.
+
+Notes from the Verifier (PASS, 2026-10-13):
+- The upgrade measured starts from Clean-2's unity-session 49.4 (the archive's), not from our published +unity1.
+  Neither of them recommends the library, so apt treats +unity1 -> +unity2 the same.
+- `dpkg.log` was rotated just after the upgrade. The lines are in `dpkg.log.1`, "install libunity-gtk4-menu0
+  <none> 0.12" and "upgrade unity-session 49.4 49.4+unity2" (added to logs/10).
+- `dpkg -V` of both installed packages is clean, and the local repository's file, the only source of 49.4+unity2,
+  has the build's sha256 `ff1339f2…`.
+
+## Verification (2026-10-13)
+
+The Verifier gave **PASS** for the refresh:
+- e137fb1 differs from 951b463 only in the Recommends line and the changelog, and from 7af2106 only in the date;
+- the manifest and every sha256 match;
+- the deb differs from the published +unity1 only in its version, Recommends and changelog;
+- the logs support the table, and the rerun of the upgrade is valid;
+- no Recommends cycle, Conflicts or Breaks.
