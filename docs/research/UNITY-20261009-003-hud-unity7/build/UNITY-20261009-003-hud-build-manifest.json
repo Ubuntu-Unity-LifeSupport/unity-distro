@@ -1,0 +1,275 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261009-003",
+  "package": "hud",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity7",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-0309-003/packages/hud",
+  "source_commit": "689325036c1c7bfd19ffcb7ae57b428fdd2f5cc4",
+  "source_tree_hash": "959243d14f42151e4977e0b7417a632116f5eccb",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
+  ],
+  "build_started": "2026-10-12T22:08:46.552501+00:00",
+  "build_finished": "2026-10-12T22:38:00.101498+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261009-003-hud-14.10+17.10.20170619-0ubuntu6+unity7-sbuild.log",
+    "sha256": "76f7f8c3d150dc9c6d300c8a8bdbc9f6401943ea191be3832f8b96988c262969"
+  },
+  "artifacts": [
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity7.dsc",
+      "sha256": "bb5161e9c356c0ac9cfe9165e9ebff09f6c6027fb076ad85ddd910aca9baab57",
+      "size": 2435,
+      "kind": "source",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity7_amd64.changes",
+      "sha256": "6e6954ec1aca7cdb32af5e565654f76cb11e975bbad732a4adc8869605b2fda4",
+      "size": 9543,
+      "kind": "changes"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619.orig.tar.gz",
+      "sha256": "3cb825f0f98dae4dc26ef90a1cadab80c4c7bdf45f3cb7082437ba12e2ca2aa6",
+      "size": 181237,
+      "kind": "source_file",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity7.diff.gz",
+      "sha256": "ebcec184f839fc9337ad230eab93c761dbadc1c5eb4423548e909b428138c8c5",
+      "size": 34960,
+      "kind": "source_file",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7"
+    },
+    {
+      "file": "gir1.2-hud-2_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "998fe439f868622bdbcb2d1947f958e64f0cadf1a441fb9f8ec018aa326c4df1",
+      "size": 5234,
+      "kind": "binary",
+      "package": "gir1.2-hud-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "gir1.2-hud-client-2_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "057e5bf72020f08226f03742aea3fe64cd85e28561fa21d0b00dfc17017451a5",
+      "size": 6204,
+      "kind": "binary",
+      "package": "gir1.2-hud-client-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud-dbgsym_14.10+17.10.20170619-0ubuntu6+unity7_amd64.ddeb",
+      "sha256": "089d704c4dcec3f920d74b22a6470bf33a64951407cc9ccabbd28ae9df8a7568",
+      "size": 10217026,
+      "kind": "binary",
+      "package": "hud-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud-doc_14.10+17.10.20170619-0ubuntu6+unity7_all.deb",
+      "sha256": "fbd9a1c5c84b646f3cb8bbc19d5216c6807eff95aaf06464073a6e1365021c56",
+      "size": 3878,
+      "kind": "binary",
+      "package": "hud-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "all"
+    },
+    {
+      "file": "hud-tools-dbgsym_14.10+17.10.20170619-0ubuntu6+unity7_amd64.ddeb",
+      "sha256": "f2521c3046b0e8046e1a39882496c265cc0c098d0922ca89671dd4e9ab51cdcd",
+      "size": 70336,
+      "kind": "binary",
+      "package": "hud-tools-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud-tools_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "3ba5ed0f45545e3991c8f33aba7cef406c76e91e24d9a8c1eda8448f6dbaeb25",
+      "size": 17922,
+      "kind": "binary",
+      "package": "hud-tools",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity7_amd64.buildinfo",
+      "sha256": "aaa7e00300dacedd5b97cbc1efe24cd814940c7b9420c1f29a5eac79c237aad1",
+      "size": 31894,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "ded65eb1a9a6d726fefc1ca5115f4eb03492bc3950e644585c638b771d27d687",
+      "size": 212006,
+      "kind": "binary",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-client2-dbgsym_14.10+17.10.20170619-0ubuntu6+unity7_amd64.ddeb",
+      "sha256": "6247d0c43320e28e62a56ce615cc9302af54a0ee38e9f68c10cc4633187d5c69",
+      "size": 544002,
+      "kind": "binary",
+      "package": "libhud-client2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-client2-dev_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "61fa733368ed7e6950230fca11f4689d740c0484ac9a089e719adf844424932a",
+      "size": 15862,
+      "kind": "binary",
+      "package": "libhud-client2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-client2-doc_14.10+17.10.20170619-0ubuntu6+unity7_all.deb",
+      "sha256": "053ab783ed1124b94330dcdee07d7cbb2c0e1f9e3c74992b86ce21b94114edd4",
+      "size": 3802,
+      "kind": "binary",
+      "package": "libhud-client2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "all"
+    },
+    {
+      "file": "libhud-client2_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "a105a6b9d58e4a30ff3573e4fbb8f15f90cc44c2e3f966b429e3fed2e4fef599",
+      "size": 51820,
+      "kind": "binary",
+      "package": "libhud-client2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-gtk1-dbgsym_14.10+17.10.20170619-0ubuntu6+unity7_amd64.ddeb",
+      "sha256": "927038ff512e0de8139e29d96e68f8f412bdddc891c6442178e9d982d09e60a3",
+      "size": 12372,
+      "kind": "binary",
+      "package": "libhud-gtk1-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-gtk1-dev_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "c9913196ef9aca9653e2ea96b3da9ff9166c55ecf6a3a792bd5bcc7dc89389c3",
+      "size": 5392,
+      "kind": "binary",
+      "package": "libhud-gtk1-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-gtk1-doc_14.10+17.10.20170619-0ubuntu6+unity7_all.deb",
+      "sha256": "94f39e851cc0712af7695c87c40295f55f415cb83ae568bdf41fa9876b34781f",
+      "size": 3860,
+      "kind": "binary",
+      "package": "libhud-gtk1-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "all"
+    },
+    {
+      "file": "libhud-gtk1_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "792bb802a69d78382e65505ef159f62b1d56eab825d590e494caf87926b83554",
+      "size": 7786,
+      "kind": "binary",
+      "package": "libhud-gtk1",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud2-dbgsym_14.10+17.10.20170619-0ubuntu6+unity7_amd64.ddeb",
+      "sha256": "c16afcfc091fd3686478134189b234e93e55caaadd010d1194795898d565b7f2",
+      "size": 100072,
+      "kind": "binary",
+      "package": "libhud2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud2-dev_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "9c2b4088816cf8b0d795f2c4552742c4b5e54742b2de3f4e61f0943cf608594e",
+      "size": 11832,
+      "kind": "binary",
+      "package": "libhud2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud2-doc_14.10+17.10.20170619-0ubuntu6+unity7_all.deb",
+      "sha256": "d489749b3cc66d9b035b52c0a1139c7d225e462760be464fbe87db19e977e14c",
+      "size": 3824,
+      "kind": "binary",
+      "package": "libhud2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "all"
+    },
+    {
+      "file": "libhud2_14.10+17.10.20170619-0ubuntu6+unity7_amd64.deb",
+      "sha256": "c4a51ab5e3b36fd9e8c1d5fcab82d1ad41d9b4c44d55a46fab4e331e8ec4460e",
+      "size": 29204,
+      "kind": "binary",
+      "package": "libhud2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity7",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-0309-003/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}
