@@ -65,3 +65,18 @@ changes the ConsoleKit backend only; the Unity session runs under logind.
 
 - The drop-in of -022 has no effect on the main dbus-daemon process itself
   being killed.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261013-016-20261013T174522Z`.
+  21 files, complete, equal to live; list sha256
+  `1133cee97c55a24765929c0bf7705216a05e789ff0c1cae2acb9fd4d4b7c6847`.
+- **Repository:** 4 records added to `unity-resolute` (the source,
+  cinnamon-session, cinnamon-session-common and cinnamon-session-dbgsym);
+  the sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261013-016`, which is the live
+  `unity-resolute-20260927-037` plus these 4 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
