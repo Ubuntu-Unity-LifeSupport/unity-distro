@@ -1,0 +1,2 @@
+  opt-out file: -rw-rw-r-- 1 mike mike 0 Oct 13 05:21 /home/mike/.config/environment.d/50-gtk-nocsd.conf
+G  session-wrapper=/etc/X11/Xsession

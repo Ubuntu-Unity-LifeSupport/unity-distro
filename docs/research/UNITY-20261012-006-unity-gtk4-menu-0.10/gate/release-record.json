@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261012-006",
+  "package": "unity-gtk4-menu",
+  "target_series": "resolute",
+  "candidate_version": "0.10",
+  "source_commit": "aa008465773f2571983f6fdc6c277f0a289bcfcb",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261012-006",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/gate/target-test.txt",
+    "debs": {
+      "libunity-gtk4-menu0_0.10_amd64.deb": "4420b1a07e081945754c9fa7c5bfbe6796085cc964fb2045ddf1fd07e6731324"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/README.md",
+    "verification_record": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

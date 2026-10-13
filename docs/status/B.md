@@ -75,6 +75,28 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-13 ~01:25Z: UNITY-20261012-003 NOT_REPRODUCED (merged, main fc678c5); UNITY-20261012-004 INVESTIGATING,
+without a target until -006.**
+- **UNITY-20261012-003:**
+  - On the live stack, a GTK4 application's first start opens its panel menu on the first Alt+F or Alt+F10
+    press: 13 of 13 attempts, measured by events. The first open takes 0.15-0.92 s.
+  - The earlier "reproduction" was a screenshot taken before the popup was mapped.
+  - Verifier PASS in round 3. The DECISIONS entry of 2026-10-13 holds the outcome, a correction to
+    UNITY-20261012-001 and the rule that panel key tests are judged by events.
+  - Card: `research/UNITY-20261012-003-panel-first-start-mnemonic/`.
+- **UNITY-20261012-004:** Pinta gets no global menu from unity-gtk4-menu.
+  - By code reading: the library looks for a menu once, at realize, and Pinta 3.1.2 packs its MenuButtons only
+    after `Present()`.
+  - Now: an existing-fix check (gtk-nocsd's late-menu code, unity-gtk-module, appmenu-gtk-module) and reading
+    GTK 4.22's realize-time `_GTK_*` properties.
+  - The target confirmation (the library's note() log) waits for -006 (0.10) to be published and merged, on C's
+    word. DC before any code. A owns the unity-gtk4-menu packaging.
+  - Worktree `~/work/b/unity-distro-1012-004`, branch `b/UNITY-20261012-004`. The Pinta source is in
+    `/srv/build/B-UNITY-20261012-004`.
+- **target2:** at Clean-2, powered off since 01:16Z, checked inside.
+
+Earlier:
+
 **2026-10-12 ~23:55Z: UNITY-20261009-003, -004 and -005 DONE (hud +unity7); next UNITY-20261012-003.**
 - **hud +unity7:**
   - libqtgmenu activates a menu item with its target (-004: the Unity 7 HUD "Создать окно" opens a
@@ -516,7 +538,8 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**At `Clean-2`, powered off, since 2026-10-12 23:49Z.** It was rolled back after the UNITY-20261009-003
+**At `Clean-2`, powered off, since 2026-10-13 01:16Z.** It was rolled back after UNITY-20261012-003 (no ~/b1203,
+no libunity-gtk4-menu0, hud 0ubuntu6). Before that, since 2026-10-12 23:49Z, after the UNITY-20261009-003
 publication check. Checked inside: no `~/.dirty`, no `~/b0309`, only `ubuntu.sources`, hud 0ubuntu6.
 
 Before that, at `Clean-2` and powered off from 2026-10-10 18:15Z. It was rolled back

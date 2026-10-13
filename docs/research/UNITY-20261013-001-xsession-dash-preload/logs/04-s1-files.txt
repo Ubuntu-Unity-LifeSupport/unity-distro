@@ -1,0 +1,4 @@
+  on: drop-in session-wrapper=/etc/X11/Xsession | trace file 2 lines
+  lightdm: G  session-wrapper=/etc/X11/Xsession
+[Seat:*]
+session-wrapper=/etc/X11/Xsession

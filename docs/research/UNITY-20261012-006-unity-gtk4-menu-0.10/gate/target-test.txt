@@ -1,0 +1,58 @@
+UNITY-20261012-005 and UNITY-20261012-006: target test of gtk-nocsd 4.8-1+unity4 and
+unity-gtk4-menu 0.10 (one session test for both, 2026-10-12 23:40-23:55Z)
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: fresh boot,
+~/.dirty from the snapshot, gtk-nocsd +unity3), updated from the live repository (full-upgrade; live
+includes unity-settings-daemon +unity14 and hud +unity7), libunity-gtk4-menu0 0.9 installed from the live
+repository, then a cold boot. Autologin of user mike into the Unity session through lightdm; lightdm's
+effective session-wrapper is /usr/sbin/lightdm-session (lightdm --show-config), which sources
+/etc/X11/Xsession.d.
+
+Installed from these builds, with apt, in the running session (no relogin):
+  99075d625c30d45e0e0a1cbe1879e0889df7d92f64bfbf8cd177aaf21c66c0b5  libgtk-nocsd0_4.8-1+unity4_amd64.deb
+  4420b1a07e081945754c9fa7c5bfbe6796085cc964fb2045ddf1fd07e6731324  libunity-gtk4-menu0_0.10_amd64.deb
+  (gtk3-nocsd and libgtk3-nocsd0 are transitional packages not installed on the target.)
+After the install: both libraries -rw-r--r--; /usr/lib/environment.d/50-gtk-nocsd.conf and
+60-unity-gtk4-menu.conf contain the /usr/$$LIB/ form.
+
+Observation: over ssh - the user manager's value (systemctl --user show-environment), LD_PRELOAD in
+/proc/PID/environ and the two libraries in /proc/PID/maps of the session processes, and the stderr of
+sudo -n true, su -c true, ping -c1 and pkexec true run with the session's value (stderr counted for
+ld.so lines); ld.so lines in the system and user journals; screenshots of the desktop. Commands typed into a gnome-terminal of the
+session with xdotool.
+
+Before the upgrade (+unity3, 0.9): manager and session processes LD_PRELOAD=libunity-gtk4-menu.so.0:
+libgtk-nocsd.so.0, both libraries mapped; no ld.so line from the four privileged programs.
+
+1. Upgraded, no relogin: the session keeps the earlier value. Ordinary processes started now still map
+   both libraries, without a message. Each of sudo, su, ping and pkexec prints 2 lines
+   "ERROR: ld.so: object '<name>' from LD_PRELOAD cannot be preloaded (cannot open shared object file):
+   ignored." (one per library) on stderr; the journal has 2 such messages, one per library, from gvfsd at
+   23:48:47Z, before the relogin.
+2. Relogin with the user manager stopped in between (all sessions of the user ended, lightdm restarted;
+   new manager): the manager holds $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0';
+   the session leader started by lightdm-session (unity-session), compiz and unity-panel-service have
+   LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 (literal $LIB, no "/usr//",
+   no "$'") and map both libraries; no ld.so line from the four privileged programs; no new journal line.
+3. Relogin with the user manager kept alive (an ssh session of the user open; the manager's start time
+   is the same before and after) and the earlier bare value set in it (show-environment before the
+   relogin: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0): after the relogin the manager and the session processes have the path form as in 2; no
+   ld.so line.
+4. Applications: gnome-disks (GTK3) and file-roller (GTK4), started through the user manager, have the
+   path form and map both libraries. Both windows are drawn with compiz's title bars (client-side
+   decorations removed). The panel shows file-roller's menu as the global menu, with its items;
+   gnome-terminal's menu bar is in the panel. In a gnome-terminal of the session: echo $LD_PRELOAD shows
+   the path form; sudo true, su -c true (fails on the password, as expected), ping -c1 and pkexec true
+   (timed out waiting for an agent) print no ld.so line; gnome-terminal-server and its shell have the
+   path form and map both libraries.
+5. A value with a space set in the user manager (show-environment before the relogin:
+   $'/usr/$LIB/libunity-gtk4-menu.so.0 /usr/$LIB/libgtk-nocsd.so.0'), then relogin: the session starts; the value is
+   written with ':' in the session and in the manager.
+6. ~/.config/environment.d/50-gtk-nocsd.conf (empty) and a relogin with the manager stopped: the
+   manager and the session (lightdm-session path) have only /usr/$LIB/libunity-gtk4-menu.so.0;
+   gtk-nocsd is not mapped; no ld.so line. The file was removed afterwards.
+
+The machine was powered off afterwards.
+
+Result: PASS.
+tested_build: this_build (the debs above are the gated builds of UNITY-20261012-005 and UNITY-20261012-006).
