@@ -1,0 +1,23 @@
+UNITY-20261013-007: target verification of the publication of cinnamon-session 6.4.2-1+unity6
+
+Published 2026-10-13 12:41:10Z as snapshot unity-resolute-20261013-007 (publish record
+~/coordinator/publish-records/UNITY-20261013-007.json: aptly PASS, post-publish check PASS; signer mode,
+approved by policy). On builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 12:36:05 UTC,
+Valid-Until Fri, 16 Oct 2026 12:36:05 UTC, sha256 3018aeec... (the signer's inrelease_sha256). The pool file
+cinnamon-session_6.4.2-1+unity6_amd64.deb has the gated sha256 e528f0b5...
+
+target2 (the machine of the target test, logs/07-09):
+- apt-get update from the live repository: rc 0 (InRelease Date 12:36:05 UTC); apt-cache policy: candidate
+  6.4.2-1+unity6 from http://192.168.56.10:8080 resolute/main, +unity5 still listed.
+- cinnamon-session and cinnamon-session-common set back to 6.4.2-1+unity5 from the live repository, the cached
+  +unity6 debs removed, then apt-get full-upgrade: both fetched from 192.168.56.10:8080; dpkg.log "upgrade
+  cinnamon-session:amd64 6.4.2-1+unity5 6.4.2-1+unity6" and the same for -common. The downloaded debs:
+    e528f0b59ae01dfae71798d5abd0ebc47ce0a88523590d083f31d4ae144d71b7  cinnamon-session_6.4.2-1+unity6_amd64.deb
+    d7967587cce1b2f6f894fd813cb65538239ced032637cad99cd44ad5416712d0  cinnamon-session-common_6.4.2-1+unity6_all.deb
+  the gated files.
+- A cold boot with autologin, then observe.sh and summary.py as in the target test (logs/10-published-observe-s5.txt):
+  every connection lifetime has exactly one close followed by one free (4 of 4); cinnamon-session keeps running
+  after the SIGKILL of an xterm and ends at the logout; no crash report, no segfault line, no cinnamon-session
+  critical.
+
+Result: PASS.
