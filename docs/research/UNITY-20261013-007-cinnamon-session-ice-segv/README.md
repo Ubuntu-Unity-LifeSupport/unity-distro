@@ -121,3 +121,15 @@ In cinnamon-session-binary all allocated sections are identical except `.text`, 
 6: the line numbers that `g_assert_not_reached ()` and `G_OBJECT_WARN_INVALID_PROPERTY_ID` (two places) pass in
 csm-xsmp-server.c, 6 lines earlier now that the comments above them are shorter. No instruction or code path
 differs.
+
+### Target check of the 7904214 build (target2, two cold sessions, logs/07-09)
+
+The check above, repeated on the build that is published. The setup was Clean-2 → live (Release Date
+2026-10-13 10:44:09 UTC, full-upgrade, nothing left to upgrade). Then this build with `dpkg -i`, after its sha256
+was checked against build/ (cinnamon-session `e528f0b5…`, -common `d7967587…`); `dpkg -V` is clean.
+`observe.sh` and `summary.py` were the same as before, in sessions s3 and s4.
+
+**Result,** in both sessions:
+- every connection lifetime has exactly one close followed by one free (4 of 4);
+- cinnamon-session survives the SIGKILL of an xterm and ends at logout;
+- no crash report, no segfault line, no cinnamon-session critical.
