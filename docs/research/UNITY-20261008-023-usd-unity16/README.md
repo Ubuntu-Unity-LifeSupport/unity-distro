@@ -29,7 +29,7 @@ serves the same monitor as `org.gnome.Mutter.IdleMonitor`.
   the watch, on the object and interface it came through; through this
   interface a client removes only its own watches. The Mutter interface is
   unchanged.
-- `8b8c6da`, `04963c7`, `32ba40e`: tests (`test-idle-monitor-dbus`,
+- `8b8c6da`, `04963c7`, `32ba40e`, `82e9267`: tests (`test-idle-monitor-dbus`,
   `test-idle-monitor-registry`), run by `make check` under xvfb on a
   private session bus.
 - `c02cf52`: changelog; `Breaks: cinnamon-session (<< 6.4.2-1+unity7)`, so
