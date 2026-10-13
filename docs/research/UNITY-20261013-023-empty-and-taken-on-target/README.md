@@ -53,6 +53,7 @@ its menubar only after realize has no global menu.** 0.12 is no worse than 0.11 
   - With 0.12 the window already has a menubar path. A fix could keep our container exported and put the
     application's menubar into it, instead of releasing it, which is the round-3 design's TAKEN rule. Or it could
     make the panel subscribe again.
-  - This changes the design, so it is a question for C, not part of this task.
+  - Follow-up UNITY-20261013-024: first a survey of how often real applications set their menubar after realize,
+    then weighed in the 0.13 design (UNITY-20261013-008). The panel-side option belongs to unity and stays separate.
 - The first test-3 attempt does not count: the HUD's own window, left open by the HUD test, held the focus
   (logs/01).
