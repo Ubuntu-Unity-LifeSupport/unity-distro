@@ -191,3 +191,21 @@ Searched against the sources linked below, not reproduced in a log here.
     series unity took them always after: compiz's first `SyncOne libappmenu.so` came 0.38-1.60 s after the window
     became active (`table.py`; the panel service's `ReSync` before it, 0.27 s at the earliest).
 - **Newer release:** not needed, because nothing reproduced.
+
+## Verification (independent Verifier, 2026-10-13): PASS in round 3
+
+- **Round 1: FAIL.** The counted series held, and every latency matched the logs. Three blocking points in the
+  text:
+  - the active → panel `Start` delay was given as 0.1-0.2 s, but it is 0.14-0.54 s;
+  - the entry-table claim covered sessions without such a table;
+  - session 1 was called a measurement error, though that is an inference, and the audit.py condition was not
+    measured by events.
+  - Fixed: sessions 8-10 measured the audit.py condition (logs/05, 6 of 6), and the text was reworded.
+- **Round 2: FAIL.** One point: the existing-fix section gave the panel service's subscription delay as the time
+  unity takes the entries.
+  - Fixed: compiz's `SyncOne libappmenu.so` comes 0.38-1.60 s after the activation, and `table.py` prints it.
+- **Round 3: PASS.**
+  - `table.py` was re-run, and a separate parser found no libappmenu `SyncOne` or `ReSync` before the
+    activation in any of the 13 attempts.
+  - Remark: `SyncOne` is compiz's request, and the entries arrive in its reply, so the time is a lower bound.
+    That leaves "always after the activation" unaffected.
