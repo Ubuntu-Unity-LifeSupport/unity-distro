@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-018",
+  "package": "light-locker",
+  "source_commit": "56582bab922766a7068e7308ae3a28cae4f573be",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261013-018-light-locker-unity4/README.md",
+      "sha256": "20b7e50770de2a508ce5f31ae373bccb0cbc6e9a8a194d98f5fe54026045279e"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261013-018-light-locker-unity4/README.md",
+      "sha256": "20b7e50770de2a508ce5f31ae373bccb0cbc6e9a8a194d98f5fe54026045279e"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "db467e82cd928aca55479d6b295d6b2e8e640a24721cbad77fa639798458d4a6"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261013-018-light-locker-unity4/gate/release-record.json",
+      "sha256": "3899cb8cc186c9a49b75f58752b6175daee3dc748c23534b56f44ffa66911c3e"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261013-018-light-locker-unity4/gate/version-check.json",
+      "sha256": "9f3fdb16e973ac5ea3d6c2347f21f8ea3fd179b243c940c3f4e5b834a3c4ccc3"
+    }
+  }
+}
