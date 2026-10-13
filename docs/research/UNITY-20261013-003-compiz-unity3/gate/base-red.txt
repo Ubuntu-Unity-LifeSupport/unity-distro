@@ -22,3 +22,4 @@ Failure messages:
   511: [  DEATH   ] close EBADF 4, fclose on a closed descriptor 2, cache written
 
 All other 1434 tests pass. An earlier run with the first version of the tests (before 4d7ead5) is superseded: its no-sections case used a key that iniparser counts as a section. Two attempts in between stopped at 503 errors from snapshot.ubuntu.com before the build.
+The sixth new test, CCSUnixTextFileTest.ReadAppendRead, passes on +unity2 as expected: it reads, appends to and reads again a regular file, whose size ftell measures correctly; it checks that the change keeps that path working.
