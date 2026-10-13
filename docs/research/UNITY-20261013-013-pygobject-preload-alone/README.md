@@ -177,8 +177,8 @@ action disable under 0.10, because our `gtk_widget_action_set_enabled` did not f
 | opt-out session, 0.10 (control) | 04 | 25 `AssertionError` lines; meld, gnome-tweaks, apps.py 3/4, unity-indicator-appearance, onboard exit 1; the Gio check fails at import |
 | opt-out session, 0.11 | 05 | **0** `AssertionError` lines; unity-indicator-appearance and onboard run from autostart; meld, gnome-tweaks, apps.py 3/4, update-manager, software-properties-gtk, apport-gtk show windows, with menubars where the program has one; orca runs; `Gio.SettingsBackend` is `DConfSettingsBackend` and a write reads back from dconf; `cat` and a Python without gi map neither libgmodule nor libgtk-4 |
 | every order, Xvfb | 06 | Python GLib import, apps.py 3/4, meld, gnome-tweaks, unity-indicator-appearance alive in all six orders (none; ours alone; before and after Ubuntu's gtk-nocsd; before and after gtk-nocsd built by its own `make`, the issue #1 build); alone, the log shows libgmodule's own; the RTLD_LOCAL plugin gives 1 activation in every order |
-| the 0.9 card's `order-0.9.sh`, unchanged | 06 | identical to `docs/research/nocsd-order/order-0.9.txt` in all 50 rows (order, rc, menu lines): C and gjs programs as in 0.9 |
-| both libraries, the session's default | 07 | the same programs as in 05, 0 `AssertionError` lines, the dconf check; the card's `classlive.sh` unchanged: the stand-in for `win.class-hello` follows `gtk_widget_action_set_enabled` both ways, activating it while disabled does nothing, while enabled prints `ACTIVATED win.class-hello` once |
+| the 0.9 card's `order-0.9.sh`, unchanged | 06 | identical to `docs/research/nocsd-order/order-0.9.txt` in all 50 rows (order, rc, menu lines): C programs as in 0.9. Its gjs rows are `rc=1` in both, because the script runs `gjstest.js` without `gjs -m` (noted in the 0.9 card), so they say nothing about gjs; the gjs applications in the set (gnome-characters, gnome-weather) are alive with the menu as in 0.9 |
+| both libraries, the session's default | 07 | the same programs as in 05 (apport-gtk exited 0 this time without a window, with no crash report to show and no error), 0 `AssertionError` lines, the dconf check; the card's `classlive.sh` unchanged: the stand-in for `win.class-hello` follows `gtk_widget_action_set_enabled` both ways, activating it while disabled does nothing, while enabled prints `ACTIVATED win.class-hello` once |
 
 gnome-tweaks prints one Traceback in every run, with and without any preload. It is a `GDBus.Error` for
 `org.gnome.Shell.Extensions`, an interface that does not exist outside GNOME Shell. In the opt-out session the
@@ -190,3 +190,24 @@ On target2, besides the live archive and the test tools, these were installed fo
 - the GTK4 programs of `order-0.9.sh` as debs (gjs, gnome-text-editor, gnome-characters, gnome-calculator,
   nautilus, gnome-clocks, gnome-contacts, gnome-font-viewer, gnome-weather). None of them was on target2 before,
   so the first run of `order-0.9.sh` in logs/06 had rc 127; the log holds the rerun after the install.
+
+## Verification (Verifier, 2026-10-13): PASS
+
+PATCH_CORRECT, REVIEWED. What the Verifier checked:
+- the diff touches only `next_symbol()` and its two callers;
+- the design review items are in `00fabde`;
+- `NEEDED` is libc only, mode 0644;
+- the manifest's tree and every sha256 match the files, and the changelog date is UTC;
+- the logs support the tables, recomputed: 25 / 0 / 0 `AssertionError` lines; the 50 `order-0.9.sh` rows identical;
+  plugin activations 1 / 2 / 1.
+
+With its own stand-in libraries, the Verifier also reproduced:
+- the `RTLD_LOCAL` case and the lookup by soname;
+- the call from a constructor under the loader lock, with no deadlock;
+- an interposer after ours still taken through `RTLD_NEXT`.
+
+Not tested: Perl/Lua GObject bindings, gdk-pixbuf loaders, and a process with a second copy of libgmodule or
+libgtk-4.
+
+Left for 0.12 (a source change would break the link to this tested build): the package README names only the
+libgmodule fallback, not the libgtk-4 one for `gtk_widget_action_set_enabled`.
