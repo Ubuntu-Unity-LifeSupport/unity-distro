@@ -1,0 +1,16 @@
+# 2026-09-29T14:36:59Z every goleveldb 'db@open' in /srv/aptly/db/LOG since 2026-09-28 (db-opens.py, read-only)
+# 2026-09-29: backup 14:21:17Z; L1 4 commands (opens 14:23:12-14:23:25Z); P1-P5 14:23:30-14:24:15Z; P8, P7 14:26:16-20Z
+Sep 28, 2026 09:45:02.744051
+Sep 28, 2026 13:09:08.357671
+Sep 29, 2026 14:23:12.081848
+Sep 29, 2026 14:23:16.357259
+Sep 29, 2026 14:23:21.003996
+Sep 29, 2026 14:23:25.383039
+Sep 29, 2026 14:23:30.267322
+Sep 29, 2026 14:23:36.109298
+Sep 29, 2026 14:23:53.944600
+Sep 29, 2026 14:23:59.647580
+Sep 29, 2026 14:24:15.386847
+Sep 29, 2026 14:26:16.090070
+Sep 29, 2026 14:26:20.319757
+# result: 11 opens on 2026-09-29, all B's in-window commands (4 L1 + 7 P); none between the backup and L1; the previous open is 2026-09-28 13:09:08 (the known event)

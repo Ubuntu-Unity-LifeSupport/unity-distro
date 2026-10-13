@@ -1,0 +1,40 @@
+Started ld019tests4.service - [systemd-run] /bin/sh /home/mike/run-tests-4.sh Utest-019pw.
+=== phase T6c-stalled-close-forced-stage1 (1 cycle) 10:41:29Z
+21:session optional pam_exec.so type=close_session /usr/local/sbin/ld019-stall
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+cycle 1: Logout did not end session 380 in 20 s, loginctl terminate-session
+cycle 1: greeter up after 4s, logging in
+cycle 1: utest session on seat0, greeter gone after 10s
+--- state after cycle 1 (10:43:02.399Z)
+sessions: 389  109 lightdm -     118188 manager-early - no -
+sessions: 392 1001 utest   seat0 118328 user          - no -
+sessions: 393 1001 utest   -     118585 manager       - no -
+sessions: 397 1000 mike    -     120169 manager       - no -
+sessions: c32  109 lightdm seat0 118180 greeter       - no -
+users:  109 lightdm no closing
+users: 1000 mike    no closing
+users: 1001 utest   no active
+session: Id=389 Name=lightdm Scope= Leader=118188 Class=manager-early State=active
+session: Id=392 Name=utest Scope=session-392.scope Leader=118328 Class=user State=active
+session: Id=393 Name=utest Scope= Leader=118585 Class=manager State=active
+session: Id=397 Name=mike Scope= Leader=120169 Class=manager State=active
+session: Id=c32 Name=lightdm Scope=session-c32.scope Leader=118180 Class=greeter State=closing
+lightdm-uid processes:  118188 systemd  118192 (sd-pam)  118219 pulseaudio  118227 dbus-daemon  118232 at-spi-bus-laun  118240 dbus-daemon  118243 gvfsd  118249 gvfsd-fuse  118295 gvfsd-metadata  118330 at-spi2-registr
+user@109: active runtime-dir: /run/user/109
+greeter scopes: session-392.scope active running,● loaded deactivating
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+no pam_exec line in /etc/pam.d/lightdm-greeter
+13:42:16.813058 forcing SIGTERM into greeter session-child 118180 at pam_getenv after waitpid
+--- lightdm.log
+[+36.37s] DEBUG: Session pid=114655: Exited with return value 1
+[+36.25s] DEBUG: Session pid=115390: Sending SIGTERM
+[+36.37s] DEBUG: Session pid=115390: Exited with return value 1
+[+100.34s] DEBUG: Session pid=116610: Exited with return value 1
+[+115.49s] DEBUG: Session pid=118180: Sending SIGTERM
+[+125.49s] DEBUG: Session pid=118180: Terminated with signal 14
+=== done 10:43:12Z
+ld019tests4.service: Deactivated successfully.
+ld019tests4.service: Consumed 8.220s CPU time over 1min 43.606s wall clock time, 4.1M memory peak.

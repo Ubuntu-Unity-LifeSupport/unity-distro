@@ -1,0 +1,1488 @@
+$ SBUILD_CONFIG=/home/claude/work/b/unity-distro-013/build/sbuild-config.pl sbuild -d resolute --no-clean-source --verbose --dpkg-source-opt=-i --dpkg-source-opt=-I --chroot-mode=unshare --chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst
+dpkg-source: warning: version number suggests Ubuntu vendor changes, but there is no XSBC-Original-Maintainer field
+dpkg-source: warning: source directory '/home/claude/work/b/unity-distro-013/packages/libcolumbus-control' is not <sourcepackage>-<upstreamversion> 'libcolumbus-1.1.0+15.10.20150806'
+dpkg-source: warning: .orig directory name libcolumbus-control.orig is not <package>-<upstreamversion> (wanted libcolumbus-1.1.0+15.10.20150806.orig)
+dpkg-source: info: using source format '1.0'
+dpkg-source: info: building libcolumbus using existing ../libcolumbus_1.1.0+15.10.20150806.orig.tar.gz
+dpkg-source: info: building libcolumbus in ../libcolumbus_1.1.0+15.10.20150806-0ubuntu39.diff.gz
+dpkg-source: warning: the diff modifies the following upstream files: 
+ .pc/.quilt_patches
+ .pc/.quilt_series
+ .pc/.version
+ .pc/0001-fix-build-with-python3.10.patch/cmake/python.cmake
+ .pc/applied-patches
+ CMakeLists.txt
+ cmake/python.cmake
+ python/CMakeLists.txt
+ test/MatcherTest.cc
+ test/TrieTest.cc
+dpkg-source: info: use the '3.0 (quilt)' format to have separate and documented changes to upstream files, see dpkg-source(1)
+dpkg-source: info: building libcolumbus in ../libcolumbus_1.1.0+15.10.20150806-0ubuntu39.dsc
+sbuild (Debian sbuild) 0.91.2ubuntu3 (11 February 2026) on claude-pc
+
++====================================================================================+
+| libcolumbus 1.1.0+15.10.20150806-0ubuntu39 (amd64) Thu, 08 Oct 2026 22:45:27 +0000 |
++====================================================================================+
+
+Package: libcolumbus
+Version: 1.1.0+15.10.20150806-0ubuntu39
+Source Version: 1.1.0+15.10.20150806-0ubuntu39
+Distribution: resolute
+Machine Architecture: amd64
+Host Architecture: amd64
+Build Architecture: amd64
+Build Type: binary
+
+I: Unpacking /home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst to /var/tmp/sbuild-claude/sbuild-unshare-_GbAsD...
+I: Setting up the chroot...
+I: Creating chroot session...
+I: Setting up log color...
+I: Setting up apt archive...
+
++------------------------------------------------------------------------------+
+| Update chroot                                Thu, 08 Oct 2026 22:45:40 +0000 |
++------------------------------------------------------------------------------+
+
+Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]
+Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]
+Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]
+Get:4 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 Packages [16.0 MB]
+Get:5 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/restricted amd64 Packages [152 kB]
+Get:6 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 Packages [1480 kB]
+Get:7 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/restricted amd64 Packages [508 kB]
+Get:8 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 Packages [734 kB]
+Get:9 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/universe amd64 Packages [323 kB]
+Get:10 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security/universe amd64 Packages [200 kB]
+Get:11 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security/main amd64 Packages [598 kB]
+Get:12 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security/restricted amd64 Packages [474 kB]
+Fetched 20.8 MB in 8s (2704 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+
++------------------------------------------------------------------------------+
+| Fetch source files                           Thu, 08 Oct 2026 22:45:50 +0000 |
++------------------------------------------------------------------------------+
+
+
+Local sources
+-------------
+
+/home/claude/work/b/unity-distro-013/packages/libcolumbus_1.1.0+15.10.20150806-0ubuntu39.dsc exists in /home/claude/work/b/unity-distro-013/packages; copying to chroot
+
++------------------------------------------------------------------------------+
+| Install package build dependencies           Thu, 08 Oct 2026 22:45:54 +0000 |
++------------------------------------------------------------------------------+
+
+
+Setup apt archive
+-----------------
+
+Merged Build-Depends: debhelper (>= 9~), cmake, pkg-config, libicu-dev, python3-dev, libboost-python-dev, libsparsehash-dev, build-essential
+Filtered Build-Depends: debhelper (>= 9~), cmake, pkg-config, libicu-dev, python3-dev, libboost-python-dev, libsparsehash-dev, build-essential
+dpkg-deb: building package 'sbuild-build-depends-main-dummy' in '/build/reproducible-path/resolver-6OEbnN/apt_archive/sbuild-build-depends-main-dummy.deb'.
+Ign:1 copy:/build/reproducible-path/resolver-6OEbnN/apt_archive ./ InRelease
+Get:2 copy:/build/reproducible-path/resolver-6OEbnN/apt_archive ./ Release [609 B]
+Ign:3 copy:/build/reproducible-path/resolver-6OEbnN/apt_archive ./ Release.gpg
+Get:4 copy:/build/reproducible-path/resolver-6OEbnN/apt_archive ./ Sources [678 B]
+Get:5 copy:/build/reproducible-path/resolver-6OEbnN/apt_archive ./ Packages [717 B]
+Fetched 2004 B in 0s (127 kB/s)
+Reading package lists...
+Reading package lists...
+
+Install main build dependencies (apt-based resolver)
+----------------------------------------------------
+
+Installing build dependencies
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Solving dependencies...
+The following additional packages will be installed:
+  autoconf automake autopoint autotools-dev bsdextrautils cmake cmake-data
+  debhelper debugedit dh-autoreconf dh-strip-nondeterminism dwz file gettext
+  gettext-base groff-base icu-devtools intltool-debian libarchive-zip-perl
+  libarchive13t64 libboost-container1.90-dev libboost-container1.90.0
+  libboost-exception1.90-dev libboost-graph1.90-dev libboost-graph1.90.0
+  libboost-python-dev libboost-python1.90-dev libboost-python1.90.0
+  libboost-regex1.90-dev libboost-regex1.90.0 libboost-serialization1.90-dev
+  libboost-serialization1.90.0 libboost-test1.90-dev libboost-test1.90.0
+  libboost1.90-dev libbrotli1 libcom-err2 libcurl4t64 libdebhelper-perl
+  libdw1t64 libelf1t64 libexpat1 libexpat1-dev libffi8
+  libfile-stripnondeterminism-perl libgnutls30t64 libgssapi-krb5-2
+  libhogweed6t64 libicu-dev libicu78 libidn2-0 libjs-sphinxdoc libjsoncpp26
+  libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap-common libldap2
+  libmagic-mgc libmagic1t64 libncursesw6 libnettle8t64 libnghttp2-14
+  libp11-kit0 libpipeline1 libpkgconf7 libproc2-0 libpsl5t64 libpython3-dev
+  libpython3-stdlib libpython3.14 libpython3.14-dev libpython3.14-minimal
+  libpython3.14-stdlib libreadline8t64 librhash1 librtmp1 libsasl2-2
+  libsasl2-modules-db libsparsehash-dev libsqlite3-0 libssh2-1t64 libtasn1-6
+  libtool libuchardet0 libunistring5 libuv1t64 libxml2-16 m4 man-db
+  media-types netbase pkg-config pkgconf pkgconf-bin po-debconf procps python3
+  python3-dev python3-minimal python3.14 python3.14-dev python3.14-minimal
+  readline-common sensible-utils tzdata zlib1g-dev
+Suggested packages:
+  autoconf-archive gnu-standards autoconf-doc cmake-doc cmake-format
+  elpa-cmake-mode ninja-build dh-make gettext-doc libasprintf-dev
+  libgettextpo-dev gnulib-l10n groff lrzip graphviz libboost1.90-doc
+  libboost-atomic1.90-dev libboost-chrono1.90-dev libboost-context1.90-dev
+  libboost-contract1.90-dev libboost-coroutine1.90-dev
+  libboost-date-time1.90-dev libboost-fiber1.90-dev
+  libboost-filesystem1.90-dev libboost-graph-parallel1.90-dev
+  libboost-iostreams1.90-dev libboost-json1.90-dev libboost-locale1.90-dev
+  libboost-log1.90-dev libboost-math1.90-dev libboost-mpi-python1.90-dev
+  libboost-mpi1.90-dev libboost-nowide1.90-dev libboost-numpy1.90-dev
+  libboost-program-options1.90-dev libboost-random1.90-dev
+  libboost-stacktrace1.90-dev libboost-thread1.90-dev libboost-timer1.90-dev
+  libboost-type-erasure1.90-dev libboost-url1.90-dev libboost-wave1.90-dev
+  libboost1.90-tools-dev libmpfrc++-dev libntl-dev gnutls-bin krb5-doc
+  krb5-user icu-doc libtool-doc gfortran | fortran95-compiler m4-doc apparmor
+  less www-browser libmail-box-perl python3-doc python3-tk python3-venv
+  python3.14-venv python3.14-doc binfmt-support readline-doc
+Recommended packages:
+  curl | wget | lynx libarchive-cpio-perl krb5-locales libgpm2 publicsuffix
+  libsasl2-modules libltdl-dev libmail-sendmail-perl psmisc
+  linux-sysctl-defaults
+The following NEW packages will be installed:
+  autoconf automake autopoint autotools-dev bsdextrautils cmake cmake-data
+  debhelper debugedit dh-autoreconf dh-strip-nondeterminism dwz file gettext
+  gettext-base groff-base icu-devtools intltool-debian libarchive-zip-perl
+  libarchive13t64 libboost-container1.90-dev libboost-container1.90.0
+  libboost-exception1.90-dev libboost-graph1.90-dev libboost-graph1.90.0
+  libboost-python-dev libboost-python1.90-dev libboost-python1.90.0
+  libboost-regex1.90-dev libboost-regex1.90.0 libboost-serialization1.90-dev
+  libboost-serialization1.90.0 libboost-test1.90-dev libboost-test1.90.0
+  libboost1.90-dev libbrotli1 libcom-err2 libcurl4t64 libdebhelper-perl
+  libdw1t64 libelf1t64 libexpat1 libexpat1-dev libffi8
+  libfile-stripnondeterminism-perl libgnutls30t64 libgssapi-krb5-2
+  libhogweed6t64 libicu-dev libicu78 libidn2-0 libjs-sphinxdoc libjsoncpp26
+  libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap-common libldap2
+  libmagic-mgc libmagic1t64 libncursesw6 libnettle8t64 libnghttp2-14
+  libp11-kit0 libpipeline1 libpkgconf7 libproc2-0 libpsl5t64 libpython3-dev
+  libpython3-stdlib libpython3.14 libpython3.14-dev libpython3.14-minimal
+  libpython3.14-stdlib libreadline8t64 librhash1 librtmp1 libsasl2-2
+  libsasl2-modules-db libsparsehash-dev libsqlite3-0 libssh2-1t64 libtasn1-6
+  libtool libuchardet0 libunistring5 libuv1t64 libxml2-16 m4 man-db
+  media-types netbase pkg-config pkgconf pkgconf-bin po-debconf procps python3
+  python3-dev python3-minimal python3.14 python3.14-dev python3.14-minimal
+  readline-common sbuild-build-depends-main-dummy sensible-utils tzdata
+  zlib1g-dev
+0 upgraded, 109 newly installed, 0 to remove and 0 not upgraded.
+Need to get 89.8 MB of archives.
+After this operation, 474 MB of additional disk space will be used.
+Get:1 copy:/build/reproducible-path/resolver-6OEbnN/apt_archive ./ sbuild-build-depends-main-dummy 0.invalid.0 [694 B]
+Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libexpat1 amd64 2.7.4-1ubuntu0.2 [98.8 kB]
+Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libpython3.14-minimal amd64 3.14.4-1ubuntu0.2 [916 kB]
+Get:4 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 python3.14-minimal amd64 3.14.4-1ubuntu0.2 [2579 kB]
+Get:5 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 python3-minimal amd64 3.14.3-0ubuntu2 [25.8 kB]
+Get:6 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 media-types all 14.0.0build1 [31.4 kB]
+Get:7 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 netbase all 6.5build1 [13.0 kB]
+Get:8 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 tzdata all 2026c-0ubuntu0.26.04.1 [193 kB]
+Get:9 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libffi8 amd64 3.5.2-4 [26.3 kB]
+Get:10 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libncursesw6 amd64 6.6+20251231-1 [150 kB]
+Get:11 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 readline-common all 8.3-4 [61.5 kB]
+Get:12 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libreadline8t64 amd64 8.3-4 [164 kB]
+Get:13 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libsqlite3-0 amd64 3.46.1-9ubuntu0.3 [720 kB]
+Get:14 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libpython3.14-stdlib amd64 3.14.4-1ubuntu0.2 [2415 kB]
+Get:15 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 python3.14 amd64 3.14.4-1ubuntu0.2 [830 kB]
+Get:16 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libpython3-stdlib amd64 3.14.3-0ubuntu2 [8476 B]
+Get:17 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 python3 amd64 3.14.3-0ubuntu2 [22.9 kB]
+Get:18 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libcom-err2 amd64 1.47.2-3ubuntu4 [27.8 kB]
+Get:19 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libproc2-0 amd64 2:4.0.4-9ubuntu1 [59.4 kB]
+Get:20 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 procps amd64 2:4.0.4-9ubuntu1 [710 kB]
+Get:21 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 sensible-utils all 0.0.26build1 [27.1 kB]
+Get:22 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libelf1t64 amd64 0.194-4 [57.1 kB]
+Get:23 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libnettle8t64 amd64 3.10.2-1 [185 kB]
+Get:24 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libhogweed6t64 amd64 3.10.2-1 [201 kB]
+Get:25 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libunistring5 amd64 1.3-2build1 [610 kB]
+Get:26 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libidn2-0 amd64 2.3.8-4build1 [67.6 kB]
+Get:27 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libp11-kit0 amd64 0.26.2-2 [313 kB]
+Get:28 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libtasn1-6 amd64 4.21.0-2 [45.3 kB]
+Get:29 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libgnutls30t64 amd64 3.8.12-2ubuntu1.1 [1029 kB]
+Get:30 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libkrb5support0 amd64 1.22.1-2ubuntu4.1 [33.5 kB]
+Get:31 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libk5crypto3 amd64 1.22.1-2ubuntu4.1 [82.0 kB]
+Get:32 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libkeyutils1 amd64 1.6.3-6ubuntu3 [10.6 kB]
+Get:33 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libkrb5-3 amd64 1.22.1-2ubuntu4.1 [361 kB]
+Get:34 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libgssapi-krb5-2 amd64 1.22.1-2ubuntu4.1 [147 kB]
+Get:35 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libxml2-16 amd64 2.15.2+dfsg-0.1ubuntu0.2 [606 kB]
+Get:36 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 bsdextrautils amd64 2.41.3-3ubuntu2.2 [86.7 kB]
+Get:37 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libmagic-mgc amd64 1:5.46-5build2 [337 kB]
+Get:38 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libmagic1t64 amd64 1:5.46-5build2 [90.8 kB]
+Get:39 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 file amd64 1:5.46-5build2 [22.0 kB]
+Get:40 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 gettext-base amd64 0.23.2-1 [42.3 kB]
+Get:41 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libuchardet0 amd64 0.0.8-2 [75.8 kB]
+Get:42 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 groff-base amd64 1.23.0-10 [1023 kB]
+Get:43 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libnghttp2-14 amd64 1.68.0-2ubuntu0.2 [71.0 kB]
+Get:44 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libpipeline1 amd64 1.5.8-2 [31.4 kB]
+Get:45 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libpsl5t64 amd64 0.21.2-1.1build2 [59.5 kB]
+Get:46 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libuv1t64 amd64 1.51.0-2ubuntu1 [103 kB]
+Get:47 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 man-db amd64 2.13.1-1build1 [1392 kB]
+Get:48 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 m4 amd64 1.4.21-1 [219 kB]
+Get:49 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 autoconf all 2.72-3.1ubuntu2 [384 kB]
+Get:50 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 autotools-dev all 20240727.1build1 [43.4 kB]
+Get:51 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 automake all 1:1.18.1-3build1 [582 kB]
+Get:52 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 autopoint all 0.23.2-1 [620 kB]
+Get:53 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 cmake-data all 4.2.3-2ubuntu2 [2581 kB]
+Get:54 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libarchive13t64 amd64 3.8.5-1ubuntu2.2 [397 kB]
+Get:55 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libbrotli1 amd64 1.2.0-3build1 [343 kB]
+Get:56 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg1-9ubuntu3 [21.1 kB]
+Get:57 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libsasl2-2 amd64 2.1.28+dfsg1-9ubuntu3 [54.0 kB]
+Get:58 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libldap-common all 2.6.10+dfsg-1ubuntu5 [36.0 kB]
+Get:59 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libldap2 amd64 2.6.10+dfsg-1ubuntu5 [204 kB]
+Get:60 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-3 [59.0 kB]
+Get:61 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libssh2-1t64 amd64 1.11.1-1ubuntu0.26.04.4 [138 kB]
+Get:62 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libcurl4t64 amd64 8.18.0-1ubuntu2.7 [428 kB]
+Get:63 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libjsoncpp26 amd64 1.9.6-5 [84.0 kB]
+Get:64 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 librhash1 amd64 1.4.6-1.1 [133 kB]
+Get:65 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 cmake amd64 4.2.3-2ubuntu2 [13.7 MB]
+Get:66 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libdebhelper-perl all 13.31ubuntu1 [78.8 kB]
+Get:67 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libtool all 2.5.4-9 [169 kB]
+Get:68 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 dh-autoreconf all 21+nmu1 [11.9 kB]
+Get:69 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libarchive-zip-perl all 1.68-1 [90.2 kB]
+Get:70 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libfile-stripnondeterminism-perl all 1.15.0-1build1 [20.6 kB]
+Get:71 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 dh-strip-nondeterminism all 1.15.0-1build1 [5110 B]
+Get:72 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libdw1t64 amd64 0.194-4 [285 kB]
+Get:73 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 debugedit amd64 1:5.3-4 [52.9 kB]
+Get:74 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 dwz amd64 0.16-4 [112 kB]
+Get:75 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 gettext amd64 0.23.2-1 [1019 kB]
+Get:76 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 intltool-debian all 0.35.0+20060710.6build1 [24.1 kB]
+Get:77 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 po-debconf all 1.0.22 [215 kB]
+Get:78 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 debhelper all 13.31ubuntu1 [925 kB]
+Get:79 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libicu78 amd64 78.2-2ubuntu1 [11.5 MB]
+Get:80 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 icu-devtools amd64 78.2-2ubuntu1 [214 kB]
+Get:81 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libboost1.90-dev amd64 1.90.0-6ubuntu1 [11.5 MB]
+Get:82 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libboost-container1.90.0 amd64 1.90.0-6ubuntu1 [255 kB]
+Get:83 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libboost-container1.90-dev amd64 1.90.0-6ubuntu1 [263 kB]
+Get:84 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-exception1.90-dev amd64 1.90.0-6ubuntu1 [224 kB]
+Get:85 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-graph1.90.0 amd64 1.90.0-6ubuntu1 [360 kB]
+Get:86 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libboost-regex1.90.0 amd64 1.90.0-6ubuntu1 [340 kB]
+Get:87 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libboost-regex1.90-dev amd64 1.90.0-6ubuntu1 [355 kB]
+Get:88 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-serialization1.90.0 amd64 1.90.0-6ubuntu1 [337 kB]
+Get:89 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-serialization1.90-dev amd64 1.90.0-6ubuntu1 [380 kB]
+Get:90 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-test1.90.0 amd64 1.90.0-6ubuntu1 [453 kB]
+Get:91 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-test1.90-dev amd64 1.90.0-6ubuntu1 [563 kB]
+Get:92 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-graph1.90-dev amd64 1.90.0-6ubuntu1 [395 kB]
+Get:93 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libboost-python1.90.0 amd64 1.90.0-6ubuntu1 [311 kB]
+Get:94 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libpython3.14 amd64 3.14.4-1ubuntu0.2 [2579 kB]
+Get:95 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libexpat1-dev amd64 2.7.4-1ubuntu0.2 [149 kB]
+Get:96 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 zlib1g-dev amd64 1:1.3.dfsg+really1.3.1-1ubuntu3.1 [895 kB]
+Get:97 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 libpython3.14-dev amd64 3.14.4-1ubuntu0.2 [5986 kB]
+Get:98 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libpython3-dev amd64 3.14.3-0ubuntu2 [8736 B]
+Get:99 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates/main amd64 python3.14-dev amd64 3.14.4-1ubuntu0.2 [510 kB]
+Get:100 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libjs-sphinxdoc all 8.2.3-12 [28.4 kB]
+Get:101 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 python3-dev amd64 3.14.3-0ubuntu2 [26.6 kB]
+Get:102 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-python1.90-dev amd64 1.90.0-6ubuntu1 [338 kB]
+Get:103 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libboost-python-dev amd64 1.90.0.1ubuntu3 [3612 B]
+Get:104 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libicu-dev amd64 78.2-2ubuntu1 [12.5 MB]
+Get:105 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 libpkgconf7 amd64 2.5.1-4 [38.8 kB]
+Get:106 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/universe amd64 libsparsehash-dev all 2.0.3-2build1 [72.2 kB]
+Get:107 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 pkgconf-bin amd64 2.5.1-4 [22.7 kB]
+Get:108 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 pkgconf amd64 2.5.1-4 [20.0 kB]
+Get:109 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute/main amd64 pkg-config amd64 2.5.1-4 [7684 B]
+Preconfiguring packages ...
+Fetched 89.8 MB in 24s (3722 kB/s)
+Selecting previously unselected package libexpat1:amd64.
+(Reading database ... 13634 files and directories currently installed.)
+Preparing to unpack .../libexpat1_2.7.4-1ubuntu0.2_amd64.deb ...
+Unpacking libexpat1:amd64 (2.7.4-1ubuntu0.2) ...
+Selecting previously unselected package libpython3.14-minimal:amd64.
+Preparing to unpack .../libpython3.14-minimal_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking libpython3.14-minimal:amd64 (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package python3.14-minimal.
+Preparing to unpack .../python3.14-minimal_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking python3.14-minimal (3.14.4-1ubuntu0.2) ...
+Setting up libpython3.14-minimal:amd64 (3.14.4-1ubuntu0.2) ...
+Setting up libexpat1:amd64 (2.7.4-1ubuntu0.2) ...
+Setting up python3.14-minimal (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package python3-minimal.
+(Reading database ... 13988 files and directories currently installed.)
+Preparing to unpack .../00-python3-minimal_3.14.3-0ubuntu2_amd64.deb ...
+Unpacking python3-minimal (3.14.3-0ubuntu2) ...
+Selecting previously unselected package media-types.
+Preparing to unpack .../01-media-types_14.0.0build1_all.deb ...
+Unpacking media-types (14.0.0build1) ...
+Selecting previously unselected package netbase.
+Preparing to unpack .../02-netbase_6.5build1_all.deb ...
+Unpacking netbase (6.5build1) ...
+Selecting previously unselected package tzdata.
+Preparing to unpack .../03-tzdata_2026c-0ubuntu0.26.04.1_all.deb ...
+Unpacking tzdata (2026c-0ubuntu0.26.04.1) ...
+Selecting previously unselected package libffi8:amd64.
+Preparing to unpack .../04-libffi8_3.5.2-4_amd64.deb ...
+Unpacking libffi8:amd64 (3.5.2-4) ...
+Selecting previously unselected package libncursesw6:amd64.
+Preparing to unpack .../05-libncursesw6_6.6+20251231-1_amd64.deb ...
+Unpacking libncursesw6:amd64 (6.6+20251231-1) ...
+Selecting previously unselected package readline-common.
+Preparing to unpack .../06-readline-common_8.3-4_all.deb ...
+Unpacking readline-common (8.3-4) ...
+Selecting previously unselected package libreadline8t64:amd64.
+Preparing to unpack .../07-libreadline8t64_8.3-4_amd64.deb ...
+Adding 'diversion of /lib/x86_64-linux-gnu/libhistory.so.8 to /lib/x86_64-linux-gnu/libhistory.so.8.usr-is-merged by libreadline8t64'
+Adding 'diversion of /lib/x86_64-linux-gnu/libhistory.so.8.2 to /lib/x86_64-linux-gnu/libhistory.so.8.2.usr-is-merged by libreadline8t64'
+Adding 'diversion of /lib/x86_64-linux-gnu/libreadline.so.8 to /lib/x86_64-linux-gnu/libreadline.so.8.usr-is-merged by libreadline8t64'
+Adding 'diversion of /lib/x86_64-linux-gnu/libreadline.so.8.2 to /lib/x86_64-linux-gnu/libreadline.so.8.2.usr-is-merged by libreadline8t64'
+Unpacking libreadline8t64:amd64 (8.3-4) ...
+Selecting previously unselected package libsqlite3-0:amd64.
+Preparing to unpack .../08-libsqlite3-0_3.46.1-9ubuntu0.3_amd64.deb ...
+Unpacking libsqlite3-0:amd64 (3.46.1-9ubuntu0.3) ...
+Selecting previously unselected package libpython3.14-stdlib:amd64.
+Preparing to unpack .../09-libpython3.14-stdlib_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking libpython3.14-stdlib:amd64 (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package python3.14.
+Preparing to unpack .../10-python3.14_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking python3.14 (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package libpython3-stdlib:amd64.
+Preparing to unpack .../11-libpython3-stdlib_3.14.3-0ubuntu2_amd64.deb ...
+Unpacking libpython3-stdlib:amd64 (3.14.3-0ubuntu2) ...
+Setting up python3-minimal (3.14.3-0ubuntu2) ...
+Selecting previously unselected package python3.
+(Reading database ... 15028 files and directories currently installed.)
+Preparing to unpack .../00-python3_3.14.3-0ubuntu2_amd64.deb ...
+Unpacking python3 (3.14.3-0ubuntu2) ...
+Selecting previously unselected package libcom-err2:amd64.
+Preparing to unpack .../01-libcom-err2_1.47.2-3ubuntu4_amd64.deb ...
+Unpacking libcom-err2:amd64 (1.47.2-3ubuntu4) ...
+Selecting previously unselected package libproc2-0:amd64.
+Preparing to unpack .../02-libproc2-0_2%3a4.0.4-9ubuntu1_amd64.deb ...
+Unpacking libproc2-0:amd64 (2:4.0.4-9ubuntu1) ...
+Selecting previously unselected package procps.
+Preparing to unpack .../03-procps_2%3a4.0.4-9ubuntu1_amd64.deb ...
+Unpacking procps (2:4.0.4-9ubuntu1) ...
+Selecting previously unselected package sensible-utils.
+Preparing to unpack .../04-sensible-utils_0.0.26build1_all.deb ...
+Unpacking sensible-utils (0.0.26build1) ...
+Selecting previously unselected package libelf1t64:amd64.
+Preparing to unpack .../05-libelf1t64_0.194-4_amd64.deb ...
+Unpacking libelf1t64:amd64 (0.194-4) ...
+Selecting previously unselected package libnettle8t64:amd64.
+Preparing to unpack .../06-libnettle8t64_3.10.2-1_amd64.deb ...
+Unpacking libnettle8t64:amd64 (3.10.2-1) ...
+Selecting previously unselected package libhogweed6t64:amd64.
+Preparing to unpack .../07-libhogweed6t64_3.10.2-1_amd64.deb ...
+Unpacking libhogweed6t64:amd64 (3.10.2-1) ...
+Selecting previously unselected package libunistring5:amd64.
+Preparing to unpack .../08-libunistring5_1.3-2build1_amd64.deb ...
+Unpacking libunistring5:amd64 (1.3-2build1) ...
+Selecting previously unselected package libidn2-0:amd64.
+Preparing to unpack .../09-libidn2-0_2.3.8-4build1_amd64.deb ...
+Unpacking libidn2-0:amd64 (2.3.8-4build1) ...
+Selecting previously unselected package libp11-kit0:amd64.
+Preparing to unpack .../10-libp11-kit0_0.26.2-2_amd64.deb ...
+Unpacking libp11-kit0:amd64 (0.26.2-2) ...
+Selecting previously unselected package libtasn1-6:amd64.
+Preparing to unpack .../11-libtasn1-6_4.21.0-2_amd64.deb ...
+Unpacking libtasn1-6:amd64 (4.21.0-2) ...
+Selecting previously unselected package libgnutls30t64:amd64.
+Preparing to unpack .../12-libgnutls30t64_3.8.12-2ubuntu1.1_amd64.deb ...
+Unpacking libgnutls30t64:amd64 (3.8.12-2ubuntu1.1) ...
+Selecting previously unselected package libkrb5support0:amd64.
+Preparing to unpack .../13-libkrb5support0_1.22.1-2ubuntu4.1_amd64.deb ...
+Unpacking libkrb5support0:amd64 (1.22.1-2ubuntu4.1) ...
+Selecting previously unselected package libk5crypto3:amd64.
+Preparing to unpack .../14-libk5crypto3_1.22.1-2ubuntu4.1_amd64.deb ...
+Unpacking libk5crypto3:amd64 (1.22.1-2ubuntu4.1) ...
+Selecting previously unselected package libkeyutils1:amd64.
+Preparing to unpack .../15-libkeyutils1_1.6.3-6ubuntu3_amd64.deb ...
+Unpacking libkeyutils1:amd64 (1.6.3-6ubuntu3) ...
+Selecting previously unselected package libkrb5-3:amd64.
+Preparing to unpack .../16-libkrb5-3_1.22.1-2ubuntu4.1_amd64.deb ...
+Unpacking libkrb5-3:amd64 (1.22.1-2ubuntu4.1) ...
+Selecting previously unselected package libgssapi-krb5-2:amd64.
+Preparing to unpack .../17-libgssapi-krb5-2_1.22.1-2ubuntu4.1_amd64.deb ...
+Unpacking libgssapi-krb5-2:amd64 (1.22.1-2ubuntu4.1) ...
+Selecting previously unselected package libxml2-16:amd64.
+Preparing to unpack .../18-libxml2-16_2.15.2+dfsg-0.1ubuntu0.2_amd64.deb ...
+Unpacking libxml2-16:amd64 (2.15.2+dfsg-0.1ubuntu0.2) ...
+Selecting previously unselected package bsdextrautils.
+Preparing to unpack .../19-bsdextrautils_2.41.3-3ubuntu2.2_amd64.deb ...
+Unpacking bsdextrautils (2.41.3-3ubuntu2.2) ...
+Selecting previously unselected package libmagic-mgc.
+Preparing to unpack .../20-libmagic-mgc_1%3a5.46-5build2_amd64.deb ...
+Unpacking libmagic-mgc (1:5.46-5build2) ...
+Selecting previously unselected package libmagic1t64:amd64.
+Preparing to unpack .../21-libmagic1t64_1%3a5.46-5build2_amd64.deb ...
+Unpacking libmagic1t64:amd64 (1:5.46-5build2) ...
+Selecting previously unselected package file.
+Preparing to unpack .../22-file_1%3a5.46-5build2_amd64.deb ...
+Unpacking file (1:5.46-5build2) ...
+Selecting previously unselected package gettext-base.
+Preparing to unpack .../23-gettext-base_0.23.2-1_amd64.deb ...
+Unpacking gettext-base (0.23.2-1) ...
+Selecting previously unselected package libuchardet0:amd64.
+Preparing to unpack .../24-libuchardet0_0.0.8-2_amd64.deb ...
+Unpacking libuchardet0:amd64 (0.0.8-2) ...
+Selecting previously unselected package groff-base.
+Preparing to unpack .../25-groff-base_1.23.0-10_amd64.deb ...
+Unpacking groff-base (1.23.0-10) ...
+Selecting previously unselected package libnghttp2-14:amd64.
+Preparing to unpack .../26-libnghttp2-14_1.68.0-2ubuntu0.2_amd64.deb ...
+Unpacking libnghttp2-14:amd64 (1.68.0-2ubuntu0.2) ...
+Selecting previously unselected package libpipeline1:amd64.
+Preparing to unpack .../27-libpipeline1_1.5.8-2_amd64.deb ...
+Unpacking libpipeline1:amd64 (1.5.8-2) ...
+Selecting previously unselected package libpsl5t64:amd64.
+Preparing to unpack .../28-libpsl5t64_0.21.2-1.1build2_amd64.deb ...
+Unpacking libpsl5t64:amd64 (0.21.2-1.1build2) ...
+Selecting previously unselected package libuv1t64:amd64.
+Preparing to unpack .../29-libuv1t64_1.51.0-2ubuntu1_amd64.deb ...
+Unpacking libuv1t64:amd64 (1.51.0-2ubuntu1) ...
+Selecting previously unselected package man-db.
+Preparing to unpack .../30-man-db_2.13.1-1build1_amd64.deb ...
+Unpacking man-db (2.13.1-1build1) ...
+Selecting previously unselected package m4.
+Preparing to unpack .../31-m4_1.4.21-1_amd64.deb ...
+Unpacking m4 (1.4.21-1) ...
+Selecting previously unselected package autoconf.
+Preparing to unpack .../32-autoconf_2.72-3.1ubuntu2_all.deb ...
+Unpacking autoconf (2.72-3.1ubuntu2) ...
+Selecting previously unselected package autotools-dev.
+Preparing to unpack .../33-autotools-dev_20240727.1build1_all.deb ...
+Unpacking autotools-dev (20240727.1build1) ...
+Selecting previously unselected package automake.
+Preparing to unpack .../34-automake_1%3a1.18.1-3build1_all.deb ...
+Unpacking automake (1:1.18.1-3build1) ...
+Selecting previously unselected package autopoint.
+Preparing to unpack .../35-autopoint_0.23.2-1_all.deb ...
+Unpacking autopoint (0.23.2-1) ...
+Selecting previously unselected package cmake-data.
+Preparing to unpack .../36-cmake-data_4.2.3-2ubuntu2_all.deb ...
+Unpacking cmake-data (4.2.3-2ubuntu2) ...
+Selecting previously unselected package libarchive13t64:amd64.
+Preparing to unpack .../37-libarchive13t64_3.8.5-1ubuntu2.2_amd64.deb ...
+Unpacking libarchive13t64:amd64 (3.8.5-1ubuntu2.2) ...
+Selecting previously unselected package libbrotli1:amd64.
+Preparing to unpack .../38-libbrotli1_1.2.0-3build1_amd64.deb ...
+Unpacking libbrotli1:amd64 (1.2.0-3build1) ...
+Selecting previously unselected package libsasl2-modules-db:amd64.
+Preparing to unpack .../39-libsasl2-modules-db_2.1.28+dfsg1-9ubuntu3_amd64.deb ...
+Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg1-9ubuntu3) ...
+Selecting previously unselected package libsasl2-2:amd64.
+Preparing to unpack .../40-libsasl2-2_2.1.28+dfsg1-9ubuntu3_amd64.deb ...
+Unpacking libsasl2-2:amd64 (2.1.28+dfsg1-9ubuntu3) ...
+Selecting previously unselected package libldap-common.
+Preparing to unpack .../41-libldap-common_2.6.10+dfsg-1ubuntu5_all.deb ...
+Unpacking libldap-common (2.6.10+dfsg-1ubuntu5) ...
+Selecting previously unselected package libldap2:amd64.
+Preparing to unpack .../42-libldap2_2.6.10+dfsg-1ubuntu5_amd64.deb ...
+Unpacking libldap2:amd64 (2.6.10+dfsg-1ubuntu5) ...
+Selecting previously unselected package librtmp1:amd64.
+Preparing to unpack .../43-librtmp1_2.4+20151223.gitfa8646d.1-3_amd64.deb ...
+Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-3) ...
+Selecting previously unselected package libssh2-1t64:amd64.
+Preparing to unpack .../44-libssh2-1t64_1.11.1-1ubuntu0.26.04.4_amd64.deb ...
+Unpacking libssh2-1t64:amd64 (1.11.1-1ubuntu0.26.04.4) ...
+Selecting previously unselected package libcurl4t64:amd64.
+Preparing to unpack .../45-libcurl4t64_8.18.0-1ubuntu2.7_amd64.deb ...
+Unpacking libcurl4t64:amd64 (8.18.0-1ubuntu2.7) ...
+Selecting previously unselected package libjsoncpp26:amd64.
+Preparing to unpack .../46-libjsoncpp26_1.9.6-5_amd64.deb ...
+Unpacking libjsoncpp26:amd64 (1.9.6-5) ...
+Selecting previously unselected package librhash1:amd64.
+Preparing to unpack .../47-librhash1_1.4.6-1.1_amd64.deb ...
+Unpacking librhash1:amd64 (1.4.6-1.1) ...
+Selecting previously unselected package cmake.
+Preparing to unpack .../48-cmake_4.2.3-2ubuntu2_amd64.deb ...
+Unpacking cmake (4.2.3-2ubuntu2) ...
+Selecting previously unselected package libdebhelper-perl.
+Preparing to unpack .../49-libdebhelper-perl_13.31ubuntu1_all.deb ...
+Unpacking libdebhelper-perl (13.31ubuntu1) ...
+Selecting previously unselected package libtool.
+Preparing to unpack .../50-libtool_2.5.4-9_all.deb ...
+Unpacking libtool (2.5.4-9) ...
+Selecting previously unselected package dh-autoreconf.
+Preparing to unpack .../51-dh-autoreconf_21+nmu1_all.deb ...
+Unpacking dh-autoreconf (21+nmu1) ...
+Selecting previously unselected package libarchive-zip-perl.
+Preparing to unpack .../52-libarchive-zip-perl_1.68-1_all.deb ...
+Unpacking libarchive-zip-perl (1.68-1) ...
+Selecting previously unselected package libfile-stripnondeterminism-perl.
+Preparing to unpack .../53-libfile-stripnondeterminism-perl_1.15.0-1build1_all.deb ...
+Unpacking libfile-stripnondeterminism-perl (1.15.0-1build1) ...
+Selecting previously unselected package dh-strip-nondeterminism.
+Preparing to unpack .../54-dh-strip-nondeterminism_1.15.0-1build1_all.deb ...
+Unpacking dh-strip-nondeterminism (1.15.0-1build1) ...
+Selecting previously unselected package libdw1t64:amd64.
+Preparing to unpack .../55-libdw1t64_0.194-4_amd64.deb ...
+Unpacking libdw1t64:amd64 (0.194-4) ...
+Selecting previously unselected package debugedit.
+Preparing to unpack .../56-debugedit_1%3a5.3-4_amd64.deb ...
+Unpacking debugedit (1:5.3-4) ...
+Selecting previously unselected package dwz.
+Preparing to unpack .../57-dwz_0.16-4_amd64.deb ...
+Unpacking dwz (0.16-4) ...
+Selecting previously unselected package gettext.
+Preparing to unpack .../58-gettext_0.23.2-1_amd64.deb ...
+Unpacking gettext (0.23.2-1) ...
+Selecting previously unselected package intltool-debian.
+Preparing to unpack .../59-intltool-debian_0.35.0+20060710.6build1_all.deb ...
+Unpacking intltool-debian (0.35.0+20060710.6build1) ...
+Selecting previously unselected package po-debconf.
+Preparing to unpack .../60-po-debconf_1.0.22_all.deb ...
+Unpacking po-debconf (1.0.22) ...
+Selecting previously unselected package debhelper.
+Preparing to unpack .../61-debhelper_13.31ubuntu1_all.deb ...
+Unpacking debhelper (13.31ubuntu1) ...
+Selecting previously unselected package libicu78:amd64.
+Preparing to unpack .../62-libicu78_78.2-2ubuntu1_amd64.deb ...
+Unpacking libicu78:amd64 (78.2-2ubuntu1) ...
+Selecting previously unselected package icu-devtools.
+Preparing to unpack .../63-icu-devtools_78.2-2ubuntu1_amd64.deb ...
+Unpacking icu-devtools (78.2-2ubuntu1) ...
+Selecting previously unselected package libboost1.90-dev:amd64.
+Preparing to unpack .../64-libboost1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-container1.90.0:amd64.
+Preparing to unpack .../65-libboost-container1.90.0_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-container1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-container1.90-dev:amd64.
+Preparing to unpack .../66-libboost-container1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-container1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-exception1.90-dev:amd64.
+Preparing to unpack .../67-libboost-exception1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-exception1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-graph1.90.0:amd64.
+Preparing to unpack .../68-libboost-graph1.90.0_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-graph1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-regex1.90.0:amd64.
+Preparing to unpack .../69-libboost-regex1.90.0_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-regex1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-regex1.90-dev:amd64.
+Preparing to unpack .../70-libboost-regex1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-regex1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-serialization1.90.0:amd64.
+Preparing to unpack .../71-libboost-serialization1.90.0_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-serialization1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-serialization1.90-dev:amd64.
+Preparing to unpack .../72-libboost-serialization1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-serialization1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-test1.90.0:amd64.
+Preparing to unpack .../73-libboost-test1.90.0_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-test1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-test1.90-dev:amd64.
+Preparing to unpack .../74-libboost-test1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-test1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-graph1.90-dev:amd64.
+Preparing to unpack .../75-libboost-graph1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-graph1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-python1.90.0.
+Preparing to unpack .../76-libboost-python1.90.0_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-python1.90.0 (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libpython3.14:amd64.
+Preparing to unpack .../77-libpython3.14_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking libpython3.14:amd64 (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package libexpat1-dev:amd64.
+Preparing to unpack .../78-libexpat1-dev_2.7.4-1ubuntu0.2_amd64.deb ...
+Unpacking libexpat1-dev:amd64 (2.7.4-1ubuntu0.2) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../79-zlib1g-dev_1%3a1.3.dfsg+really1.3.1-1ubuntu3.1_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.3.dfsg+really1.3.1-1ubuntu3.1) ...
+Selecting previously unselected package libpython3.14-dev:amd64.
+Preparing to unpack .../80-libpython3.14-dev_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking libpython3.14-dev:amd64 (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../81-libpython3-dev_3.14.3-0ubuntu2_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.14.3-0ubuntu2) ...
+Selecting previously unselected package python3.14-dev.
+Preparing to unpack .../82-python3.14-dev_3.14.4-1ubuntu0.2_amd64.deb ...
+Unpacking python3.14-dev (3.14.4-1ubuntu0.2) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../83-libjs-sphinxdoc_8.2.3-12_all.deb ...
+Unpacking libjs-sphinxdoc (8.2.3-12) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../84-python3-dev_3.14.3-0ubuntu2_amd64.deb ...
+Unpacking python3-dev (3.14.3-0ubuntu2) ...
+Selecting previously unselected package libboost-python1.90-dev.
+Preparing to unpack .../85-libboost-python1.90-dev_1.90.0-6ubuntu1_amd64.deb ...
+Unpacking libboost-python1.90-dev (1.90.0-6ubuntu1) ...
+Selecting previously unselected package libboost-python-dev.
+Preparing to unpack .../86-libboost-python-dev_1.90.0.1ubuntu3_amd64.deb ...
+Unpacking libboost-python-dev (1.90.0.1ubuntu3) ...
+Selecting previously unselected package libicu-dev:amd64.
+Preparing to unpack .../87-libicu-dev_78.2-2ubuntu1_amd64.deb ...
+Unpacking libicu-dev:amd64 (78.2-2ubuntu1) ...
+Selecting previously unselected package libpkgconf7:amd64.
+Preparing to unpack .../88-libpkgconf7_2.5.1-4_amd64.deb ...
+Unpacking libpkgconf7:amd64 (2.5.1-4) ...
+Selecting previously unselected package libsparsehash-dev.
+Preparing to unpack .../89-libsparsehash-dev_2.0.3-2build1_all.deb ...
+Unpacking libsparsehash-dev (2.0.3-2build1) ...
+Selecting previously unselected package pkgconf-bin.
+Preparing to unpack .../90-pkgconf-bin_2.5.1-4_amd64.deb ...
+Unpacking pkgconf-bin (2.5.1-4) ...
+Selecting previously unselected package pkgconf:amd64.
+Preparing to unpack .../91-pkgconf_2.5.1-4_amd64.deb ...
+Unpacking pkgconf:amd64 (2.5.1-4) ...
+Selecting previously unselected package pkg-config:amd64.
+Preparing to unpack .../92-pkg-config_2.5.1-4_amd64.deb ...
+Unpacking pkg-config:amd64 (2.5.1-4) ...
+Selecting previously unselected package sbuild-build-depends-main-dummy.
+Preparing to unpack .../93-sbuild-build-depends-main-dummy_0.invalid.0_amd64.deb ...
+Unpacking sbuild-build-depends-main-dummy (0.invalid.0) ...
+Setting up media-types (14.0.0build1) ...
+Setting up libpipeline1:amd64 (1.5.8-2) ...
+Setting up libboost-test1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Setting up libkeyutils1:amd64 (1.6.3-6ubuntu3) ...
+Setting up bsdextrautils (2.41.3-3ubuntu2.2) ...
+Setting up libboost-graph1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Setting up libmagic-mgc (1:5.46-5build2) ...
+Setting up libarchive-zip-perl (1.68-1) ...
+Setting up libxml2-16:amd64 (2.15.2+dfsg-0.1ubuntu0.2) ...
+Setting up libdebhelper-perl (13.31ubuntu1) ...
+Setting up libbrotli1:amd64 (1.2.0-3build1) ...
+Setting up libsqlite3-0:amd64 (3.46.1-9ubuntu0.3) ...
+Setting up libpkgconf7:amd64 (2.5.1-4) ...
+Setting up libuv1t64:amd64 (1.51.0-2ubuntu1) ...
+Setting up libmagic1t64:amd64 (1:5.46-5build2) ...
+Setting up libnghttp2-14:amd64 (1.68.0-2ubuntu0.2) ...
+Setting up gettext-base (0.23.2-1) ...
+Setting up m4 (1.4.21-1) ...
+Setting up libcom-err2:amd64 (1.47.2-3ubuntu4) ...
+Setting up file (1:5.46-5build2) ...
+Setting up libldap-common (2.6.10+dfsg-1ubuntu5) ...
+Setting up libsparsehash-dev (2.0.3-2build1) ...
+Setting up libelf1t64:amd64 (0.194-4) ...
+Setting up libkrb5support0:amd64 (1.22.1-2ubuntu4.1) ...
+Setting up libdw1t64:amd64 (0.194-4) ...
+Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg1-9ubuntu3) ...
+Setting up tzdata (2026c-0ubuntu0.26.04.1) ...
+
+Current default time zone: 'Etc/UTC'
+Local time is now:      Thu Oct  8 22:48:44 UTC 2026.
+Universal Time is now:  Thu Oct  8 22:48:44 UTC 2026.
+Run 'dpkg-reconfigure tzdata' if you wish to change it.
+
+Setting up libicu78:amd64 (78.2-2ubuntu1) ...
+Setting up libboost-python1.90.0 (1.90.0-6ubuntu1) ...
+Setting up libnettle8t64:amd64 (3.10.2-1) ...
+Setting up autotools-dev (20240727.1build1) ...
+Setting up libexpat1-dev:amd64 (2.7.4-1ubuntu0.2) ...
+Setting up libjsoncpp26:amd64 (1.9.6-5) ...
+Setting up libproc2-0:amd64 (2:4.0.4-9ubuntu1) ...
+Setting up libunistring5:amd64 (1.3-2build1) ...
+Setting up autopoint (0.23.2-1) ...
+Setting up icu-devtools (78.2-2ubuntu1) ...
+Setting up pkgconf-bin (2.5.1-4) ...
+Setting up libncursesw6:amd64 (6.6+20251231-1) ...
+Setting up libk5crypto3:amd64 (1.22.1-2ubuntu4.1) ...
+Setting up libjs-sphinxdoc (8.2.3-12) ...
+Setting up libsasl2-2:amd64 (2.1.28+dfsg1-9ubuntu3) ...
+Setting up autoconf (2.72-3.1ubuntu2) ...
+Setting up zlib1g-dev:amd64 (1:1.3.dfsg+really1.3.1-1ubuntu3.1) ...
+Setting up libffi8:amd64 (3.5.2-4) ...
+Setting up dwz (0.16-4) ...
+Setting up libhogweed6t64:amd64 (3.10.2-1) ...
+Setting up sensible-utils (0.0.26build1) ...
+Setting up libuchardet0:amd64 (0.0.8-2) ...
+Setting up procps (2:4.0.4-9ubuntu1) ...
+Setting up libtasn1-6:amd64 (4.21.0-2) ...
+Setting up debugedit (1:5.3-4) ...
+Setting up libboost1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up netbase (6.5build1) ...
+Setting up libboost-serialization1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Setting up cmake-data (4.2.3-2ubuntu2) ...
+Setting up librhash1:amd64 (1.4.6-1.1) ...
+Setting up libkrb5-3:amd64 (1.22.1-2ubuntu4.1) ...
+Setting up libboost-regex1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Setting up libssh2-1t64:amd64 (1.11.1-1ubuntu0.26.04.4) ...
+Setting up libarchive13t64:amd64 (3.8.5-1ubuntu2.2) ...
+Setting up readline-common (8.3-4) ...
+Setting up libicu-dev:amd64 (78.2-2ubuntu1) ...
+Setting up libboost-container1.90.0:amd64 (1.90.0-6ubuntu1) ...
+Setting up libldap2:amd64 (2.6.10+dfsg-1ubuntu5) ...
+Setting up automake (1:1.18.1-3build1) ...
+update-alternatives: using /usr/bin/automake-1.18 to provide /usr/bin/automake (automake) in auto mode
+Setting up libfile-stripnondeterminism-perl (1.15.0-1build1) ...
+Setting up libboost-serialization1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up gettext (0.23.2-1) ...
+Setting up libtool (2.5.4-9) ...
+Setting up libidn2-0:amd64 (2.3.8-4build1) ...
+Setting up pkgconf:amd64 (2.5.1-4) ...
+Setting up intltool-debian (0.35.0+20060710.6build1) ...
+Setting up dh-autoreconf (21+nmu1) ...
+Setting up libboost-container1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up libp11-kit0:amd64 (0.26.2-2) ...
+Setting up libgssapi-krb5-2:amd64 (1.22.1-2ubuntu4.1) ...
+Setting up pkg-config:amd64 (2.5.1-4) ...
+Setting up libreadline8t64:amd64 (8.3-4) ...
+Setting up dh-strip-nondeterminism (1.15.0-1build1) ...
+Setting up libboost-exception1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up libboost-regex1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up groff-base (1.23.0-10) ...
+Setting up libgnutls30t64:amd64 (3.8.12-2ubuntu1.1) ...
+Setting up libboost-test1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up libpython3.14-stdlib:amd64 (3.14.4-1ubuntu0.2) ...
+Setting up po-debconf (1.0.22) ...
+Setting up libpsl5t64:amd64 (0.21.2-1.1build2) ...
+Setting up man-db (2.13.1-1build1) ...
+Not building database; man-db/auto-update is not 'true'.
+Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-3) ...
+Setting up libboost-graph1.90-dev:amd64 (1.90.0-6ubuntu1) ...
+Setting up libpython3.14:amd64 (3.14.4-1ubuntu0.2) ...
+Setting up libpython3.14-dev:amd64 (3.14.4-1ubuntu0.2) ...
+Setting up python3.14 (3.14.4-1ubuntu0.2) ...
+Setting up libpython3-stdlib:amd64 (3.14.3-0ubuntu2) ...
+Setting up libpython3-dev:amd64 (3.14.3-0ubuntu2) ...
+Setting up libcurl4t64:amd64 (8.18.0-1ubuntu2.7) ...
+Setting up python3.14-dev (3.14.4-1ubuntu0.2) ...
+Setting up debhelper (13.31ubuntu1) ...
+Setting up python3 (3.14.3-0ubuntu2) ...
+Setting up python3-dev (3.14.3-0ubuntu2) ...
+Setting up cmake (4.2.3-2ubuntu2) ...
+Setting up libboost-python1.90-dev (1.90.0-6ubuntu1) ...
+Setting up libboost-python-dev (1.90.0.1ubuntu3) ...
+Setting up sbuild-build-depends-main-dummy (0.invalid.0) ...
+Processing triggers for libc-bin (2.43-2ubuntu2.4) ...
+
++------------------------------------------------------------------------------+
+| Check architectures                          Thu, 08 Oct 2026 22:48:51 +0000 |
++------------------------------------------------------------------------------+
+
+Arch check ok (amd64 included in any all)
+
++------------------------------------------------------------------------------+
+| Build environment                            Thu, 08 Oct 2026 22:48:52 +0000 |
++------------------------------------------------------------------------------+
+
+Kernel: Linux 7.0.0-34-generic #34-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep  2 14:29:37 UTC 2026 amd64 (x86_64)
+Toolchain package versions: binutils_2.46-3ubuntu2 dpkg-dev_1.23.7ubuntu1 g++-15_15.2.0-16ubuntu1 gcc-15_15.2.0-16ubuntu1 libc6-dev_2.43-2ubuntu2.4 libstdc++-15-dev_15.2.0-16ubuntu1 libstdc++6_16-20260322-1ubuntu1 linux-libc-dev_7.0.0-38.38
+Package versions: apt_3.2.0 autoconf_2.72-3.1ubuntu2 automake_1:1.18.1-3build1 autopoint_0.23.2-1 autotools-dev_20240727.1build1 base-files_14ubuntu6.2 base-passwd_3.6.8 bash_5.3-2ubuntu1 binutils_2.46-3ubuntu2 binutils-common_2.46-3ubuntu2 binutils-x86-64-linux-gnu_2.46-3ubuntu2 bsdextrautils_2.41.3-3ubuntu2.2 build-essential_12.12ubuntu2.26.04.2 bzip2_1.0.8-6ubuntu0.1 ca-certificates_20260601~26.04.1 cmake_4.2.3-2ubuntu2 cmake-data_4.2.3-2ubuntu2 coreutils_9.5-1ubuntu2+0.0.0~ubuntu25 coreutils-from-uutils_0.0.0~ubuntu25 cpp_4:15.2.0-5ubuntu1 cpp-15_15.2.0-16ubuntu1 cpp-15-x86-64-linux-gnu_15.2.0-16ubuntu1 cpp-x86-64-linux-gnu_4:15.2.0-5ubuntu1 dash_0.5.12-12ubuntu3 debconf_1.5.92 debhelper_13.31ubuntu1 debianutils_5.23.2build1 debugedit_1:5.3-4 dh-autoreconf_21+nmu1 dh-strip-nondeterminism_1.15.0-1build1 diffutils_1:3.12-1ubuntu0.1 dpkg_1.23.7ubuntu1 dpkg-dev_1.23.7ubuntu1 dwz_0.16-4 file_1:5.46-5build2 findutils_4.10.0-3build2 g++_4:15.2.0-5ubuntu1 g++-15_15.2.0-16ubuntu1 g++-15-x86-64-linux-gnu_15.2.0-16ubuntu1 g++-x86-64-linux-gnu_4:15.2.0-5ubuntu1 gcc_4:15.2.0-5ubuntu1 gcc-15_15.2.0-16ubuntu1 gcc-15-base_15.2.0-16ubuntu1 gcc-15-x86-64-linux-gnu_15.2.0-16ubuntu1 gcc-16-base_16-20260322-1ubuntu1 gcc-x86-64-linux-gnu_4:15.2.0-5ubuntu1 gettext_0.23.2-1 gettext-base_0.23.2-1 gnu-coreutils_9.7-3ubuntu2.1 gpgv_2.4.8-4ubuntu3.1 grep_3.12-1 groff-base_1.23.0-10 gzip_1.14-1~exp2ubuntu1.1 hostname_3.25build1 icu-devtools_78.2-2ubuntu1 init-system-helpers_1.69 intltool-debian_0.35.0+20060710.6build1 libacl1_2.3.2-2 libapt-pkg7.0_3.2.0 libarchive-zip-perl_1.68-1 libarchive13t64_3.8.5-1ubuntu2.2 libasan8_16-20260322-1ubuntu1 libatomic1_16-20260322-1ubuntu1 libattr1_1:2.5.2-4ubuntu0.1 libaudit-common_1:4.1.2-1ubuntu0.1 libaudit1_1:4.1.2-1ubuntu0.1 libbinutils_2.46-3ubuntu2 libblkid1_2.41.3-3ubuntu2.2 libboost-container1.90-dev_1.90.0-6ubuntu1 libboost-container1.90.0_1.90.0-6ubuntu1 libboost-exception1.90-dev_1.90.0-6ubuntu1 libboost-graph1.90-dev_1.90.0-6ubuntu1 libboost-graph1.90.0_1.90.0-6ubuntu1 libboost-python-dev_1.90.0.1ubuntu3 libboost-python1.90-dev_1.90.0-6ubuntu1 libboost-python1.90.0_1.90.0-6ubuntu1 libboost-regex1.90-dev_1.90.0-6ubuntu1 libboost-regex1.90.0_1.90.0-6ubuntu1 libboost-serialization1.90-dev_1.90.0-6ubuntu1 libboost-serialization1.90.0_1.90.0-6ubuntu1 libboost-test1.90-dev_1.90.0-6ubuntu1 libboost-test1.90.0_1.90.0-6ubuntu1 libboost1.90-dev_1.90.0-6ubuntu1 libbrotli1_1.2.0-3build1 libbz2-1.0_1.0.8-6ubuntu0.1 libc-bin_2.43-2ubuntu2.4 libc-dev-bin_2.43-2ubuntu2.4 libc-gconv-modules-extra_2.43-2ubuntu2.4 libc6_2.43-2ubuntu2.4 libc6-dev_2.43-2ubuntu2.4 libcap-ng0_0.8.5-4build5 libcc1-0_16-20260322-1ubuntu1 libcom-err2_1.47.2-3ubuntu4 libcrypt-dev_1:4.5.1-1 libcrypt1_1:4.5.1-1 libctf-nobfd0_2.46-3ubuntu2 libctf0_2.46-3ubuntu2 libcurl4t64_8.18.0-1ubuntu2.7 libdb5.3t64_5.3.28+dfsg2-10ubuntu1 libdebconfclient0_0.280ubuntu1 libdebhelper-perl_13.31ubuntu1 libdpkg-perl_1.23.7ubuntu1 libdw1t64_0.194-4 libelf1t64_0.194-4 libexpat1_2.7.4-1ubuntu0.2 libexpat1-dev_2.7.4-1ubuntu0.2 libffi8_3.5.2-4 libfile-stripnondeterminism-perl_1.15.0-1build1 libgcc-15-dev_15.2.0-16ubuntu1 libgcc-s1_16-20260322-1ubuntu1 libgcrypt20_1.12.0-2ubuntu1.1 libgdbm-compat4t64_1.26-1build1 libgdbm6t64_1.26-1build1 libgmp10_2:6.3.0+dfsg-5ubuntu2 libgnutls30t64_3.8.12-2ubuntu1.1 libgomp1_16-20260322-1ubuntu1 libgpg-error0_1.58-2 libgprofng0_2.46-3ubuntu2 libgssapi-krb5-2_1.22.1-2ubuntu4.1 libhogweed6t64_3.10.2-1 libhwasan0_16-20260322-1ubuntu1 libicu-dev_78.2-2ubuntu1 libicu78_78.2-2ubuntu1 libidn2-0_2.3.8-4build1 libisl23_0.27-1build1 libitm1_16-20260322-1ubuntu1 libjansson4_2.14-2build4 libjs-sphinxdoc_8.2.3-12 libjsoncpp26_1.9.6-5 libk5crypto3_1.22.1-2ubuntu4.1 libkeyutils1_1.6.3-6ubuntu3 libkrb5-3_1.22.1-2ubuntu4.1 libkrb5support0_1.22.1-2ubuntu4.1 libldap-common_2.6.10+dfsg-1ubuntu5 libldap2_2.6.10+dfsg-1ubuntu5 liblsan0_16-20260322-1ubuntu1 liblz4-1_1.10.0-8 liblzma5_5.8.3-1 libmagic-mgc_1:5.46-5build2 libmagic1t64_1:5.46-5build2 libmd0_1.1.0-2build4 libmount1_2.41.3-3ubuntu2.2 libmpc3_1.3.1-3 libmpfr6_4.2.2-3 libncursesw6_6.6+20251231-1 libnettle8t64_3.10.2-1 libnghttp2-14_1.68.0-2ubuntu0.2 libp11-kit0_0.26.2-2 libpam-modules_1.7.0-5ubuntu3.2 libpam-modules-bin_1.7.0-5ubuntu3.2 libpam-runtime_1.7.0-5ubuntu3.2 libpam0g_1.7.0-5ubuntu3.2 libpcre2-8-0_10.46-1build1 libperl5.40_5.40.1-7ubuntu0.3 libpipeline1_1.5.8-2 libpkgconf7_2.5.1-4 libproc2-0_2:4.0.4-9ubuntu1 libpsl5t64_0.21.2-1.1build2 libpython3-dev_3.14.3-0ubuntu2 libpython3-stdlib_3.14.3-0ubuntu2 libpython3.14_3.14.4-1ubuntu0.2 libpython3.14-dev_3.14.4-1ubuntu0.2 libpython3.14-minimal_3.14.4-1ubuntu0.2 libpython3.14-stdlib_3.14.4-1ubuntu0.2 libquadmath0_16-20260322-1ubuntu1 libreadline8t64_8.3-4 librhash1_1.4.6-1.1 librtmp1_2.4+20151223.gitfa8646d.1-3 libsasl2-2_2.1.28+dfsg1-9ubuntu3 libsasl2-modules-db_2.1.28+dfsg1-9ubuntu3 libseccomp2_2.6.0-2ubuntu5 libselinux1_3.9-4build1 libsframe3_2.46-3ubuntu2 libsmartcols1_2.41.3-3ubuntu2.2 libsparsehash-dev_2.0.3-2build1 libsqlite3-0_3.46.1-9ubuntu0.3 libssh2-1t64_1.11.1-1ubuntu0.26.04.4 libssl3t64_3.5.5-1ubuntu3.7 libstdc++-15-dev_15.2.0-16ubuntu1 libstdc++6_16-20260322-1ubuntu1 libsystemd0_259.5-0ubuntu3.4 libtasn1-6_4.21.0-2 libtinfo6_6.6+20251231-1 libtool_2.5.4-9 libtsan2_16-20260322-1ubuntu1 libubsan1_16-20260322-1ubuntu1 libuchardet0_0.0.8-2 libudev1_259.5-0ubuntu3.4 libunistring5_1.3-2build1 libuuid1_2.41.3-3ubuntu2.2 libuv1t64_1.51.0-2ubuntu1 libxml2-16_2.15.2+dfsg-0.1ubuntu0.2 libxxhash0_0.8.3-2build1 libzstd1_1.5.7+dfsg-3 linux-libc-dev_7.0.0-38.38 lto-disabled-list_79 m4_1.4.21-1 make_4.4.1-3 man-db_2.13.1-1build1 mawk_1.3.4.20260129-1 media-types_14.0.0build1 ncurses-base_6.6+20251231-1 ncurses-bin_6.6+20251231-1 netbase_6.5build1 openssl_3.5.5-1ubuntu3.7 openssl-provider-legacy_3.5.5-1ubuntu3.7 patch_2.8-2build1 perl_5.40.1-7ubuntu0.3 perl-base_5.40.1-7ubuntu0.3 perl-modules-5.40_5.40.1-7ubuntu0.3 pkg-config_2.5.1-4 pkgconf_2.5.1-4 pkgconf-bin_2.5.1-4 po-debconf_1.0.22 procps_2:4.0.4-9ubuntu1 python3_3.14.3-0ubuntu2 python3-dev_3.14.3-0ubuntu2 python3-minimal_3.14.3-0ubuntu2 python3.14_3.14.4-1ubuntu0.2 python3.14-dev_3.14.4-1ubuntu0.2 python3.14-minimal_3.14.4-1ubuntu0.2 readline-common_8.3-4 rpcsvc-proto_1.4.3-1build1 rust-coreutils_0.10.0-1ubuntu2~26.04.1 sbuild-build-depends-main-dummy_0.invalid.0 sed_4.9-2ubuntu1 sensible-utils_0.0.26build1 sysvinit-utils_3.15-5ubuntu1 tar_1.35+dfsg-4ubuntu0.4 tzdata_2026c-0ubuntu0.26.04.1 ubuntu-keyring_2023.11.28.1build1 util-linux_2.41.3-3ubuntu2.2 xz-utils_5.8.3-1 zlib1g_1:1.3.dfsg+really1.3.1-1ubuntu3.1 zlib1g-dev_1:1.3.dfsg+really1.3.1-1ubuntu3.1
+
++------------------------------------------------------------------------------+
+| Build                                        Thu, 08 Oct 2026 22:48:52 +0000 |
++------------------------------------------------------------------------------+
+
+
+Unpack source
+-------------
+
+Format: 1.0
+Source: libcolumbus
+Binary: libcolumbus1v5, libcolumbus1-common, libcolumbus1-dev, python3-columbus
+Architecture: any all
+Version: 1.1.0+15.10.20150806-0ubuntu39
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Homepage: https://launchpad.net/libcolombus
+Standards-Version: 3.9.4
+Vcs-Bzr: https://code.launchpad.net/~canonical-product-strategy/libcolumbus/trunk
+Build-Depends: debhelper (>= 9~), cmake, pkg-config, libicu-dev, python3-dev, libboost-python-dev, libsparsehash-dev
+Package-List:
+ libcolumbus1-common deb libs optional arch=all
+ libcolumbus1-dev deb libdevel optional arch=any
+ libcolumbus1v5 deb libs optional arch=any
+ python3-columbus deb python optional arch=any
+Checksums-Sha1:
+ 26cac6e2ea97fe1dcff9c080d76d4956dd78c32f 54362 libcolumbus_1.1.0+15.10.20150806.orig.tar.gz
+ cad50cbe570c8c84359bc665dbfa69951765fa79 8781 libcolumbus_1.1.0+15.10.20150806-0ubuntu39.diff.gz
+Checksums-Sha256:
+ b57fc4a4d0a90b62273f11d5e9ccde0eb6cce9f220ca300631d95d115690eb79 54362 libcolumbus_1.1.0+15.10.20150806.orig.tar.gz
+ c1e65e66c9e48f0a6b1e5488e98fa2cf61c74432b292d6c8458763a81f364c9e 8781 libcolumbus_1.1.0+15.10.20150806-0ubuntu39.diff.gz
+Files:
+ d3150a5886764c1e0a7a6c3f6f206ed9 54362 libcolumbus_1.1.0+15.10.20150806.orig.tar.gz
+ d2aa9d3ead343581427bdfa1f814a348 8781 libcolumbus_1.1.0+15.10.20150806-0ubuntu39.diff.gz
+
+dpkg-source: warning: extracting unsigned source package (libcolumbus_1.1.0+15.10.20150806-0ubuntu39.dsc)
+dpkg-source: info: extracting libcolumbus in /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806
+dpkg-source: info: unpacking libcolumbus_1.1.0+15.10.20150806.orig.tar.gz
+dpkg-source: info: applying libcolumbus_1.1.0+15.10.20150806-0ubuntu39.diff.gz
+dpkg-source: info: upstream files that have been modified: 
+ .pc/.quilt_patches
+ .pc/.quilt_series
+ .pc/.version
+ .pc/0001-fix-build-with-python3.10.patch/cmake/python.cmake
+ .pc/applied-patches
+ CMakeLists.txt
+ cmake/python.cmake
+ python/CMakeLists.txt
+ test/MatcherTest.cc
+ test/TrieTest.cc
+
+Check disk space
+----------------
+
+Sufficient free space for build
+
+User Environment
+----------------
+
+APT_CONFIG=/var/lib/sbuild/apt.conf
+HOME=/sbuild-nonexistent
+LANG=C.UTF-8
+LC_ALL=C.UTF-8
+LOGNAME=sbuild
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+SHELL=/bin/sh
+USER=sbuild
+
+dpkg-buildpackage
+-----------------
+
+Command: dpkg-buildpackage --sanitize-env -us -uc -b
+dpkg-buildpackage: info: source package libcolumbus
+dpkg-buildpackage: info: source version 1.1.0+15.10.20150806-0ubuntu39
+dpkg-buildpackage: info: source distribution resolute
+dpkg-buildpackage: info: source changed by Matthias Klose <doko@ubuntu.com>
+ dpkg-source --before-build .
+dpkg-buildpackage: info: host architecture amd64
+ debian/rules clean
+dh clean --parallel
+dh: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_auto_clean -O--parallel
+dh_auto_clean: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_clean -O--parallel
+dh_clean: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+ debian/rules binary
+dh binary --parallel
+dh: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+   dh_update_autotools_config -O--parallel
+   debian/rules override_dh_auto_configure
+make[1]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806'
+dh_auto_configure -- -DCMAKE_BUILD_TYPE=''
+dh_auto_configure: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	cd obj-x86_64-linux-gnu && DEB_PYTHON_INSTALL_LAYOUT=deb PKG_CONFIG=/usr/bin/pkg-config cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=None -DCMAKE_INSTALL_SYSCONFDIR=/etc -DCMAKE_INSTALL_LOCALSTATEDIR=/var -DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON -DFETCHCONTENT_FULLY_DISCONNECTED=ON "-GUnix Makefiles" -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu -DCMAKE_BUILD_TYPE= ..
+CMake Warning (dev) at CMakeLists.txt:1 (project):
+  cmake_minimum_required() should be called prior to this top-level project()
+  call.  Please see the cmake-commands(7) manual for usage documentation of
+  both commands.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "2.5.1")
+-- Performing Test IS_CLANG
+-- Performing Test IS_CLANG - Failed
+-- Using precompiled headers.
+-- Checking for one of the modules 'python3'
+-- Found Python version 3.14.
+-- Building Python bindings.
+-- Using sparse hash.
+-- Checking for one of the modules 'gtk+-3.0'
+-- GTK+ 3.0 not found, not building GUI apps.
+-- Checking for one of the modules 'icu-uc'
+-- Configuring done (1.8s)
+-- Generating done (0.1s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_EXPORT_NO_PACKAGE_REGISTRY
+    CMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY
+    CMAKE_FIND_USE_PACKAGE_REGISTRY
+    FETCHCONTENT_FULLY_DISCONNECTED
+
+
+-- Build files have been written to: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu
+make[1]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806'
+   dh_auto_build -O--parallel
+dh_auto_build: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	cd obj-x86_64-linux-gnu && make -j4 VERBOSE=1
+make[1]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+/usr/bin/cmake -S/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 -B/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/CMakeFiles /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu//CMakeFiles/progress.marks
+make  -f CMakeFiles/Makefile2 all
+make[2]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f src/CMakeFiles/columbus_pch.dir/build.make src/CMakeFiles/columbus_pch.dir/depend
+make  -f python/CMakeFiles/columbus_ext_pch.dir/build.make python/CMakeFiles/columbus_ext_pch.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/python /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python/CMakeFiles/columbus_ext_pch.dir/DependInfo.cmake "--color=" columbus_ext_pch
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src/CMakeFiles/columbus_pch.dir/DependInfo.cmake "--color=" columbus_pch
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f python/CMakeFiles/columbus_ext_pch.dir/build.make python/CMakeFiles/columbus_ext_pch.dir/build
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f src/CMakeFiles/columbus_pch.dir/build.make src/CMakeFiles/columbus_pch.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[  1%] Generating colpython_pch.hh.gch
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python && /usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -I /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I /usr/include/python3.14 -I /usr/include/x86_64-linux-gnu/python3.14 -DBUILDING_COLUMBUS -fPIC -DBOOST_PYTHON_USE_GCC_SYMBOL_VISIBILITY=1 -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/python/pch/colpython_pch.hh -o /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python/colpython_pch.hh.gch
+[  3%] Generating columbus_pch.hh.gch
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -I /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -DBUILDING_COLUMBUS -fPIC -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/pch/columbus_pch.hh -o /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src/columbus_pch.hh.gch
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[  3%] Built target columbus_pch
+make  -f src/CMakeFiles/columbus.dir/build.make src/CMakeFiles/columbus.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src/CMakeFiles/columbus.dir/DependInfo.cmake "--color=" columbus
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f src/CMakeFiles/columbus.dir/build.make src/CMakeFiles/columbus.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[  4%] Building CXX object src/CMakeFiles/columbus.dir/LevenshteinIndex.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/LevenshteinIndex.cc.o -MF CMakeFiles/columbus.dir/LevenshteinIndex.cc.o.d -o CMakeFiles/columbus.dir/LevenshteinIndex.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/LevenshteinIndex.cc
+[  6%] Building CXX object src/CMakeFiles/columbus.dir/ErrorValues.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/ErrorValues.cc.o -MF CMakeFiles/columbus.dir/ErrorValues.cc.o.d -o CMakeFiles/columbus.dir/ErrorValues.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/ErrorValues.cc
+[  7%] Building CXX object src/CMakeFiles/columbus.dir/IndexMatches.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/IndexMatches.cc.o -MF CMakeFiles/columbus.dir/IndexMatches.cc.o.d -o CMakeFiles/columbus.dir/IndexMatches.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/IndexMatches.cc
+[  9%] Building CXX object src/CMakeFiles/columbus.dir/Word.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/Word.cc.o -MF CMakeFiles/columbus.dir/Word.cc.o.d -o CMakeFiles/columbus.dir/Word.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Word.cc
+[ 10%] Building CXX object src/CMakeFiles/columbus.dir/ColumbusHelpers.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/ColumbusHelpers.cc.o -MF CMakeFiles/columbus.dir/ColumbusHelpers.cc.o.d -o CMakeFiles/columbus.dir/ColumbusHelpers.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/ColumbusHelpers.cc
+[ 12%] Building CXX object src/CMakeFiles/columbus.dir/ColumbusSlow.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/ColumbusSlow.cc.o -MF CMakeFiles/columbus.dir/ColumbusSlow.cc.o.d -o CMakeFiles/columbus.dir/ColumbusSlow.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/ColumbusSlow.cc
+[ 13%] Building CXX object src/CMakeFiles/columbus.dir/WordList.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/WordList.cc.o -MF CMakeFiles/columbus.dir/WordList.cc.o.d -o CMakeFiles/columbus.dir/WordList.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/WordList.cc
+[ 15%] Building CXX object src/CMakeFiles/columbus.dir/Document.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/Document.cc.o -MF CMakeFiles/columbus.dir/Document.cc.o.d -o CMakeFiles/columbus.dir/Document.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Document.cc
+[ 16%] Building CXX object src/CMakeFiles/columbus.dir/Corpus.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/Corpus.cc.o -MF CMakeFiles/columbus.dir/Corpus.cc.o.d -o CMakeFiles/columbus.dir/Corpus.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Corpus.cc
+[ 18%] Building CXX object src/CMakeFiles/columbus.dir/Matcher.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/Matcher.cc.o -MF CMakeFiles/columbus.dir/Matcher.cc.o.d -o CMakeFiles/columbus.dir/Matcher.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc
+[ 20%] Building CXX object src/CMakeFiles/columbus.dir/MatchResults.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/MatchResults.cc.o -MF CMakeFiles/columbus.dir/MatchResults.cc.o.d -o CMakeFiles/columbus.dir/MatchResults.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/MatchResults.cc
+[ 21%] Building CXX object src/CMakeFiles/columbus.dir/IndexWeights.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/IndexWeights.cc.o -MF CMakeFiles/columbus.dir/IndexWeights.cc.o.d -o CMakeFiles/columbus.dir/IndexWeights.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/IndexWeights.cc
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:59:24: warning: ‘template<class _Arg, class _Result> struct std::unary_function’ is deprecated [-Wdeprecated-declarations]
+   59 | struct idhasher : std::unary_function<const pair<WordID, WordID>, size_t> {
+      |                        ^~~~~~~~~~~~~~
+In file included from /usr/include/c++/15/bits/refwrap.h:41,
+                 from /usr/include/c++/15/vector:70,
+                 from /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/pch/columbus_pch.hh:26:
+/usr/include/c++/15/bits/stl_function.h:120:12: note: declared here
+  120 |     struct unary_function
+      |            ^~~~~~~~~~~~~~
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc: In member function ‘void Columbus::Matcher::index(const Columbus::Corpus&)’:
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:254:12: warning: variable ‘buildStart’ set but not used [-Wunused-but-set-variable]
+  254 |     double buildStart, buildEnd;
+      |            ^~~~~~~~~~
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:254:24: warning: variable ‘buildEnd’ set but not used [-Wunused-but-set-variable]
+  254 |     double buildStart, buildEnd;
+      |                        ^~~~~~~~
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc: In member function ‘void Columbus::Matcher::relevancyMatch(const Columbus::WordList&, const Columbus::SearchParameters&, int, Columbus::MatchResults&)’:
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:315:12: warning: variable ‘start’ set but not used [-Wunused-but-set-variable]
+  315 |     double start, indexMatchEnd, gatherEnd, finish;
+      |            ^~~~~
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:315:19: warning: variable ‘indexMatchEnd’ set but not used [-Wunused-but-set-variable]
+  315 |     double start, indexMatchEnd, gatherEnd, finish;
+      |                   ^~~~~~~~~~~~~
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:315:34: warning: variable ‘gatherEnd’ set but not used [-Wunused-but-set-variable]
+  315 |     double start, indexMatchEnd, gatherEnd, finish;
+      |                                  ^~~~~~~~~
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Matcher.cc:315:45: warning: variable ‘finish’ set but not used [-Wunused-but-set-variable]
+  315 |     double start, indexMatchEnd, gatherEnd, finish;
+      |                                             ^~~~~~
+[ 23%] Building CXX object src/CMakeFiles/columbus.dir/MatcherStatistics.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/MatcherStatistics.cc.o -MF CMakeFiles/columbus.dir/MatcherStatistics.cc.o.d -o CMakeFiles/columbus.dir/MatcherStatistics.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/MatcherStatistics.cc
+[ 24%] Building CXX object src/CMakeFiles/columbus.dir/WordStore.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/WordStore.cc.o -MF CMakeFiles/columbus.dir/WordStore.cc.o.d -o CMakeFiles/columbus.dir/WordStore.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/WordStore.cc
+/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/WordStore.cc:35:22: warning: ‘template<class _Arg, class _Result> struct std::unary_function’ is deprecated [-Wdeprecated-declarations]
+   35 | struct hasher : std::unary_function<const Word&, std::size_t> {
+      |                      ^~~~~~~~~~~~~~
+In file included from /usr/include/c++/15/bits/refwrap.h:41,
+                 from /usr/include/c++/15/vector:70,
+                 from /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/pch/columbus_pch.hh:26:
+/usr/include/c++/15/bits/stl_function.h:120:12: note: declared here
+  120 |     struct unary_function
+      |            ^~~~~~~~~~~~~~
+[ 26%] Building CXX object src/CMakeFiles/columbus.dir/ColumbusCAPI.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/ColumbusCAPI.cc.o -MF CMakeFiles/columbus.dir/ColumbusCAPI.cc.o.d -o CMakeFiles/columbus.dir/ColumbusCAPI.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/ColumbusCAPI.cc
+[ 27%] Building CXX object src/CMakeFiles/columbus.dir/ErrorMatrix.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/ErrorMatrix.cc.o -MF CMakeFiles/columbus.dir/ErrorMatrix.cc.o.d -o CMakeFiles/columbus.dir/ErrorMatrix.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/ErrorMatrix.cc
+[ 29%] Building CXX object src/CMakeFiles/columbus.dir/ResultFilter.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/ResultFilter.cc.o -MF CMakeFiles/columbus.dir/ResultFilter.cc.o.d -o CMakeFiles/columbus.dir/ResultFilter.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/ResultFilter.cc
+[ 30%] Building CXX object src/CMakeFiles/columbus.dir/Trie.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/Trie.cc.o -MF CMakeFiles/columbus.dir/Trie.cc.o.d -o CMakeFiles/columbus.dir/Trie.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Trie.cc
+[ 32%] Building CXX object src/CMakeFiles/columbus.dir/SearchParameters.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC  -include columbus_pch.hh -Winvalid-pch -MD -MT src/CMakeFiles/columbus.dir/SearchParameters.cc.o -MF CMakeFiles/columbus.dir/SearchParameters.cc.o.d -o CMakeFiles/columbus.dir/SearchParameters.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/SearchParameters.cc
+[ 33%] Linking CXX shared library libcolumbus.so
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/cmake -E cmake_link_script CMakeFiles/columbus.dir/link.txt --verbose=1
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 33%] Built target columbus_ext_pch
+/usr/bin/c++ -fPIC -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -shared -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro  -Wl,--version-script,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/libcolumbus.map -Wl,--dependency-file=CMakeFiles/columbus.dir/link.d -Wl,-soname,libcolumbus.so.1 -o libcolumbus.so.1.1.0 CMakeFiles/columbus.dir/LevenshteinIndex.cc.o CMakeFiles/columbus.dir/IndexMatches.cc.o CMakeFiles/columbus.dir/ErrorValues.cc.o CMakeFiles/columbus.dir/Word.cc.o CMakeFiles/columbus.dir/ColumbusHelpers.cc.o CMakeFiles/columbus.dir/ColumbusSlow.cc.o CMakeFiles/columbus.dir/WordList.cc.o CMakeFiles/columbus.dir/Document.cc.o CMakeFiles/columbus.dir/Corpus.cc.o CMakeFiles/columbus.dir/Matcher.cc.o CMakeFiles/columbus.dir/MatchResults.cc.o CMakeFiles/columbus.dir/IndexWeights.cc.o CMakeFiles/columbus.dir/MatcherStatistics.cc.o CMakeFiles/columbus.dir/WordStore.cc.o CMakeFiles/columbus.dir/ColumbusCAPI.cc.o CMakeFiles/columbus.dir/ErrorMatrix.cc.o CMakeFiles/columbus.dir/ResultFilter.cc.o CMakeFiles/columbus.dir/Trie.cc.o CMakeFiles/columbus.dir/SearchParameters.cc.o  -licuuc -licudata
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src && /usr/bin/cmake -E cmake_symlink_library libcolumbus.so.1.1.0 libcolumbus.so.1 libcolumbus.so
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 33%] Built target columbus
+make  -f tools/CMakeFiles/queryindex.dir/build.make tools/CMakeFiles/queryindex.dir/depend
+make  -f python/CMakeFiles/columbus_ext.dir/build.make python/CMakeFiles/columbus_ext.dir/depend
+make  -f test/CMakeFiles/trie.dir/build.make test/CMakeFiles/trie.dir/depend
+make  -f test/CMakeFiles/levtrie.dir/build.make test/CMakeFiles/levtrie.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/tools /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/tools /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/tools/CMakeFiles/queryindex.dir/DependInfo.cmake "--color=" queryindex
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/python /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python/CMakeFiles/columbus_ext.dir/DependInfo.cmake "--color=" columbus_ext
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/trie.dir/DependInfo.cmake "--color=" trie
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/levtrie.dir/DependInfo.cmake "--color=" levtrie
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f python/CMakeFiles/columbus_ext.dir/build.make python/CMakeFiles/columbus_ext.dir/build
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f tools/CMakeFiles/queryindex.dir/build.make tools/CMakeFiles/queryindex.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/levtrie.dir/build.make test/CMakeFiles/levtrie.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/trie.dir/build.make test/CMakeFiles/trie.dir/build
+[ 35%] Building CXX object python/CMakeFiles/columbus_ext.dir/columbus.cc.o
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python && /usr/bin/c++ -DBUILDING_COLUMBUS -Dcolumbus_ext_EXPORTS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -I/usr/include/python3.14 -I/usr/include/x86_64-linux-gnu/python3.14 -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -fPIC -DBOOST_PYTHON_USE_GCC_SYMBOL_VISIBILITY=1 -include colpython_pch.hh -Winvalid-pch -MD -MT python/CMakeFiles/columbus_ext.dir/columbus.cc.o -MF CMakeFiles/columbus_ext.dir/columbus.cc.o.d -o CMakeFiles/columbus_ext.dir/columbus.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/python/columbus.cc
+[ 36%] Building CXX object test/CMakeFiles/levtrie.dir/LevTrieTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/levtrie.dir/LevTrieTest.cc.o -MF CMakeFiles/levtrie.dir/LevTrieTest.cc.o.d -o CMakeFiles/levtrie.dir/LevTrieTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/LevTrieTest.cc
+[ 38%] Building CXX object tools/CMakeFiles/queryindex.dir/queryindex.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/tools && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT tools/CMakeFiles/queryindex.dir/queryindex.cc.o -MF CMakeFiles/queryindex.dir/queryindex.cc.o.d -o CMakeFiles/queryindex.dir/queryindex.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/tools/queryindex.cc
+[ 40%] Building CXX object test/CMakeFiles/trie.dir/TrieTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/trie.dir/TrieTest.cc.o -MF CMakeFiles/trie.dir/TrieTest.cc.o.d -o CMakeFiles/trie.dir/TrieTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/TrieTest.cc
+[ 41%] Building CXX object test/CMakeFiles/trie.dir/__/src/Trie.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/trie.dir/__/src/Trie.cc.o -MF CMakeFiles/trie.dir/__/src/Trie.cc.o.d -o CMakeFiles/trie.dir/__/src/Trie.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/src/Trie.cc
+[ 43%] Linking CXX executable queryindex
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/tools && /usr/bin/cmake -E cmake_link_script CMakeFiles/queryindex.dir/link.txt --verbose=1
+[ 44%] Linking CXX executable levtrie
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/levtrie.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/queryindex.dir/link.d CMakeFiles/queryindex.dir/queryindex.cc.o -o queryindex  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 44%] Built target queryindex
+make  -f test/CMakeFiles/levindex.dir/build.make test/CMakeFiles/levindex.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/levindex.dir/DependInfo.cmake "--color=" levindex
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/levindex.dir/build.make test/CMakeFiles/levindex.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 46%] Building CXX object test/CMakeFiles/levindex.dir/LevIndexTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/levindex.dir/LevIndexTest.cc.o -MF CMakeFiles/levindex.dir/LevIndexTest.cc.o.d -o CMakeFiles/levindex.dir/LevIndexTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/LevIndexTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/levtrie.dir/link.d CMakeFiles/levtrie.dir/LevTrieTest.cc.o -o levtrie  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 46%] Built target levtrie
+make  -f test/CMakeFiles/custom_error.dir/build.make test/CMakeFiles/custom_error.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/custom_error.dir/DependInfo.cmake "--color=" custom_error
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/custom_error.dir/build.make test/CMakeFiles/custom_error.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 47%] Building CXX object test/CMakeFiles/custom_error.dir/CustomErrorTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/custom_error.dir/CustomErrorTest.cc.o -MF CMakeFiles/custom_error.dir/CustomErrorTest.cc.o.d -o CMakeFiles/custom_error.dir/CustomErrorTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/CustomErrorTest.cc
+[ 49%] Linking CXX executable trie
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/trie.dir/link.txt --verbose=1
+[ 50%] Linking CXX executable custom_error
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/custom_error.dir/link.txt --verbose=1
+[ 52%] Linking CXX executable levindex
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/levindex.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/custom_error.dir/link.d CMakeFiles/custom_error.dir/CustomErrorTest.cc.o -o custom_error  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 52%] Built target custom_error
+make  -f test/CMakeFiles/error_values.dir/build.make test/CMakeFiles/error_values.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/error_values.dir/DependInfo.cmake "--color=" error_values
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/error_values.dir/build.make test/CMakeFiles/error_values.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 53%] Building CXX object test/CMakeFiles/error_values.dir/ErrorValuesTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/error_values.dir/ErrorValuesTest.cc.o -MF CMakeFiles/error_values.dir/ErrorValuesTest.cc.o.d -o CMakeFiles/error_values.dir/ErrorValuesTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/ErrorValuesTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/trie.dir/link.d CMakeFiles/trie.dir/TrieTest.cc.o CMakeFiles/trie.dir/__/src/Trie.cc.o -o trie  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 53%] Built target trie
+make  -f test/CMakeFiles/word.dir/build.make test/CMakeFiles/word.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/word.dir/DependInfo.cmake "--color=" word
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/word.dir/build.make test/CMakeFiles/word.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 55%] Building CXX object test/CMakeFiles/word.dir/WordTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/word.dir/WordTest.cc.o -MF CMakeFiles/word.dir/WordTest.cc.o.d -o CMakeFiles/word.dir/WordTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/WordTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/levindex.dir/link.d CMakeFiles/levindex.dir/LevIndexTest.cc.o -o levindex  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 55%] Built target levindex
+make  -f test/CMakeFiles/wordlist.dir/build.make test/CMakeFiles/wordlist.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/wordlist.dir/DependInfo.cmake "--color=" wordlist
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/wordlist.dir/build.make test/CMakeFiles/wordlist.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 56%] Building CXX object test/CMakeFiles/wordlist.dir/WordListTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/wordlist.dir/WordListTest.cc.o -MF CMakeFiles/wordlist.dir/WordListTest.cc.o.d -o CMakeFiles/wordlist.dir/WordListTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/WordListTest.cc
+[ 58%] Linking CXX executable error_values
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/error_values.dir/link.txt --verbose=1
+[ 60%] Linking CXX executable word
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/word.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/error_values.dir/link.d CMakeFiles/error_values.dir/ErrorValuesTest.cc.o -o error_values  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 61%] Linking CXX executable wordlist
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/wordlist.dir/link.txt --verbose=1
+[ 61%] Built target error_values
+make  -f test/CMakeFiles/document.dir/build.make test/CMakeFiles/document.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/document.dir/DependInfo.cmake "--color=" document
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/document.dir/build.make test/CMakeFiles/document.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 63%] Building CXX object test/CMakeFiles/document.dir/DocumentTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/document.dir/DocumentTest.cc.o -MF CMakeFiles/document.dir/DocumentTest.cc.o.d -o CMakeFiles/document.dir/DocumentTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/DocumentTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/wordlist.dir/link.d CMakeFiles/wordlist.dir/WordListTest.cc.o -o wordlist  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 63%] Built target wordlist
+make  -f test/CMakeFiles/corpus.dir/build.make test/CMakeFiles/corpus.dir/depend
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/word.dir/link.d CMakeFiles/word.dir/WordTest.cc.o -o word  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/corpus.dir/DependInfo.cmake "--color=" corpus
+[ 63%] Built target word
+make  -f test/CMakeFiles/matcher.dir/build.make test/CMakeFiles/matcher.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/matcher.dir/DependInfo.cmake "--color=" matcher
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/corpus.dir/build.make test/CMakeFiles/corpus.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/matcher.dir/build.make test/CMakeFiles/matcher.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 64%] Building CXX object test/CMakeFiles/corpus.dir/CorpusTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/corpus.dir/CorpusTest.cc.o -MF CMakeFiles/corpus.dir/CorpusTest.cc.o.d -o CMakeFiles/corpus.dir/CorpusTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/CorpusTest.cc
+[ 66%] Building CXX object test/CMakeFiles/matcher.dir/MatcherTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/matcher.dir/MatcherTest.cc.o -MF CMakeFiles/matcher.dir/MatcherTest.cc.o.d -o CMakeFiles/matcher.dir/MatcherTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/MatcherTest.cc
+[ 67%] Linking CXX executable document
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/document.dir/link.txt --verbose=1
+[ 69%] Linking CXX executable corpus
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/corpus.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/document.dir/link.d CMakeFiles/document.dir/DocumentTest.cc.o -o document  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 69%] Built target document
+make  -f test/CMakeFiles/matchresults.dir/build.make test/CMakeFiles/matchresults.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/matchresults.dir/DependInfo.cmake "--color=" matchresults
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/matchresults.dir/build.make test/CMakeFiles/matchresults.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 70%] Building CXX object test/CMakeFiles/matchresults.dir/MatchResultsTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/matchresults.dir/MatchResultsTest.cc.o -MF CMakeFiles/matchresults.dir/MatchResultsTest.cc.o.d -o CMakeFiles/matchresults.dir/MatchResultsTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/MatchResultsTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/corpus.dir/link.d CMakeFiles/corpus.dir/CorpusTest.cc.o -o corpus  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 72%] Linking CXX executable matcher
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/matcher.dir/link.txt --verbose=1
+[ 72%] Built target corpus
+make  -f test/CMakeFiles/helpers.dir/build.make test/CMakeFiles/helpers.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/helpers.dir/DependInfo.cmake "--color=" helpers
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/helpers.dir/build.make test/CMakeFiles/helpers.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 73%] Building CXX object test/CMakeFiles/helpers.dir/HelpersTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/helpers.dir/HelpersTest.cc.o -MF CMakeFiles/helpers.dir/HelpersTest.cc.o.d -o CMakeFiles/helpers.dir/HelpersTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/HelpersTest.cc
+[ 75%] Linking CXX executable matchresults
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/matchresults.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/matchresults.dir/link.d CMakeFiles/matchresults.dir/MatchResultsTest.cc.o -o matchresults  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 76%] Linking CXX executable helpers
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/helpers.dir/link.txt --verbose=1
+[ 76%] Built target matchresults
+make  -f test/CMakeFiles/indexweights.dir/build.make test/CMakeFiles/indexweights.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/indexweights.dir/DependInfo.cmake "--color=" indexweights
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/indexweights.dir/build.make test/CMakeFiles/indexweights.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 78%] Building CXX object test/CMakeFiles/indexweights.dir/IndexWeightsTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/indexweights.dir/IndexWeightsTest.cc.o -MF CMakeFiles/indexweights.dir/IndexWeightsTest.cc.o.d -o CMakeFiles/indexweights.dir/IndexWeightsTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/IndexWeightsTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/matcher.dir/link.d CMakeFiles/matcher.dir/MatcherTest.cc.o -o matcher  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 78%] Built target matcher
+make  -f test/CMakeFiles/wordstore.dir/build.make test/CMakeFiles/wordstore.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/wordstore.dir/DependInfo.cmake "--color=" wordstore
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/wordstore.dir/build.make test/CMakeFiles/wordstore.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 80%] Building CXX object test/CMakeFiles/wordstore.dir/WordStoreTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/wordstore.dir/WordStoreTest.cc.o -MF CMakeFiles/wordstore.dir/WordStoreTest.cc.o.d -o CMakeFiles/wordstore.dir/WordStoreTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/WordStoreTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/helpers.dir/link.d CMakeFiles/helpers.dir/HelpersTest.cc.o -o helpers  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 80%] Built target helpers
+make  -f test/CMakeFiles/filtering.dir/build.make test/CMakeFiles/filtering.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/filtering.dir/DependInfo.cmake "--color=" filtering
+[ 81%] Linking CXX executable indexweights
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/indexweights.dir/link.txt --verbose=1
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/filtering.dir/build.make test/CMakeFiles/filtering.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 83%] Building CXX object test/CMakeFiles/filtering.dir/ResultFilterTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/filtering.dir/ResultFilterTest.cc.o -MF CMakeFiles/filtering.dir/ResultFilterTest.cc.o.d -o CMakeFiles/filtering.dir/ResultFilterTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/ResultFilterTest.cc
+[ 84%] Linking CXX executable wordstore
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/wordstore.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/indexweights.dir/link.d CMakeFiles/indexweights.dir/IndexWeightsTest.cc.o -o indexweights  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 84%] Built target indexweights
+make  -f test/CMakeFiles/searchparameters.dir/build.make test/CMakeFiles/searchparameters.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/searchparameters.dir/DependInfo.cmake "--color=" searchparameters
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/searchparameters.dir/build.make test/CMakeFiles/searchparameters.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 86%] Building CXX object test/CMakeFiles/searchparameters.dir/SearchParametersTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/searchparameters.dir/SearchParametersTest.cc.o -MF CMakeFiles/searchparameters.dir/SearchParametersTest.cc.o.d -o CMakeFiles/searchparameters.dir/SearchParametersTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/SearchParametersTest.cc
+[ 87%] Linking CXX executable filtering
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/filtering.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/wordstore.dir/link.d CMakeFiles/wordstore.dir/WordStoreTest.cc.o -o wordstore  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 87%] Built target wordstore
+make  -f test/CMakeFiles/capi.dir/build.make test/CMakeFiles/capi.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/capi.dir/DependInfo.cmake "--color=" capi
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/capi.dir/build.make test/CMakeFiles/capi.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 89%] Building C object test/CMakeFiles/capi.dir/CAPITest.c.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cc -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -std=c99 -MD -MT test/CMakeFiles/capi.dir/CAPITest.c.o -MF CMakeFiles/capi.dir/CAPITest.c.o.d -o CMakeFiles/capi.dir/CAPITest.c.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/CAPITest.c
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/filtering.dir/link.d CMakeFiles/filtering.dir/ResultFilterTest.cc.o -o filtering  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 90%] Linking C executable capi
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/capi.dir/link.txt --verbose=1
+[ 90%] Built target filtering
+make  -f test/CMakeFiles/lev_scalability.dir/build.make test/CMakeFiles/lev_scalability.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/lev_scalability.dir/DependInfo.cmake "--color=" lev_scalability
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/lev_scalability.dir/build.make test/CMakeFiles/lev_scalability.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 92%] Building CXX object test/CMakeFiles/lev_scalability.dir/LevScalabilityTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/lev_scalability.dir/LevScalabilityTest.cc.o -MF CMakeFiles/lev_scalability.dir/LevScalabilityTest.cc.o.d -o CMakeFiles/lev_scalability.dir/LevScalabilityTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/LevScalabilityTest.cc
+[ 93%] Linking CXX executable searchparameters
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/searchparameters.dir/link.txt --verbose=1
+/usr/bin/cc -g -O2 -Werror=implicit-function-declaration -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -std=c99 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/capi.dir/link.d CMakeFiles/capi.dir/CAPITest.c.o -o capi  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 93%] Built target capi
+make  -f test/CMakeFiles/create_performance.dir/build.make test/CMakeFiles/create_performance.dir/depend
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806 /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/CMakeFiles/create_performance.dir/DependInfo.cmake "--color=" create_performance
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+make  -f test/CMakeFiles/create_performance.dir/build.make test/CMakeFiles/create_performance.dir/build
+make[3]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 95%] Building CXX object test/CMakeFiles/create_performance.dir/CreatePerformanceTest.cc.o
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/c++ -DBUILDING_COLUMBUS -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/include -I/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/include -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -MD -MT test/CMakeFiles/create_performance.dir/CreatePerformanceTest.cc.o -MF CMakeFiles/create_performance.dir/CreatePerformanceTest.cc.o.d -o CMakeFiles/create_performance.dir/CreatePerformanceTest.cc.o -c /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/CreatePerformanceTest.cc
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/searchparameters.dir/link.d CMakeFiles/searchparameters.dir/SearchParametersTest.cc.o -o searchparameters  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 95%] Built target searchparameters
+[ 96%] Linking CXX executable lev_scalability
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/lev_scalability.dir/link.txt --verbose=1
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/lev_scalability.dir/link.d CMakeFiles/lev_scalability.dir/LevScalabilityTest.cc.o -o lev_scalability  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 98%] Linking CXX executable create_performance
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test && /usr/bin/cmake -E cmake_link_script CMakeFiles/create_performance.dir/link.txt --verbose=1
+[ 98%] Built target lev_scalability
+/usr/bin/c++ -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/create_performance.dir/link.d CMakeFiles/create_performance.dir/CreatePerformanceTest.cc.o -o create_performance  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src ../src/libcolumbus.so.1.1.0 -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[ 98%] Built target create_performance
+[100%] Linking CXX shared library columbus.cpython-314-x86_64-linux-gnu.so
+cd /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python && /usr/bin/cmake -E cmake_link_script CMakeFiles/columbus_ext.dir/link.txt --verbose=1
+/usr/bin/c++ -fPIC -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806=/usr/src/libcolumbus-1.1.0+15.10.20150806-0ubuntu39 -Wdate-time -D_FORTIFY_SOURCE=3 -Wall -pedantic -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -shared -Wl,-Bsymbolic-functions -Wl,--package-metadata=%7B%22type%22:%22deb%22%2C%22os%22:%22ubuntu%22%2C%22name%22:%22libcolumbus%22%2C%22version%22:%221.1.0+15.10.20150806-0ubuntu39%22%2C%22architecture%22:%22amd64%22%7D -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,--dependency-file=CMakeFiles/columbus_ext.dir/link.d -Wl,-soname,columbus.cpython-314-x86_64-linux-gnu.so -o columbus.cpython-314-x86_64-linux-gnu.so CMakeFiles/columbus_ext.dir/columbus.cc.o  -Wl,-rpath,/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/src: ../src/libcolumbus.so.1.1.0 /usr/lib/x86_64-linux-gnu/libboost_python314.so -licuuc -licudata
+make[3]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+[100%] Built target columbus_ext
+make[2]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+/usr/bin/cmake -E cmake_progress_start /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/CMakeFiles 0
+make[1]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+   dh_auto_test -O--parallel
+dh_auto_test: warning: Compatibility levels before 10 are deprecated (level 9 in use)
+	cd obj-x86_64-linux-gnu && make -j4 test ARGS\+=--verbose ARGS\+=-j4
+make[1]: Entering directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+Running tests...
+/usr/bin/ctest --verbose -j4
+UpdateCTestConfiguration  from :/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/DartConfiguration.tcl
+Test project /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+Connected to MAKE jobserver
+test 1
+      Start  1: trie
+
+1: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/trie
+1: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+1: Test timeout computed to be: 10000000
+test 2
+      Start  2: levtrie
+
+2: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/levtrie
+2: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+2: Test timeout computed to be: 10000000
+test 3
+      Start  3: levindex
+
+3: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/levindex
+3: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+3: Test timeout computed to be: 10000000
+test 4
+      Start  4: custom_error
+
+4: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/custom_error
+4: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+4: Test timeout computed to be: 10000000
+1: trie: ./test/TrieTest.cc:108: void testNoMappingLeft(): Assertion `deletedMappings().count == before.count' failed.
+ 1/18 Test  #2: levtrie ..........................   Passed    0.01 sec
+test 5
+      Start  5: error_values
+
+5: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/error_values
+5: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+5: Test timeout computed to be: 10000000
+ 2/18 Test  #3: levindex .........................   Passed    0.02 sec
+test 6
+      Start  6: word
+
+6: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/word
+6: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+6: Test timeout computed to be: 10000000
+ 3/18 Test  #4: custom_error .....................   Passed    0.02 sec
+test 7
+      Start  7: wordlist
+
+7: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/wordlist
+7: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+7: Test timeout computed to be: 10000000
+ 4/18 Test  #5: error_values .....................   Passed    0.02 sec
+ 5/18 Test  #6: word .............................   Passed    0.01 sec
+test 8
+      Start  8: document
+
+8: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/document
+8: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+8: Test timeout computed to be: 10000000
+test 9
+      Start  9: corpus
+
+9: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/corpus
+9: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+9: Test timeout computed to be: 10000000
+ 6/18 Test  #7: wordlist .........................   Passed    0.02 sec
+test 10
+      Start 10: matcher
+
+10: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/matcher
+10: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+10: Test timeout computed to be: 10000000
+ 7/18 Test  #8: document .........................   Passed    0.01 sec
+test 11
+      Start 11: matchresults
+
+11: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/matchresults
+11: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+11: Test timeout computed to be: 10000000
+10: matcher: ./test/MatcherTest.cc:338: void testNoMappingLeft(): Assertion `deletedMappings() == before' failed.
+ 8/18 Test  #9: corpus ...........................   Passed    0.02 sec
+test 12
+      Start 12: helpers
+
+12: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/helpers
+12: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+12: Test timeout computed to be: 10000000
+ 9/18 Test #11: matchresults .....................   Passed    0.02 sec
+test 13
+      Start 13: indexweights
+
+13: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/indexweights
+13: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+13: Test timeout computed to be: 10000000
+10/18 Test #13: indexweights .....................   Passed    0.01 sec
+test 14
+      Start 14: wordstore
+
+14: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/wordstore
+14: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+14: Test timeout computed to be: 10000000
+11/18 Test #12: helpers ..........................   Passed    0.02 sec
+test 15
+      Start 15: filtering
+
+15: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/filtering
+15: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+15: Test timeout computed to be: 10000000
+12/18 Test #14: wordstore ........................   Passed    0.02 sec
+test 16
+      Start 16: searchparameters
+
+16: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/searchparameters
+16: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+16: Test timeout computed to be: 10000000
+13/18 Test #15: filtering ........................   Passed    0.03 sec
+test 17
+      Start 17: capi
+
+17: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test/capi
+17: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+17: Test timeout computed to be: 10000000
+14/18 Test #16: searchparameters .................   Passed    0.01 sec
+test 18
+      Start 18: python
+
+18: Test command: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/test/pythontest.py
+18: Working Directory: /build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/test
+18: Environment variables: 
+18:  PYTHONPATH=/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/python:/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu/python
+18: Test timeout computed to be: 10000000
+15/18 Test #17: capi .............................   Passed    0.02 sec
+18: ....................
+18: ----------------------------------------------------------------------
+18: Ran 20 tests in 0.008s
+18: 
+18: OK
+16/18 Test #18: python ...........................   Passed    0.15 sec
+17/18 Test  #1: trie .............................Subprocess aborted***Exception:   0.45 sec
+trie: ./test/TrieTest.cc:108: void testNoMappingLeft(): Assertion `deletedMappings().count == before.count' failed.
+
+18/18 Test #10: matcher ..........................Subprocess aborted***Exception:   0.46 sec
+matcher: ./test/MatcherTest.cc:338: void testNoMappingLeft(): Assertion `deletedMappings() == before' failed.
+
+
+89% tests passed, 2 tests failed out of 18
+
+Total Test time (real) =   0.51 sec
+
+The following tests FAILED:
+	  1 - trie (Subprocess aborted)
+	 10 - matcher (Subprocess aborted)
+Errors while running CTest
+make[1]: *** [Makefile:74: test] Error 8
+make[1]: Leaving directory '/build/reproducible-path/libcolumbus-1.1.0+15.10.20150806/obj-x86_64-linux-gnu'
+dh_auto_test: error: cd obj-x86_64-linux-gnu && make -j4 test ARGS\+=--verbose ARGS\+=-j4 returned exit code 2
+make: *** [debian/rules:16: binary] Error 255
+dpkg-buildpackage: error: debian/rules binary subprocess failed with exit status 2
+--------------------------------------------------------------------------------
+Build finished at 2026-10-08T22:49:39Z
+
+Finished
+--------
+
+
++------------------------------------------------------------------------------+
+| Cleanup                                      Thu, 08 Oct 2026 22:49:40 +0000 |
++------------------------------------------------------------------------------+
+
+Purging /build/reproducible-path
+Not cleaning session: cloned chroot in use
+E: Build failure (dpkg-buildpackage died with exit 2)
+
++------------------------------------------------------------------------------+
+| Summary                                      Thu, 08 Oct 2026 22:49:43 +0000 |
++------------------------------------------------------------------------------+
+
+Build Architecture: amd64
+Build Type: binary
+Build-Space: 562924
+Build-Time: 44
+Distribution: resolute
+Fail-Stage: build
+Host Architecture: amd64
+Install-Time: 177
+Job: /home/claude/work/b/unity-distro-013/packages/libcolumbus_1.1.0+15.10.20150806-0ubuntu39.dsc
+Machine Architecture: amd64
+Package: libcolumbus
+Package-Time: 252
+Source-Version: 1.1.0+15.10.20150806-0ubuntu39
+Space: 562924
+Status: attempted
+Version: 1.1.0+15.10.20150806-0ubuntu39
+--------------------------------------------------------------------------------
+Finished at 2026-10-08T22:49:39Z
+Build needed 00:04:12, 562924k disk space
+E: Build failure (dpkg-buildpackage died with exit 2)

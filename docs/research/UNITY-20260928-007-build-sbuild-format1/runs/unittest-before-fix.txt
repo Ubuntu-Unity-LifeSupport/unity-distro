@@ -1,0 +1,116 @@
+......FFFF..F.FFFF
+======================================================================
+FAIL: test_real_dpkg_source_no_vcs_metadata (test_build_sbuild.BuildSbuildTest.test_real_dpkg_source_no_vcs_metadata) (format='1.0', checkout='clone')
+End to end with the real dpkg-source, run the way sbuild runs it: every
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 300, in test_real_dpkg_source_no_vcs_metadata
+    self.assertEqual(r.returncode, 0, r.stdout[-2000:] + r.stderr[-2000:])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : sbuild failed (1); see /tmp/tmprpaeaj0y/out/UNITY-20260927-045-tiny-1.0-1+unity1-sbuild.log
+
+
+======================================================================
+FAIL: test_real_dpkg_source_no_vcs_metadata (test_build_sbuild.BuildSbuildTest.test_real_dpkg_source_no_vcs_metadata) (format='1.0', checkout='worktree')
+End to end with the real dpkg-source, run the way sbuild runs it: every
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 304, in test_real_dpkg_source_no_vcs_metadata
+    self.assertEqual([p for p in members if ".git" in p.split("/")], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['tiny-1.0/.git'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'tiny-1.0/.git'
+
+- ['tiny-1.0/.git']
++ []
+
+======================================================================
+FAIL: test_real_dpkg_source_no_vcs_metadata (test_build_sbuild.BuildSbuildTest.test_real_dpkg_source_no_vcs_metadata) (format='1.0 native', checkout='clone')
+End to end with the real dpkg-source, run the way sbuild runs it: every
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 304, in test_real_dpkg_source_no_vcs_metadata
+    self.assertEqual([p for p in members if ".git" in p.split("/")], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['tiny-1.0+unity1/.git', 'tiny-1.0+unity1/[2139 chars]ags'] != []
+
+First list contains 49 additional elements.
+First extra element 0:
+'tiny-1.0+unity1/.git'
+
+Diff is 2338 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_real_dpkg_source_no_vcs_metadata (test_build_sbuild.BuildSbuildTest.test_real_dpkg_source_no_vcs_metadata) (format='1.0 native', checkout='worktree')
+End to end with the real dpkg-source, run the way sbuild runs it: every
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 304, in test_real_dpkg_source_no_vcs_metadata
+    self.assertEqual([p for p in members if ".git" in p.split("/")], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['tiny-1.0+unity1/.git'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'tiny-1.0+unity1/.git'
+
+- ['tiny-1.0+unity1/.git']
++ []
+
+======================================================================
+FAIL: test_unreadable_source_file_fails_closed (test_build_sbuild.BuildSbuildTest.test_unreadable_source_file_fails_closed)
+A produced source file that cannot be read is not waved through.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 340, in test_unreadable_source_file_fails_closed
+    self.assertEqual(r.returncode, 2, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_vcs_metadata_rejected (test_build_sbuild.BuildSbuildTest.test_vcs_metadata_rejected) (case='.git file in a .diff.gz')
+A produced source file with VCS metadata: no manifest, exit 2.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 323, in test_vcs_metadata_rejected
+    self.assertEqual(r.returncode, 2, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_vcs_metadata_rejected (test_build_sbuild.BuildSbuildTest.test_vcs_metadata_rejected) (case='.git/ directory in a native tarball')
+A produced source file with VCS metadata: no manifest, exit 2.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 323, in test_vcs_metadata_rejected
+    self.assertEqual(r.returncode, 2, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_vcs_metadata_rejected (test_build_sbuild.BuildSbuildTest.test_vcs_metadata_rejected) (case='nested sub/.git in a debian.tar')
+A produced source file with VCS metadata: no manifest, exit 2.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 323, in test_vcs_metadata_rejected
+    self.assertEqual(r.returncode, 2, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_vcs_metadata_rejected (test_build_sbuild.BuildSbuildTest.test_vcs_metadata_rejected) (case='.svn in a native tarball')
+A produced source file with VCS metadata: no manifest, exit 2.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_build_sbuild.py", line 323, in test_vcs_metadata_rejected
+    self.assertEqual(r.returncode, 2, r.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+----------------------------------------------------------------------
+Ran 12 tests in 18.403s
+
+FAILED (failures=9)

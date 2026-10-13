@@ -1,0 +1,26 @@
+UNITY-20261002-012 slot 1: target verification of the publication
+
+Published: ./resolute = unity-resolute-20261002-012-usd, 2026-10-08T18:21:12Z (publish record
+~/coordinator/publish-records/UNITY-20261002-012.json; switch-time version check SAFE).
+
+Target: target-desktop, restored to the published stack of 2026-10-08 (unity-settings-daemon +unity11,
+cinnamon-session +unity3). The restore was confirmed inside the guest: uptime 1 min, the snapshot's
+marker file, +unity11 installed.
+
+The repository was updated the ordinary way, as a user would (apt-get update, apt-get full-upgrade,
+from http://192.168.56.10:8080 resolute):
+  apt candidate unity-settings-daemon: 15.04.1+21.10.20220802-0ubuntu7+unity12
+  installed after the upgrade: unity-settings-daemon, unity-settings-daemon-schemas,
+    libunity-settings-daemon1 15.04.1+21.10.20220802-0ubuntu7+unity12
+  (the same upgrade also brought the already published hud +unity4 and an Ubuntu libarchive update)
+
+Cold boot (power off, power on), session up:
+  automount helper running, sha256 /proc/<pid>/exe = df11c480329c35bcfc614c45dbf9d166aeed12a6b668de40cc43a00765a1eeed
+  (= the tested and gated build), no deleted mappings.
+
+Medium present at login (an ISO image in the optical drive, then a new login): mounted at
+/run/media/mike/Ubuntu-Unity 26.04 amd64.
+Medium inserted into the running session: not mounted. That is the existing behaviour under
+cinnamon-session (UNITY-20261008-008) and was the same before the update.
+
+Result: PASS.

@@ -1,0 +1,21 @@
+UNITY-20261008-016 (slot 3 of UNITY-20261002-012): target verification of the publication
+
+Published: ./resolute = unity-resolute-20261008-016, 2026-10-08T20:39:56Z (publish record
+~/coordinator/publish-records/UNITY-20261008-016.json; switch-time version check SAFE).
+
+Target: target-desktop, the same restored published stack as for UNITY-20261008-015, after its update.
+Updated again the ordinary way from the live repository (apt-get full-upgrade; the first attempt waited
+on unattended-upgrades holding the dpkg lock, then ran):
+  apt candidate light-locker: 1.8.0-3ubuntu4+unity3
+  installed: light-locker 1.8.0-3ubuntu4+unity3, unity +unity13, unity-settings-daemon +unity12, hud +unity5
+
+Cold boot (power off, power on):
+  light-locker owns org.gnome.ScreenSaver and org.freedesktop.ScreenSaver.
+  sha256 /usr/bin/light-locker = 45474e34afdd767465ef8041a5fdf0ace6610a0b9b46bd4a0077c97061357b9e = the gated build.
+  Lock requested through logind:
+    samples: GetActive (light-locker) true, LockedHint "yes"
+    (the last one after light-locker had shown its unlock prompt: still true/"yes");
+    ActiveChanged(true) x1 and SetLockedHint(true) x1, both from light-locker; nothing else.
+  The run ended with a power-off (no unlock); the target was restored afterwards.
+
+Result: PASS.

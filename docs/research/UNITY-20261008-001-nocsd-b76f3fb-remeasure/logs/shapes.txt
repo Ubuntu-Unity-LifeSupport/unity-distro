@@ -1,0 +1,48 @@
+app                   S-on            U-on            U-g1            U-g2            
+amberol               holder 1        holder 1        holder 1        flat 10         
+baobab                holder 1        holder 1        holder 1        flat 6          
+celluloid             holder 1        holder 1        holder 1        flat 8          
+d-spy                 holder 1        holder 1        holder 1        flat 3          
+deja-dup              holder 1        holder 1        holder 1        flat 4          
+dialect               holder 1        holder 1        holder 1        flat 4          
+epiphany              holder 1        holder 1        holder 1        flat 13         
+evince                holder 1        holder 1        holder 1        flat 18         
+file-roller           holder 1        holder 1        holder 1        flat 12         
+foliate               holder 1        holder 1        holder 1        flat 3          
+fragments             holder 1        holder 1        holder 1        flat 8          
+gnome-2048            holder 1        holder 1        holder 1        flat 3          
+gnome-calculator      holder 1        holder 1        holder 1        flat 11         
+gnome-calendar        holder 1        - 0             - 0             flat 5          
+gnome-characters      holder 1        holder 1        holder 1        flat 2          
+gnome-chess           holder 1        holder 1        holder 1        flat 9          
+gnome-clocks          holder 1        holder 1        holder 1        flat 3          
+gnome-contacts        - 0             - 0             - 0             - 0             
+gnome-firmware        holder 1        holder 1        holder 1        flat 7          
+gnome-logs            holder 1        holder 1        holder 1        flat 4          
+gnome-maps            holder 1        holder 1        holder 1        flat 5          
+gnome-mines           holder 1        holder 1        holder 1        flat 6          
+gnome-music           holder 1        holder 1        holder 1        flat 4          
+gnome-nibbles         holder 1        holder 1        holder 1        flat 7          
+gnome-robots          holder 1        holder 1        holder 1        flat 5          
+gnome-sudoku          holder 1        holder 1        holder 1        flat 9          
+gnome-system-monitor  holder 1        holder 1        holder 1        flat 5          
+gnome-text-editor     holder 1        holder 1        holder 1        flat 11         
+gnome-tour            - 0             - 0             - 0             - 0             
+gnome-tweaks          holder 1        holder 1        holder 1        flat 2          
+gnome-weather         holder 1        holder 1        holder 1        flat 4          
+kgx                   holder 1        holder 1        holder 1        flat 6          
+lightsoff             holder 1        holder 1        holder 1        flat 5          
+loupe                 holder 1        holder 1        holder 1        flat 9          
+nautilus              holder 1        holder 1        holder 1        flat 8          
+papers                holder 1        holder 1        holder 1        flat 3          
+quadrapassel          holder 1        holder 1        holder 1        flat 6          
+secrets               holder 1        holder 1        holder 1        flat 4          
+shortwave             holder 1        holder 1        holder 1        flat 6          
+showtime              - 0             - 0             - 0             - 0             
+simple-scan           holder 1        holder 1        holder 1        flat 7          
+swell-foop            holder 1        holder 1        holder 1        flat 7          
+yelp                  holder 1        holder 1        holder 1        flat 7          
+var-S-on.txt: holder 40, flat 0, no menu 3, labels with a mnemonic underscore 229
+var-U-on.txt: holder 39, flat 0, no menu 4, labels with a mnemonic underscore 0
+var-U-g1.txt: holder 39, flat 0, no menu 4, labels with a mnemonic underscore 0
+var-U-g2.txt: holder 0, flat 40, no menu 3, labels with a mnemonic underscore 0

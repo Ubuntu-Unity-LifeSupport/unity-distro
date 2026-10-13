@@ -1,0 +1,75 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 15.04.1+21.10.20220802-0ubuntu7+unity7 is newer than resolute 15.04.1+21.10.20220802-0ubuntu6",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity-settings-daemon",
+  "source_commit": "b570a220e5b3fbb28c7ec3fbbb53277491545f12",
+  "candidate_source_version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+  "pockets": {
+    "resolute": "15.04.1+21.10.20220802-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T15:02:16Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "libunity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    },
+    {
+      "package": "libunity-settings-daemon1-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    },
+    {
+      "package": "libunity-settings-daemon1",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    },
+    {
+      "package": "unity-settings-daemon-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    },
+    {
+      "package": "unity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    },
+    {
+      "package": "unity-settings-daemon-schemas",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "all",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    },
+    {
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+      "architecture": "amd64",
+      "apt_candidate": "15.04.1+21.10.20220802-0ubuntu7+unity7"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-012",
+    "packages": 339,
+    "list_sha256": "d55e145c062256af98bb7c8860896d31076f2e6613f92a297e46db0a265101da",
+    "model_entries": 305,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "a84a74c1f99246b15c6c81fde0f719144c777ba2640eb4616f504fe3209ee1bc"
+}

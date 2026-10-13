@@ -1,0 +1,25 @@
+# Fix check on target2, 2026-09-28.
+## TestWindowThread.* only, Xorg -noreset (twt.sh): before the watchdog fix 5 of 20 runs SIGSEGV (MultiWatchFd, OneFdEvent); after it:
+TestWindowThread only: segfaults 0 of 30   (30 x [  PASSED  ] 4 tests.)
+## Full gtest-nux-slow through the patched runner (-noreset) with the watchdog fix, 20 runs (loop.sh):
+run 1: rc=0 [  PASSED  ] 113 tests. 
+run 2: rc=0 [  PASSED  ] 113 tests. 
+run 3: rc=0 [  PASSED  ] 113 tests. 
+run 4: rc=0 [  PASSED  ] 113 tests. 
+run 5: rc=0 [  PASSED  ] 113 tests. 
+run 6: rc=0 [  PASSED  ] 113 tests. 
+run 7: rc=0 [  PASSED  ] 113 tests. 
+run 8: rc=0 [  PASSED  ] 113 tests. 
+run 9: rc=0 [  PASSED  ] 113 tests. 
+run 10: rc=0 [  PASSED  ] 113 tests. 
+run 11: rc=0 [  PASSED  ] 113 tests. 
+run 12: rc=0 [  PASSED  ] 113 tests. 
+run 13: rc=0 [  PASSED  ] 113 tests. 
+run 14: rc=0 [  PASSED  ] 113 tests. 
+run 15: rc=0 [  PASSED  ] 113 tests. 
+run 16: rc=0 [  PASSED  ] 113 tests. 
+run 17: rc=0 [  PASSED  ] 113 tests. 
+run 18: rc=0 [  PASSED  ] 113 tests. 
+run 19: rc=0 [  PASSED  ] 113 tests. 
+run 20: rc=0 [  PASSED  ] 113 tests. 
+segfaults 0 of 20

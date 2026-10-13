@@ -1,0 +1,29 @@
+# UNITY-20260927-026 target verification of the publication on target2 from Clean-2 (restore checked inside at 18:23Z: no ~/.dirty, no ~/b029, indicator-datetime 0ubuntu6; NTPSynchronized=yes): our repository (live ./resolute = unity-resolute-20260927-026, InRelease Date Fri, 2 Oct 2026 18:32:04 UTC), normal full-upgrade, no file repository
+# builder utc 2026-10-02T18:42:44Z
+== install host=target2 boot=19c2a6d7-dbf4-4a16-b748-ce601f10af03 utc=2026-10-02T18:42:46Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 21:42:46 EEST 
+== snapshot marker: ~/.dirty absent
+== policy indicator-datetime
+indicator-datetime:
+  Установлен: 15.10+21.04.20210304-0ubuntu6
+  Кандидат:   15.10+21.04.20210304-0ubuntu6+unity3
+full-upgrade rc=0
+== installed: indicator-datetime 15.10+21.04.20210304-0ubuntu6+unity3 ii 
+== the .deb apt fetched: b090852c644ea6a751c91592991390370a382bdee1eca974de3898d42d0cbd90  /var/cache/apt/archives/indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb
+== dpkg -V indicator-datetime: 0 lines
+## after a reboot
+== session host=target2 boot=13f63d0b-1564-423a-a6fe-7002c8f3c591 utc=2026-10-02T18:56:43Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 21:56:43 EEST 
+== indicator-datetime installed: 15.10+21.04.20210304-0ubuntu6+unity3
+e85fafc75f240e0ad2fc5e2745b8fafe17148020184c7ee2f6b6e466bf8c9ed4  /usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service
+indicator-datetime-service pid=2099 exe=/usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service deleted_maps=2 deleted_libs=0
+== on the bus: 1
+== datetime header
+desktop-header': (true, '', [<{'accessible-desc': <'21:56'>, 'label': <'21:56'>, 'title': <'Дата и время'>, 'visible': <true>}
+== panel lists datetime: 1
+== warnings since boot
+== done
+# PASS. indicator-datetime +unity3 came from the live ./resolute (unity-resolute-20260927-026); the .deb apt fetched is the gated
+# one (b090852c...); indicator-datetime-service e85fafc7... is its file; its two "(deleted)" mappings are no library (dconf
+# databases); dpkg -V clean. The service is on the bus, its desktop-header has the clock label and the title, and the panel
+# lists com.canonical.indicator.datetime. Natural session start, no drop-in, no test environment; NTPSynchronized=yes throughout.

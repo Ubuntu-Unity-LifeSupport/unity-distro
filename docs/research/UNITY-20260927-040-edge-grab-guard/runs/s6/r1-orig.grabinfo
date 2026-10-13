@@ -1,0 +1,12 @@
+[  2946.475] (II) Printing all currently active device grabs:
+[  2946.475] Active grab 0x43000e18 (core) on device 'Virtual core pointer' (2):
+[  2946.475]       client pid 2563 /usr/bin/compiz 
+[  2946.475]       at 2912553 (from passive grab) (device frozen, state 6)
+[  2946.475]         core event mask 0x4c
+[  2946.475]       passive grab type 4, detail 0x0, activating key 0
+[  2946.475]       owner-events false, kb 1 ptr 0, confine 0, cursor 0x30003b8
+[  2946.475] Active grab 0x3800000 (core) on device 'Virtual core keyboard' (3):
+[  2946.475]       client pid 2563 /usr/bin/compiz 
+[  2946.475]       at 2912805 (from active grab) (device thawed, state 1)
+[  2946.475]         core event mask 0x3
+[  2946.475]       owner-events true, kb 1 ptr 1, confine 0, cursor 0x0

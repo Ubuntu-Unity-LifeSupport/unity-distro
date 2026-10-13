@@ -1,0 +1,19 @@
+boot_id 6638fd26-e50f-4145-bfec-0f33c5ce2118 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2190 drop-ins:  power-owner: (':1.43',)
+toggle: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2190: waited 7,71 s for the first inhibitor (polls: 97); active=false at +8,28 s; active=true at +8,83 s
+55463 ms pid 2190 MANAGER-NEW (register_manager_dbus, inlined)
+55464 ms pid 2190 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7fe76e947b05
+        0x7fe76e947d44
+        0x7fe76e936920
+        0x7fe76e72bc1b
+        0x7fe76e72d257
+        g_main_loop_run+311
+
+60210 ms pid 2190 ON-BUS-GOTTEN

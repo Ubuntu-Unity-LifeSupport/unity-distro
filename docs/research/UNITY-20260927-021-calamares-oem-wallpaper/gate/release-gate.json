@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-021",
+  "package": "calamares-settings-ubuntu",
+  "target_series": "resolute",
+  "candidate_version": "1:26.04.12+unity2",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-021/packages/calamares-settings-ubuntu",
+  "source_remote_ref": "origin/b/UNITY-20260927-021",
+  "source_commit": "c03daf48d5dbb719d985f75d5e96cc2a6df04e84",
+  "source_tree_hash": "d4fb3f58259135ae6269c624e72e17f08eb4abc5",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-021-r2"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/build-r2/UNITY-20260927-021-calamares-settings-ubuntu-build-manifest.json",
+    "sha256": "fe5f9881bda481eb7844d39306148e53ce494bd157dfe507b051d3011bda106c"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/gate/evidence-manifest.json",
+    "sha256": "c0c66411f7e7fbab8016742199af803d94f102b925d2a3f5f885bd0c59806858"
+  }
+}

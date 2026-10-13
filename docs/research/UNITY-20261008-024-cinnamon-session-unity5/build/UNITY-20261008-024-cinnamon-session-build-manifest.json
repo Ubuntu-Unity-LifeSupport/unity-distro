@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-024",
+  "package": "cinnamon-session",
+  "candidate_version": "6.4.2-1+unity5",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/unity-distro-cs5/packages/cinnamon-session",
+  "source_commit": "44343b48c7a9e06bcd43c56dc439a6a4de37e73d",
+  "source_tree_hash": "cd2e7748cff34dc6f3e2a3b62a203598644ea766",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
+  ],
+  "build_started": "2026-10-09T01:08:16.907626+00:00",
+  "build_finished": "2026-10-09T01:16:19.569024+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261008-024-cinnamon-session-6.4.2-1+unity5-sbuild.log",
+    "sha256": "982846796f500134a36921c0ae975c7a6615833cfd36a7b6b9716bdbdc66409c"
+  },
+  "artifacts": [
+    {
+      "file": "cinnamon-session_6.4.2-1+unity5.dsc",
+      "sha256": "335f73835ca65ac6d4081ce1817fdec840ab4578f256455190abd6a938fd0af4",
+      "size": 1794,
+      "kind": "source",
+      "package": "cinnamon-session",
+      "version": "6.4.2-1+unity5"
+    },
+    {
+      "file": "cinnamon-session_6.4.2-1+unity5_amd64.changes",
+      "sha256": "be43d5ad298c321b6b06f7cb74a0dce1b51113bdeb988ffb2bb9ef37e609ca4f",
+      "size": 2631,
+      "kind": "changes"
+    },
+    {
+      "file": "cinnamon-session_6.4.2.orig.tar.gz",
+      "sha256": "c2021caa966a1ed34b1646e9603170d4a326501a6d6e616b28fc460e579e9d5b",
+      "size": 162134,
+      "kind": "source_file",
+      "package": "cinnamon-session",
+      "version": "6.4.2-1+unity5"
+    },
+    {
+      "file": "cinnamon-session_6.4.2-1+unity5.debian.tar.xz",
+      "sha256": "f889f93aa72c9f188746d95fa44ed360d88be5e361d5f242574695fbea7d276c",
+      "size": 22888,
+      "kind": "source_file",
+      "package": "cinnamon-session",
+      "version": "6.4.2-1+unity5"
+    },
+    {
+      "file": "cinnamon-session-common_6.4.2-1+unity5_all.deb",
+      "sha256": "9deaf578609a21e16f60807b700b12cc6b1882efea7ab53184052b682c9ea883",
+      "size": 14014,
+      "kind": "binary",
+      "package": "cinnamon-session-common",
+      "version": "6.4.2-1+unity5",
+      "architecture": "all"
+    },
+    {
+      "file": "cinnamon-session-dbgsym_6.4.2-1+unity5_amd64.ddeb",
+      "sha256": "8eab888c1e88fe17fd6c2426a3ed22ea87a910b8f04ee27d3d17f42f09a75e41",
+      "size": 360454,
+      "kind": "binary",
+      "package": "cinnamon-session-dbgsym",
+      "version": "6.4.2-1+unity5",
+      "architecture": "amd64"
+    },
+    {
+      "file": "cinnamon-session_6.4.2-1+unity5_amd64.buildinfo",
+      "sha256": "c40f2529d89a4e14e1110ebb4fee59de33bec150188967b9f87c676dea3efdc1",
+      "size": 19432,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "cinnamon-session_6.4.2-1+unity5_amd64.deb",
+      "sha256": "6b545e9eb0900774ae703c0893887506db1a77195452ef00a86b65af8a73da0f",
+      "size": 106244,
+      "kind": "binary",
+      "package": "cinnamon-session",
+      "version": "6.4.2-1+unity5",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/a/unity-distro-cs5/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

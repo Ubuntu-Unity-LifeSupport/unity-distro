@@ -1,0 +1,10 @@
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/x86_64-linux-gnu/libthread_db.so.1".
+__syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+warning: 56	../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S: Нет такого файла или каталога
+Breakpoint 1 at 0x7adf6c966c60: file /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity11/plugins/power/gsd-power-manager.c, line 2318.
+Breakpoint 2 at 0x7adf6c9699e0: file /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity11/plugins/power/gsd-power-manager.c, line 2956.
+Thread 1 "unity-settings-" received signal SIGINT, Interrupt.
+__syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+56	in ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S
+[Inferior 1 (process 2160) detached]

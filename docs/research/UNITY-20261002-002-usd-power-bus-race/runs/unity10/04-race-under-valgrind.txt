@@ -1,0 +1,16 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 under valgrind: Power owner after 7s: (':1.456',)
+## start 2026-10-02 21:18:27 pid 
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 267, 'UnknownMethod': 1041, 'not running': 1041}
+  u-s-d pid now:  (was ); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 3647, 'not running': 2386}
+  u-s-d pid now:  (was ); NRestarts 0
+== journal since 2026-10-02 21:18:27
+  crash files: 0
+  active: true
+Power owner after the race: (':1.456',)
+==00:00:00:48.084 8517==    definitely lost: 3,185 bytes in 52 blocks
+==00:00:00:48.084 8517== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+u-s-d back under systemd: 9145
+tracer: active

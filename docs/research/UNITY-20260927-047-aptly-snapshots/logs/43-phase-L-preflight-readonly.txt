@@ -1,0 +1,7 @@
+# 2026-09-29 ~11:10Z phase L preflight, read-only (B session b7902aab)
+builder: ~/.aptly.conf rootDir /srv/aptly, no endpoints; secret key rsa4096/7BF3F77FC27B152C (29A893E03970066F2DD287D47BF3F77FC27B152C)
+builder sizes: /srv/aptly/db 1.2M, public 74M, pool 31M; free on / (holds /srv, /home, /var/tmp): 156G
+builder processes: no aptly/apt/apt-get/dpkg/unattended-upgrade
+target2 (Clean-2, boot 11:04Z): no apt/dpkg; timers (EEST): apt-daily-upgrade 14:14 today then daily (randomised), apt-daily 21:14, update-notifier-download 14:09, fwupd-refresh 14:39, motd-news 16:45
+target2: our repository source NOT present after Clean-2 (only the Ubuntu archive) - to add before before-L
+target (A): not checked by B (A's machine); plan note had timers 03:08Z, 03:25Z

@@ -1,0 +1,8 @@
+== mutation none
+2 passed, 24 deselected
+== mutation remove
+FAILED scripts/tests/test_build_sbuild.py::BuildSbuildTest::test_tested_with
+1 failed, 1 passed, 24 deselected
+== mutation path
+FAILED scripts/tests/test_build_sbuild.py::BuildSbuildTest::test_tested_with_same_bytes_elsewhere
+1 failed, 1 passed, 24 deselected

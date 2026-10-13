@@ -1,0 +1,6 @@
+calamares-settings-ubuntu-unity: +unity1 53 entries, +unity2 53; added []; removed []
+  changelog entries: +unity1 1, +unity2 95
+calamares-settings-ubuntu-common: +unity1 17 entries, +unity2 17; added []; removed []
+  changelog entries: +unity1 1, +unity2 95
+calamares-settings-ubuntu-common-data: +unity1 37 entries, +unity2 37; added []; removed []
+  changelog entries: +unity1 1, +unity2 95

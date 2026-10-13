@@ -1,0 +1,26 @@
+== s1 at 2026-10-13T07:54:44Z, boot 2026-10-13 10:52:46; cinnamon-session 6.4.2-1+unity6; cinnamon-session pid 2273
+  bpftrace: 
+-- xterm, normal exit
+  xterm 1 exited: 0
+-- xterm, SIGKILL
+  xterm 2 killed: status 137
+  cinnamon-session still running: 2273
+-- logout
+/usr/share/cinnamon-session/cinnamon-session-quit.py:91: PyGIDeprecationWarning: GLib.unix_signal_add is deprecated; use GLibUnix.signal_add instead
+  GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  cinnamon-session-quit rc=0
+  cinnamon-session pid 2273 gone after logout: yes
+  crash reports newer than boot: 0
+  journal: segfault lines 0, cinnamon-session criticals 0
+Attached 3 probes
+132781085788 close 0x5938dc045c80
+132781398875 free 0x5938dc045c80
+133685944379 accept 0x5938dc045c80
+138705772319 close 0x5938dc045c80
+138708886669 free 0x5938dc045c80
+142372349773 close 0x5938dc040f00
+142372461513 free 0x5938dc040f00
+142372766323 close 0x5938dc041fb0
+142372820511 free 0x5938dc041fb0
+
+

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-016",
+  "package": "light-locker",
+  "source_commit": "07367c0281fda9f24798d44df87e55e8e1e49f8d",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/README.md",
+      "sha256": "cf2860f675dd3bbe279be28a85a08925a27fcef73c19b2a5c4e7c18a3ca544ef"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/README.md",
+      "sha256": "cf2860f675dd3bbe279be28a85a08925a27fcef73c19b2a5c4e7c18a3ca544ef"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "871b58419f095eecc9db3b7f3b9c60d21e61f041c448b2d1dbc9a445d612fa83"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/gate-016/release-record.json",
+      "sha256": "7eb406835802833c6f9feef035786c9eac4870c3bd2a41a35db99954eadb45b3"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261002-012-session-lock-state/gate-016/version-check.json",
+      "sha256": "5d432b725234d68874238245b8f1f11345b3625d8258f83b7ed5bbfc66780e85"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+== S1 create the tarball from snapshot 20260929T201245Z
+$ mmdebstrap --variant=buildd --arch=amd64 --skip=output/mknod --include=ca-certificates --aptopt=Acquire::Retries "5" resolute /home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst.partial.tar.zst deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted
+I: automatically chosen mode: unshare
+I: chroot architecture amd64 is equal to the host's architecture
+I: finding correct signed-by value...
+I: automatically chosen format: tar
+I: using /tmp/mmdebstrap.pfawHvxmFN as tempdir
+I: skipping output/mknod as requested for ./dev/console
+I: skipping output/mknod as requested for ./dev/full
+I: skipping output/mknod as requested for ./dev/null
+I: skipping output/mknod as requested for ./dev/ptmx
+I: skipping output/mknod as requested for ./dev/random
+I: skipping output/mknod as requested for ./dev/tty
+I: skipping output/mknod as requested for ./dev/urandom
+I: skipping output/mknod as requested for ./dev/zero
+I: running apt-get update...
+I: downloading packages with apt...
+I: extracting archives...
+I: installing essential packages...
+I: installing remaining packages inside the chroot...
+I: cleaning package lists and apt cache...
+I: creating tarball...
+I: done
+I: removing tempdir /tmp/mmdebstrap.pfawHvxmFN...
+I: success in 94.3083 seconds
+/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst
+S1 exit=0
+-rw-rw-r-- 1 claude claude      6505 Sep 29 20:14 /home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json
+-rw-r--r-- 1 claude claude 143090706 Sep 29 20:14 /home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst
+  sources ['deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted', 'deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted', 'deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted']
+  inrelease {'resolute': 'Thu, 23 Apr 2026 17:07:15 UTC', 'resolute-updates': 'Tue, 29 Sep 2026 19:18:11 UTC', 'resolute-security': 'Tue, 29 Sep 2026 18:35:33 UTC'}
+  packages 126 ['ca-certificates:all=20260601~26.04.1']
+== S2 tiny013 on it (real sbuild)
+/home/claude/work/a/016-real/out-s2/UNITY-20260929-016-tiny013-build-manifest.json
+S2 exit=0
+20:I: Unpacking /home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst to /var/tmp/sbuild-claude/sbuild-unshare-WGcYSr...
+30:Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]
+31:Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]
+32:Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]
+48:0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+71:Ign:1 copy:/build/reproducible-path/resolver-SdMBkB/apt_archive ./ InRelease
+108:0 upgraded, 33 newly installed, 0 to remove and 0 not upgraded.
+641:Ign:1 copy:/build/reproducible-path/resolver-SdMBkB/apt_archive ./ InRelease
+769:0 upgraded, 172 newly installed, 0 to remove and 0 not upgraded.
+== S3 unity 7b0eca27 + our nux from the pool, same tarball
+/home/claude/work/a/016-real/out-s3/UNITY-20260929-016-unity-build-manifest.json
+S3 exit=0
+22:I: Unpacking /home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst to /var/tmp/sbuild-claude/sbuild-unshare-SdM4tC...
+35:Ign:1 file:/build/reproducible-path/resolver-H8hlW0/apt_archive ./ InRelease
+40:Get:5 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]
+41:Get:6 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]
+42:Get:7 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]
+58:0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+81:Ign:1 copy:/build/reproducible-path/resolver-hFL77F/apt_archive ./ InRelease
+88:Ign:1 file:/build/reproducible-path/resolver-H8hlW0/apt_archive ./ InRelease
+403:0 upgraded, 557 newly installed, 0 to remove and 0 not upgraded.
+12401:Ign:1 copy:/build/reproducible-path/resolver-hFL77F/apt_archive ./ InRelease
+12408:Ign:1 file:/build/reproducible-path/resolver-H8hlW0/apt_archive ./ InRelease
+12502:0 upgraded, 114 newly installed, 0 to remove and 0 not upgraded.
+13145:Status: successful
+   UNITY-20260929-016-tiny013-build-manifest.json 20260929T201245Z d48b78645647c32d 3 InRelease lines
+   UNITY-20260929-016-unity-build-manifest.json 20260929T201245Z d48b78645647c32d 3 InRelease lines
+== done 20:37:30Z

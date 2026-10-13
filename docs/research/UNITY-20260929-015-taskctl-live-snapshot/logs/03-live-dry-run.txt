@@ -1,0 +1,22 @@
+# UNITY-20260929-015 live dry run (2026-09-29T17:45:13Z): real -021 record, real live aptly db, read-only snapshot search; publish show answered from the -019 record
+record UNITY-20260927-021: snapshot unity-resolute-20260927-021-r2, published_at 2026-09-29T16:10:23Z, post_publish_check PASS, 10 artifacts
+(publish show answered from UNITY-20260928-019 record: unity-resolute-20260928-019)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-kubuntu), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-lubuntu), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common-data), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common-dbgsym), Version (= 1:26.04.12+unity2), Architecture (amd64)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common), Version (= 1:26.04.12+unity2), Architecture (amd64)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-unity), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu), $Architecture (source), Version (= 1:26.04.12+unity2)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu), $Architecture (source), Version (= 1:26.04.12+unity2)' -> rc 0, 3 line(s)
+result: CONFIRMED
+(publish show answered from UNITY-20260928-019 record: unity-resolute-20260928-019)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-kubuntu), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-lubuntu), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common-data), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common-dbgsym), Version (= 1:26.04.12+unity2), Architecture (amd64)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-common), Version (= 1:26.04.12+unity2), Architecture (amd64)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu-unity), Version (= 1:26.04.12+unity2), Architecture (all)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu), $Architecture (source), Version (= 1:26.04.12+unity2)' -> rc 0, 1 line(s)
+snapshot search unity-resolute-20260928-019 'Name (calamares-settings-ubuntu), $Architecture (source), Version (= 1:26.04.12+unity2)' -> rc 0, 3 line(s)
+altered binary hash: live snapshot unity-resolute-20260928-019 (the recorded unity-resolute-20260927-021-r2 is no longer live) does not carry the record's artifacts: missing [], other sha256 ['calamares-settings-kubuntu 1:26.04.12+unity2 all']

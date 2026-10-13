@@ -1,0 +1,76 @@
+вер 28 16:28:58.051457 mike-virtualbox delaytest[4194]: action=poweroff cinnamon-session 6.4.2-1+unity3~noonce1; inhibitors: 1
+вер 28 16:28:58.056395 mike-virtualbox delaytest[4195]: calling org.gnome.SessionManager.Shutdown
+вер 28 16:29:01.071137 mike-virtualbox delaytest[4231]: clicking Выключить
+вер 28 16:29:01.271312 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.15450s: Requesting system shutdown...
+вер 28 16:29:01.268737 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.15450s: Requesting system shutdown...
+вер 28 16:29:01.340970 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.22492s: Requesting system shutdown...
+вер 28 16:29:01.340970 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.22500s: Requesting system shutdown...
+вер 28 16:29:01.339176 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.22492s: Requesting system shutdown...
+вер 28 16:29:01.339222 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.22500s: Requesting system shutdown...
+вер 28 16:29:01.351396 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.23708s: Requesting system shutdown...
+вер 28 16:29:01.351339 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.23708s: Requesting system shutdown...
+вер 28 16:29:01.377093 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.26260s: Requesting system shutdown...
+вер 28 16:29:01.376861 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.26260s: Requesting system shutdown...
+вер 28 16:29:01.386108 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.26809s: Requesting system shutdown...
+вер 28 16:29:01.382342 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.26809s: Requesting system shutdown...
+вер 28 16:29:01.394400 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.27970s: Requesting system shutdown...
+вер 28 16:29:01.393958 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.27970s: Requesting system shutdown...
+вер 28 16:29:01.395023 mike-virtualbox cinnamon-session[2192]: cinnamon-session-binary[2192]: WARNING: t+56.28030s: Requesting system shutdown...
+вер 28 16:29:01.394519 mike-virtualbox cinnamon-session-binary[2192]: WARNING: t+56.28030s: Requesting system shutdown...
+вер 28 16:29:01.861371 mike-virtualbox delaytest[4312]: t=1 seat0=3/mike compiz=2842 csm=
+вер 28 16:29:02.954638 mike-virtualbox delaytest[4351]: t=2 seat0= compiz= csm=
+вер 28 16:29:04.034570 mike-virtualbox delaytest[4364]: t=3 seat0= compiz= csm=
+вер 28 16:29:05.126309 mike-virtualbox delaytest[4417]: t=4 seat0=c1/lightdm compiz= csm=
+вер 28 16:29:06.185156 mike-virtualbox delaytest[4480]: t=5 seat0=c1/lightdm compiz= csm=
+вер 28 16:29:07.251320 mike-virtualbox delaytest[4547]: t=6 seat0=c1/lightdm compiz= csm=
+вер 28 16:29:11.717498 mike-virtualbox delaytest[4583]: t=10 seat0=c1/lightdm compiz= csm=
+вер 28 16:29:35.013470 mike-virtualbox delaytest[4789]: t=30 seat0=c1/lightdm compiz= csm=
+вер 28 16:30:01.481455 mike-virtualbox systemd-logind[4154]: System is powering down.
+--- counts (cinnamon-session-binary tag only, to avoid the doubled stderr copy)
+Requesting system restart: 0
+Requesting system shutdown: 8
+OperationInProgress: 0
+not confirmed by logind: 0
+--- last delaytest tick with the session manager alive
+--- first tick without it
+вер 28 16:29:01.861371 mike-virtualbox delaytest[4312]: t=1 seat0=3/mike compiz=2842 csm=
+--- logind bus traffic (/var/tmp/cs-busmon.txt, if tools/cs-delay.sh recorded it)
+  Sender=:1.114  Destination=:1.89
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=12  Timestamp="Mon 2026-09-28 13:29:01.329321 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=13  Timestamp="Mon 2026-09-28 13:29:01.344233 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=14  Timestamp="Mon 2026-09-28 13:29:01.344253 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=15  Timestamp="Mon 2026-09-28 13:29:01.353978 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=16  Timestamp="Mon 2026-09-28 13:29:01.378943 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+--
+  Sender=:1.118  Destination=org.freedesktop.login1  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=ListSessionsEx
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=17  Timestamp="Mon 2026-09-28 13:29:01.384023 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+‣ Type=signal  Endian=l  Flags=1  Version=1 Cookie=92  Timestamp="Mon 2026-09-28 13:29:01.392567 UTC"
+  Sender=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PrepareForShutdown
+--
+  Sender=:1.114  Destination=:1.118
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=18  Timestamp="Mon 2026-09-28 13:29:01.400053 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+‣ Type=method_call  Endian=l  Flags=0  Version=1 Cookie=19  Timestamp="Mon 2026-09-28 13:29:01.400061 UTC"
+  Sender=:1.89  Destination=:1.114  Path=/org/freedesktop/login1  Interface=org.freedesktop.login1.Manager  Member=PowerOff
+--- logind's replies to the session manager's Reboot/PowerOff calls
+‣ Type=method_return  Endian=l  Flags=1  Version=1 Cookie=93  ReplyCookie=12  Timestamp="Mon 2026-09-28 13:29:01.392591 UTC"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=110  ReplyCookie=13  Timestamp="Mon 2026-09-28 13:29:01.448306 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=112  ReplyCookie=14  Timestamp="Mon 2026-09-28 13:29:01.449592 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=114  ReplyCookie=15  Timestamp="Mon 2026-09-28 13:29:01.453738 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=116  ReplyCookie=16  Timestamp="Mon 2026-09-28 13:29:01.456906 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=118  ReplyCookie=17  Timestamp="Mon 2026-09-28 13:29:01.484832 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=120  ReplyCookie=18  Timestamp="Mon 2026-09-28 13:29:01.486435 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"
+‣ Type=error  Endian=l  Flags=1  Version=1 Cookie=122  ReplyCookie=19  Timestamp="Mon 2026-09-28 13:29:01.490479 UTC"
+  ErrorName=System.Error.ENXIO  ErrorMessage="No such device or address"

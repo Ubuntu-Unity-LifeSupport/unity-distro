@@ -1,0 +1,2 @@
+# 09:49Z after reboot (stored values from the broken instance 2671 were [] / 4294967295):
+after boot: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 1   <- lightdm_current 4294967295 >= 2, so list.size-1

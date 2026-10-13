@@ -1,0 +1,18 @@
+boot_id eb60e050-f604-4848-84fa-bcf41cb8e21a u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2380 drop-ins:  power-owner: (':1.45',)
+88432 ms pid 2380 MANAGER-NEW (register_manager_dbus, inlined)
+88432 ms pid 2380 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7d6092347b05
+        0x7d6092347d44
+        0x7d6092336920
+        0x7d60920c7c1b
+        0x7d60920c9257
+        g_main_loop_run+311
+
+96679 ms pid 2380 ON-BUS-GOTTEN

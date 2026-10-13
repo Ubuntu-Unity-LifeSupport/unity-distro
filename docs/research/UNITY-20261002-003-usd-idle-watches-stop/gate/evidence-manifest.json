@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-003",
+  "package": "unity-settings-daemon",
+  "source_commit": "89648a32c3d24c0298b9e351cb50736731485873",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/README.md",
+      "sha256": "25e05fea77752b2ff51cf982535c6b7404b0613d9ad2962527e82e1da829375c"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/README.md",
+      "sha256": "25e05fea77752b2ff51cf982535c6b7404b0613d9ad2962527e82e1da829375c"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "db83ac862ebf00ec8c2d6c1ddaf4880c727f71724c18425d1de02eb925255f92"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "6d76492daf1dda776e09e78a5520d70eb388fc40987ed2c4ad9acb93369ea77f"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/gate/release-record.json",
+      "sha256": "5216ea9311f8b204ad2d79986054d183a4349216d4f6da3a099e9a6d1f4a6e70"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261002-003-usd-idle-watches-stop/gate/version-check.json",
+      "sha256": "f6d40bccc30b6d54543289818eaaaf3cddcaa7be3c5af9871e64f63a524c5f85"
+    }
+  }
+}

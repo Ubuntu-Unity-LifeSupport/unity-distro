@@ -1,0 +1,36 @@
+# UNITY-20261009-003/-004/-005 builds (scripts/build_sbuild.py, chroot resolute-amd64-20261008T083223Z, sbuild unshare chroots on /srv/build)
+
+## +unity7: packages/hud b/UNITY-20261009-003 6893250 (build/, manifest result PASS)
+1: [  PASSED  ] 7 tests.
+1/6 Test #1: test-integration-tests ................   Passed    5.13 sec
+2: [  PASSED  ] 10 tests.
+2/6 Test #2: test-libhud-unit-tests ................   Passed    1.97 sec
+3: [  PASSED  ] 15 tests.
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed    7.50 sec
+4: [  PASSED  ] 8 tests.
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.05 sec
+5: [  PASSED  ] 60 tests.
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.26 sec
+6: [  PASSED  ] 33 tests.
+6/6 Test #6: test-window-stack-bridge-unit-tests ...   Passed    7.97 sec
+100% tests passed, 0 tests failed out of 6
+
+## control: packages/hud-control control/UNITY-20261009-003 06726fd (the tests only, on +unity6 1369d9e), version +unity6 (build-control/)
+1: [  FAILED  ] TestHud.LegacyExecuteUsesItemTarget (2539 ms)
+1: [  PASSED  ] 6 tests.
+1: [  FAILED  ] 1 test, listed below:
+1: [  FAILED  ] TestHud.LegacyExecuteUsesItemTarget
+1/6 Test #1: test-integration-tests ................***Failed    6.86 sec
+2: [  PASSED  ] 10 tests.
+2/6 Test #2: test-libhud-unit-tests ................   Passed    3.53 sec
+3: [  PASSED  ] 15 tests.
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed   11.08 sec
+4: [  PASSED  ] 0 tests.
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.11 sec
+5: [  FAILED  ] TestApplication.RelativeDataHomeIgnored (2 ms)
+5/6 Test #5: test-service-unit-tests ...............***Failed    2.48 sec
+6: [  PASSED  ] 33 tests.
+6/6 Test #6: test-window-stack-bridge-unit-tests ...   Passed    9.15 sec
+67% tests passed, 2 tests failed out of 6
+service suite: the last test started is TestItemStore.ExecuteUnknownIdLeavesStoreUnchanged (36 tests started), then the binary ends without a summary (SIGSEGV); TestQuery's new tests come after it and do not run here. Each new test alone: logs/06 (devtests.sh).
+EXIT=2

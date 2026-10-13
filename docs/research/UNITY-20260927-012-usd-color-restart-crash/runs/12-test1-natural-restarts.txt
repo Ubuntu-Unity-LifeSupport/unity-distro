@@ -1,0 +1,6 @@
+restart 1: boot 2026-09-29 01:58:17: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test1 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=6
+restart 2: boot 2026-09-29 02:00:56: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test1 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+restart 3: boot 2026-09-29 02:03:36: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test1 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+restart 4: boot 2026-09-29 02:06:03: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test1 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+restart 5: boot 2026-09-29 02:08:30: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test1 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0
+restart 6: boot 2026-09-29 02:11:17: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test1 previous-boot clicked=1 u-s-d crash reports=0  ; journal u-s-d criticals=0

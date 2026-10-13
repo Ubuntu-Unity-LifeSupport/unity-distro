@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 1.32.0-6ubuntu4+unity2 is newer than resolute 1.32.0-6ubuntu4",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "lightdm",
+  "source_commit": "f5af23c",
+  "candidate_source_version": "1.32.0-6ubuntu4+unity2",
+  "pockets": {
+    "resolute": "1.32.0-6ubuntu4"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T09:07:18Z",
+  "mode": "pockets",
+  "view_sha256": "b1fc59ace9e854534ea76e91db25c6c816b2e7ec0afbf6793701ec94d920d881"
+}

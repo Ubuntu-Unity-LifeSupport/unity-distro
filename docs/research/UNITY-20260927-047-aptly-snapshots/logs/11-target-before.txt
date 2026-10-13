@@ -1,0 +1,1388 @@
+== before-target host=mike-virtualbox boot_id=f6957d33-b8c8-443a-90f5-d05fb5f9cfd1 date_utc=2026-09-27T21:55:00Z
+## sources for our repository
+## apt-get update rc=0; E/W lines:
+(none)
+## our InRelease: /var/lib/apt/lists/192.168.56.10:8080_dists_resolute_InRelease
+Origin: . resolute
+Label: . resolute
+Suite: resolute
+Codename: resolute
+Date: Sat, 26 Sep 2026 20:53:52 UTC
+Architectures: amd64
+Components: main
+## apt-cache policy for every name (compare before/after with diff)
+appmenu-gtk-module-common:
+  Установлен: 25.04-1build1+unity1
+  Кандидат:   25.04-1build1+unity1
+  Таблица версий:
+ *** 25.04-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     25.04-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+appmenu-gtk3-module:
+  Установлен: 25.04-1build1+unity1
+  Кандидат:   25.04-1build1+unity1
+  Таблица версий:
+ *** 25.04-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     25.04-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+ayatana-indicator-messages:
+  Установлен: 24.5.1-1build1+unity1
+  Кандидат:   24.5.1-1build1+unity1
+  Таблица версий:
+ *** 24.5.1-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     24.5.1-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+calamares-settings-ubuntu-common:
+  Установлен: (отсутствует)
+  Кандидат:   1:26.04.12+unity1
+  Таблица версий:
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+calamares-settings-ubuntu-common-data:
+  Установлен: (отсутствует)
+  Кандидат:   1:26.04.12+unity1
+  Таблица версий:
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+calamares-settings-ubuntu-unity:
+  Установлен: (отсутствует)
+  Кандидат:   1:26.04.12+unity1
+  Таблица версий:
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+cinnamon-session:
+  Установлен: 6.4.2-1+unity3
+  Кандидат:   6.4.2-1+unity3
+  Таблица версий:
+ *** 6.4.2-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     6.4.2-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     6.4.2-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     6.4.2-1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+cinnamon-session-common:
+  Установлен: 6.4.2-1+unity3
+  Кандидат:   6.4.2-1+unity3
+  Таблица версий:
+ *** 6.4.2-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     6.4.2-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     6.4.2-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     6.4.2-1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+compiz:
+  Установлен: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+ *** 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+compiz-core:
+  Установлен: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+ *** 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+compiz-dev:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+compiz-gnome:
+  Установлен: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+ *** 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+compiz-mate:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+compiz-plugins:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+compiz-plugins-default:
+  Установлен: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+ *** 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+compiz-plugins-extra:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+compiz-plugins-main:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+compiz-plugins-main-default:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+compiz-plugins-main-dev:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+compizconfig-settings-manager:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+gir1.2-hud-2:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+gir1.2-hud-client-2:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+gir1.2-lightdm-1:
+  Установлен: (отсутствует)
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+     1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+gir1.2-messagingmenu-1.0:
+  Установлен: (отсутствует)
+  Кандидат:   24.5.1-1build1+unity1
+  Таблица версий:
+     24.5.1-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     24.5.1-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+gir1.2-unity-7.0:
+  Установлен: 7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+ *** 7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+gtk3-nocsd:
+  Установлен: (отсутствует)
+  Кандидат:   4.8-1+unity3
+  Таблица версий:
+     4.8-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+hud:
+  Установлен: 14.10+17.10.20170619-0ubuntu6+unity1
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+ *** 14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+hud-dbgsym:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+hud-doc:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+hud-tools:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+hud-tools-dbgsym:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+indicator-bluetooth:
+  Установлен: 0.0.6+17.10.20170605-0ubuntu7+unity1
+  Кандидат:   0.0.6+17.10.20170605-0ubuntu7+unity1
+  Таблица версий:
+ *** 0.0.6+17.10.20170605-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.0.6+17.10.20170605-0ubuntu7 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-common:
+  Установлен: 16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Таблица версий:
+ *** 16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     16.10.0+18.04.20180321.1-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+indicator-datetime:
+  Установлен: 15.10+21.04.20210304-0ubuntu6+unity2
+  Кандидат:   15.10+21.04.20210304-0ubuntu6+unity2
+  Таблица версий:
+ *** 15.10+21.04.20210304-0ubuntu6+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     15.10+21.04.20210304-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.10+21.04.20210304-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-keyboard:
+  Установлен: 0.0.0+19.10.20240924-0ubuntu1+unity3
+  Кандидат:   0.0.0+19.10.20240924-0ubuntu1+unity3
+  Таблица версий:
+ *** 0.0.0+19.10.20240924-0ubuntu1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.0.0+19.10.20240924-0ubuntu1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.0.0+19.10.20240924-0ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.0.0+19.10.20240924-0ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-messages:
+  Установлен: (отсутствует)
+  Кандидат:   13.10.1+18.10.20180918-0ubuntu8~26.04.1
+  Таблица версий:
+     13.10.1+18.10.20180918-0ubuntu8~26.04.1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     13.10.1+18.10.20180918-0ubuntu7 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-power:
+  Установлен: 12.10.6+17.10.20170829.1-0ubuntu9+unity1
+  Кандидат:   12.10.6+17.10.20170829.1-0ubuntu9+unity1
+  Таблица версий:
+ *** 12.10.6+17.10.20170829.1-0ubuntu9+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     12.10.6+17.10.20170829.1-0ubuntu9 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-printers:
+  Установлен: 0.1.7+17.10.20171101-0ubuntu8+unity1
+  Кандидат:   0.1.7+17.10.20171101-0ubuntu8+unity1
+  Таблица версий:
+ *** 0.1.7+17.10.20171101-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.1.7+17.10.20171101-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-session:
+  Установлен: 17.3.20+21.10.20210613.1-0ubuntu5+unity1
+  Кандидат:   17.3.20+21.10.20210613.1-0ubuntu5+unity1
+  Таблица версий:
+ *** 17.3.20+21.10.20210613.1-0ubuntu5+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     17.3.20+21.10.20210613.1-0ubuntu5 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+indicator-sound:
+  Установлен: 12.10.2+18.10.20180612-0ubuntu7+unity1
+  Кандидат:   12.10.2+18.10.20180612-0ubuntu7+unity1
+  Таблица версий:
+ *** 12.10.2+18.10.20180612-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     12.10.2+18.10.20180612-0ubuntu7 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libappmenu-gtk-parser-dev-common:
+  Установлен: (отсутствует)
+  Кандидат:   25.04-1build1+unity1
+  Таблица версий:
+     25.04-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     25.04-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libappmenu-gtk3-parser-dev:
+  Установлен: (отсутствует)
+  Кандидат:   25.04-1build1+unity1
+  Таблица версий:
+     25.04-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     25.04-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libappmenu-gtk3-parser0:
+  Установлен: 25.04-1build1+unity1
+  Кандидат:   25.04-1build1+unity1
+  Таблица версий:
+ *** 25.04-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     25.04-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libcompizconfig0:
+  Установлен: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+ *** 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libcompizconfig0-dev:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libdecoration0-dev:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libdecoration0t64:
+  Установлен: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+ *** 1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libgtk-nocsd0:
+  Установлен: 4.8-1+unity2
+  Кандидат:   4.8-1+unity3
+  Таблица версий:
+     4.8-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 4.8-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     4.8-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libgtk-nocsd0-dbgsym:
+  Установлен: (отсутствует)
+  Кандидат:   4.8-1+unity3
+  Таблица версий:
+     4.8-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+libgtk3-nocsd0:
+  Установлен: (отсутствует)
+  Кандидат:   4.8-1+unity3
+  Таблица версий:
+     4.8-1+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.8-1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3+0~20260321+0b77e1b-1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libhud-client2:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libhud-client2-dbgsym:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+libhud-client2-dev:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libhud-client2-doc:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libhud-gtk1:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libhud-gtk1-dbgsym:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+libhud-gtk1-dev:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libhud-gtk1-doc:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libhud2:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libhud2-dbgsym:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+libhud2-dev:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libhud2-doc:
+  Установлен: (отсутствует)
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity1
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     14.10+17.10.20170619-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libindicator-dev:
+  Установлен: (отсутствует)
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Таблица версий:
+     16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libindicator3-7:
+  Установлен: 16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Таблица версий:
+ *** 16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     16.10.0+18.04.20180321.1-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libindicator3-dev:
+  Установлен: (отсутствует)
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Таблица версий:
+     16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libindicator3-tools:
+  Установлен: (отсутствует)
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Таблица версий:
+     16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libindicator7:
+  Установлен: (отсутствует)
+  Кандидат:   16.10.0+18.04.20180321.1-0ubuntu8+unity2
+  Таблица версий:
+     16.10.0+18.04.20180321.1-0ubuntu8+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     16.10.0+18.04.20180321.1-0ubuntu8 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+liblightdm-gobject-1-0:
+  Установлен: 1.32.0-6ubuntu4+unity1
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+ *** 1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+liblightdm-gobject-dev:
+  Установлен: (отсутствует)
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+     1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+liblightdm-qt5-3-0:
+  Установлен: (отсутствует)
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+     1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+liblightdm-qt5-3-dev:
+  Установлен: (отсутствует)
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+     1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libmessaging-menu-dev:
+  Установлен: (отсутствует)
+  Кандидат:   24.5.1-1build1+unity1
+  Таблица версий:
+     24.5.1-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     24.5.1-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libmessaging-menu0:
+  Установлен: 24.5.1-1build1+unity1
+  Кандидат:   24.5.1-1build1+unity1
+  Таблица версий:
+ *** 24.5.1-1build1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     24.5.1-1build1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libnux-4.0-0:
+  Установлен: 4.0.8+18.10.20180623-0ubuntu15+unity2
+  Кандидат:   4.0.8+18.10.20180623-0ubuntu15+unity2
+  Таблица версий:
+ *** 4.0.8+18.10.20180623-0ubuntu15+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     4.0.8+18.10.20180623-0ubuntu15+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libnux-4.0-common:
+  Установлен: 4.0.8+18.10.20180623-0ubuntu15+unity2
+  Кандидат:   4.0.8+18.10.20180623-0ubuntu15+unity2
+  Таблица версий:
+ *** 4.0.8+18.10.20180623-0ubuntu15+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     4.0.8+18.10.20180623-0ubuntu15+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libnux-4.0-dev:
+  Установлен: (отсутствует)
+  Кандидат:   4.0.8+18.10.20180623-0ubuntu15+unity2
+  Таблица версий:
+     4.0.8+18.10.20180623-0ubuntu15+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu15+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-control-center-dev:
+  Установлен: (отсутствует)
+  Кандидат:   15.04.0+23.04.20230220-0ubuntu13+unity2
+  Таблица версий:
+     15.04.0+23.04.20230220-0ubuntu13+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.0+23.04.20230220-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.0+23.04.20230220-0ubuntu13 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-control-center1:
+  Установлен: 15.04.0+23.04.20230220-0ubuntu13+unity2
+  Кандидат:   15.04.0+23.04.20230220-0ubuntu13+unity2
+  Таблица версий:
+ *** 15.04.0+23.04.20230220-0ubuntu13+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     15.04.0+23.04.20230220-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.0+23.04.20230220-0ubuntu13 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-core-6.0-9:
+  Установлен: 7.7.1+26.04.20260306-0ubuntu3+unity11
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-core-6.0-dev:
+  Установлен: (отсутствует)
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+     7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-dev:
+  Установлен: (отсутствует)
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+     7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+libunity-gtk4-menu0:
+  Установлен: (отсутствует)
+  Кандидат:   0.9
+  Таблица версий:
+     0.9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.7 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.6 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+libunity-protocol-private0:
+  Установлен: 7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+ *** 7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+libunity-scopes-json-def-desktop:
+  Установлен: 7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+ *** 7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main i386 Packages
+libunity-scopes-json-def-phone:
+  Установлен: (отсутствует)
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+     7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+libunity-settings-daemon-dev:
+  Установлен: (отсутствует)
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity5
+  Таблица версий:
+     15.04.1+21.10.20220802-0ubuntu7+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-settings-daemon1:
+  Установлен: 15.04.1+21.10.20220802-0ubuntu7+unity5
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity5
+  Таблица версий:
+ *** 15.04.1+21.10.20220802-0ubuntu7+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     15.04.1+21.10.20220802-0ubuntu7+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity-tools:
+  Установлен: (отсутствует)
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+     7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+libunity9:
+  Установлен: 7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+ *** 7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+light-locker:
+  Установлен: 1.8.0-3ubuntu4+unity2
+  Кандидат:   1.8.0-3ubuntu4+unity2
+  Таблица версий:
+ *** 1.8.0-3ubuntu4+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1.8.0-3ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+lightdm:
+  Установлен: 1.32.0-6ubuntu4+unity1
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+ *** 1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+lightdm-vala:
+  Установлен: (отсутствует)
+  Кандидат:   1.32.0-6ubuntu4+unity1
+  Таблица версий:
+     1.32.0-6ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1.32.0-6ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+nux-tools:
+  Установлен: 4.0.8+18.10.20180623-0ubuntu15+unity2
+  Кандидат:   4.0.8+18.10.20180623-0ubuntu15+unity2
+  Таблица версий:
+ *** 4.0.8+18.10.20180623-0ubuntu15+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     4.0.8+18.10.20180623-0ubuntu15+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu13 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     4.0.8+18.10.20180623-0ubuntu12 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+overlay-scrollbar:
+  Установлен: 0.2.17.1+16.04.20151117-0ubuntu5+unity1
+  Кандидат:   0.2.17.1+16.04.20151117-0ubuntu5+unity1
+  Таблица версий:
+ *** 0.2.17.1+16.04.20151117-0ubuntu5+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.2.17.1+16.04.20151117-0ubuntu5 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+overlay-scrollbar-gtk2:
+  Установлен: 0.2.17.1+16.04.20151117-0ubuntu5+unity1
+  Кандидат:   0.2.17.1+16.04.20151117-0ubuntu5+unity1
+  Таблица версий:
+ *** 0.2.17.1+16.04.20151117-0ubuntu5+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.2.17.1+16.04.20151117-0ubuntu5 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+python3-compizconfig:
+  Установлен: (отсутствует)
+  Кандидат:   1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+  Таблица версий:
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:0.9.14.2+25.10.20250930-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+session-migration:
+  Установлен: 0.3.9build2+unity1
+  Кандидат:   0.3.9build2+unity1
+  Таблица версий:
+ *** 0.3.9build2+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.3.9build2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+ubuntu-unity-desktop:
+  Установлен: 0.29+unity1
+  Кандидат:   0.29+unity1
+  Таблица версий:
+ *** 0.29+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     0.29 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity:
+  Установлен: 7.7.1+26.04.20260306-0ubuntu3+unity11
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-autopilot:
+  Установлен: (отсутствует)
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+     7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-control-center:
+  Установлен: 15.04.0+23.04.20230220-0ubuntu13+unity2
+  Кандидат:   15.04.0+23.04.20230220-0ubuntu13+unity2
+  Таблица версий:
+ *** 15.04.0+23.04.20230220-0ubuntu13+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     15.04.0+23.04.20230220-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.0+23.04.20230220-0ubuntu13 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-control-center-dev:
+  Установлен: (отсутствует)
+  Кандидат:   15.04.0+23.04.20230220-0ubuntu13+unity2
+  Таблица версий:
+     15.04.0+23.04.20230220-0ubuntu13+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.0+23.04.20230220-0ubuntu13+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.0+23.04.20230220-0ubuntu13 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-greeter:
+  Установлен: 25.04.1-0ubuntu1+unity1
+  Кандидат:   25.04.1-0ubuntu1+unity1
+  Таблица версий:
+ *** 25.04.1-0ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     25.04.1-0ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-lens-files:
+  Установлен: 7.1.0+17.10.20170605-0ubuntu6+unity1
+  Кандидат:   7.1.0+17.10.20170605-0ubuntu6+unity1
+  Таблица версий:
+ *** 7.1.0+17.10.20170605-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.1.0+17.10.20170605-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-schemas:
+  Установлен: 7.7.1+26.04.20260306-0ubuntu3+unity11
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-calculator:
+  Установлен: (отсутствует)
+  Кандидат:   0.1+14.04.20140328-0ubuntu6+unity1
+  Таблица версий:
+     0.1+14.04.20140328-0ubuntu6+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.1+14.04.20140328-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-devhelp:
+  Установлен: (отсутствует)
+  Кандидат:   0.1+14.04.20140328-0ubuntu5+unity1
+  Таблица версий:
+     0.1+14.04.20140328-0ubuntu5+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.1+14.04.20140328-0ubuntu5 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-gnote:
+  Установлен: (отсутствует)
+  Кандидат:   0.1+13.10.20130723-0ubuntu4+unity1
+  Таблица версий:
+     0.1+13.10.20130723-0ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.1+13.10.20130723-0ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-manpages:
+  Установлен: (отсутствует)
+  Кандидат:   3.0+14.04.20140324-0ubuntu5+unity1
+  Таблица версий:
+     3.0+14.04.20140324-0ubuntu5+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     3.0+14.04.20140324-0ubuntu5 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-tomboy:
+  Установлен: (отсутствует)
+  Кандидат:   0.1+13.10.20130723-0ubuntu4+unity1
+  Таблица версий:
+     0.1+13.10.20130723-0ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.1+13.10.20130723-0ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-virtualbox:
+  Установлен: (отсутствует)
+  Кандидат:   0.1+13.10.20130723-0ubuntu4+unity1
+  Таблица версий:
+     0.1+13.10.20130723-0ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.1+13.10.20130723-0ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scope-zotero:
+  Установлен: (отсутствует)
+  Кандидат:   0.1+13.10.20130723-0ubuntu4+unity1
+  Таблица версий:
+     0.1+13.10.20130723-0ubuntu4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     0.1+13.10.20130723-0ubuntu4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-scopes-runner:
+  Установлен: 7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Кандидат:   7.1.4+19.04.20190319-6.1ubuntu1+unity1
+  Таблица версий:
+ *** 7.1.4+19.04.20190319-6.1ubuntu1+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.1.4+19.04.20190319-6.1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-services:
+  Установлен: 7.7.1+26.04.20260306-0ubuntu3+unity11
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-session:
+  Установлен: 49.4+unity1
+  Кандидат:   49.4+unity1
+  Таблица версий:
+ *** 49.4+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     49.4 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-settings-daemon:
+  Установлен: 15.04.1+21.10.20220802-0ubuntu7+unity5
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity5
+  Таблица версий:
+ *** 15.04.1+21.10.20220802-0ubuntu7+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     15.04.1+21.10.20220802-0ubuntu7+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-settings-daemon-dev:
+  Установлен: (отсутствует)
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity5
+  Таблица версий:
+     15.04.1+21.10.20220802-0ubuntu7+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+unity-settings-daemon-schemas:
+  Установлен: 15.04.1+21.10.20220802-0ubuntu7+unity5
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity5
+  Таблица версий:
+ *** 15.04.1+21.10.20220802-0ubuntu7+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     15.04.1+21.10.20220802-0ubuntu7+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+unity-uwidgets:
+  Установлен: 7.7.1+26.04.20260306-0ubuntu3+unity11
+  Кандидат:   7.7.1+26.04.20260306-0ubuntu3+unity11
+  Таблица версий:
+ *** 7.7.1+26.04.20260306-0ubuntu3+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     7.7.1+26.04.20260306-0ubuntu3+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity8 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     7.7.1+26.04.20260306-0ubuntu3 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+xnest:
+  Установлен: (отсутствует)
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+     2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+xorg-server-source:
+  Установлен: (отсутствует)
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+     2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/universe i386 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+xserver-common:
+  Установлен: 2:21.1.22-1ubuntu1.3+unity2
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+ *** 2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/main amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/main i386 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main i386 Packages
+xserver-xephyr:
+  Установлен: (отсутствует)
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+     2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+xserver-xorg-core:
+  Установлен: 2:21.1.22-1ubuntu1.3+unity2
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+ *** 2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/main amd64 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+xserver-xorg-dev:
+  Установлен: (отсутствует)
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+     2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/main amd64 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/main amd64 Packages
+xserver-xorg-legacy:
+  Установлен: 2:21.1.22-1ubuntu1.3+unity2
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+ *** 2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+        100 /var/lib/dpkg/status
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+xvfb:
+  Установлен: (отсутствует)
+  Кандидат:   2:21.1.22-1ubuntu1.3+unity2
+  Таблица версий:
+     2:21.1.22-1ubuntu1.3+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     2:21.1.22-1ubuntu1.2 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute-updates/universe amd64 Packages
+     2:21.1.22-1ubuntu1 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages

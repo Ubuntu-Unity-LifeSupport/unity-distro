@@ -1,0 +1,48 @@
+== T2-forced-stage1
+Started ld019force-T2-forced-stage1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt.
+Attached 5 probes
+12:19:47.994566 forcing SIGTERM into greeter session-child 4006 at pam_getenv after waitpid
+12:20:37.679525 forcing SIGTERM into greeter session-child 6967 at pam_getenv after waitpid
+12:21:27.093314 forcing SIGTERM into greeter session-child 9958 at pam_getenv after waitpid
+12:22:16.437151 forcing SIGTERM into greeter session-child 12945 at pam_getenv after waitpid
+Stopping ld019force-T2-forced-stage1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt...
+ld019force-T2-forced-stage1.service: Deactivated successfully.
+Stopped ld019force-T2-forced-stage1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt.
+ld019force-T2-forced-stage1.service: Consumed 1.140s CPU time over 3min 31.678s wall clock time, 51.7M memory peak.
+== T3-forced-in-pam_systemd-close
+Started ld019force-T3-forced-in-pam_systemd-close.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-sigterm-at.bt close.
+Attached 8 probes
+12:52:50.860720 forcing SIGTERM into 45063 inside pam_systemd pam_sm_close_session
+12:52:50.863700 45063 gone
+Stopping ld019force-T3-forced-in-pam_systemd-close.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-sigterm-at.bt close...
+ld019force-T3-forced-in-pam_systemd-close.service: Deactivated successfully.
+Stopped ld019force-T3-forced-in-pam_systemd-close.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-sigterm-at.bt close.
+ld019force-T3-forced-in-pam_systemd-close.service: Consumed 2.133s CPU time over 5min 28.958s wall clock time, 56.9M memory peak.
+== T4-forced-at-pam_end
+Started ld019force-T4-forced-at-pam_end.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-sigterm-at.bt end.
+Attached 8 probes
+12:56:53.730843 forcing SIGTERM into 49112 at pam_end
+12:56:53.731489 49112 gone
+Stopping ld019force-T4-forced-at-pam_end.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-sigterm-at.bt end...
+ld019force-T4-forced-at-pam_end.service: Deactivated successfully.
+Stopped ld019force-T4-forced-at-pam_end.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-sigterm-at.bt end.
+ld019force-T4-forced-at-pam_end.service: Consumed 3.230s CPU time over 7min 25.846s wall clock time, 56.7M memory peak.
+== T6-stalled-close-forced-stage1
+Started ld019force-T6-stalled-close-forced-stage1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt.
+Attached 5 probes
+Stopping ld019force-T6-stalled-close-forced-stage1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt...
+ld019force-T6-stalled-close-forced-stage1.service: Deactivated successfully.
+Stopped ld019force-T6-stalled-close-forced-stage1.service - [systemd-run] /usr/bin/bpftrace --unsafe /home/mike/force-late-sigterm.bt.
+ld019force-T6-stalled-close-forced-stage1.service: Consumed 1.169s CPU time over 8min 35.948s wall clock time, 51.8M memory peak.
+== stall hook
+== phases
+вер 29 12:19:21.897524 mike-virtualbox ld019phase[3054]: phase T2-forced-stage1 start
+вер 29 12:22:53.711169 mike-virtualbox ld019phase[15824]: phase T2-forced-stage1 end
+вер 29 12:22:53.770141 mike-virtualbox ld019phase[15826]: phase T1-natural start
+вер 29 12:48:00.425123 mike-virtualbox ld019phase[41001]: phase T1-natural end
+вер 29 12:48:00.436193 mike-virtualbox ld019phase[41003]: phase T3-forced-in-pam_systemd-close start
+вер 29 12:53:29.523431 mike-virtualbox ld019phase[47132]: phase T3-forced-in-pam_systemd-close end
+вер 29 12:53:29.596451 mike-virtualbox ld019phase[47134]: phase T4-forced-at-pam_end start
+вер 29 13:00:55.566623 mike-virtualbox ld019phase[53246]: phase T4-forced-at-pam_end end
+вер 29 13:00:55.612407 mike-virtualbox ld019phase[53256]: phase T6-stalled-close-forced-stage1 start
+вер 29 13:09:31.590636 mike-virtualbox ld019phase[56304]: phase T6-stalled-close-forced-stage1 end

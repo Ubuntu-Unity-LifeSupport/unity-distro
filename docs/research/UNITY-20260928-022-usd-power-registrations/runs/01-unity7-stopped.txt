@@ -1,0 +1,21 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity7 pid 2259 mode stopped 
+== plugin running:
+  D-Bus Screen.GetPercentage after .1211 s: Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+== after stop (stopped):
+  D-Bus Screen.GetPercentage after 28.14 s: Ошибка: Истекло время ожидания
+== 30 s without input
+== pointer moved
+      1 GDB-READY
+      1 CB handle_method_call GetPercentage manager=0x563dc5f33420
+      1 Thread 1 "unity-settings-" received signal SIGINT, Interrupt.
+      1 AFTER-CONTINUE
+      1 #0  __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+      1 #1  0x0000702bbfea039c in __internal_syscall_cancel (a1=<optimized out>, a2=<optimized out>, a3=<optimized out>, a4=<optimized out>, a5=8, a6=0, nr=271) at ./nptl/cancell
+      1 #2  __syscall_cancel (a1=<optimized out>, a2=<optimized out>, a3=<optimized out>, a4=<optimized out>, a5=a5@entry=8, a6=a6@entry=0, nr=271) at ./nptl/cancellation.c:75
+      1 #3  0x0000702bbff28136 in __GI_ppoll (fds=<optimized out>, nfds=<optimized out>, timeout=<optimized out>, sigmask=<optimized out>) at ../sysdeps/unix/sysv/linux/ppoll.c:4
+      1 #4  0x0000702bc012d371 in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+      1 #5  0x0000702bc012d5f7 in g_main_loop_run () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+      1 #6  0x0000702bc060fc05 in gtk_main () at /usr/lib/x86_64-linux-gnu/libgtk-3.so.0
+      1 #7  0x0000563dbab8109a in main (argc=<optimized out>, argv=<optimized out>) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity7/gnome-settings-daemon
+u-s-d pid 2259 alive: yes; criticals since 02:49:36: 0
+crash reports: 0

@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 14.10+17.10.20170619-0ubuntu6+unity2 is newer than resolute 14.10+17.10.20170619-0ubuntu6",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "hud",
+  "source_commit": "ef39a8d5a5a036ddad83952c508b98cc3b9f3708",
+  "candidate_source_version": "14.10+17.10.20170619-0ubuntu6+unity2",
+  "pockets": {
+    "resolute": "14.10+17.10.20170619-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T16:27:43Z",
+  "mode": "pockets",
+  "view_sha256": "07eec1a4486e47ff3950e66d91e16ca97f8fe1002caf648f74920fe129f7c45c"
+}

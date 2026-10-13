@@ -1,0 +1,23 @@
+{
+  "task_id": "UNITY-20260927-040",
+  "package": "unity",
+  "target_series": "resolute",
+  "candidate_version": "7.7.1+26.04.20260306-0ubuntu3+unity12",
+  "source_commit": "7b0eca27917d60d9bfb55957e68171cd5c39db14",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20260927-040",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-040-edge-grab-guard/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-040-edge-grab-guard/README.md",
+    "verification_record": "docs/research/UNITY-20260927-040-edge-grab-guard/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

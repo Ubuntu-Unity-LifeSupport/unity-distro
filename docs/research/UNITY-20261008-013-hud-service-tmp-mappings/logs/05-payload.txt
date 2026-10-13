@@ -1,0 +1,5 @@
+libcolumbus1v5: file list identical (13 files)
+libcolumbus1-dev: file list identical (26 files)
+python3-columbus: file list identical (11 files)
+libcolumbus1-common: file list identical (10 files)
+libcolumbus.so.1 exported symbols: identical (196 symbols)

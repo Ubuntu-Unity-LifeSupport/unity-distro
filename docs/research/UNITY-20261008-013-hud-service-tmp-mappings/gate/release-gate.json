@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-013",
+  "package": "libcolumbus",
+  "target_series": "resolute",
+  "candidate_version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-013/packages/libcolumbus",
+  "source_remote_ref": "origin/b/UNITY-20261008-013",
+  "source_commit": "3da4d89457f3528b1bf75324d5fda35faf8cb1de",
+  "source_tree_hash": "5f4f988dd4d446cfc0da59afe7a3fc33b9df0069",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-013"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/build/UNITY-20261008-013-libcolumbus-build-manifest.json",
+    "sha256": "437de91d2adf0597b149ff4129422471eddf648adae57ed14492c68425188cc9"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/gate/evidence-manifest.json",
+    "sha256": "c196763767bd0e176ee815dd868d1dc7f7cbb0672add331677919d98dbb702fa"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/logs/06-target.txt",
+        "sha256": "d29369e3f9291487fd7c7dfe87e3235e09c212081efbbbbc5753301b3df51b80"
+      },
+      "debs": {
+        "libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity1_all.deb": "cea9db10e53d0482ac5a51b70f774c4837a5f5ee4c2251013f7c083ca2a90637",
+        "libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb": "65773439ef292b3c3efbf49dec37a090c26f37519f6b80b9c511c4887e5c3520"
+      }
+    }
+  }
+}

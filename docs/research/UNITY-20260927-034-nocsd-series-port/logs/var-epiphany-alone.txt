@@ -1,0 +1,69 @@
+### base-off
+=================== epiphany (pid 22978)
+  shim: NOT HOOKED in pid 22978
+  NO-MENUBAR bus=:1.813
+### base
+=================== epiphany (pid 23182)
+  shim: NOT HOOKED in pid 23182
+  NO-MENUBAR bus=:1.819
+### A
+=================== epiphany (pid 23353)
+  shim: NOT HOOKED in pid 23353
+  NO-MENUBAR bus=:1.825
+### AB
+=================== epiphany (pid 23523)
+  shim: NOT HOOKED in pid 23523
+            -                                        Веб-браузер
+    ok        app.new-window                           _Новое окно
+    ok        app.new-incognito                        Новое _приватное окно
+    disabled  app.reopen-closed-tab                    Открыть _закрытую вкладку
+    ok        win.gtk-nocsd-win-fullscreen             По_лноэкранный режим
+    ok        app.history                              Истор_ия
+              -                                        _Веб-приложения
+      disabled  win.gtk-nocsd-win-save-as-application    Установить как _веб-приложение…
+      ok        win.gtk-nocsd-win-open-application-manager Управле_ние веб-приложениями
+    ok        win.gtk-nocsd-win-privacy-report         Отчет о кон_фиденциальности
+    ok        win.gtk-nocsd-win-passwords              Па_роли
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            Комбинации _клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+    MISSING   app.uninstall-web-app                    _Удалить веб-приложение
+### ABC
+=================== epiphany (pid 23704)
+  shim: NOT HOOKED in pid 23704
+            -                                        Веб-браузер
+    ok        app.new-window                           _Новое окно
+    ok        app.new-incognito                        Новое _приватное окно
+    disabled  app.reopen-closed-tab                    Открыть _закрытую вкладку
+    ok        win.gtk-nocsd-win-fullscreen             По_лноэкранный режим
+    ok        app.history                              Истор_ия
+              -                                        _Веб-приложения
+      disabled  win.gtk-nocsd-win-save-as-application    Установить как _веб-приложение…
+      ok        win.gtk-nocsd-win-open-application-manager Управле_ние веб-приложениями
+    ok        win.gtk-nocsd-win-privacy-report         Отчет о кон_фиденциальности
+    ok        win.gtk-nocsd-win-passwords              Па_роли
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            Комбинации _клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+    MISSING   app.uninstall-web-app                    _Удалить веб-приложение
+### ABCD
+=================== epiphany (pid 23881)
+  shim: NOT HOOKED in pid 23881
+            -                                        Веб-браузер
+    ok        app.new-window                           _Новое окно
+    ok        app.new-incognito                        Новое _приватное окно
+    disabled  app.reopen-closed-tab                    Открыть _закрытую вкладку
+    ok        win.gtk-nocsd-win-fullscreen             По_лноэкранный режим
+    ok        app.history                              Истор_ия
+              -                                        _Веб-приложения
+      disabled  win.gtk-nocsd-win-save-as-application    Установить как _веб-приложение…
+      ok        win.gtk-nocsd-win-open-application-manager Управле_ние веб-приложениями
+    ok        win.gtk-nocsd-win-privacy-report         Отчет о кон_фиденциальности
+    ok        win.gtk-nocsd-win-passwords              Па_роли
+    ok        app.preferences                          _Параметры
+    ok        app.shortcuts                            Комбинации _клавиш
+    ok        app.help                                 _Справка
+    ok        app.about                                _О приложении
+    MISSING   app.uninstall-web-app                    _Удалить веб-приложение

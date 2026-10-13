@@ -1,0 +1,23 @@
+{
+  "task_id": "UNITY-20260928-014",
+  "package": "indicator-keyboard",
+  "target_series": "resolute",
+  "candidate_version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+  "source_commit": "5d6a8c57443061f624258c43d39fc7cee36bb759",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260928-014",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260928-014-ik-greeter-sources/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260928-014-ik-greeter-sources/README.md",
+    "verification_record": "docs/research/UNITY-20260928-014-ik-greeter-sources/verification.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

@@ -1,0 +1,20 @@
+## index entries named unity-scope-*
+Package: unity-scope-calculator	Package: unity-scope-devhelp
+Package: unity-scope-gnote	Package: unity-scope-manpages
+Package: unity-scope-tomboy	Package: unity-scope-virtualbox
+Package: unity-scope-zotero	Package: unity-scopes-runner
+## aptly package show (one of them), pool files
+Files in the pool:
+  /srv/aptly/pool/1b/4d/61032903407c705adf96cd20ad04_unity-scope-calculator_0.1+14.04.20140328-0ubuntu6+unity1_all.deb
+
+## public pool path
+/srv/aptly/public/pool/main/u/unity-scope-calculator
+/srv/aptly/public/pool/main/u/unity-scope-calculator/unity-scope-calculator_0.1+14.04.20140328-0ubuntu6+unity1_all.deb
+## when were they added? repo package refs vs publish date
+142:2026-09-24 22:04Z B START stack health (May): nux, indicator-*, vala-appmenu-panel, appmenu-gtk3-module, unity-tweak-tool, lenses/scopes, Python 3.14 -> docs/STACK-HEALTH.md section B
+245:2026-09-25 16:12Z B START trial sbuild of never-built section-B sources (libindicator, libunity, lenses/scopes, indicator-application/appmenu/notifications, vala-panel) in ~/work/b/rebuild; STACK-HEALTH section B refresh
+335:2026-09-26 13:02Z B START scopes: dist-packages __init__.py conflict + survey of all unity-scope/lens in 26.04 (task B-4)
+336:2026-09-26 13:10Z B START build 8 unity-scope-* +unity1 (dist-packages __init__.py)
+342:2026-09-26 13:49Z B START aptly publish 7 unity-scope-* +unity1
+343:2026-09-26 13:49Z B DONE  7 unity-scope-* +unity1 in aptly (co-installable; manpages GTK3; gnote activation retry)
+445:2026-09-27 21:41Z B DONE  UNITY-20260927-036 dated record corrections (status/B, indicator-units, rebuild-loss, unity-scopes, package-patches-b index; PATCHES appended on main 1232851); branch b/UNITY-20260927-036 1094bbc

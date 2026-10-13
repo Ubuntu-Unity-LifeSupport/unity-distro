@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-023",
+  "package": "libindicator",
+  "target_series": "resolute",
+  "candidate_version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-li023/packages/libindicator",
+  "source_remote_ref": "origin/b/UNITY-20260927-023",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "source_tree_hash": "26b4500293aafa9c2453f58b61c876e146798eb2",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-023"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-023-libindicator-abi/build-gated/UNITY-20260927-023-libindicator-build-manifest.json",
+    "sha256": "0de81250d5b0f83fed7184121ada49e86895592088261c3ac7ed017509d97767"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-023-libindicator-abi/gate/evidence-manifest.json",
+    "sha256": "23ec81a3dcdaeff7318ec59a8b42ac5280dfd0a423287be7f2bb2457d5467610"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20260927-023-libindicator-abi/logs/07-target-this-build.txt",
+        "sha256": "3b8cc5a27bb6ac4ec0d00586ab0e3f1b8ae57970def183841ebbeb258e2ef671"
+      },
+      "debs": {
+        "indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb": "08384eb2f94a494687b9838d7df9ba1e218a934c4823c6511e566e43ca8332eb",
+        "libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb": "caac08af4472f33f91e6ae77ed97ba2e8df53e247ca0f6d3f48ec808e19b0767"
+      }
+    }
+  }
+}

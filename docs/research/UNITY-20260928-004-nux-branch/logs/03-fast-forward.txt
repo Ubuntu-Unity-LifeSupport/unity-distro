@@ -1,0 +1,9 @@
+# unity/resolute before/after, 2026-09-28T09:01:40Z
+before: 3c56e898d112e9ec4e7212d78a548bab82e60079 (0ubuntu13; also on GitHub)
+after (local clone): 9793c2329dd99f0fe779c51409a79f2c4ab077cc
+command: git fetch . b/fbo:unity/resolute (fast-forward only; no checkout)
+commits added:
+9793c23 Keep the FBO colour attachment vectors sized (LP: #2160298)
+9d26778 Rebase onto upstream 0ubuntu15; carry fix-missing-vidmode.patch
+2c1878a d/control: Remove libboost-system-dev from build dependencies.
+d39896c 4.0.8+18.10.20180623-0ubuntu14 (patches unapplied)

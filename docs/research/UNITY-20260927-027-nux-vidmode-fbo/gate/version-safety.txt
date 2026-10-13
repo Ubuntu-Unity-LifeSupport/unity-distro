@@ -1,0 +1,69 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 4.0.8+18.10.20180623-0ubuntu15+unity3 is newer than resolute 4.0.8+18.10.20180623-0ubuntu12",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "nux",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "candidate_source_version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+  "pockets": {
+    "resolute": "4.0.8+18.10.20180623-0ubuntu12"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T22:48:46Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "libnux-4.0-0-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "package": "libnux-4.0-0",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "package": "libnux-4.0-common",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "all",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "package": "libnux-4.0-dev",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "package": "nux-tools-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "package": "nux-tools",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-027",
+    "packages": 331,
+    "list_sha256": "5d766e8816323d50d54f03c1574165412652ef3bda8644ca98a6bab587f7e316",
+    "model_entries": 298,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "5c517e4ee849a38686751c212ab3f6f20539b75f128bc9d2c1235bb944246afe"
+}

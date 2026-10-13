@@ -1,0 +1,3 @@
+Removed '/home/mike/.config/systemd/user/unity-settings-daemon.service.wants/u002-window-toggle.service'.
+disabled
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity10

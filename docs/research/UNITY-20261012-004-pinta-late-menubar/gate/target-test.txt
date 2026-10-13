@@ -1,0 +1,34 @@
+UNITY-20261012-004 (with UNITY-20261013-017): target test of unity-gtk4-menu 0.12 (source commit 4b7a537)
+(2026-10-13 13:09-14:13Z, target2)
+
+Target: target-desktop-2 restored to Clean-2 at 11:28Z and confirmed inside (UNITY-20261013-007
+logs/07-target-setup-7904214.txt: no ~/.dirty, only ubuntu.sources). The live repository was added, with
+apt-get full-upgrade (InRelease Date 2026-10-13 12:36:05 UTC, with cinnamon-session 6.4.2-1+unity6 and
+libunity-gtk4-menu0 0.11 from live). Then the test tools (logs/03b-test-setup-0.11.txt), Pinta 3.1.2 built with
+dotnet (logs/08-pinta-setup-0.12.txt), and gnome-text-editor, gnome-calculator, gnome-tour.
+
+Installed from this build with dpkg -i (the 0.11 control runs set it back to 0.11 from live with apt):
+  1e5d6040b9aa689c7e4311aa9d30e4f2275833e499e092aec7efaa29e1c3c662  libunity-gtk4-menu0_0.12_amd64.deb
+The same file as in build-0.12/UNITY-20261012-004-unity-gtk4-menu-build-manifest.json (source_commit 4b7a537);
+the builds of 569366d and 910f912 gave a byte-identical deb.
+
+1. tests/latetest.c and tests/latetest-adw.py from 4b7a537 (the files on target2 have the committed sha256), under
+   Xvfb and dbus-run-session, G_DEBUG=fatal-criticals, gtk-shell-shows-menubar TRUE (1f and 3f: FALSE):
+   - against 0.11 (control, logs/05): 1, 1f, 2, 4, 9, 11, 6a fail, each for the missing late menu; 3, 3f, 5, 7, 8,
+     12, 6 pass;
+   - against 0.12 in the session's preload order (logs/06): 14 of 14 pass;
+   - against 0.12 preloaded alone (logs/07): 14 of 14 pass.
+   Each case's library log is in the files, and shows the path the case names.
+2. Pinta 3.1.2 in its header-bar layout, a cold session (logs/09): the empty menubar is set at realize and filled
+   late on the map of Pinta's header-bar buttons with its main menu (39 labels, _File ... _Help under "Pinta"); the
+   panel has the "Pinta" entry; Alt+F10 from the host opens the panel popup and Escape closes it (popwatch.sh); the
+   HUD returns Pinta's commands (dbus-monitor on com.canonical.hud).
+3. The UNITY-20261012-003 set (logs/10-13): Text Editor and Calculator have their menu at realize with no wait and
+   no map shim installed; mnemo.py keeps its own menubar; gnome-tour (no menu) waits with no panel entry and no
+   fill; Alt+F10 (Calculator, Text Editor) and Alt+F (mnemo.py) from the host open the panel popups and Escape
+   closes them, by events. The first Calculator attempt is not counted: its window was not the active one.
+4. Cost (logs/14-15): 10 000 map/unmap cycles of a menu button, 0.11 vs 0.12 with gtk-nocsd, medians 7.48 and
+   7.75 us per cycle; 10 001 shim calls make 2-3 looks; Pinta from start to idle: 6 shim calls, 2 looks, 1 late
+   fill.
+
+Result: PASS.

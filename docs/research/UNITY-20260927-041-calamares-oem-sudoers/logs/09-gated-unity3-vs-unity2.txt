@@ -1,0 +1,33 @@
+# UNITY-20260927-041 gated +unity3 build vs +unity2 (UNITY-20260927-021 build-r2), 2026-09-29T18:03:02Z
+calamares-settings-kubuntu_26.04.12+unity3_all.deb: file list SAME as calamares-settings-kubuntu_26.04.12+unity2_all.deb
+   oemconfig.tar.gz entries: 51, changed vs +unity2: 0
+     kubuntu/oemconfig/etc/sudoers.oem = ('0o400', 'root', 'root', 1762)
+calamares-settings-lubuntu_26.04.12+unity3_all.deb: file list SAME as calamares-settings-lubuntu_26.04.12+unity2_all.deb
+   oemconfig.tar.gz entries: 68, changed vs +unity2: 0
+     lubuntu/oemconfig/etc/sudoers.oem = ('0o400', 'root', 'root', 1762)
+calamares-settings-ubuntu-common-data_26.04.12+unity3_all.deb: file list SAME as calamares-settings-ubuntu-common-data_26.04.12+unity2_all.deb
+calamares-settings-ubuntu-common-dbgsym_26.04.12+unity3_amd64.ddeb: file list DIFF as calamares-settings-ubuntu-common-dbgsym_26.04.12+unity2_amd64.ddeb
+   + ('-rw-r--r--', 'root/root', './usr/lib/debug/.build-id/0b/8dee734caccb793fe9310fcefaab4b1fa531cb.debug')
+   - ('-rw-r--r--', 'root/root', './usr/lib/debug/.build-id/6f/51ad209e9562b199c842f65e5942f0022f98a4.debug')
+   - ('-rw-r--r--', 'root/root', './usr/lib/debug/.build-id/ac/551c3a10fb9c06c24f3c81d50a107518f15bbe.debug')
+   + ('-rw-r--r--', 'root/root', './usr/lib/debug/.build-id/d5/c261a7257a130ff6f3fc96c3ecba657210ab45.debug')
+   + ('drwxr-xr-x', 'root/root', './usr/lib/debug/.build-id/0b/')
+   - ('drwxr-xr-x', 'root/root', './usr/lib/debug/.build-id/6f/')
+   - ('drwxr-xr-x', 'root/root', './usr/lib/debug/.build-id/ac/')
+   + ('drwxr-xr-x', 'root/root', './usr/lib/debug/.build-id/d5/')
+calamares-settings-ubuntu-common_26.04.12+unity3_amd64.deb: file list SAME as calamares-settings-ubuntu-common_26.04.12+unity2_amd64.deb
+   changelog entries: 96, top: calamares-settings-ubuntu (1:26.04.12+unity3) resolute; urgency=medium
+calamares-settings-ubuntu-unity_26.04.12+unity3_all.deb: file list SAME as calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb
+   oemconfig.tar.gz entries: 44, changed vs +unity2: 1
+     ubuntuunity/oemconfig/etc/sudoers.oem: ('0o644', 'root', 'root', 1762) -> ('0o440', 'root', 'root', 1762)
+     ubuntuunity/oemconfig/etc/sudoers.oem = ('0o440', 'root', 'root', 1762)
+calamares-settings-ubuntu-unity_26.04.12+unity3_all.deb ubuntuunity/oemconfig/usr/bin/basicwallpaper ca88f9c350b7
+calamares-settings-ubuntu-unity_26.04.12+unity3_all.deb ubuntuunity/oemconfig/etc/sudoers.oem d0a025d4a986
+calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb ubuntuunity/oemconfig/usr/bin/basicwallpaper 077f7c36fc6c
+calamares-settings-ubuntu-unity_26.04.12+unity2_all.deb ubuntuunity/oemconfig/etc/sudoers.oem d0a025d4a986
+# basicwallpaper bytes differ (ca88f9c3 vs 077f7c36) although its source is unchanged:
+#   git diff c03daf4 221c691 --stat: Makefile (1 line) and debian/changelog only.
+#   Same size (1240448) and the same section sizes; the differences are the build ID, the
+#   package note (.note.package: "version":"1:26.04.12+unity3" vs +unity2) and a build-path string
+#   (/usr/src/calamares-settings-ubuntu-1:26.04.12+unity2/common/basicwallpaper/build in +unity2).
+#   The target check therefore runs the +unity3 binary itself through the cold boots again.

@@ -1,0 +1,32 @@
+== step 3: publish snapshot rhA (signed through the stand-in) at 2026-09-29T22:43:02Z
+-- stand-in trace:
+{"argv": ["-o", "/tmp/aptly3316736488/Release.gpg", "--digest-algo", "SHA256", "--armor", "--yes", "--detach-sign", "/tmp/aptly3316736488/Release"], "tempdir": "/tmp/aptly3316736488", "listing": [["Release", 1896, false], ["main_binary-amd64_Packages", 480, false], ["main_binary-amd64_Packages.bz2", 375, false], ["main_binary-amd64_Packages.gz", 372, false], ["main_binary-amd64_Release", 126, false]]}
+{"argv": ["-o", "/tmp/aptly3316736488/InRelease", "--digest-algo", "SHA256", "--yes", "--clearsign", "/tmp/aptly3316736488/Release"], "tempdir": "/tmp/aptly3316736488", "listing": [["Release", 1896, false], ["Release.gpg", 228, false], ["main_binary-amd64_Packages", 480, false], ["main_binary-amd64_Packages.bz2", 375, false], ["main_binary-amd64_Packages.gz", 372, false], ["main_binary-amd64_Release", 126, false]]}
+-- published dists:
+/var/tmp/aptly-rehearsal/021/state/public/dists/resolute:
+total 24
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 .
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 ..
+-rw-r--r-- 1 claude claude 2216 Sep 29 22:42 InRelease
+-rw-r--r-- 1 claude claude 1896 Sep 29 22:42 Release
+-rw-r--r-- 1 claude claude  228 Sep 29 22:42 Release.gpg
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 main
+
+/var/tmp/aptly-rehearsal/021/state/public/dists/resolute/main/binary-amd64:
+total 24
+drwxr-xr-x 2 claude claude 4096 Sep 29 22:42 .
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:42 ..
+-rw-r--r-- 1 claude claude  480 Sep 29 22:42 Packages
+-rw-r--r-- 1 claude claude  375 Sep 29 22:42 Packages.bz2
+-rw-r--r-- 1 claude claude  372 Sep 29 22:42 Packages.gz
+-rw-r--r-- 1 claude claude  126 Sep 29 22:42 Release
+-- InRelease verifies with the signer key:
+gpgv: Good signature from "aptly-signer rehearsal <rehearsal@example.invalid>"
+Date: Tue, 29 Sep 2026 22:37:51 UTC
+Valid-Until: Fri, 02 Oct 2026 22:37:51 UTC
+-- published Release (aptly's) has Valid-Until? 0
+-- Release.gpg over the published Release (window, expected to fail closed):
+gpgv: BAD signature from "aptly-signer rehearsal <rehearsal@example.invalid>"
+-- stored switch trio:
+total 8
+-rw------- 1 claude claude 5899 Sep 29 22:42 a056fbd3c045fb977e7c9d82409cbfd632024dcc93d491487a64e6c43d04de08.json

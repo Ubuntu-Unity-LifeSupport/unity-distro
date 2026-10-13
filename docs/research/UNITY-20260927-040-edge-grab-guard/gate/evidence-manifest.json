@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-040",
+  "package": "unity",
+  "source_commit": "7b0eca27917d60d9bfb55957e68171cd5c39db14",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-040-edge-grab-guard/README.md",
+      "sha256": "aa0371386e5e9cb4a5f072d2f2b9fad70876f5a66308bcbc27c3fea8ad1cfced"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-040-edge-grab-guard/README.md",
+      "sha256": "aa0371386e5e9cb4a5f072d2f2b9fad70876f5a66308bcbc27c3fea8ad1cfced"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "01b6517954670dbda076420cd3350f2114ca2bf58dee54a81c3b545d5c07b3d8"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "bcadbbfc61902d0c05e05eec916a27d526e8c28c211cf3f3ad4c850f7b34e61f"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-040-edge-grab-guard/gate/release-record.json",
+      "sha256": "cfa5f9111d0a70c972da948fa9f20583f690399c14ca692c2e47c3009dd20e45"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-040-edge-grab-guard/gate/version-check.json",
+      "sha256": "fea3f80aa089f9544c47345769bb114aafa0cc0b6f9ce71201aa13cd75e05bbc"
+    }
+  }
+}

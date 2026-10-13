@@ -1,0 +1,11 @@
+# 2026-10-10T17:45:19Z UNITY-20261010-001: db backup ~/backups/UNITY-20261010-001-20261010T174519Z (19 files, equal to live, list sha256 f278579f64d28315dc520cb47b689554aa4202c375c268a94def1b3ac594eee9); repo add of the gated build (7 records: source, 4 .deb, 2 .ddeb) to unity-resolute (521 -> 528) at 17:45:24Z, pool sha256 9 of 9 equal to the manifest; snapshot unity-resolute-20261010-001 from the repo at 17:45:34Z
+# live ./resolute: unity-resolute-20261008-025 (publish record UNITY-20261008-025, published_at 2026-10-09T05:40:24Z; the served files were republished 2026-10-10 15:51:54Z with the same 470 entries during the signer deployment, ARCH P5-DEPLOY, verified by C)
+# snapshot diff unity-resolute-20261008-025 unity-resolute-20261010-001 (7 added, all +unity2; nothing removed or changed):
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | libcolumbus1-common                      | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   
++ amd64  | libcolumbus1-dev                         | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   
++ amd64  | libcolumbus1v5                           | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   
++ amd64  | libcolumbus1v5-dbgsym                    | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   
++ amd64  | python3-columbus                         | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   
++ amd64  | python3-columbus-dbgsym                  | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   
++ source | libcolumbus                              | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity2   

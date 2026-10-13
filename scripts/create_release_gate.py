@@ -8,6 +8,10 @@ from pathlib import Path
 import re
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dependencies import manifest_error  # noqa: E402
+import tested_build  # noqa: E402
+
 
 def digest(path):
     h = hashlib.sha256()
@@ -81,6 +85,17 @@ def main():
         path = args.build_manifest.parent / artifact.get("file", "")
         if not path.is_file() or digest(path) != artifact.get("sha256"):
             parser.error(f"missing or changed build artifact: {path}")
+    # UNITY-20260929-013: extra build dependencies, only when the build had any.
+    dependency_error = manifest_error(manifest, args.build_manifest.parent)
+    if dependency_error: parser.error(dependency_error)
+    # UNITY-20261008-003: the build's .buildinfo is committed with its manifest,
+    # so a later published_by can compare a covered build with this one.
+    _buildinfo, buildinfo_error = tested_build.manifest_buildinfo(root, manifest, args.build_manifest.parent, "gated build's")
+    if buildinfo_error: parser.error(buildinfo_error)
+    # UNITY-20260929-020: what the target test installed is this build or
+    # equivalent to it (ENGINEERING-PROCESS section 6).
+    tested, tested_error = tested_build.check(record, manifest, args.build_manifest.parent, root)
+    if tested_error: parser.error(tested_error)
     if not args.snapshot or not args.distribution: parser.error("snapshot and distribution are required")
     evidence_paths = record.get("evidence", {})
     if not isinstance(evidence_paths, dict) or not all(isinstance(evidence_paths.get(key), str) for key in ("evidence_card", "verification_record", "patch_record")):
@@ -98,6 +113,9 @@ def main():
     if verdict.get("result") != "SAFE": parser.error(f"version check is not SAFE: {verdict.get('reasons')}")
     if (verdict.get("snapshot") or {}).get("name") != args.snapshot:
         parser.error("the version check measured another snapshot than the gate names")
+    # UNITY-20261008-005: the snapshot's content (keys and per-package sha256), not only its names.
+    if not (verdict.get("snapshot") or {}).get("content_sha256"):
+        parser.error("the version check does not record the snapshot's content_sha256: measure it again with apt_view.py")
     if record.get("decision_required") is True and not isinstance(evidence_paths.get("decision_record"), str):
         parser.error("decision_record evidence is required when a material design decision was made")
     evidence_manifest = {"schema": 1, "task_id": record["task_id"], "package": record["package"],
@@ -126,6 +144,7 @@ def main():
                     "snapshot": args.snapshot},
         "build_manifest": {"file": str(manifest_path.relative_to(root)), "sha256": digest(manifest_path)},
         "evidence_manifest": {"file": str(evidence_manifest_path.relative_to(root)), "sha256": digest(evidence_manifest_path)},
+        "tested_build": tested,
     }
     gate_path.write_text(json.dumps(gate, indent=2) + "\n", encoding="utf-8")
     print(gate_path)

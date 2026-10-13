@@ -1,0 +1,4 @@
+names before/after: ['demo-bin_1.0+unity1_amd64'] ['demo-bin_1.0+unity1_amd64']
+list_sha256 (names) before fe01d1470dd0 after fe01d1470dd0 equal: True
+aptly keys before ['Pamd64 demo-bin 1.0+unity1 db9f4ac63c6f1c9f'] after ['Pamd64 demo-bin 1.0+unity1 65c919a8ad0208c6'] equal: False
+snapshot_identity_lines (content_sha256 input) equal: False

@@ -1,0 +1,47 @@
+== multiarch at 2026-10-13T03:08:02Z; foreign architectures: i386
+  apt-get install libc6:i386 rc=0
+  libc6:amd64 2.43-2ubuntu2.4 install ok installed
+  libc6:i386 2.43-2ubuntu2.4 install ok installed
+  libc6-i386:amd64 2.43-2ubuntu2.4 install ok installed
+  lrwxrwxrwx 1 root root     28 Sep  3 17:09 /lib/ld-linux.so.2 -> i386-linux-gnu/ld-linux.so.2
+  -rwxr-xr-x 1 root root 228668 Sep  3 17:09 /usr/lib/i386-linux-gnu/ld-linux.so.2
+  lrwxrwxrwx 1 root root     28 Sep  3 17:09 /usr/lib/ld-linux.so.2 -> i386-linux-gnu/ld-linux.so.2
+  -rwxr-xr-x 1 root root 223568 Sep  3 17:09 /usr/lib32/ld-linux.so.2
+  t32-biarch interpreter: 
+-- /home/mike/b1302/t32-biarch (ELF 32-bit LSB pie executable, Intel i386)
+  P t32 0: rc 0, stdout lines 1, stderr lines 2, mapped: nocsd 0 gtk4-menu 0
+            1 ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            1 ERROR: ld.so: object '/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  P t32 3: rc 0, stdout lines 4, stderr lines 8, mapped: nocsd 0 gtk4-menu 0
+            4 ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            4 ERROR: ld.so: object '/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  N t32 0: rc 0, stdout lines 1, stderr lines 2, mapped: nocsd 0 gtk4-menu 0
+            1 ERROR: ld.so: object 'libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            1 ERROR: ld.so: object 'libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  N t32 3: rc 0, stdout lines 4, stderr lines 8, mapped: nocsd 0 gtk4-menu 0
+            4 ERROR: ld.so: object 'libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            4 ERROR: ld.so: object 'libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  LD_DEBUG=libs for the path form (lines naming the two libraries):
+ERROR: ld.so: object '/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+-- where $LIB points: stand-in 32-bit libgtk-nocsd.so.0
+  dummy: ELF 32-bit LSB shared object, Intel i386
+  stand-in only in /usr/lib32:
+    ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+    t32 pid 4404 bits 32 nocsd 0 gtk4-menu 0 left 0
+  stand-in only in /usr/lib/i386-linux-gnu:
+    dummy preload loaded from /usr/lib/i386-linux-gnu/libgtk-nocsd.so.0
+    t32 pid 4412 bits 32 nocsd 1 gtk4-menu 0 left 0
+  stand-ins removed: 2/2 absent
+-- the biarch loader run explicitly: /usr/lib32/ld-linux.so.2 t32-biarch
+  stand-in only in /usr/lib32:
+    dummy preload loaded from /usr/lib32/libgtk-nocsd.so.0
+    t32 pid 4520 bits 32 nocsd 1 gtk4-menu 0 left 0
+  stand-in only in /usr/lib/i386-linux-gnu:
+    ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+    t32 pid 4531 bits 32 nocsd 0 gtk4-menu 0 left 0
+  bare names with the biarch loader:
+    ERROR: ld.so: object 'libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+    ERROR: ld.so: object 'libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+    t32 pid 4536 bits 32 nocsd 0 gtk4-menu 0 left 0
+  stand-ins removed: 2/2 absent

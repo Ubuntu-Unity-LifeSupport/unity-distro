@@ -1,0 +1,5 @@
+proposal 8352147646f64e22  received Tue, 29 Sep 2026 22:38:56 UTC
+task (claimed by builder): UNITY-20260929-021
+base: (empty repository)   new content: 23e272c699467e950b550ec84180537b0b6d5cb3412fd335e99fd78cc22cfc82
+added    signer-demo all  new 1.0 sha256 02622c32dca5c0b0d4a6c3df7f3eeadebd3b127ee7761a9489c823aac8f94298 size 464  [no scripts]
+type 'approve' to approve exactly this content: approved

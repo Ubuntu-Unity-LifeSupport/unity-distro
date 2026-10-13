@@ -1,0 +1,16 @@
+# hud +unity3 (2f2fa89 build, dpkg -i) on target2 after a reboot, lo7.sh 10 (GAP=3 WATCH_DELAY=0; the script of UNITY-20260927-029), 2026-09-29
+hud	14.10+17.10.20170619-0ubuntu6+unity3
+run 1: xid=56623243 in_window_stack=1 app_id=56623243 hud_now=0 hud_after_5s=0 no_desktop_file=0
+run 2: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=58720292 in_window_stack=1 app_id=libreoffice-writer hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 4: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 5: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 7: xid=56623140 in_window_stack=1 app_id=libreoffice-writer hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 8: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 9: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=1
+run 10: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+# 10/10 in the window stack, HUD answered 9/10. The one empty run is run 1, the first Writer start of the session,
+# with xid 56623243: the same xid as the only mechanism-2 case of UNITY-20260927-029 (archive hud, lo4 run 1, also
+# the first start). Consistent with that window being a first-start dialog rather than the Writer window; for
+# UNITY-20260929-002. Not specific to +unity3.

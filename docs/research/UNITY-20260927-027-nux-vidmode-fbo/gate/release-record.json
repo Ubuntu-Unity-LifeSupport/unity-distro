@@ -1,0 +1,33 @@
+{
+  "task_id": "UNITY-20260927-027",
+  "package": "nux",
+  "target_series": "resolute",
+  "candidate_version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-027",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/logs/10-target-this-build.txt",
+    "debs": {
+      "libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb": "ce0dba348a8b6b8f525a4cae6bd66899f9a1cdf324a950247f29cfda532a0028",
+      "libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb": "1cc0617d98c5b56b3b769bf02b07169515c389183d7072d80e7223dfde22a479",
+      "libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb": "7b1ddd64f358e6d87c9a3b034075b51ec33e82ea10878b51192301e87c15e209",
+      "nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb": "102ffeec361143652ecdd0b78dc35cd20042451c4f8352d5574273e51af3572a"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/README.md",
+    "verification_record": "docs/research/UNITY-20260927-027-nux-vidmode-fbo/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

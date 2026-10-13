@@ -1,0 +1,10 @@
+# +unity3 (85c6c4a), second sbuild of the same source, 2026-09-28: successful. Full log: build/.
+11650:[  PASSED  ] 130 tests.
+11700:[ RUN      ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce
+11701:[       OK ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (218 ms)
+11705:[ RUN      ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased
+11707:[       OK ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (295 ms)
+11712:[  PASSED  ] 11 tests.
+11774:[  PASSED  ] 18 tests.
+12264:[  PASSED  ] 113 tests.
+14407:Status: successful

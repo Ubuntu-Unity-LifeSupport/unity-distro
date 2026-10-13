@@ -1,0 +1,14 @@
+# UNITY-20260927-010: recount with tools/login-check.sh of every boot so far; unity-session 49.4 (stock, held) in all of them: 10 cold logins without injection (runs/01), 3 with the injector (runs/02)
+boot -12 (2026-09-28T21:37:23) login 21:38:04: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -11 (2026-09-28T21:41:55) login 21:42:33: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -10 (2026-09-28T21:46:28) login 21:47:07: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -9 (2026-09-28T21:51:02) login 21:51:42: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -8 (2026-09-28T21:55:34) login 21:56:11: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -7 (2026-09-28T22:00:00) login 22:00:42: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -6 (2026-09-28T22:04:42) login 22:05:30: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -5 (2026-09-28T22:09:45) login 22:10:34: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -4 (2026-09-28T22:14:25) login 22:15:04: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -3 (2026-09-28T22:18:57) login 22:19:40: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+boot -2 (2026-09-28T22:24:19) login 22:25:01: injected=1 gvfs-daemon killed at start=1 dbus activation timeouts=3 client proxy timeouts=29
+boot -1 (2026-09-28T22:28:59) login 22:29:50: injected=1 gvfs-daemon killed at start=1 dbus activation timeouts=3 client proxy timeouts=29
+boot 0 (2026-09-28T22:33:58) login 22:34:53: injected=1 gvfs-daemon killed at start=1 dbus activation timeouts=3 client proxy timeouts=29

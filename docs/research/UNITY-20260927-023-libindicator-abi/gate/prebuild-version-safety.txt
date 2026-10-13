@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 16.10.0+18.04.20180321.1-0ubuntu8+unity3 is newer than resolute 16.10.0+18.04.20180321.1-0ubuntu8",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "libindicator",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "candidate_source_version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+  "pockets": {
+    "resolute": "16.10.0+18.04.20180321.1-0ubuntu8"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T16:28:03Z",
+  "mode": "pockets",
+  "view_sha256": "fcbaec113937cda3f4c8e681ab5e4191c373c4ec9e566a417282bd28ea968981"
+}

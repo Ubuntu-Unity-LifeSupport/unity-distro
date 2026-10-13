@@ -1,0 +1,3 @@
+# UNITY-20260927-026 peer notice (ENGINEERING-PROCESS section 6)
+2026-10-02 18:25Z B -> A: indicator-datetime 15.10+21.04.20210304-0ubuntu6+unity3, 3 records, snapshot unity-resolute-20260927-026 (= live -023 + 3), tests and test script only (no src change; the binary's payload equals the tested build), switch after C and May
+2026-10-02 18:26Z A -> B: A ACK UNITY-20260927-026; no repo add, snapshot or slot on A's side; target-desktop takes indicator-datetime +unity3 only on A's explicit apt upgrade

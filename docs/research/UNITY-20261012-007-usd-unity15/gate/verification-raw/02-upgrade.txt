@@ -1,0 +1,15 @@
+Пол:29 http://security.ubuntu.com/ubuntu resolute-security/multiverse Translation-en [3 728 B]
+Получено 4 776 kB за 4с (1 102 kB/s)
+Чтение списков пакетов…
+Настраивается пакет unity-settings-daemon-schemas (15.04.1+21.10.20220802-0ubuntu7+unity15) …
+Настраивается пакет libunity-settings-daemon1:amd64 (15.04.1+21.10.20220802-0ubuntu7+unity15) …
+Настраивается пакет unity-settings-daemon (15.04.1+21.10.20220802-0ubuntu7+unity15) …
+compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity15
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+unity-settings-daemon-schemas	15.04.1+21.10.20220802-0ubuntu7+unity15
+409d285be9c0bcf178cac4fd362f0b597b71aee50c2561bbf86a96cb020d9bf6  /var/cache/apt/archives/libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+e2516cdaca43295ca798c8629a3a6b211b5607d19136129c10a5842ffef993d5  /var/cache/apt/archives/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+0b5fecd88ce2e105e9641f748587e821fd4028ac506847453e4784e0a82aaf3f  /var/cache/apt/archives/unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity15_all.deb
+f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7  /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+0

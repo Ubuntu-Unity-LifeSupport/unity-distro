@@ -1,0 +1,53 @@
+Attached 14 probes
+READY
+3081 REMOVE-GRAB
+3083 XUNGRABPOINTER
+        XUngrabPointer+0
+        ExpoScreen::donePaint()+684
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+3083 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+3094 UNITY-SEES ButtonPress window=0x300039c button=1
+3094 UNITY-SEES ButtonRelease window=0x300039c button=1
+3099 UNITY-SEES ButtonPress window=0x300001a button=1
+7188 UNITY-SEES ButtonPress window=0x3000018 button=1
+7196 UNITY-SEES ButtonPress window=0x300039c button=1
+7197 EDGE-DOWN button=1
+7198 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+7202 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+7214 RESIZE-INITIATE state=4
+7214 PUSH-POINTER-GRAB resize
+7214 XGRABPOINTER
+        XGrabPointer+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3102
+        ResizeLogic::handleEvent(_XEvent*)+3553
+        CompScreen::handleEvent(_XEvent*)+103
+
+7500 UNITY-SEES ButtonRelease window=0x300039c button=1
+7500 RESIZE-TERMINATE state=8
+7500 REMOVE-GRAB
+7500 XUNGRABPOINTER
+        XUngrabPointer+0
+        ResizeLogic::terminateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+455
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+
+8986 UNITY-SEES ButtonPress window=0x300001a button=1
+
+

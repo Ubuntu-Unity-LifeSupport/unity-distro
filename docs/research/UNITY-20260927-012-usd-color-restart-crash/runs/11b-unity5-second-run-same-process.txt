@@ -1,0 +1,35 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2156
+== start: 0 session / 0 screensaver callbacks so far
+== 1 inhibitor: 4 session / 0 screensaver callbacks so far
+== 2 lock+unlock: 4 session / 0 screensaver callbacks so far
+== 3 plugin off + inhibitor: 8 session / 0 screensaver callbacks so far
+== 4 plugin on + inhibitor: 14 session / 0 screensaver callbacks so far
+--- callbacks in order
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      2 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE
+      1 POWER-SESSION-CB
+      1 IDLE-CONFIGURE

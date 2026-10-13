@@ -1,0 +1,19 @@
+ubuntu-unity +unity2: -rw-r--r-- root/root ubuntuunity/oemconfig/etc/sudoers.oem
+ubuntu-unity +unity3: -r--r----- root/root ubuntuunity/oemconfig/etc/sudoers.oem
+ubuntu-unity tarball entries diff (+unity2 -> +unity3):
+27c27
+< -rw-r--r-- root/root ubuntuunity/oemconfig/etc/sudoers.oem
+---
+> -r--r----- root/root ubuntuunity/oemconfig/etc/sudoers.oem
+kubuntu +unity2: -r-------- root/root kubuntu/oemconfig/etc/sudoers.oem
+kubuntu +unity3: -r-------- root/root kubuntu/oemconfig/etc/sudoers.oem
+kubuntu tarball entries diff (+unity2 -> +unity3):
+lubuntu +unity2: -r-------- root/root lubuntu/oemconfig/etc/sudoers.oem
+lubuntu +unity3: -r-------- root/root lubuntu/oemconfig/etc/sudoers.oem
+lubuntu tarball entries diff (+unity2 -> +unity3):
+deb file lists (+unity2 -> +unity3):
+calamares-settings-kubuntu_26.04.12+unity3_all.deb: same
+calamares-settings-lubuntu_26.04.12+unity3_all.deb: same
+calamares-settings-ubuntu-common-data_26.04.12+unity3_all.deb: same
+calamares-settings-ubuntu-common_26.04.12+unity3_amd64.deb: same
+calamares-settings-ubuntu-unity_26.04.12+unity3_all.deb: same

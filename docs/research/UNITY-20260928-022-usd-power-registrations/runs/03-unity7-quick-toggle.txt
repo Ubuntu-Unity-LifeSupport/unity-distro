@@ -1,0 +1,17 @@
+STOP
+START
+STOP
+CB power_keyboard_proxy_ready
+CB session_presence_proxy_ready
+START
+STOP
+CB power_keyboard_proxy_ready
+CB session_presence_proxy_ready
+START
+CB power_keyboard_proxy_ready
+STOP
+CB session_presence_proxy_ready
+START
+CB power_keyboard_proxy_ready
+CB session_presence_proxy_ready
+u-s-d alive: yes; crash: 0

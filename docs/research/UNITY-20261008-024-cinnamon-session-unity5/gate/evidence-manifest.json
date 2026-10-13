@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-024",
+  "package": "cinnamon-session",
+  "source_commit": "44343b48c7a9e06bcd43c56dc439a6a4de37e73d",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/README.md",
+      "sha256": "85493c368fba4f815597d592a7309532e97583d78aa165851c9805ed2283c572"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/README.md",
+      "sha256": "85493c368fba4f815597d592a7309532e97583d78aa165851c9805ed2283c572"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "f672372a0a43952d7739ff5ab8675314a60f89954b79e09bc8d7b779a78f95c2"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/gate/release-record.json",
+      "sha256": "1a752eb14e18cd0a02a7891183f806274313f9e0e5ed0b2fe56c481289341fd3"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/gate/version-check.json",
+      "sha256": "f1b0ae99d365b7201fead592da566c4796df127d6fdffb9a2196066151052070"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+# UNITY-20260927-029 peer notice (ENGINEERING-PROCESS section 6)
+2026-10-02 16:38Z B -> A: hud 14.10+17.10.20170619-0ubuntu6+unity2, 20 records, snapshot unity-resolute-20260927-029 (= live -022 + 20), library exports identical to +unity1 (libhud.so.2 25, libhud-client.so.2 70, libhud-gtk.so.1 3; measured on the gated .debs against the pool), switch after C and May
+2026-10-02 16:40Z A -> B: A ACK UNITY-20260927-029; no repo add, snapshot or slot on A's side; target-desktop takes hud +unity2 only on A's explicit apt upgrade

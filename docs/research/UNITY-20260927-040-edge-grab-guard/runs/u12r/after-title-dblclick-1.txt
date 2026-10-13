@@ -1,0 +1,64 @@
+Attached 14 probes
+READY
+423 PUSH-GRAB wall
+424 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+427 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::handleEvent(_XEvent*)+351
+        CompScreen::handleEvent(_XEvent*)+103
+
+769 REMOVE-GRAB
+770 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+770 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+1473 PUSH-GRAB wall
+1473 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1475 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallWindow::activate()+402
+        CompWindow::activate()+431
+
+1832 REMOVE-GRAB
+1833 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+1833 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+2864 UNITY-SEES ButtonPress window=0x3200163 button=1
+2864 GRABEDGE-DOWN button=1
+2913 UNITY-SEES ButtonRelease window=0x3200163 button=1
+2964 UNITY-SEES ButtonPress window=0x3200163 button=1
+2964 GRABEDGE-DOWN button=1
+4805 UNITY-SEES ButtonPress window=0x320010b button=1
+4905 UNITY-SEES ButtonPress window=0x320010b button=1
+7003 UNITY-SEES ButtonPress window=0x32001ae button=1
+
+

@@ -1,0 +1,34 @@
+{
+  "task_id": "UNITY-20261013-003",
+  "package": "compiz",
+  "target_series": "resolute",
+  "candidate_version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+  "source_commit": "4d7ead588f0ac3bffaf3daac63e0fb795263c6e9",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261013-003",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261013-003-compiz-unity3/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261013-003-compiz-unity3/gate/target-test.txt",
+    "debs": {
+      "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb": "6958264ee61c1b2eb0528a909002f23d6b78d33a9b9ec3242d05e3573b8b95d6",
+      "compiz-core_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "27adc71551d0ec3513bfebefa10ea1d1780627a7d90c645f4b1707ed5dadfeca",
+      "compiz-gnome_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "2024d0fd3b84a029fb1e1d8fe53615e30c569feb2d64fc38810e26b0fe711310",
+      "compiz-plugins-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "d87399c221f78e09adccb49ff47f0dce2d30f4127d7e0e1e76900eb609f16e2d",
+      "libcompizconfig0_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "9a4a8edee5aa8b13a6ac068b6c914ff94ce70fb5ff963212ae3958dee6f52e92",
+      "libdecoration0t64_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "37da6a9e0b46258a438e3a7b281c6f1714f282bccd5cf25a6e7fe1c9b9b3fa3d"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261013-003-compiz-unity3/README.md",
+    "verification_record": "docs/research/UNITY-20261013-003-compiz-unity3/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

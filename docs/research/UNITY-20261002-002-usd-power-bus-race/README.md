@@ -1,0 +1,339 @@
+# UNITY-20261002-002: the power plugin's D-Bus object and name are never registered when stop() runs before on_bus_gotten
+
+From UNITY-20260928-022 (its Design Challenger named the gap; the target
+check of the +unity9 publication hit it). Agent A, target `target-desktop`,
+2026-10-02. May's decision through C: fix forward as +unity10, no rollback.
+
+## Mechanism (code, FACT)
+
+`plugins/power/gsd-power-manager.c`:
+
+- The plugin object creates its manager at load time
+  (`GNOME_SETTINGS_PLUGIN_REGISTER`: `plugin_init` -> `gsd_power_manager_new`).
+  `gsd_power_manager_new` creates the singleton `manager_object` once per
+  process and calls `register_manager_dbus`, which queues
+  `g_bus_get (G_BUS_TYPE_SESSION, priv->bus_cancellable, on_bus_gotten)`.
+  `on_bus_gotten` registers `/org/gnome/SettingsDaemon/Power` and owns
+  `org.gnome.SettingsDaemon.Power`. Nothing else ever registers them.
+- `gsd_power_manager_stop` cancels and frees `priv->bus_cancellable` and
+  frees `priv->introspection_data`. A GTask checks its cancellable when the
+  result is collected, so a cancel at any point before `g_bus_get_finish`
+  makes `on_bus_gotten` return on `G_IO_ERROR_CANCELLED` without registering.
+- A later `gsd_power_manager_start` does not register: the plugin runs
+  (inhibitors, idle, keys) with no D-Bus object and no name until the daemon
+  restarts.
+- Age: the cancel in `stop()` is in the archive's 0ubuntu6 (`ubuntu/devel`,
+  since the 2014 import), in `unity/resolute`, +unity7 and +unity9. 27e75f4
+  (+unity8) added a second cancel in `finalize` and did not touch `stop()`.
+
+The only stop paths that leave the process alive are the plugin's own
+deactivation (`plugin_enabled_cb` on the GSettings key
+`com.canonical.unity.settings-daemon.plugins.power active`); `name_lost`,
+`Stop`/`SessionOver` and exit all quit the main loop (`main.c`).
+
+## The window at session start (measured)
+
+`tools/u002-trace.bt` (bpftrace uprobes on `gsd_power_manager_new`,
+`gsd_power_manager_start`, `gsd_power_manager_stop`, `on_bus_gotten`, run
+from early boot by `tools/u002-trace.service`), 10 natural boots of the
+published +unity9 (`runs/boots-unity9/`):
+
+| boot | NEW -> ON-BUS-GOTTEN |
+|---|---|
+| 1..10 | 4209 - 6397 ms (median about 5.1 s) |
+
+The result of `g_bus_get` is delivered only when the main loop runs again,
+after every plugin's synchronous `start()`: at session start the window is
+seconds, not the 90 ms seen on a warm `systemctl --user restart`
+(`runs/restart-trace.txt`). Any stop of the power plugin in those seconds
+loses the registration for the life of the process.
+
+## Reproduction
+
+- Deterministic (`tools/stop-before-bus.sh`, in UNITY-20260928-022
+  `runs-race/`): u-s-d under gdb, `gsd_power_manager_stop` called after
+  `start()` returns and before the bus result; then the plugin cycled with
+  gsettings. +unity9 and +unity7 alike: no owner, Power calls ServiceUnknown,
+  no crash; back under systemd the name is owned.
+- Natural: 1 session start of 12 on the published +unity9 without test
+  drop-ins (UNITY-20260928-022 `target-verification.md`): plugin running
+  (logind inhibitors taken), no Power owner, NRestarts 0, no crash file. The
+  10 boots traced here: 0 stops, name owned 10/10. What stopped the plugin in
+  that session is **not known** (section below).
+
+## What stopped the plugin at that session start (open)
+
+Facts from that boot's journal (boot -11 of 2026-10-02, 18:42-18:45 EEST)
+against the next good boot:
+
+- same unit timings (u-s-d started 2.0 s before cinnamon-session, dconf
+  service activated 4.3 s after u-s-d);
+- the bad boot alone has four `compiz: failed to commit changes to dconf:
+  Error receiving data: Socket operation on non-socket` at 18:43:31-35,
+  inside u-s-d's plugin-start window (its xrandr plugin logged EDID at
+  18:43:34);
+- no "Name taken", no second u-s-d instance, no u-s-d warning, no
+  `cinnamon-settings-daemon-*` autostart unit ran (all dead, OnlyShowIn
+  X-Cinnamon), nothing in the system writes the `active` key
+  (`10_ubuntu-settings.gschema.override` sets other power keys only); the
+  key is stored `true` in the user db and defaults to `true`.
+
+A documented path to `plugin_enabled_cb ("active")` at session start exists
+(sweep, 2026-10-02): dconf's `dconf_engine_watch_established` emits a change
+for every key under the watched path when another process's write lands
+while a GSettings object's subscription is being set up ("SHM invalidated
+while establishing subscription ... signalling change"; dconf 0.29.1 narrowed
+it from "/" to the watched path, GNOME/dconf#41). compiz writes dconf in
+that window. That gives a "changed" on `active`; a stop still needs the
+read to return false, and the sweep found no path for that on a valid user
+db (reads go through the lower sources only when the user gvdb fails to
+open). So: a "changed" on `active` in the window is expected; the false
+read is **not shown**. Further natural boots: `runs/boots-unity9-b/`.
+
+## Existing fix: NOT_FIXED (sweep 2026-10-02, 20 min, read-only)
+
+- gnome-settings-daemon: 3.8.6 has the same `register_manager_dbus` from
+  `_new()` and the cancel in `stop()`; 9166afdb (2014, "power: Call stop from
+  finalize", Ubuntu's LP: #1567116 fix) and the 2017 renames keep it. The
+  case was removed structurally: caf51f50 (3.23.2, 2016) "main: Remove
+  ability to start/stop individual plugins" - one process per plugin, stop()
+  only at exit. 015fe8ef / a212e6d7 (2025, GApplication port, issue #867)
+  move registration out of `_new()`. Neither is a fix we can carry: our
+  daemon is the 3.8-era monolith with the `active` keys.
+- unity-settings-daemon: no Launchpad bug for the missing Power name or dead
+  brightness keys until restart (searches: brightness, power,
+  SettingsDaemon.Power, no owner, not registered); LP: #1567116 is the crash
+  in `stop()` on unload, fixed 2016. Archive: resolute 0ubuntu6; stonking
+  26.10.1ubuntu.build1 (2026-09-22, no-change rebuild) - not checked for this
+  code, same lineage.
+- cinnamon-settings-daemon's csd-power: the same async `g_bus_get` from
+  `_new()` with a cancel in `stop()`, but `stop()` runs only at process exit
+  (daemon-skeleton): no re-start path, so the gap cannot happen there.
+- Gaps: issue comment threads not readable (dconf#41, glib#2174, g-s-d #867);
+  -proposed and PPAs not checked.
+
+## Fix: F1, the registration lives with the manager object
+
+`stop()` no longer cancels `bus_cancellable` and no longer frees
+`introspection_data`; `finalize` cancels the one and frees the other, next
+to the unregister and unown it already does since 27e75f4. Nothing else
+changes: after a normal stop the object and name already stayed registered
+(stop never unregistered them), and the handlers answer "The power plugin
+is not running" while stopped (UNITY-20260928-022). The screensaver-proxy
+plugin already registers in `_new` and cancels only in finalize.
+
+Rejected: F2, register in `start()` / unregister in `stop()` - the name
+would come and go with every toggle and clients would see ServiceUnknown
+instead of the -022 error; F3, re-issue `g_bus_get` in `start()` when the
+connection is missing - a pending-state machine for a problem that
+disappears once stop() stops cancelling.
+
+Commit `ca997f7` on Ubuntu-Unity-LifeSupport/unity-settings-daemon branch
+`a/UNITY-20261002-002` (on +unity9 `57945f5`), changelog +unity10 `122c413`.
+
+## Design Challenger: APPROVE (round 1, 2026-10-02)
+
+- D1 lifetime: finalize cancels `bus_cancellable` before anything else can
+  run; a GTask whose cancellable is cancelled returns CANCELLED even when it
+  had completed (GLib 2.88); and the only finalize path is process exit
+  after `gtk_main` returned (`main.c`, `_unload_all`), with no main-loop
+  iteration after it. `on_bus_gotten` checks the result before touching
+  `manager`. Safe on both counts.
+- D2 client-visible change: only the stop-before-registration case.
+- D3 `introspection_data`: created in `register_manager_dbus`, read in
+  `on_bus_gotten`, nothing in start/stop depends on it.
+- D4 layer: F1; precedent screensaver-proxy; F2 contradicts -022 D1, F3
+  adds state for nothing. Idempotent under the dconf change storm (one
+  `g_bus_get` per process).
+- D5 same gap elsewhere: **housekeeping** (identical pattern) - follow-up;
+  xrandr (name unowned in stop, object never unregistered) and media-keys
+  (cancel in stop, no unregister) - different defects, low, follow-ups.
+- D6 tests: required before the gate - a stop/start toggle inside the real
+  4-6 s session-start window without gdb (`tools/u002-window-toggle.*`:
+  FAIL on +unity9, PASS on +unity10, >= 5 boots each, the tracer showing
+  STOP before ON-BUS-GOTTEN); add a method call to `stop-before-bus.sh`
+  (done, D6b); `keyboard-toggle-race.sh` once under valgrind; the trigger
+  question stays a separate task.
+- D7 packaging: format 1.0, change in the tree, +unity10 sorts above
+  +unity9, UTC trailer.
+
+## Tests (Design Challenger D6)
+
+### D6a: the plugin switched off and on inside the session-start window, no gdb
+
+`tools/u002-window-toggle.service` + `.sh` (user unit, `After=` and
+`WantedBy=unity-settings-daemon.service`): waits for the power plugin's
+first logind inhibitor (`systemd-inhibit --list`), sets `active` false,
+then true. Boot batches with `tools/boot-loop.sh`, which also collects the
+unit's record; the bpftrace trace shows whether STOP landed before
+ON-BUS-GOTTEN.
+
+- **v1 (false, 0.3 s, true) on +unity9, 6 boots (`runs/toggle-unity9/`):
+  no STOP in any trace, Power owned 6/6.** Both writes land while the main
+  loop is still blocked in the plugin-start phase (4.5-19.7 s in these
+  boots); when it resumes, `plugin_enabled_cb` reads the final value, true,
+  and stops nothing. Not a reproduction: a finding about the test, kept as
+  evidence that a quick off/on at session start is coalesced.
+- **v2 (false, wait until the power plugin's inhibitors are gone = stop()
+  processed, then true)**. First run `runs/toggle-unity9-wait/` had harness
+  defects (wrong inhibitor condition, trace read before bpftrace flushed);
+  kept as evidence. Fixed harness, **+unity9, 3 boots
+  (`runs/toggle-unity9-v2/`): STOP lands 314-504 ms *after* ON-BUS-GOTTEN
+  in every boot, Power owned 3/3.** The `false` written inside the window
+  (+10.8 s after the unit started, window about 6 s from NEW) is processed
+  only when the main loop resumes, and the `g_bus_get` completion queued at
+  NEW is dispatched first. So the GSettings key cannot put the stop before
+  the registration on +unity9: D6a's "FAIL on +unity9 without gdb" is not
+  reachable through the key. **This is a limit of the demonstration, not
+  evidence that the defect is absent**: the defect is proved by
+  `stop-before-bus.sh` (the stop injected synchronously inside the start
+  phase; FAIL on +unity9 and +unity7, PASS on +unity10) and was observed
+  at a natural session start of the published +unity9 on 2026-10-02
+  (UNITY-20260928-022 target-verification). Accepted in this form by C
+  (2026-10-02). Lead for UNITY-20261002-009, recorded in that task's card:
+  the natural stop of that boot ran inside the start phase, before the main
+  loop resumed - not a key change dispatched by the loop.
+- The same v2 toggle on **+unity10, 3 boots (`runs/toggle-unity10/`): STOP
+  1-450 ms after ON-BUS-GOTTEN, Power owned 3/3** - the same dispatch order,
+  no change in behaviour where the key path is concerned.
+- Summary of D6a: gdb (`stop-before-bus.sh`) FAIL on +unity9 / PASS on
+  +unity10; the key toggle in the window PASS on both, with the dispatch
+  order as the reason.
+
+### D6b: the deterministic test, with a method call
+
+`tools/stop-before-bus.sh` (the -022 script plus `Screen.GetPercentage`)
+on +unity10 (`runs/unity10/01`, `02`): with the stop before the bus result,
+`bus_cancellable` is unchanged after STOP-CALLED, the name is owned after
+start and after the off/on cycle, `Get Icon` answers, `Screen.GetPercentage`
+answers with the -022 error ("Screen backlight ...", no backlight on the
+VM) - never NoReply or ServiceUnknown. Same on the `nostop` run.
+
+### D6c: keyboard-toggle-race under valgrind
+
+`tools/race-under-valgrind.sh` on +unity10 (`runs/unity10/04-*.txt`,
+`.log`): u-s-d under valgrind in the live session, Power owned after 7 s,
+the two 20 s races (StepUp and Screen.GetPercentage in flight while the
+plugin is toggled 15x): every call answered ("No keyboard backlight" 267x,
+"not running", the -022 error), NRestarts 0, 0 crash files, Power still
+owned after the race; valgrind ERROR SUMMARY 0 errors (the "definitely
+lost" blocks are the SIGTERM exit path).
+
+Harness note: the first attempt died with SIGTRAP at
+`gsd_power_manager_new` after 4.4 s. Cause: the bpftrace tracer's uprobes
+put `int3` into `libpower.so`'s code and valgrind, translating the code
+itself, executes them as breakpoints. +unity9 "worked" under valgrind only
+because its `dpkg -i` had given the file a new inode the probes were not
+attached to. The script now stops `u002-trace.service` for its run.
+
+### Regressions on +unity10 (`runs/unity10/05`-`09`)
+
+- UNITY-20260928-022 `power-dbus-checks.sh`: "not running" answers while
+  stopped, inhibitors back after the quick toggles, alive;
+  `keyboard-toggle-race.sh` under systemd: every call answered, same pid,
+  0 crash files.
+- UNITY-20260927-012 `usd-power-regress.sh`: session callbacks 2/0/2;
+  `usd-color-uaf.sh`: STOP-CALLED, alive, 0 journal lines.
+- UNITY-20260927-052 `two-clients.sh`: SURVIVED.
+- `/var/crash`: 0 u-s-d reports; NRestarts 0.
+
+### Natural boots of +unity10
+
+`runs/boots-unity10/`, 10 boots, toggle unit disabled, tracer recording:
+**Power owned 10/10, 0 stops, NEW -> ON-BUS-GOTTEN 4.3-28.6 s (one boot at 28.6 s), 0 crash files, NRestarts 0.** With the 19 boots of +unity9 that makes 29 traced natural boots without a stop in the window; the one bad boot of 2026-10-02 stays the only natural occurrence (UNITY-20261002-009).
+
+## Verifier: PASS (INDEPENDENTLY_REPRODUCED, 2026-10-02)
+
+Independent Verifier on a33aab5: manifest, artifacts, chroot sha, .changes
+and .dsc checksums, changelog trailer; the diff 57945f5..122c413 is exactly
+the described change and the D1 lifetime argument holds (`bus_cancellable`
+created once in init, used once in `register_manager_dbus`, cancelled only
+in finalize; `on_bus_gotten` checks the result first; finalize only on the
+exit path); version ordering above +unity9, 0ubuntu6 and every published
+u-s-d; target state re-checked (versions, deb hashes equal to `build/`, no
+replaced mapping, Power owned, no test units, NRestarts 0); every run's
+raw output supports the card's numbers (window values recomputed from the
+traces). The gdb and valgrind runs were reviewed from their recorded
+outputs (not re-run; the Verifier may not run them on target).
+
+Remarks and what was done:
+1. `build/*.dsc` untracked: kept untracked on purpose, as in the earlier
+   publications (the manifest records its hash; it is needed for
+   `repo add`).
+2. `/var/crash` held the memcheck crash of the SIGTRAP harness incident
+   (valgrind under the tracer's uprobes, not a u-s-d report): removed, and
+   target rebooted before the gate so that no traced process remains.
+3. The changelog and commit message say the window is "4-6 s" (the first 10
+   boots); later measurements give 4-11 s on +unity9 and up to 28.6 s on
+   +unity10. PATCHES and this card carry the full ranges; changing the
+   package text would mean a rebuild and a repeat of the target test -
+   left to the coordinator's decision.
+4. The +unity10 gdb runs print no `ON-BUS-GOTTEN` lines (the -022 +unity9
+   runs printed 8): the tracer's uprobes, installed before those runs,
+   consumed the breakpoint at `on_bus_gotten` before gdb saw it. The owner
+   check proves the registration; noted here.
+5. The last tracer run overlapped the running u-s-d for a minute: a reboot
+   before the gate (remark 2) gives the clean state.
+6. Lintian "fail" lines in the sbuild log (native changelog version, `.la`
+   dependency_libs) are the same 24 as in the +unity9 gated build;
+   pre-existing.
+7. PATCHES' "a key toggle inside the window keeps the name" compresses D6a:
+   a correction record states the dispatch order explicitly.
+
+## Known gaps before the gate (board tasks, IDs from C, 2026-10-02)
+
+Not fixed by +unity10; each has its own task so that none is left as text
+(DECISIONS 2026-10-02, UNITY-20260928-022):
+
+- **UNITY-20261002-006** housekeeping: the identical pattern - register in
+  `_new`, cancel of the bus request in `stop()`, `on_bus_gotten` bails on
+  cancelled (`gsd-housekeeping-manager.c`).
+- **UNITY-20261002-007** xrandr: name unowned in `stop()`, object never
+  unregistered; a re-start registers the same path again (fails with
+  EXISTS).
+- **UNITY-20261002-008** media-keys: cancel in `stop()`, no name or
+  unregister handling.
+- **UNITY-20261002-009** what deactivates the power plugin at a session
+  start: the trigger of the one bad boot is not identified; tracing
+  continues with a probe on `plugin_enabled_cb` (and the `active` read).
+  +unity10 removes the consequence (the lost registration) whatever the
+  trigger.
+
+## Evidence card
+
+```yaml
+task_id: UNITY-20261002-002
+package: unity-settings-daemon
+target_series: resolute
+issue: >-
+  power plugin: D-Bus object and name never registered when stop() runs
+  before on_bus_gotten (registration once per process, bus request
+  cancelled in stop()); Power absent for the session
+status: REPRODUCED   # deterministic under gdb on +unity7 and +unity9; natural 1 of 12 session starts on +unity9, trigger not identified
+issue_search_result: PENDING   # sweep delegated 2026-10-02 (g-s-d upstream, Launchpad u-s-d, csd, dconf)
+source_version: 15.04.1+21.10.20220802-0ubuntu6 (archive) and 0ubuntu7+unity9 (ours, published)
+binary_version: measured on target-desktop, +unity9 from the repository and +unity7 from the repository
+source_commit: code since the 2014 import; our published 57945f5 (+unity9)
+observed: >-
+  one session start of the published +unity9: u-s-d running, power plugin
+  active (inhibitors taken), org.gnome.SettingsDaemon.Power has no owner,
+  every Power call ServiceUnknown; systemctl --user restart fixes it.
+  gdb: stop() between start() and the bus result reproduces it every time on
+  +unity7 and +unity9.
+expected: the Power object and name exist whenever the manager object exists; a stop/start cycle at any time keeps them
+reproduction: tools/stop-before-bus.sh (UNITY-20260928-022 runs-race/01-04); window measured by tools/u002-trace.bt over 10 boots
+existing_fix_result: PENDING
+root_cause: >-
+  register_manager_dbus runs once per process; stop() cancels its bus
+  request; nothing re-registers on start()
+root_cause_mechanism: >-
+  GTask returns G_IO_ERROR_CANCELLED when its cancellable is cancelled before
+  the result is collected; on_bus_gotten returns early; registration ids and
+  name_id stay 0 for the process life
+invariant: >-
+  the power manager's D-Bus object and name live as long as the manager
+  object, independent of start()/stop(); while stopped, calls get the
+  "not running" error (UNITY-20260928-022)
+chosen_approach: PENDING (Design Challenger before code)
+regression_test: tools/stop-before-bus.sh (fail = no owner after stop before the bus result; pass = owner and an answered call), plus natural boots without drop-ins
+```

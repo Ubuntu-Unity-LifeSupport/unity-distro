@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261010-001",
+  "package": "libcolumbus",
+  "source_commit": "63c6950fb6cfd418869463c67a792faf7914531b",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/README.md",
+      "sha256": "4d223fba28ab8626f22714f4b0e3a052da53a2d5622bcf0fb7fb8928fe9e4155"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/README.md",
+      "sha256": "4d223fba28ab8626f22714f4b0e3a052da53a2d5622bcf0fb7fb8928fe9e4155"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "95a0a31a8c5942ebdea14d854beae42e28800040004c68d8434acffc3f7b8954"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/gate/release-record.json",
+      "sha256": "ab5c12fe93f0b433f2da322e8d912583a761c222d6d819d1aacb61b0da024cf2"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/gate/version-check.json",
+      "sha256": "a3d6066f1bfaaeade2da7855ba282265679b74f4ebb73f4b3121c8751cfbbc06"
+    }
+  }
+}

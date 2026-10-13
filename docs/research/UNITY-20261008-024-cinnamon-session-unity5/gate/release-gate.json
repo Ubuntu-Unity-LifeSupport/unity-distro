@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-024",
+  "package": "cinnamon-session",
+  "target_series": "resolute",
+  "candidate_version": "6.4.2-1+unity5",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-cs5/packages/cinnamon-session",
+  "source_remote_ref": "origin/a/UNITY-20261008-024",
+  "source_commit": "44343b48c7a9e06bcd43c56dc439a6a4de37e73d",
+  "source_tree_hash": "cd2e7748cff34dc6f3e2a3b62a203598644ea766",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-024"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/build/UNITY-20261008-024-cinnamon-session-build-manifest.json",
+    "sha256": "bc3b6b1c426d318f3b2f4358b88862bd521477b633d7f2fde139df8fff614e19"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/gate/evidence-manifest.json",
+    "sha256": "48aa4f8c57e5fe6463396f6d8b6b5ed27bfb77932b97651826c2d6e4eb5db7de"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-024-cinnamon-session-unity5/gate/target-test.txt",
+        "sha256": "29fdf0d1f9a940192e28f0feb58c8d3fc30e4e1c24f5e7f0b8e338b330ea5a41"
+      },
+      "debs": {
+        "cinnamon-session-common_6.4.2-1+unity5_all.deb": "9deaf578609a21e16f60807b700b12cc6b1882efea7ab53184052b682c9ea883",
+        "cinnamon-session_6.4.2-1+unity5_amd64.deb": "6b545e9eb0900774ae703c0893887506db1a77195452ef00a86b65af8a73da0f"
+      }
+    }
+  }
+}

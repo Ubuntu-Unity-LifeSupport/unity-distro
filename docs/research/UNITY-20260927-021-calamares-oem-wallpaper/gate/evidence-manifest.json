@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-021",
+  "package": "calamares-settings-ubuntu",
+  "source_commit": "c03daf48d5dbb719d985f75d5e96cc2a6df04e84",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/README.md",
+      "sha256": "165608e343a4f45db99ae47c0a63ffbd6dae9b29b373b4fd54e51582f3a26ccb"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/verification.md",
+      "sha256": "1faee6734a11471ad6b142b48d8e128e3e03a7d91fd65e4225c90df6bc744651"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "338045c3fe5d32661456186b1c3ebeffdaf1bfa42c4ab774c68887ba2b66ac0b"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "f4dda617609a59ba464a015f33862ec44bf0f4487ef6d9d49467a08b9277b434"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/gate/release-record.json",
+      "sha256": "52dc2c989d451780350bcfb59735a026fb69b0713200c0df84791645f0f8de2a"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/gate/version-check-r2.json",
+      "sha256": "f7d8d71c15db6ce5b63c96288110cf8f07af6ab396eec99addf54db3a444c4d3"
+    }
+  }
+}

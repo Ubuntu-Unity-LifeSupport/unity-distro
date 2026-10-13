@@ -1,0 +1,3 @@
+# unity-greeter on target2, indicator-keyboard +unity3 (pid 16610, systemd user unit, UNITY_GREETER_DBUS_NAME=:1.39),
+# 2026-09-28 16:44 EEST: 12 keys up/down = six switches mike <-> *other. journalctl since 16:44:05
+# for the service, segfaults and restarts: nothing. The service kept pid 16610.

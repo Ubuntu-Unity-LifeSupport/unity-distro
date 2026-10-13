@@ -1,0 +1,62 @@
+Attached 14 probes
+READY
+2416 PUSH-GRAB wall
+2416 XGRABPOINTER
+        XGrabPointer+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::initiate(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, WallScreen::Direction, bool)+204
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+
+2416 XGRABKEYBOARD
+        XGrabKeyboard+0
+        WallScreen::moveViewport(int, int, unsigned long)+867
+        WallScreen::initiate(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, WallScreen::Direction, bool)+204
+        compiz::private_screen::EventManager::triggerPress(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+130
+
+3338 REMOVE-GRAB
+3338 XUNGRABPOINTER
+        XUngrabPointer+0
+        WallScreen::donePaint()+133
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+
+3339 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        CompositeScreen::donePaint()+96
+        CompositeScreen::donePaint()+96
+        CompositeScreen::handlePaintTimeout()+1241
+
+6143 UNITY-SEES ButtonPress window=0x32015c9 button=1
+6143 EDGE-DOWN button=1
+6143 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+6144 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+890
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+6145 RESIZE-INITIATE state=4
+6145 PUSH-POINTER-GRAB resize
+6145 XGRABPOINTER
+        XGrabPointer+0
+        ResizeLogic::initiateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&, unsigned int)+3102
+        ResizeLogic::handleEvent(_XEvent*)+3553
+        CompScreen::handleEvent(_XEvent*)+103
+
+6456 UNITY-SEES ButtonRelease window=0x32015c9 button=1
+6456 RESIZE-TERMINATE state=8
+6456 REMOVE-GRAB
+6456 XUNGRABPOINTER
+        XUngrabPointer+0
+        ResizeLogic::terminateResize(CompAction*, unsigned int, std::vector<CompOption, std::allocator<CompOption> >&)+455
+        ResizeLogic::handleEvent(_XEvent*)+1608
+        CompScreen::handleEvent(_XEvent*)+103
+
+7982 UNITY-SEES ButtonPress window=0x32001ae button=1
+
+

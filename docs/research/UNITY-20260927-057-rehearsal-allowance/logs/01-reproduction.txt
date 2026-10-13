@@ -1,0 +1,3 @@
+# current guard (origin/main 629cb20) on the rehearsal commands, 2026-09-28T10:47:31Z
+rc=2 'aptly publish/task/api is blocked in any form (publish through scripts/publish_aptly.py; a' :: aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish list
+rc=2 'aptly publish/task/api is blocked in any form (publish through scripts/publish_aptly.py; a' :: aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish repo -distribution=resolute -architectures=amd64 -batch unity-resolute

@@ -1,0 +1,11 @@
+boot 1: ## run: run 1: xid=54525988 in_window_stack=1 app_id=54525988 hud_now=0 hud_after_5s=0 no_desktop_file=0
+boot 2: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 3: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 4: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=0 hud_after_5s=0 no_desktop_file=0
+boot 5: ## run: run 1: xid=62914596 in_window_stack=1 app_id=libreoffice-writer hud_now=0 hud_after_5s=1 no_desktop_file=0
+boot 6: ## run: run 1: xid=65011748 in_window_stack=1 app_id=65011748 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 7: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 8: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 9: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 10: ## run: run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+EXIT=0

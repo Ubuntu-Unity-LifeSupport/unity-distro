@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-012",
+  "package": "unity-settings-daemon",
+  "source_commit": "b570a220e5b3fbb28c7ec3fbbb53277491545f12",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/README.md",
+      "sha256": "0ecf8a42baeb3863e95931775fc255c941ffb8b4eb147313b96b08388daad9af"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/README.md",
+      "sha256": "0ecf8a42baeb3863e95931775fc255c941ffb8b4eb147313b96b08388daad9af"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "e3f8f639c88316e496ef9f9db3949789b5415be07b657cca0757c66b3c5fbaa7"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "fd1d107429880327f095aef0a2366a297e3b550b73be4a6621e829fdf0f45fb1"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/gate/release-record.json",
+      "sha256": "29aa7aab5c64e827599aeadaf194db0004466830f18bd6b4ada9b7392512c5c3"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/gate/version-check.json",
+      "sha256": "a84a74c1f99246b15c6c81fde0f719144c777ba2640eb4616f504fe3209ee1bc"
+    }
+  }
+}

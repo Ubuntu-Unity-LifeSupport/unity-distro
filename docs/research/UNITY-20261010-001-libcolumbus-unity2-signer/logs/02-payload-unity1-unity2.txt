@@ -1,0 +1,54 @@
+libcolumbus1-common (deb): files identical (10); control identical apart from the version; md5sums DIFFER; control members identical (control,md5sums)
+3c3
+< 860b8dd3547e548fa5692c9ba739720d  usr/share/doc/libcolumbus1-common/changelog.Debian.gz
+---
+> 302df4b37767855edd7f40b0a763e4c0  usr/share/doc/libcolumbus1-common/changelog.Debian.gz
+libcolumbus1-dev (deb): files identical (26); control identical apart from the version; md5sums DIFFER; control members identical (control,md5sums)
+14c14
+< bc39b98b6ddad888cce1b052862480cf  usr/share/doc/libcolumbus1-dev/changelog.Debian.gz
+---
+> 30de5e836f0215744b7a5498240ddd53  usr/share/doc/libcolumbus1-dev/changelog.Debian.gz
+libcolumbus1v5 (deb): files identical (13); control identical apart from the version; md5sums DIFFER; control members identical (control,md5sums,shlibs,symbols,triggers)
+1,2c1,2
+< 5a2c6fee9320ecbbe6209109170195a6  usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0
+< 28c12bfdd84d45da0083f67d9ceeaaa4  usr/share/doc/libcolumbus1v5/changelog.Debian.gz
+---
+> fe4ce4ee1b0874e465abc68d1d338ae5  usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0
+> de638c892f99831e92426d5f08894f88  usr/share/doc/libcolumbus1v5/changelog.Debian.gz
+python3-columbus (deb): files identical (11); control identical apart from the version; md5sums DIFFER; control members identical (control,md5sums)
+1,2c1,2
+< f2c5715f94bd1b69cbf71553293785a1  usr/lib/python3/dist-packages/columbus.cpython-314-x86_64-linux-gnu.so
+< f30c1a761fe18c3b8c4751881c92951c  usr/share/doc/python3-columbus/changelog.Debian.gz
+---
+> d7c383977d9a939a6e201b490b603dd4  usr/lib/python3/dist-packages/columbus.cpython-314-x86_64-linux-gnu.so
+> 8e5059bf36abb981777b4bcb3bdffc84  usr/share/doc/python3-columbus/changelog.Debian.gz
+libcolumbus1v5-dbgsym (ddeb): files DIFFER (10); control DIFFERS apart from the version; md5sums DIFFER; control members identical (control,md5sums)
+6,7c6,7
+< drwxr-xr-x ./usr/lib/debug/.build-id/5c/
+< -rw-r--r-- ./usr/lib/debug/.build-id/5c/30cf6bc26328f714d7bda8ed68081993e5a021.debug
+---
+> drwxr-xr-x ./usr/lib/debug/.build-id/cb/
+14c14
+< Build-Ids: 5c30cf6bc26328f714d7bda8ed68081993e5a021
+---
+> Build-Ids: cbae8f16ef3eaa7e75a12769ca18196befe5de00
+1c1
+< 1ddf5801cfd1d07348ea90a88deb175f  usr/lib/debug/.build-id/5c/30cf6bc26328f714d7bda8ed68081993e5a021.debug
+---
+> 2ab1d5066041c812202eac51045a8a39  usr/lib/debug/.build-id/cb/ae8f16ef3eaa7e75a12769ca18196befe5de00.debug
+python3-columbus-dbgsym (ddeb): files DIFFER (10); control DIFFERS apart from the version; md5sums DIFFER; control members identical (control,md5sums)
+6,7c6,7
+< drwxr-xr-x ./usr/lib/debug/.build-id/75/
+< -rw-r--r-- ./usr/lib/debug/.build-id/75/6e06ae713ad912f4cfdb3f6b102e9122d77d79.debug
+---
+> drwxr-xr-x ./usr/lib/debug/.build-id/ff/
+13c13
+< Build-Ids: 756e06ae713ad912f4cfdb3f6b102e9122d77d79
+---
+> Build-Ids: ffb67d8aca7a799185340faca59f3ba398ed69c5
+1c1
+< 537734ac8593fccfb55cd24015ebb6c1  usr/lib/debug/.build-id/75/6e06ae713ad912f4cfdb3f6b102e9122d77d79.debug
+---
+> fda8e13c2b59b93c0f61300ce831bae7  usr/lib/debug/.build-id/ff/b67d8aca7a799185340faca59f3ba398ed69c5.debug
+libcolumbus.so.1 exported symbols: identical (196 symbols)
+DT_NEEDED/SONAME: identical

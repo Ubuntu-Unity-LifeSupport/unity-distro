@@ -1,0 +1,14 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test2 pid 5935; cinnamon-session pid 5931; GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+STOP-CALLED
+COLOR-CB manager=0x61dc740c3970
+Thread 1 "unity-settings-" received signal SIGSEGV, Segmentation fault.
+AFTER-CONTINUE
+#0  gcm_session_active_changed_cb (session=0x61dc7401d400, changed=<optimized out>, invalidated=<optimized out>, manager=0x61dc740c3970) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubunt
+#1  0x000076bfb754368c in g_closure_invoke () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#2  0x000076bfb7561bc9 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#3  0x000076bfb7563b66 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#4  0x000076bfb7563dc8 in g_signal_emit_valist () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#5  0x000076bfb7563e83 in g_signal_emit () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#6  0x000076bfb6d4f7ee in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#7  0x000076bfb6d36920 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+u-s-d pid 5935 alive after: no; crash reports: 1

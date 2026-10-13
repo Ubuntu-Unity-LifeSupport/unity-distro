@@ -1,0 +1,5 @@
+titlemovewheel#1 ok | titlemovewheel border@740,216 -> xterm 400x290+556+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovewheel#2 ok | titlemovewheel border@740,216 -> xterm 400x290+555+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovewheel#3 ok | titlemovewheel border@740,216 -> xterm 400x290+555+250 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovewheel#4 ok | titlemovewheel border@740,216 -> xterm 400x290+556+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+titlemovewheel#5 ok | titlemovewheel border@740,216 -> xterm 400x290+557+251 | pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free

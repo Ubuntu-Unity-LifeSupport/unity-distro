@@ -1,0 +1,4 @@
+boot_id c5e8c997-96ec-4162-ba77-c6da187d1c71 uptime 83.13s
+644 root:root /etc/sudoers
+ls: cannot access '/home/oem/oemconfig-*.tar.gz': No such file or directory
+ls: cannot access '/home/oem/modes.sh': No such file or directory

@@ -1,0 +1,6 @@
+вівторок, 13 жовтень UTC 2026 10:19:41 +0000
+2026-10-13 13:18:34
+-rw-rw-r-- 1 mike mike 0 Oct  8 10:29 /home/mike/.dirty
+compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity11
+ls: cannot access '/home/mike/usd15': No such file or directory

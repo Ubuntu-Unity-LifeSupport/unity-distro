@@ -1,0 +1,10 @@
+# UNITY-20260927-047 phase L - L0 record (B session b7902aab-1709-4ec2-8775-3ae2d48a2d1f)
+# GO: May via C for plan v2 (cde32da), 3 h window; May confirmed the run directly in B's session (2026-09-29).
+1 freeze: declared by C (coordinator log); A informed and idle (C, 14:14Z)
+2 builder 14:20:16Z: no aptly/apt/apt-get/dpkg/unattended-upgrade process
+3 guard: install_command_guard.py --check OK; pgrep -f probe denied (Pattern-based process matching is blocked); live-commands.json sha256 4e9dde5a5b862f58a27f47bfaea80942fab73c46ac0b9434a0c0d6e70f42294a; live-proof.py for b7902aab: L1-L8 'no live authorization is recorded', RESULT all denied as expected; no live marker, no live log
+4 ~/.aptly.conf mode 644 owner claude sha256 ece05ab8ad8469cdeaa39487013830d7a9304cc09cf9989a18543193d8831b25; /usr/bin/aptly 755 root; secret key 7BF3F77FC27B152C present
+5 target2 (boot 11:04Z, Clean-2 + ~/.dirty): our source http://192.168.56.10:8080/ resolute main amd64, Signed-By /etc/apt/keyrings/unity-distro.asc (fingerprint 29A893E03970066F2DD287D47BF3F77FC27B152C); before-L capture logs/45-target2-before-L.txt (14:20:37Z, 1392 lines, apt-get update rc=0 no E/W, sha256 3d8e3ac172ff5d21463bfed2a5755b9f88c317d1e13c60bf50122643098f6fda); apt-daily.timer and apt-daily-upgrade.timer stopped (inactive)
+6 target (A): /home/mike/047-before-L-target-desktop.txt, builder copy ~/work/a/047-capture/047-before-L-target-desktop.txt, 1394 lines, sha256 25f58132ac2bea35186a599fbac8c8e56cb31da633811c3a5f7e850c03a13447 (checked by B), date_utc 14:14:55Z; A stopped fwupd-refresh and anacron for the window; unpublished unity +unity12 (-040) installed on target before and after
+7 backup /home/claude/backups/aptly-047-L-20260929T142117Z (14:21:17Z, no aptly process, cp -a db + public): 281 files equal to live; backup.sha256 sha256 3bcac39a69dc4d88ff822b53cdd82e122778d26eca8f1c1fa386cbae941d5845 (copy logs/44c); live-list.py baseline 633 files sha256 e09a4db711a20d349db591a08e37b57b9e5673bd79636e0260d3b3ab81170aa1 (logs/44b), byte-identical to the 09:57Z list: yes
+8 record written 2026-09-29T14:22:01Z; commit: see git log for this file

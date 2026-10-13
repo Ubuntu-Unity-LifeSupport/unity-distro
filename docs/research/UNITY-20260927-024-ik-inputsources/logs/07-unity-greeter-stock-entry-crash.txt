@@ -1,0 +1,21 @@
+# unity-greeter on target2, Ubuntu indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1 (stock), started by
+# its systemd user unit with UNITY_GREETER_DBUS_NAME=:1.39; no accounts-daemon restart. Three rounds of
+# up/down (mike <-> *other) from 16:43:08 EEST; journalctl filtered. 3 of 3 rounds: SIGSEGV.
+вер 28 16:43:10 target2 indicator-keyboard-service[16027]: ActUserManager: user (null) has no username (uid: -1)
+вер 28 16:43:10 target2 indicator-keyboard-service[16027]: g_variant_ref: assertion 'value != NULL' failed
+вер 28 16:43:10 target2 kernel: indicator-keybo[16027]: segfault at 30 ip 00007cf4abb992c8 sp 00007ffe5669e1d0 error 6 in libglib-2.0.so.0.8800.0[222c8,7cf4abb96000+a6000] likely on CPU 0 (core 0, 
+вер 28 16:43:16 target2 systemd[5794]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 16:43:16 target2 systemd[5794]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 28 16:43:16 target2 indicator-keyboard-service[16086]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 28 16:43:16 target2 indicator-keyboard-service[16086]: ActUserManager: user (null) has no username (uid: -1)
+вер 28 16:43:27 target2 indicator-keyboard-service[16086]: g_variant_ref: assertion 'value != NULL' failed
+вер 28 16:43:27 target2 kernel: indicator-keybo[16086]: segfault at 30 ip 00007204cdcf72c8 sp 00007ffd6917e390 error 6 in libglib-2.0.so.0.8800.0[222c8,7204cdcf4000+a6000] likely on CPU 1 (core 1, 
+вер 28 16:43:28 target2 systemd[5794]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 16:43:29 target2 systemd[5794]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 28 16:43:29 target2 indicator-keyboard-service[16248]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+вер 28 16:43:29 target2 indicator-keyboard-service[16248]: ActUserManager: user (null) has no username (uid: -1)
+вер 28 16:43:42 target2 indicator-keyboard-service[16248]: g_variant_ref: assertion 'value != NULL' failed
+вер 28 16:43:42 target2 kernel: indicator-keybo[16248]: segfault at 30 ip 0000754c556b42c8 sp 00007ffc3372f100 error 6 in libglib-2.0.so.0.8800.0[222c8,754c556b1000+a6000] likely on CPU 0 (core 0, 
+вер 28 16:43:43 target2 systemd[5794]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 28 16:43:43 target2 systemd[5794]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 28 16:43:43 target2 indicator-keyboard-service[16400]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed

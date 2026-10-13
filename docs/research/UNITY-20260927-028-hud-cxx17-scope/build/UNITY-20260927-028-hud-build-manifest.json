@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-028",
+  "package": "hud",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro/packages/hud",
+  "source_commit": "2f2fa89afe432427322f42668272ffd243af82dc",
+  "source_tree_hash": "2d9b6dbacf9ad71c8086e64340dad8ddf56da5b3",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I"
+  ],
+  "build_started": "2026-09-29T00:32:17.253476+00:00",
+  "build_finished": "2026-09-29T01:03:08.772066+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-028-hud-14.10+17.10.20170619-0ubuntu6+unity3-sbuild.log",
+    "sha256": "69afb5f5e56926b8d2b7140d9aeaf743eb64c43a623af2cb906f35ace5ef2f05"
+  },
+  "artifacts": [
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity3.dsc",
+      "sha256": "b06501e97aff2e439a0bdf098a6ce1d22b6a838aacb76f8166ea8fb953534715",
+      "size": 2435,
+      "kind": "source",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.changes",
+      "sha256": "6ec763efdc862f68eddba50b60de5035cd28db6b43b733214c0f662d2811555b",
+      "size": 8835,
+      "kind": "changes"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619.orig.tar.gz",
+      "sha256": "3cb825f0f98dae4dc26ef90a1cadab80c4c7bdf45f3cb7082437ba12e2ca2aa6",
+      "size": 181237,
+      "kind": "source_file",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity3.diff.gz",
+      "sha256": "e06253ce6cfa93f045512d06f8477d19cde28083c1dbb02275102308f71ed74a",
+      "size": 15372,
+      "kind": "source_file",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "file": "gir1.2-hud-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "2a3a5e947617e0c2f17b460e692cd0a79a1baf3f61d0787f1d9539c27e3f86fe",
+      "size": 4026,
+      "kind": "binary",
+      "package": "gir1.2-hud-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "gir1.2-hud-client-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "b55796336651a4e2eb45acb848d3992f643712aedadfec8a42d285b7db34f2b6",
+      "size": 4990,
+      "kind": "binary",
+      "package": "gir1.2-hud-client-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "45dddd52564dceb7b9db7306a33a235efb0289d054a559d9f1e56f83698c7c8e",
+      "size": 10170842,
+      "kind": "binary",
+      "package": "hud-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "sha256": "8e0859ed6878c59392e2fc3eaf13c248fe1a40831d89e832dfe663e8398924eb",
+      "size": 2676,
+      "kind": "binary",
+      "package": "hud-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "hud-tools-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "6900f0c403bc48ec95b3e98613d5fee9fcc27ed7e9994ab2a6102d6adeae8c68",
+      "size": 70330,
+      "kind": "binary",
+      "package": "hud-tools-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud-tools_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "949d0a74484e12f011ce066279863c4338a4f39e268173b964a6188aa8e5470f",
+      "size": 16720,
+      "kind": "binary",
+      "package": "hud-tools",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.buildinfo",
+      "sha256": "eed11f58ad23b293f789d78f90bb1ca97a2aa35e37e4c53736c0fcc492551f1c",
+      "size": 31074,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "53519934fe22c4368e4b80a6895ca6c50e9ce008d0133c8fe5df4dce86078c11",
+      "size": 206788,
+      "kind": "binary",
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-client2-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "f30ec9e1623de1311bcc100ea4f564ec20356ad95d995485b051c862576a42a4",
+      "size": 543992,
+      "kind": "binary",
+      "package": "libhud-client2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-client2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "51c7181fd5f526c2724e2b06969e946d2681362645f02878b415d2637362ae72",
+      "size": 14682,
+      "kind": "binary",
+      "package": "libhud-client2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-client2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "sha256": "32f6dc413818fc9a80d08df6d32f60dd9a9b1a6bbcca7a1e582a29c286eb158c",
+      "size": 2606,
+      "kind": "binary",
+      "package": "libhud-client2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libhud-client2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "2ac43a1cea6ce514740974420fd2f52e0a78401a18c7b2adab0bd3aae5500780",
+      "size": 50680,
+      "kind": "binary",
+      "package": "libhud-client2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-gtk1-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "368a3fa0817bf8f3a8acd6151cfc71759f732bccbc71f5fbe5b0d3f98a3b3dc0",
+      "size": 12366,
+      "kind": "binary",
+      "package": "libhud-gtk1-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-gtk1-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "b228c0e0313155d80874001ca4c23bc0b37abfa11e146ddb6f50dc8847a41803",
+      "size": 4168,
+      "kind": "binary",
+      "package": "libhud-gtk1-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud-gtk1-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "sha256": "aaaddba584c7f0fcd9c9940fc2f041ee6320250a719310e282624fd0cbd38e38",
+      "size": 2672,
+      "kind": "binary",
+      "package": "libhud-gtk1-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libhud-gtk1_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "d5d89573341e99c1d670cb8eaf9531c771b1be501e82652c84f100850eeb2d12",
+      "size": 6530,
+      "kind": "binary",
+      "package": "libhud-gtk1",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud2-dbgsym_14.10+17.10.20170619-0ubuntu6+unity3_amd64.ddeb",
+      "sha256": "c974686b901c544d96251dad7055f93ea5ce8d0ef834a5d034b9d602265fc050",
+      "size": 100070,
+      "kind": "binary",
+      "package": "libhud2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "faf7bbac21a239ce07b324d7d194dbad4f57d7e4c0bd5823039075efd5ff2c7f",
+      "size": 10646,
+      "kind": "binary",
+      "package": "libhud2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libhud2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb",
+      "sha256": "92be371a7bae3370c9ed0e4119968a9c05feec4372a1a4fd4290af2138579eed",
+      "size": 2632,
+      "kind": "binary",
+      "package": "libhud2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libhud2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb",
+      "sha256": "7a54092465eaa4c53f8ee815c2222f5d97551a2b1015f01aeeeb4eb37ae3713f",
+      "size": 27992,
+      "kind": "binary",
+      "package": "libhud2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64"
+    }
+  ]
+}

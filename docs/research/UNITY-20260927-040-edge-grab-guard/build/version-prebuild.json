@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 7.7.1+26.04.20260306-0ubuntu3+unity12 is newer than resolute 7.7.1+26.04.20260306-0ubuntu3",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity",
+  "source_commit": "7b0eca27",
+  "candidate_source_version": "7.7.1+26.04.20260306-0ubuntu3+unity12",
+  "pockets": {
+    "resolute": "7.7.1+26.04.20260306-0ubuntu3"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T13:14:48Z",
+  "mode": "pockets",
+  "view_sha256": "528754782f20b7a38cabebb137b2c800cb2278400289f02aa68fd1eefb8973c2"
+}

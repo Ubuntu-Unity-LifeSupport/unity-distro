@@ -1,0 +1,28 @@
+UNITY-20261002-012 slot 1: target test of unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity12
+
+Target: target-desktop. Base: the published stack at 2026-10-08 (cinnamon-session 6.4.2-1+unity3,
+unity-settings-daemon +unity11) plus the packages below, installed from this build (build-usd/).
+Each run started from a fresh restore. The comparison baseline was the same restore with +unity11.
+
+Installed debs (sha256 equal to build-usd/ and the build manifest):
+  f0433b31431871356e008483b63de56933bc3c868f2c9ba4218925491d1a37e5  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity12_amd64.deb
+  073c3b9aeebbefd5e2d737241c8f5a8f39e6e689122de370f538b48360d7e936  libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity12_amd64.deb
+  93a8a0a503ad3e86b05d5c3915cd2509f88d201a1ecb1e6666e8e9c538953dcb  unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity12_all.deb
+
+Installed state, read on the target after a fresh boot (2026-10-08T10:28:16Z):
+  dpkg-query: unity-settings-daemon, unity-settings-daemon-schemas, libunity-settings-daemon1 all
+  15.04.1+21.10.20220802-0ubuntu7+unity12.
+  sha256 /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+    = sha256 /proc/<helper pid>/exe
+    = df11c480329c35bcfc614c45dbf9d166aeed12a6b668de40cc43a00765a1eeed
+    = the helper in the built deb.
+  No deleted mappings in the helper process.
+
+Results (unlocked session; the medium is an ISO image in the empty optical drive):
+  | property                               | +unity11 (baseline) | +unity12      |
+  | medium present at login                | mounted             | mounted       |
+  | medium inserted into the session       | not mounted         | not mounted   |
+The second row is the same on both versions. Under cinnamon-session the helper does not mount on
+hotplug at all (UNITY-20261008-008). +unity12 is no worse than +unity11.
+
+tested_build: this_build (the debs above are this gate's build).

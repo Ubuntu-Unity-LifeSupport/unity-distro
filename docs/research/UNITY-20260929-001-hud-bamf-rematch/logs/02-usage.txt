@@ -1,0 +1,4 @@
+window 62914596
+first result: ['30', 'Сохранить', '[(0, 9)]']
+usage rows (application, entry, count): [('62914596', 'Файл||Сохранить', 1)]
+focused now: Сохранить

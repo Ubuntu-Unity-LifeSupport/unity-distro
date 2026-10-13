@@ -1,0 +1,24 @@
+== run 1
+backend: DConfSettingsBackend
+start: [('xkb', 'gb'), ('xkb', 'us')] 0
+same sources written -> changed signals: []
+same current written -> changed signals: ['current']
+different sources written -> changed signals: ['sources']
+that value again -> changed signals: []
+restored: [('xkb', 'gb'), ('xkb', 'us')] 0
+== run 2
+backend: DConfSettingsBackend
+start: [('xkb', 'gb'), ('xkb', 'us')] 0
+same sources written -> changed signals: []
+same current written -> changed signals: []
+different sources written -> changed signals: ['sources']
+that value again -> changed signals: []
+restored: [('xkb', 'gb'), ('xkb', 'us')] 0
+== run 3
+backend: DConfSettingsBackend
+start: [('xkb', 'gb'), ('xkb', 'us')] 0
+same sources written -> changed signals: []
+same current written -> changed signals: []
+different sources written -> changed signals: ['sources']
+that value again -> changed signals: []
+restored: [('xkb', 'gb'), ('xkb', 'us')] 0

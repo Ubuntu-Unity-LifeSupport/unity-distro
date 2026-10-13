@@ -1,0 +1,9 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | unity-settings-daemon-schemas            | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ amd64  | libunity-settings-daemon-dev             | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ amd64  | libunity-settings-daemon1                | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ amd64  | libunity-settings-daemon1-dbgsym         | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ amd64  | unity-settings-daemon                    | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ amd64  | unity-settings-daemon-dbgsym             | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ amd64  | unity-settings-daemon-dev                | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 
++ source | unity-settings-daemon                    | -                                        | 15.04.1+21.10.20220802-0ubuntu7+unity10 

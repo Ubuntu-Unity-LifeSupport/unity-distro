@@ -1,0 +1,13 @@
+# 2026-09-29T10:37:31Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity4
+--- run 1 seeded: sources=[('xkb', 'fr')] current=uint32 0
+10:37:35.098 ACTION restart accounts-daemon
+10:37:35.996 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:37:40.713 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+--- run 2 seeded: sources=[('xkb', 'fr')] current=uint32 0
+10:37:45.486 ACTION restart accounts-daemon
+10:37:46.550 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:37:51.009 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+--- run 3 seeded: sources=[('xkb', 'fr')] current=uint32 0
+10:37:55.355 ACTION restart accounts-daemon
+10:37:56.268 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:38:00.994 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0

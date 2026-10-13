@@ -1,0 +1,18 @@
+boot_id 2c603b3b-5a95-455d-9c0c-b48864a66e92 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2157 drop-ins:  power-owner: (':1.43',)
+46923 ms pid 2157 MANAGER-NEW (register_manager_dbus, inlined)
+46923 ms pid 2157 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7c326b947b05
+        0x7c326b947d44
+        0x7c326b936920
+        0x7c326b72bc1b
+        0x7c326b72d257
+        g_main_loop_run+311
+
+51769 ms pid 2157 ON-BUS-GOTTEN

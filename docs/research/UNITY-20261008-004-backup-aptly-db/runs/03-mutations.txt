@@ -1,0 +1,16 @@
+== none: 13 passed
+== exit 0 on a mismatch: 2 failed, 11 passed
+   FAILED BackupDbTest::test_copy_failed
+   FAILED BackupDbTest::test_live_changed_during_copy
+== pidof check skipped: 1 failed, 12 passed
+   FAILED BackupDbTest::test_running_tool_refused
+== flock dropped: 3 failed, 10 passed
+   FAILED BackupDbTest::test_lock_held_by_another_process_refused
+   FAILED BackupDbTest::test_lock_held_through_the_second_read
+   FAILED BackupDbTest::test_shared_lock_held_while_copying
+== lock released before the second read: 1 failed, 12 passed
+   FAILED BackupDbTest::test_lock_held_through_the_second_read
+== existing BACKUP_DIR allowed: 1 failed, 12 passed
+   FAILED BackupDbTest::test_existing_backup_dir_refused
+== inside-live check skipped: 1 failed, 12 passed
+   FAILED BackupDbTest::test_backup_dir_inside_live_refused

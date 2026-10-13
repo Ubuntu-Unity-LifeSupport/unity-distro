@@ -1,0 +1,21 @@
+# boot 1c869097-614a-46b5-b191-8e9adce75b12 uptime 129.35 2026-10-08T07:40:30Z
+# hud-service started чт жов  8 10:40:06 2026; window-stack-bridge чт жов  8 10:39:39 2026
+# 1791445234.264 START libreoffice --writer
+# 1791445246.283 VISIBLE xid 62914596
+# 1791445246.347 QUERY
+   0.01 before: hud-service :1.92; unity-panel-service :1.87
+   0.42 legacy StartQuery: 0 suggestions, 0 with Файл
+   0.42 after: hud-service :1.92
+   0.43 CreateQuery: /com/canonical/hud/query/1 results=com.canonical.hud.query1.results revision=0
+   0.49 +0s: synchronized=True rows=0 with Файл=0
+   1.49 +1s: synchronized=True rows=0 with Файл=0
+   2.49 +2s: synchronized=True rows=0 with Файл=0
+   5.50 +5s: synchronized=True rows=5 with Файл=5
+  10.50 +10s: synchronized=True rows=5 with Файл=5
+  12.49 UpdateQuery('Сохранит') -> revision 0
+  12.99 UpdateQuery('Сохранить') -> revision 0
+  13.96 +13.5s after UpdateQuery back: synchronized=True rows=5 with Файл=5
+  20.45 +20s: synchronized=True rows=5 with Файл=5
+  20.95 closed
+## window stack
+([(uint32 39845928, '39845928', false, uint32 0), (62914596, '62914596', true, 0), (58720258, 'compiz', false, 0), (58720259, 'compiz', false, 0), (58720260, 'compiz', false, 0), (58720261, 'compiz', false, 0), (58720262, 'compiz', false, 0)],)

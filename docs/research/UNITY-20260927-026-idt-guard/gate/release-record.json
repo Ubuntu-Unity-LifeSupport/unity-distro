@@ -1,0 +1,30 @@
+{
+  "task_id": "UNITY-20260927-026",
+  "package": "indicator-datetime",
+  "target_series": "resolute",
+  "candidate_version": "15.10+21.04.20210304-0ubuntu6+unity3",
+  "source_commit": "9a004468998ce694079698ae7225b52e23efe28c",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-026",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-026-idt-guard/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-023-libindicator-abi/logs/07-target-this-build.txt",
+    "debs": {
+      "indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb": "b090852c644ea6a751c91592991390370a382bdee1eca974de3898d42d0cbd90"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-026-idt-guard/README.md",
+    "verification_record": "docs/research/UNITY-20260927-026-idt-guard/README.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

@@ -1,0 +1,3 @@
+login 1: boot 0 (2026-09-28T22:39:51) login 22:40:29: injected=1 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 2: boot 0 (2026-09-28T22:44:24) login 22:45:07: injected=1 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+login 3: boot 0 (2026-09-28T22:49:01) login 22:49:40: injected=1 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0

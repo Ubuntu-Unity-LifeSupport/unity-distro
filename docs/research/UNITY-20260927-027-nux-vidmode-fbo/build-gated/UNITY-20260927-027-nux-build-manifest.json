@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-027",
+  "package": "nux",
+  "candidate_version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-027/packages/nux",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "source_tree_hash": "63abc181b013eee9dbef1b86b40827054ff532e4",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst"
+  ],
+  "build_started": "2026-09-29T22:12:46.582782+00:00",
+  "build_finished": "2026-09-29T22:27:11.093736+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-027-nux-4.0.8+18.10.20180623-0ubuntu15+unity3-sbuild.log",
+    "sha256": "23fc8d6a40c9e535f3bb0c813a112710ce6bf816e07905f5cdba217f33505560"
+  },
+  "artifacts": [
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3.dsc",
+      "sha256": "047160c945141aa746fdc03ced725647394e5c7185dfabd7b7640a489cc78111",
+      "size": 1595,
+      "kind": "source",
+      "package": "nux",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.changes",
+      "sha256": "c7793f368d5b2be62a5dc32e2eb4ec47c20ec68d1b2b7c0da9bdcdf33e717bb4",
+      "size": 4678,
+      "kind": "changes"
+    },
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3.tar.gz",
+      "sha256": "3d4605479d660ca2eb3d397ea73a5af45ff8f39f1b4249cdbdc21a669d14274d",
+      "size": 1045337,
+      "kind": "source_file",
+      "package": "nux",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "file": "libnux-4.0-0-dbgsym_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.ddeb",
+      "sha256": "382d7a2d97674aa5ad278189d358a99c1fcc54a4ff979f589de5a6f37c389485",
+      "size": 15875308,
+      "kind": "binary",
+      "package": "libnux-4.0-0-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "ce0dba348a8b6b8f525a4cae6bd66899f9a1cdf324a950247f29cfda532a0028",
+      "size": 785308,
+      "kind": "binary",
+      "package": "libnux-4.0-0",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+      "sha256": "1cc0617d98c5b56b3b769bf02b07169515c389183d7072d80e7223dfde22a479",
+      "size": 53424,
+      "kind": "binary",
+      "package": "libnux-4.0-common",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "7b1ddd64f358e6d87c9a3b034075b51ec33e82ea10878b51192301e87c15e209",
+      "size": 229272,
+      "kind": "binary",
+      "package": "libnux-4.0-dev",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "nux-tools-dbgsym_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.ddeb",
+      "sha256": "d9ec5b9056fe14deaf877794c71babe355158df926ec8586f4cdf88f4ec9274f",
+      "size": 17294,
+      "kind": "binary",
+      "package": "nux-tools-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "102ffeec361143652ecdd0b78dc35cd20042451c4f8352d5574273e51af3572a",
+      "size": 11624,
+      "kind": "binary",
+      "package": "nux-tools",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.buildinfo",
+      "sha256": "5e7849968ac9c35fba6e4b641a0ec52a3ce88a23c257419c7fcdfd0c7ede4c03",
+      "size": 17488,
+      "kind": "buildinfo"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst",
+    "sha256": "d48b78645647c32d4c649374fb6920b135028de2a62715d142938b1f05defe80",
+    "size": 143090706,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json",
+    "sidecar_sha256": "228d4a7f87daaac9957dbb5e2d62e3a4fb0449a1670dd34e141de19545d46640",
+    "snapshot": "20260929T201245Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Tue, 29 Sep 2026 19:18:11 UTC",
+        "sha256": "d6d58182351b401877a611adfb38c7a6a5c249de6f6d5cf84c08de66e7bd0b0d"
+      },
+      "resolute-security": {
+        "date": "Tue, 29 Sep 2026 18:35:33 UTC",
+        "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-027/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+ calamares-settings-ubuntu | 1:26.04.12  | resolute/universe       | source
+ calamares-settings-ubuntu | 1:26.10.5   | stonking/universe       | source
+1:26.04.12+unity2 gt 1:26.04.12: yes
+1:26.04.12+unity2 gt 1:26.04.12+unity1: yes
+1:26.10.5 gt 1:26.04.12+unity2: yes

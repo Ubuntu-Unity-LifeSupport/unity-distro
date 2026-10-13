@@ -1,0 +1,122 @@
+diff --git a/debian/changelog b/debian/changelog
+index 7b4e5d9..8368d22 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,11 @@
++unity-settings-daemon (15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1) UNRELEASED; urgency=medium
++
++  * TEST BUILD, NOT FOR PUBLICATION (UNITY-20260927-011): +unity5 with
++    the two color plugin fixes (+unity2 10bb1c9, +unity3 cc665b6)
++    reverted, to isolate them.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Mon, 28 Sep 2026 20:42:34 +0000
++
+ unity-settings-daemon (15.04.1+21.10.20220802-0ubuntu7+unity5) resolute; urgency=medium
+ 
+   * debian/source_unity-settings-daemon.py: raw string for the regex
+diff --git a/plugins/color/gsd-color-manager.c b/plugins/color/gsd-color-manager.c
+index 06fe322..22a1218 100644
+--- a/plugins/color/gsd-color-manager.c
++++ b/plugins/color/gsd-color-manager.c
+@@ -65,7 +65,6 @@ enum {
+ static void     gsd_color_manager_class_init  (GsdColorManagerClass *klass);
+ static void     gsd_color_manager_init        (GsdColorManager      *color_manager);
+ static void     gsd_color_manager_finalize    (GObject             *object);
+-static void     gcm_session_create_resources  (GsdColorManager      *manager);
+ 
+ G_DEFINE_TYPE (GsdColorManager, gsd_color_manager, G_TYPE_OBJECT)
+ 
+@@ -1558,8 +1557,6 @@ gsd_color_manager_start (GsdColorManager *manager,
+         g_debug ("Starting color manager");
+         gnome_settings_profile_start (NULL);
+ 
+-        gcm_session_create_resources (manager);
+-
+         /* coldplug the list of screens */
+         priv->x11_screen = gsd_rr_screen_new (gdk_screen_get_default (), error);
+         if (priv->x11_screen == NULL)
+@@ -1582,10 +1579,6 @@ gsd_color_manager_stop (GsdColorManager *manager)
+ {
+         g_debug ("Stopping color manager");
+ 
+-        /* the session proxy is shared by every plugin and outlives this one */
+-        if (manager->priv->session != NULL)
+-                g_signal_handlers_disconnect_by_data (manager->priv->session, manager);
+-
+         g_clear_object (&manager->priv->settings);
+         g_clear_object (&manager->priv->client);
+         g_clear_object (&manager->priv->profile_store);
+@@ -2132,18 +2125,29 @@ gcm_session_active_changed_cb (GDBusProxy      *session,
+         priv->session_is_active = is_active;
+ }
+ 
+-/* Everything stop() destroys, created again by each start() so that the
+- * plugin can be switched off and on. */
+ static void
+-gcm_session_create_resources (GsdColorManager *manager)
++gsd_color_manager_class_init (GsdColorManagerClass *klass)
+ {
+-        GsdColorManagerPrivate *priv = manager->priv;
++        GObjectClass   *object_class = G_OBJECT_CLASS (klass);
++
++        object_class->finalize = gsd_color_manager_finalize;
++
++        g_type_class_add_private (klass, sizeof (GsdColorManagerPrivate));
++}
++
++static void
++gsd_color_manager_init (GsdColorManager *manager)
++{
++        GsdColorManagerPrivate *priv;
++        priv = manager->priv = GSD_COLOR_MANAGER_GET_PRIVATE (manager);
+ 
+         /* track the active session */
+         priv->session = gnome_settings_bus_get_session_proxy ();
+-        g_signal_connect_object (priv->session, "g-properties-changed",
+-                                 G_CALLBACK (gcm_session_active_changed_cb),
+-                                 manager, 0);
++        g_signal_connect (priv->session, "g-properties-changed",
++                          G_CALLBACK (gcm_session_active_changed_cb), manager);
++
++        /* set the _ICC_PROFILE atoms on the root screen */
++        priv->gdk_window = gdk_screen_get_root_window (gdk_screen_get_default ());
+ 
+         /* parsing the EDID is expensive */
+         priv->edid_cache = g_hash_table_new_full (g_str_hash,
+@@ -2182,26 +2186,6 @@ gcm_session_create_resources (GsdColorManager *manager)
+                           manager);
+ }
+ 
+-static void
+-gsd_color_manager_class_init (GsdColorManagerClass *klass)
+-{
+-        GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+-
+-        object_class->finalize = gsd_color_manager_finalize;
+-
+-        g_type_class_add_private (klass, sizeof (GsdColorManagerPrivate));
+-}
+-
+-static void
+-gsd_color_manager_init (GsdColorManager *manager)
+-{
+-        GsdColorManagerPrivate *priv;
+-        priv = manager->priv = GSD_COLOR_MANAGER_GET_PRIVATE (manager);
+-
+-        /* set the _ICC_PROFILE atoms on the root screen */
+-        priv->gdk_window = gdk_screen_get_root_window (gdk_screen_get_default ());
+-}
+-
+ static void
+ gsd_color_manager_finalize (GObject *object)
+ {
+@@ -2212,8 +2196,7 @@ gsd_color_manager_finalize (GObject *object)
+ 
+         manager = GSD_COLOR_MANAGER (object);
+ 
+-        if (manager->priv->session != NULL)
+-                g_signal_handlers_disconnect_by_data (manager->priv->session, manager);
++        g_signal_handlers_disconnect_by_data (manager->priv->session, manager);
+ 
+         g_clear_object (&manager->priv->settings);
+         g_clear_object (&manager->priv->client);

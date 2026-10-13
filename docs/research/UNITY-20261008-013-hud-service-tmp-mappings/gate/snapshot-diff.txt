@@ -1,0 +1,11 @@
+# 2026-10-08T23:54:13Z UNITY-20261008-013: db backup ~/backups/UNITY-20261008-013-20261008T235358Z (19 files, equal to live, list sha256 a1486de83880df0139fc4be2c2644f3b861192a8771763a400a3cdf234ffadb1); repo add of the gated build (7 records: source, 4 .deb, 2 .ddeb) to unity-resolute (482 -> 489) at 23:54:12Z, pool sha256 9 of 9 equal to the manifest; snapshot unity-resolute-20261008-013 from the repo
+# live ./resolute: unity-resolute-20260927-053 (publish record UNITY-20260927-053, published_at 2026-10-08T22:44:53Z)
+# aptly snapshot diff unity-resolute-20260927-053 unity-resolute-20261008-013:
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | libcolumbus1-common                      | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   
++ amd64  | libcolumbus1-dev                         | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   
++ amd64  | libcolumbus1v5                           | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   
++ amd64  | libcolumbus1v5-dbgsym                    | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   
++ amd64  | python3-columbus                         | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   
++ amd64  | python3-columbus-dbgsym                  | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   
++ source | libcolumbus                              | -                                        | 1.1.0+15.10.20150806-0ubuntu39+unity1   

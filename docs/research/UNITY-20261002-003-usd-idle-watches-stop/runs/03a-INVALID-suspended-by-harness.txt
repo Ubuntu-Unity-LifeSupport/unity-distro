@@ -1,0 +1,11 @@
+INVALID run (kept as harness evidence): the harness set sleep-inactive-ac-timeout=15 before sleep-inactive-ac-type=blank; with the idle path live (gnome.is_vm=0, real SessionIsActive from F2) the sleep watch fired in between with the default type suspend: logind 'The system will suspend now!' at 02:32:06, one second after the start; woken with a key at 02:39. Not a u-s-d defect (AC timeout 15 s / suspend is the configured behaviour). Harness fixed: type first.
+
+cmdline: gnome.is_vm=0; SessionIsActive real: b true
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11 pid 2259 02:32:05
+plugin restarted under gdb at 02:39:52; after start: 0 forced
+watches state is printed at STOP; plugin off at 02:40:04
+input injected at 02:40:09 (idle reset after stop)
+25 s after the input: 02:40:34
+input injected again
+--- gdb events:
+callbacks after the last STOP: 0

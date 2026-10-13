@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-019",
+  "package": "lightdm",
+  "candidate_version": "1.32.0-6ubuntu4+unity2",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/019-lightdm",
+  "source_commit": "f5af23c0b9d5931aea0dfc7a2eaf424415cf8920",
+  "source_tree_hash": "aebb2b51b2388bd2961eec336f6d3fe8e5e7a957",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I"
+  ],
+  "build_started": "2026-09-29T09:08:30.936301+00:00",
+  "build_finished": "2026-09-29T09:16:08.740899+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260928-019-lightdm-1.32.0-6ubuntu4+unity2-sbuild.log",
+    "sha256": "dccc84a482205b054495a02c95a689b7e19349aea5715ffec213d415af224f5b"
+  },
+  "artifacts": [
+    {
+      "file": "lightdm_1.32.0-6ubuntu4+unity2.dsc",
+      "sha256": "2b691c0fe320407f009e87a4ad93db33f23c3e1fd9eda1b1408eb5d39348e754",
+      "size": 2090,
+      "kind": "source",
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "file": "lightdm_1.32.0-6ubuntu4+unity2_amd64.changes",
+      "sha256": "eebaa3334a6938dae5267060f647154a70c9283715bfe1c36fcbd3db2eb7db20",
+      "size": 5251,
+      "kind": "changes"
+    },
+    {
+      "file": "lightdm_1.32.0.orig.tar.xz",
+      "sha256": "12f5ab432748f0387c7cf8b94430495a558a035a4f8465e5181af6faff133e4b",
+      "size": 518168,
+      "kind": "source_file",
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "file": "lightdm_1.32.0.orig.tar.xz.asc",
+      "sha256": "8ff9d803e6d19e6d4553ceeec0adaa31d068b4f86a90319a6f0899d63899fba3",
+      "size": 195,
+      "kind": "source_file",
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "file": "lightdm_1.32.0-6ubuntu4+unity2.debian.tar.xz",
+      "sha256": "6cf4ec03d02339dc926ff4058b47f80e44a1581c63d840175e8f95f6dab1f378",
+      "size": 44600,
+      "kind": "source_file",
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2"
+    },
+    {
+      "file": "gir1.2-lightdm-1_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "72695433659827ed7d0c92d3deae5f4e0c877a2dade803413d8cc9f2974a65ef",
+      "size": 25190,
+      "kind": "binary",
+      "package": "gir1.2-lightdm-1",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "liblightdm-gobject-1-0-dbgsym_1.32.0-6ubuntu4+unity2_amd64.ddeb",
+      "sha256": "754f689c06f54c2f90278586a00a532f3f695f56f9e42159c92d00e6af340c53",
+      "size": 139018,
+      "kind": "binary",
+      "package": "liblightdm-gobject-1-0-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "liblightdm-gobject-1-0_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "00c7999de4f9618329d8e15ef2746678b99aff6432c20eb81eec62e45bde1049",
+      "size": 57304,
+      "kind": "binary",
+      "package": "liblightdm-gobject-1-0",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "liblightdm-gobject-dev_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "e54f6371f842041b0241c7d2b445c4e4476c96e63a42202108e8d64d68b690c7",
+      "size": 100300,
+      "kind": "binary",
+      "package": "liblightdm-gobject-dev",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "liblightdm-qt5-3-0-dbgsym_1.32.0-6ubuntu4+unity2_amd64.ddeb",
+      "sha256": "3d9e164113e7983adcb24bee75effa76d909bbfa9ed16fc1eb84d86c1f7196b6",
+      "size": 482864,
+      "kind": "binary",
+      "package": "liblightdm-qt5-3-0-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "liblightdm-qt5-3-0_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "8478163f6a9b353d1e72c7ac990ffe6359b19b6c1195704f73c7e878a3f5b2bf",
+      "size": 43804,
+      "kind": "binary",
+      "package": "liblightdm-qt5-3-0",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "liblightdm-qt5-3-dev_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "af989b7b6c21d8b694fa0fead581040cd041f6dbe5c16ec4d75a8765fa4853b7",
+      "size": 46326,
+      "kind": "binary",
+      "package": "liblightdm-qt5-3-dev",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "lightdm-dbgsym_1.32.0-6ubuntu4+unity2_amd64.ddeb",
+      "sha256": "7e72255430f60f05a952672c9323d3b7fde6722469772d518d7a85d9d43d6e25",
+      "size": 434952,
+      "kind": "binary",
+      "package": "lightdm-dbgsym",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "lightdm-vala_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "18f89a045ec56cbee812dc192a43d18a53f3be1ec5339906c2e1a8aed446e9bb",
+      "size": 22662,
+      "kind": "binary",
+      "package": "lightdm-vala",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    },
+    {
+      "file": "lightdm_1.32.0-6ubuntu4+unity2_amd64.buildinfo",
+      "sha256": "362c77c75113bac837c539ebd94a141902059fd2a4a7d734cddd819b3ffbe10d",
+      "size": 21764,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "lightdm_1.32.0-6ubuntu4+unity2_amd64.deb",
+      "sha256": "194abcf483d4b4d7f9a706532219dc81bea6e1963e0abce39c9a5ea37f7a15c9",
+      "size": 178330,
+      "kind": "binary",
+      "package": "lightdm",
+      "version": "1.32.0-6ubuntu4+unity2",
+      "architecture": "amd64"
+    }
+  ]
+}

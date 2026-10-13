@@ -1,0 +1,15 @@
+## 2026-10-08T03:07:44Z variant S-off
+S-off: 44 apps, menus 0 top, NO-MENUBAR 41, NO-GTK-PROPS 3, MISSING 0, crashes 1
+## 2026-10-08T03:14:19Z variant S-on
+S-on: 44 apps, menus 52 top, NO-MENUBAR 0, NO-GTK-PROPS 1, MISSING 3, crashes 1
+## 2026-10-08T03:20:50Z variant U-off
+U-off: 44 apps, menus 0 top, NO-MENUBAR 43, NO-GTK-PROPS 1, MISSING 0, crashes 1
+## 2026-10-08T03:27:08Z variant U-oldvar
+U-oldvar: 44 apps, menus 0 top, NO-MENUBAR 43, NO-GTK-PROPS 1, MISSING 0, crashes 1
+## 2026-10-08T03:33:38Z variant U-on
+U-on: 44 apps, menus 51 top, NO-MENUBAR 0, NO-GTK-PROPS 2, MISSING 3, crashes 1
+## 2026-10-08T03:40:36Z variant U-g1
+U-g1: 44 apps, menus 51 top, NO-MENUBAR 0, NO-GTK-PROPS 2, MISSING 3, crashes 1
+## 2026-10-08T03:47:40Z variant U-g2
+U-g2: 44 apps, menus 12 top, NO-MENUBAR 0, NO-GTK-PROPS 1, MISSING 3, crashes 1
+## 2026-10-08T03:53:59Z packaged library restored: 6fcf52bcc6d96440; dpkg -V: 0 lines

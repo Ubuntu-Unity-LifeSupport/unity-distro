@@ -1,0 +1,21 @@
+restart 1: boot 2026-09-28 21:07:11: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:04:43.691959 mike-virtualbox compiz[9320]: WARN  2026-09-28 21:04:43 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 9320 _exit(1) directly (no exit handlers)
+    trace: compiz 9320 gone
+restart 2: boot 2026-09-28 21:10:09: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:09:17.983673 mike-virtualbox compiz[2885]: WARN  2026-09-28 21:09:17 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2885 _exit(0) directly (no exit handlers)
+    trace: compiz 2885 gone
+restart 3: boot 2026-09-28 21:13:23: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:12:13.738677 mike-virtualbox compiz[2884]: WARN  2026-09-28 21:12:13 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2884 _exit(0) directly (no exit handlers)
+    trace: compiz 2884 gone
+restart 4: boot 2026-09-28 21:16:16: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:15:28.798302 mike-virtualbox compiz[2796]: WARN  2026-09-28 21:15:28 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2796 _exit(0) directly (no exit handlers)
+    trace: compiz 2796 gone
+restart 5: boot 2026-09-28 21:18:53: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:18:08.349353 mike-virtualbox compiz[2820]: WARN  2026-09-28 21:18:08 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2820 _exit(0) directly (no exit handlers)
+    trace: compiz 2820 gone
+restart 6: boot 2026-09-28 21:21:25: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:20:40.857752 mike-virtualbox compiz[2837]: WARN  2026-09-28 21:20:40 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2837 _exit(0) directly (no exit handlers)
+    trace: compiz 2837 gone
+restart 7: boot 2026-09-28 21:23:59: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 21:23:09.353046 mike-virtualbox compiz[2819]: WARN  2026-09-28 21:23:09 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2819 _exit(0) directly (no exit handlers)
+    trace: compiz 2819 gone

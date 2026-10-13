@@ -1,0 +1,13 @@
+# stale-probe.sh unity11-a (unity +unity11), phases: phase 0: nothing mapped;phase 1: mapped, shaped;phase 2: mapped, empty shape;phase 3: unmapped;
+threshold  2 phase 1:  27437 pixels changed, box (50, 50, 250, 200)
+threshold  2 phase 2:      0 pixels changed, box None
+threshold  2 phase 3:      0 pixels changed, box None
+threshold  4 phase 1:  27376 pixels changed, box (50, 50, 250, 200)
+threshold  4 phase 2:      0 pixels changed, box None
+threshold  4 phase 3:      0 pixels changed, box None
+threshold  8 phase 1:  27336 pixels changed, box (50, 50, 250, 200)
+threshold  8 phase 2:      0 pixels changed, box None
+threshold  8 phase 3:      0 pixels changed, box None
+threshold 24 phase 1:  27078 pixels changed, box (50, 50, 250, 200)
+threshold 24 phase 2:      0 pixels changed, box None
+threshold 24 phase 3:      0 pixels changed, box None

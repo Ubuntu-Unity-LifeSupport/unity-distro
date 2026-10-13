@@ -1,0 +1,41 @@
+# guard dry run (repeat) with the main hook (~/unity-distro 7e5015f), session fa14e5f5-9fa9-405c-8373-3873520d3c73, ~/coordinator 0755, no marker; nothing executed; 2026-09-28T11:17:14Z
+ok   rc=0 ''
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf repo create -distribution=resolute -component=main unity-resolute
+ok   rc=0 ''
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf repo add unity-resolute /var/tmp/aptly-rehearsal/incoming
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish show resolute
+ok   rc=0 ''
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf snapshot create unity-resolute-20260927-047 from repo unity-resolute
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish switch resolute unity-resolute-20260927-047
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish show resolute candidate
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish drop resolute
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish show resolute
+ok   rc=0 ''
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf snapshot create unity-resolute-20260927-047b from repo unity-resolute
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish switch resolute unity-resolute-20260927-047b
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish drop resolute
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish list
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish drop resolute candidate
+ok   rc=2 "aptly rehearsal not allowed: no rehearsal authorization is recorded (C writes it after May's approva"
+     /usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish list
+ok   rc=0 ''
+     chmod -R go-w /var/tmp/aptly-rehearsal
+
+unexpected: 0

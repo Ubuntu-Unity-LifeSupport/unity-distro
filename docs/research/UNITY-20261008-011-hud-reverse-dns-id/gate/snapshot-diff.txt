@@ -1,0 +1,24 @@
+# 2026-10-08T18:43:28Z UNITY-20261008-011: db backup ~/backups/UNITY-20261008-011-20261008T184250Z (18 files, equal to live, list sha256 7ec54728655c48515c76d75e5eed627f73a9cccfdb4edd71b462167f230df0bc); repo add of the gated build (20 records: source, 14 .deb, 5 .ddeb) to unity-resolute (444 -> 464) at 18:43:18Z, pool sha256 22 of 22 equal to the manifest; snapshot unity-resolute-20261008-011 from the repo
+# live ./resolute: unity-resolute-20261002-012-usd (publish record UNITY-20261002-012, published_at 2026-10-08T18:21:12Z = Release Date)
+# aptly snapshot diff unity-resolute-20261002-012-usd unity-resolute-20261008-011:
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | hud-doc                                  | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ all    | libhud-client2-doc                       | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ all    | libhud-gtk1-doc                          | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ all    | libhud2-doc                              | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | gir1.2-hud-2                             | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | gir1.2-hud-client-2                      | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | hud                                      | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | hud-dbgsym                               | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | hud-tools                                | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | hud-tools-dbgsym                         | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud-client2                           | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud-client2-dbgsym                    | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud-client2-dev                       | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud-gtk1                              | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud-gtk1-dbgsym                       | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud-gtk1-dev                          | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud2                                  | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud2-dbgsym                           | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ amd64  | libhud2-dev                              | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    
++ source | hud                                      | -                                        | 14.10+17.10.20170619-0ubuntu6+unity5    

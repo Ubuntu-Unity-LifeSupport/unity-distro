@@ -1,0 +1,3 @@
+R1 symlinked build-dependencies/: REFUSED (build dependencies must be in the manifest directory's own build-dependencies/: /tmp/tmp1mt3vksh/out1/build-dependencies)
+R2 size=True: REFUSED (build dependency record lacks one of file, sha256, size, package, version, architecture, source: {'file': 'build-dependencies/libnux-4.0-dev_4.0.8-0ubuntu15+unity2_amd64.deb', 'sha256': 'e4978be9e02a044169e769ddd909f689c13f84b8cf3cea82990327cb7a26f365', 'size': True, 'package': 'libnux-4.0-dev', 'version': '4.0.8-0ubuntu15+unity2', 'architecture': 'amd64', 'source': 'nux'})
+R3 refused package: refused=True CLEAN

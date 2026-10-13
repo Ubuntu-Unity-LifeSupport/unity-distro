@@ -1,0 +1,95 @@
+UNITY-20261010-001 - target verification of the publication (target2, 2026-10-10)
+Clean-2 restored after the switch (17:49:19Z) and confirmed inside; the live archive added the usual way (our key + unity-distro.sources; no file repository, no drop-in, no test configuration), apt full-upgrade from unity-resolute-20261010-001 (Release Date 17:44:18 UTC, backdated by the signer's 300 s). Test helpers installed afterwards: xdotool (apt) and ~/b013/{leak.sh,lens.sh,liveness.py,frequent.py}; the earlier test's helpers and file repository were gone with the restore. Then a cold cycle (systemctl poweroff over ssh at 18:03Z, start_vm headless) and the natural boot into the auto-login session.
+
+===== pub-setup.sh
+== 1 restore, checked inside at 2026-10-10T17:51:48Z, boot 2026-10-10 20:50:40
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b025': No such file or directory
+  ls: cannot access '/home/mike/b001': No such file or directory
+  ls: cannot access '/home/mike/b013': No such file or directory
+  ls: cannot access '/home/mike/b1010/repo': No such file or directory
+  sources.list.d: ubuntu.sources
+  hud	14.10+17.10.20170619-0ubuntu6
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39
+  NTP yes
+== 2 live archive
+  sources.list.d: ubuntu.sources unity-distro.sources
+  update rc=0
+  Пол:1 http://192.168.56.10:8080 resolute InRelease [2 821 B]
+  Пол:2 http://192.168.56.10:8080 resolute/main amd64 Packages [108 kB]
+  Date: Sat, 10 Oct 2026 17:44:18 UTC
+  Valid-Until: Tue, 13 Oct 2026 17:44:18 UTC
+  libcolumbus1v5:
+    Установлен: 1.1.0+15.10.20150806-0ubuntu39
+    Кандидат:   1.1.0+15.10.20150806-0ubuntu39+unity2
+    Таблица версий:
+       1.1.0+15.10.20150806-0ubuntu39+unity2 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       1.1.0+15.10.20150806-0ubuntu39+unity1 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+   *** 1.1.0+15.10.20150806-0ubuntu39 500
+          500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+          100 /var/lib/dpkg/status
+  libcolumbus1-common:
+    Установлен: 1.1.0+15.10.20150806-0ubuntu39
+    Кандидат:   1.1.0+15.10.20150806-0ubuntu39+unity2
+    Таблица версий:
+       1.1.0+15.10.20150806-0ubuntu39+unity2 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       1.1.0+15.10.20150806-0ubuntu39+unity1 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+   *** 1.1.0+15.10.20150806-0ubuntu39 500
+          500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+          500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+          100 /var/lib/dpkg/status
+  full-upgrade rc=0
+  left to upgrade: 0
+  hud	14.10+17.10.20170619-0ubuntu6+unity6
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39+unity2
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity2
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+  dpkg -V rc=0
+  libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb sha256 447d26d510288373a3da823ff345d1e2591be13e99d5236ccc333440229ebcbc
+  libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb sha256 95c09ff88c5cf3ab2ccd348190ece85f2bd242098ce39b6b9fa24464905c3572
+
+===== target-check.sh after the cold boot
+ubuntu.sources
+unity-distro.sources
+== 1 versions and mappings (2026-10-10T18:06:11Z, boot 2026-10-10 21:04:17)
+  hud	14.10+17.10.20170619-0ubuntu6+unity6
+  libcolumbus1-common	1.1.0+15.10.20150806-0ubuntu39+unity2
+  libcolumbus1v5:amd64	1.1.0+15.10.20150806-0ubuntu39+unity2
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+  unity-lens-applications	7.1.0+16.10.20160927-0ubuntu8
+  installed /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0 inode 132114 sha256 d2232c631fb4c95d
+  hud-service pid 3759: 132114 /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0, deleted libraries 0
+  unity-scope-loader(applications) pid 4086: 132114 /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0, deleted libraries 0
+== 2 HUD query
+  empty query, 1 rows, first: Всегда наверху Window actions
+  hud-service 3759 baseline 0
+  query open 3
+  query closed 0
+== 3 leak.sh
+  hud 14.10+17.10.20170619-0ubuntu6+unity6, hud-service pid 3759, up       00:28
+  1 baseline                         tmp-maps     0 files    0 rss_kB   34912 fds   15
+  2 after 10 queries (desktop)       tmp-maps     0 files    0 rss_kB   35016 fds   15
+  3 after 10 Mines starts            tmp-maps     0 files    0 rss_kB   35032 fds   15
+  4 after 10 Writer starts           tmp-maps     0 files    0 rss_kB   39636 fds   15
+  5 after 10 queries (Writer)        tmp-maps     0 files    0 rss_kB   41660 fds   15
+  6 Writer closed, 60 s idle         tmp-maps     0 files    0 rss_kB   41612 fds   15
+== 4 lens.sh 4
+  libcolumbus1v5 1.1.0+15.10.20150806-0ubuntu39+unity2, unity-scope-loader (applications) pid 4086
+  libcolumbus mapping: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+  start                        deleted-maps    5 tmp-maps    5 rss_kB   33816
+  re-index 1 (added)           deleted-maps    5 tmp-maps    5 rss_kB   35728
+  re-index 2 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   35796
+  re-index 3 (added)           deleted-maps    5 tmp-maps    5 rss_kB   36876
+  re-index 4 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   36920
+  test file removed            deleted-maps    5 tmp-maps    5 rss_kB   36920
+== end: hud-service pid 3759 (was 3759), scope pid 4086 (was 4086)
+
+===== the Dash (super from vbox send_keys, the query typed with xdotool): "тирминал" (misspelt) -> Приложения: Терминал (dash-search-published.png)
+
+===== reading
+apt's candidate and the installed version are +unity2 from 192.168.56.10; the downloaded .debs equal the gated manifest (libcolumbus1v5 95c09ff8..., libcolumbus1-common 447d26d5...); dpkg -V clean. hud-service and the applications scope map the installed library, no deleted library mapping; HUD 0 -> 3 -> 0; leak.sh 0 at every step; the lens a constant 5 over 4 re-indexes; the Dash finds Terminal misspelt. The same results as the pre-publication check (logs/04).

@@ -1,0 +1,6 @@
+== snap at 2026-10-13T06:11:12Z; snapd 2.76.3+ubuntu26.04; session value: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  snap install hello-world rc=0 hello-world 6.4 от Canonical** installed
+  hello-world  6.4     29      latest/stable  canonical**  -
+  confinement: strict
+  P hello-world.env: LD_PRELOAD inside: (not set), stderr ld.so lines 0
+  N hello-world.env: LD_PRELOAD inside: (not set), stderr ld.so lines 0

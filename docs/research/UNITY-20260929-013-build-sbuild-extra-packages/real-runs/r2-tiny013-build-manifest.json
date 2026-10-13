@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260929-013",
+  "package": "tiny013",
+  "candidate_version": "1.0",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/013-real/tiny013",
+  "source_commit": "94b6627b8139935fc76e7f75ba8dd3b6f69ea321",
+  "source_tree_hash": "5993899cb638e7c24ee74afafcb53d03af41b3e4",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--extra-package=/home/claude/work/a/013-real/out-r2/build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb"
+  ],
+  "build_started": "2026-09-29T16:00:08.497499+00:00",
+  "build_finished": "2026-09-29T16:02:21.157817+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260929-013-tiny013-1.0-sbuild.log",
+    "sha256": "8f09bf8a98ca7b64784fdbf82efbcb77320ad4fd846e0cc07889c5f3e3c44a52"
+  },
+  "artifacts": [
+    {
+      "file": "tiny013_1.0.dsc",
+      "sha256": "c3c231052ab9a367fdbee99b61be02472a8e02e81092a40952395d13f60888ca",
+      "size": 499,
+      "kind": "source",
+      "package": "tiny013",
+      "version": "1.0"
+    },
+    {
+      "file": "tiny013_1.0_amd64.changes",
+      "sha256": "64f8d345ef2179a3a1711dbf1700a754c7c0dcf8137442f4074111c9d5103517",
+      "size": 902,
+      "kind": "changes"
+    },
+    {
+      "file": "tiny013_1.0.tar.xz",
+      "sha256": "be95cbf8fd4567750190dd43e9cefa5d002310c0016cc2c6fcf1c2f37b78bece",
+      "size": 608,
+      "kind": "source_file",
+      "package": "tiny013",
+      "version": "1.0"
+    },
+    {
+      "file": "tiny013_1.0_all.deb",
+      "sha256": "4482357ad3a55beedd81a38b868aa906371d1fa4aeef88d1f2c2417c5cbcb9fc",
+      "size": 854,
+      "kind": "binary",
+      "package": "tiny013",
+      "version": "1.0",
+      "architecture": "all"
+    },
+    {
+      "file": "tiny013_1.0_amd64.buildinfo",
+      "sha256": "3278960330a371f906f8366125df5db85d09f5f696953a2794c80333fb1c0822",
+      "size": 5432,
+      "kind": "buildinfo"
+    }
+  ],
+  "build_dependencies": [
+    {
+      "file": "build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb",
+      "sha256": "b0b517a0d9bb3901851cdf22e018110b566249fe476c6f553e7fb5fdb4b1af62",
+      "size": 52774,
+      "package": "libnux-4.0-common",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity2",
+      "architecture": "all",
+      "source": "nux",
+      "given_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb",
+      "resolved_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb",
+      "in_our_repository_pool": true,
+      "pool_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity2_all.deb"
+    }
+  ]
+}

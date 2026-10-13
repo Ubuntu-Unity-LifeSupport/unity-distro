@@ -1,0 +1,3 @@
+# UNITY-20260927-023 peer notice (ENGINEERING-PROCESS section 6)
+2026-10-02 18:00Z B -> A: libindicator 16.10.0+18.04.20180321.1-0ubuntu8+unity3, 10 records, snapshot unity-resolute-20260927-023 (= live -028 + 10), one export removed (libindicator3.so.7 back to the archive's 40 symbols; the pool scan found no consumer), imports/NEEDED/Depends/shlibs/file lists equal to +unity2, switch after C and May
+2026-10-02 18:02Z A -> B: A ACK UNITY-20260927-023; no repo add, snapshot or slot on A's side; target-desktop takes libindicator3-7 +unity3 only on A's explicit apt upgrade

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-041",
+  "package": "calamares-settings-ubuntu",
+  "source_commit": "221c69128aa9c88647f5fe73b09b124d75213b14",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-041-calamares-oem-sudoers/README.md",
+      "sha256": "1588f4fa0121e70df1acb724f645261111b45aaed833591f7ab461d85ecf4000"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-041-calamares-oem-sudoers/verification.md",
+      "sha256": "dff415b201729b2756b29015644793070b93935a9730d917baa9bff63eb811a7"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "d649604822a0c1e960889bc8bc18b2e0eb65d0be0412644a2c25440b486cc487"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-041-calamares-oem-sudoers/gate/release-record.json",
+      "sha256": "0e7b193836eb673b705c060eb9dd0c601bd8c9b69eab70e4ca10bef83a580d71"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-041-calamares-oem-sudoers/gate/version-check.json",
+      "sha256": "43bc8b6cf60aa68b660746c8a63767f7f355acdb0e47c2afaf8fbf11e283e1d0"
+    }
+  }
+}

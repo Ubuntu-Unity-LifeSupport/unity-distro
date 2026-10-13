@@ -1,0 +1,30 @@
+{
+ "task_id": "UNITY-20261010-001",
+ "package": "libcolumbus",
+ "target_series": "resolute",
+ "candidate_version": "1.1.0+15.10.20150806-0ubuntu39+unity2",
+ "source_commit": "63c6950fb6cfd418869463c67a792faf7914531b",
+ "source_provenance": "PUSHED",
+ "source_remote_ref": "origin/b/UNITY-20261010-001",
+ "version_safety": "SAFE",
+ "version_check": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/gate/version-check.json",
+ "verification_result": "PASS",
+ "verification_scope": "",
+ "verification_reason": "",
+ "peer_notice": "ACK",
+ "patch_and_decision_docs": true,
+ "decision_required": false,
+ "target_test": {
+  "record": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/logs/04-target.txt",
+  "debs": {
+   "libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity2_amd64.deb": "95c09ff88c5cf3ab2ccd348190ece85f2bd242098ce39b6b9fa24464905c3572",
+   "libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity2_all.deb": "447d26d510288373a3da823ff345d1e2591be13e99d5236ccc333440229ebcbc"
+  }
+ },
+ "tested_build": "this_build",
+ "evidence": {
+  "evidence_card": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/README.md",
+  "verification_record": "docs/research/UNITY-20261010-001-libcolumbus-unity2-signer/README.md",
+  "patch_record": "docs/PATCHES.md"
+ }
+}

@@ -1,0 +1,3 @@
+# UNITY-20261008-011 peer notice (ENGINEERING-PROCESS section 6 step 7)
+2026-10-08 18:44Z B -> A: hud 14.10+17.10.20170619-0ubuntu6+unity5, 20 records, snapshot unity-resolute-20261008-011 (= live unity-resolute-20261002-012-usd + 20, nothing removed or changed), version_safety SAFE, window-stack-bridge only, switch after C and May
+2026-10-08 18:46Z A -> B: A ACK UNITY-20261008-011; no repo add, snapshot or slot on A's side; A's last records (u-s-d +unity12) are published in the live unity-resolute-20261002-012-usd; A's next builds (unity +unity13, light-locker +unity3) are local only

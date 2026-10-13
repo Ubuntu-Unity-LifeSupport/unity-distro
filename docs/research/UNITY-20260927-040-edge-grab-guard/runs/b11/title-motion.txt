@@ -1,0 +1,35 @@
+Attached 14 probes
+READY
+2754 UNITY-SEES ButtonPress window=0x300010c button=1
+2754 GRABEDGE-DOWN button=1
+2807 EDGE-DOWN button=1
+2807 XUNGRABPOINTER
+        XUngrabPointer+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+343
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+2807 XUNGRABKEYBOARD
+        XUngrabKeyboard+0
+        unity::decoration::Manager::Impl::HandleFrameEvent(_XEvent*)+343
+        unity::decoration::Manager::Impl::HandleEventBefore(_XEvent*)+67
+        unity::UnityScreen::handleEvent(_XEvent*)+66
+
+2808 PUSH-POINTER-GRAB move
+2808 XGRABPOINTER
+        XGrabPointer+0
+        0x7ca2714e6031
+        MoveScreen::handleEvent(_XEvent*)+2189
+        CompScreen::handleEvent(_XEvent*)+103
+
+3101 UNITY-SEES ButtonRelease window=0x300010c button=1
+3101 REMOVE-GRAB
+3101 XUNGRABPOINTER
+        XUngrabPointer+0
+        0x7ca2714e4d1f
+        MoveScreen::handleEvent(_XEvent*)+437
+        CompScreen::handleEvent(_XEvent*)+103
+
+4589 UNITY-SEES ButtonPress window=0x300001a button=1
+
+

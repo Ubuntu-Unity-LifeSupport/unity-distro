@@ -1,0 +1,6 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 6567 tunables: 
+STOP-CALLED
+[Thread 0x736300cd76c0 (LWP 7526) exited]
+[Thread 0x7363014d86c0 (LWP 7527) exited]
+[Thread 0x7362ebfff6c0 (LWP 7525) exited]
+u-s-d pid 6567 alive: yes; journal since 21:13:11: 0

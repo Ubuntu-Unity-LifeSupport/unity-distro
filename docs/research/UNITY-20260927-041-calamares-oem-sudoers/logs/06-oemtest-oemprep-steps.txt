@@ -1,0 +1,8 @@
+/usr/sbin/visudo
+/usr/sbin/visudo.ws
+== /home/oem/oemconfig-a.tar.gz -> -rw-r--r-- 644 root:root
+visudo(rs) -c -f: /tmp/oemroot.Dil5/etc/sudoers: parsed OK 
+visudo(ws) -c -f: /tmp/oemroot.Dil5/etc/sudoers: parsed OK /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK 
+== /home/oem/oemconfig-u3.tar.gz -> -r--r----- 440 root:root
+visudo(rs) -c -f: /tmp/oemroot.Imn4/etc/sudoers: parsed OK 
+visudo(ws) -c -f: /tmp/oemroot.Imn4/etc/sudoers: parsed OK /etc/sudoers.d/10-installer: parsed OK /etc/sudoers.d/README: parsed OK 

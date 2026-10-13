@@ -1,0 +1,458 @@
+Verifier run 2, UNITY-20260928-022, u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 on target (ssh target, user mike), 2026-09-29 UTC; target clock is EEST (UTC+3).
+Source reviewed: git -C /home/claude/work/a/022-usd/pkg diff b570a22 57945f5 -- plugins/ (27e75f4 + df68430).
+Scripts copied to target /tmp/v2 (card tools copied unchanged; md5 of card tools == files already on target) and run as ssh target 'sh /tmp/v2/<script>'. Sources at the end.
+
+================ 0. initial state (ssh target: dpkg-query, pgrep -x, deleted maps, drop-in env, /var/crash)
+dpkg-query -W: libunity-settings-daemon1 / unity-settings-daemon / unity-settings-daemon-dbgsym = 15.04.1+21.10.20220802-0ubuntu7+unity9
+pgrep -x unity-settings- -> 2137, started 2026-09-29 04:08:43 EEST
+sudo grep '(deleted)' /proc/2137/maps | grep -v -e /memfd: -e /SYSV | wc -l -> 0 (only /memfd:pulseaudio x4 and /SYSV00000000)
+systemctl --user show: ActiveState=active MainPID=2137 NRestarts=0
+/proc/2137/environ: GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0, G_MESSAGES_DEBUG=all
+/var/crash: _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash 3487386 bytes, mtime 2026-09-29 03:38:25.208731651 +0300 (round 1)
+md5 card tools vs target: kbdrace.py 6bd857d9..., keyboard-toggle-race.sh 284e5b7e..., finalized-unique-name.sh c1603f93..., power-dbus-checks.sh 6908bf78... - identical
+
+================ ssh target 'sh /tmp/v2/state.sh'
+## 2026-09-29 04:13:08 EEST pid=2137 ActiveState=active NRestarts=0 
+  deleted maps (excl memfd/SYSV): 0
+  active: true; Power name owner: (true,)
+  crash file: -rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  logind inhibitors of pid 2137:
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+================ race run 1: ssh target 'sh /tmp/v2/keyboard-toggle-race.sh'
+## start 2026-09-29 04:13:09 pid 2137
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'UnknownMethod': 6277, 'not running': 22895, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 386}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 46790, 'not running': 25497}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== journal since 2026-09-29 04:13:09
+  crash files: 1
+  active: true
+================ race run 2: ssh target 'sh /tmp/v2/keyboard-toggle-race.sh'
+## start 2026-09-29 04:13:49 pid 2137
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'UnknownMethod': 5305, 'not running': 19560, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 342}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 34583, 'not running': 26146}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== journal since 2026-09-29 04:13:49
+  crash files: 1
+  active: true
+================ ssh target 'sh /tmp/v2/state.sh'
+## 2026-09-29 04:14:31 EEST pid=2137 ActiveState=active NRestarts=0 
+  deleted maps (excl memfd/SYSV): 0
+  active: true; Power name owner: (true,)
+  crash file: -rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  logind inhibitors of pid 2137:
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+
+================ ssh target 'sh /tmp/v2/race2.sh'
+## start 2026-09-29 04:14:35 pid 2137
+== org.gnome.SettingsDaemon.Power.Keyboard.StepDown: 20 calls in flight for 25 s while toggling active 25x (irregular)
+  calls by result: {'UnknownMethod': 4984, 'not running': 32547, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 516}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== org.gnome.SettingsDaemon.Power.Keyboard.Toggle: 20 calls in flight for 25 s while toggling active 25x (irregular)
+  calls by result: {'UnknownMethod': 6351, 'not running': 28373, 'other:GDBus.Error:org.freedesktop.DBus.Error.Failed: No keyboard backlight': 729}
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== MIXED: 20 calls in flight for 25 s while toggling active 25x (irregular)
+   Introspectable.Introspect:reply                              4514
+   Keyboard.StepDown:No keyboard backlight                      62
+   Keyboard.StepDown:UnknownMethod                              2021
+   Keyboard.StepDown:not running                                2432
+   Keyboard.StepUp:No keyboard backlight                        64
+   Keyboard.StepUp:UnknownMethod                                2020
+   Keyboard.StepUp:not running                                  2431
+   Keyboard.Toggle:No keyboard backlight                        60
+   Keyboard.Toggle:UnknownMethod                                2021
+   Keyboard.Toggle:not running                                  2434
+   Power.GetDevices:not running                                 2436
+   Power.GetDevices:reply                                       2078
+   Power.GetPrimaryDevice:no primary device                     2076
+   Power.GetPrimaryDevice:not running                           2438
+   Properties.Get(Icon):not running                             2436
+   Properties.Get(Icon):reply                                   2078
+   Properties.Get(Percentage):not available                     2077
+   Properties.Get(Percentage):not running                       2437
+   Properties.Get(Tooltip):not running                          2434
+   Properties.Get(Tooltip):reply                                2080
+   Properties.GetAll:reply                                      4514
+   Screen.GetPercentage:not available                           2084
+   Screen.GetPercentage:not running                             2431
+   Screen.SetPercentage:not available                           2084
+   Screen.SetPercentage:not running                             2431
+   Screen.StepDown:not available                                2079
+   Screen.StepDown:not running                                  2435
+   Screen.StepUp:not available                                  2079
+   Screen.StepUp:not running                                    2435
+  max reply time: 0.089 s
+  u-s-d pid now: 2137 (was 2137); NRestarts 0
+== journal since 2026-09-29 04:14:35
+  crash file: -rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  active: true
+================ ssh target 'sh /tmp/v2/state.sh'
+## 2026-09-29 04:15:52 EEST pid=2137 ActiveState=active NRestarts=0 
+  deleted maps (excl memfd/SYSV): 0
+  active: true; Power name owner: (true,)
+  crash file: -rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  logind inhibitors of pid 2137:
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+
+================ ssh target 'sh /tmp/v2/power-dbus-checks.sh'  (card tool: running / stopped / quick toggles / running again)
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2137
+== plugin running
+  Get Percentage (.0610 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: Property Percentage is not available
+  Get Icon (.0336 s): (<''>,)
+  Screen.GetPercentage (.0338 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+  u-s-d pid 2137 alive: yes
+  u-s-d (pid 2137) logind inhibitors: unity-settings- handle-lid-switch Multiple displays attached block;unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;unity-settings- sleep GNOME 
+== plugin stopped
+  Get Percentage (.0354 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Get Icon (.0307 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Screen.GetPercentage (.0297 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  u-s-d pid 2137 alive: yes
+== quick on/off x3, then on
+  u-s-d (pid 2137) logind inhibitors: unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;
+== plugin running again
+  Get Icon (.0250 s): (<''>,)
+  Screen.GetPercentage (.0267 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+  u-s-d pid 2137 alive: yes
+  u-s-d (pid 2137) logind inhibitors: unity-settings- handle-lid-switch Multiple displays attached block;unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;unity-settings- sleep GNOME 
+journal since 04:16:11: 0
+================ ssh target 'sh /tmp/v2/toggles.sh' (run 1)
+  inhibitors of pid 2137 after toggles (active true):
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+    busctl: ['handle-power-key:handle-suspend-key:handle-hibernate-key', 'mike', 'GNOME handling keypresses', 'block', 1000, 2137]
+    busctl: ['sleep', 'mike', 'GNOME needs to lock the screen', 'delay', 1000, 2137]
+    busctl: ['handle-lid-switch', 'mike', 'Multiple displays attached', 'block', 1000, 2137]
+  GetDevices (.0291 s): ([('/org/freedesktop/UPower/devices/line_power_AC', uint32 1, '. GThemedIcon ac-adapter-symbolic ac-adapter  -symbolic',
+  pid now 2137 (was 2137)
+================ ssh target 'sh /tmp/v2/toggles.sh' (run 2)
+  inhibitors of pid 2137 after toggles (active true):
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+    busctl: ['handle-lid-switch', 'mike', 'Multiple displays attached', 'block', 1000, 2137]
+    busctl: ['handle-power-key:handle-suspend-key:handle-hibernate-key', 'mike', 'GNOME handling keypresses', 'block', 1000, 2137]
+    busctl: ['sleep', 'mike', 'GNOME needs to lock the screen', 'delay', 1000, 2137]
+  GetDevices (.0334 s): ([('/org/freedesktop/UPower/devices/line_power_AC', uint32 1, '. GThemedIcon ac-adapter-symbolic ac-adapter  -symbolic',
+  pid now 2137 (was 2137)
+================ ssh target 'sh /tmp/v2/toggles.sh' (run 3)
+  inhibitors of pid 2137 after toggles (active true):
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+    busctl: ['handle-power-key:handle-suspend-key:handle-hibernate-key', 'mike', 'GNOME handling keypresses', 'block', 1000, 2137]
+    busctl: ['handle-lid-switch', 'mike', 'Multiple displays attached', 'block', 1000, 2137]
+    busctl: ['sleep', 'mike', 'GNOME needs to lock the screen', 'delay', 1000, 2137]
+  GetDevices (.0441 s): ([('/org/freedesktop/UPower/devices/line_power_AC', uint32 1, '. GThemedIcon ac-adapter-symbolic ac-adapter  -symbolic',
+  pid now 2137 (was 2137)
+================ stopped: methods/properties while active=false
+  org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power Percentage (.0302 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  org.freedesktop.DBus.Properties.GetAll org.gnome.SettingsDaemon.Power (.0286 s): (@a{sv} {},)
+  org.gnome.SettingsDaemon.Power.GetDevices  (.0269 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  org.gnome.SettingsDaemon.Power.GetPrimaryDevice  (.0303 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  org.gnome.SettingsDaemon.Power.Keyboard.StepDown  (.0371 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  org.gnome.SettingsDaemon.Power.Keyboard.Toggle  (.0274 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  org.gnome.SettingsDaemon.Power.Screen.StepUp  (.0282 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  inhibitors while stopped:
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+  back on: Get Percentage: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: Property Percentage is not available
+================ ssh target 'sh /tmp/v2/state.sh'
+## 2026-09-29 04:17:01 EEST pid=2137 ActiveState=active NRestarts=0 
+  deleted maps (excl memfd/SYSV): 0
+  active: true; Power name owner: (true,)
+  crash file: -rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  logind inhibitors of pid 2137:
+    mike                         1000 mike 2137 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2137 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2137 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+================ journal of u-s-d since pid start (04:08:43), filtered
+kernel segfaults: 0
+
+================ journal sanity: u-s-d lines since 04:08:40 and warnings
+2876
+0
+0
+(plugin g_debug lines such as 'Starting power manager' are not logged by u-s-d at all - 0 matches - so the journal filter covers warnings/criticals/segfaults only)
+
+================ ssh target 'sh /tmp/v2/finalized-unique-name.sh' (card tool: gdb calls gnome_settings_manager_stop(gnome_settings_manager_new()), then calls via unique name)
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2137 unique name :1.51
+  org.gnome.SettingsDaemon.Power.Screen.GetPercentage via :1.51: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не сущест
+  org.freedesktop.DBus.Properties.Get via :1.51: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не сущест
+STOP-CALLED
+AFTER-CONTINUE
+#0  __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+u-s-d pid 2137 alive: yes; crash reports: 1
+================ after finalize: well-known name and state
+pid 2137
+(false,)
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+alive: yes
+ActiveState=active NRestarts=0 
+-rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+0
+
+================ ssh target 'sudo systemctl reboot' (u-s-d left with plugins stopped by the forced finalize)
+wait NameHasOwner org.gnome.SessionManager -> (true,) (after ~85 s)
+
+================ after reboot: ssh target 'sh /tmp/v2/state.sh' (+ version, env, boot journal)
+/tmp/v2 gone after reboot
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity9
+    PID                  STARTED COMMAND
+   2296 вт вер 29 04:19:34 2026 /usr/lib/unity-settings-daemon/unity-settings-daemon
+GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+G_MESSAGES_DEBUG=all
+## 2026-09-29 04:20:11 EEST pid=2296 ActiveState=active NRestarts=0 
+  deleted maps (excl memfd/SYSV): 0
+  active: true; Power name owner: (true,)
+  crash file: -rw-r-----  1 mike whoopsie 3487386 2026-09-29 03:38:25.208731651 +0300 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  logind inhibitors of pid 2296:
+    mike                         1000 mike 2296 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2296 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2296 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+вер 29 04:19:52 mike-virtualbox unity-settings-daemon-localeexec[2296]: 2026-09-29T01:19:52.273953Z DEBUG glycin::sandbox: bwrap availability test returned: Output { status: ExitStatus(unix_wait_status(0)), stdout: "", stderr: "Setting process memory limit\n" } (Signal: None, Code: Some(0))
+kernel segfaults this boot: 0
+ActiveState=active
+(the one line matched above is glycin's bwrap debug message containing 'Signal: None', not an error)
+
+================ SCRIPT SOURCES
+---- state.sh (verifier 2)
+#!/bin/sh
+# Verifier-2: daemon state snapshot
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-)
+echo "## $(date '+%F %T %Z') pid=$P $(systemctl --user show -p NRestarts,ActiveState unity-settings-daemon | tr '\n' ' ')"
+echo "  deleted maps (excl memfd/SYSV): $(sudo grep '(deleted)' /proc/$P/maps | grep -v -e /memfd: -e /SYSV | wc -l)"
+echo "  active: $(gsettings get $S active); Power name owner: $(gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.NameHasOwner org.gnome.SettingsDaemon.Power)"
+echo "  crash file: $(ls -la --time-style=full-iso /var/crash | grep unity-settings)"
+echo "  logind inhibitors of pid $P:"; systemd-inhibit --list --no-legend | awk -v p=$P '$4==p' | sed 's/^/    /'
+---- race2.sh (verifier 2)
+#!/bin/sh
+# Verifier-2 UNITY-20260928-022: Keyboard.StepDown / Keyboard.Toggle / mixed
+# calls in flight while the power plugin is toggled, with irregular short
+# pauses (0.05-0.6 s) to land calls in the start() window before the kbd
+# proxy callback. Usage: race2.sh
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-); T=$(date '+%F %T')
+echo "## start $T pid $P"
+for M in org.gnome.SettingsDaemon.Power.Keyboard.StepDown org.gnome.SettingsDaemon.Power.Keyboard.Toggle MIXED; do
+  echo "== $M: 20 calls in flight for 25 s while toggling active 25x (irregular)"
+  if [ $M = MIXED ]; then python3 /tmp/v2/mixrace.py 30 25 & else python3 /tmp/kbdrace.py 20 25 $M & fi
+  R=$!
+  sleep 1
+  for i in $(seq 1 25); do
+    gsettings set $S active false; sleep $(python3 -c 'import random;print(round(random.uniform(0.05,0.5),2))')
+    gsettings set $S active true;  sleep $(python3 -c 'import random;print(round(random.uniform(0.0,0.4),2))')
+  done
+  wait $R
+  echo "  u-s-d pid now: $(pgrep -x unity-settings-) (was $P); NRestarts $(systemctl --user show -p NRestarts --value unity-settings-daemon)"
+done
+gsettings set $S active true
+echo "== journal since $T"
+journalctl --user -u unity-settings-daemon --since "$T" --no-pager | grep -iE "abort|assert|segfault|dumped|critical|signal|core" | cut -c1-220 | sort | uniq -c | head
+journalctl --since "$T" --no-pager | grep -iE "unity-settings.*(segfault|dumped|SIGSEGV|SIGABRT)|systemd-coredump" | cut -c1-220 | head
+echo "  crash file: $(ls -la --time-style=full-iso /var/crash | grep unity-settings)"
+echo "  active: $(gsettings get $S active)"
+---- mixrace.py (verifier 2)
+#!/usr/bin/python3
+# Verifier-2 UNITY-20260928-022: N calls in flight for D seconds, cycling over
+# every method and property of /org/gnome/SettingsDaemon/Power; counts reply
+# kinds and reports the longest reply time. Usage: mixrace.py N D
+import sys, time, collections, itertools
+import gi
+gi.require_version("Gio", "2.0")
+from gi.repository import Gio, GLib
+N, D = int(sys.argv[1]), float(sys.argv[2])
+PW="org.gnome.SettingsDaemon.Power"
+CALLS = [
+ (PW+".Keyboard","StepUp",None),(PW+".Keyboard","StepDown",None),(PW+".Keyboard","Toggle",None),
+ (PW+".Screen","GetPercentage",None),(PW+".Screen","SetPercentage",GLib.Variant("(u)",(50,))),
+ (PW+".Screen","StepUp",None),(PW+".Screen","StepDown",None),
+ (PW,"GetDevices",None),(PW,"GetPrimaryDevice",None),
+ ("org.freedesktop.DBus.Properties","Get",GLib.Variant("(ss)",(PW,"Percentage"))),
+ ("org.freedesktop.DBus.Properties","Get",GLib.Variant("(ss)",(PW,"Icon"))),
+ ("org.freedesktop.DBus.Properties","Get",GLib.Variant("(ss)",(PW,"Tooltip"))),
+ ("org.freedesktop.DBus.Properties","GetAll",GLib.Variant("(s)",(PW,))),
+ ("org.freedesktop.DBus.Introspectable","Introspect",None),
+]
+cyc = itertools.cycle(CALLS)
+bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+loop = GLib.MainLoop()
+counts = collections.Counter(); maxt=[0.0]
+end = time.monotonic() + D
+inflight = [0]
+def done(conn, res, data):
+    key, t0 = data
+    inflight[0] -= 1
+    dt = time.monotonic()-t0; maxt[0]=max(maxt[0],dt)
+    try:
+        conn.call_finish(res); counts[key+":reply"] += 1
+    except GLib.Error as e:
+        m = e.message
+        for k in ("not running","No keyboard backlight","UnknownMethod","NoReply","Timeout","timed out",
+                  "ServiceUnknown","NameHasNoOwner","Disconnected","not available","no primary device","Screen backlight"):
+            if k in m:
+                counts[key+":"+k] += 1
+                if k in ("Timeout","timed out","NoReply","Disconnected"): print("  %s %s at %s" % (k,key,time.strftime("%T")), flush=True)
+                break
+        else: counts[key+":other:"+m[:60]] += 1
+    fire()
+def fire():
+    if time.monotonic() < end:
+        iface, meth, args = next(cyc)
+        key = iface.split(".")[-1]+"."+meth+("("+args.unpack()[-1]+")" if meth=="Get" else "")
+        inflight[0] += 1
+        bus.call(PW, "/org/gnome/SettingsDaemon/Power", iface, meth, args, None,
+                 Gio.DBusCallFlags.NONE, 10000, None, done, (key, time.monotonic()))
+    elif inflight[0] == 0:
+        loop.quit()
+for _ in range(N): fire()
+loop.run()
+for k in sorted(counts): print("   %-60s %d" % (k, counts[k]))
+print("  max reply time: %.3f s" % maxt[0])
+---- toggles.sh (verifier 2)
+#!/bin/sh
+# Verifier-2: 10x on/off back to back (no pause), 5x with 0.1 s, end on true;
+# then u-s-d's logind inhibitors must be back and methods answer.
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-)
+for i in $(seq 1 10); do gsettings set $S active false; gsettings set $S active true; done
+for i in $(seq 1 5); do gsettings set $S active false; sleep 0.1; gsettings set $S active true; sleep 0.1; done
+sleep 5
+echo "  inhibitors of pid $P after toggles (active $(gsettings get $S active)):"
+systemd-inhibit --list --no-legend | awk -v p=$P '$4==p' | sed 's/^/    /'
+busctl call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager ListInhibitors --json=short | python3 -c 'import json,sys; [print("    busctl:",r) for r in json.load(sys.stdin)["data"][0] if r[5]=='"$P"']'
+t0=$(date +%s.%N); r=$(timeout 30 gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.gnome.SettingsDaemon.Power.GetDevices 2>&1 | cut -c1-120); echo "  GetDevices ($(echo "$(date +%s.%N)-$t0"|bc|cut -c1-5) s): $r"
+echo "  pid now $(pgrep -x unity-settings-) (was $P)"
+---- keyboard-toggle-race.sh (card tools/, unchanged)
+#!/bin/sh
+# Verifier UNITY-20260928-022: Keyboard/Screen calls in flight while the
+# plugin is switched on and off (no gdb): does every call get an answer,
+# does the daemon survive the start() window before the kbd proxy is ready?
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-); T=$(date '+%F %T')
+echo "## start $T pid $P"
+for M in org.gnome.SettingsDaemon.Power.Keyboard.StepUp org.gnome.SettingsDaemon.Power.Screen.GetPercentage; do
+  echo "== $M: 20 calls in flight for 20 s while toggling active 15x"
+  python3 /tmp/kbdrace.py 20 20 $M &
+  R=$!
+  sleep 1
+  for i in $(seq 1 15); do gsettings set $S active false; sleep 0.4; gsettings set $S active true; sleep 0.6; done
+  wait $R
+  echo "  u-s-d pid now: $(pgrep -x unity-settings-) (was $P); NRestarts $(systemctl --user show -p NRestarts --value unity-settings-daemon)"
+done
+echo "== journal since $T"
+journalctl --user -u unity-settings-daemon --since "$T" --no-pager | grep -iE "abort|assert|segfault|dumped|critical|signal|core" | cut -c1-220 | sort | uniq -c | head
+journalctl --since "$T" --no-pager | grep -iE "unity-settings.*(segfault|dumped|SIGSEGV|SIGABRT)|systemd-coredump" | cut -c1-220 | head
+echo "  crash files: $(ls /var/crash | grep -c unity-settings)"
+echo "  active: $(gsettings get $S active)"
+
+---- kbdrace.py (card tools/, unchanged)
+#!/usr/bin/python3
+# Verifier UNITY-20260928-022: keep N Keyboard.StepUp calls in flight to the
+# power object for D seconds, count reply kinds. Usage: kbdrace.py N D [method]
+import sys, time, collections
+import gi
+gi.require_version("Gio", "2.0")
+from gi.repository import Gio, GLib
+N, D = int(sys.argv[1]), float(sys.argv[2])
+IFACE, METHOD = (sys.argv[3].rsplit(".", 1) if len(sys.argv) > 3
+                 else ("org.gnome.SettingsDaemon.Power.Keyboard", "StepUp"))
+bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+loop = GLib.MainLoop()
+counts = collections.Counter()
+end = time.monotonic() + D
+inflight = [0]
+def done(conn, res, _):
+    inflight[0] -= 1
+    try:
+        conn.call_finish(res); counts["reply"] += 1
+    except GLib.Error as e:
+        m = e.message
+        for k in ("not running", "UnknownMethod", "NoReply", "Timeout", "timed out",
+                  "ServiceUnknown", "NameHasNoOwner", "Disconnected"):
+            if k in m:
+                counts[k] += 1
+                if k in ("Timeout","timed out","NoReply") and counts[k] in (1,): print("  first %s at %s" % (k, time.strftime("%T")), flush=True)
+                break
+        else: counts["other:" + m[:80]] += 1
+    fire()
+def fire():
+    if time.monotonic() < end:
+        inflight[0] += 1
+        bus.call("org.gnome.SettingsDaemon.Power", "/org/gnome/SettingsDaemon/Power",
+                 IFACE, METHOD, None, None, Gio.DBusCallFlags.NONE, 10000, None, done, None)
+    elif inflight[0] == 0:
+        loop.quit()
+for _ in range(N): fire()
+loop.run()
+print("  calls by result:", dict(counts))
+
+---- power-dbus-checks.sh (card tools/, unchanged)
+#!/bin/sh
+# UNITY-20260928-022: D-Bus behaviour of the power plugin, running and
+# stopped, and the logind inhibitors around quick on/off toggles.
+# Run as mike over ssh. Prints one line per check.
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings- | head -1)
+echo "u-s-d $(dpkg-query -W -f='${Version}' unity-settings-daemon) pid $P"
+T=$(date +%T)
+get() { t0=$(date +%s.%N); r=$(timeout 40 gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power "$1" 2>&1 | head -1 | cut -c1-110); echo "  Get $1 ($(echo "$(date +%s.%N) - $t0" | bc | cut -c1-5) s): $r"; }
+meth() { t0=$(date +%s.%N); r=$(timeout 40 gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.gnome.SettingsDaemon.Power.Screen.GetPercentage 2>&1 | head -1 | cut -c1-110); echo "  Screen.GetPercentage ($(echo "$(date +%s.%N) - $t0" | bc | cut -c1-5) s): $r"; }
+alive() { echo "  u-s-d pid $P alive: $(kill -0 $P 2>/dev/null && echo yes || echo no)"; }
+inh() { Q=$(pgrep -x unity-settings- | head -1); echo "  u-s-d (pid $Q) logind inhibitors: $(systemd-inhibit --list --no-legend | awk -v p=$Q '$4==p' | awk '{$1=$2=$3=$4=""; print}' | sed 's/^ *//' | tr '\n' ';' | cut -c1-200)"; }
+echo "== plugin running"; get Percentage; get Icon; meth; alive; inh
+gsettings set $S active false; sleep 3
+echo "== plugin stopped"; get Percentage; get Icon; meth; alive
+echo "== quick on/off x3, then on"
+for i in 1 2 3; do gsettings set $S active true; gsettings set $S active false; sleep 3; done
+inh
+gsettings set $S active true; sleep 5
+echo "== plugin running again"; get Icon; meth; alive; inh
+echo "journal since $T: $(journalctl --since $T --no-pager | grep -cE 'unity-settings.*(ERROR|assert|dumped|segfault)')"
+---- finalized-unique-name.sh (card tools/, unchanged)
+#!/bin/sh
+# UNITY-20260928-022: after the forced finalize, call the power object through
+# u-s-d's unique bus name (the well-known name is released by then), so the
+# call reaches the connection: GDBus must answer from the registration table
+# (object gone) instead of dispatching to freed memory. Run as mike over ssh
+# with the perturb drop-in.
+. ~/envt.sh
+P=$(pgrep -x unity-settings- | head -1)
+U=$(gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.GetNameOwner org.gnome.SettingsDaemon.Power | grep -o ":[0-9.]*")
+echo "u-s-d $(dpkg-query -W -f='${Version}' unity-settings-daemon) pid $P unique name $U"
+cat > /tmp/fu.gdb <<'G'
+set pagination off
+set confirm off
+handle SIGCONT nostop noprint pass
+call (void) gnome_settings_manager_stop (gnome_settings_manager_new ())
+echo STOP-CALLED\n
+continue
+echo AFTER-CONTINUE\n
+bt 6
+G
+sudo -n timeout 40 stdbuf -oL gdb -q -batch -p $P -x /tmp/fu.gdb > /tmp/fu.txt 2>&1 &
+G=$!
+sleep 12
+for m in org.gnome.SettingsDaemon.Power.Screen.GetPercentage org.freedesktop.DBus.Properties.Get; do
+  a=""; [ $m = org.freedesktop.DBus.Properties.Get ] && a="org.gnome.SettingsDaemon.Power Percentage"
+  echo "  $m via $U: $(timeout 30 gdbus call --session --dest $U --object-path /org/gnome/SettingsDaemon/Power --method $m $a 2>&1 | head -1 | cut -c1-120)"
+done
+sleep 3; sudo -n kill -INT $G 2>/dev/null; wait $G 2>/dev/null
+grep -E "STOP-CALLED|AFTER-CONTINUE|SIGSEGV|SIGABRT|^#0" /tmp/fu.txt | cut -c1-140
+echo "u-s-d pid $P alive: $(kill -0 $P 2>/dev/null && echo yes || echo no); crash reports: $(ls /var/crash | grep -c unity-settings)"

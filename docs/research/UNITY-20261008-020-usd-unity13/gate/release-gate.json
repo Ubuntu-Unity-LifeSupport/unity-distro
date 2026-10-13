@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-020",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity13",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-usd13/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20261008-020",
+  "source_commit": "5a0a30078ceb5dc75754104395605616c1e14016",
+  "source_tree_hash": "0725b5cb03fc6849834b7bb9e74815d5cb8349a0",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-020"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-020-usd-unity13/build/UNITY-20261008-020-unity-settings-daemon-build-manifest.json",
+    "sha256": "c5046af644ad069adbf6301fc48b10be33eedb742130b0eb6fbd4daaf25ad70c"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-020-usd-unity13/gate/evidence-manifest.json",
+    "sha256": "9a015af493bc632bc79299ebf670e5a3a4df70da2128252fe411be236d88b73f"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-020-usd-unity13/gate/target-test.txt",
+        "sha256": "566f14e22c0989a328e0beff042b789299bc6307d9688b5068f9cb78e800db72"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity13_amd64.deb": "1f4ff38a185aacd62f82accfad77bf8ddcc269da31d8451848392724d5b10d2a",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity13_all.deb": "0b025eb66b61bfd60cd40a7004f63f877c71a010424fb2c021a1236f488e38a0",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity13_amd64.deb": "b4d5fdc8cd13ff10067064575e0d44673a6ac4191c6012c93abfb89b4528e1bf"
+      }
+    }
+  }
+}

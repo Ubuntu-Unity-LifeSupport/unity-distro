@@ -1,0 +1,28 @@
+# greeter-restart.sh on target2 at lightdm-gtk-greeter (mike's graphical session
+# terminated), 2026-09-28 ~13:26Z. indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1+unity3
+# (sha256 52576c1d..., same file as in the rehearsal incoming/), run as lightdm on
+# the greeter's bus. Lines: time (EEST, guest clock), greeter's input-sources
+# sources and current, printed on change.
+== run 1
+service pid 6184; before: [('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+16:25:59.162 RESTART accounts-daemon
+16:25:59.965 [('xkb', 'gb')] current=uint32 0
+16:26:00.358 [('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service alive
+== run 2
+16:26:24.081 RESTART accounts-daemon
+16:26:24.421 [('xkb', 'gb')] current=uint32 0
+16:26:24.641 [('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service alive
+== run 3
+16:26:43.044 RESTART accounts-daemon
+16:26:43.320 [('xkb', 'gb')] current=uint32 0
+16:26:43.621 [('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service alive
+# No CRITICAL, WARNING or segfault in the service's output. Its accountsservice
+# debug output for run 3: the daemon's Changed arrives at 16:26:43.570-.580
+# ("sending user-changed signal for user ik024test", "... mike"); the list is
+# whole again at 43.621. The indicator is not connected to ActUser "changed";
+# it re-runs migrate_input_sources() on LightDM.UserList user-changed, which
+# liblightdm emits for the same D-Bus Changed signal (inference from timing
+# and main.vala:433).

@@ -1,0 +1,4 @@
+before: nemo.desktop
+now: test-fm.desktop
+compiz 17564 -> 17564; unity7 active; crash files: 
+restored: nemo.desktop

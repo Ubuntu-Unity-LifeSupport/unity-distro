@@ -1,0 +1,25 @@
+commit e6576ce78bc8da61e716ff96df6d1d8f61daf666
+Author: NeiroNext <mihail.rozshko@gmail.com>
+Date:   Mon Sep 28 10:12:31 2026 +0000
+
+    CONTROL (not for release): +unity3 without the due-date fallback
+
+diff --git a/src/engine-eds.cpp b/src/engine-eds.cpp
+index 3bd921d..8f746cc 100644
+--- a/src/engine-eds.cpp
++++ b/src/engine-eds.cpp
+@@ -1038,14 +1038,6 @@ private:
+         baseline.begin = datetime_from_component_date_time(client, cancellable, eccdt_tmp, gtz);
+         e_cal_component_datetime_free(eccdt_tmp);
+ 
+-        // a task may have only a due date (Nextcloud Tasks), place it there
+-        if (!baseline.begin.is_set() && e_cal_component_get_vtype(component) == E_CAL_COMPONENT_TODO)
+-        {
+-            eccdt_tmp = e_cal_component_get_due(component);
+-            baseline.begin = datetime_from_component_date_time(client, cancellable, eccdt_tmp, gtz);
+-            e_cal_component_datetime_free(eccdt_tmp);
+-        }
+-
+         // get appointment.end
+         eccdt_tmp = e_cal_component_get_dtend(component);
+         if (eccdt_tmp != nullptr) {

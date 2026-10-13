@@ -1,0 +1,4 @@
++unity9, toggle unit v2 with the fixed harness, 3 boots: STOP via the GSettings signal path 314-504 ms AFTER ON-BUS-GOTTEN in every boot (active=false written at +10.8 s inside the ~6 s window, processed when the main loop resumed, after the g_bus_get completion), Power owned 3/3. The key path cannot lose the registration on +unity9.
+boot 1: (':1.39',); stops: 1; toggled
+boot 2: (':1.50',); stops: 1; toggled
+boot 3: (':1.31',); stops: 1; toggled

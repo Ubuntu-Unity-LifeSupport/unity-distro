@@ -1,0 +1,1056 @@
+signal time=1791448150.911261 sender=org.freedesktop.DBus -> destination=:1.99 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.99"
+signal time=1791448150.911317 sender=org.freedesktop.DBus -> destination=:1.99 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.99"
+method call time=1791448152.081354 sender=:1.50 -> destination=:1.27 serial=447 path=/org/gtk/vfs/metadata; interface=org.gtk.vfs.Metadata; member=GetTreeFromDevice
+   uint32 0
+   uint32 36
+method call time=1791448152.090922 sender=:1.50 -> destination=:1.27 serial=448 path=/org/gtk/vfs/metadata; interface=org.gtk.vfs.Metadata; member=Remove
+   array of bytes "/home/mike/.local/share/gvfs-metadata/root" + \0
+   array of bytes "/tmp/gdk-pixbuf-glycin-tmp.OOYVW3" + \0
+method call time=1791448152.092705 sender=:1.50 -> destination=:1.27 serial=449 path=/org/gtk/vfs/metadata; interface=org.gtk.vfs.Metadata; member=GetTreeFromDevice
+   uint32 0
+   uint32 36
+method call time=1791448152.095892 sender=:1.50 -> destination=:1.27 serial=450 path=/org/gtk/vfs/metadata; interface=org.gtk.vfs.Metadata; member=Remove
+   array of bytes "/home/mike/.local/share/gvfs-metadata/root" + \0
+   array of bytes "/tmp/gdk-pixbuf-glycin-tmp.HVNTW3" + \0
+signal time=1791448152.097824 sender=:1.50 -> destination=(null destination) serial=451 path=/org/ayatana/bamf/window/60817409; interface=org.ayatana.bamf.view; member=NameChanged
+   string ""
+   string "LibreOffice"
+signal time=1791448152.099270 sender=:1.50 -> destination=(null destination) serial=452 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewOpened
+   string "/org/ayatana/bamf/window/60817409"
+   string "window"
+signal time=1791448152.100801 sender=:1.50 -> destination=(null destination) serial=453 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewOpened
+   string "/org/ayatana/bamf/application/0x6175bf569c20"
+   string "application"
+signal time=1791448152.101001 sender=:1.50 -> destination=(null destination) serial=454 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.view; member=ChildAdded
+   string "/org/ayatana/bamf/window/60817409"
+signal time=1791448152.101141 sender=:1.50 -> destination=(null destination) serial=455 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.application; member=WindowAdded
+   string "/org/ayatana/bamf/window/60817409"
+signal time=1791448152.101294 sender=:1.50 -> destination=(null destination) serial=456 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.view; member=RunningChanged
+   boolean true
+signal time=1791448152.102078 sender=:1.50 -> destination=(null destination) serial=457 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.view; member=NameChanged
+   string ""
+   string "LibreOffice"
+signal time=1791448152.102730 sender=:1.50 -> destination=(null destination) serial=458 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=StackingOrderChanged
+signal time=1791448152.103225 sender=:1.50 -> destination=(null destination) serial=459 path=/org/ayatana/bamf/window/60817409; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice"
+      )
+   ]
+   array [
+   ]
+method return time=1791448152.103641 sender=:1.50 -> destination=:1.43 serial=460 reply_serial=77
+   uint32 60817409
+signal time=1791448152.103973 sender=:1.50 -> destination=(null destination) serial=461 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice"
+      )
+      dict entry(
+         string "Icon"
+         variant             string "application-default-icon"
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+method return time=1791448152.104226 sender=:1.50 -> destination=:1.43 serial=462 reply_serial=78
+   array [
+      string "/org/ayatana/bamf/application/0x6175bf569c20"
+   ]
+method return time=1791448152.107029 sender=:1.50 -> destination=:1.43 serial=463 reply_serial=79
+   string ""
+signal time=1791448152.107715 sender=:1.43 -> destination=(null destination) serial=80 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=WindowCreated
+   uint32 60817409
+   string "60817409"
+method call time=1791448152.108132 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=79 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowBusAddress
+   uint32 60817409
+error time=1791448152.109287 sender=:1.50 -> destination=:1.92 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=83
+   string "Не существует интерфейса “com.canonical.dbusmenu” на объекте по пути /org/ayatana/bamf/window/60817409"
+method return time=1791448152.115178 sender=:1.50 -> destination=:1.90 serial=465 reply_serial=1031
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice"
+      )
+      dict entry(
+         string "Icon"
+         variant             string ""
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean false
+      )
+      dict entry(
+         string "Running"
+         variant             boolean false
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+   ]
+method return time=1791448152.118840 sender=:1.50 -> destination=:1.90 serial=466 reply_serial=1036
+   array [
+   ]
+method return time=1791448152.119376 sender=:1.50 -> destination=:1.90 serial=467 reply_serial=1037
+   uint32 60817409
+method return time=1791448152.120242 sender=:1.50 -> destination=:1.90 serial=468 reply_serial=1038
+   uint32 7
+method return time=1791448152.120932 sender=:1.50 -> destination=:1.90 serial=469 reply_serial=1039
+   int32 0
+method return time=1791448152.121571 sender=:1.50 -> destination=:1.90 serial=470 reply_serial=1040
+   int32 0
+method return time=1791448152.125542 sender=:1.50 -> destination=:1.90 serial=471 reply_serial=1045
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice"
+      )
+      dict entry(
+         string "Icon"
+         variant             string "application-default-icon"
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean false
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+   ]
+method return time=1791448152.135167 sender=:1.50 -> destination=:1.90 serial=472 reply_serial=1050
+   array [
+   ]
+method return time=1791448152.135189 sender=:1.50 -> destination=:1.90 serial=473 reply_serial=1051
+   array [
+      string "/org/ayatana/bamf/window/60817409"
+   ]
+method return time=1791448152.135195 sender=:1.50 -> destination=:1.90 serial=474 reply_serial=1052
+   string ""
+method return time=1791448152.135198 sender=:1.50 -> destination=:1.90 serial=475 reply_serial=1053
+   string ""
+method return time=1791448152.135200 sender=:1.50 -> destination=:1.90 serial=476 reply_serial=1054
+   string "system"
+method return time=1791448152.135203 sender=:1.50 -> destination=:1.90 serial=477 reply_serial=1055
+   string ""
+method return time=1791448152.135206 sender=:1.50 -> destination=:1.90 serial=478 reply_serial=1056
+   string ""
+method return time=1791448152.135216 sender=:1.50 -> destination=:1.90 serial=479 reply_serial=1057
+   string ""
+method return time=1791448152.135219 sender=:1.50 -> destination=:1.90 serial=480 reply_serial=1058
+   string ""
+method return time=1791448152.135222 sender=:1.50 -> destination=:1.90 serial=481 reply_serial=1059
+   string ""
+method return time=1791448152.135224 sender=:1.50 -> destination=:1.90 serial=482 reply_serial=1060
+   string ""
+method return time=1791448152.139205 sender=:1.50 -> destination=:1.88 serial=483 reply_serial=605
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice"
+      )
+      dict entry(
+         string "Icon"
+         variant             string ""
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean false
+      )
+      dict entry(
+         string "Running"
+         variant             boolean false
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+   ]
+method return time=1791448152.141089 sender=:1.50 -> destination=:1.88 serial=484 reply_serial=610
+   array [
+   ]
+method return time=1791448152.141867 sender=:1.50 -> destination=:1.88 serial=485 reply_serial=611
+   uint32 60817409
+method return time=1791448152.142086 sender=:1.50 -> destination=:1.88 serial=486 reply_serial=612
+   uint32 7
+method return time=1791448152.144061 sender=:1.50 -> destination=:1.88 serial=487 reply_serial=613
+   int32 0
+method return time=1791448152.152595 sender=:1.50 -> destination=:1.88 serial=488 reply_serial=614
+   int32 0
+method return time=1791448152.152618 sender=:1.50 -> destination=:1.88 serial=489 reply_serial=615
+   string ""
+method return time=1791448152.152622 sender=:1.50 -> destination=:1.88 serial=490 reply_serial=616
+   string ""
+method return time=1791448152.152625 sender=:1.50 -> destination=:1.88 serial=491 reply_serial=621
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice"
+      )
+      dict entry(
+         string "Icon"
+         variant             string "application-default-icon"
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean false
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+   ]
+method return time=1791448152.152661 sender=:1.50 -> destination=:1.88 serial=492 reply_serial=626
+   array [
+   ]
+method return time=1791448152.152664 sender=:1.50 -> destination=:1.88 serial=493 reply_serial=627
+   array [
+      string "/org/ayatana/bamf/window/60817409"
+   ]
+method return time=1791448152.152669 sender=:1.50 -> destination=:1.88 serial=494 reply_serial=628
+   string ""
+method call time=1791448152.152672 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=85 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowProperties
+   uint32 60817409
+   string "60817409"
+   array [
+      string "_GTK_UNIQUE_BUS_NAME"
+      string "_GTK_APP_MENU_OBJECT_PATH"
+      string "_GTK_MENUBAR_OBJECT_PATH"
+      string "_GTK_APPLICATION_OBJECT_PATH"
+      string "_GTK_WINDOW_OBJECT_PATH"
+      string "_UNITY_OBJECT_PATH"
+   ]
+method return time=1791448152.153269 sender=:1.50 -> destination=:1.43 serial=495 reply_serial=82
+   string ""
+method return time=1791448152.154216 sender=:1.50 -> destination=:1.43 serial=496 reply_serial=83
+   string ""
+method return time=1791448152.155956 sender=:1.50 -> destination=:1.43 serial=497 reply_serial=84
+   string ""
+method return time=1791448152.157100 sender=:1.50 -> destination=:1.43 serial=498 reply_serial=85
+   string ""
+method return time=1791448152.158266 sender=:1.50 -> destination=:1.43 serial=499 reply_serial=86
+   string ""
+method return time=1791448152.159584 sender=:1.50 -> destination=:1.43 serial=500 reply_serial=87
+   string ""
+signal time=1791448153.437619 sender=:1.50 -> destination=(null destination) serial=501 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewClosed
+   string "/org/ayatana/bamf/window/60817409"
+   string "window"
+signal time=1791448153.445497 sender=:1.50 -> destination=(null destination) serial=502 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.view; member=ChildRemoved
+   string "/org/ayatana/bamf/window/60817409"
+signal time=1791448153.445517 sender=:1.50 -> destination=(null destination) serial=503 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.application; member=WindowRemoved
+   string "/org/ayatana/bamf/window/60817409"
+signal time=1791448153.445520 sender=:1.50 -> destination=(null destination) serial=504 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.view; member=RunningChanged
+   boolean false
+signal time=1791448153.445523 sender=:1.50 -> destination=(null destination) serial=505 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewClosed
+   string "/org/ayatana/bamf/application/0x6175bf569c20"
+   string "application"
+signal time=1791448153.445527 sender=:1.50 -> destination=(null destination) serial=506 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Running"
+         variant             boolean false
+      )
+   ]
+   array [
+   ]
+signal time=1791448153.445540 sender=:1.50 -> destination=(null destination) serial=507 path=/org/ayatana/bamf/application/0x6175bf569c20; interface=org.ayatana.bamf.view; member=Closed
+signal time=1791448153.445542 sender=:1.50 -> destination=(null destination) serial=508 path=/org/ayatana/bamf/window/60817409; interface=org.ayatana.bamf.view; member=Closed
+signal time=1791448153.445544 sender=:1.50 -> destination=(null destination) serial=509 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=StackingOrderChanged
+signal time=1791448153.445545 sender=:1.43 -> destination=(null destination) serial=89 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=WindowDestroyed
+   uint32 60817409
+   string "60817409"
+signal time=1791448153.787929 sender=:1.50 -> destination=(null destination) serial=510 path=/org/ayatana/bamf/window/62914596; interface=org.ayatana.bamf.view; member=NameChanged
+   string ""
+   string "LibreOffice 26.2"
+signal time=1791448153.789013 sender=:1.50 -> destination=(null destination) serial=511 path=/org/ayatana/bamf/window/62914596; interface=org.ayatana.bamf.view; member=UserVisibleChanged
+   boolean true
+signal time=1791448153.789031 sender=:1.50 -> destination=(null destination) serial=512 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewOpened
+   string "/org/ayatana/bamf/window/62914596"
+   string "window"
+signal time=1791448153.806964 sender=:1.50 -> destination=(null destination) serial=513 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewOpened
+   string "/org/ayatana/bamf/application/0x6175bf621950"
+   string "application"
+signal time=1791448153.806988 sender=:1.50 -> destination=(null destination) serial=514 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=ChildAdded
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448153.806991 sender=:1.50 -> destination=(null destination) serial=515 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.application; member=WindowAdded
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448153.806994 sender=:1.50 -> destination=(null destination) serial=516 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=UserVisibleChanged
+   boolean true
+signal time=1791448153.807006 sender=:1.50 -> destination=(null destination) serial=517 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=RunningChanged
+   boolean true
+signal time=1791448153.833973 sender=:1.50 -> destination=(null destination) serial=518 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=NameChanged
+   string ""
+   string "LibreOffice 26.2"
+signal time=1791448153.834005 sender=:1.50 -> destination=(null destination) serial=519 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=StackingOrderChanged
+signal time=1791448153.834007 sender=:1.50 -> destination=(null destination) serial=520 path=/org/ayatana/bamf/window/62914596; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice 26.2"
+      )
+   ]
+   array [
+   ]
+method return time=1791448153.834024 sender=:1.50 -> destination=:1.43 serial=521 reply_serial=90
+   uint32 62914596
+signal time=1791448153.834027 sender=:1.50 -> destination=(null destination) serial=522 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice 26.2"
+      )
+      dict entry(
+         string "Icon"
+         variant             string "/tmp/.bamficonHZI0W3"
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+method return time=1791448153.834052 sender=:1.50 -> destination=:1.88 serial=523 reply_serial=643
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice 26.2"
+      )
+      dict entry(
+         string "Icon"
+         variant             string ""
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+      dict entry(
+         string "Running"
+         variant             boolean false
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+   ]
+signal time=1791448153.876038 sender=:1.50 -> destination=(null destination) serial=524 path=/org/ayatana/bamf/window/35651624; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+   ]
+   array [
+   ]
+signal time=1791448153.876160 sender=:1.50 -> destination=(null destination) serial=525 path=/org/ayatana/bamf/window/35651624; interface=org.ayatana.bamf.view; member=ActiveChanged
+   boolean false
+signal time=1791448153.878016 sender=:1.50 -> destination=(null destination) serial=526 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ActiveWindowChanged
+   string "/org/ayatana/bamf/window/35651624"
+   string ""
+signal time=1791448153.878035 sender=:1.50 -> destination=(null destination) serial=527 path=/org/ayatana/bamf/window/62914596; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Active"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+signal time=1791448153.878048 sender=:1.50 -> destination=(null destination) serial=528 path=/org/ayatana/bamf/window/62914596; interface=org.ayatana.bamf.view; member=ActiveChanged
+   boolean true
+signal time=1791448153.878061 sender=:1.50 -> destination=(null destination) serial=529 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ActiveWindowChanged
+   string ""
+   string "/org/ayatana/bamf/window/62914596"
+method return time=1791448153.878065 sender=:1.50 -> destination=:1.43 serial=530 reply_serial=91
+   array [
+      string "/org/ayatana/bamf/application/0x6175bf621950"
+   ]
+method return time=1791448153.878151 sender=:1.50 -> destination=:1.88 serial=531 reply_serial=648
+   array [
+   ]
+method return time=1791448153.878973 sender=:1.50 -> destination=:1.90 serial=532 reply_serial=1069
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice 26.2"
+      )
+      dict entry(
+         string "Icon"
+         variant             string ""
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+      dict entry(
+         string "Running"
+         variant             boolean false
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean true
+      )
+   ]
+signal time=1791448153.879127 sender=:1.50 -> destination=(null destination) serial=533 path=/org/ayatana/bamf/window/62914596; interface=com.canonical.dbusmenu; member=LayoutUpdated
+   uint32 2
+   int32 0
+signal time=1791448153.879255 sender=:1.50 -> destination=(null destination) serial=534 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Active"
+         variant             boolean true
+      )
+   ]
+   array [
+   ]
+signal time=1791448153.891375 sender=:1.50 -> destination=(null destination) serial=535 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=ActiveChanged
+   boolean true
+signal time=1791448153.893738 sender=:1.50 -> destination=(null destination) serial=536 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ActiveApplicationChanged
+   string ""
+   string "/org/ayatana/bamf/application/0x6175bf621950"
+signal time=1791448153.893762 sender=:1.50 -> destination=(null destination) serial=537 path=/org/ayatana/bamf/window/62914596; interface=com.canonical.dbusmenu; member=LayoutUpdated
+   uint32 2
+   int32 0
+method return time=1791448153.893767 sender=:1.50 -> destination=:1.43 serial=538 reply_serial=92
+   string ""
+signal time=1791448153.893770 sender=:1.43 -> destination=(null destination) serial=93 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=WindowCreated
+   uint32 62914596
+   string "62914596"
+signal time=1791448153.893775 sender=:1.43 -> destination=(null destination) serial=94 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=FocusedWindowChanged
+   uint32 62914596
+   string "62914596"
+   uint32 0
+signal time=1791448153.893780 sender=:1.50 -> destination=(null destination) serial=539 path=/org/ayatana/bamf/window/62914596; interface=org.ayatana.bamf.view; member=NameChanged
+   string "LibreOffice 26.2"
+   string "Без имени 1 — LibreOffice Writer"
+signal time=1791448153.893784 sender=:1.50 -> destination=(null destination) serial=540 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=NameChanged
+   string "LibreOffice 26.2"
+   string "Без имени 1 — LibreOffice Writer"
+method call time=1791448153.893805 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=89 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowBusAddress
+   uint32 62914596
+signal time=1791448153.902015 sender=:1.50 -> destination=(null destination) serial=541 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=ChildRemoved
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448153.902052 sender=:1.50 -> destination=(null destination) serial=542 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.application; member=WindowRemoved
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448153.902055 sender=:1.50 -> destination=(null destination) serial=543 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=UserVisibleChanged
+   boolean false
+signal time=1791448153.902058 sender=:1.50 -> destination=(null destination) serial=544 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=RunningChanged
+   boolean false
+signal time=1791448153.902061 sender=:1.50 -> destination=(null destination) serial=545 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewClosed
+   string "/org/ayatana/bamf/application/0x6175bf621950"
+   string "application"
+signal time=1791448153.902065 sender=:1.50 -> destination=(null destination) serial=546 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Active"
+         variant             boolean false
+      )
+      dict entry(
+         string "Running"
+         variant             boolean false
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean false
+      )
+      dict entry(
+         string "Name"
+         variant             string "Без имени 1 — LibreOffice Writer"
+      )
+   ]
+   array [
+   ]
+signal time=1791448153.902091 sender=:1.50 -> destination=(null destination) serial=547 path=/org/ayatana/bamf/application/0x6175bf621950; interface=org.ayatana.bamf.view; member=Closed
+signal time=1791448153.902093 sender=:1.50 -> destination=(null destination) serial=548 path=/org/ayatana/bamf/application/746707297; interface=org.ayatana.bamf.view; member=NameChanged
+   string ""
+   string "LibreOffice Writer"
+signal time=1791448153.902097 sender=:1.50 -> destination=(null destination) serial=549 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ViewOpened
+   string "/org/ayatana/bamf/application/746707297"
+   string "application"
+signal time=1791448153.902100 sender=:1.50 -> destination=(null destination) serial=550 path=/org/ayatana/bamf/application/746707297; interface=org.ayatana.bamf.view; member=ChildAdded
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448153.902103 sender=:1.50 -> destination=(null destination) serial=551 path=/org/ayatana/bamf/application/746707297; interface=org.ayatana.bamf.application; member=WindowAdded
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448153.902106 sender=:1.50 -> destination=(null destination) serial=552 path=/org/ayatana/bamf/application/746707297; interface=org.ayatana.bamf.view; member=UserVisibleChanged
+   boolean true
+signal time=1791448153.902108 sender=:1.50 -> destination=(null destination) serial=553 path=/org/ayatana/bamf/application/746707297; interface=org.ayatana.bamf.view; member=RunningChanged
+   boolean true
+method return time=1791448153.902111 sender=:1.50 -> destination=:1.88 serial=554 reply_serial=649
+   uint32 62914596
+signal time=1791448153.902114 sender=:1.50 -> destination=(null destination) serial=555 path=/org/ayatana/bamf/window/62914596; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Name"
+         variant             string "Без имени 1 — LibreOffice Writer"
+      )
+   ]
+   array [
+   ]
+method return time=1791448153.902125 sender=:1.50 -> destination=:1.90 serial=556 reply_serial=1074
+   array [
+   ]
+signal time=1791448153.902128 sender=:1.50 -> destination=(null destination) serial=557 path=/org/ayatana/bamf/application/746707297; interface=org.freedesktop.DBus.Properties; member=PropertiesChanged
+   string "org.ayatana.bamf.view"
+   array [
+      dict entry(
+         string "Active"
+         variant             boolean true
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+      dict entry(
+         string "Icon"
+         variant             string "libreoffice-writer"
+      )
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice Writer"
+      )
+   ]
+   array [
+   ]
+signal time=1791448153.902470 sender=:1.50 -> destination=(null destination) serial=558 path=/org/ayatana/bamf/application/746707297; interface=org.ayatana.bamf.view; member=ActiveChanged
+   boolean true
+signal time=1791448153.902473 sender=:1.50 -> destination=(null destination) serial=559 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=ActiveApplicationChanged
+   string ""
+   string "/org/ayatana/bamf/application/746707297"
+method return time=1791448153.903383 sender=:1.50 -> destination=:1.92 serial=560 reply_serial=93
+   uint32 2
+   struct {
+      int32 0
+      array [
+         dict entry(
+            string "children-display"
+            variant                string "submenu"
+         )
+      ]
+      array [
+         variant             struct {
+               int32 36
+               array [
+                  dict entry(
+                     string "children-display"
+                     variant                         string "submenu"
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "Window actions"
+                  )
+               ]
+               array [
+               ]
+            }
+      ]
+   }
+method return time=1791448153.905160 sender=:1.50 -> destination=:1.88 serial=561 reply_serial=650
+   uint32 0
+method return time=1791448153.905177 sender=:1.50 -> destination=:1.90 serial=562 reply_serial=1075
+   uint32 62914596
+method return time=1791448153.906663 sender=:1.50 -> destination=:1.88 serial=563 reply_serial=651
+   int32 0
+method return time=1791448153.906681 sender=:1.50 -> destination=:1.90 serial=564 reply_serial=1076
+   uint32 0
+method return time=1791448153.909288 sender=:1.50 -> destination=:1.88 serial=565 reply_serial=652
+   int32 3
+method return time=1791448153.913740 sender=:1.50 -> destination=:1.88 serial=566 reply_serial=653
+   string ":1.100"
+method return time=1791448153.913762 sender=:1.50 -> destination=:1.90 serial=567 reply_serial=1077
+   int32 0
+method return time=1791448153.918139 sender=:1.50 -> destination=:1.88 serial=568 reply_serial=654
+   string "/org/ayatana/bamf/application/746707297"
+method return time=1791448153.919462 sender=:1.50 -> destination=:1.90 serial=569 reply_serial=1078
+   int32 3
+method return time=1791448153.925753 sender=:1.50 -> destination=:1.88 serial=570 reply_serial=659
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice Writer"
+      )
+      dict entry(
+         string "Icon"
+         variant             string "libreoffice-writer"
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean true
+      )
+   ]
+method return time=1791448153.933798 sender=:1.50 -> destination=:1.88 serial=571 reply_serial=664
+   array [
+   ]
+method return time=1791448153.937292 sender=:1.50 -> destination=:1.88 serial=572 reply_serial=665
+   array [
+      string "/org/ayatana/bamf/window/62914596"
+   ]
+method return time=1791448153.938944 sender=:1.50 -> destination=:1.88 serial=573 reply_serial=666
+   string "/usr/share/applications/libreoffice-writer.desktop"
+error time=1791448153.940767 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1083
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.941515 sender=:1.50 -> destination=:1.88 serial=575 reply_serial=667
+   string ":1.100"
+method return time=1791448153.946627 sender=:1.50 -> destination=:1.88 serial=576 reply_serial=668
+   string ""
+error time=1791448153.949973 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1088
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.953620 sender=:1.50 -> destination=:1.88 serial=578 reply_serial=669
+   string "/org/libreoffice/window/62914596/menus/menubar"
+error time=1791448153.954309 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1089
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.956648 sender=:1.50 -> destination=:1.88 serial=580 reply_serial=670
+   string "/org/libreoffice"
+error time=1791448153.958242 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1090
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.961099 sender=:1.50 -> destination=:1.88 serial=582 reply_serial=671
+   string "/org/libreoffice/window/62914596"
+error time=1791448153.963158 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1091
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.965071 sender=:1.50 -> destination=:1.88 serial=584 reply_serial=672
+   string "/org/appmenu/gtk/window/2"
+error time=1791448153.966057 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1092
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+error time=1791448153.968454 sender=:1.50 -> destination=:1.88 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=685
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+error time=1791448153.968988 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1093
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+error time=1791448153.970854 sender=:1.50 -> destination=:1.88 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=690
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+error time=1791448153.971731 sender=:1.50 -> destination=:1.88 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=691
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+error time=1791448153.972247 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1094
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+error time=1791448153.972604 sender=:1.50 -> destination=:1.88 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=692
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method call time=1791448153.973593 sender=:1.92 -> destination=com.canonical.Unity.WindowStack serial=95 path=/com/canonical/Unity/WindowStack; interface=com.canonical.Unity.WindowStack; member=GetWindowProperties
+   uint32 62914596
+   string "62914596"
+   array [
+      string "_GTK_UNIQUE_BUS_NAME"
+      string "_GTK_APP_MENU_OBJECT_PATH"
+      string "_GTK_MENUBAR_OBJECT_PATH"
+      string "_GTK_APPLICATION_OBJECT_PATH"
+      string "_GTK_WINDOW_OBJECT_PATH"
+      string "_UNITY_OBJECT_PATH"
+   ]
+method return time=1791448153.974818 sender=:1.50 -> destination=:1.43 serial=592 reply_serial=96
+   string ":1.100"
+error time=1791448153.975676 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1095
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.975997 sender=:1.50 -> destination=:1.43 serial=594 reply_serial=97
+   string ""
+error time=1791448153.976764 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1096
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.977061 sender=:1.50 -> destination=:1.43 serial=596 reply_serial=98
+   string "/org/libreoffice/window/62914596/menus/menubar"
+error time=1791448153.977859 sender=:1.50 -> destination=:1.90 error_name=org.freedesktop.DBus.Error.UnknownMethod reply_serial=1097
+   string "Объект по пути «/org/ayatana/bamf/application/0x6175bf621950» не существует"
+method return time=1791448153.978876 sender=:1.50 -> destination=:1.43 serial=598 reply_serial=99
+   string "/org/libreoffice"
+method return time=1791448153.979740 sender=:1.50 -> destination=:1.43 serial=599 reply_serial=100
+   string "/org/libreoffice/window/62914596"
+method return time=1791448153.980732 sender=:1.50 -> destination=:1.43 serial=600 reply_serial=101
+   string "/org/appmenu/gtk/window/2"
+method return time=1791448153.983907 sender=:1.50 -> destination=:1.90 serial=601 reply_serial=1098
+   string "/org/ayatana/bamf/application/746707297"
+method return time=1791448153.987341 sender=:1.50 -> destination=:1.92 serial=602 reply_serial=97
+   uint32 2
+   struct {
+      int32 36
+      array [
+         dict entry(
+            string "children-display"
+            variant                string "submenu"
+         )
+         dict entry(
+            string "label"
+            variant                string "Window actions"
+         )
+      ]
+      array [
+         variant             struct {
+               int32 37
+               array [
+                  dict entry(
+                     string "label"
+                     variant                         string "_Свернуть"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 38
+               array [
+                  dict entry(
+                     string "label"
+                     variant                         string "Восстановить _прежний размер"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 39
+               array [
+                  dict entry(
+                     string "label"
+                     variant                         string "Пере_местить"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 40
+               array [
+                  dict entry(
+                     string "label"
+                     variant                         string "_Изменить размер"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 41
+               array [
+                  dict entry(
+                     string "enabled"
+                     variant                         boolean true
+                  )
+                  dict entry(
+                     string "type"
+                     variant                         string "separator"
+                  )
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 42
+               array [
+                  dict entry(
+                     string "toggle-state"
+                     variant                         int32 0
+                  )
+                  dict entry(
+                     string "toggle-type"
+                     variant                         string "checkmark"
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "Всегда _наверху"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 43
+               array [
+                  dict entry(
+                     string "toggle-state"
+                     variant                         int32 0
+                  )
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "toggle-type"
+                     variant                         string "radio"
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "_Всегда на видимом рабочем месте"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 44
+               array [
+                  dict entry(
+                     string "toggle-state"
+                     variant                         int32 1
+                  )
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "toggle-type"
+                     variant                         string "radio"
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "_Только на этом рабочем месте"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 45
+               array [
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "Переместить на рабочее место с_лева"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 46
+               array [
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "_Переместить на рабочее место справа"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 47
+               array [
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "Переместить на рабочее место _выше"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 48
+               array [
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "Переместить на рабочее место _ниже"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 49
+               array [
+                  dict entry(
+                     string "visible"
+                     variant                         boolean false
+                  )
+                  dict entry(
+                     string "label"
+                     variant                         string "Переместить на другое _рабочее место"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 50
+               array [
+                  dict entry(
+                     string "enabled"
+                     variant                         boolean true
+                  )
+                  dict entry(
+                     string "type"
+                     variant                         string "separator"
+                  )
+               ]
+               array [
+               ]
+            }
+         variant             struct {
+               int32 51
+               array [
+                  dict entry(
+                     string "label"
+                     variant                         string "_Закрыть"
+                  )
+               ]
+               array [
+               ]
+            }
+      ]
+   }
+method return time=1791448153.990793 sender=:1.50 -> destination=:1.90 serial=603 reply_serial=1101
+   array [
+      dict entry(
+         string "Name"
+         variant             string "LibreOffice Writer"
+      )
+      dict entry(
+         string "Icon"
+         variant             string "libreoffice-writer"
+      )
+      dict entry(
+         string "UserVisible"
+         variant             boolean true
+      )
+      dict entry(
+         string "Running"
+         variant             boolean true
+      )
+      dict entry(
+         string "Starting"
+         variant             boolean false
+      )
+      dict entry(
+         string "Urgent"
+         variant             boolean false
+      )
+      dict entry(
+         string "Active"
+         variant             boolean true
+      )
+   ]
+method return time=1791448153.994662 sender=:1.50 -> destination=:1.90 serial=604 reply_serial=1104
+   array [
+   ]
+method return time=1791448153.995458 sender=:1.50 -> destination=:1.90 serial=605 reply_serial=1105
+   array [
+      string "/org/ayatana/bamf/window/62914596"
+   ]
+method return time=1791448153.996271 sender=:1.50 -> destination=:1.90 serial=606 reply_serial=1106
+   string "/usr/share/applications/libreoffice-writer.desktop"
+method return time=1791448153.998994 sender=:1.50 -> destination=:1.90 serial=607 reply_serial=1107
+   string "/org/ayatana/bamf/window/62914596"
+method return time=1791448154.001187 sender=:1.50 -> destination=:1.90 serial=608 reply_serial=1108
+   string "/org/ayatana/bamf/window/62914596"
+method return time=1791448154.004088 sender=:1.50 -> destination=:1.90 serial=609 reply_serial=1109
+   string "/org/ayatana/bamf/window/62914596"
+signal time=1791448154.399717 sender=:1.50 -> destination=(null destination) serial=610 path=/org/ayatana/bamf/matcher; interface=org.ayatana.bamf.matcher; member=RunningApplicationsChanged
+   array [
+      string "/usr/share/applications/libreoffice-writer.desktop"
+   ]
+   array [
+   ]

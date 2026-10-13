@@ -1,0 +1,18 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5+test2 pid 2131 tunables: GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+STOP-CALLED
+CB manager=0x626e39d31c90 priv=0xa5a5a5a5a5a5a5a5
+Thread 1 "unity-settings-" received signal SIGSEGV, Segmentation fault.
+AFTER-CONTINUE
+#0  gcm_session_active_changed_cb (session=0x626e39d4f2a0, changed=<optimized out>, invalidated=<optimized out>, manager=0x626e39d31c90) at /usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity5+test2/plugins/color/gsd-color-manager.c:2104
+#1  0x000079c63dbd568c in g_closure_invoke () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#2  0x000079c63dbf3bc9 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#3  0x000079c63dbf5b66 in ??? () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#4  0x000079c63dbf5dc8 in g_signal_emit_valist () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#5  0x000079c63dbf5e83 in g_signal_emit () at /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+#6  0x000079c63dd4efe1 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#7  0x000079c63dd36920 in ??? () at /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+#8  0x000079c63dac7c1b in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#9  0x000079c63dac9257 in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+u-s-d pid 2131 alive: yes; journal since 01:29:17: 0
+вер 29 01:29:41 mike-virtualbox unity-settings-daemon[2131]: g_signal_handlers_disconnect_matched: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+crash files: 

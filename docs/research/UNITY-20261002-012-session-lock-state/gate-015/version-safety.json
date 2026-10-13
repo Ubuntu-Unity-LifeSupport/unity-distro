@@ -1,0 +1,94 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 7.7.1+26.04.20260306-0ubuntu3+unity13 is newer than resolute 7.7.1+26.04.20260306-0ubuntu3",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity",
+  "source_commit": "c5339fc62b100e43861133decbc655b63f7c3279",
+  "candidate_source_version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+  "pockets": {
+    "resolute": "7.7.1+26.04.20260306-0ubuntu3"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-08T20:17:17Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "libunity-core-6.0-9-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "libunity-core-6.0-9",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "libunity-core-6.0-dev",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity-autopilot",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "all",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity-schemas",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "all",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity-services-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity-services",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity-uwidgets",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "all",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    },
+    {
+      "package": "unity",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+      "architecture": "amd64",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity13"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261008-015",
+    "packages": 475,
+    "list_sha256": "2646ae2e276a3c34bf92ddb9306febb52ee3099dfdd044fc66cd0b954ebf698f",
+    "content_sha256": "ade26ffc3b37a402ca3dedd3a1435e6664901afce244e3a836f84f75c380e062",
+    "model_entries": 430,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "39f1cc84c075af77905c98d656e2193e15991f9d003b2fc91cbe8002d78666ac"
+}

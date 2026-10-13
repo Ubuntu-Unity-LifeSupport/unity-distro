@@ -1,0 +1,9 @@
+test_tested_with (test_build_sbuild.BuildSbuildTest.test_tested_with)
+--tested-with: the tested build's chroot must be this one. ... ok
+test_tested_with_same_bytes_elsewhere (test_build_sbuild.BuildSbuildTest.test_tested_with_same_bytes_elsewhere)
+UNITY-20261002-001: --tested-with compares the chroot's content, not its path: a ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.851s
+
+OK

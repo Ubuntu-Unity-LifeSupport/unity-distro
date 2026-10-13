@@ -1,0 +1,102 @@
+== date (UTC)
+2026-09-29T16:29:50Z
+== before
+calamares-settings-ubuntu-common	1:26.04.12
+calamares-settings-ubuntu-common-data	1:26.04.12
+calamares-settings-ubuntu-unity	1:26.04.12
+gpg: directory '/home/ubuntu-unity/.gnupg' created
+gpg: keybox '/home/ubuntu-unity/.gnupg/pubring.kbx' created
+gpg: /home/ubuntu-unity/.gnupg/trustdb.gpgfpr:::::::::29A893E03970066F2DD287D47BF3F77FC27B152C:
+: trustdb created
+Types: deb
+URIs: http://192.168.56.10:8080/
+Suites: resolute
+Components: main
+Signed-By: /etc/apt/keyrings/unity-distro.asc
+Get:3 http://192.168.56.10:8080 resolute InRelease [4314 B]
+Get:5 http://192.168.56.10:8080 resolute/main amd64 Packages [64.1 kB]
+== policy
+calamares-settings-ubuntu-unity:
+  Installed: 1:26.04.12
+  Candidate: 1:26.04.12+unity2
+  Version table:
+     1:26.04.12+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 1:26.04.12 500
+        500 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+calamares-settings-ubuntu-common:
+  Installed: 1:26.04.12
+  Candidate: 1:26.04.12+unity2
+  Version table:
+     1:26.04.12+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 1:26.04.12 500
+        500 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+calamares-settings-ubuntu-common-data:
+  Installed: 1:26.04.12
+  Candidate: 1:26.04.12+unity2
+  Version table:
+     1:26.04.12+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     1:26.04.12+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 1:26.04.12 500
+        500 http://archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Solving dependencies...
+The following packages will be upgraded:
+  calamares-settings-ubuntu-common calamares-settings-ubuntu-common-data
+  calamares-settings-ubuntu-unity
+3 upgraded, 0 newly installed, 0 to remove and 534 not upgraded.
+Need to get 4051 kB of archives.
+After this operation, 22.5 kB of additional disk space will be used.
+Get:1 http://192.168.56.10:8080 resolute/main amd64 calamares-settings-ubuntu-common amd64 1:26.04.12+unity2 [3349 kB]
+Get:2 http://192.168.56.10:8080 resolute/main amd64 calamares-settings-ubuntu-common-data all 1:26.04.12+unity2 [16.5 kB]
+Get:3 http://192.168.56.10:8080 resolute/main amd64 calamares-settings-ubuntu-unity all 1:26.04.12+unity2 [685 kB]
+Fetched 4051 kB in 0s (22.3 MB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 270834 files and directories currently installed.)
+Preparing to unpack .../calamares-settings-ubuntu-common_1%3a26.04.12+unity2_amd64.deb ...
+Unpacking calamares-settings-ubuntu-common (1:26.04.12+unity2) over (1:26.04.12) ...
+Preparing to unpack .../calamares-settings-ubuntu-common-data_1%3a26.04.12+unity2_all.deb ...
+Unpacking calamares-settings-ubuntu-common-data (1:26.04.12+unity2) over (1:26.04.12) ...
+Preparing to unpack .../calamares-settings-ubuntu-unity_1%3a26.04.12+unity2_all.deb ...
+Unpacking calamares-settings-ubuntu-unity (1:26.04.12+unity2) over (1:26.04.12) ...
+Setting up calamares-settings-ubuntu-common-data (1:26.04.12+unity2) ...
+Setting up calamares-settings-ubuntu-common (1:26.04.12+unity2) ...
+Setting up calamares-settings-ubuntu-unity (1:26.04.12+unity2) ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/icon.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/install.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/logo.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/welcome-oem.png ...
+Installing new version of config file /etc/calamares/branding/ubuntuunity/welcome.png ...
+Installing new version of config file /etc/calamares/oemconfig.tar.gz ...
+Processing triggers for desktop-file-utils (0.28-1build1) ...
+Processing triggers for hicolor-icon-theme (0.18-2build1) ...
+Processing triggers for gnome-menus (3.38.1-1ubuntu1) ...
+Processing triggers for bamfdaemon (0.5.6+22.04.20220217-0ubuntu6) ...
+Rebuilding /usr/share/applications/bamf-2.index...
+== after
+calamares-settings-ubuntu-common 1:26.04.12+unity2 ii 
+calamares-settings-ubuntu-common-data 1:26.04.12+unity2 ii 
+calamares-settings-ubuntu-unity 1:26.04.12+unity2 ii 
+== dpkg -V (empty = clean)
+dpkg -V done
+== changelog entries
+calamares-settings-ubuntu-unity: 95 top: calamares-settings-ubuntu (1:26.04.12+unity2) resolute; urgency=medium
+calamares-settings-ubuntu-common: 95 top: calamares-settings-ubuntu (1:26.04.12+unity2) resolute; urgency=medium
+calamares-settings-ubuntu-common-data: 95 top: calamares-settings-ubuntu (1:26.04.12+unity2) resolute; urgency=medium
+== oemconfig
+90992b17f0e2b50c2ce6620c8f3b0edec6b1f6c8f2e6401b8e44503d170399df  /etc/calamares/oemconfig.tar.gz
+077f7c36fc6c90d046282775fc3d52515d367e58a055a4e89720c9caa444ff9f  /tmp/tmp.UXZCJO1ukN/ubuntuunity/oemconfig/usr/bin/basicwallpaper
+== oemprep unchanged path
+7:tar xvzf /etc/calamares/oemconfig.tar.gz -C "$1" --strip-components=2;
+R021-LIVE-OK

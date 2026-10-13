@@ -1,0 +1,214 @@
+== tests-0.12 at 2026-10-13T14:09:29Z; libunity-gtk4-menu0 0.12; library sha256 7e630da38b4f6e20
+  build latetest rc=0 (2 warnings)
+  case 1: rc 0 PASS case 1
+      (latetest:19810): Gdk-WARNING **: 17:09:31.369: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:19810): Gtk-WARNING **: 17:09:31.605: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x55addadabb10 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 1f: rc 0 PASS case 1
+      (latetest:19952): Gdk-WARNING **: 17:09:33.702: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:19952): Gtk-WARNING **: 17:09:33.868: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5d013a1a5cf0 with width 6 and height -1
+      lib: GTK4 is not loaded in this process yet
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 2: rc 0 PASS case 2
+      (latetest:20091): Gdk-WARNING **: 17:09:35.915: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20091): Gtk-WARNING **: 17:09:36.207: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5bfbe22adad0 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 3: rc 0 PASS case 3
+      (latetest:20231): Gdk-WARNING **: 17:09:38.028: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20231): Gtk-WARNING **: 17:09:38.240: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x64004f570aa0 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: a window stopped waiting (0 waiting)
+  case 3f: rc 0 PASS case 3
+      (latetest:20369): Gdk-WARNING **: 17:09:40.574: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20369): Gtk-WARNING **: 17:09:40.795: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x60e2ccc998f0 with width 6 and height -1
+      lib: GTK4 is not loaded in this process yet
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: a window stopped waiting (0 waiting)
+  case 4: rc 0 PASS case 4
+      (latetest:20507): Gdk-WARNING **: 17:09:43.140: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20507): Gtk-WARNING **: 17:09:43.346: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5f199f100e10 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: late look: no menu yet
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 5: rc 0 PASS case 5
+      (latetest:20648): Gdk-WARNING **: 17:09:45.135: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20648): Gtk-WARNING **: 17:09:45.359: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x6088444a5e20 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: the application set a menubar of its own; ours is released
+      lib: a window stopped waiting (0 waiting)
+      lib: the application has a menubar of its own
+  case 7: rc 0 PASS case 7
+      (latetest:20791): Gdk-WARNING **: 17:09:47.475: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20791): Gtk-WARNING **: 17:09:47.830: Trying to snapshot GtkLabel 0x55c399f62510 without a current allocation
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: menubar filled, labelled "latetest"
+  case 8: rc 0 PASS case 8
+      (latetest:20934): Gdk-WARNING **: 17:09:49.182: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:20934): Gtk-WARNING **: 17:09:49.392: Trying to snapshot GtkLabel 0x602c14939540 without a current allocation
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: menubar filled, labelled "latetest"
+  case 9: rc 0 PASS case 9
+      (latetest:21068): Gdk-WARNING **: 17:09:51.041: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:21068): Gtk-WARNING **: 17:09:51.193: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x63ff97736ea0 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 11: rc 0 PASS case 11
+      (latetest:21207): Gdk-WARNING **: 17:09:53.050: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:21207): Gtk-WARNING **: 17:09:53.207: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5fb99ec21d00 with width 6 and height -1
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 1
+      lib: dropped 1 item(s) that cannot cross D-Bus
+      lib: the menu found has no item that can cross D-Bus; not used
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: candidate 2 at depth 4: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 2
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 12: rc 0 PASS case 12
+      (latetest:21348): Gdk-WARNING **: 17:09:54.784: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: a window stopped waiting (0 waiting)
+  case adw6: rc 0 PASS case 6
+      (latetest-adw.py:21488): Gdk-WARNING **: 17:09:56.638: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest-adw.py:21488): Gtk-WARNING **: 17:09:57.032: Trying to snapshot GtkLabel 0x1528b6b0 without a current allocation
+      case 6: the dialog is a window of its own (Window)
+      (latetest-adw.py:21488): Gtk-WARNING **: 17:09:57.361: Trying to snapshot GtkLabel 0x15244250 without a current allocation
+      lib: GTK4 is not loaded in this process yet
+      lib: GTK4 found through GObject Introspection
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: late look: no menu yet
+  case adw6a: rc 0 PASS case 6a
+      (latetest-adw.py:21637): Gdk-WARNING **: 17:09:59.496: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest-adw.py:21637): Gtk-WARNING **: 17:09:59.919: Trying to snapshot GtkLabel 0x169a4260 without a current allocation
+      (latetest-adw.py:21637): Gtk-WARNING **: 17:10:00.193: Trying to snapshot GtkLabel 0x169a4260 without a current allocation
+      lib: GTK4 is not loaded in this process yet
+      lib: GTK4 found through GObject Introspection
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 12: shown=1 primary=0 app./win. items=3
+      lib: candidate 2 at depth 12: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 2
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest-adw.py"
+  total: 14 passed, 0 failed

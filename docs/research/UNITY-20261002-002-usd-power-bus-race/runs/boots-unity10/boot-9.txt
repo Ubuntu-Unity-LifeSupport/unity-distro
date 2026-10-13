@@ -1,0 +1,20 @@
+boot_id 1daae641-f455-454c-addc-8eb7ccbedfaf u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2298 drop-ins:  power-owner: (':1.38',)
+68742 ms pid 2298 MANAGER-NEW (register_manager_dbus, inlined)
+68743 ms pid 2298 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x6ffce6747b05
+        0x6ffce6747d44
+        0x6ffce6736920
+        0x6ffce652bc1b
+        0x6ffce652d257
+        g_main_loop_run+311
+
+74227 ms pid 2298 ON-BUS-GOTTEN
+
+

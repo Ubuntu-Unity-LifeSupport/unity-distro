@@ -1,0 +1,25 @@
+# UNITY-20260928-012 step 6: guard runs per Bash call in a session rooted in ~/unity-distro (after merge b505fef)
+# Session 'Тестовая сессия [9399ee]', started by May, Claude Code pid 2164419, /proc/2164419/cwd = /home/claude/unity-distro
+# (project settings = unity-distro/.claude/settings.json, user = ~/.claude/settings.json, handlers byte-identical).
+# Tracer: logs/guard_exec.bt (sudo bpftrace, execve of /usr/bin/timeout and /usr/bin/python3 with ancestry).
+# May typed three commands, one Bash call each, 09:14-09:15Z; the session reported:
+#   T1 echo step6-call-1 -> printed step6-call-1
+#   T2 echo step6-call-2 -> printed step6-call-2
+#   T3 the pgrep -f probe -> blocked by the hook: Pattern-based process matching is blocked; identify the exact PID.
+# Events whose grandparent (timeout) or great-grandparent (python3) is 2164419, from two overlapping tracers:
+== tracer bt-step6b.txt
+09:14:05 file=/usr/bin/timeout pid=2186046 ppid=2186045 gppid=2164419 ggppid=4160
+09:14:05 file=/usr/bin/python3 pid=2186047 ppid=2186046 gppid=2186045 ggppid=2164419
+09:15:08 file=/usr/bin/timeout pid=2188498 ppid=2188497 gppid=2164419 ggppid=4160
+09:15:08 file=/usr/bin/python3 pid=2188499 ppid=2188498 gppid=2188497 ggppid=2164419
+09:15:27 file=/usr/bin/timeout pid=2189281 ppid=2189280 gppid=2164419 ggppid=4160
+09:15:27 file=/usr/bin/python3 pid=2189282 ppid=2189281 gppid=2189280 ggppid=2164419
+== tracer bt-step6c.txt
+09:14:05 file=/usr/bin/timeout pid=2186046 ppid=2186045 gppid=2164419 ggppid=4160
+09:14:05 file=/usr/bin/python3 pid=2186047 ppid=2186046 gppid=2186045 ggppid=2164419
+09:15:08 file=/usr/bin/timeout pid=2188498 ppid=2188497 gppid=2164419 ggppid=4160
+09:15:08 file=/usr/bin/python3 pid=2188499 ppid=2188498 gppid=2188497 ggppid=2164419
+09:15:27 file=/usr/bin/timeout pid=2189281 ppid=2189280 gppid=2164419 ggppid=4160
+09:15:27 file=/usr/bin/python3 pid=2189282 ppid=2189281 gppid=2189280 ggppid=2164419
+# Result: 3 calls -> 3 timeout + 3 python3 (command_guard.py) execs, not 6: the identical user and project
+# handlers ran once per call (Claude Code dedup). Step 6 PASS.

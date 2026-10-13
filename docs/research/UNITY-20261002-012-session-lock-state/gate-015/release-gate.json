@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-015",
+  "package": "unity",
+  "target_series": "resolute",
+  "candidate_version": "7.7.1+26.04.20260306-0ubuntu3+unity13",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1002-012/packages/unity",
+  "source_remote_ref": "origin/a/UNITY-20261002-012",
+  "source_commit": "c5339fc62b100e43861133decbc655b63f7c3279",
+  "source_tree_hash": "8b742c7bc36c2c2cafe4b8530b8f72edb4b7a95d",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-015"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261002-012-session-lock-state/build-unity/UNITY-20261008-015-unity-build-manifest.json",
+    "sha256": "33079ca8fdcfb2c1aa2cfd948641bae538ea2c95ac54165ad55e6226cebcda1e"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261002-012-session-lock-state/gate-015/evidence-manifest.json",
+    "sha256": "e95207177f8c2d5ca5ca5abd1d57ebcf4a7dca098398c3a5797c3041a8d22570"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261002-012-session-lock-state/gate-015/target-test.txt",
+        "sha256": "8f5a26d458ddfb24ea829da610235de169c006e8720868795f640cb4beddac0b"
+      },
+      "debs": {
+        "libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity13_amd64.deb": "c18ada26a2e4f5fcf91a7ee9c74125fb04621a2f4e8f693da938353fb35c6592",
+        "unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity13_all.deb": "6d55044e0713c0774fe3fedbcc6c193ef0969836559324eb36e1d4bf95302872",
+        "unity-services_7.7.1+26.04.20260306-0ubuntu3+unity13_amd64.deb": "31775a2298ee3f5097b25d8e6ee4b29d3e347dcab8c58c687abb0dc835abeb50",
+        "unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity13_all.deb": "c06d7c1ce73c652215caf50146d9d4f72e83aaf5216b70c15f567a7877b64e66",
+        "unity_7.7.1+26.04.20260306-0ubuntu3+unity13_amd64.deb": "c481bdc639ef7d05764ecaddd6ff2fc35a71a30a8e4b6e15aeba2fff47212e10"
+      }
+    }
+  }
+}

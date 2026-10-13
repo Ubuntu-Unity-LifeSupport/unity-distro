@@ -1,0 +1,20 @@
+boot_id 6a625e5e-14c8-4093-abd6-1d10f23b47dc u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2318 drop-ins:  power-owner: (':1.42',)
+79986 ms pid 2318 MANAGER-NEW (register_manager_dbus, inlined)
+79986 ms pid 2318 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x79e182b47b05
+        0x79e182b47d44
+        0x79e182b36920
+        0x79e1828c7c1b
+        0x79e1828c9257
+        g_main_loop_run+311
+
+86444 ms pid 2318 ON-BUS-GOTTEN
+
+

@@ -1,0 +1,1 @@
+expo vp=0,0 border@901,377 xterm 400x290+500+232 -> 400x290+-780+232 | pointer before click: x:901 y:377 | during: pointer=free keyboard=free | after: pointer=GRABBED keyboard=GRABBED | click@0,207 reached=0 pointer=GRABBED keyboard=GRABBED

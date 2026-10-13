@@ -1,0 +1,54 @@
+== control-0.10 at 2026-10-13T09:09:01Z; libunity-gtk4-menu0 0.10; library sha256 8e792ad7111199f8; control
+  build latetest rc=0 (2 warnings)
+  case 1: rc 1 FAIL case 1 (control: library log not checked)
+      (latetest:16850): Gdk-WARNING **: 12:09:02.908: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:16850): Gtk-WARNING **: 12:09:03.086: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x56c4adf712f0 with width 6 and height -1
+      FAIL case 1: the late menu is not in the application's menubar
+      FAIL case 1: a subscribed D-Bus client does not see the late menu
+      FAIL case 1 (control: library log not checked)
+  case 2: rc 1 FAIL case 2 (control: library log not checked)
+      (latetest:16990): Gdk-WARNING **: 12:09:04.563: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:16990): Gtk-WARNING **: 12:09:04.752: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5fdaa4c7fed0 with width 6 and height -1
+      FAIL case 2: the late popover menu bar is not in the menubar
+      FAIL case 2: a subscribed D-Bus client does not see the late menu bar
+      FAIL case 2 (control: library log not checked)
+  case 3: rc 0 PASS case 3 (control: library log not checked)
+      (latetest:17126): Gdk-WARNING **: 12:09:06.214: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17126): Gtk-WARNING **: 12:09:06.398: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x64a24f1cda90 with width 6 and height -1
+  case 4: rc 1 FAIL case 4 (control: library log not checked)
+      (latetest:17265): Gdk-WARNING **: 12:09:08.421: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17265): Gtk-WARNING **: 12:09:08.677: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x622d36a27d80 with width 6 and height -1
+      FAIL case 4: the menu given later is not in the menubar
+      FAIL case 4 (control: library log not checked)
+  case 5: rc 0 PASS case 5 (control: library log not checked)
+      (latetest:17404): Gdk-WARNING **: 12:09:10.797: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17404): Gtk-WARNING **: 12:09:11.076: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x59461d9409b0 with width 6 and height -1
+  case 7: rc 0 PASS case 7 (control: library log not checked)
+      (latetest:17546): Gdk-WARNING **: 12:09:13.302: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17546): Gtk-WARNING **: 12:09:13.711: Trying to snapshot GtkLabel 0x598dcdef18c0 without a current allocation
+  case 8: rc 0 PASS case 8 (control: library log not checked)
+      (latetest:17690): Gdk-WARNING **: 12:09:15.199: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17690): Gtk-WARNING **: 12:09:15.409: Trying to snapshot GtkLabel 0x58e6d7b938d0 without a current allocation
+  case 9: rc 1 FAIL case 9 (control: library log not checked)
+      (latetest:17825): Gdk-WARNING **: 12:09:16.790: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17825): Gtk-WARNING **: 12:09:16.977: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5f84d170dab0 with width 6 and height -1
+      FAIL case 9: the late menu is not in the application's menubar
+      FAIL case 9: a subscribed D-Bus client does not see the late menu
+      FAIL case 9 (control: library log not checked)
+  case 11: rc 1 FAIL case 11 (control: library log not checked)
+      (latetest:17962): Gdk-WARNING **: 12:09:18.475: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:17962): Gtk-WARNING **: 12:09:18.669: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x6189f2c6cdb0 with width 6 and height -1
+      FAIL case 11: the valid menu after an empty one was not used
+      FAIL case 11 (control: library log not checked)
+  case 12: rc 0 PASS case 12 (control: library log not checked)
+      (latetest:18101): Gdk-WARNING **: 12:09:20.580: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case adw6: rc 0 PASS case 6 (control: library log not checked)
+      (latetest-adw.py:18240): Gdk-WARNING **: 12:09:22.444: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest-adw.py:18240): Gtk-WARNING **: 12:09:22.788: Trying to snapshot GtkLabel 0x36ca0160 without a current allocation
+  case adw6a: rc 1 FAIL case 6a (control: library log not checked)
+      (latetest-adw.py:18388): Gdk-WARNING **: 12:09:25.046: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest-adw.py:18388): Gtk-WARNING **: 12:09:25.358: Trying to snapshot GtkLabel 0x708d8f0 without a current allocation
+      (latetest-adw.py:18388): Gtk-WARNING **: 12:09:25.641: Trying to snapshot GtkLabel 0x708d8f0 without a current allocation
+      FAIL case 6a: the late header-bar menu is not in the menubar
+      FAIL case 6a (control: library log not checked)
+  total: 6 passed, 6 failed

@@ -1,0 +1,21 @@
+UNITY-20260927-053: target verification of the publication
+
+Published: ./resolute = unity-resolute-20260927-053, 2026-10-08T22:44:52Z (publish record
+~/coordinator/publish-records/UNITY-20260927-053.json; switch-time version check SAFE).
+
+Target: target-desktop, the published stack of 2026-10-08 restored (confirmed inside the guest:
+cinnamon-session 6.4.2-1+unity3 before the update), then updated the ordinary way from the live
+repository (apt-get update, apt-get full-upgrade):
+  installed: cinnamon-session 6.4.2-1+unity4, cinnamon-session-common 6.4.2-1+unity4,
+  unity-settings-daemon +unity12, unity +unity13, light-locker +unity3, hud +unity5
+  sha256 /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary =
+  b300006964040460f0cb3362aa54b2bb63ed592a3d8f26d5297c7b8c516e9223 = the same file in the gated build's deb.
+
+Cold boot (power off, power on):
+  cinnamon-session runs from the new binary (no "(deleted)" mappings).
+  SessionIsActive: (<true>,); logind Active=yes, LockedHint=no.
+  Journal: "Could not get session id" 0, "active_v != NULL" (color) 0.
+  Medium (an ISO image in the optical drive) inserted into the unlocked session: mounted within
+  about 2 s under /run/media/mike/. The medium was ejected afterwards.
+
+Result: PASS.

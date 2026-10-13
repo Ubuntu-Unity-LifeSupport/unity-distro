@@ -47,6 +47,18 @@ and state; the agent status file gives its assigned machine/workspace state.
 - Builds happen in a clean chroot via `sbuild`. Never build in the builder's
   own system.
 - Long builds go in `tmux` with a log file, never an interactive command.
+- Build scratch space is the 54 GB SSD mounted at `/srv/build` (label
+  `unity-build`). sbuild's unshare chroots already go to `/srv/build/sbuild`
+  through `~/.config/sbuild/config.pl`. Other heavy temporary work belongs in
+  `/srv/build/<A|B|C>-<task>/`, for example build trees, unpacked sources and
+  test runs. The SSD is small, so clean up after yourself:
+  - remove your `/srv/build` directories when the task is merged or closed;
+  - after an interrupted sbuild, remove the leftover
+    `/srv/build/sbuild/sbuild-unshare-*` directory. Its files belong to subuid
+    100000, so use `sudo rm -rf -- "${DIR:?}"`.
+
+  Results that are evidence stay in the task worktree or `~/work`, not in
+  `/srv/build`.
 - Communicate with May in Russian; write code, commits and documentation in
   English so the project stays open to outside contributors.
 

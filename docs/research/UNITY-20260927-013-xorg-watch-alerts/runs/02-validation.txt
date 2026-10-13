@@ -1,0 +1,23 @@
+# UNITY-20260927-013 validation after Verifier round 1, 2026-09-28 17:03Z
+test_a_damaged_failure_counter_restarts (scripts.tests.test_alerts.AlertsTest.test_a_damaged_failure_counter_restarts) ... ok
+test_a_second_failure_streak_after_an_ack_is_a_new_alert (scripts.tests.test_alerts.AlertsTest.test_a_second_failure_streak_after_an_ack_is_a_new_alert) ... ok
+test_message_is_kept_on_one_line (scripts.tests.test_alerts.AlertsTest.test_message_is_kept_on_one_line) ... ok
+test_new_upload_raises_one_alert_and_one_log_line (scripts.tests.test_alerts.AlertsTest.test_new_upload_raises_one_alert_and_one_log_line) ... ok
+test_nothing_above_the_base_raises_nothing (scripts.tests.test_alerts.AlertsTest.test_nothing_above_the_base_raises_nothing) ... ok
+test_only_c_or_may_acknowledge_and_only_known_keys (scripts.tests.test_alerts.AlertsTest.test_only_c_or_may_acknowledge_and_only_known_keys) ... ok
+test_raise_is_idempotent_and_ack_closes (scripts.tests.test_alerts.AlertsTest.test_raise_is_idempotent_and_ack_closes) ... ok
+test_repeated_failures_raise_one_alert_and_success_resets (scripts.tests.test_alerts.AlertsTest.test_repeated_failures_raise_one_alert_and_success_resets) ... ok
+test_taskctl_ignores_an_unreadable_alert_file (scripts.tests.test_alerts.AlertsTest.test_taskctl_ignores_an_unreadable_alert_file) ... ok
+test_taskctl_shows_open_alerts_until_acknowledged (scripts.tests.test_alerts.AlertsTest.test_taskctl_shows_open_alerts_until_acknowledged) ... ok
+test_upload_is_retried_when_the_alert_cannot_be_written (scripts.tests.test_alerts.AlertsTest.test_upload_is_retried_when_the_alert_cannot_be_written) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 7.940s
+
+OK
+## full suite
+Ran 105 tests in 49.197s
+
+OK
+## dash -n
+ok

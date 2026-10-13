@@ -1,0 +1,32 @@
+3e83c1085930d5cbd4597381d17ff7819d435299 meson: fix types for some build options
+c251243f282acaf590201d8bd2508aebeb6d8fb5 xkb: fix incorrect size check when growing doodads in a
+cc2bd590f368cb6aaa5d1b54e3ac4689f37f54ed xkb: fix potential buff overflow in XkbVModIndexText
+c9cd39f9b7fc5a9e540ec4dbfdaafba24371851a Xi: add missing gesture grab type checks in
+39befa04f92a5acd2f97ef414a799a4a38e979d1 xkb: Fix out-of-bounds array access in
+7ee87732a90cd557b6dd0f69b05af30e7f489b4b xkb: Fix off-by-one in color index validation in
+5f2ac0de4798f2290620ff89ba86af171c45013c xkb: Fix off-by-one and NULL dereferences in
+852bf24683d8d9fc482632582744c0e4b6791cb3 xkb: Add bounds check for action data in
+2be25deaa6a73aa9e680932065095e025019da32 present: actually return the created notifies
+1888711ce4899b76fc5230e9367231c901716bb8 glx: reject negative size in FeedbackBuffer and
+f304b57444be3991fd9d3389f309c6eeb056a6c4 sync: fix deletion of counters and fences
+92a167ab3fda0bee41cf97f6a40a4c01c67d85d4 sync: restart trigger list iteration in
+eced7e74cad4a46c3a3c17b2df13b70b8bedfc25 xkb: reject key types with num_levels exceeding
+54c3d9fad0f2f97835da9d275b53255f4963029f xkb: clamp nMaps to mapWidths buffer size in
+94341bd715d62ba8da4c1851f517018996da1af8 glx: fix reversed length check in
+182c23f780402062ab31963776a19d5b87e25ac8 saver: re-fetch screen private after CheckScreenPrivate
+a569eb4f36ed96a9e445ececd7e8d98c223461a0 dix: increase XLFDMAXFONTNAMELEN to match libXfont2's
+4926348d826b7dc12d51d7e41bd9068aee5f90af dri2: Use booleans for (fake) front buffer tracking in
+f0b8e6e1d969548c0625051d56a780e5df39de26 dri2: Deduplicate attachments in do_get_buffer
+8a6e5f0fcdf196bd5ba2059816069806d523b665 dix/colormap: fix out-of-bounds read in
+a29a7c1ec5b488b4069ef976e8096cb997074e49 xkb: preserve buffer on realloc failure
+c285ed7dc6e429e7747f76c208f9a373261421f8 glx: fix duplicate tagInfo->vendor = NULL assignment
+f2f7b8293c1f3594b31301159c7ddf4570ea9a7f glamor: fix an error path cleanup
+6c6a2dfd295f836a502410ff40b5855b133c7ffd dix: Silence a compiler warning in
+bf25faf5c1b825f14642f81129b28e04a024356d dix: Silent static analyzer warning
+c0839d9cbf85261cea20cda2f7d6c8a732e16eb6 dix: Silence a compiler warning in
+ab2766f3473efdc9d13234553d21b0dc4dd780d8 Xi: Check window attribute is valid in XIChangeCursor
+d6fff22bc8b464dbadf3bc1fb858bd5a91c86849 GLX: Free the tag of the old context later
+d6d96084f305a142eb3db7f720d7edd21e4c98b4 glx: free old context tag before allocating new one in
+0f1f4bcbfb1f23b800dfe386782d3a0f05b6756f fb/mi/glamor: reject glyphs with negative dimensions
+f3df3c9a52b4f480cbcff45cc6569c19de6bfede glamor: reject fonts with per-glyph metrics exceeding
+8d604fa14969ca5bf941c6f9002e1d8798f7f5b2 Subject: [PATCH] Fix use-after-free caused by duplicate glyphs in one glyphset

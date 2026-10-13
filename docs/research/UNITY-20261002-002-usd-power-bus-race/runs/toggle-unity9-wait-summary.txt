@@ -1,0 +1,5 @@
++unity9, toggle unit v2 first run (wait for the stop before switching back on), 4 boots, harness defects: the wait looked for all u-s-d inhibitors to vanish (media-keys keeps one, so it always timed out at 30 s), the loop read the trace before the toggle unit finished and before bpftrace flushed. Boot 1: one STOP via the GSettings signal path 0.8 s after ON-BUS-GOTTEN, name kept. Boots 2-4: records collected too early (empty trace, name not yet owned at that moment; owned later - boot 4 checked by hand: NEW/START/BUS within 20 ms, no STOP for 46 s after active=false at +14.7 s, i.e. the write did not reach the daemon then; from a shell and from a user unit in the running session the same write stops the plugin within 250 ms). Kept as harness evidence; superseded by runs/toggle-unity9-v2.
+boot 1: (':1.41',); stops: 1
+boot 2: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwne; stops: 0
+boot 3: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwne; stops: 0
+boot 4: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwne; stops: 0

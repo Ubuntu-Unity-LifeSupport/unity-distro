@@ -1,0 +1,6 @@
+restore checked inside 2026-10-13T08:02:13Z, boot 2026-10-13 11:00:42
+ls: cannot access '/home/mike/.dirty': No such file or directory
+ls: cannot access '/home/mike/b1307': No such file or directory
+ubuntu.sources
+bpftrace	0.25.0-1ubuntu1
+cinnamon-session	6.4.2-1

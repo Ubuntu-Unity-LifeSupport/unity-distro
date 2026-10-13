@@ -1,0 +1,18 @@
+boot_id 31e1f2da-d024-4e0e-8e7c-ebb3cf92a788 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2261 drop-ins:  power-owner: (':1.45',)
+64247 ms pid 2261 MANAGER-NEW (register_manager_dbus, inlined)
+64247 ms pid 2261 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x718787547b05
+        0x718787547d44
+        0x718787536920
+        0x718787d87c1b
+        0x718787d89257
+        g_main_loop_run+311
+
+69743 ms pid 2261 ON-BUS-GOTTEN

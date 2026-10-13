@@ -1,0 +1,13 @@
+writer start 1: window 62914596 stack app id 'libreoffice-writer' bamf now libreoffice-writer child-removed-of-window 0
+writer start 2: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 3: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 4: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 5: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 6: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 7: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 8: window 65011748 stack app id '65011748' bamf now libreoffice-writer child-removed-of-window 1
+writer start 9: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+writer start 10: window 62914596 stack app id '62914596' bamf now libreoffice-writer child-removed-of-window 1
+calc start 1: window 62914596 stack app id '62914596' bamf now libreoffice-calc child-removed-of-window 1
+calc start 2: window 60817444 stack app id '60817444' bamf now libreoffice-calc child-removed-of-window 1
+calc start 3: window 62914596 stack app id 'libreoffice-calc' bamf now libreoffice-calc child-removed-of-window 1

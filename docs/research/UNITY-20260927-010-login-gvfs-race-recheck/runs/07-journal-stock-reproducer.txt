@@ -1,0 +1,12 @@
+вер 28 22:25:14.848129 mike-virtualbox u010[1456]: activation requested
+вер 28 22:25:15.180117 mike-virtualbox dbus-daemon[1235]: [session uid=1000 pid=1235 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.7' (uid=1000 pid=1510 comm="gdbus call --session --dest org.gtk.vfs.Daemon --o" label="unconfined")
+вер 28 22:25:15.230900 mike-virtualbox systemd[1204]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 28 22:25:16.082825 mike-virtualbox systemd[1204]: gvfs-daemon.service: Control process exited, code=killed, status=15/TERM
+вер 28 22:25:16.083423 mike-virtualbox systemd[1204]: gvfs-daemon.service: Failed with result 'signal'.
+вер 28 22:25:16.083996 mike-virtualbox systemd[1204]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 28 22:25:43.217603 mike-virtualbox u010[1455]: activation returned rc=1 after 39s
+вер 28 22:25:50.627585 mike-virtualbox xdg-desktop-por[1847]: Error creating proxy: Error calling StartServiceByName for org.gtk.vfs.Daemon: Timeout was reached (g-io-error-quark, 24)
+вер 28 22:25:50.631518 mike-virtualbox systemd[1204]: Reached target graphical-session-pre.target - Session services which should run early before the graphical session is brought up.
+вер 28 22:25:50.631601 mike-virtualbox systemd[1204]: Reached target graphical-session.target - Current graphical user session.
+вер 28 22:26:16.506175 mike-virtualbox ubuntu-advantage-notification[1921]: Error creating proxy: Ошибка вызова StartServiceByName для org.gtk.vfs.Daemon: Истекло время ожидания (g-io-error-quark, 24)
+вер 28 22:26:17.417847 mike-virtualbox indicator-printers-service[1946]: Error creating proxy: Ошибка вызова StartServiceByName для org.gtk.vfs.Daemon: Истекло время ожидания (g-io-error-quark, 24)

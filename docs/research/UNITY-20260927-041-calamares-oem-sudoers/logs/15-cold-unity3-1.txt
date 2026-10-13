@@ -1,0 +1,21 @@
+# UNITY-20260927-041 target step 4: snapshot OEM-ready-unity3 (powered off, after the VBoxSVC wedge cleared), then a cold first boot from it with no input; disk checked from inside the guest
+exit 0
+ssh as oem up at 192.168.56.105 (20:34:00)
+== cold-unity3-1 start at uptime 49.39s  basicwallpaper sha256 ca88f9c350b7
+56.61 xfwm4 pid 1940
+62.66 wallpaper viewable 4194311
+74.42 calamares viewable 12582919
+74.47 focus -> 6291506 (Xfwm4)
+  0x400007   "basicwallpaper", "basicwallpaper"   STICKY, SKIP_PAGER, SKIP_TASKBAR, BELOW | DESKTOP, _KDEOVERRIDE, NORMAL
+  0xc00007   "calamares", "calamares"             MAXIMIZED_HORZ, MAXIMIZED_VERT | _KDEOVERRIDE, NORMAL
+91.65 pixel 700,200: #EFEFEF -> Calamares on top
+== disk check inside the guest
+2026-09-29T20:34:46Z
+440 root:root /etc/sudoers
+440 root:root /etc/sudoers.orig
+ca88f9c350b78e6fefd6989097ca0f22f683df2ebc74eeff29db35f404b6f54a  /usr/bin/basicwallpaper
+sha256sum: /etc/sudoers: Permission denied
+autologin-session=ubuntu-unity-oem-environment
+ 22:34:46 up 1 min,  2 users,  load average: 3,09, 1,09, 0,39
+
+# 'Permission denied' for oem on /etc/sudoers is the 0440 root:root mode at work

@@ -1,0 +1,14 @@
+# act-probe.py 16 0.02 on target2 (third of three runs, 2026-09-28 ~13:23Z); accounts-daemon restarted at ~4 s.
+# Identical consecutive SNAP lines are collapsed.
+   0.008 MANAGER is-loaded = False
+   0.011 MANAGER is-loaded = True
+   0.016 WATCH list_users 0x77df1777ab80 loaded=True name='mike' uid=1000 path='/org/freedesktop/Accounts/User1000' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+   0.030 SNAP 0x77df1777ab80 loaded=True name='mike' uid=1000 path='/org/freedesktop/Accounts/User1000' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+   3.907 MANAGER is-loaded = False
+   3.907   AT-MANAGER-NOTIFY 0x77df1777ab80 loaded=True name='mike' uid=1000 path='/org/freedesktop/Accounts/User1000' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+   3.915 SNAP 0x77df1777ab80 loaded=True name=None uid=0 path='/org/freedesktop/Accounts/User1000' input_sources=NULL
+   4.062 MANAGER is-loaded = True
+   4.062   AT-MANAGER-NOTIFY 0x77df1777ab80 loaded=True name=None uid=0 path='/org/freedesktop/Accounts/User1000' input_sources=NULL
+   4.084 SNAP 0x77df1777ab80 loaded=True name='mike' uid=1000 path='/org/freedesktop/Accounts/User1000' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+   4.303 USER-CHANGED 0x77df1777ab80 loaded=True name='mike' uid=1000 path='/org/freedesktop/Accounts/User1000' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+   4.304 CHANGED 0x77df1777ab80 loaded=True name='mike' uid=1000 path='/org/freedesktop/Accounts/User1000' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]

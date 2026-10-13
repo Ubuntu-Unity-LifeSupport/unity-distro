@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-026",
+  "package": "indicator-datetime",
+  "source_commit": "9a004468998ce694079698ae7225b52e23efe28c",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260927-026-idt-guard/README.md",
+      "sha256": "1a744f980ffae45863b2223ef56b3507a3ec4d9185a0dd2598f48c78ac38bd02"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260927-026-idt-guard/README.md",
+      "sha256": "1a744f980ffae45863b2223ef56b3507a3ec4d9185a0dd2598f48c78ac38bd02"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "cb89d2fb2c2d14ae66ee715d2fb4efa30767cc239df18fa811d4b84c4e02dbe6"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "a8048f5f6dbac8c6149f9f1483689c4fb2159922857aa3d1d78cf6f1258a0a67"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260927-026-idt-guard/gate/release-record.json",
+      "sha256": "2a044dfb8c127a2ede6af53f897641373f49697b7aefa0bda9814f05d46dd95d"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260927-026-idt-guard/gate/version-check.json",
+      "sha256": "54056e25788131c1463c144c7e147ad847a710b980bc50311c2bd9b7f61fcf11"
+    }
+  }
+}

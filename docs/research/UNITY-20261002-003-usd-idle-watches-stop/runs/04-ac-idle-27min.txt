@@ -1,0 +1,36 @@
+start 2026-10-02T23:47:22Z: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity11 pid 2160, cinnamon-session 6.4.2-1+unity4
+cmdline: gnome.is_vm=0
+effective: sleep-inactive-ac-timeout=0 ac-type='suspend' idle-dim=true session idle-delay=uint32 300
+light-locker lock-after-screensaver was uint32 5, set to 0 for the run
+min 1 02:48:26: VT 7 SessionIsActive=b true screensaver=(false,)
+min 2 02:49:26: VT 7 SessionIsActive=b true screensaver=(false,)
+min 3 02:50:26: VT 7 SessionIsActive=b true screensaver=(false,)
+min 4 02:51:26: VT 7 SessionIsActive=b true screensaver=(false,)
+min 5 02:52:26: VT 7 SessionIsActive=b true screensaver=(false,)
+min 6 02:53:27: VT 7 SessionIsActive=b true screensaver=(false,)
+min 7 02:54:27: VT 7 SessionIsActive=b true screensaver=(false,)
+min 8 02:55:27: VT 7 SessionIsActive=b true screensaver=(false,)
+min 9 02:56:27: VT 7 SessionIsActive=b true screensaver=(false,)
+min 10 02:57:27: VT 7 SessionIsActive=b true screensaver=(false,)
+min 11 02:58:27: VT 7 SessionIsActive=b true screensaver=(false,)
+min 12 02:59:28: VT 7 SessionIsActive=b true screensaver=(false,)
+min 13 03:00:28: VT 7 SessionIsActive=b true screensaver=(false,)
+min 14 03:01:28: VT 7 SessionIsActive=b true screensaver=(false,)
+min 15 03:02:28: VT 7 SessionIsActive=b true screensaver=(false,)
+min 16 03:03:28: VT 7 SessionIsActive=b true screensaver=(false,)
+min 17 03:04:28: VT 7 SessionIsActive=b true screensaver=(false,)
+min 18 03:05:29: VT 7 SessionIsActive=b true screensaver=(false,)
+min 19 03:06:30: VT 7 SessionIsActive=b true screensaver=(false,)
+min 20 03:07:31: VT 7 SessionIsActive=b true screensaver=(false,)
+min 21 03:08:31: VT 7 SessionIsActive=b true screensaver=(false,)
+min 22 03:09:32: VT 7 SessionIsActive=b true screensaver=(false,)
+min 23 03:10:32: VT 7 SessionIsActive=b true screensaver=(false,)
+min 24 03:11:33: VT 7 SessionIsActive=b true screensaver=(false,)
+min 25 03:12:33: VT 7 SessionIsActive=b true screensaver=(false,)
+min 26 03:13:33: VT 7 SessionIsActive=b true screensaver=(false,)
+min 27 03:14:33: VT 7 SessionIsActive=b true screensaver=(false,)
+end 2026-10-03T00:14:34Z; light-locker lock-after-screensaver restored to uint32 5
+--- logind suspend messages during the run:
+--- gdb events:
+Thread 1 "unity-settings-" received signal SIGINT, Interrupt.
+uptime:  03:14:34 up 30 min,  2 users,  load average: 0,00, 0,05, 0,18

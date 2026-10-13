@@ -1,0 +1,30 @@
+{
+ "task_id": "UNITY-20261008-013",
+ "package": "libcolumbus",
+ "target_series": "resolute",
+ "candidate_version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+ "source_commit": "3da4d89457f3528b1bf75324d5fda35faf8cb1de",
+ "source_provenance": "PUSHED",
+ "source_remote_ref": "origin/b/UNITY-20261008-013",
+ "version_safety": "SAFE",
+ "version_check": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/gate/version-check.json",
+ "verification_result": "PASS",
+ "verification_scope": "",
+ "verification_reason": "",
+ "peer_notice": "ACK",
+ "patch_and_decision_docs": true,
+ "decision_required": false,
+ "target_test": {
+  "record": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/logs/06-target.txt",
+  "debs": {
+   "libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb": "65773439ef292b3c3efbf49dec37a090c26f37519f6b80b9c511c4887e5c3520",
+   "libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity1_all.deb": "cea9db10e53d0482ac5a51b70f774c4837a5f5ee4c2251013f7c083ca2a90637"
+  }
+ },
+ "tested_build": "this_build",
+ "evidence": {
+  "evidence_card": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/README.md",
+  "verification_record": "docs/research/UNITY-20261008-013-hud-service-tmp-mappings/README.md",
+  "patch_record": "docs/PATCHES.md"
+ }
+}

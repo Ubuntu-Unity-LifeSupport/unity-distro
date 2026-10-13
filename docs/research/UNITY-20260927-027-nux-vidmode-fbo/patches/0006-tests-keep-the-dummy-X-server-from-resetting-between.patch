@@ -1,0 +1,57 @@
+From d50b77c06c65fd898d9953ef54f677fade7574ca Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 20:43:57 +0000
+Subject: [PATCH 6/8] tests: keep the dummy X server from resetting between
+ tests (UNITY-20260928-020)
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/patches/series                         |  2 ++
+ debian/patches/tests-dummy-xorg-noreset.patch | 24 +++++++++++++++++++
+ 2 files changed, 26 insertions(+)
+ create mode 100644 debian/patches/tests-dummy-xorg-noreset.patch
+
+diff --git a/debian/patches/series b/debian/patches/series
+index 2cb938f..c0f48e1 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -8,3 +8,5 @@ remove_unicode_licensed.patch
+ fix-missing-vidmode.patch
+ fix-fullscreen-mode-list-double-free.patch
+ fix-fbo-attachment-arrays.patch
++tests-dummy-xorg-noreset.patch
++tests-windowthread-join-watchdog.patch
+diff --git a/debian/patches/tests-dummy-xorg-noreset.patch b/debian/patches/tests-dummy-xorg-noreset.patch
+new file mode 100644
+index 0000000..1d4de92
+--- /dev/null
++++ b/debian/patches/tests-dummy-xorg-noreset.patch
+@@ -0,0 +1,24 @@
++Description: tests: keep the dummy X server from resetting between tests
++ Without -noreset, Xorg resets whenever its last client disconnects. The test
++ suites open and close their connections test by test, so the server
++ regenerated about once per test (88 and 114 GLX initialisations in two runs
++ of gtest-nux-slow), and a test that connected during a reset got NULL from
++ XOpenDisplay. EmbeddedContext then dereferenced it in DefaultRootWindow() and
++ the suite died with SIGSEGV. With -noreset the server is generated once and
++ no EmbeddedContext test crashed in 10 runs (9 of 10 runs crashed without).
++Author: NeiroNext <mihail.rozshko@gmail.com>
++Forwarded: no
++Last-Update: 2026-09-28
++Index: nux/tests/dummy-xorg-test-runner.sh
++===================================================================
++--- nux.orig/tests/dummy-xorg-test-runner.sh
+++++ nux/tests/dummy-xorg-test-runner.sh
++@@ -61,7 +61,7 @@ trap "do_cleanup; exit 1" SIGHUP SIGINT
++ 
++ dpy=$((RANDOM+1))
++ export DISPLAY=:`for id in $(seq $dpy $((dpy+50))); do test -e /tmp/.X$id-lock || { echo $id; exit 0; }; done; exit 1`
++-Xorg $DISPLAY -config $conffile -logfile $logfile &> /dev/null &
+++Xorg $DISPLAY -noreset -config $conffile -logfile $logfile &> /dev/null &
++ x_pid=$!
++ 
++ start_time=$(date +%s)
+-- 
+2.53.0
+

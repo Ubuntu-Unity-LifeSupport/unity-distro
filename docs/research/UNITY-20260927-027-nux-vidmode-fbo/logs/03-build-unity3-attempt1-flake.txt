@@ -1,0 +1,16 @@
+# +unity3 (85c6c4a), first sbuild, 2026-09-28 ~15:16Z: suites 130, 11 (both new tests OK), 18 pass; gtest-nux
+# segfaults in TestWindowThread.OneFdEvent. gtest-nux's sources are unchanged from +unity2 and the only library
+# change (dropping a pre-query XFree of a NULL pointer) is a no-op on a first window. History: 0ubuntu15+unity1
+# attempt1 segfaulted in EmbeddedContextMultiWindow.ForeignFrameEndedPresentNone; 5 other nux builds passed 113.
+# The identical source rebuilt (logs/04) passed. Extract:
+11650:[  PASSED  ] 130 tests.
+11700:[ RUN      ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce
+11701:[       OK ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (274 ms)
+11705:[ RUN      ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased
+11707:[       OK ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (683 ms)
+11712:[  PASSED  ] 11 tests.
+11774:[  PASSED  ] 18 tests.
+12180:[ RUN      ] TestWindowThread.OneFdEvent
+12183:Segmentation fault         (core dumped) $binary $@
+12184:make[3]: *** [Makefile:2690: check-headless] Error 139
+12225:Status: attempted

@@ -1,0 +1,69 @@
+# UNITY-20261009-003/-004/-005: the new tests one by one (devtests.sh), on target2 (2026-10-12, Clean-2 restored and confirmed, then apt-get build-dep hud, cmake, systemd-dev, xvfb, dbus-x11)
+# control = hud-control control/UNITY-20261009-003 06726fd (the tests on +unity6 1369d9e); fix = hud b/UNITY-20261009-003 6893250 (+unity7)
+# each test alone with --gtest_filter under xvfb-run + dbus-run-session; rc 139 = SIGSEGV, which ends the whole binary
+
+## setup
+update rc=0
+build-dep rc=0
+extra rc=0
+trees: control
+control.tar
+devtests.sh
+fix
+fix.tar
+systemd-dev installed afterwards (cmake's pkg_get_variable for the systemd user unit directory)
+
+## build
+systemd-dev rc=0
+control cmake rc=0
+control make rc=0 warnings 23
+fix cmake rc=0
+fix make rc=0 warnings 23
+(the 23 warnings are the same in both trees; the only one in a changed file is the old insertMulti at service/ItemStore.cpp:188)
+
+## run
+== control
+  TestHud.LegacyExecuteUsesItemTarget: rc=1 [  FAILED  ] 1 test, listed below: [  FAILED  ] TestHud.LegacyExecuteUsesItemTarget 
+  TestQuery.ExecuteCommandWithStructureKeyOutsideDBus: rc=139 (no gtest summary: )
+  TestQuery.ExecuteCommandWithNonNumericStringKey: rc=1 [  FAILED  ] 1 test, listed below: [  FAILED  ] TestQuery.ExecuteCommandWithNonNumericStringKey 
+  TestQuery.ExecuteCommandWithNumericStringKey: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteCommandWithoutFocusedWindow: rc=139 (no gtest summary: )
+  TestQuery.ExecuteCommandWithBadKeyOverDBus: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteParameterizedWithBadKeys: rc=139 (no gtest summary: )
+  TestQuery.ExecuteParameterizedWithoutFocusedWindow: rc=139 (no gtest summary: )
+  TestItemStore.ExecuteUnknownIdLeavesStoreUnchanged: rc=139 (no gtest summary: )
+  TestApplication.RelativeDataHomeIgnored: rc=1 [  FAILED  ] 1 test, listed below: [  FAILED  ] TestApplication.RelativeDataHomeIgnored 
+  TestActivationParameter.*: rc=0 [  PASSED  ] 0 tests. 
+== fix
+  TestHud.LegacyExecuteUsesItemTarget: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteCommandWithStructureKeyOutsideDBus: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteCommandWithNonNumericStringKey: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteCommandWithNumericStringKey: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteCommandWithoutFocusedWindow: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteCommandWithBadKeyOverDBus: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteParameterizedWithBadKeys: rc=0 [  PASSED  ] 1 test. 
+  TestQuery.ExecuteParameterizedWithoutFocusedWindow: rc=0 [  PASSED  ] 1 test. 
+  TestItemStore.ExecuteUnknownIdLeavesStoreUnchanged: rc=0 [  PASSED  ] 1 test. 
+  TestApplication.RelativeDataHomeIgnored: rc=0 [  PASSED  ] 1 test. 
+  TestActivationParameter.*: rc=0 [  PASSED  ] 8 tests. 
+
+## control TestHud.LegacyExecuteUsesItemTarget: where it fails, and ctest on the fix tree
+1791844085.417 GetWindowStack
+1791844085.433 GetMenuForWindow 0
+1791844085.437 GetWindowProperties 0 "app0" ["_GTK_UNIQUE_BUS_NAME", "_GTK_APP_MENU_OBJECT_PATH", "_GTK_MENUBAR_OBJECT_PATH", "_GTK_APPLICATION_OBJECT_PATH", "_GTK_WINDOW_OBJECT_PATH", "_UNITY_OBJECT_PATH"]
+/home/mike/b0309/dev/control/tests/integration/TestHud.cpp:470: Failure
+Expected equality of these values:
+  invoked.size()
+    Which is: 0
+Window
+====
+    Start 4: test-qtgmenu-unit-tests
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.10 sec
+    Start 5: test-service-unit-tests
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.14 sec
+    Start 6: test-window-stack-bridge-unit-tests
+6/6 Test #6: test-window-stack-bridge-unit-tests ...   Passed    8.20 sec
+
+100% tests passed, 0 tests failed out of 6
+
+Total Test time (real) =  26.85 sec

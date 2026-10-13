@@ -1,0 +1,55 @@
+boot_id 049ca556-8a68-4d2f-8012-9cde848a7101 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2177 drop-ins:  power-owner: (':1.50',)
+toggle: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 2177: waited 8,82 s for the first inhibitor (polls: 131); active=false at +10,13 s; inhibitors gone at +12,46 s (polls: 38); active=true at +12,84 s
+43884 ms pid 2177 MANAGER-NEW (register_manager_dbus, inlined)
+43885 ms pid 2177 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x7cfe1f147b05
+        0x7cfe1f147d44
+        0x7cfe1f136920
+        0x7cfe1ef2bc1b
+        0x7cfe1ef2d257
+        g_main_loop_run+311
+
+51118 ms pid 2177 ON-BUS-GOTTEN
+51571 ms pid 2177 STOP
+
+        gsd_power_manager_stop+0
+        g_cclosure_marshal_VOID__STRINGv+127
+        0x7cfe1fa09cc9
+        g_signal_emit_valist+56
+        g_signal_emit+147
+        0x7cfe1f11f263
+        0x7cfe1f0a4fe2
+        0x7cfe1fa09cc9
+        g_signal_emit_valist+56
+        g_signal_emit+147
+        0x7cfe1f1212bd
+        0x7cfe1f11bf96
+        0x7cfe1ef2bc1b
+        0x7cfe1ef2d257
+        g_main_loop_run+311
+        gtk_main+133
+
+52701 ms pid 2177 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        g_cclosure_marshal_VOID__STRINGv+127
+        0x7cfe1fa09cc9
+        g_signal_emit_valist+56
+        g_signal_emit+147
+        0x7cfe1f11f263
+        0x7cfe1f0a4fe2
+        0x7cfe1fa09cc9
+        g_signal_emit_valist+56
+        g_signal_emit+147
+        0x7cfe1f1212bd
+
+
+

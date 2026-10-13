@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-012",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-012/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20260927-012",
+  "source_commit": "b570a220e5b3fbb28c7ec3fbbb53277491545f12",
+  "source_tree_hash": "ba300771f3dac3a2a811139d50e202de36ea010c",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-012"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/build-gated/UNITY-20260927-012-unity-settings-daemon-build-manifest.json",
+    "sha256": "2605aa9aee1ef020cc200722688f5cbefa6a6e0c519b224a45c0dab269684193"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/gate/evidence-manifest.json",
+    "sha256": "a32f9df5fd1bc17bf024654ade9413753b140b8fd47cb58dd51dbe31c5bf61a1"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20260927-012-usd-color-restart-crash/runs-gated/README.txt",
+        "sha256": "fffb4b0d7801e5fe5cc1f2661ed2ff5aca6c35d584d900f1e425fa8d84538d83"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity7_amd64.deb": "ebcf1dee1dda302944572f9f15e3f44c4df6da084bfc3a2600e38e42b0bb1adf",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity7_all.deb": "49aeae3561e8cdd087a21a1e93e33a3a1e292255fa3038a243c4fdbebcd1a484",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity7_amd64.deb": "44a92fc4321f5e5b776b749ab4b2da5fdd0f40cca8720581b9596871ddf0d926"
+      }
+    }
+  }
+}

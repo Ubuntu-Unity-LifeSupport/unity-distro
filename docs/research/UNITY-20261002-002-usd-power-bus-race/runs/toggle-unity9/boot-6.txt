@@ -1,0 +1,19 @@
+boot_id 264f4310-befd-4a27-b286-c9359ac90e0e u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2222 drop-ins:  power-owner: (':1.54',)
+toggle: u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2222: waited 7,41 s for the first inhibitor (polls: 91); active=false at +7,75 s; active=true at +8,37 s
+48250 ms pid 2222 MANAGER-NEW (register_manager_dbus, inlined)
+48250 ms pid 2222 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x72ce21f47b05
+        0x72ce21f47d44
+        0x72ce21f36920
+        0x72ce22787c1b
+        0x72ce22789257
+        g_main_loop_run+311
+
+52815 ms pid 2222 ON-BUS-GOTTEN

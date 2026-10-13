@@ -1,0 +1,20 @@
+UNITY-20261008-020 (with UNITY-20261008-009, UNITY-20261008-010): target verification of the publication
+
+Published: ./resolute = unity-resolute-20261008-020, 2026-10-09T00:38:37Z (publish record
+~/coordinator/publish-records/UNITY-20261008-020.json; switch-time version check SAFE).
+
+Target: target-desktop, the published stack of 2026-10-08 restored (confirmed inside the guest:
+unity-settings-daemon +unity11 before the update), then updated the ordinary way from the live repository
+(apt-get update, apt-get full-upgrade):
+  installed: unity-settings-daemon, unity-settings-daemon-schemas, libunity-settings-daemon1 +unity13,
+  cinnamon-session +unity4, unity +unity13, light-locker +unity3, hud +unity5, libcolumbus1v5 +unity1
+  sha256 /usr/lib/unity-settings-daemon/unity-fallback-mount-helper =
+  896d1b22fbd628c589bebc55cd8d50bf7ab8eceb32a96d77a15b3e4dc76b5856 = the same file in the gated build's deb.
+
+Cold boot (power off, power on):
+  unity-fallback-mount-helper runs from the new binary (no "(deleted)" mappings); SessionIsActive true,
+  logind Active=yes, LockedHint=no; no helper warnings in the journal.
+  Medium (an ISO image in the optical drive) inserted into the unlocked session: mounted within about
+  2 s; no autorun dialog (autorun is off by default). The medium was unmounted and ejected afterwards.
+
+Result: PASS.

@@ -1,0 +1,32 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity7 pid 4110
+== H2: quick on/off toggles with inhibit_suspend_done traced
+u-s-d delay inhibitors before: 3
+u-s-d-held inhibitors while stopped:
+mike                         1000 mike 4110 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses        
+STOP
+START
+STOP
+CB inhibit_suspend_done
+CB inhibit_lid_switch_done
+CB power_keyboard_proxy_ready
+CB session_presence_proxy_ready
+START
+STOP
+CB session_presence_proxy_ready
+CB power_keyboard_proxy_ready
+START
+CB inhibit_suspend_done
+CB power_keyboard_proxy_ready
+CB session_presence_proxy_ready
+CB inhibit_lid_switch_done
+STOP
+== H1: Properties.Get Percentage while stopped
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
+u-s-d pid 4110 alive: no; new pid: 4744
+вер 29 03:04:45 mike-virtualbox unity-settings-daemon-localeexec[4110]: GLib-GIO:ERROR:../../../gio/gdbusconnection.c:4771:invoke_get_property_in_idle_cb: assertion failed: (error != NULL)
+вер 29 03:04:45 mike-virtualbox unity-settings-daemon-localeexec[4110]: Bail out! GLib-GIO:ERROR:../../../gio/gdbusconnection.c:4771:invoke_get_property_in_idle_cb: assertion failed: (error != NULL)
+вер 29 03:04:52 mike-virtualbox systemd[1242]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+вер 29 03:04:52 mike-virtualbox systemd[1242]: unity-settings-daemon.service: Failed with result 'core-dump'.
+вер 29 03:04:52 mike-virtualbox systemd[1242]: unity-settings-daemon.service: Consumed 1.519s CPU time over 8min 42.205s wall clock time, 206.3M memory peak.
+вер 29 03:04:52 mike-virtualbox systemd[1242]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 2.
+inhibitors after re-enable: 3

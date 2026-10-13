@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-013",
+  "package": "libcolumbus",
+  "candidate_version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-013/packages/libcolumbus",
+  "source_commit": "3da4d89457f3528b1bf75324d5fda35faf8cb1de",
+  "source_tree_hash": "5f4f988dd4d446cfc0da59afe7a3fc33b9df0069",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
+  ],
+  "build_started": "2026-10-08T22:39:55.529806+00:00",
+  "build_finished": "2026-10-08T22:45:19.495791+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261008-013-libcolumbus-1.1.0+15.10.20150806-0ubuntu39+unity1-sbuild.log",
+    "sha256": "b19ad774f46b59cb89caeaa1a41941b3e536630d9c8bfbc74eea754293f76813"
+  },
+  "artifacts": [
+    {
+      "file": "libcolumbus_1.1.0+15.10.20150806-0ubuntu39+unity1.dsc",
+      "sha256": "f1bdb39fd07129f63277c413df6c2dd46b8f5b95bd5a29fd2b2e7d7546144141",
+      "size": 1390,
+      "kind": "source",
+      "package": "libcolumbus",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1"
+    },
+    {
+      "file": "libcolumbus_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.changes",
+      "sha256": "8d535a4d8eaa51f35f5d3928667461bcce8d78d18da68c5843b25febb1cd5589",
+      "size": 4128,
+      "kind": "changes"
+    },
+    {
+      "file": "libcolumbus_1.1.0+15.10.20150806.orig.tar.gz",
+      "sha256": "b57fc4a4d0a90b62273f11d5e9ccde0eb6cce9f220ca300631d95d115690eb79",
+      "size": 54362,
+      "kind": "source_file",
+      "package": "libcolumbus",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1"
+    },
+    {
+      "file": "libcolumbus_1.1.0+15.10.20150806-0ubuntu39+unity1.diff.gz",
+      "sha256": "4d813d96039c7b8f6de3cced1051e9eede52d18d417c6bdf9a423fbbfcbacbd1",
+      "size": 10116,
+      "kind": "source_file",
+      "package": "libcolumbus",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1"
+    },
+    {
+      "file": "libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity1_all.deb",
+      "sha256": "cea9db10e53d0482ac5a51b70f774c4837a5f5ee4c2251013f7c083ca2a90637",
+      "size": 3322,
+      "kind": "binary",
+      "package": "libcolumbus1-common",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+      "architecture": "all"
+    },
+    {
+      "file": "libcolumbus1-dev_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb",
+      "sha256": "1671deafae217cfc754f74a5785000a10a4723d99e522974cf154f290f855cce",
+      "size": 7628,
+      "kind": "binary",
+      "package": "libcolumbus1-dev",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libcolumbus1v5-dbgsym_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.ddeb",
+      "sha256": "f4eab749e8db2f708b787588081ecb369e6883341196b151c873722d3074ec0f",
+      "size": 1029448,
+      "kind": "binary",
+      "package": "libcolumbus1v5-dbgsym",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb",
+      "sha256": "65773439ef292b3c3efbf49dec37a090c26f37519f6b80b9c511c4887e5c3520",
+      "size": 79478,
+      "kind": "binary",
+      "package": "libcolumbus1v5",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libcolumbus_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.buildinfo",
+      "sha256": "90cbd15f9714061fa7eae00283526f9f4b9354443bd6221a27df8e11ead3227a",
+      "size": 10517,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "python3-columbus-dbgsym_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.ddeb",
+      "sha256": "86bc143d2db58c45a50e7395db301419136d484f999e26ac228d30ad39dbcaf5",
+      "size": 450202,
+      "kind": "binary",
+      "package": "python3-columbus-dbgsym",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+      "architecture": "amd64"
+    },
+    {
+      "file": "python3-columbus_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb",
+      "sha256": "cae6b6d6f19bdc7664561301083971d4cc17cd18a91b6661b99157660b402e6c",
+      "size": 33348,
+      "kind": "binary",
+      "package": "python3-columbus",
+      "version": "1.1.0+15.10.20150806-0ubuntu39+unity1",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-013/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

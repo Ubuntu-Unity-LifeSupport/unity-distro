@@ -1,0 +1,449 @@
+.FFEFFFFFFFFFFFFFFFFFFFFFFFF.FFFFF
+======================================================================
+ERROR: test_kind_locked_at_ready_for_fix (test_taskctl.TaskctlKindsTest.test_kind_locked_at_ready_for_fix)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 161, in test_kind_locked_at_ready_for_fix
+    self.assertEqual(self.lock.read_text().strip(), "tool")
+                     ~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 788, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/pathlib/__init__.py", line 772, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp227uyom3/evidence/UNITY-20990101-001.kind'
+
+======================================================================
+FAIL: test_blocked_resume_into_review_then_done_by_kind (test_taskctl.TaskctlKindsTest.test_blocked_resume_into_review_then_done_by_kind)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 218, in test_blocked_resume_into_review_then_done_by_kind
+    self.assert_ok(self.go("DONE", task_kind="tool", terminal_evidence="x", **REVIEW_PASS), "DONE")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 69, in assert_ok
+    self.assertEqual(rc_err[0], 0, rc_err[1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : taskctl: transition REVIEW -> DONE is not allowed
+
+
+======================================================================
+FAIL: test_documentation_done_from_verifying_and_review (test_taskctl.TaskctlKindsTest.test_documentation_done_from_verifying_and_review)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 99, in test_documentation_done_from_verifying_and_review
+    self.assert_ok(self.go("DONE", task_kind="documentation", validation_record="read",
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           terminal_evidence="x"), "DONE")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 69, in assert_ok
+    self.assertEqual(rc_err[0], 0, rc_err[1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : taskctl: only an explicitly non-package task may move VERIFYING -> DONE
+
+
+======================================================================
+FAIL: test_legacy_package_done_from_published (test_taskctl.TaskctlKindsTest.test_legacy_package_done_from_published)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 124, in test_legacy_package_done_from_published
+    self.assert_ok(self.go("DONE", package_change=True, terminal_evidence="x"), "DONE")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 69, in assert_ok
+    self.assertEqual(rc_err[0], 0, rc_err[1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : taskctl: package tasks reach DONE only after PUBLISHED
+
+
+======================================================================
+FAIL: test_legacy_package_refused_on_review_done (test_taskctl.TaskctlKindsTest.test_legacy_package_refused_on_review_done)
+package_change=true without task_kind is a package (fail-safe).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 119, in test_legacy_package_refused_on_review_done
+    self.assert_refused(self.go("DONE", package_change=True, terminal_evidence="x", **REVIEW_PASS),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "only after PUBLISHED", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'only after PUBLISHED' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_missing_kind_refused_from_ready_for_fix (test_taskctl.TaskctlKindsTest.test_missing_kind_refused_from_ready_for_fix)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 130, in test_missing_kind_refused_from_ready_for_fix
+    self.assert_refused(self.go("READY_FOR_FIX", package_change=False, **DEFECT_CARD),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "requires task_kind", "INVESTIGATING")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_non_bool_and_mismatched_package_change (test_taskctl.TaskctlKindsTest.test_non_bool_and_mismatched_package_change) (evidence={'task_kind': 'tool', 'package_change': 'no'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 141, in test_non_bool_and_mismatched_package_change
+    self.assert_refused(self.go("READY_FOR_FIX", **dict(DEFECT_CARD, **evidence)), fragment, "INVESTIGATING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_non_bool_and_mismatched_package_change (test_taskctl.TaskctlKindsTest.test_non_bool_and_mismatched_package_change) (evidence={'task_kind': 'tool', 'package_change': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 141, in test_non_bool_and_mismatched_package_change
+    self.assert_refused(self.go("READY_FOR_FIX", **dict(DEFECT_CARD, **evidence)), fragment, "INVESTIGATING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_non_bool_and_mismatched_package_change (test_taskctl.TaskctlKindsTest.test_non_bool_and_mismatched_package_change) (evidence={'task_kind': 'package', 'package_change': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 141, in test_non_bool_and_mismatched_package_change
+    self.assert_refused(self.go("READY_FOR_FIX", **dict(DEFECT_CARD, **evidence)), fragment, "INVESTIGATING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_non_bool_and_mismatched_package_change (test_taskctl.TaskctlKindsTest.test_non_bool_and_mismatched_package_change) (evidence={'task_kind': 'script'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 141, in test_non_bool_and_mismatched_package_change
+    self.assert_refused(self.go("READY_FOR_FIX", **dict(DEFECT_CARD, **evidence)), fragment, "INVESTIGATING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_non_package_cannot_publish (test_taskctl.TaskctlKindsTest.test_non_package_cannot_publish)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 153, in test_non_package_cannot_publish
+    self.assert_refused(self.go("READY_TO_PUBLISH", task_kind="tool", **REVIEW_PASS),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "only package tasks are published", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'only package tasks are published' not found in 'taskctl: READY_TO_PUBLISH requires evidence fields: release_gate, build_manifest, version_check\n'
+
+======================================================================
+FAIL: test_operation_and_documentation_ready_without_defect_fields (test_taskctl.TaskctlKindsTest.test_operation_and_documentation_ready_without_defect_fields)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 181, in test_operation_and_documentation_ready_without_defect_fields
+    self.assert_ok(self.go("READY_FOR_FIX", task_kind="operation", existing_state_check="none there",
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           authorization=AUTH, **PLAN), "READY_FOR_FIX")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 69, in assert_ok
+    self.assertEqual(rc_err[0], 0, rc_err[1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : taskctl: READY_FOR_FIX requires evidence fields: reproduction, reproduction_result, existing_fix_result, issue_search_result, root_cause, invariant
+
+
+======================================================================
+FAIL: test_operation_authorization_required (test_taskctl.TaskctlKindsTest.test_operation_authorization_required) (extra={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 194, in test_operation_authorization_required
+    self.assert_refused(self.go("READY_FOR_FIX", task_kind="operation", existing_state_check="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(PLAN, **extra)), fragment, "INVESTIGATING")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'authorization' not found in 'taskctl: READY_FOR_FIX requires evidence fields: reproduction, reproduction_result, existing_fix_result, issue_search_result, root_cause, invariant\n'
+
+======================================================================
+FAIL: test_operation_authorization_required (test_taskctl.TaskctlKindsTest.test_operation_authorization_required) (extra={'authorization': 'May said so'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 194, in test_operation_authorization_required
+    self.assert_refused(self.go("READY_FOR_FIX", task_kind="operation", existing_state_check="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(PLAN, **extra)), fragment, "INVESTIGATING")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'authorization' not found in 'taskctl: READY_FOR_FIX requires evidence fields: reproduction, reproduction_result, existing_fix_result, issue_search_result, root_cause, invariant\n'
+
+======================================================================
+FAIL: test_operation_authorization_required (test_taskctl.TaskctlKindsTest.test_operation_authorization_required) (extra={'authorization': {'approved_by': 'B', 'reference': '~/coordinator/PENDING-MAY.md 2099-01-01', 'scope': 'create repositories'}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 194, in test_operation_authorization_required
+    self.assert_refused(self.go("READY_FOR_FIX", task_kind="operation", existing_state_check="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(PLAN, **extra)), fragment, "INVESTIGATING")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'approved_by' not found in 'taskctl: READY_FOR_FIX requires evidence fields: reproduction, reproduction_result, existing_fix_result, issue_search_result, root_cause, invariant\n'
+
+======================================================================
+FAIL: test_operation_authorization_required (test_taskctl.TaskctlKindsTest.test_operation_authorization_required) (extra={'authorization': {'approved_by': 'May', 'reference': 'TBD', 'scope': 'create repositories'}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 194, in test_operation_authorization_required
+    self.assert_refused(self.go("READY_FOR_FIX", task_kind="operation", existing_state_check="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(PLAN, **extra)), fragment, "INVESTIGATING")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'reference' not found in 'taskctl: READY_FOR_FIX requires evidence fields: reproduction, reproduction_result, existing_fix_result, issue_search_result, root_cause, invariant\n'
+
+======================================================================
+FAIL: test_operation_done_from_verifying (test_taskctl.TaskctlKindsTest.test_operation_done_from_verifying)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 106, in test_operation_done_from_verifying
+    self.assert_ok(self.go("DONE", task_kind="operation", validation_record="ls-remote",
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           terminal_evidence="x"), "DONE")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 69, in assert_ok
+    self.assertEqual(rc_err[0], 0, rc_err[1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : taskctl: only an explicitly non-package task may move VERIFYING -> DONE
+
+
+======================================================================
+FAIL: test_package_done_refused_from_review_and_verifying (test_taskctl.TaskctlKindsTest.test_package_done_refused_from_review_and_verifying) (state='REVIEW')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 113, in test_package_done_refused_from_review_and_verifying
+    self.assert_refused(self.go("DONE", task_kind="package", terminal_evidence="x", **REVIEW_PASS),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "only after PUBLISHED", state)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'only after PUBLISHED' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_package_done_refused_from_review_and_verifying (test_taskctl.TaskctlKindsTest.test_package_done_refused_from_review_and_verifying) (state='VERIFYING')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 113, in test_package_done_refused_from_review_and_verifying
+    self.assert_refused(self.go("DONE", task_kind="package", terminal_evidence="x", **REVIEW_PASS),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "only after PUBLISHED", state)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'only after PUBLISHED' not found in 'taskctl: only an explicitly non-package task may move VERIFYING -> DONE\n'
+
+======================================================================
+FAIL: test_package_markers_force_package (test_taskctl.TaskctlKindsTest.test_package_markers_force_package) (marker='build_manifest')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 147, in test_package_markers_force_package
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(REVIEW_PASS, **{marker: "x"})),
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "belongs to a package task", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'belongs to a package task' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_package_markers_force_package (test_taskctl.TaskctlKindsTest.test_package_markers_force_package) (marker='release_gate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 147, in test_package_markers_force_package
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(REVIEW_PASS, **{marker: "x"})),
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "belongs to a package task", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'belongs to a package task' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_package_markers_force_package (test_taskctl.TaskctlKindsTest.test_package_markers_force_package) (marker='candidate_version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 147, in test_package_markers_force_package
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(REVIEW_PASS, **{marker: "x"})),
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "belongs to a package task", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'belongs to a package task' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_package_markers_force_package (test_taskctl.TaskctlKindsTest.test_package_markers_force_package) (marker='version_safety')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 147, in test_package_markers_force_package
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                **dict(REVIEW_PASS, **{marker: "x"})),
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "belongs to a package task", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'belongs to a package task' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_seeded_legacy_package_cannot_be_relabelled (test_taskctl.TaskctlKindsTest.test_seeded_legacy_package_cannot_be_relabelled)
+A lock written at deployment (tools/seed-kind-locks.py) holds an
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 172, in test_seeded_legacy_package_cannot_be_relabelled
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x", **REVIEW_PASS),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "held to task_kind=package", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'held to task_kind=package' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_tool_done_only_from_review_with_pass (test_taskctl.TaskctlKindsTest.test_tool_done_only_from_review_with_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 81, in test_tool_done_only_from_review_with_pass
+    self.assert_ok(self.go("DONE", task_kind="tool", terminal_evidence="merged", **REVIEW_PASS), "DONE")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 69, in assert_ok
+    self.assertEqual(rc_err[0], 0, rc_err[1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : taskctl: transition REVIEW -> DONE is not allowed
+
+
+======================================================================
+FAIL: test_tool_review_done_refused_without_pass (test_taskctl.TaskctlKindsTest.test_tool_review_done_refused_without_pass) (result='FAIL')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 88, in test_tool_review_done_refused_without_pass
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x", **ev),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "verification_result=PASS", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'verification_result=PASS' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_tool_review_done_refused_without_pass (test_taskctl.TaskctlKindsTest.test_tool_review_done_refused_without_pass) (result='INCOMPLETE')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 88, in test_tool_review_done_refused_without_pass
+    self.assert_refused(self.go("DONE", task_kind="tool", terminal_evidence="x", **ev),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        "verification_result=PASS", "REVIEW")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 74, in assert_refused
+    self.assertIn(fragment, rc_err[1])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'verification_result=PASS' not found in 'taskctl: transition REVIEW -> DONE is not allowed\n'
+
+======================================================================
+FAIL: test_tool_verifying_done_refused (test_taskctl.TaskctlKindsTest.test_tool_verifying_done_refused)
+Reproduced gap 3: tool code may no longer skip the Verifier.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 94, in test_tool_verifying_done_refused
+    self.assert_refused(self.go("DONE", task_kind="tool", package_change=False, validation_record="t",
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                terminal_evidence="x"), "only from REVIEW", "VERIFYING")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_verifying_requirements (test_taskctl.TaskctlKindsTest.test_verifying_requirements) (kind='tool', evidence={'validation_record': 'v'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 211, in test_verifying_requirements
+    self.assert_refused(self.go("VERIFYING", task_kind=kind, **evidence), fragment, "IMPLEMENTING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_verifying_requirements (test_taskctl.TaskctlKindsTest.test_verifying_requirements) (kind='tool', evidence={'regression_test': 't'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 211, in test_verifying_requirements
+    self.assert_refused(self.go("VERIFYING", task_kind=kind, **evidence), fragment, "IMPLEMENTING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_verifying_requirements (test_taskctl.TaskctlKindsTest.test_verifying_requirements) (kind='operation', evidence={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 211, in test_verifying_requirements
+    self.assert_refused(self.go("VERIFYING", task_kind=kind, **evidence), fragment, "IMPLEMENTING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_verifying_requirements (test_taskctl.TaskctlKindsTest.test_verifying_requirements) (kind='package', evidence={'regression_test': 't'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 211, in test_verifying_requirements
+    self.assert_refused(self.go("VERIFYING", task_kind=kind, **evidence), fragment, "IMPLEMENTING")
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/work/a/unity-distro/scripts/tests/test_taskctl.py", line 73, in assert_refused
+    self.assertNotEqual(rc_err[0], 0)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 20 tests in 4.677s
+
+FAILED (failures=31, errors=1)

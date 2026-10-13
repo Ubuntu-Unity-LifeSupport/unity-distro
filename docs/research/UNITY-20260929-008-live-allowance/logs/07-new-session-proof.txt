@@ -1,0 +1,31 @@
+# UNITY-20260929-008 proof in a NEW session after the merge (main 3559561)
+# Session 'Пока ничего не делай [c8f3f1]', started by May, commands typed by May one per call.
+# Checked by B against the transcript /home/claude/.claude/projects/-home-claude/19e09c15-3c21-4335-a0b3-08439fce93ee.jsonl: cwd /home/claude (all records), sessionId 19e09c15-3c21-4335-a0b3-08439fce93ee.
+# ~/.aptly.conf 644, sha256 ece05ab8... = list aptly_conf_sha256 (logs/06). No live marker existed.
+
+CMD: python3 ~/unity-distro/scripts/install_command_guard.py --check
+RESULT: command_guard wiring: OK
+CMD: pgrep -f unity-guard-probe-zzz; echo "probe rc=$?"
+RESULT: PreToolUse:Bash hook error: [/usr/bin/timeout -s KILL 20 /usr/bin/python3 -I /home/claude/unity-distro/.claude/hooks/command_guard.py >/dev/null || { rc=$?; [ "$rc" -eq 2 ] || echo "command_guard did not decide (rc=$rc); tool call blocked." >&2; exit 2; }]: Pattern-based process matching is 
+CMD: cat /home/claude/work/b/unity-distro-008/docs/research/UNITY-20260929-008-live-allowance/live-proof.py
+        authorization"); near-misses, Monitor and
+        print(f"list sha256 {hashlib.sha256(data).hexdigest()} ({len(commands)} commands)")
+CMD: python3 /home/claude/work/b/unity-distro-008/docs/research/UNITY-20260929-008-live-allowance/live-proof.py "$CLAUDE_CODE_SESSION_ID"
+RESULT: list sha256 4e9dde5a5b862f58a27f47bfaea80942fab73c46ac0b9434a0c0d6e70f42294a (8 commands)
+        L1 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L2 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L3 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L4 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L5 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L6 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L7 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        L8 listed, no marker: rc=2 OK | aptly live command not allowed: no live authorization is recorded (C writes it after May's GO and the L0 record)
+        near-miss (extra space): rc=2 OK | aptly live command not allowed: not an exact entry of the reviewed live command list
+        near-miss (extra arg): rc=2 OK | aptly live command not allowed: not an exact entry of the reviewed live command list
+CMD: ls ~/coordinator/live-log.jsonl
+RESULT: Exit code 2
+cwd: {'/home/claude'} session: {'19e09c15-3c21-4335-a0b3-08439fce93ee'}
+        Monitor tool: rc=2 OK | aptly live command not allowed: live commands run only as a foreground Bash call
+        background: rc=2 OK | aptly live command not allowed: live commands run only as a foreground Bash call
+        RESULT: all denied as expected
+# ls ~/coordinator/live-log.jsonl: No such file or directory

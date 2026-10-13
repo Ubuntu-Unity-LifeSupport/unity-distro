@@ -1,0 +1,53 @@
+# UNITY-20260927-028 target test (this_build) on target2: continues the UNITY-20260927-029 session (Clean-2, our repository, gated +unity2), then the gated hud +unity3 .debs from a file repository (the upgrade path +unity2 -> +unity3)
+# builder utc 2026-10-02T16:06:14Z
+== install unity3 host=target2 boot=40febe08-042f-4a18-8b07-5266ddeecc74 utc=2026-10-02T16:06:14Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 19:06:14 EEST 
+== snapshot marker: ~/.dirty PRESENT
+== policy hud
+hud:
+  Установлен: 14.10+17.10.20170619-0ubuntu6+unity2
+  Кандидат:   14.10+17.10.20170619-0ubuntu6+unity3
+  Таблица версий:
+     14.10+17.10.20170619-0ubuntu6+unity3 500
+        500 file:/var/tmp/localrepo-unity3 ./ Packages
+ *** 14.10+17.10.20170619-0ubuntu6+unity2 500
+        500 file:/var/tmp/localrepo-unity2 ./ Packages
+full-upgrade rc=0
+xdotool rc=0
+== installed hud packages
+hud 14.10+17.10.20170619-0ubuntu6+unity3 ii 
+== installed .deb sha256 (apt cache of the file repository is the file itself)
+53519934fe22c4368e4b80a6895ca6c50e9ce008d0133c8fe5df4dce86078c11  /var/tmp/localrepo-unity3/hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb
+## after a reboot
+== session  host=target2 boot=b6ec793f-e8e5-40b1-bbb7-a78692bbbe3b utc=2026-10-02T16:08:35Z
+== clock: NTPSynchronized=yes TimeUSec=Fri 2026-10-02 19:08:35 EEST 
+== hud installed: 14.10+17.10.20170619-0ubuntu6+unity3
+c2534c84c9960ad1c2ab4f6b7098fef68cc680f6387c232c92d2591249c3be41  /usr/lib/x86_64-linux-gnu/hud/hud-service
+95ab8785f0c70278967ae73dcb08e4228ab6636c1bcea58724474f33d155d4a0  /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge
+hud-service pid=3623 exe=/usr/lib/x86_64-linux-gnu/hud/hud-service deleted_maps=0
+window-stack-br pid=2147 exe=/usr/lib/x86_64-linux-gnu/hud/window-stack-bridge deleted_maps=0
+== lo7.sh 20 (GAP=3 WATCH_DELAY=0), as logs/05
+run 1: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 2: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 3: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 4: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 5: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 6: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 7: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 8: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 9: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 10: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 11: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 12: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 13: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 14: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 15: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 16: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 17: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 18: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 19: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+run 20: xid=62914596 in_window_stack=1 app_id=62914596 hud_now=1 hud_after_5s=1 no_desktop_file=0
+== window-stack-bridge / hud-service warnings since boot
+== done
+# binaries: hud-service c2534c84… and window-stack-bridge 95ab8785… equal the files in the gated hud_…+unity3_amd64.deb (53519934…); no "(deleted)" mapping.
+# 20/20 windows in the stack, the HUD answered 20/20 (now and after 5 s). No warnings from hud-service or window-stack-bridge.

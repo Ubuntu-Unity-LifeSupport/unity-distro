@@ -1,0 +1,4 @@
+/usr/bin/snap
+/usr/lib/x86_64-linux-gnu/libunity-settings-daemon.so.1.0.0
+/usr/lib/x86_64-linux-gnu/libgnome-desktop-4.so.2.1.4
+/usr/lib/x86_64-linux-gnu/libgnome-desktop-3.so.20.0.0

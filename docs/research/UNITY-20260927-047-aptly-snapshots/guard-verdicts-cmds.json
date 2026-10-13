@@ -1,0 +1,13 @@
+[
+ ["R1a", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf repo create -distribution=resolute -component=main unity-resolute"],
+ ["R1b", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf repo add unity-resolute /var/tmp/aptly-rehearsal/incoming"],
+ ["R2a", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute"],
+ ["R2b", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish show resolute"],
+ ["Rsnap", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf snapshot create unity-resolute-20260927-047 from repo unity-resolute"],
+ ["R3", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish switch resolute unity-resolute-20260927-047"],
+ ["R5a", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish snapshot -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute-20260927-047 candidate"],
+ ["R6a", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish drop resolute"],
+ ["R9a", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish drop resolute candidate"],
+ ["R9b", "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish list"],
+ ["chmod", "chmod -R go-w /var/tmp/aptly-rehearsal"]
+]

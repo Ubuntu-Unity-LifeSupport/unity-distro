@@ -1,0 +1,25 @@
+UNITY-20261013-007: target test of cinnamon-session 6.4.2-1+unity6 (source commit 7904214)
+(2026-10-13 11:28-12:37Z, target2)
+
+Target: target-desktop-2 restored to Clean-2, confirmed inside (no ~/.dirty, only ubuntu.sources, cinnamon-session
+6.4.2-1), the live repository added (InRelease Date 2026-10-13 10:44:09 UTC), apt-get full-upgrade (nothing left to
+upgrade), bpftrace and xterm installed. logs/07-target-setup-7904214.txt.
+
+Installed from this build with dpkg -i; dpkg -V clean:
+  e528f0b59ae01dfae71798d5abd0ebc47ce0a88523590d083f31d4ae144d71b7  cinnamon-session_6.4.2-1+unity6_amd64.deb
+  d7967587cce1b2f6f894fd813cb65538239ced032637cad99cd44ad5416712d0  cinnamon-session-common_6.4.2-1+unity6_all.deb
+The same files as in build/UNITY-20261013-007-cinnamon-session-build-manifest.json (source_commit 7904214).
+
+Two sessions, each a cold boot with autologin into Unity, with observe.sh: passive bpftrace uprobes on libICE's
+IceAcceptConnection, IceCloseConnection and _IceFreeConnection in the running cinnamon-session; an xterm (an XSMP
+client) that exits normally, an xterm killed with SIGKILL, then a logout with cinnamon-session-quit. summary.py
+reads the trace.
+
+  s3 (logs/08-observe-s3-7904214.txt) and s4 (logs/09-observe-s4-7904214.txt), each:
+  - every connection lifetime has exactly one close followed by one free (4 of 4);
+  - cinnamon-session keeps running after the SIGKILL and ends at the logout;
+  - no crash report newer than the boot, no segfault line, no cinnamon-session critical in the journal.
+
+The earlier build of the same code (1d3f2bc, comments differ) gave the same result in logs/03-06.
+
+Result: PASS.

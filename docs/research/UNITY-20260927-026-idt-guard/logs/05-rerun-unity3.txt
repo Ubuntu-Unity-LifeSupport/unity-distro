@@ -1,0 +1,3 @@
+# rerun of +unity3 (5d6492d) from git with build_sbuild.py, 2026-09-28 ~10:29-10:40Z (started at the regression control's end; flakiness check for test-eds-ics-all-day-events)
+100% tests passed, 0 tests failed out of 29
+Status: successful

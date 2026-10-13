@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-020",
+  "package": "nux",
+  "candidate_version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro/packages/nux",
+  "source_commit": "0274bc5ae114ed23537d503c925e8d72f4d90f75",
+  "source_tree_hash": "63abc181b013eee9dbef1b86b40827054ff532e4",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I"
+  ],
+  "build_started": "2026-09-28T21:23:47.485851+00:00",
+  "build_finished": "2026-09-28T21:40:10.250488+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260928-020-nux-4.0.8+18.10.20180623-0ubuntu15+unity3-sbuild.log",
+    "sha256": "4f4e7ea16d74fb98e3702a9dfc74e14534932fbcba4e844e3ce27df3bb505add"
+  },
+  "artifacts": [
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3.dsc",
+      "sha256": "43900321635022ce9f59d965447e81439d4090c2a07ee4d31fb368f19381d53d",
+      "size": 1595,
+      "kind": "source",
+      "package": "nux",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.changes",
+      "sha256": "6efc62862efb39aa7f41bc300172ea39d16d1b4a3be4be4c3dbb79fdb4e18121",
+      "size": 4678,
+      "kind": "changes"
+    },
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3.tar.gz",
+      "sha256": "510df15864fea2d10c067c98d72aa7e0ae8fbc48d0f83022deabfb7323509acd",
+      "size": 1044935,
+      "kind": "source_file",
+      "package": "nux",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3"
+    },
+    {
+      "file": "libnux-4.0-0-dbgsym_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.ddeb",
+      "sha256": "382d7a2d97674aa5ad278189d358a99c1fcc54a4ff979f589de5a6f37c389485",
+      "size": 15875308,
+      "kind": "binary",
+      "package": "libnux-4.0-0-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "127c476d9f82d35a022a860a02de60ed9866d29be65a334c1e549f7d7cb81d24",
+      "size": 785316,
+      "kind": "binary",
+      "package": "libnux-4.0-0",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+      "sha256": "f4b509702b5fbb45b88e819292b38f3c70d70c0182645fc60c17a8d392eb4097",
+      "size": 53438,
+      "kind": "binary",
+      "package": "libnux-4.0-common",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "91e4c62e3d197cbf7e8774cc66e8d6f9a3347a6e1a185a5b496ff3734c2a9978",
+      "size": 229276,
+      "kind": "binary",
+      "package": "libnux-4.0-dev",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "nux-tools-dbgsym_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.ddeb",
+      "sha256": "d9ec5b9056fe14deaf877794c71babe355158df926ec8586f4cdf88f4ec9274f",
+      "size": 17294,
+      "kind": "binary",
+      "package": "nux-tools-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "31b8726a8ecf6b69e25df4cc52ae3a1fcc46794fb37814e3f3415c01dd4a188e",
+      "size": 11634,
+      "kind": "binary",
+      "package": "nux-tools",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "nux_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.buildinfo",
+      "sha256": "1b7f7152fe1767ca73c463f127ea144191cec50cb74ba3fcc5efecd602b635b9",
+      "size": 16995,
+      "kind": "buildinfo"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# coldloop.sh 5 with hud +unity2 on target2 (a reboot before each first Writer start), 2026-09-29 ~00:00Z
+boot 1: run 1: xid=56623140 in_window_stack=1 app_id=56623140 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 2: run 1: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 3: run 1: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=1 no_desktop_file=0
+boot 4: run 1: xid=58720292 in_window_stack=1 app_id=58720292 hud_now=1 hud_after_5s=0 no_desktop_file=0
+boot 5: run 1: xid=58720292 in_window_stack=1 app_id=libreoffice-writer hud_now=1 hud_after_5s=1 no_desktop_file=0
+
+# boot 4: the HUD answered, and 5 s later did not. No "Could not get desktop file" in that run, so the changed
+# branch was not taken: the window would have been kept the same way by the archive hud. A second sighting of
+# mechanism 2. The user journal of that boot (journalctl --user -b -1), hud and window-stack-bridge lines:
+вер 29 02:59:43.766888 target2 window-stack-bridge[2281]: QDBusConnection: name 'org.ayatana.bamf' had owner '' but we thought it was ':1.38'
+вер 29 03:00:32.046818 target2 hud-service[3994]: void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher*): "Не существует интерфейса “com.canonical.dbusmenu” на объекте по пути /org/ayatana/bamf/window/56623105"
+вер 29 03:00:48.046717 target2 hud-service[3994]: QCoreApplication::postEvent: Unexpected null receiver
+вер 29 03:01:15.440017 target2 dbus-daemon[1221]: [session uid=1000 pid=1221 pidfd=5] Activating via systemd: service name='org.ayatana.bamf' unit='bamfdaemon.service' requested by ':1.91' (uid=1000 pid=3994 comm="/usr/lib/x86_64-linux-gnu/hud/hud-service" label="unconfined")
+вер 29 03:01:15.451223 target2 dbus-daemon[1221]: [session uid=1000 pid=1221 pidfd=5] Activating via systemd: service name='org.ayatana.bamf' unit='bamfdaemon.service' requested by ':1.91' (uid=1000 pid=3994 comm="/usr/lib/x86_64-linux-gnu/hud/hud-service" label="unconfined")

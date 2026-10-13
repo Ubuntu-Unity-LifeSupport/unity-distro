@@ -1,0 +1,29 @@
+# UNITY-20261008-013 target verification of the publication (target2, 2026-10-09)
+# 00:22:19Z poweroff over ssh; Clean-2 restored, started; confirmed inside at 00:24:24Z: no ~/.dirty, ~/b013, unity-distro.sources, b013-local.list, ~/.cache/indicator-appmenu; hud 0ubuntu6, libcolumbus1v5 0ubuntu39; NTPSynchronized=yes.
+# The usual path: our key + unity-distro.sources, apt-get update; apt-cache policy libcolumbus1v5: candidate 1.1.0+15.10.20150806-0ubuntu39+unity1 from http://192.168.56.10:8080 resolute/main (live ./resolute = unity-resolute-20261008-013, Release Date 00:21:51 UTC); apt-get full-upgrade (fu=0), xdotool (test helper). No file repository (sources.list.d: ubuntu.sources, unity-distro.sources).
+# /var/cache/apt/archives: libcolumbus1v5_1.1.0+15.10.20150806-0ubuntu39+unity1_amd64.deb sha256 65773439ef292b3c3efbf49dec37a090c26f37519f6b80b9c511c4887e5c3520, libcolumbus1-common_1.1.0+15.10.20150806-0ubuntu39+unity1_all.deb sha256 cea9db10e53d0482ac5a51b70f774c4837a5f5ee4c2251013f7c083ca2a90637 (= the gated manifest); dpkg -V clean.
+# Installed: cinnamon-session 6.4.2-1+unity4, hud 14.10+17.10.20170619-0ubuntu6+unity5, libcolumbus1-common 1.1.0+15.10.20150806-0ubuntu39+unity1, libcolumbus1v5 1.1.0+15.10.20150806-0ubuntu39+unity1, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, unity-lens-applications 7.1.0+16.10.20160927-0ubuntu8, unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity12, 
+# Cold cycle: 00:37:46Z systemctl poweroff, powered off (safe_to_snapshot), start_vm; boot into the auto-login session; no drop-ins or test configuration of ours.
+
+hud-service 3569 libcolumbus: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+== liveness
+hud-service 3569 baseline 0
+query open 3
+query closed 0
+== leak.sh
+hud 14.10+17.10.20170619-0ubuntu6+unity5, hud-service pid 3569, up       00:35
+1 baseline                         tmp-maps     0 files    0 rss_kB   33512 fds   15
+2 after 10 queries (desktop)       tmp-maps     0 files    0 rss_kB   34852 fds   15
+3 after 10 Mines starts            tmp-maps     0 files    0 rss_kB   34868 fds   15
+4 after 10 Writer starts           tmp-maps     0 files    0 rss_kB   39576 fds   15
+5 after 10 queries (Writer)        tmp-maps     0 files    0 rss_kB   41600 fds   15
+6 Writer closed, 60 s idle         tmp-maps     0 files    0 rss_kB   41560 fds   15
+== lens
+libcolumbus1v5 1.1.0+15.10.20150806-0ubuntu39+unity1, unity-scope-loader (applications) pid 6061
+libcolumbus mapping: /usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0  
+start                        deleted-maps    5 tmp-maps    5 rss_kB   33752
+re-index 1 (added)           deleted-maps    5 tmp-maps    5 rss_kB   35800
+re-index 2 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   35876
+re-index 3 (added)           deleted-maps    5 tmp-maps    5 rss_kB   36956
+re-index 4 (removed)         deleted-maps    5 tmp-maps    5 rss_kB   37008
+test file removed            deleted-maps    5 tmp-maps    5 rss_kB   37008

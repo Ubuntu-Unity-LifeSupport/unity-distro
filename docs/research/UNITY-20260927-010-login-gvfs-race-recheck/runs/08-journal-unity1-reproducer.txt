@@ -1,0 +1,12 @@
+вер 28 22:40:38.512874 mike-virtualbox u010[1531]: activation requested
+вер 28 22:40:39.225706 mike-virtualbox dbus-daemon[1310]: [session uid=1000 pid=1310 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.7' (uid=1000 pid=1568 comm="gdbus call --session --dest org.gtk.vfs.Daemon --o" label="unconfined")
+вер 28 22:40:39.265091 mike-virtualbox systemd[1278]: Starting gvfs-daemon.service - Virtual filesystem service...
+вер 28 22:40:45.126630 mike-virtualbox dbus-daemon[1310]: [session uid=1000 pid=1310 pidfd=5] Successfully activated service 'org.gtk.vfs.Daemon'
+вер 28 22:40:45.128417 mike-virtualbox systemd[1278]: Started gvfs-daemon.service - Virtual filesystem service.
+вер 28 22:40:45.137726 mike-virtualbox u010[1530]: activation returned rc=0 after 14s
+вер 28 22:40:47.876481 mike-virtualbox systemd[1278]: Reached target graphical-session-pre.target - Session services which should run early before the graphical session is brought up.
+вер 28 22:40:47.876757 mike-virtualbox systemd[1278]: Reached target graphical-session.target - Current graphical user session.
+вер 28 22:43:42.216656 mike-virtualbox systemd[1278]: Stopping gvfs-daemon.service - Virtual filesystem service...
+вер 28 22:43:42.744566 mike-virtualbox systemd[1278]: Stopped gvfs-daemon.service - Virtual filesystem service.
+вер 28 22:43:42.767314 mike-virtualbox systemd[1278]: Stopped target graphical-session.target - Current graphical user session.
+вер 28 22:43:42.790920 mike-virtualbox systemd[1278]: Stopped target graphical-session-pre.target - Session services which should run early before the graphical session is brought up.

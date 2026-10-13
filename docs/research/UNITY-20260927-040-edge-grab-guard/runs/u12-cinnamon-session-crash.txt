@@ -1,0 +1,27 @@
+UNITY-20260927-040, target-desktop, 2026-09-29 16:49 EEST (13:49Z), unity +unity12 test build,
+cinnamon-session 6.4.2-1+unity3. Not caused by the Edge change; recorded because it ended a test run.
+
+replay-stuck1.sh run 1 (orig) finished clean on +unity12 (EDGE-DOWN, expo REMOVE-GRAB, no frozen
+grab), then its unconditional recovery sent SIGHUP to compiz (16:49:17: compiz stops and unloads
+its plugins, unityshell first, cleanly). 7 s later:
+
+  16:49:24.706 systemd[1189]: unity-session.service: Main process exited, code=dumped, status=11/SEGV
+  16:49:24.862 lightdm: pam_unix(lightdm-autologin:session): session closed for user mike
+  Xorg: Server terminated successfully (0)
+  the re-exec'd compiz: "Fatal: Couldn't open display :0"
+
+Crash report: /var/crash/_usr_lib_x86_64-linux-gnu_cinnamon-session_cinnamon-session-binary.1000.crash
+(kept on the builder in ~/work/a/040-build/crash/, not committed: it holds a core dump).
+Signal 11. gdb on the core, no debug symbols:
+
+#0  0x00007c837d4f3f5c in IceProcessMessages () at /usr/lib/x86_64-linux-gnu/libICE.so.6
+#1  0x000061be2f6e7b61 in ??? ()
+#2  0x00007c837d562c1b in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#3  0x00007c837d564257 in ??? () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#4  0x00007c837d5645f7 in g_main_loop_run () at /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#5  0x000061be2f6cc941 in ??? ()
+#6  __libc_start_call_main ... #7 __libc_start_main_impl ... #8 ???
+
+INFERENCE: cinnamon-session's XSMP (ICE) watch for compiz's session connection, handled while
+compiz disconnects and re-execs. About 15 earlier compiz SIGHUP restarts on this target today did
+not crash it. Proposed as a follow-up for C; replay-stuck1.sh now restarts compiz only when stuck.

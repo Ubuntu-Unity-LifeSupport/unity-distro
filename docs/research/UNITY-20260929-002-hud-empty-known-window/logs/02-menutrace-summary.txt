@@ -1,0 +1,7 @@
+boot 1: HUD answered=1 / second query: 4
+boot 2: HUD answered=1 / second query: 4
+boot 3: HUD answered=1 / second query: 4
+boot 4: HUD answered=1 / second query: 4
+boot 5: HUD answered=1 / second query: 4
+boot 6: HUD answered=0 / second query: 4
+# stopped after boot 6 (C: May stops all agents, 2026-10-03); boots 7-10 not run

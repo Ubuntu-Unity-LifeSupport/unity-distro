@@ -1,0 +1,15 @@
+17:47:49.728532844 lightdm 1.32.0-6ubuntu4; greeter session c27, session-child 108195: lightdm --session-child 17 20 ; GLIBC_TUNABLES=glibc.malloc.tcache_count=0
+17:47:50.204554985 signal_cb 0x1a7b0, child_pid offset 0x4029c, address 0x615c693ae29c
+$1 = 108232
+$2 = 0
+$3 = 0
+$4 = 1
+17:47:57.601180068 session-child 108195 exited .5622 s after SIGTERM
+--- tools/ld-fini-free.bt
+Attached 9 probes
+17:47:57.004354 exit(0)
+17:47:57.011107 _exit(0) at the end of exit(), 6753 us after exit()
+@calls[/usr/lib/x86_64-linux-gnu/libselinux.so.1, uprobe:/lib/x86_64-linux-gnu/libc.so.6:free]: 35
+@cur[108195]: /lib64/ld-linux-x86-64.so.2
+@in[108195]: 1
+@t0[108195]: 3799289656811

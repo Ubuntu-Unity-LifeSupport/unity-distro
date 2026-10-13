@@ -1,0 +1,40 @@
+# dpkg 1.23.7ubuntu1 defaults, perl Dpkg::Source::Package
+## diff-ignore regex (-i)
+(?:^|/).*~$|(?:^|/)\.#.*$|(?:^|/)\..*\.sw.$|(?:^|/),,.*(?:$|/.*$)|(?:^|/)(?:DEADJOE|\.arch-inventory|\.(?:bzr|cvs|hg|git|mtn-)ignore)$|(?:^|/)(?:CVS|RCS|\.deps|\{arch\}|\.arch-ids|\.svn|\.hg(?:tags|sigs)?|_darcs|\.git(?:attributes|modules|review)?|\.mailmap|\.shelf|_MTN|\.be|\.bzr(?:\.backup|tags)?)(?:$|/.*$)
+## tar-ignore patterns (-I)
+*.a
+*.la
+*.o
+*.so
+.*.sw?
+*/*~
+,,*
+.[#~]*
+.arch-ids
+.arch-inventory
+.be
+.bzr
+.bzr.backup
+.bzr.tags
+.bzrignore
+.cvsignore
+.deps
+.git
+.gitattributes
+.gitignore
+.gitmodules
+.gitreview
+.hg
+.hgignore
+.hgsigs
+.hgtags
+.mailmap
+.mtn-ignore
+.shelf
+.svn
+CVS
+DEADJOE
+RCS
+_MTN
+_darcs
+{arch}

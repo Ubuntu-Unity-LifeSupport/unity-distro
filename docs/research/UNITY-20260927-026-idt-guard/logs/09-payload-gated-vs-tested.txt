@@ -1,0 +1,4 @@
+# payload compare, version 15.10+21.04.20210304-0ubuntu6+unity3
+# old: /home/claude/work/b/unity-distro/packages
+# new: /home/claude/work/b/unity-distro-026/docs/research/UNITY-20260927-026-idt-guard/build-gated
+indicator-datetime_15.10+21.04.20210304-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/39

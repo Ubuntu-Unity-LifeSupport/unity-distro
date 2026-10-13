@@ -1,0 +1,48 @@
+# UNITY-20261008-013 builds on chroot 20261008T083223Z, 2026-10-08 (build_sbuild.py)
+# first attempt of both: configure failed, CMake 4 'Compatibility with CMake < 3.5 has been removed' (the archive 0ubuntu39 as it is); after the cmake_minimum_required 3.10 commit:
+## build: 1.1.0+15.10.20150806-0ubuntu39+unity1, libcolumbus b/UNITY-20261008-013 3da4d89
+ 1/18 Test  #2: levtrie ..........................   Passed    0.01 sec
+ 2/18 Test  #1: trie .............................   Passed    0.02 sec
+ 3/18 Test  #4: custom_error .....................   Passed    0.01 sec
+ 4/18 Test  #3: levindex .........................   Passed    0.02 sec
+ 5/18 Test  #6: word .............................   Passed    0.01 sec
+ 6/18 Test  #7: wordlist .........................   Passed    0.01 sec
+ 7/18 Test  #5: error_values .....................   Passed    0.02 sec
+ 8/18 Test  #8: document .........................   Passed    0.01 sec
+ 9/18 Test  #9: corpus ...........................   Passed    0.01 sec
+10/18 Test #11: matchresults .....................   Passed    0.01 sec
+11/18 Test #12: helpers ..........................   Passed    0.01 sec
+12/18 Test #13: indexweights .....................   Passed    0.01 sec
+13/18 Test #14: wordstore ........................   Passed    0.01 sec
+14/18 Test #15: filtering ........................   Passed    0.01 sec
+15/18 Test #16: searchparameters .................   Passed    0.01 sec
+16/18 Test #17: capi .............................   Passed    0.01 sec
+17/18 Test #10: matcher ..........................   Passed    0.03 sec
+18/18 Test #18: python ...........................   Passed    0.16 sec
+100% tests passed, 0 tests failed out of 18
+Status: successful
+## build-control: archive 0ubuntu39 + the tests (27955c8) + the build fix (c6359e8), no Trie fix: FAIL, expected exactly trie and matcher
+1: trie: ./test/TrieTest.cc:108: void testNoMappingLeft(): Assertion `deletedMappings().count == before.count' failed.
+ 1/18 Test  #2: levtrie ..........................   Passed    0.01 sec
+ 2/18 Test  #3: levindex .........................   Passed    0.02 sec
+ 3/18 Test  #4: custom_error .....................   Passed    0.02 sec
+ 4/18 Test  #5: error_values .....................   Passed    0.02 sec
+ 5/18 Test  #6: word .............................   Passed    0.01 sec
+ 6/18 Test  #7: wordlist .........................   Passed    0.02 sec
+ 7/18 Test  #8: document .........................   Passed    0.01 sec
+10: matcher: ./test/MatcherTest.cc:338: void testNoMappingLeft(): Assertion `deletedMappings() == before' failed.
+ 8/18 Test  #9: corpus ...........................   Passed    0.02 sec
+ 9/18 Test #11: matchresults .....................   Passed    0.02 sec
+10/18 Test #13: indexweights .....................   Passed    0.01 sec
+11/18 Test #12: helpers ..........................   Passed    0.02 sec
+12/18 Test #14: wordstore ........................   Passed    0.02 sec
+13/18 Test #15: filtering ........................   Passed    0.03 sec
+14/18 Test #16: searchparameters .................   Passed    0.01 sec
+15/18 Test #17: capi .............................   Passed    0.02 sec
+16/18 Test #18: python ...........................   Passed    0.15 sec
+17/18 Test  #1: trie .............................Subprocess aborted***Exception:   0.45 sec
+trie: ./test/TrieTest.cc:108: void testNoMappingLeft(): Assertion `deletedMappings().count == before.count' failed.
+18/18 Test #10: matcher ..........................Subprocess aborted***Exception:   0.46 sec
+matcher: ./test/MatcherTest.cc:338: void testNoMappingLeft(): Assertion `deletedMappings() == before' failed.
+89% tests passed, 2 tests failed out of 18
+Status: attempted

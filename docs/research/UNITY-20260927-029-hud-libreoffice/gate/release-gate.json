@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-029",
+  "package": "hud",
+  "target_series": "resolute",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity2",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-029/packages/hud",
+  "source_remote_ref": "origin/b/UNITY-20260927-029",
+  "source_commit": "ef39a8d5a5a036ddad83952c508b98cc3b9f3708",
+  "source_tree_hash": "82b6b13ddbf6e85fc252909fdbbb49759f623134",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260927-029"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260927-029-hud-libreoffice/build-gated/UNITY-20260927-029-hud-build-manifest.json",
+    "sha256": "fbf0f30fd8cd1313a0944ea632ad4a1be3c0e0cc0322fc54f4c941abd0b93515"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260927-029-hud-libreoffice/gate/evidence-manifest.json",
+    "sha256": "2bb757ffdfa9db7336ec075d018e49ff9b5a18d947f39e47c964a0e1da50a3a2"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20260927-029-hud-libreoffice/logs/07-target-this-build.txt",
+        "sha256": "08aa2ff9f4767b2904dc1191db49baa7bc5856da144fbffb4faede21d7165a8e"
+      },
+      "debs": {
+        "hud_14.10+17.10.20170619-0ubuntu6+unity2_amd64.deb": "b3321894eabef4a0727cd13b1ddf292f17ebff6585704574c95577ae84ead22c"
+      }
+    }
+  }
+}

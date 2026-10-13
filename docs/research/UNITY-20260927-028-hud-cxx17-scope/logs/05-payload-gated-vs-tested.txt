@@ -1,0 +1,17 @@
+# payload compare, version 14.10+17.10.20170619-0ubuntu6+unity3
+# old: packages
+# new: docs/research/UNITY-20260927-028-hud-cxx17-scope/build-gated
+gir1.2-hud-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3
+gir1.2-hud-client-2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3
+hud-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb control=same files=same symbols=same files_with_other_sha256=0/2
+hud-tools_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/9
+hud_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/13
+libhud-client2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/14
+libhud-client2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb control=same files=same symbols=same files_with_other_sha256=0/2
+libhud-client2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3
+libhud-gtk1-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/5
+libhud-gtk1-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb control=same files=same symbols=same files_with_other_sha256=0/2
+libhud-gtk1_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3
+libhud2-dev_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/8
+libhud2-doc_14.10+17.10.20170619-0ubuntu6+unity3_all.deb control=same files=same symbols=same files_with_other_sha256=0/2
+libhud2_14.10+17.10.20170619-0ubuntu6+unity3_amd64.deb control=same files=same symbols=same files_with_other_sha256=0/3

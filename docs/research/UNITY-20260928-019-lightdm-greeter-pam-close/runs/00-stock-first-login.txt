@@ -1,0 +1,65 @@
+Started ld019s1.service - [systemd-run] /usr/bin/bpftrace /home/mike/greeter-close-trace.bt.
+/home/mike/greeter-close-trace.bt:79:3-18: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+  ~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:79:20-36: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                   ~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:79:38-55: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                     ~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:79:57-77: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                                        ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:79:79-98: WARNING: Return value discarded.
+  delete(@g[pid]); delete(@t0[pid]); delete(@dlv[pid]); delete(@reaped[pid]); delete(@stage[pid]);
+                                                                              ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:80:3-22: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+  ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:80:24-44: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                       ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:80:46-64: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                             ~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:80:66-85: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                                                 ~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:80:87-107: WARNING: Return value discarded.
+  delete(@treap[pid]); delete(@passed[pid]); delete(@open[pid]); delete(@close[pid]); delete(@tclose[pid]);
+                                                                                      ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:81:3-23: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+  ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:81:25-46: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                        ~~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:81:48-65: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                               ~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:81:67-87: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                                                  ~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:81:89-105: WARNING: Return value discarded.
+  delete(@closed[pid]); delete(@setcred[pid]); delete(@end[pid]); delete(@endret[pid]); delete(@ex[pid]);
+                                                                                        ~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:82:3-24: WARNING: Return value discarded.
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+  ~~~~~~~~~~~~~~~~~~~~~
+/home/mike/greeter-close-trace.bt:82:26-53: WARNING: Return value discarded.
+  delete(@nochild[pid]); delete(@nochild_stage[pid]);
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Attached 15 probes
+11:00:53.473984 greeter session-child 4406 started the greeter 4461
+11:01:17.575140 SIGTERM 1(systemd) -> 4406 result 0
+11:01:17.575261 deliver SIGTERM to 4406 tid 4406 (lightdm) reaped=0 stage=0
+11:01:17.575270 4406 kill(4461, 15) - handler passes SIGTERM on
+11:01:17.577178 4406 reaped 4461
+11:01:17.581550 SIGTERM 1127(lightdm) -> 4406 result 0
+11:01:17.581675 deliver SIGTERM to 4406 tid 4406 (lightdm) reaped=1 stage=1
+11:01:17.582342 SUMMARY greeter-sc 4406 open=0 reaped=1 deliveries=2 passed_on=1 nochild=1 nochild_stage=1 close_enter=0 close_ret=0 setcred=0 pam_end=0 pam_end_ret=0 exit=2 reap_to_gone_us=5165
+Stopping ld019s1.service - [systemd-run] /usr/bin/bpftrace /home/mike/greeter-close-trace.bt...
+ld019s1.service: Deactivated successfully.
+Stopped ld019s1.service - [systemd-run] /usr/bin/bpftrace /home/mike/greeter-close-trace.bt.
+ld019s1.service: Consumed 742ms CPU time over 1min 13.943s wall clock time, 65.7M memory peak.

@@ -1,0 +1,53 @@
+# dialogtitle dialog (research/nocsd-epiphany-crash/tests), rep.sh, target2 Unity session, 2026-09-28 ~17:40Z. 3 runs x 4 builds:
+# 6b1f70a (his main before af90f21), 2cfc8f1 (our fix), e817d80 (his main as assigned), a57e976 (his main now). rc 134 = SIGABRT.
+== 6b1f70a run 1
+  rc=134
+    CRITICAL gtk_widget_get_preferred_size: assertion 'GTK_IS_WIDGET (widget)' failed
+  dialog: window GtkWindow title ''
+  dialog: window AdwApplicationWindow title 'Main'
+== 2cfc8f1 run 1
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== e817d80 run 1
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== a57e976 run 1
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== 6b1f70a run 2
+  rc=134
+    CRITICAL gtk_widget_get_preferred_size: assertion 'GTK_IS_WIDGET (widget)' failed
+  dialog: window GtkWindow title ''
+  dialog: window AdwApplicationWindow title 'Main'
+== 2cfc8f1 run 2
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== e817d80 run 2
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== a57e976 run 2
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== 6b1f70a run 3
+  rc=134
+    CRITICAL gtk_widget_get_preferred_size: assertion 'GTK_IS_WIDGET (widget)' failed
+  dialog: window GtkWindow title ''
+  dialog: window AdwApplicationWindow title 'Main'
+== 2cfc8f1 run 3
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== e817d80 run 3
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'
+== a57e976 run 3
+  rc=0
+  dialog: window GtkWindow title 'Passwords'
+  dialog: window AdwApplicationWindow title 'Main'

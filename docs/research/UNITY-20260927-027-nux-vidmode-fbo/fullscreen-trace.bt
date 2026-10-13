@@ -1,0 +1,9 @@
+// fullscreen-trace.bt - UNITY-20260927-027: show the fullscreen branch of
+// CreateOpenGLWindow and every XFree of the mode list. Run as root while the program runs as the session user; filtered by comm.
+uprobe:/usr/lib/x86_64-linux-gnu/libXxf86vm.so.1:XF86VidModeGetAllModeLines /comm == "fullscreen-dire"/ { @modes_out[tid] = arg3; }
+uretprobe:/usr/lib/x86_64-linux-gnu/libXxf86vm.so.1:XF86VidModeGetAllModeLines /comm == "fullscreen-dire"/
+{
+	printf("XF86VidModeGetAllModeLines -> list %p\n", *(uint64 *)@modes_out[tid]);
+}
+uprobe:/usr/lib/x86_64-linux-gnu/libXxf86vm.so.1:XF86VidModeSwitchToMode /comm == "fullscreen-dire"/ { printf("XF86VidModeSwitchToMode (fullscreen branch)\n"); }
+uprobe:/usr/lib/x86_64-linux-gnu/libX11.so.6:XFree /comm == "fullscreen-dire"/ { printf("XFree(%p)\n", arg0); }

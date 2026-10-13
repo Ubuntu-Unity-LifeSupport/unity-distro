@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 1:26.04.12+unity3 is newer than resolute 1:26.04.12",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "calamares-settings-ubuntu",
+  "source_commit": "221c69128aa9c88647f5fe73b09b124d75213b14",
+  "candidate_source_version": "1:26.04.12+unity3",
+  "pockets": {
+    "resolute": "1:26.04.12"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T17:56:05Z",
+  "mode": "pockets",
+  "view_sha256": "4fb46dfc1da0cd33bb440051e8e16d253a2003f08e749c2c5e24b8e94d4a3984"
+}

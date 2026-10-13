@@ -1,0 +1,2 @@
+  trace: drop-in none | trace file 2 lines
+  lightdm: E  session-wrapper=/usr/sbin/lightdm-session

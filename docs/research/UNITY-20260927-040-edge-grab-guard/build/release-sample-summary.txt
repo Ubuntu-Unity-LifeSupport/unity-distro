@@ -1,0 +1,32 @@
+=== boot 2026-09-29 20:38:43 | compiz	1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 libunity-core-6.0-9:amd64	7.7.1+26.04.20260306-0ubuntu3+unity12 unity	7.7.1+26.04.20260306-0ubuntu3+unity12
+=== compiz 2797, deleted library mappings: 0, libunityshell sha256 9266969d28fd8bc2
+=== (1) regression: title drag in expo x5
+SUMMARY expo-title stuck 0/5
+  expo-title-1 edge=2 ungrab-from-decorations=0 expo-removed=1
+  expo-title-2 edge=2 ungrab-from-decorations=0 expo-removed=1
+  expo-title-3 edge=2 ungrab-from-decorations=0 expo-removed=1
+  expo-title-4 edge=2 ungrab-from-decorations=0 expo-removed=1
+  expo-title-5 edge=2 ungrab-from-decorations=0 expo-removed=1
+=== (1b) replay orig x2, noborder x1
+run 1 orig b trace: EDGE-DOWNbutton=1 REMOVE-GRAB XUNGRABPOINTER
+run 1 orig active grabs: 0 frozen: 0
+run 2 orig b trace: EDGE-DOWNbutton=1 REMOVE-GRAB XUNGRABPOINTER
+run 2 orig active grabs: 0 frozen: 0
+run 1 noborder b trace: REMOVE-GRAB XUNGRABPOINTER
+run 1 noborder active grabs: 0 frozen: 0
+=== (2) expo-border x2
+SUMMARY expo-border stuck 0/2
+  expo-border-1 edge=1 ungrab-from-decorations=0 expo-removed=3
+  expo-border-2 edge=1 ungrab-from-decorations=0 expo-removed=3
+=== (3)(4) title bar, first press after expo
+  title-immediate 300x200+700+482 -> 300x200+773+518 | allowed-actions:  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  title-motion 400x290+500+232 -> 400x290+563+263 |  | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboard=free
+  after-expo 400x290+500+232 -> 442x290+500+232 | grabs before the press: pointer=free keyboard=free | after: pointer=free keyboard=free | click@200,207 reached=2 pointer=free keyboa
+=== (5) keyboard resize, border reached
+SUMMARY kbdresize-drag stuck 0/2
+  kbdresize-drag-1 edge=1 ungrab-from-decorations=0 expo-removed=1
+  kbdresize-drag-2 edge=1 ungrab-from-decorations=0 expo-removed=1
+=== (6) UNITY-20260927-001 #3 sample
+  rmbslow stuck=0/3 | rmbslow#1 ok | rmbslow border@901,377 -> xterm 520x290+500+232 | pointer=free keyboard=free | click@200,207 reached=2 po
+  titlemovermb stuck=0/3 | titlemovermb#1 ok | titlemovermb border@740,216 -> xterm 400x290+596+276 | pointer=free keyboard=free | click@200,207 re
+=== done 17:54:03Z

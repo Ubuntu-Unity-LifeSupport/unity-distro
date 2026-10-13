@@ -1,0 +1,4 @@
+manifest demo-bin sha256 79b833507585 | in repository b958c3dc2fed
+name check: pass | source check: pass
+snapshot demo-bin SHA256 field: ['b958c3dc2fed'] | equals manifest: False
+RESULT (checks of main c672ce9): ACCEPTED

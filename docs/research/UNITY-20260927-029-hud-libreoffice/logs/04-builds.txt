@@ -1,0 +1,35 @@
+# sbuild (build_sbuild.py), 2026-09-28. packages/hud (local git tree: archive 0ubuntu6 -> +unity1 from the debdiff, identical to the
+# published +unity1 source; -> af43552 fix + tests; -> 0e99dca changelog +unity2).
+== ctl (hud-ctl 5808b07: the three new tests, the fix reverted; not for release)
+1/6 Test #1: test-integration-tests ................   Passed    5.14 sec
+2/6 Test #2: test-libhud-unit-tests ................   Passed    3.02 sec
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed    3.65 sec
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.14 sec
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.55 sec
+6/6 Test #6: test-window-stack-bridge-unit-tests ...***Failed   12.52 sec
+6: [ RUN      ] TestBamfWindowStack.HandlesWindowWhoseApplicationIsGone
+83% tests passed, 1 tests failed out of 6
+Status: attempted
+== unity2 (0e99dca, +unity2)
+1/6 Test #1: test-integration-tests ................   Passed    7.25 sec
+100% tests passed, 0 tests failed out of 6
+2/6 Test #2: test-libhud-unit-tests ................   Passed    2.21 sec
+3/6 Test #3: test-libhud-client-unit-tests .........   Passed    7.75 sec
+4/6 Test #4: test-qtgmenu-unit-tests ...............   Passed    0.08 sec
+5/6 Test #5: test-service-unit-tests ...............   Passed    1.01 sec
+6/6 Test #6: test-window-stack-bridge-unit-tests ...   Passed    2.13 sec
+6: [ RUN      ] TestBamfWindowStack.HandlesWindowWhoseApplicationIsGone
+Status: successful
+
+# the three new tests, per build:
+== ctl
+6: [  FAILED  ] TestBamfWindowStack.HandlesWindowWhoseApplicationIsGone (196 ms)
+6: [  FAILED  ] TestBamfWindowStack.WindowCreatedWhenApplicationIsGone (4936 ms)
+6: [  FAILED  ] TestBamfWindowStack.WindowDestroyedWhenApplicationWasGone (4967 ms)
+6: [  FAILED  ] TestBamfWindowStack.HandlesWindowWhoseApplicationIsGone
+6: [  FAILED  ] TestBamfWindowStack.WindowCreatedWhenApplicationIsGone
+6: [  FAILED  ] TestBamfWindowStack.WindowDestroyedWhenApplicationWasGone
+== unity2
+6: [       OK ] TestBamfWindowStack.HandlesWindowWhoseApplicationIsGone (150 ms)
+6: [       OK ] TestBamfWindowStack.WindowCreatedWhenApplicationIsGone (149 ms)
+6: [       OK ] TestBamfWindowStack.WindowDestroyedWhenApplicationWasGone (134 ms)

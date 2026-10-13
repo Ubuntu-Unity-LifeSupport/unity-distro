@@ -1,0 +1,14 @@
+# fakebamf-run.sh on target2 with the installed window-stack-bridge (archive hud 0ubuntu6), 3 runs, 2026-09-28
+== run 1
+window 101: MISSING
+window 102: known, app id '102'
+window 103: known, app id 'libreoffice-writer'
+Could not get desktop file for "/org/ayatana/bamf/window/101" QDBusError("org.freedesktop.DBus.Error.UnknownMethod", "Object does not exist at path "/org/ayat...
+== run 2
+window 101: MISSING
+window 102: known, app id '102'
+window 103: known, app id 'libreoffice-writer'
+== run 3
+window 101: MISSING
+window 102: known, app id '102'
+window 103: known, app id 'libreoffice-writer'

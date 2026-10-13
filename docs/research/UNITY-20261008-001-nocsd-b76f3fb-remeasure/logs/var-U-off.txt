@@ -1,0 +1,132 @@
+=================== yelp (pid 76689)
+  shim: NOT HOOKED in pid 76689
+  NO-MENUBAR bus=:1.273
+=================== loupe (pid 76790)
+  shim: NOT HOOKED in pid 76790
+  NO-MENUBAR bus=:1.276
+=================== kgx (pid 76821)
+  shim: NOT HOOKED in pid 76821
+  NO-MENUBAR bus=:1.277
+=================== file-roller (pid 76865)
+  shim: NOT HOOKED in pid 76865
+  NO-MENUBAR bus=:1.279
+=================== baobab (pid 76891)
+  shim: NOT HOOKED in pid 76891
+  NO-MENUBAR bus=:1.280
+=================== gnome-clocks (pid 76924)
+  shim: NOT HOOKED in pid 76924
+  NO-MENUBAR bus=:1.281
+=================== gnome-system-monitor (pid 77000)
+  shim: NOT HOOKED in pid 77000
+  NO-MENUBAR bus=:1.283
+=================== papers (pid 77099)
+  shim: NOT HOOKED in pid 77099
+  NO-MENUBAR bus=:1.284
+=================== gnome-calculator (pid 77132)
+  shim: NOT HOOKED in pid 77132
+  NO-MENUBAR bus=:1.285
+=================== gnome-logs (pid 77163)
+  shim: NOT HOOKED in pid 77163
+  NO-MENUBAR bus=:1.286
+=================== simple-scan (pid 77189)
+  shim: NOT HOOKED in pid 77189
+  NO-MENUBAR bus=:1.288
+=================== gnome-text-editor (pid 77224)
+  shim: NOT HOOKED in pid 77224
+  NO-MENUBAR bus=:1.289
+=================== nautilus (pid 77261)
+  shim: NOT HOOKED in pid 77261
+  NO-MENUBAR bus=:1.290
+=================== gnome-contacts (pid 77353)
+  shim: NOT HOOKED in pid 77353
+  NO-MENUBAR bus=:1.291
+=================== gnome-characters (pid 77384)
+  shim: NOT HOOKED in pid 77384
+  NO-MENUBAR bus=:1.292
+=================== gnome-weather (pid 77417)
+  shim: NOT HOOKED in pid 77417
+  NO-MENUBAR bus=:1.293
+=================== gnome-tweaks (pid 77464)
+  shim: NOT HOOKED in pid 77464
+  NO-MENUBAR bus=:1.295
+=================== gnome-music (pid 77498)
+  shim: NOT HOOKED in pid 77498
+  NO-MENUBAR bus=:1.297
+=================== gnome-maps (pid 77539)
+  shim: NOT HOOKED in pid 77539
+  NO-MENUBAR bus=:1.298
+=================== gnome-calendar (pid 77589)
+  shim: NOT HOOKED in pid 77589
+  NO-MENUBAR bus=:1.299
+=================== secrets (pid 77672)
+  shim: NOT HOOKED in pid 77672
+  NO-MENUBAR bus=:1.301
+=================== fragments (pid 77701)
+  shim: NOT HOOKED in pid 77701
+  NO-MENUBAR bus=:1.303
+=================== amberol (pid 77745)
+  shim: NOT HOOKED in pid 77745
+  NO-MENUBAR bus=:1.305
+=================== showtime (pid 77839)
+  shim: NOT HOOKED in pid 77839
+  NO-MENUBAR bus=:1.308
+=================== epiphany (pid 77932)
+  shim: NOT HOOKED in pid 77932
+  NO-MENUBAR bus=:1.309
+=================== gnome-tour (pid 78025)
+  shim: NOT HOOKED in pid 78025
+  NO-MENUBAR bus=:1.312
+=================== d-spy (pid 78077)
+  shim: NOT HOOKED in pid 78077
+  NO-MENUBAR bus=:1.313
+=================== celluloid (pid 78147)
+  shim: NOT HOOKED in pid 78147
+  NO-MENUBAR bus=:1.315
+=================== shortwave (pid 78230)
+  shim: NOT HOOKED in pid 78230
+  NO-MENUBAR bus=:1.318
+=================== foliate (pid 78322)
+  shim: NOT HOOKED in pid 78322
+  NO-MENUBAR bus=:1.320
+=================== apostrophe (pid 78365)
+  shim: NOT HOOKED in pid 78365
+  NO-GTK-PROPS (no window exports _GTK_UNIQUE_BUS_NAME)
+=================== gnome-chess (pid 78400)
+  shim: NOT HOOKED in pid 78400
+  NO-MENUBAR bus=:1.323
+=================== gnome-mines (pid 78435)
+  shim: NOT HOOKED in pid 78435
+  NO-MENUBAR bus=:1.324
+=================== quadrapassel (pid 78464)
+  shim: NOT HOOKED in pid 78464
+  NO-MENUBAR bus=:1.325
+=================== gnome-2048 (pid 78522)
+  shim: NOT HOOKED in pid 78522
+  NO-MENUBAR bus=:1.326
+=================== gnome-sudoku (pid 78557)
+  shim: NOT HOOKED in pid 78557
+  NO-MENUBAR bus=:1.327
+=================== gnome-robots (pid 78587)
+  shim: NOT HOOKED in pid 78587
+  NO-MENUBAR bus=:1.328
+=================== gnome-nibbles (pid 78681)
+  shim: NOT HOOKED in pid 78681
+  NO-MENUBAR bus=:1.330
+=================== swell-foop (pid 78710)
+  shim: NOT HOOKED in pid 78710
+  NO-MENUBAR bus=:1.331
+=================== lightsoff (pid 78739)
+  shim: NOT HOOKED in pid 78739
+  NO-MENUBAR bus=:1.332
+=================== evince (pid 78764)
+  shim: NOT HOOKED in pid 78764
+  NO-MENUBAR bus=:1.334
+=================== dialect (pid 78795)
+  shim: NOT HOOKED in pid 78795
+  NO-MENUBAR bus=:1.336
+=================== deja-dup (pid 78868)
+  shim: NOT HOOKED in pid 78868
+  NO-MENUBAR bus=:1.337
+=================== gnome-firmware (pid 78902)
+  shim: NOT HOOKED in pid 78902
+  NO-MENUBAR bus=:1.338

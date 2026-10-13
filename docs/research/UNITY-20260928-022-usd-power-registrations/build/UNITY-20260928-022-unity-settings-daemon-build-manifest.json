@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-022",
+  "package": "unity-settings-daemon",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/022-usd/pkg",
+  "source_commit": "41fd7eb0d3f9238da6e5954edefb6856984d36d6",
+  "source_tree_hash": "456067d54a7fc9bc7160c34fab3aff852b7ba5ed",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I"
+  ],
+  "build_started": "2026-09-29T00:11:09.705568+00:00",
+  "build_finished": "2026-09-29T00:20:48.321654+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260928-022-unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity8-sbuild.log",
+    "sha256": "d97ef7cd53fbbcf3ba1e37fea5533ffd176840709fdd364f21b3336679e8a043"
+  },
+  "artifacts": [
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8.dsc",
+      "sha256": "f3219ee4918166cb8b88b4e3129b983773a6e22f0cfa8ee7dbd33ede3fa931c8",
+      "size": 2552,
+      "kind": "source",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.changes",
+      "sha256": "909ead83480078cc6662c9e2380a45e8efb3a994e01f0b57f6f3d751487f7802",
+      "size": 4763,
+      "kind": "changes"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802.orig.tar.gz",
+      "sha256": "d02929707f36814c2847992d7d4ca0a5115943474a168fadd9ec1e7240d68c6a",
+      "size": 2824586,
+      "kind": "source_file",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8.diff.gz",
+      "sha256": "2849c2e9096f55f07804d279694316d107419341ed2e13d095ff8ee732ad0d2b",
+      "size": 23812,
+      "kind": "source_file",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8"
+    },
+    {
+      "file": "libunity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.deb",
+      "sha256": "df9db387dc141d2c2c1efb8b0f58de5c2e90fd2cc66ca990452692e26e314a67",
+      "size": 77996,
+      "kind": "binary",
+      "package": "libunity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-settings-daemon1-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.ddeb",
+      "sha256": "f00bb87be0b276cc89936148636e9998bfcd9eeda8558c40b656ad12a5c75da8",
+      "size": 224104,
+      "kind": "binary",
+      "package": "libunity-settings-daemon1-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.deb",
+      "sha256": "93af452e21996de4574107286a7758210eacd73de6aefbe28380ca1a9c48960b",
+      "size": 67626,
+      "kind": "binary",
+      "package": "libunity-settings-daemon1",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-settings-daemon-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.ddeb",
+      "sha256": "9a5c0d3b92c820adf03d54560f21d56279f47dc37cd3d11b38c60830d94c03bf",
+      "size": 1831966,
+      "kind": "binary",
+      "package": "unity-settings-daemon-dbgsym",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.deb",
+      "sha256": "8134f15d2f41e7828d547378a667de25b78106d9d8b62fe570aa2537b3b75255",
+      "size": 12276,
+      "kind": "binary",
+      "package": "unity-settings-daemon-dev",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity8_all.deb",
+      "sha256": "b989570224065533fac4475aa0b6400e4d391320b4ceb2ef2f33a302a9634f17",
+      "size": 13712,
+      "kind": "binary",
+      "package": "unity-settings-daemon-schemas",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "all"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.buildinfo",
+      "sha256": "c5e0b7931ef64b06508a54c12129fe559499afc60bbba7b05be92eb31e0230cf",
+      "size": 23153,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity8_amd64.deb",
+      "sha256": "1dd3e3a6cb13e33cda9572ed3fa4616665b131cf380823b61a42e0a4676a78d0",
+      "size": 1358318,
+      "kind": "binary",
+      "package": "unity-settings-daemon",
+      "version": "15.04.1+21.10.20220802-0ubuntu7+unity8",
+      "architecture": "amd64"
+    }
+  ]
+}

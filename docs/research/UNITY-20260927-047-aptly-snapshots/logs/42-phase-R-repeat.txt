@@ -1,0 +1,47 @@
+# UNITY-20260927-047 phase R repeat, 2026-09-29 10:00:21-10:04:17Z, B session b7902aab-1709-4ec2-8775-3ae2d48a2d1f
+# (Claude Code, user-level command_guard handler, --check OK, pgrep -f probe denied), /var/tmp/aptly-rehearsal
+# prepared again 09:57Z (logs/40, 40b), run 1 kept in run1/. Marker by C: sha256 3b95d84f63335a6e764a06bd80245e1815e9642b82d8c4f7d040231a2221c59b,
+# window 2026-09-29T10:00:00Z-12:00:00Z, session_id b7902aab. May's direct confirmation in B's session ("Разрешение на rehearsal-команду даю").
+# Every aptly command was one literal Bash call, followed by a separate `chmod -R go-w /var/tmp/aptly-rehearsal`
+# (one exception: R6 drop and republish were sent in one batch, so the chmod between them was skipped; drop creates
+# no directory and the guard allowed the publish). R4 and R8b ran as a script (cp -a, sha256), no aptly process.
+# Order as blocked-commands.md: R9 before R8b.
+
+## guard verdicts before the window (payload without session id, nothing executed, log unchanged at 1 line)
+R1a/R1b repo create/add, snapshot create, chmod: ALLOW; every publish command: DENY "belongs to another session"
+
+## R1 10:00:21-10:00:36Z repo create + repo add: "Number of packages: 285" (258 binaries + 27 sources)
+## option (a) check = R2a, the first command that needs the marker (agreed with C):
+log lines before R2a: 1; R2a allowed; after: 2, new line
+{"time": "2026-09-29T10:00:56Z", "session_id": "b7902aab-1709-4ec2-8775-3ae2d48a2d1f", "task_id": "UNITY-20260927-047", "command": "/usr/bin/aptly -config=/var/tmp/aptly-rehearsal/aptly.conf publish repo -distribution=resolute -architectures=amd64 -gpg-key=7BF3F77FC27B152C -batch unity-resolute", "marker_sha256": "3b95d84f..."}  -> PASS
+## R2 publish show -> Prefix . / main: unity-resolute [local]
+== R2 scratch vs live: only in A/B none; index files with different bytes none; Release fields that differ: Date only
+   (Tue, 29 Sep 2026 10:00:58 UTC vs Sat, 26 Sep 2026 20:53:52 UTC); InRelease signed by 29A893E03970066F2DD287D47BF3F77FC27B152C both; pool 258/258 same names
+## snapshot create unity-resolute-20260927-047
+## R3 publish switch resolute 047 -> "ERROR: unable to switch: not a published snapshot repository" (expected), rc 1
+## R4 10:01:50Z backup state/public+db -> backup-r4: 283 files, sha256 equal
+## R5 publish snapshot ... candidate; show -> Prefix candidate / 047 [snapshot]
+== R5 candidate vs R2 (.): no file-set or index difference; Release fields that differ: Date Label MD5Sum Origin SHA1 SHA256 SHA512
+   (checksum lists differ only through main/binary-amd64/Release, which carries Origin/Label - as run 1); same signing key; pool 258/258
+## R6 drop resolute (10:02:13.712793869Z before) + publish snapshot 047 at . (new InRelease mtime 10:02:14.875248349Z): gap upper bound 1.16 s
+== R6 vs R2 (backup-r4): Date only; == R6 vs live: Date only; signed 29A893E0...C27B152C; pool 258/258
+isolated apt client on file:state/public, Signed-By the live key (r047 aptclient): apt-get update rc=0, 0 E/W lines;
+   candidates unity 7.7.1+26.04.20260306-0ubuntu3+unity11, libunity-gtk4-menu0 0.9
+## R7 snapshot create 047b; publish switch resolute 047b (no -gpg-key) -> switched
+== R7 vs R2 (backup-r4): Date only; signed 29A893E03970066F2DD287D47BF3F77FC27B152C
+## R8a publish drop resolute + publish repo -> vs R2 (backup-r4): Date only; pool 258/258
+## R9 publish drop resolute candidate: candidate/dists and candidate/pool removed, empty candidate/ left; 267 files outside candidate/
+   unchanged (sha256); publish list -> ./resolute [amd64] publishes {main: [unity-resolute]}
+## R8b 10:04:10Z restore R4 backup (no aptly process): state/public+db moved to aside-r8b/, cp -a backup-r4: 283 files byte-identical
+   to the R4 list; publish list -> ./resolute {main: [unity-resolute]}
+== R8b restored vs R2 (backup-r4): Release fields that differ: none; InRelease byte-identical to R2; snapshots: unity-resolute-20260927-047 only
+
+## rehearsal-log.jsonl: 1 -> 15 lines; the 14 new lines are exactly B's 14 publish commands, all session b7902aab, marker 3b95d84f
+10:00:56 publish repo (R2a) | 10:01:08 publish show resolute | 10:01:33 publish switch resolute 047 (R3) | 10:01:55 publish snapshot 047 candidate
+10:02:00 publish show resolute candidate | 10:02:13 publish drop resolute | 10:02:14 publish snapshot 047 | 10:02:28 publish show resolute
+10:03:04 publish switch resolute 047b | 10:03:16 publish drop resolute | 10:03:24 publish repo | 10:03:47 publish drop resolute candidate
+10:03:58 publish list (R9) | 10:04:17 publish list (R8b)
+
+## /srv/aptly: before (09:57Z) and after R (10:04Z): 633 files, live-list.py list sha256
+## e09a4db711a20d349db591a08e37b57b9e5673bd79636e0260d3b3ab81170aa1, lists byte-identical -> unchanged
+## Result: every R step as expected and as run 1; this time through the 057 allowance, each publish logged once.

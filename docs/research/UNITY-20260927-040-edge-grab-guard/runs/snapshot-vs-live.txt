@@ -1,0 +1,32 @@
+# UNITY-20260927-040 2026-09-29T18:17:10Z: snapshot unity-resolute-20260927-040 against the live unity-resolute-20260927-041
+## snapshot diff 041 -> 040 (only additions, exactly the 11 unity +unity12 records):
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | unity-autopilot                          | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ all    | unity-schemas                            | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ all    | unity-uwidgets                           | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | libunity-core-6.0-9                      | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | libunity-core-6.0-9-dbgsym               | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | libunity-core-6.0-dev                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | unity                                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | unity-dbgsym                             | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | unity-services                           | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ amd64  | unity-services-dbgsym                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
++ source | unity                                    | -                                        | 7.7.1+26.04.20260306-0ubuntu3+unity12   
+## calamares-settings-ubuntu records in -040 (the 7 +unity3 records of UNITY-20260927-041 must be there, or the switch would roll -041 back):
+calamares-settings-kubuntu_1:26.04.12+unity2_all
+calamares-settings-kubuntu_1:26.04.12+unity3_all
+calamares-settings-lubuntu_1:26.04.12+unity2_all
+calamares-settings-lubuntu_1:26.04.12+unity3_all
+calamares-settings-ubuntu-common-data_1:26.04.12+unity1_all
+calamares-settings-ubuntu-common-data_1:26.04.12+unity2_all
+calamares-settings-ubuntu-common-data_1:26.04.12+unity3_all
+calamares-settings-ubuntu-common-dbgsym_1:26.04.12+unity2_amd64
+calamares-settings-ubuntu-common-dbgsym_1:26.04.12+unity3_amd64
+calamares-settings-ubuntu-common_1:26.04.12+unity1_amd64
+calamares-settings-ubuntu-common_1:26.04.12+unity2_amd64
+calamares-settings-ubuntu-common_1:26.04.12+unity3_amd64
+calamares-settings-ubuntu-unity_1:26.04.12+unity1_all
+calamares-settings-ubuntu-unity_1:26.04.12+unity2_all
+calamares-settings-ubuntu-unity_1:26.04.12+unity3_all
+calamares-settings-ubuntu_1:26.04.12+unity2_source
+calamares-settings-ubuntu_1:26.04.12+unity3_source

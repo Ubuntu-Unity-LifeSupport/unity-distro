@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261008-016",
+  "package": "light-locker",
+  "target_series": "resolute",
+  "candidate_version": "1.8.0-3ubuntu4+unity3",
+  "source_commit": "07367c0281fda9f24798d44df87e55e8e1e49f8d",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261002-012",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261002-012-session-lock-state/gate-016/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261002-012-session-lock-state/gate-016/target-test.txt",
+    "debs": {
+      "light-locker_1.8.0-3ubuntu4+unity3_amd64.deb": "fee605bbfbc7322879e78f1172dae982493ebb122172eba42b9454a47ff8c9b1"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261002-012-session-lock-state/README.md",
+    "verification_record": "docs/research/UNITY-20261002-012-session-lock-state/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

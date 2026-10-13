@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261012-004",
+  "package": "unity-gtk4-menu",
+  "source_commit": "4b7a537770f5ad90f44c328a5af017c3ffe70643",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261012-004-pinta-late-menubar/README.md",
+      "sha256": "d82b12f53ba9e4ebda65e1fe2c5c9346e033682122d3fc869c568ca847e3c75e"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261012-004-pinta-late-menubar/README.md",
+      "sha256": "d82b12f53ba9e4ebda65e1fe2c5c9346e033682122d3fc869c568ca847e3c75e"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "e929656c513463bb28b7655e79501529b80da7c1bde5ab74272fc7e159c767c1"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261012-004-pinta-late-menubar/gate/release-record.json",
+      "sha256": "dc0e366b0421a6491f761455124879a2cad537f2f64dbcf3ae84b7002ff2dd2a"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261012-004-pinta-late-menubar/gate/version-check.json",
+      "sha256": "662936b2a0ffc1520659efb3df61e3626b7e1de764e845a7936aeb31a60f7f7f"
+    }
+  }
+}

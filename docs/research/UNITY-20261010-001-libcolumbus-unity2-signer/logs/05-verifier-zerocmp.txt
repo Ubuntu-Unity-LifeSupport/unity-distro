@@ -1,0 +1,29 @@
+# zerocmp.py (written by the independent Verifier, 2026-10-10): the published +unity1 binaries against the +unity2 build, whole files with .note.package, .note.gnu.build-id and .gnu_debuglink zeroed
+== libcolumbus1v5-1/usr/lib/x86_64-linux-gnu/libcolumbus.so.1.1.0
+sizes: 244632 / 244632
+ELF header (64 B): identical
+program headers (672 B): identical
+section header table (1984 B, 31 entries): identical
+bytes outside headers and sections: 5905, of which differing: 0
+whole file with the 3 sections zeroed: IDENTICAL (0 differing bytes); sha256 895c7c391fe7ef1a / 895c7c391fe7ef1a
+== python3-columbus-1/usr/lib/python3/dist-packages/columbus.cpython-314-x86_64-linux-gnu.so
+sizes: 133728 / 133728
+ELF header (64 B): identical
+program headers (672 B): identical
+section header table (1984 B, 31 entries): identical
+bytes outside headers and sections: 3588, of which differing: 0
+whole file with the 3 sections zeroed: IDENTICAL (0 differing bytes); sha256 2cf7cd6610ab4c4b / 2cf7cd6610ab4c4b
+== libcolumbus1v5-dbgsym-1/usr/lib/debug/.build-id/5c/30cf6bc26328f714d7bda8ed68081993e5a021.debug
+sizes: 1198128 / 1198128
+ELF header (64 B): identical
+program headers (672 B): identical
+section header table (2624 B, 41 entries): DIFFER
+bytes outside headers and sections: 89450, of which differing: 2
+whole file with the 3 sections zeroed: DIFFER (554989 differing bytes); sha256 0d3c8e2bbe18a3bf / e9d1727512d6c193
+== python3-columbus-dbgsym-1/usr/lib/debug/.build-id/75/6e06ae713ad912f4cfdb3f6b102e9122d77d79.debug
+sizes: 630672 / 630664
+ELF header (64 B): DIFFER
+program headers (672 B): identical
+section header table (2624 B, 41 entries): DIFFER
+bytes outside headers and sections: 34430, of which differing: 0
+whole file with the 3 sections zeroed: DIFFER (213239 differing bytes); sha256 731fae5b33fb79f4 / 3f59b90e19d49d48

@@ -1,0 +1,20 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity7 pid 4869
+== plugin running
+  Get Percentage (7.735 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus withou
+  Get Icon (.0668 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not
+  Screen.GetPercentage (.0739 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not
+  u-s-d pid 4869 alive: no
+  u-s-d logind inhibitors: 
+== plugin stopped
+  Get Percentage (.0328 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not
+  Get Icon (.0449 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not
+  Screen.GetPercentage (.0407 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not
+  u-s-d pid 4869 alive: no
+== quick on/off x3, then on
+  u-s-d logind inhibitors: 
+== plugin running again
+  Get Icon (.0347 s): (<''>,)
+  Screen.GetPercentage (.0363 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+  u-s-d pid 4869 alive: no
+  u-s-d logind inhibitors: 
+journal since 03:11:56: 3

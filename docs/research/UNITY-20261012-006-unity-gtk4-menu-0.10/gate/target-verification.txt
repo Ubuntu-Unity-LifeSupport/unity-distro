@@ -1,0 +1,28 @@
+UNITY-20261012-006: target verification of the publication of unity-gtk4-menu 0.10
+
+Published 2026-10-13 01:46:53Z as snapshot unity-resolute-20261012-006 (publish record
+~/coordinator/publish-records/UNITY-20261012-006.json: aptly PASS, post-publish check PASS; signer mode,
+proposal b8ff8a40e1dcea40 approved by May on the signer console (the first -dbgsym of this package),
+refresh OK, live OK). On builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026
+01:41:51 UTC, Valid-Until Fri, 16 Oct 2026 01:41:51 UTC, sha256 f5f1fc0d..., gpgv Good signature (the
+repository key).
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: fresh boot,
+~/.dirty from the snapshot, gtk-nocsd +unity3, unity-gtk4-menu not installed), apt-get update and
+full-upgrade from the live repository, libunity-gtk4-menu0 installed from it, then a cold boot.
+  The first attempt, right after the boot, changed nothing: dpkg was locked by the system's own apt
+  run at start and the commands, run with their output discarded, failed without being noticed (the
+  packages stayed +unity3 / not installed). The machine was booted again and the same commands were run
+  with -o DPkg::Lock::Timeout=300 and their output shown; the values below are from that run.
+  Installed: libgtk-nocsd0 4.8-1+unity4 and libunity-gtk4-menu0 0.10; the downloaded debs have sha256
+  4420b1a07e081945754c9fa7c5bfbe6796085cc964fb2045ddf1fd07e6731324 (libunity-gtk4-menu0_0.10_amd64.deb)
+  and 99075d625c30d45e0e0a1cbe1879e0889df7d92f64bfbf8cd177aaf21c66c0b5 (libgtk-nocsd0), equal to the
+  gated builds. Both libraries -rw-r--r--; 60-unity-gtk4-menu.conf has the /usr/$$LIB/ form.
+  The first session after the upgrade started normally; no crash report.
+  User manager LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'; the session
+  leader (unity-session), compiz and unity-panel-service have the path form and map both libraries;
+  sudo -n true, su -c true, ping -c1 and pkexec true run with the session's value print no ld.so line;
+  no ld.so line in the journals.
+  file-roller (GTK4) is drawn with compiz's title bar and its menu title is in the panel (screenshot).
+
+Result: PASS.

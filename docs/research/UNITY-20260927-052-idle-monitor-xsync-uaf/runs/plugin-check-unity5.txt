@@ -1,0 +1,6 @@
+Добавляется «локальное отклонение /usr/lib/unity-settings-daemon/unity-settings-daemon в /usr/lib/unity-settings-daemon/unity-settings-daemon.real»
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5, pid 8629, hidden: 1
+watch id 4 from :1.190
+watch id 5 from :1.191
+after two departures: pid 8629
+after the input, pid 8629 logged: nothing => FAIL

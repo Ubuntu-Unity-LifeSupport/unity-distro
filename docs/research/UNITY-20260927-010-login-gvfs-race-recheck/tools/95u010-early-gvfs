@@ -1,0 +1,14 @@
+# UNITY-20260927-010 test injector (NOT part of any package; removed after the
+# test). Sourced by Xsession before the session starts: request gvfs over
+# D-Bus in the background, as ibus-daemon does, so that the activation is
+# pending when run-systemd-session begins. With the drop-in
+# ~/.config/systemd/user/gvfs-daemon.service.d/zz-u010-slow.conf
+# (ExecStartPre=/bin/sleep 3) the start job is still running when the
+# script stops graphical-session.target - the race's losing order, every time.
+if [ "$(id -un)" = mike ] && [ -f /home/mike/.config/systemd/user/gvfs-daemon.service.d/zz-u010-slow.conf ]; then
+    ( logger -t u010 "activation requested"
+      DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus timeout 200 \
+        gdbus call --session --dest org.gtk.vfs.Daemon --object-path /org/gtk/vfs/Daemon \
+        --method org.freedesktop.DBus.Peer.Ping >/dev/null 2>&1
+      logger -t u010 "activation returned rc=$? after ${SECONDS:-?}s" ) &
+fi

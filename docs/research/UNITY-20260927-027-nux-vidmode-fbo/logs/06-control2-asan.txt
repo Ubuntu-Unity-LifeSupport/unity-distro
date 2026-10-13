@@ -1,0 +1,34 @@
+# Control 2 (1d694a1, +unity3~ctl2, not for release): both new tests (double free detected with ASan), neither fix.
+# sbuild 2026-09-28. Both tests FAIL: fail before.
+[ RUN      ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce
+gtest-nuxgraphics-graphic-display.cpp:81: Failure
+    Result: died but not with expected exit code:
+[  DEATH   ] ==18135==ERROR: AddressSanitizer: attempting double-free on 0x73d518de1b40 in thread T0:
+[  DEATH   ]     #0 0x76b51db2a3ff in free ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:51
+[  DEATH   ]     #1 0x76b51d544dac in XFree (/usr/lib/x86_64-linux-gnu/libX11.so.6+0x43dac) (BuildId: 33397ebbef5d7a644ee9dd69618a279db858a7be)
+[  DEATH   ]     #2 0x76b51e1cbfd5 in nux::GraphicsDisplay::~GraphicsDisplay() /usr/src/nux-4.0.8+18.10.20180623-0ubuntu15+unity3~ctl2/NuxGraphics/GraphicsDisplayX11.cpp:180
+[  DEATH   ]     #15 0x59c6a6dab9eb in RUN_ALL_TESTS() /usr/include/gtest/gtest.h:2334
+[  DEATH   ] freed by thread T0 here:
+[  DEATH   ]     #0 0x76b51db2a3ff in free ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:51
+[  DEATH   ]     #1 0x76b51d544dac in XFree (/usr/lib/x86_64-linux-gnu/libX11.so.6+0x43dac) (BuildId: 33397ebbef5d7a644ee9dd69618a279db858a7be)
+[  DEATH   ]     #2 0x76b51e1d06f9 in nux::GraphicsDisplay::CreateOpenGLWindow(char const*, unsigned int, unsigned int, nux::WindowStyle, nux::GraphicsDisplay const*, bool, bool) /usr/src/nux-4.0.8+18
+[  DEATH   ]     #3 0x76b51e19489f in nux::DisplayAccessController::CreateGLWindow(char const*, unsigned int, unsigned int, nux::WindowStyle, nux::GraphicsDisplay*, bool, bool) /usr/src/nux-4.0.8+18.1
+[  DEATH   ]     #16 0x59c6a6dab9eb in RUN_ALL_TESTS() /usr/include/gtest/gtest.h:2334
+[  DEATH   ] previously allocated by thread T0 here:
+[  DEATH   ]     #2 0x76b51e1d0600 in nux::GraphicsDisplay::CreateOpenGLWindow(char const*, unsigned int, unsigned int, nux::WindowStyle, nux::GraphicsDisplay const*, bool, bool) /usr/src/nux-4.0.8+18
+[  DEATH   ]     #3 0x76b51e19489f in nux::DisplayAccessController::CreateGLWindow(char const*, unsigned int, unsigned int, nux::WindowStyle, nux::GraphicsDisplay*, bool, bool) /usr/src/nux-4.0.8+18.1
+[  DEATH   ]     #16 0x59c6a6dab9eb in RUN_ALL_TESTS() /usr/include/gtest/gtest.h:2334
+[  DEATH   ] SUMMARY: AddressSanitizer: double-free (/usr/lib/x86_64-linux-gnu/libX11.so.6+0x43dac) (BuildId: 33397ebbef5d7a644ee9dd69618a279db858a7be) in XFree
+[  FAILED  ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (1254 ms)
+[  PASSED  ] 130 tests.
+[  FAILED  ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (1254 ms)
+[ RUN      ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased
+gtest-nuxgraphics-fbo.cpp:47: Failure
+    Which is: 2
+    Which is: 1
+[  FAILED  ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (188 ms)
+[  PASSED  ] 9 tests.
+[  FAILED  ] 2 tests, listed below:
+[  FAILED  ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce
+[  FAILED  ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased
+Status: attempted

@@ -1,0 +1,28 @@
+B (agent B, UNITY-20260928-012): proof that command_guard is loaded in a NEW session. C agreed this with May. Change nothing and don't improvise: run each command below as its OWN Bash call (one command per call), then send me via SendMessage the verbatim output of each, or the verbatim hook refusal text (the "PreToolUse:Bash hook error: ..." line). All probes are harmless even if the hook is missing: /nonexistent/aptly does not exist, pgrep only reads the process list.
+
+First, before the commands: your session_id and cwd as Claude Code reports them.
+
+S1 (expect: hook denial):
+pgrep -f unity-guard-probe-zzz; echo "probe rc=$?"
+
+S2 (expect: hook denial):
+/nonexistent/aptly publish list
+
+S3 (expect: hook denial):
+/nonexistent/aptly -config=/nonexistent/aptly.conf publish list
+
+S4 (expect: runs, output):
+ls /home/claude/unity-distro
+
+S5 (expect: runs):
+cat /home/claude/coordinator/AGENT-REGISTRY.json
+
+S6 (expect: runs):
+git -C /home/claude/unity-distro status --short
+
+S7 (expect: runs, prints the variables):
+echo "sid=$CLAUDE_CODE_SESSION_ID pwd=$PWD proj=${CLAUDE_PROJECT_DIR:-unset}"
+
+S8 - subagent: start ONE subagent (Agent tool, general-purpose) with exactly this prompt: "Run exactly one Bash call: pgrep -f unity-guard-probe-zzz; echo \"probe rc=$?\" - then return its verbatim output or the verbatim hook refusal text. Do nothing else." Send me its answer verbatim.
+
+Report in the form S1: <verbatim> ... S8: <verbatim>.

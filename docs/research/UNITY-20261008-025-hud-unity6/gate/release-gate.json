@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-025",
+  "package": "hud",
+  "target_series": "resolute",
+  "candidate_version": "14.10+17.10.20170619-0ubuntu6+unity6",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-1008-025/packages/hud",
+  "source_remote_ref": "origin/b/UNITY-20261008-025",
+  "source_commit": "1369d9eb675a48b02f994d4047aa53e4d18260d7",
+  "source_tree_hash": "38edac899f5b58d81e8c7e5e7c67f7d81f4863a3",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-025"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-025-hud-unity6/build/UNITY-20261008-025-hud-build-manifest.json",
+    "sha256": "e501b75ded43cc252df1c4dac6542ec9b9800f5cc19ad4be0b8ad9f19257d6e7"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-025-hud-unity6/gate/evidence-manifest.json",
+    "sha256": "beff2b88fd88d4f09ec7c96e66c11dbd5d9f811598ceb026a1804125aedf48e9"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-025-hud-unity6/logs/03-target-unity7-hud.txt",
+        "sha256": "cffc848a28cf20bced16108e2c8789ab0afd1f271541dcc81463339a19ff42ec"
+      },
+      "debs": {
+        "hud_14.10+17.10.20170619-0ubuntu6+unity6_amd64.deb": "9fafa7227344aa06b8606e45c89c5e853b08feb8530e580d53de5a1859147a00"
+      }
+    }
+  }
+}

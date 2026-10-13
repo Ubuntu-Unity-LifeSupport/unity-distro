@@ -1,0 +1,19 @@
+restart 1: boot 2026-09-28 20:53:01: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 20:50:33.957618 mike-virtualbox compiz[2742]: WARN  2026-09-28 20:50:33 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace: compiz 2742 exit(0) from
+    trace:         __GI_exit+0
+    trace:         IceProcessMessages+943
+    trace:         0x741d1d660c89
+    trace:         CompWatchFd::internalCallback(Glib::IOCondition)+106
+    trace:         Glib::IOSource::dispatch(sigc::slot_base*)+65
+    trace:         Glib::Source::dispatch_vfunc(_GSource*, int (*)(void*), void*)+43
+    trace: compiz 2742 _exit(0) at the end of exit()
+    trace: compiz 2742 gone
+restart 2: boot 2026-09-28 20:55:50: previous boot clicked=1 compiz cores in /var/tmp=0 journal segv/dump=0 last compiz line: вер 28 20:55:03.343422 mike-virtualbox compiz[2757]: WARN  2026-09-28 20:55:03 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to gra
+    trace:         0x71e34b2486a0
+    trace:         0x71e34b1f40df
+    trace:         0x71e34b94ec89
+    trace:         0x71e34b90c30a
+    trace:         0x71e34b1b1c71
+    trace:         0x71e34b1b3aeb
+    trace: compiz 2757 _exit(0) at the end of exit()
+    trace: compiz 2757 gone

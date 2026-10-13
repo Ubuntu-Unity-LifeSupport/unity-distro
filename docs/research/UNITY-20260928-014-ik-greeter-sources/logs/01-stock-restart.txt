@@ -1,0 +1,41 @@
+### run 1
+# 2026-09-29T09:29:18Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1
+service pid before: 2361
+/home/mike/repro014.sh: строка 21: /proc/2361/environ: Отказано в доступе
+service env: 
+09:29:18.726 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:29:21.262 ACTION restart accounts-daemon
+09:29:32.703 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 2361 (same)
+вер 29 12:29:21.825801 target2 indicator-keyboard-service[2361]: g_variant_ref: assertion 'value != NULL' failed
+вер 29 12:29:21.827273 target2 kernel: indicator-keybo[2361]: segfault at 30 ip 000077b899e432c8 sp 00007ffc3f439620 error 6 in libglib-2.0.so.0.8800.0[222c8,77b899e40000+a6000] likely on CPU 0 (core 0, socket 0)
+### run 2
+# 2026-09-29T09:29:38Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1
+service pid before: 2361
+/home/mike/repro014.sh: строка 21: /proc/2361/environ: Отказано в доступе
+service env: 
+09:29:38.741 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:29:41.634 ACTION restart accounts-daemon
+09:29:52.959 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 2933 (CHANGED)
+вер 29 12:29:45.689809 target2 systemd[1563]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 29 12:29:45.689910 target2 systemd[1563]: indicator-keyboard.service: Failed with result 'core-dump'.
+вер 29 12:29:45.792512 target2 systemd[1563]: indicator-keyboard.service: Scheduled restart job, restart counter is at 1.
+вер 29 12:29:45.795051 target2 systemd[1563]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 29 12:29:45.885878 target2 indicator-keyboard-service[2933]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+### run 3
+# 2026-09-29T09:29:58Z mode=restart host=target2 indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1
+service pid before: 2933
+/home/mike/repro014.sh: строка 21: /proc/2933/environ: Отказано в доступе
+service env: 
+09:29:59.000 before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+09:30:01.324 ACTION restart accounts-daemon
+09:30:13.164 end: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+service pid after: 3050 (CHANGED)
+вер 29 12:30:02.566642 target2 indicator-keyboard-service[2933]: g_variant_ref: assertion 'value != NULL' failed
+вер 29 12:30:02.574577 target2 kernel: indicator-keybo[2933]: segfault at 30 ip 000074c7559a82c8 sp 00007ffd6d471db0 error 6 in libglib-2.0.so.0.8800.0[222c8,74c7559a5000+a6000] likely on CPU 1 (core 1, socket 0)
+вер 29 12:30:04.054898 target2 systemd[1563]: indicator-keyboard.service: Main process exited, code=dumped, status=11/SEGV
+вер 29 12:30:04.055245 target2 systemd[1563]: indicator-keyboard.service: Failed with result 'core-dump'.
+вер 29 12:30:04.300066 target2 systemd[1563]: indicator-keyboard.service: Scheduled restart job, restart counter is at 2.
+вер 29 12:30:04.301423 target2 systemd[1563]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+вер 29 12:30:04.532010 target2 indicator-keyboard-service[3050]: gtk_icon_theme_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed

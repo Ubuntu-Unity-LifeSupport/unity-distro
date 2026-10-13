@@ -1,0 +1,17 @@
+test_tested_with (test_build_sbuild.BuildSbuildTest.test_tested_with)
+--tested-with: the tested build's chroot must be this one. ... FAIL
+
+======================================================================
+FAIL: test_tested_with (test_build_sbuild.BuildSbuildTest.test_tested_with)
+--tested-with: the tested build's chroot must be this one.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/work/a/unity-distro-001/scripts/tests/test_build_sbuild.py", line 493, in test_tested_with
+    self.assertEqual(r3.returncode, 2, r3.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+----------------------------------------------------------------------
+Ran 1 test in 2.081s
+
+FAILED (failures=1)

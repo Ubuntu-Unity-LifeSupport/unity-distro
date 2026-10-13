@@ -1,0 +1,24 @@
+=== restart run 1
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2266
+STOP
+START
+criticals since 00:04:06: 1
+      1 ettings-daemon[2266]: cd_client_connect: assertion 'CD_IS_CLIENT (client)' failed
+colord devices for this display: 1
+u-s-d pid now 2266; crash files: _usr_bin_light-locker.1000.crash 
+=== restart run 2
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2266
+STOP
+START
+criticals since 00:04:27: 1
+      1 ettings-daemon[2266]: cd_client_connect: assertion 'CD_IS_CLIENT (client)' failed
+colord devices for this display: 1
+u-s-d pid now 2266; crash files: _usr_bin_light-locker.1000.crash 
+=== restart run 3
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5~nocolor1 pid 2266
+STOP
+START
+criticals since 00:04:48: 1
+      1 ettings-daemon[2266]: cd_client_connect: assertion 'CD_IS_CLIENT (client)' failed
+colord devices for this display: 1
+u-s-d pid now 2266; crash files: _usr_bin_light-locker.1000.crash 

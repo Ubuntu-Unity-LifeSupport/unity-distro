@@ -1,0 +1,19 @@
+== H1 control: plain sbuild, hostile user config, no SBUILD_CONFIG
+H1 exit=3
+29:echo HOSTILE-SETUP-MARKER
+32:HOSTILE-SETUP-MARKER
+34:I: Finished running 'echo HOSTILE-SETUP-MARKER'.
+44:Ign:1 file:/home/claude/work/a/016-real/evilrepo ./ InRelease
+45:Ign:2 file:/home/claude/work/a/016-real/evilrepo ./ Release
+46:Err:3 file:/home/claude/work/a/016-real/evilrepo ./ Packages
+== H2 build_sbuild.py, same hostile user config
+/home/claude/work/a/016-real/out-h2/UNITY-20260929-016-tiny013-build-manifest.json
+H2 exit=0
+  H2 lines naming evilrepo or the marker: 0
+20:I: Unpacking /home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst to /var/tmp/sbuild-claude/sbuild-unshare-ZbyEsH...
+30:Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]
+31:Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]
+32:Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]
+48:0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+108:0 upgraded, 33 newly installed, 0 to remove and 0 not upgraded.
+== done 20:52:18Z

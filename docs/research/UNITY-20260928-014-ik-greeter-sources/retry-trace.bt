@@ -1,0 +1,12 @@
+// retry-trace.bt - UNITY-20260928-014 (Verifier round 1): which callback runs
+// migrate_input_sources() around a daemon restart, and what
+// greeter_sources_known() is called with (it returns with > 0 || without == 0). Offsets from the +unity4 dbgsym
+// (build-id d488342f3e05bbfbf1ce7ea05a4dbbc05c5f4348). Attach with -p PID.
+config = { missing_probes = "warn" }
+BEGIN { @t0 = nsecs; printf("attached\n"); }
+uprobe:/usr/libexec/indicator-keyboard/indicator-keyboard-service:____lambda27__act_user_manager_user_changed { printf("%6d ms manager user-changed -> retry lambda27\n", (nsecs - @t0) / 1000000); }
+uprobe:/usr/libexec/indicator-keyboard/indicator-keyboard-service:____lambda29__lightdm_user_list_user_changed { printf("%6d ms LightDM user-changed lambda29\n", (nsecs - @t0) / 1000000); }
+uprobe:/usr/libexec/indicator-keyboard/indicator-keyboard-service:____lambda28__lightdm_user_list_user_added { printf("%6d ms LightDM user-added lambda28\n", (nsecs - @t0) / 1000000); }
+uprobe:/usr/libexec/indicator-keyboard/indicator-keyboard-service:indicator_keyboard_service_migrate_input_sources { printf("%6d ms   migrate_input_sources\n", (nsecs - @t0) / 1000000); }
+uretprobe:/usr/libexec/indicator-keyboard/indicator-keyboard-service:greeter_sources_known { printf("%6d ms     -> %d\n", (nsecs - @t0) / 1000000, retval & 0xff); }
+uprobe:/usr/libexec/indicator-keyboard/indicator-keyboard-service:greeter_sources_known { printf("%6d ms     greeter_sources_known(with=%d, without=%d)\n", (nsecs - @t0) / 1000000, arg0, arg1); }

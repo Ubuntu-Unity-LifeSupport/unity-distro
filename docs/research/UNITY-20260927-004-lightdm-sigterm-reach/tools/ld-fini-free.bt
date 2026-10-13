@@ -1,0 +1,17 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260927-004: which libraries' ELF destructors run in exit() of one
+// session-child (bpftrace -p PID), and how many allocator calls each makes.
+// _dl_call_fini's argument is the struct link_map; l_name is at offset 8.
+uprobe:/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2:_dl_call_fini { @cur[tid] = str(*(uint64 *)(arg0 + 8)); }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:exit { @in[tid] = 1; @t0[tid] = nsecs; printf("%s exit(%d)\n", strftime("%H:%M:%S.%f", nsecs), arg0); }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:free,
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:malloc,
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:calloc,
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:realloc /@in[tid]/ { @calls[@cur[tid], probe] = count(); }
+// chunk size of each block freed in exit() (size field before the pointer,
+// low 3 bits are flags); glibc frees chunks up to global_max_fast (128 bytes
+// by default on x86-64) to fastbins without taking the arena lock
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:free /@in[tid]/ { if (arg0 == 0) { @free_null = count(); } else { @free_nonnull = count(); } }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:free /@in[tid] && arg0 != 0/ { @chunk_size = lhist(*(uint64 *)(arg0 - 8) & 0xfffffffffffffff8, 0, 1024, 32); @chunk_max = max(*(uint64 *)(arg0 - 8) & 0xfffffffffffffff8); }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:__lll_lock_wait_private /@in[tid]/ { printf("%s lock wait in exit(), destructor of %s\n%s\n", strftime("%H:%M:%S.%f", nsecs), @cur[tid], ustack(12)); }
+uprobe:/lib/x86_64-linux-gnu/libc.so.6:_exit { printf("%s _exit(%d) %s, %d us after exit()\n", strftime("%H:%M:%S.%f", nsecs), arg0, @in[tid] ? "at the end of exit()" : "without exit()", @in[tid] ? (nsecs - @t0[tid]) / 1000 : 0); print(@calls); clear(@calls); print(@free_null); print(@free_nonnull); print(@chunk_size); print(@chunk_max); }

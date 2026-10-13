@@ -1,0 +1,20 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 6567
+== plugin running
+  Get Percentage (.0170 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: Property Percentage is not available
+  Get Icon (.0184 s): (<''>,)
+  Screen.GetPercentage (.0167 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+  u-s-d pid 6567 alive: yes
+  u-s-d (pid 6567) logind inhibitors: unity-settings- handle-lid-switch Multiple displays attached block;unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;unity-settings- sleep GNOME 
+== plugin stopped
+  Get Percentage (.0166 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Get Icon (.0166 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Screen.GetPercentage (.0155 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  u-s-d pid 6567 alive: yes
+== quick on/off x3, then on
+  u-s-d (pid 6567) logind inhibitors: unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;
+== plugin running again
+  Get Icon (.0171 s): (<''>,)
+  Screen.GetPercentage (.0179 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight 
+  u-s-d pid 6567 alive: yes
+  u-s-d (pid 6567) logind inhibitors: unity-settings- handle-lid-switch Multiple displays attached block;unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses block;unity-settings- sleep GNOME 
+journal since 21:11:19: 0

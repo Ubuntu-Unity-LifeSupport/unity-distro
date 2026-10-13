@@ -1,0 +1,107 @@
+Description: Keep the FBO colour attachment vectors sized
+ IOpenGLFrameBufferObject::SetupFrameBufferObject() sizes
+ texture_attachment_array_ and surface_attachment_array_ to
+ GetMaxFboAttachment() and then calls FormatFrameBufferObject(), which
+ clear()s both. Every later SetRenderTarget(), SetTextureAttachment(),
+ TextureAttachment() and Activate() indexes the now empty vectors: undefined
+ behaviour that happens to work (the capacity is still there), aborts under
+ -D_GLIBCXX_ASSERTIONS, and never releases the attachments' references, since
+ the vector's destructor sees no elements. Reset the elements instead.
+ .
+ The test (gtest-nuxgraphics, TestFrameBufferObject) attaches a texture and
+ checks that the attachment reads back and that the FBO releases the
+ texture's reference when it goes away; without the fix the reference leaks.
+Author: Ubuntu Unity Life Support <mihail.rozshko@gmail.com>
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/nux/+bug/2160298
+Forwarded: no
+Last-Update: 2026-09-28
+---
+Index: nux/NuxGraphics/IOpenGLFrameBufferObject.cpp
+===================================================================
+--- nux.orig/NuxGraphics/IOpenGLFrameBufferObject.cpp
++++ nux/NuxGraphics/IOpenGLFrameBufferObject.cpp
+@@ -69,8 +69,13 @@ namespace nux
+   {
+     Deactivate();
+ 
+-    texture_attachment_array_.clear();
+-    surface_attachment_array_.clear();
++    // Drop the attachments but keep one slot per colour attachment:
++    // SetRenderTarget(), SetTextureAttachment(), TextureAttachment() and
++    // Activate() index these vectors up to GetMaxFboAttachment().
++    for (auto& texture : texture_attachment_array_)
++      texture = ObjectPtr<IOpenGLBaseTexture> (0);
++    for (auto& surface : surface_attachment_array_)
++      surface = ObjectPtr<IOpenGLSurface> (0);
+ 
+     depth_surface_attachment_ = ObjectPtr<IOpenGLSurface> (0);
+     stencil_surface_attachment_ = ObjectPtr<IOpenGLSurface> (0);
+Index: nux/tests/Makefile.am
+===================================================================
+--- nux.orig/tests/Makefile.am
++++ nux/tests/Makefile.am
+@@ -131,7 +131,8 @@ gtest_nux_slow_LDFLAGS = $(GTestLDFlags)
+ gtest_nuxgraphics_SOURCES = \
+   gtest-nuxgraphics-main.cpp \
+   gtest-nuxgraphics-texture.cpp \
+-  gtest-nuxgraphics-graphic-display.cpp
++  gtest-nuxgraphics-graphic-display.cpp \
++  gtest-nuxgraphics-fbo.cpp
+ 
+ gtest_nuxgraphics_CPPFLAGS = $(GTestFlags) $(NUX_GRAPHICS_CFLAGS)
+ gtest_nuxgraphics_LDADD = $(GTestLibs) $(NUX_GRAPHICS_LIBS)
+Index: nux/tests/gtest-nuxgraphics-fbo.cpp
+===================================================================
+--- /dev/null
++++ nux/tests/gtest-nuxgraphics-fbo.cpp
+@@ -0,0 +1,50 @@
++#include <memory>
++#include <gmock/gmock.h>
++
++#include "Nux/Nux.h"
++#include "NuxGraphics/GraphicsDisplay.h"
++#include "NuxGraphics/GpuDevice.h"
++#include "NuxGraphics/IOpenGLFrameBufferObject.h"
++
++using namespace testing;
++
++namespace {
++
++struct TestFrameBufferObject : Test
++{
++  virtual void SetUp()
++  {
++    nux::NuxInitialize(0);
++    wnd_thread.reset(nux::CreateNuxWindow("nux::TestFrameBufferObject", 300, 200, nux::WINDOWSTYLE_NORMAL, NULL, false, NULL, NULL));
++    ASSERT_NE(nux::GetGraphicsDisplay(), nullptr);
++    gpu = nux::GetGraphicsDisplay()->GetGpuDevice();
++    ASSERT_NE(gpu, nullptr);
++  }
++
++  std::unique_ptr<nux::WindowThread> wnd_thread;
++  nux::GpuDevice* gpu;
++};
++
++// FormatFrameBufferObject() used to clear the attachment vectors right after
++// they were sized, so attaching indexed an empty vector and the FBO never
++// released what was attached (LP: #2160298).
++TEST_F(TestFrameBufferObject, ColourAttachmentIsKeptAndReleased)
++{
++  nux::ObjectPtr<nux::IOpenGLBaseTexture> texture =
++    gpu->CreateTexture(64, 64, 1, nux::BITFMT_R8G8B8A8, NUX_TRACKER_LOCATION);
++  ASSERT_TRUE(texture.IsValid());
++  int refs_before = texture->GetReferenceCount();
++
++  {
++    nux::ObjectPtr<nux::IOpenGLFrameBufferObject> fbo = gpu->CreateFrameBufferObject();
++    ASSERT_TRUE(fbo.IsValid());
++    fbo->FormatFrameBufferObject(64, 64, nux::BITFMT_R8G8B8A8);
++    fbo->SetTextureAttachment(0, texture, 0);
++    EXPECT_TRUE(fbo->TextureAttachment(0) == texture);
++    EXPECT_GT(texture->GetReferenceCount(), refs_before);
++  }
++
++  EXPECT_EQ(texture->GetReferenceCount(), refs_before);
++}
++
++}

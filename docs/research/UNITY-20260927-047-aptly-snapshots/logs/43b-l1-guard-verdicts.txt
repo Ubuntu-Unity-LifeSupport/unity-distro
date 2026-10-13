@@ -1,0 +1,5 @@
+# 2026-09-29T12:47:19Z guard verdicts (main 6fe3640) for the L1 non-publish commands, payloads without session id, nothing executed
+L1a: ALLOW 
+L1b: ALLOW 
+L1c: ALLOW 
+L1d: ALLOW 

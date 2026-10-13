@@ -1,0 +1,171 @@
+UNITY-20261012-003 - sessions 2-4 (exploratory), live stack on target2 (libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity +unity13), cold boots. Times UTC.
+In sessions 2 and 3 the outcome was first judged from a vbox screenshot taken right after the key; that screenshot came before the popup was mapped. Session 3's later screenshot (03:29:29 EEST = 00:29:29Z) shows the menu open; session 4 measured the map time (popwatch.sh).
+
+#### s2calc
+s2calc start 00:20:58.851Z, boot 2026-10-13 03:19:06, session up since вт жов 13 03:20:34 2026
+  window 60817412 mapped at 00:21:00.897Z
+  gnome-calculator pid 4101 window 60817412 (Калькулятор) active 60817412
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.109"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.Calculator"
+  menu labels: 0, with an underscore in the label: 0
+  ready 00:21:06.168Z
+panel-service windows visible: 2
+
+#### s2calc-stop
+== s2calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:20:57.927 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x1400028
+  00:21:00.828 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+== s2calc: org.gtk.Menus / org.gtk.Actions calls
+  00:21:00.002 signal :1.67(indicator-datet) -> (null() Changed | array [ | ]
+  00:21:00.990 call   :1.101(unity-panel-ser) -> :1.109(gnome-calculato) Start | array [ | uint32 0
+  00:21:00.990 call   :1.101(unity-panel-ser) -> :1.109(gnome-calculato) DescribeAll
+  00:21:00.990 call   :1.101(unity-panel-ser) -> :1.109(gnome-calculato) DescribeAll
+  00:21:01.010 call   :1.107(hud-service) -> :1.109(gnome-calculato) Start | array [ | uint32 0
+  00:21:01.010 call   :1.107(hud-service) -> :1.109(gnome-calculato) DescribeAll
+  00:21:01.011 call   :1.107(hud-service) -> :1.109(gnome-calculato) DescribeAll
+  00:21:02.010 signal :1.109(gnome-calculato) -> (null() Changed | array [ | ]
+  00:21:02.011 signal :1.109(gnome-calculato) -> (null() Changed | array [ | ]
+  00:21:02.015 call   :1.101(unity-panel-ser) -> :1.109(gnome-calculato) Start | array [ | uint32 1
+  00:21:02.015 call   :1.107(hud-service) -> :1.109(gnome-calculato) Start | array [ | uint32 1
+  00:22:00.001 signal :1.67(indicator-datet) -> (null() Changed | array [ | ]
+  00:23:00.002 signal :1.67(indicator-datet) -> (null() Changed | array [ | ]
+  00:24:00.002 signal :1.67(indicator-datet) -> (null() Changed | array [ | ]
+
+#### s2te
+s2te start 00:24:35.133Z, boot 2026-10-13 03:19:06, session up since вт жов 13 03:20:34 2026
+  window 62914564 mapped at 00:24:37.107Z
+  gnome-text-editor pid 4529 window 62914564 (Новый документ (Черновик) - текстовый редактор) active 62914564
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.115"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.TextEditor"
+  menu labels: 0, with an underscore in the label: 0
+  ready 00:24:42.301Z
+
+#### s2te-stop
+== s2te: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:24:33.751 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+  00:24:36.861 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3c00004
+== s2te: org.gtk.Menus / org.gtk.Actions calls
+  00:24:35.761 signal :1.115(gnome-text-edit) -> (null() Changed | array [ | ]
+  00:24:37.019 call   :1.101(unity-panel-ser) -> :1.115(gnome-text-edit) Start | array [ | uint32 0
+  00:24:37.019 call   :1.101(unity-panel-ser) -> :1.115(gnome-text-edit) DescribeAll
+  00:24:37.019 call   :1.101(unity-panel-ser) -> :1.115(gnome-text-edit) DescribeAll
+  00:24:37.081 call   :1.107(hud-service) -> :1.115(gnome-text-edit) Start | array [ | uint32 0
+  00:24:37.081 call   :1.107(hud-service) -> :1.115(gnome-text-edit) DescribeAll
+  00:24:37.082 call   :1.107(hud-service) -> :1.115(gnome-text-edit) DescribeAll
+  00:24:37.830 signal :1.115(gnome-text-edit) -> (null() Changed | array [ | ]
+  00:24:37.835 call   :1.107(hud-service) -> :1.115(gnome-text-edit) Start | array [ | uint32 1
+  00:24:37.837 call   :1.101(unity-panel-ser) -> :1.115(gnome-text-edit) Start | array [ | uint32 1
+
+#### s3calc
+s3calc start 00:28:59.213Z, boot 2026-10-13 03:26:47, session up since вт жов 13 03:28:30 2026
+  window 62914564 mapped at 00:29:05.224Z
+  gnome-calculator pid 4121 window 62914564 (Калькулятор) active 62914564
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.110"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.Calculator"
+  menu labels: 0, with an underscore in the label: 0
+  ready 00:29:10.445Z
+== s3-before-keys at 00:29:10.508Z, active window 62914564 (0x3c00004)
+  libappmenu.so id=0x62abf1b58590 win=62914564 label='Калькулятор' sensitive=True visible=True prio=0
+
+#### s3calc-stop
+== s3calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:28:58.708 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x1c00028
+  00:29:04.896 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3c00004
+== s3calc: org.gtk.Menus / org.gtk.Actions calls
+  00:28:59.247 call   :1.108(hud-service) -> :1.53(nemo-desktop) Start | array [ | uint32 0
+  00:29:00.084 signal :1.102(unity-panel-ser) -> (null() ReSync | string "com.canonical.indicator.datetime"
+  00:29:00.085 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncOne | string "com.canonical.indicator.datetime"
+  00:29:05.099 call   :1.102(unity-panel-ser) -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  00:29:05.129 call   :1.108(hud-service) -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  00:29:06.942 signal :1.110(gnome-calculato) -> (null() Changed | array [ | ]
+  00:29:06.943 signal :1.110(gnome-calculato) -> (null() Changed | array [ | ]
+  00:29:06.946 call   :1.102(unity-panel-ser) -> :1.110(gnome-calculato) Start | array [ | uint32 1
+  00:29:06.946 call   :1.108(hud-service) -> :1.110(gnome-calculato) Start | array [ | uint32 1
+  00:29:07.027 signal :1.102(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  00:29:07.029 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncOne | string "libappmenu.so"
+  00:29:07.042 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel110163507584528_0" | array [
+  00:29:10.591 call   :1.111() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  00:29:14.147 call   :1.104(compiz) -> :1.102(unity-panel-ser) ShowEntry | string "0x62abf1b58590" | uint32 62914564
+  00:29:14.441 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel110163507584528_0" | string "0x62abf1b58590"
+
+#### s4calc-stop
+== s4calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:33:36.396 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x1e00028
+  00:33:41.888 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+== s4calc: org.gtk.Menus / org.gtk.Actions calls
+  00:33:36.478 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel94501850144368_0" | array [
+  00:33:36.563 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.563 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:36.564 signal :1.29(indicator-sessi) -> (null() Changed | array [ | struct {
+  00:33:38.751 call   :1.109(hud-service) -> :1.51(nemo-desktop) Start | array [ | uint32 0
+  00:33:41.995 call   :1.102(unity-panel-ser) -> :1.107(gnome-calculato) Start | array [ | uint32 0
+  00:33:42.039 call   :1.109(hud-service) -> :1.107(gnome-calculato) Start | array [ | uint32 0
+  00:33:43.410 signal :1.107(gnome-calculato) -> (null() Changed | array [ | ]
+  00:33:43.411 signal :1.107(gnome-calculato) -> (null() Changed | array [ | ]
+  00:33:43.412 call   :1.109(hud-service) -> :1.107(gnome-calculato) Start | array [ | uint32 1
+  00:33:43.415 call   :1.102(unity-panel-ser) -> :1.107(gnome-calculato) Start | array [ | uint32 1
+  00:33:43.497 signal :1.102(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  00:33:43.497 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncOne | string "libappmenu.so"
+  00:33:43.504 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel94501850144368_0" | array [
+  00:33:51.684 call   :1.104(compiz) -> :1.102(unity-panel-ser) ShowEntry | string "0x606727065630" | uint32 60817412
+  00:33:52.351 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel94501850144368_0" | string "0x606727065630"
+  00:34:00.085 signal :1.102(unity-panel-ser) -> (null() ReSync | string "com.canonical.indicator.datetime"
+  00:34:00.087 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncOne | string "com.canonical.indicator.datetime"
+  00:34:18.616 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+00:33:47.772 panel-service visible windows 0, active 60817412
+00:33:52.604 panel-service visible windows 2, active 60817412
+00:34:18.730 panel-service visible windows 0, active 60817412
+
+#### s4mn
+00:35:16.695 panel-service visible windows 0, active 62914564
+00:35:25.737 panel-service visible windows 2, active 62914564
+00:35:39.866 panel-service visible windows 0, active 62914564
+== s4mn: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:35:08.665 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+  00:35:10.644 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3c00004
+== s4mn: org.gtk.Menus / org.gtk.Actions calls
+  00:35:10.896 signal :1.116(python3) -> (null() Changed | array [ | ]
+  00:35:11.044 call   :1.102(unity-panel-ser) -> :1.116(python3) Start | array [ | uint32 0
+  00:35:11.052 call   :1.109(hud-service) -> :1.116(python3) Start | array [ | uint32 0
+  00:35:11.053 call   :1.102(unity-panel-ser) -> :1.116(python3) Start | array [ | uint32 3
+  00:35:11.053 call   :1.102(unity-panel-ser) -> :1.116(python3) Start | array [ | uint32 2
+  00:35:11.053 call   :1.102(unity-panel-ser) -> :1.116(python3) Start | array [ | uint32 1
+  00:35:11.056 call   :1.109(hud-service) -> :1.116(python3) Start | array [ | uint32 1
+  00:35:11.058 call   :1.109(hud-service) -> :1.116(python3) Start | array [ | uint32 2
+  00:35:11.058 call   :1.109(hud-service) -> :1.116(python3) Start | array [ | uint32 3
+  00:35:11.133 signal :1.102(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  00:35:11.219 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel94501850144368_0" | array [
+  00:35:11.224 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncOne | string "libappmenu.so"
+  00:35:11.258 call   :1.104(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel94501850144368_0" | array [
+  00:35:21.906 call   :1.117() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  00:35:25.153 call   :1.104(compiz) -> :1.102(unity-panel-ser) ShowEntry | string "0x730d9c017d10" | uint32 62914564
+  00:35:25.202 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel94501850144368_0" | string "0x730d9c017d10"
+  00:35:39.630 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+
+Precision (after the Verifier's round 2): the header above says the early screenshot came before the popup map for
+sessions 2 and 3. Only session 3 shows that (its later screenshot); session 2 has no ShowEntry or popup timing, so
+for session 2 it is not shown.

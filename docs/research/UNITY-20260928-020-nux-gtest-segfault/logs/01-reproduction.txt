@@ -1,0 +1,31 @@
+# gtest-nux-slow of unchanged +unity2 (9793c23) built on target2 (kernel 7.0.0-34, as builder), dummy-xorg-test-runner.sh as root, 2026-09-28.
+## 1. The runner as shipped: 6 runs before the loop was stopped (rc 139 = SIGSEGV)
+run 1: rc=139 
+run 2: rc=0 [  PASSED  ] 113 tests. 
+run 3: rc=139 
+run 4: rc=139 
+run 5: rc=139 
+run 6: rc=139 
+## 2. Own dummy Xorg without -noreset, 10 runs (xrun.sh 10 no)
+run 5 noreset=no: rc=139 last=EmbeddedContext.StillProcessDrawIfInvisible server-generations=1
+run 6 noreset=no: rc=139 last=TestWindowThread.WatchFd server-generations=1
+run 7 noreset=no: rc=139 last=EmbeddedContext.NoPresentInvisibleOnQueueDraw server-generations=1
+run 8 noreset=no: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+run 9 noreset=no: rc=139 last=EmbeddedContext.PresentViewInEmbeddedReadiesForPresentation server-generations=1
+run 10 noreset=no: rc=139 last=EmbeddedContextMultiWindow.PresentBoth server-generations=1
+noreset=no: segfaults 9 of 10
+   (the "server-generations" column counts a line printed once per start, not per regeneration: ignore it)
+   (runs 1-4 scrolled out of the captured tail; total as printed: 9 of 10)
+   Xorg regenerations ("Initializing extension GLX" per log): failing run 6: 88, passing run 8: 114
+## 3. Same with -noreset, 10 runs (xrun.sh 10 yes): only TestWindowThread crashes remain; 1 GLX init per log
+run 1 noreset=yes: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+run 2 noreset=yes: rc=139 last=TestWindowThread.OneFdEvent server-generations=1
+run 3 noreset=yes: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+run 4 noreset=yes: rc=139 last=TestWindowThread.WatchFd server-generations=1
+run 5 noreset=yes: rc=139 last=TestWindowThread.WatchFd server-generations=1
+run 6 noreset=yes: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+run 7 noreset=yes: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+run 8 noreset=yes: rc=139 last=TestWindowThread.MultiWatchFd server-generations=1
+run 9 noreset=yes: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+run 10 noreset=yes: rc=0 last=EmbeddedContextMultiWindow.MoveToPresentationListAfterFrameEndedIfCaughtInCutoff server-generations=1
+noreset=yes: segfaults 4 of 10

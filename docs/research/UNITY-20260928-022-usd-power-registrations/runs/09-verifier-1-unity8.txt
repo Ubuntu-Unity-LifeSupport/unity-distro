@@ -1,0 +1,664 @@
+Verifier run, UNITY-20260928-022, u-s-d +unity8 on target (ssh target, user mike), 2026-09-29 UTC; target clock is EEST.
+Scripts were copied to target /tmp and run as: ssh target 'sh /tmp/<script>'. Script sources at the end.
+
+================ 1. ssh target 'sh /tmp/v1.sh' (state as found; u-s-d left in the forced-finalized state by the author's run 08)
+## date: 2026-09-29T00:31:16Z
+## dpkg-query -W unity-settings-daemon libunity-settings-daemon1 unity-settings-daemon-dbgsym
+libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity8
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity8
+unity-settings-daemon-dbgsym	15.04.1+21.10.20220802-0ubuntu7+unity8
+## pgrep -x unity-settings-
+6181
+## ps -o pid,lstart,comm,args -p 6181
+    PID                  STARTED COMMAND         COMMAND
+   6181 вт вер 29 03:27:37 2026 unity-settings- /usr/lib/unity-settings-daemon/unity-settings-daemon
+## sudo grep -c '(deleted)' /proc/6181/maps
+3
+## environ GLIBC_TUNABLES/G_MESSAGES_DEBUG
+GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+G_MESSAGES_DEBUG=all
+## drop-in
+# UNITY-20260927-012 test drop-in for the unity-settings-daemon user unit
+# (removed after the test): fill freed memory with 0xa5 and keep freed
+# chunks out of tcache, so that a use of freed memory crashes at once
+# instead of reading whatever the chunk still holds; and log g_debug, so the
+# journal shows how the daemon leaves ("Got Stop signal", "Received SIGTERM").
+[Service]
+Environment=GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+Environment=G_MESSAGES_DEBUG=all
+## systemctl --user show -p MainPID,NRestarts,ActiveState unity-settings-daemon
+ActiveState=active
+MainPID=6181
+NRestarts=0
+## NameHasOwner org.gnome.SessionManager
+(true,)
+## NameHasOwner org.gnome.SettingsDaemon.Power
+(false,)
+## gsettings get power active
+true
+## ls -la /var/crash
+total 8
+drwxrwsrwt  2 root whoopsie 4096 Sep 29 03:21 .
+drwxr-xr-x 14 root root     4096 Sep 22 16:25 ..
+## systemd-inhibit --list --no-legend
+ModemManager                 0 root 1023 ModemManager    sleep    ModemManager needs to reset devices                       delay
+NetworkManager               0 root 1001 NetworkManager  sleep    NetworkManager needs to turn off networks                 delay
+Realtime Kit                 0 root 1306 rtkit-daemon    sleep    Demote realtime scheduling and stop canary.               delay
+UPower                       0 root 2634 upowerd         sleep    Pause device polling                                      delay
+Unattended Upgrades Shutdown 0 root 1066 unattended-upgr shutdown Stop ongoing upgrades or perform upgrades before shutdown delay
+
+================ 1b. deleted maps + journal of that pid
+79cca430b000-79cca630b000 rw-s 00000000 00:01 32                         /SYSV00000000 (deleted)
+79cccee19000-79cccee1c000 r--p 00000000 08:01 813710                     /home/mike/.config/dconf/user (deleted)
+79cccee1c000-79cccee1d000 r--s 00000000 00:39 603                        /run/user/1000/dconf/user (deleted)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/color/" (active: 2, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/color/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/rfkill/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/media-keys/" (active: 2, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/org/gnome/desktop/wm/keybindings/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/power/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/ubuntu/sound/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/media-keys/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/cursor/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/clipboard/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/org/gnome/desktop/background/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/desktop/background/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/background/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/sharing/vino-server/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/sharing/rygel/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/sharing/gnome-user-share-webdav/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/sharing/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/peripherals/touchscreen/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/orientation/" (active: 1, establishing: 0)
+вер 29 03:28:02 mike-virtualbox unity-settings-daemon[6181]: unwatch_fast: "/com/canonical/unity/settings-daemon/plugins/" (active: 1, establishing: 0)
+
+================ ssh target 'sudo systemctl reboot'; wait for NameHasOwner org.gnome.SessionManager -> (true,)
+
+================ 2. after reboot: sh /tmp/v1.sh + filtered (deleted) + journal
+## date: 2026-09-29T00:35:07Z
+## dpkg-query -W unity-settings-daemon libunity-settings-daemon1 unity-settings-daemon-dbgsym
+libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity8
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity8
+unity-settings-daemon-dbgsym	15.04.1+21.10.20220802-0ubuntu7+unity8
+## pgrep -x unity-settings-
+2252
+## ps -o pid,lstart,comm,args -p 2252
+    PID                  STARTED COMMAND         COMMAND
+   2252 вт вер 29 03:34:27 2026 unity-settings- /usr/lib/unity-settings-daemon/unity-settings-daemon
+## sudo grep -c '(deleted)' /proc/2252/maps
+5
+## environ GLIBC_TUNABLES/G_MESSAGES_DEBUG
+GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+G_MESSAGES_DEBUG=all
+## drop-in
+# UNITY-20260927-012 test drop-in for the unity-settings-daemon user unit
+# (removed after the test): fill freed memory with 0xa5 and keep freed
+# chunks out of tcache, so that a use of freed memory crashes at once
+# instead of reading whatever the chunk still holds; and log g_debug, so the
+# journal shows how the daemon leaves ("Got Stop signal", "Received SIGTERM").
+[Service]
+Environment=GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+Environment=G_MESSAGES_DEBUG=all
+## systemctl --user show -p MainPID,NRestarts,ActiveState unity-settings-daemon
+ActiveState=active
+MainPID=2252
+NRestarts=0
+## NameHasOwner org.gnome.SessionManager
+(true,)
+## NameHasOwner org.gnome.SettingsDaemon.Power
+(true,)
+## gsettings get power active
+true
+## ls -la /var/crash
+total 8
+drwxrwsrwt  2 root whoopsie 4096 Sep 29 03:21 .
+drwxr-xr-x 14 root root     4096 Sep 22 16:25 ..
+## systemd-inhibit --list --no-legend
+ModemManager                 0    root 1065 ModemManager    sleep                                                    ModemManager needs to reset devices                       delay
+NetworkManager               0    root 1026 NetworkManager  sleep                                                    NetworkManager needs to turn off networks                 delay
+Realtime Kit                 0    root 1318 rtkit-daemon    sleep                                                    Demote realtime scheduling and stop canary.               delay
+UPower                       0    root 2744 upowerd         sleep                                                    Pause device polling                                      delay
+Unattended Upgrades Shutdown 0    root 1105 unattended-upgr shutdown                                                 Stop ongoing upgrades or perform upgrades before shutdown delay
+mike                         1000 mike 2252 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+mike                         1000 mike 2252 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+mike                         1000 mike 2252 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+Блокировщик экрана           1000 mike 2761 light-locker    sleep                                                    Заблокировать экран при спящем/ждущем режимах             delay
+## deleted maps excluding memfd/SYSV
+0
+## mapped u-s-d binaries
+/usr/lib/unity-settings-daemon/unity-settings-daemon 
+/usr/lib/x86_64-linux-gnu/libunity-settings-daemon.so.1.0.0 
+/usr/lib/x86_64-linux-gnu/libupower-glib.so.3.1.2 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/liba11y-keyboard.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/liba11y-settings.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libbackground.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libclipboard.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libcolor.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libcursor.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libgsd.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libgsdwacom.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libhousekeeping.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libkeyboard.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libmedia-keys.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libmouse.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/liborientation.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libremote-display.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/librfkill.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libscreensaver-proxy.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libsharing.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libsound.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libxrandr.so 
+/usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libxsettings.so 
+/usr/share/locale-langpack/ru/LC_MESSAGES/unity-settings-daemon.mo 
+/usr/share/locale/ru/LC_MESSAGES/unity-settings-daemon.mo 
+## journal since boot, unity-settings-daemon errors
+0
+
+================ 3. sh /tmp/v2.sh (D-Bus checks running / stopped / quick toggles / running again)
+## start 2026-09-29 03:35:28  u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity8 pid 2252
+## libpower.so contains new strings: 1
+== plugin running
+  Get Percentage (.1324 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: Property Percentage is not available
+  Get Icon (.0712 s): (<''>,)
+  Get Tooltip (.0410 s): (<''>,)
+  GetAll Power (.0650 s): ({'Icon': <''>, 'Tooltip': <''>},)
+  Screen.GetPercentage (.0634 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight not available
+  Power.GetPrimaryDevice (.0774 s): Ошибка: GDBus.Error:org.gnome.SettingsDaemon.Power.Failed: There is no primary device.
+  Power.GetDevices (.0764 s): ([('/org/freedesktop/UPower/devices/line_power_AC', uint32 1, '. GThemedIcon ac-adapter-symbolic ac-adapter  -symbolic', 0.0, uint32 0, uint64 0)],)
+  Keyboard.StepUp (.0782 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/freedesktop/U
+  u-s-d pid now: 2252 (was 2252)
+  systemd-inhibit rows for pid 2252:
+    mike                         1000 mike 2252 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2252 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2252 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+  busctl ListInhibitors rows for pid 2252:
+     sleep | mike | GNOME needs to lock the screen | delay
+     handle-lid-switch | mike | Multiple displays attached | block
+     handle-power-key:handle-suspend-key:handle-hibernate-key | mike | GNOME handling keypresses | block
+== plugin stopped (active false)
+  Get Percentage (.0488 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Get Icon (.0719 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Get Tooltip (.0900 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  GetAll Power (.0477 s): (@a{sv} {},)
+  Screen.GetPercentage (.0727 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Power.GetPrimaryDevice (.0426 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Power.GetDevices (.0869 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  Keyboard.StepUp (.0589 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: The power plugin is not running
+  u-s-d pid now: 2252 (was 2252)
+  systemd-inhibit rows for pid 2252:
+    mike                         1000 mike 2252 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+  busctl ListInhibitors rows for pid 2252:
+     handle-power-key:handle-suspend-key:handle-hibernate-key | mike | GNOME handling keypresses | block
+== quick toggle: 5x (true;false) with no pause, then 3x with 0.2 s, then true
+  (stopped after toggles)
+  systemd-inhibit rows for pid 2252:
+    mike                         1000 mike 2252 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+  busctl ListInhibitors rows for pid 2252:
+     handle-power-key:handle-suspend-key:handle-hibernate-key | mike | GNOME handling keypresses | block
+== plugin running again
+  Get Percentage (.0798 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.Failed: Property Percentage is not available
+  Get Icon (.0744 s): (<''>,)
+  Get Tooltip (.0567 s): (<''>,)
+  GetAll Power (.0537 s): ({'Icon': <''>, 'Tooltip': <''>},)
+  Screen.GetPercentage (.0617 s): Ошибка: GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Code0: Screen backlight not available
+  Power.GetPrimaryDevice (.0583 s): Ошибка: GDBus.Error:org.gnome.SettingsDaemon.Power.Failed: There is no primary device.
+  Power.GetDevices (.0946 s): ([('/org/freedesktop/UPower/devices/line_power_AC', uint32 1, '. GThemedIcon ac-adapter-symbolic ac-adapter  -symbolic', 0.0, uint32 0, uint64 0)],)
+  Keyboard.StepUp (.0384 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/freedesktop/U
+  u-s-d pid now: 2252 (was 2252)
+  systemd-inhibit rows for pid 2252:
+    mike                         1000 mike 2252 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+    mike                         1000 mike 2252 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+    mike                         1000 mike 2252 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+  busctl ListInhibitors rows for pid 2252:
+     sleep | mike | GNOME needs to lock the screen | delay
+     handle-lid-switch | mike | Multiple displays attached | block
+     handle-power-key:handle-suspend-key:handle-hibernate-key | mike | GNOME handling keypresses | block
+== journal since 2026-09-29 03:35:28
+  START/STOP debug lines: 0
+  NRestarts: 0  crash files: 0
+
+================ 4. sh /tmp/v3.sh (Keyboard.StepUp / Screen.GetPercentage in flight while toggling active)
+## start 2026-09-29 03:36:20 pid 2252
+== org.gnome.SettingsDaemon.Power.Keyboard.StepUp: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'UnknownMethod': 94, 'not running': 375, 'Timeout': 20, 'NoReply': 20, 'ServiceUnknown': 3251}
+  u-s-d pid now: 5129 (was 2252); NRestarts 1
+== org.gnome.SettingsDaemon.Power.Screen.GetPercentage: 20 calls in flight for 20 s while toggling active 15x
+  calls by result: {'other:GDBus.Error:org.gtk.GDBus.UnmappedGError.Quark._gsd_5fpower_5fmanager_5ferror.Co': 5708, 'not running': 6098}
+  u-s-d pid now: 5129 (was 2252); NRestarts 1
+== journal since 2026-09-29 03:36:20
+      1 вер 29 03:36:23 mike-virtualbox unity-settings-daemon[2252]: g_dbus_proxy_call_sync_internal: assertion 'G_IS_DBUS_PROXY (proxy)' failed
+      1 вер 29 03:36:39 mike-virtualbox systemd[1253]: unity-settings-daemon.service: Failed with result 'core-dump'.
+      1 вер 29 03:36:39 mike-virtualbox systemd[1253]: unity-settings-daemon.service: Main process exited, code=dumped, status=11/SEGV
+вер 29 03:36:23 mike-virtualbox kernel: unity-settings-[2252]: segfault at 0 ip 00007e437c0570a8 sp 00007fff346e0480 error 4 in libpower.so[90a8,7e437c054000+10000] likely on CPU 1 (core 1, socket 0)
+вер 29 03:36:39 mike-virtualbox systemd[1253]: unity-settings-daemon.service: Main process exited, code=dumped, status=11/SEGV
+  crash files: 1
+  active: true
+
+================ 5. symbolize crash: gdb info symbol/line on libpower.so offset 0x90a8
+total 3912
+drwxrwsrwt  2 root whoopsie    4096 Sep 29 03:36 .
+drwxr-xr-x 14 root root        4096 Sep 22 16:25 ..
+-rw-r-----  1 mike whoopsie 3994776 Sep 29 03:36 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+upower_kbd_get_brightness.isra + 136 in section .text of /usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so
+Line 1920 of "/usr/src/unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity8/plugins/power/gsd-power-manager.c" starts at address 0x90a8 <upower_kbd_get_brightness+136> and ends at 0x90aa <upower_kbd_get_brightness+138>.
+
+================ 6. sh /tmp/v4.sh (repeat Keyboard.StepUp race)
+## start 2026-09-29 03:37:49 pid 5129 NRestarts 1
+== Keyboard.StepUp, 20 in flight 10 s, no toggling
+  calls by result: {'UnknownMethod': 973}
+  pid now 5129
+== Keyboard.StepUp, 20 in flight 20 s, toggling active 15x (repeat)
+  03:38:02 off
+  03:38:03 on
+  03:38:05 off
+  03:38:06 on
+  first Timeout at 03:38:14
+  calls by result: {'UnknownMethod': 26, 'not running': 352, 'Timeout': 40}
+  pid now 5129 (was 5129); NRestarts 1
+вер 29 03:38:05 mike-virtualbox unity-settings-daemon[5129]: g_dbus_proxy_call_sync_internal: assertion 'G_IS_DBUS_PROXY (proxy)' failed
+вер 29 03:38:05 mike-virtualbox kernel: unity-settings-[5129]: segfault at 0 ip 00007ec9a40150a8 sp 00007fff38406d30 error 4 in libpower.so[90a8,7ec9a4012000+10000] likely on CPU 1 (core 1, socket 0)
+total 2764
+drwxrwsrwt  2 root whoopsie    4096 03:38:07 .
+drwxr-xr-x 14 root root        4096 16:25:38 ..
+----------  1 mike whoopsie 2820715 03:38:25 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+
+================ 7. daemon state after systemd restart; md5 of card tools on target vs repo
+ActiveState=active
+MainPID=5688
+Result=success
+NRestarts=2
+5688
+(true,)
+true
+#!/bin/sh
+# UNITY-20260928-022: after the forced finalize, call the power object through
+# u-s-d's unique bus name (the well-known name is released by then), so the
+c1603f93278ddde4fa20f7ad9886376b  /home/mike/finalized-unique-name.sh
+624d4b3c47f9e866e958e6807a2520bc  /home/mike/power-after-stop.sh
+
+================ 8. sh /tmp/v5.sh (forced finalize, calls by unique and well-known name)
+## 2026-09-29 03:39:14 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity8 pid 5688 unique :1.217 GLIBC_TUNABLES=glibc.malloc.perturb=165:glibc.malloc.tcache_count=0
+## crash files before: -rw-r----- 1 mike whoopsie 3487386 03:38:26 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+  org.gnome.SettingsDaemon.Power.Screen.GetPercentage via :1.217 (.0460 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не существует
+  org.gnome.SettingsDaemon.Power.Keyboard.StepUp via :1.217 (.0642 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не существует
+  org.gnome.SettingsDaemon.Power.GetDevices via :1.217 (.0572 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не существует
+  org.freedesktop.DBus.Properties.Get via :1.217 (.0926 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не существует
+  org.freedesktop.DBus.Properties.Get via :1.217 (.0413 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не существует
+  org.freedesktop.DBus.Properties.GetAll via :1.217 (.0392 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/gnome/SettingsDaemon/Power» не существует
+  org.gnome.SettingsDaemon.Power.Screen.GetPercentage via org.gnome.SettingsDaemon.Power (.0484 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+  org.gnome.SettingsDaemon.Power.Keyboard.StepUp via org.gnome.SettingsDaemon.Power (.0462 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+  org.gnome.SettingsDaemon.Power.GetDevices via org.gnome.SettingsDaemon.Power (.0469 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+  org.freedesktop.DBus.Properties.Get via org.gnome.SettingsDaemon.Power (.0652 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+  org.freedesktop.DBus.Properties.Get via org.gnome.SettingsDaemon.Power (.0628 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+  org.freedesktop.DBus.Properties.GetAll via org.gnome.SettingsDaemon.Power (.0761 s): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SettingsDaemon.Power was not provided by any .service file
+  20 in flight x 5 s, Keyboard.StepUp by unique name:
+    {' Объект по пути «/org/gnome/SettingsDaem': 13127}
+STOP-CALLED
+AFTER-CONTINUE
+#0  __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+u-s-d pid 5688 alive: yes; crash files after: -rw-r----- 1 mike whoopsie 3487386 03:38:26 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+
+================ ssh target 'sudo systemctl reboot'; wait for NameHasOwner org.gnome.SessionManager -> (true,)
+
+================ 9. sh /tmp/v6.sh (gdb trace of start/stop + async callbacks, back-to-back toggles: dconf coalesces them)
+## 2026-09-29 03:43:25 pid 2197
+STOP
+START
+CB kbd
+  USE kbd
+CB presence
+  USE presence
+CB suspend
+  USE suspend
+CB lid
+  USE lid
+== check: USE after STOP without START in between:
+   none
+pid now 2197 (was 2197); crash files: -rw-r----- 1 mike whoopsie 3487386 03:38:26 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+== inhibitors of u-s-d
+mike                         1000 mike 2197 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+mike                         1000 mike 2197 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+mike                         1000 mike 2197 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+== maps (deleted) raw: 5, non-memfd/SYSV: 0
+active: true
+
+================ 10. sh /tmp/v6.sh with timed toggles (0.01..0.2 s) - final state
+## 2026-09-29 03:44:22 pid 2197
+STOP
+START
+STOP
+CB kbd
+CB presence
+CB suspend
+CB lid
+START
+CB suspend
+  USE suspend
+CB presence
+  USE presence
+CB kbd
+  USE kbd
+CB lid
+  USE lid
+STOP
+START
+CB suspend
+  USE suspend
+CB lid
+  USE lid
+STOP
+CB presence
+CB kbd
+START
+CB suspend
+  USE suspend
+CB lid
+  USE lid
+CB kbd
+  USE kbd
+STOP
+CB presence
+START
+CB kbd
+  USE kbd
+CB presence
+  USE presence
+CB suspend
+  USE suspend
+CB lid
+  USE lid
+STOP
+START
+CB suspend
+  USE suspend
+CB kbd
+  USE kbd
+CB presence
+  USE presence
+CB lid
+  USE lid
+STOP
+START
+CB suspend
+  USE suspend
+CB presence
+  USE presence
+CB kbd
+  USE kbd
+CB lid
+  USE lid
+STOP
+START
+CB suspend
+  USE suspend
+CB lid
+  USE lid
+CB kbd
+  USE kbd
+CB presence
+  USE presence
+STOP
+START
+CB suspend
+  USE suspend
+CB lid
+  USE lid
+CB kbd
+  USE kbd
+CB presence
+  USE presence
+== check: USE after STOP without START in between:
+   none
+pid now 2197 (was 2197); crash files: -rw-r----- 1 mike whoopsie 3487386 03:38:25 _usr_lib_unity-settings-daemon_unity-settings-daemon.1000.crash
+== inhibitors of u-s-d
+mike                         1000 mike 2197 unity-settings- handle-lid-switch                                        Multiple displays attached                                block
+mike                         1000 mike 2197 unity-settings- handle-power-key:handle-suspend-key:handle-hibernate-key GNOME handling keypresses                                 block
+mike                         1000 mike 2197 unity-settings- sleep                                                    GNOME needs to lock the screen                            delay
+== maps (deleted) raw: 5, non-memfd/SYSV: 0
+active: true
+
+################ script sources
+
+================ v1.sh
+#!/bin/sh
+. ~/envt.sh
+echo "## date: $(date -u +%FT%TZ)"
+echo "## dpkg-query -W unity-settings-daemon libunity-settings-daemon1 unity-settings-daemon-dbgsym"
+dpkg-query -W unity-settings-daemon libunity-settings-daemon1 unity-settings-daemon-dbgsym 2>&1
+echo "## pgrep -x unity-settings-"
+P=$(pgrep -x unity-settings-); echo "$P"
+echo "## ps -o pid,lstart,comm,args -p $P"; ps -o pid,lstart,comm,args -p $P
+echo "## sudo grep -c '(deleted)' /proc/$P/maps"; sudo grep -c '(deleted)' /proc/$P/maps
+echo "## environ GLIBC_TUNABLES/G_MESSAGES_DEBUG"; sudo cat /proc/$P/environ | tr '\0' '\n' | grep -E '^(GLIBC_TUNABLES|G_MESSAGES_DEBUG)='
+echo "## drop-in"; cat ~/.config/systemd/user/unity-settings-daemon.service.d/zz-u012-perturb.conf
+echo "## systemctl --user show -p MainPID,NRestarts,ActiveState unity-settings-daemon"; systemctl --user show -p MainPID,NRestarts,ActiveState unity-settings-daemon
+echo "## NameHasOwner org.gnome.SessionManager"
+gdbus call --session -d org.freedesktop.DBus -o /org/freedesktop/DBus -m org.freedesktop.DBus.NameHasOwner org.gnome.SessionManager
+echo "## NameHasOwner org.gnome.SettingsDaemon.Power"
+gdbus call --session -d org.freedesktop.DBus -o /org/freedesktop/DBus -m org.freedesktop.DBus.NameHasOwner org.gnome.SettingsDaemon.Power
+echo "## gsettings get power active"; gsettings get com.canonical.unity.settings-daemon.plugins.power active
+echo "## ls -la /var/crash"; ls -la /var/crash
+echo "## systemd-inhibit --list --no-legend"; systemd-inhibit --list --no-legend
+
+================ v2.sh
+#!/bin/sh
+# Verifier UNITY-20260928-022: D-Bus checks, running / stopped / toggles
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-)
+T=$(date '+%F %T')
+echo "## start $T  u-s-d $(dpkg-query -W -f='${Version}' unity-settings-daemon) pid $P"
+echo "## libpower.so contains new strings: $(grep -c -a -e 'The power plugin is not running' -e 'Property %s is not available' /usr/lib/x86_64-linux-gnu/unity-settings-daemon-1.0/libpower.so)"
+c() { # c <label> <method> [args...]
+  L=$1; shift; t0=$(date +%s.%N)
+  r=$(timeout 40 gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method "$@" 2>&1 | head -1 | cut -c1-150)
+  echo "  $L ($(echo "$(date +%s.%N) - $t0" | bc | cut -c1-5) s): $r"; }
+all() {
+  c "Get Percentage" org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power Percentage
+  c "Get Icon" org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power Icon
+  c "Get Tooltip" org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power Tooltip
+  c "GetAll Power" org.freedesktop.DBus.Properties.GetAll org.gnome.SettingsDaemon.Power
+  c "Screen.GetPercentage" org.gnome.SettingsDaemon.Power.Screen.GetPercentage
+  c "Power.GetPrimaryDevice" org.gnome.SettingsDaemon.Power.GetPrimaryDevice
+  c "Power.GetDevices" org.gnome.SettingsDaemon.Power.GetDevices
+  c "Keyboard.StepUp" org.gnome.SettingsDaemon.Power.Keyboard.StepUp
+  echo "  u-s-d pid now: $(pgrep -x unity-settings-) (was $P)"; }
+inh() { Q=$(pgrep -x unity-settings-); echo "  systemd-inhibit rows for pid $Q:"; systemd-inhibit --list --no-legend | awk -v p=$Q '$4==p' | sed 's/^/    /'
+  echo "  busctl ListInhibitors rows for pid $Q:"; busctl --system call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager ListInhibitors --json=short | python3 -c "
+import json,sys
+for w,who,why,mode,uid,pid in json.load(sys.stdin)['data'][0]:
+    if pid==$Q: print('    ',w,'|',who,'|',why,'|',mode)"; }
+echo "== plugin running"; all; inh
+gsettings set $S active false; sleep 3
+echo "== plugin stopped (active false)"; all; inh
+echo "== quick toggle: 5x (true;false) with no pause, then 3x with 0.2 s, then true"
+for i in 1 2 3 4 5; do gsettings set $S active true; gsettings set $S active false; done
+for i in 1 2 3; do gsettings set $S active true; sleep 0.2; gsettings set $S active false; sleep 0.2; done
+sleep 3; echo "  (stopped after toggles)"; inh
+gsettings set $S active true; sleep 5
+echo "== plugin running again"; all; inh
+echo "== journal since $T"
+journalctl --user -u unity-settings-daemon --since "$T" --no-pager | grep -iE "abort|assert|segfault|dumped|critical|warning|Unable to inhibit|Could not" | cut -c1-200 | sort | uniq -c | head -20
+echo "  START/STOP debug lines: $(journalctl --user -u unity-settings-daemon --since "$T" --no-pager | grep -cE 'Starting power manager|Stopping power manager')"
+echo "  NRestarts: $(systemctl --user show -p NRestarts --value unity-settings-daemon)  crash files: $(ls /var/crash | grep -c unity-settings)"
+
+================ v3.sh
+#!/bin/sh
+# Verifier UNITY-20260928-022: Keyboard/Screen calls in flight while the
+# plugin is switched on and off (no gdb): does every call get an answer,
+# does the daemon survive the start() window before the kbd proxy is ready?
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-); T=$(date '+%F %T')
+echo "## start $T pid $P"
+for M in org.gnome.SettingsDaemon.Power.Keyboard.StepUp org.gnome.SettingsDaemon.Power.Screen.GetPercentage; do
+  echo "== $M: 20 calls in flight for 20 s while toggling active 15x"
+  python3 /tmp/kbdrace.py 20 20 $M &
+  R=$!
+  sleep 1
+  for i in $(seq 1 15); do gsettings set $S active false; sleep 0.4; gsettings set $S active true; sleep 0.6; done
+  wait $R
+  echo "  u-s-d pid now: $(pgrep -x unity-settings-) (was $P); NRestarts $(systemctl --user show -p NRestarts --value unity-settings-daemon)"
+done
+echo "== journal since $T"
+journalctl --user -u unity-settings-daemon --since "$T" --no-pager | grep -iE "abort|assert|segfault|dumped|critical|signal|core" | cut -c1-220 | sort | uniq -c | head
+journalctl --since "$T" --no-pager | grep -iE "unity-settings.*(segfault|dumped|SIGSEGV|SIGABRT)|systemd-coredump" | cut -c1-220 | head
+echo "  crash files: $(ls /var/crash | grep -c unity-settings)"
+echo "  active: $(gsettings get $S active)"
+
+================ kbdrace.py
+#!/usr/bin/python3
+# Verifier UNITY-20260928-022: keep N Keyboard.StepUp calls in flight to the
+# power object for D seconds, count reply kinds. Usage: kbdrace.py N D [method]
+import sys, time, collections
+import gi
+gi.require_version("Gio", "2.0")
+from gi.repository import Gio, GLib
+N, D = int(sys.argv[1]), float(sys.argv[2])
+IFACE, METHOD = (sys.argv[3].rsplit(".", 1) if len(sys.argv) > 3
+                 else ("org.gnome.SettingsDaemon.Power.Keyboard", "StepUp"))
+bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+loop = GLib.MainLoop()
+counts = collections.Counter()
+end = time.monotonic() + D
+inflight = [0]
+def done(conn, res, _):
+    inflight[0] -= 1
+    try:
+        conn.call_finish(res); counts["reply"] += 1
+    except GLib.Error as e:
+        m = e.message
+        for k in ("not running", "UnknownMethod", "NoReply", "Timeout", "timed out",
+                  "ServiceUnknown", "NameHasNoOwner", "Disconnected"):
+            if k in m:
+                counts[k] += 1
+                if k in ("Timeout","timed out","NoReply") and counts[k] in (1,): print("  first %s at %s" % (k, time.strftime("%T")), flush=True)
+                break
+        else: counts["other:" + m[:80]] += 1
+    fire()
+def fire():
+    if time.monotonic() < end:
+        inflight[0] += 1
+        bus.call("org.gnome.SettingsDaemon.Power", "/org/gnome/SettingsDaemon/Power",
+                 IFACE, METHOD, None, None, Gio.DBusCallFlags.NONE, 10000, None, done, None)
+    elif inflight[0] == 0:
+        loop.quit()
+for _ in range(N): fire()
+loop.run()
+print("  calls by result:", dict(counts))
+
+================ v4.sh
+#!/bin/sh
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-); T=$(date '+%F %T')
+echo "## start $T pid $P NRestarts $(systemctl --user show -p NRestarts --value unity-settings-daemon)"
+echo "== Keyboard.StepUp, 20 in flight 10 s, no toggling"
+python3 /tmp/kbdrace.py 20 10
+echo "  pid now $(pgrep -x unity-settings-)"
+echo "== Keyboard.StepUp, 20 in flight 20 s, toggling active 15x (repeat)"
+python3 /tmp/kbdrace.py 20 20 & R=$!; sleep 1
+for i in $(seq 1 15); do echo "  $(date +%T) off"; gsettings set $S active false; sleep 0.4; echo "  $(date +%T) on"; gsettings set $S active true; sleep 0.6; done 2>&1 | head -4
+wait $R
+echo "  pid now $(pgrep -x unity-settings-) (was $P); NRestarts $(systemctl --user show -p NRestarts --value unity-settings-daemon)"
+journalctl --since "$T" --no-pager | grep -E "segfault|assertion|code=dumped" | cut -c1-200
+ls -la --time-style=+%T /var/crash
+
+================ v5.sh
+#!/bin/sh
+# Verifier UNITY-20260928-022: forced finalize (as in the card's
+# finalized-unique-name.sh), then calls to the power object by unique name and
+# by well-known name, incl. Keyboard/GetAll; crash mtime compared before/after.
+. ~/envt.sh
+P=$(pgrep -x unity-settings-)
+U=$(gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.GetNameOwner org.gnome.SettingsDaemon.Power | grep -o ":[0-9.]*")
+T=$(date '+%F %T')
+echo "## $T u-s-d $(dpkg-query -W -f='${Version}' unity-settings-daemon) pid $P unique $U $(sudo cat /proc/$P/environ | tr '\0' '\n' | grep ^GLIBC_TUNABLES=)"
+echo "## crash files before: $(ls -l --time-style=+%T /var/crash | grep unity-settings)"
+cat > /tmp/vfin.gdb <<'G'
+set pagination off
+set confirm off
+handle SIGCONT nostop noprint pass
+call (void) gnome_settings_manager_stop (gnome_settings_manager_new ())
+echo STOP-CALLED\n
+continue
+echo AFTER-CONTINUE\n
+bt 6
+G
+sudo -n timeout 60 stdbuf -oL gdb -q -batch -p $P -x /tmp/vfin.gdb > /tmp/vfin.txt 2>&1 &
+G=$!
+sleep 12
+c() { D=$1; shift; t0=$(date +%s.%N); r=$(timeout 30 gdbus call --session --dest $D --object-path /org/gnome/SettingsDaemon/Power --method "$@" 2>&1 | head -1 | cut -c1-140); echo "  $1 via $D ($(echo "$(date +%s.%N) - $t0" | bc | cut -c1-5) s): $r"; }
+for D in $U org.gnome.SettingsDaemon.Power; do
+  c $D org.gnome.SettingsDaemon.Power.Screen.GetPercentage
+  c $D org.gnome.SettingsDaemon.Power.Keyboard.StepUp
+  c $D org.gnome.SettingsDaemon.Power.GetDevices
+  c $D org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power Percentage
+  c $D org.freedesktop.DBus.Properties.Get org.gnome.SettingsDaemon.Power Icon
+  c $D org.freedesktop.DBus.Properties.GetAll org.gnome.SettingsDaemon.Power
+done
+echo "  20 in flight x 5 s, Keyboard.StepUp by unique name:"; python3 - $U <<'PY'
+import sys,time,collections,gi
+gi.require_version("Gio","2.0")
+from gi.repository import Gio,GLib
+U=sys.argv[1];bus=Gio.bus_get_sync(Gio.BusType.SESSION,None);loop=GLib.MainLoop();c=collections.Counter();end=time.monotonic()+5;n=[0]
+def done(b,r,_):
+    n[0]-=1
+    try: b.call_finish(r); c["reply"]+=1
+    except GLib.Error as e: c[e.message.split(":")[2][:40] if e.message.count(":")>=2 else e.message[:40]]+=1
+    fire()
+def fire():
+    if time.monotonic()<end:
+        n[0]+=1; bus.call(U,"/org/gnome/SettingsDaemon/Power","org.gnome.SettingsDaemon.Power.Keyboard","StepUp",None,None,0,10000,None,done,None)
+    elif n[0]==0: loop.quit()
+for _ in range(20): fire()
+loop.run(); print("   ",dict(c))
+PY
+sleep 3; sudo -n kill -INT $G 2>/dev/null; wait $G 2>/dev/null
+grep -E "STOP-CALLED|AFTER-CONTINUE|SIGSEGV|SIGABRT|^#0" /tmp/vfin.txt | cut -c1-140
+echo "u-s-d pid $P alive: $(kill -0 $P 2>/dev/null && echo yes || echo no); crash files after: $(ls -l --time-style=+%T /var/crash | grep unity-settings)"
+journalctl --user -u unity-settings-daemon --since "$T" --no-pager | grep -iE "abort|assert|segfault|dumped|critical" | cut -c1-200 | head
+
+================ v6.sh
+#!/bin/sh
+# Verifier UNITY-20260928-022: trace start/stop and the four async callbacks
+# of start() across quick toggles; "USE" lines mark the point after the
+# cancelled check where the callback starts touching the manager.
+. ~/envt.sh
+S=com.canonical.unity.settings-daemon.plugins.power
+P=$(pgrep -x unity-settings-); T=$(date '+%F %T')
+echo "## $T pid $P"
+cat > /tmp/vtr.gdb <<'G'
+set pagination off
+set breakpoint pending on
+set confirm off
+handle SIGCONT nostop noprint pass
+dprintf gsd_power_manager_start,"START\n"
+dprintf gsd_power_manager_stop,"STOP\n"
+dprintf session_presence_proxy_ready_cb,"CB presence\n"
+dprintf power_keyboard_proxy_ready_cb,"CB kbd\n"
+dprintf inhibit_lid_switch_done,"CB lid\n"
+dprintf inhibit_suspend_done,"CB suspend\n"
+dprintf gsd-power-manager.c:2768,"  USE presence\n"
+dprintf gsd-power-manager.c:2826,"  USE kbd\n"
+dprintf gsd-power-manager.c:3024,"  USE lid\n"
+dprintf gsd-power-manager.c:3101,"  USE suspend\n"
+continue
+G
+sudo -n timeout 50 stdbuf -oL gdb -q -batch -p $P -x /tmp/vtr.gdb > /tmp/vtr.txt 2>&1 &
+sleep 10
+gsettings set $S active false; sleep 3
+for d in 0.01 0.02 0.03 0.05 0.08 0.1 0.15 0.2; do gsettings set $S active true; sleep $d; gsettings set $S active false; sleep 1.5; done
+gsettings set $S active true; sleep 5
+wait
+grep -E "^(START|STOP|CB|  USE)" /tmp/vtr.txt
+echo "== check: USE after STOP without START in between:"
+grep -E "^(START|STOP|  USE)" /tmp/vtr.txt | awk '/^START/{r=1} /^STOP/{r=0} /USE/{ if(!r) {print "   VIOLATION: " $0; v=1} } END{ if(!v) print "   none"}'
+echo "pid now $(pgrep -x unity-settings-) (was $P); crash files: $(ls -l --time-style=+%T /var/crash | grep unity-settings)"
+echo "== inhibitors of u-s-d"; systemd-inhibit --list --no-legend | awk -v p=$(pgrep -x unity-settings-) '$4==p'
+echo "== maps (deleted) raw: $(sudo grep -c '(deleted)' /proc/$(pgrep -x unity-settings-)/maps), non-memfd/SYSV: $(sudo grep '(deleted)' /proc/$(pgrep -x unity-settings-)/maps | grep -vcE '/memfd:|/SYSV')"
+journalctl --user -u unity-settings-daemon -b --no-pager | grep -iE "abort|assert|segfault|dumped|critical|Unable to inhibit" | cut -c1-200 | head
+echo "active: $(gsettings get $S active)"
+
+Note: kbdrace.py above is the final version; run 4 used the same script without the 'first Timeout at' print (added for run 6).

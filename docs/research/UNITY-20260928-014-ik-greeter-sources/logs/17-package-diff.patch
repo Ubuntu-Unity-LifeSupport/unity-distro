@@ -1,0 +1,219 @@
+diff --git a/debian/changelog b/debian/changelog
+index 989c839..dfb3f46 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,22 @@
++indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity4) resolute; urgency=medium
++
++  * lib/main.vala: do not rewrite the greeter's input sources while
++    AccountsService has no data. When accounts-daemon restarts, the listed
++    users are loaded with an empty cache for a fraction of a second, and
++    migrate_input_sources() wrote sources=[] and current=list.size - 1
++    (4294967295) over the greeter's layouts; a stored 4294967295 came back
++    after a reboot as the last layout. The pass is now skipped while no
++    counted user has data and redone on ActUserManager::user-changed. Users
++    are listed afresh on every pass, and a manager notify::is-loaded handler
++    is connected when the manager was already loaded at start too (an
++    instance started inside the reload window never migrated again). Write
++    sources before current, and only values that changed.
++  * lib/input-sources.vala: greeter_sources_known() and greeter_current()
++    (0 with no sources, the wanted index if in range, else the last).
++  * tests: add greeter-sources-known and greeter-current.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Tue, 29 Sep 2026 10:16:00 +0000
++
+ indicator-keyboard (0.0.0+19.10.20240924-0ubuntu1+unity3) resolute; urgency=medium
+ 
+   * lib/input-sources.vala: read the xkb layouts of a user's InputSources
+diff --git a/lib/input-sources.vala b/lib/input-sources.vala
+index db75e43..749a731 100644
+--- a/lib/input-sources.vala
++++ b/lib/input-sources.vala
+@@ -42,3 +42,27 @@ string[] get_xkb_input_sources (Variant? input_sources) {
+ 
+ 	return sources;
+ }
++
++/*
++ * Whether the greeter's input sources can be rebuilt from AccountsService.
++ * While accounts-daemon restarts, the listed users are loaded but their cache
++ * is empty (no user name, no input sources) for a fraction of a second;
++ * rebuilding then wrote an empty list over the greeter's layouts. Not while
++ * every counted user is in that state (UNITY-20260928-014).
++ */
++bool greeter_sources_known (uint users_with_data, uint users_without_data) {
++	return users_with_data > 0 || users_without_data == 0;
++}
++
++/*
++ * The current index to store for the greeter: the wanted one if it is in
++ * range, else the last, and 0 when there are no sources (list.size - 1
++ * underflowed to 4294967295 there, UNITY-20260928-014).
++ */
++uint greeter_current (uint wanted, uint n_sources) {
++	if (n_sources == 0) {
++		return 0;
++	}
++
++	return wanted < n_sources ? wanted : n_sources - 1;
++}
+diff --git a/lib/main.vala b/lib/main.vala
+index eb0c508..b439140 100644
+--- a/lib/main.vala
++++ b/lib/main.vala
+@@ -32,6 +32,7 @@ public class Indicator.Keyboard.Service : Object {
+ 	private Settings per_window_settings;
+ 	private Settings? unity8_settings;
+ 	private SList<weak Act.User> users;
++	private bool migration_pending;
+ 
+ 	private WindowStack? window_stack;
+ 	private Gee.HashMap<uint, Source>? window_sources;
+@@ -407,6 +408,15 @@ public class Indicator.Keyboard.Service : Object {
+ 						});
+ 					}
+ 				}
++
++				/* An instance started while accounts-daemon reloaded took
++				 * this branch and never migrated again after a daemon
++				 * restart (UNITY-20260928-014). */
++				manager.notify["is-loaded"].connect ((pspec) => {
++					if (manager.is_loaded) {
++						migrate_input_sources ();
++					}
++				});
+ 			} else {
+ 				manager.notify["is-loaded"].connect ((pspec) => {
+ 					if (manager.is_loaded) {
+@@ -427,6 +437,14 @@ public class Indicator.Keyboard.Service : Object {
+ 				});
+ 			}
+ 
++			/* A pass skipped or incomplete for want of AccountsService data
++			 * is redone when a user's data arrives (UNITY-20260928-014). */
++			manager.user_changed.connect ((user) => {
++				if (migration_pending) {
++					migrate_input_sources ();
++				}
++			});
++
+ 			var user_list = LightDM.UserList.get_instance ();
+ 
+ 			user_list.user_added.connect ((user) => { migrate_input_sources (); });
+@@ -515,11 +533,31 @@ public class Indicator.Keyboard.Service : Object {
+ 
+ 	[DBus (visible = false)]
+ 	private void migrate_input_sources () {
++		var manager = Act.UserManager.get_default ();
++
++		if (!manager.is_loaded) {
++			/* Its notify::is-loaded handler migrates (UNITY-20260928-014). */
++			return;
++		}
++
+ 		var list = new Gee.LinkedList<string> ();
+ 		var added = new Gee.HashSet<string> ();
++		uint with_data = 0;
++		uint without_data = 0;
++
++		/* Listed afresh: the stored list can be stale (UNITY-20260928-014). */
++		foreach (var user in manager.list_users ()) {
++			if (user.is_loaded && !user.is_nonexistent ()) {
++				unowned string? name = user.user_name;
++
++				if (name == null) {
++					/* AccountsService has not refilled this user yet */
++					without_data++;
++					continue;
++				}
++
++				with_data++;
+ 
+-		foreach (var user in users) {
+-			if (user.is_loaded) {
+ 				var done = false;
+ 
+ 				foreach (var source in get_xkb_input_sources (user.input_sources)) {
+@@ -577,6 +615,12 @@ public class Indicator.Keyboard.Service : Object {
+ 			}
+ 		}
+ 
++		migration_pending = without_data > 0;
++
++		if (!greeter_sources_known (with_data, without_data)) {
++			return;
++		}
++
+ 		LightDM.Layout? layout = LightDM.get_layout ();
+ 
+ 		if (layout != null) {
+@@ -599,13 +643,19 @@ public class Indicator.Keyboard.Service : Object {
+ 			builder.add ("(ss)", "xkb", name);
+ 		}
+ 
+-		if (lightdm_current < list.size) {
+-			source_settings.set_uint ("current", lightdm_current);
+-		} else {
+-			source_settings.set_uint ("current", list.size - 1);
++		/* Sources first, so current is never past the stored list, and
++		 * nothing is written when nothing changed (UNITY-20260928-014). */
++		var new_sources = builder.end ();
++
++		if (!new_sources.equal (source_settings.get_value ("sources"))) {
++			source_settings.set_value ("sources", new_sources);
+ 		}
+ 
+-		source_settings.set_value ("sources", builder.end ());
++		var current = greeter_current (lightdm_current, (uint) list.size);
++
++		if (current != source_settings.get_uint ("current")) {
++			source_settings.set_uint ("current", current);
++		}
+ 
+ 		update_greeter_user ();
+ 	}
+diff --git a/tests/main.vala b/tests/main.vala
+index 32276d5..b070af9 100644
+--- a/tests/main.vala
++++ b/tests/main.vala
+@@ -649,6 +649,31 @@ void test_xkb_input_sources () {
+ 	assert (sources[1] == "de+neo");
+ }
+ 
++void test_greeter_sources_known () {
++	/* accounts-daemon restarting: every counted user has an empty cache
++	 * (UNITY-20260928-014) */
++	assert (!greeter_sources_known (0, 1));
++	assert (!greeter_sources_known (0, 3));
++	/* a stale object next to users with data does not block */
++	assert (greeter_sources_known (1, 1));
++	assert (greeter_sources_known (2, 0));
++	/* no users at all: the LightDM layout alone, as before */
++	assert (greeter_sources_known (0, 0));
++}
++
++void test_greeter_current () {
++	/* no sources: 0, not list.size - 1 = 4294967295 (UNITY-20260928-014) */
++	assert (greeter_current (0, 0) == 0);
++	assert (greeter_current (3, 0) == 0);
++	assert (greeter_current (uint.MAX, 0) == 0);
++	/* in range: kept */
++	assert (greeter_current (0, 2) == 0);
++	assert (greeter_current (1, 2) == 1);
++	/* out of range, e.g. a stored 4294967295: the last, as before */
++	assert (greeter_current (2, 2) == 1);
++	assert (greeter_current (uint.MAX, 2) == 1);
++}
++
+ public int main (string[] args) {
+ 	display = Environment.get_variable ("DISPLAY");
+ 
+@@ -664,6 +689,8 @@ public int main (string[] args) {
+ 	Test.add_data_func ("/indicator-keyboard-service/update-input-source", Fixture.create<Tests> (Tests.test_update_input_source));
+ 	Test.add_data_func ("/indicator-keyboard-service/update-input-sources", Fixture.create<Tests> (Tests.test_update_input_sources));
+ 	Test.add_func ("/indicator-keyboard-service/xkb-input-sources", test_xkb_input_sources);
++	Test.add_func ("/indicator-keyboard-service/greeter-sources-known", test_greeter_sources_known);
++	Test.add_func ("/indicator-keyboard-service/greeter-current", test_greeter_current);
+ 
+ 	return Test.run ();
+ }

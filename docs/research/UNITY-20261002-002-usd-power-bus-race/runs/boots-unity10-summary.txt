@@ -1,0 +1,11 @@
++unity10 (tested build), 10 natural boots, toggle unit disabled, tracer recording: Power owned 10/10, 0 stops, window 4.3-28.6 s, 0 crash files, NRestarts 0.
+boot 1: (':1.41',); stops: 0
+boot 2: (':1.40',); stops: 0
+boot 3: (':1.39',); stops: 0
+boot 4: (':1.43',); stops: 0
+boot 5: (':1.45',); stops: 0
+boot 6: (':1.45',); stops: 0
+boot 7: (':1.52',); stops: 0
+boot 8: (':1.54',); stops: 0
+boot 9: (':1.38',); stops: 0
+boot 10: (':1.42',); stops: 0

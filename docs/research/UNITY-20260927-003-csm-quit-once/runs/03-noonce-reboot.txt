@@ -1,0 +1,27 @@
+вер 28 16:25:16.062776 mike-virtualbox delaytest[4018]: action=reboot cinnamon-session 6.4.2-1+unity3~noonce1; inhibitors: 1
+вер 28 16:25:20.932200 mike-virtualbox delaytest[4085]: clicking Перезагрузить
+вер 28 16:25:21.027910 mike-virtualbox cinnamon-session[2136]: cinnamon-session-binary[2136]: WARNING: t+44.33633s: Requesting system restart...
+вер 28 16:25:21.028831 mike-virtualbox cinnamon-session-binary[2136]: WARNING: t+44.33633s: Requesting system restart...
+вер 28 16:25:21.101514 mike-virtualbox cinnamon-session[2136]: cinnamon-session-binary[2136]: WARNING: t+44.41052s: Requesting system restart...
+вер 28 16:25:21.101669 mike-virtualbox cinnamon-session-binary[2136]: WARNING: t+44.41052s: Requesting system restart...
+вер 28 16:25:21.101982 mike-virtualbox cinnamon-session[2136]: cinnamon-session-binary[2136]: WARNING: t+44.41101s: Requesting system restart...
+вер 28 16:25:21.102050 mike-virtualbox cinnamon-session-binary[2136]: WARNING: t+44.41101s: Requesting system restart...
+вер 28 16:25:21.147854 mike-virtualbox cinnamon-session[2136]: cinnamon-session-binary[2136]: WARNING: t+44.45680s: Requesting system restart...
+вер 28 16:25:21.147789 mike-virtualbox cinnamon-session-binary[2136]: WARNING: t+44.45680s: Requesting system restart...
+вер 28 16:25:21.592038 mike-virtualbox delaytest[4137]: t=1 seat0=1/mike compiz=2792 csm=
+вер 28 16:25:22.692952 mike-virtualbox delaytest[4167]: t=2 seat0=1/mike compiz= csm=
+вер 28 16:25:23.757342 mike-virtualbox delaytest[4204]: t=3 seat0= compiz= csm=
+вер 28 16:25:24.856926 mike-virtualbox delaytest[4225]: t=4 seat0= compiz= csm=
+вер 28 16:25:25.939214 mike-virtualbox delaytest[4274]: t=5 seat0=c1/lightdm compiz= csm=
+вер 28 16:25:27.023139 mike-virtualbox delaytest[4335]: t=6 seat0=c1/lightdm compiz= csm=
+вер 28 16:25:31.551037 mike-virtualbox delaytest[4430]: t=10 seat0=c1/lightdm compiz= csm=
+вер 28 16:25:54.165969 mike-virtualbox delaytest[4636]: t=30 seat0=c1/lightdm compiz= csm=
+вер 28 16:26:21.309651 mike-virtualbox systemd-logind[3970]: System is rebooting.
+--- counts (cinnamon-session-binary tag only, to avoid the doubled stderr copy)
+Requesting system restart: 4
+Requesting system shutdown: 0
+OperationInProgress: 0
+not confirmed by logind: 0
+--- last delaytest tick with the session manager alive
+--- first tick without it
+вер 28 16:25:21.592038 mike-virtualbox delaytest[4137]: t=1 seat0=1/mike compiz=2792 csm=

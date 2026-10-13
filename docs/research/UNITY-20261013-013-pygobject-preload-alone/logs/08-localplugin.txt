@@ -1,0 +1,4 @@
+== localplugin (UNITY-20261013-015) at 2026-10-13T10:36:22Z: host without GTK, plugin opened RTLD_LOCAL; disable, activate, enable, activate; right = activations 1
+  LD_PRELOAD=[none] (): rc=0 libgtk-4 in the global scope: no activations: 1 | lookup: 
+  LD_PRELOAD=[/home/mike/b1313/v/0.10.so] (0.10 build): rc=1 libgtk-4 in the global scope: no activations: 2 | lookup: 
+  LD_PRELOAD=[/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0] (0.11 build): rc=0 libgtk-4 in the global scope: no activations: 1 | lookup: not in the global scope; taking libgmodule-2.0.so.0's not in the global scope; taking libgtk-4.so.1's 

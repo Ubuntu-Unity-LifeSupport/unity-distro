@@ -1,0 +1,5 @@
+# first run on +unity5, 2026-09-28 04:42 EEST, done by hand (two watch-client.py runs) before two-clients.sh existed; lines from the target's user journal
+вер 28 04:42:52.839385 mike-virtualbox unity-settings-daemon-localeexec[2252]: double free or corruption (!prev)
+вер 28 04:43:08.757255 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+вер 28 04:43:09.098137 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 1.
+вер 28 04:43:09.100405 mike-virtualbox systemd[1262]: Started unity-settings-daemon.service - Unity Settings Daemon.

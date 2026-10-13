@@ -1,0 +1,100 @@
+# setup.sh (first run: the install refused as a whole, fractal is not in resolute) and setup2.sh (steps 3-6 again)
+== 1 restore, checked inside at 2026-10-12T13:11:59Z, boot 2026-10-12 16:10:42
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b1010': No such file or directory
+  ls: cannot access '/home/mike/b013': No such file or directory
+  ls: cannot access '/home/mike/b081': No such file or directory
+  sources.list.d: ubuntu.sources
+  dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+  hud	14.10+17.10.20170619-0ubuntu6
+  libgtk-nocsd0:amd64	3+0~20260321+0b77e1b-1
+== 2 live archive
+  update rc=0
+  Date: Sun, 11 Oct 2026 18:47:50 UTC
+  full-upgrade rc=0
+  left to upgrade: 0
+  dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+  hud	14.10+17.10.20170619-0ubuntu6+unity6
+  libgtk-nocsd0:amd64	4.8-1+unity3
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+== 3 test tools and applications
+  install rc=100
+  git 
+  build-essential 12.12ubuntu2.26.04.2
+  pkg-config 
+  libgtk-4-dev MISSING
+  libgtk-3-dev MISSING
+  libadwaita-1-dev MISSING
+  gdb 17.1-2ubuntu1
+  xdotool MISSING
+  python3-gi 3.56.2-1
+  gir1.2-gtk-4.0 4.22.4+ds-0ubuntu0.1
+  dotnet-sdk-10.0 MISSING
+  gnome-text-editor MISSING
+  nautilus MISSING
+  fractal MISSING
+  loupe 
+  gnome-calculator MISSING
+  baobab MISSING
+  gnome-clocks 
+== 4 GTK-NoCSD builds
+  packaged library saved: sha256 6fcf52bcc6d96440
+  b76f3fb make rc=2 warnings 0
+b1012/setup.sh: строка 35: : Нет такого файла или каталога
+  b76f3fb library:  sha256 
+cp: не удалось выполнить stat для '': Нет такого файла или каталога
+  fd4b76a make rc=2 warnings 0
+b1012/setup.sh: строка 35: : Нет такого файла или каталога
+  fd4b76a library:  sha256 
+cp: не удалось выполнить stat для '': Нет такого файла или каталога
+== 5 Pinta 3.1.2
+b1012/setup.sh: строка 39: git: command not found
+b1012/setup.sh: строка 40: cd: /home/mike/b1012/Pinta-3.1.2: Нет такого файла или каталога
+  pinta build rc=127
+  b1012/setup.sh: строка 41: dotnet: command not found
+  ls: cannot access '/home/mike/b1012/Pinta-3.1.2/build/bin/Pinta': No such file or directory
+
+== 3 test tools and applications (2026-10-12T13:27:05Z)
+  install rc=0
+  git 1:2.53.0-1ubuntu1
+  build-essential 12.12ubuntu2.26.04.2
+  pkg-config 2.5.1-4
+  libgtk-4-dev 4.22.4+ds-0ubuntu0.1
+  libgtk-3-dev 3.24.52-0ubuntu1
+  libadwaita-1-dev 1.9.1-0ubuntu0.1
+  gdb 17.1-2ubuntu1
+  xdotool 1:3.20160805.1-5.1build1
+  x11-utils 7.7+7build1
+  python3-gi 3.56.2-1
+  gir1.2-gtk-4.0 4.22.4+ds-0ubuntu0.1
+  dotnet-sdk-10.0 10.0.112-0ubuntu1~26.04.1
+  gnome-text-editor 50.1-0ubuntu0.1
+  nautilus 1:50.2.2-0ubuntu0.2
+  loupe 50.0-0ubuntu2
+  gnome-calculator 1:50.0-1ubuntu1
+  baobab 49.1-2
+  gnome-clocks 50.0-1
+  libunity-gtk4-menu0 0.9
+== 4 GTK-NoCSD builds
+  b76f3fb make rc=0 warnings 0
+  b76f3fb library: nocsd-b76f3fb/libgtk-nocsd.so.0 sha256 81bcb16868eed237
+  fd4b76a make rc=0 warnings 0
+  fd4b76a library: nocsd-fd4b76a/libgtk-nocsd.so.0 sha256 03e751deadf6a8db
+== 5 Pinta 3.1.2
+advice.detachedHead в значение false
+
+  b3df1e5 Add release notes for 3.1.2
+  pinta build rc=0
+      2 Warning(s)
+      0 Error(s)
+  -rwxr-xr-x 1 mike mike 72568 Oct 12 16:33 /home/mike/b1012/Pinta-3.1.2/build/bin/Pinta
+== 6 titletest
+  titletest build rc=0 warnings 0
+
+# 2d50fe9 (our series as upstream carries it), built later as the control for (a), by one command from the builder
+# (2026-10-12 13:40:50Z): git archive --format=tar 2d50fe9 > src/2d50fe9.tar; scp to target2; on target2:
+#   rm -rf nocsd-2d50fe9; mkdir nocsd-2d50fe9; tar -xf src/2d50fe9.tar -C nocsd-2d50fe9; (cd nocsd-2d50fe9 && make > make-2d50fe9.log 2>&1)
+#   cp nocsd-2d50fe9/libgtk-nocsd.so.0 libgtk-nocsd-2d50fe9.so.0
+2d50fe9 NeiroNext Find menus added late and follow menu changes
+make rc=0 warnings 0
+4535bda5c2b81e0b  (sha256 of libgtk-nocsd-2d50fe9.so.0; = the S build of UNITY-20261008-001)

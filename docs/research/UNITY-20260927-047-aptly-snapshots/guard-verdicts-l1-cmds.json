@@ -1,0 +1,6 @@
+[
+ ["L1a", "aptly -config=/home/claude/.aptly.conf repo show unity-resolute"],
+ ["L1b", "aptly -config=/home/claude/.aptly.conf snapshot list -raw"],
+ ["L1c", "aptly -config=/home/claude/.aptly.conf snapshot create unity-resolute-20260927-047 from repo unity-resolute"],
+ ["L1d", "aptly -config=/home/claude/.aptly.conf snapshot show unity-resolute-20260927-047"]
+]

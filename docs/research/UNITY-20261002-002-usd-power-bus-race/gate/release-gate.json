@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-002",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity10",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-002/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20261002-002",
+  "source_commit": "122c4137bc38a141ec5536125a44839ec06c09fd",
+  "source_tree_hash": "5ae963264ea1507074c7d1c485919a86c3670b3e",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261002-002"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/build/UNITY-20261002-002-unity-settings-daemon-build-manifest.json",
+    "sha256": "60cc62bd04a32ea0bf7178e2b78bcd73704524ca008210e163be6d6a9cf4cedf"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/gate/evidence-manifest.json",
+    "sha256": "03256e61958f9cb0924087a066e2e81babf891d7d18f9b83a901bc5b2a0400a0"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/runs/unity10/README.txt",
+        "sha256": "e62ee615482997e613c8b2da3e5992e40819fd0f69ceb7cc4f4ecec5e52c0a6c"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity10_amd64.deb": "37115e246466ddd548af6d0a942c6f6f9830e201acdc963d2bb03dc99aa78e38",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity10_all.deb": "8f3192d411967342f312dc0fc21ca6eb66eb79019d7391332e4db58b8ec87742",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity10_amd64.deb": "525413cff756b9bbbe2f0384dcf4a4ba057b9deb5c878873a96c5a219f60f786"
+      }
+    }
+  }
+}

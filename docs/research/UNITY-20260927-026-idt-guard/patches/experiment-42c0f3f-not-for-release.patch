@@ -1,0 +1,80 @@
+commit 42c0f3fd0d398932e3143bb3bb30c86d20fa360e
+Author: NeiroNext <mihail.rozshko@gmail.com>
+Date:   Mon Sep 28 09:06:34 2026 +0000
+
+    EXPERIMENT (not for release): drop the no-time guard, probe components without DTSTART and DUE
+
+diff --git a/src/engine-eds.cpp b/src/engine-eds.cpp
+index cee2855..90b883c 100644
+--- a/src/engine-eds.cpp
++++ b/src/engine-eds.cpp
+@@ -1081,13 +1081,10 @@ private:
+         }
+         g_slist_free_full(categ_list, g_free);
+ 
+-        // a component with neither a start nor a due date has no time
+-        // (LP: #1848969, #2099742)
+-        if (baseline.begin.is_set())
+-            g_debug("%s got appointment from %s to %s: %s", G_STRLOC,
+-                    baseline.begin.format("%F %T %z").c_str(),
+-                    baseline.end.format("%F %T %z").c_str(),
+-                    i_cal_component_as_ical_string(icc) /* string owned by ical */);
++        g_debug("%s got appointment from %s to %s: %s", G_STRLOC,
++                baseline.begin.format("%F %T %z").c_str(),
++                baseline.end.format("%F %T %z").c_str(),
++                i_cal_component_as_ical_string(icc) /* string owned by ical */);
+ 
+         return baseline;
+     }
+@@ -1177,9 +1174,7 @@ private:
+             Appointment appointment = get_appointment(subtask->client, subtask->cancellable, component, gtz);
+             appointment.color = subtask->color;
+ 
+-            // nothing to show without a time
+-            if (appointment.begin.is_set())
+-                subtask->task->appointments.push_back(appointment);
++            subtask->task->appointments.push_back(appointment);
+         }
+     }
+ 
+diff --git a/tests/test-eds-ics-tasks-without-start.ics.in b/tests/test-eds-ics-tasks-without-start.ics.in
+index 1110441..790f04b 100644
+--- a/tests/test-eds-ics-tasks-without-start.ics.in
++++ b/tests/test-eds-ics-tasks-without-start.ics.in
+@@ -22,4 +22,36 @@ DTSTAMP:20150601T000000Z
+ SUMMARY:Task without dates
+ STATUS:NEEDS-ACTION
+ END:VTODO
++BEGIN:VTODO
++UID:probe-rdate-only@example.org
++DTSTAMP:20150601T000000Z
++RDATE:20150620T090000
++SUMMARY:Probe RDATE without DTSTART and DUE
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:probe-rrule-no-start@example.org
++DTSTAMP:20150601T000000Z
++RRULE:FREQ=DAILY;COUNT=3
++SUMMARY:Probe RRULE without DTSTART and DUE
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:probe-detached@example.org
++DTSTAMP:20150601T000000Z
++RECURRENCE-ID:20150621T090000
++SUMMARY:Probe detached instance without DTSTART and DUE
++STATUS:NEEDS-ACTION
++END:VTODO
++BEGIN:VTODO
++UID:probe-alarm@example.org
++DTSTAMP:20150601T000000Z
++SUMMARY:Probe alarm without DTSTART and DUE
++STATUS:NEEDS-ACTION
++BEGIN:VALARM
++ACTION:DISPLAY
++DESCRIPTION:probe
++TRIGGER;VALUE=DATE-TIME:20150622T090000Z
++END:VALARM
++END:VTODO
+ END:VCALENDAR

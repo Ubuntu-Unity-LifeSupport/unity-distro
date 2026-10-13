@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-041",
+  "package": "calamares-settings-ubuntu",
+  "candidate_version": "1:26.04.12+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-041/packages/calamares-settings-ubuntu",
+  "source_commit": "221c69128aa9c88647f5fe73b09b124d75213b14",
+  "source_tree_hash": "e1c3eec4ac79674f74bb9376fb78946fdd6565f3",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I"
+  ],
+  "build_started": "2026-09-29T17:56:22.979321+00:00",
+  "build_finished": "2026-09-29T18:02:45.456134+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-041-calamares-settings-ubuntu-1:26.04.12+unity3-sbuild.log",
+    "sha256": "2974e6e9952a3ca25ddf96af8685140689ebb69d1a59d04737ba7e701bb97f04"
+  },
+  "artifacts": [
+    {
+      "file": "calamares-settings-ubuntu_26.04.12+unity3.dsc",
+      "sha256": "7033f1748e11369f4e0bef714b8e348de99e38d2488ff6c49032bd7e8f8de036",
+      "size": 1770,
+      "kind": "source",
+      "package": "calamares-settings-ubuntu",
+      "version": "1:26.04.12+unity3"
+    },
+    {
+      "file": "calamares-settings-ubuntu_26.04.12+unity3_amd64.changes",
+      "sha256": "52d9ea88dda70aaf7e84db448ab12d6bf8a2d6e1dfe72af42d7eaf059ce2c28f",
+      "size": 3700,
+      "kind": "changes"
+    },
+    {
+      "file": "calamares-settings-ubuntu_26.04.12+unity3.tar.xz",
+      "sha256": "bf16e12067b8adf5e0807a48ed5966fc8e33a853da9a19403298f580e5628aa0",
+      "size": 11800036,
+      "kind": "source_file",
+      "package": "calamares-settings-ubuntu",
+      "version": "1:26.04.12+unity3"
+    },
+    {
+      "file": "calamares-settings-kubuntu_26.04.12+unity3_all.deb",
+      "sha256": "2b8c906bef21060ac4506472045c98adebf9deacf33885b74d5ccca21dc4ce9c",
+      "size": 16613480,
+      "kind": "binary",
+      "package": "calamares-settings-kubuntu",
+      "version": "1:26.04.12+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "calamares-settings-lubuntu_26.04.12+unity3_all.deb",
+      "sha256": "0e971df0e9203cd66b58629c642b557360035ac5b0bf580020b083e3a80b32e0",
+      "size": 2209130,
+      "kind": "binary",
+      "package": "calamares-settings-lubuntu",
+      "version": "1:26.04.12+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "calamares-settings-ubuntu-common-data_26.04.12+unity3_all.deb",
+      "sha256": "24ea3e547a59ce006f9c24baf899ed4d9c24cbdceb2ee5a3f8525f9a36d997b9",
+      "size": 16614,
+      "kind": "binary",
+      "package": "calamares-settings-ubuntu-common-data",
+      "version": "1:26.04.12+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "calamares-settings-ubuntu-common-dbgsym_26.04.12+unity3_amd64.ddeb",
+      "sha256": "1e3bc492384cd8e64c1742f84f50bdd785010ee67aae6a1db9b9afb3b31f6cf1",
+      "size": 2569018,
+      "kind": "binary",
+      "package": "calamares-settings-ubuntu-common-dbgsym",
+      "version": "1:26.04.12+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "calamares-settings-ubuntu-common_26.04.12+unity3_amd64.deb",
+      "sha256": "474c8c37b29473d23281464aca15dc0620cc2fc695f85e13b14c88f936661267",
+      "size": 3425908,
+      "kind": "binary",
+      "package": "calamares-settings-ubuntu-common",
+      "version": "1:26.04.12+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "calamares-settings-ubuntu-unity_26.04.12+unity3_all.deb",
+      "sha256": "b80061c4c3244c565a2d23b4da2f683f21a94b8832f26b60ffd761d75417251b",
+      "size": 684744,
+      "kind": "binary",
+      "package": "calamares-settings-ubuntu-unity",
+      "version": "1:26.04.12+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "calamares-settings-ubuntu_26.04.12+unity3_amd64.buildinfo",
+      "sha256": "32e1d88e98deb40e16f824b16142ef81cd2ac0cfaca4df81a8baf2675491717a",
+      "size": 23199,
+      "kind": "buildinfo"
+    }
+  ]
+}

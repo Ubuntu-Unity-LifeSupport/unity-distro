@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "nux",
+  "measured_at": "2026-09-29T22:48:46Z",
+  "sources_file": "/home/claude/work/b/unity-distro-027/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20260927-027",
+    "packages": 331,
+    "list_sha256": "5d766e8816323d50d54f03c1574165412652ef3bda8644ca98a6bab587f7e316",
+    "model_entries": 298,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "8146344d4f4d00a6409acd050401aab75a4e3b1e2a9a264371d641be564d4562",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 22:48:46 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "48b5f2957d6c33368fc3b38a24c35d2a0824ee09ac2b5ffbf7dea669cc1be3e6",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Mon, 28 Sep 2026 21:59:18 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "6e0189bb412cdc3947e5f30aeb6ebf075e1b91703dbe01c533620c0ba6ed642e",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 13:07:19 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "c73c04e538b29eedbb569e62179477edaef4ff3751abf243dc58784c340b2f18",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 20:10:05 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Tue, 29 Sep 2026 18:35:33 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "4.0.8+18.10.20180623-0ubuntu12"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "libnux-4.0-0-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "file": "libnux-4.0-0-dbgsym_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.ddeb",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "policy": "libnux-4.0-0-dbgsym:\n  Installed: (none)\n  Candidate: 4.0.8+18.10.20180623-0ubuntu15+unity3\n  Version table:\n     4.0.8+18.10.20180623-0ubuntu15+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libnux-4.0-0",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "file": "libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "policy": "libnux-4.0-0:\n  Installed: (none)\n  Candidate: 4.0.8+18.10.20180623-0ubuntu15+unity3\n  Version table:\n     4.0.8+18.10.20180623-0ubuntu15+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu12 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libnux-4.0-common",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "all",
+      "file": "libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "policy": "libnux-4.0-common:\n  Installed: (none)\n  Candidate: 4.0.8+18.10.20180623-0ubuntu15+unity3\n  Version table:\n     4.0.8+18.10.20180623-0ubuntu15+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu12 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libnux-4.0-dev",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "file": "libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "policy": "libnux-4.0-dev:\n  Installed: (none)\n  Candidate: 4.0.8+18.10.20180623-0ubuntu15+unity3\n  Version table:\n     4.0.8+18.10.20180623-0ubuntu15+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu12 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "nux-tools-dbgsym",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "file": "nux-tools-dbgsym_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.ddeb",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "policy": "nux-tools-dbgsym:\n  Installed: (none)\n  Candidate: 4.0.8+18.10.20180623-0ubuntu15+unity3\n  Version table:\n     4.0.8+18.10.20180623-0ubuntu15+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "nux-tools",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "file": "nux-tools_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "apt_candidate": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "policy": "nux-tools:\n  Installed: (none)\n  Candidate: 4.0.8+18.10.20180623-0ubuntu15+unity3\n  Version table:\n     4.0.8+18.10.20180623-0ubuntu15+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu15+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu13 500\n        500 file:<VIEW>/model ./ Packages\n     4.0.8+18.10.20180623-0ubuntu12 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

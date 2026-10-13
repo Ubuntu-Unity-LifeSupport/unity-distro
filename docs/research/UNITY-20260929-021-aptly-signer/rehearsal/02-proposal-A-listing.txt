@@ -1,0 +1,16 @@
+/var/tmp/aptly-rehearsal/021p/state/public/dists/resolute:
+total 16
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:37 .
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:37 ..
+-rw-r--r-- 1 claude claude 1896 Sep 29 22:37 Release
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:37 main
+
+/var/tmp/aptly-rehearsal/021p/state/public/dists/resolute/main/binary-amd64:
+total 24
+drwxr-xr-x 2 claude claude 4096 Sep 29 22:37 .
+drwxr-xr-x 3 claude claude 4096 Sep 29 22:37 ..
+-rw-r--r-- 1 claude claude  480 Sep 29 22:37 Packages
+-rw-r--r-- 1 claude claude  375 Sep 29 22:37 Packages.bz2
+-rw-r--r-- 1 claude claude  372 Sep 29 22:37 Packages.gz
+-rw-r--r-- 1 claude claude  126 Sep 29 22:37 Release
+proposal 8352147646f64e22

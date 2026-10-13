@@ -1,0 +1,14 @@
+# exported dynamic symbols (nm -D --defined-only), measured 2026-09-28T08:37:45Z from the .debs (read-only)
+## libindicator3-7 (GTK3) archive 0ubuntu8: 40, +unity1: 40, +unity2: 41
+### archive vs +unity1
+(identical)
+### +unity1 vs +unity2
+11a12
+> indicator_ng_ayatana_menu_get_type
+## libindicator7 (GTK2) +unity1: 34, +unity2: 34
+(identical)
+## +unity2 DEBIAN/shlibs
+libindicator3 7 libindicator3-7 (>= 0.4.90)
+## symbols file in the package: none
+## the symbol in any installed header of libindicator3-dev +unity2:
+(not declared in any header)

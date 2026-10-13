@@ -1,0 +1,344 @@
+UNITY-20261012-003 - the audit.py series (the UNITY-20261012-001 rig condition: audit.py subscribes to the menu between the focus and the key), measured by events (trial.sh with AUDIT=1): one key per attempt from the host, Escape after, the unmap confirmed by popwatch.sh before the next attempt. Cold boots, live stack; versions and boot time on each '==' line. Times UTC. One vbox screenshot after the popup map in session 8 for each attempt shows the menu's contents (Calculator: Создать окно ... О приложении, letters underlined; mnemo.py: New, Open, Quit).
+
+#### s8calc
+== s8calc on libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6; boot 2026-10-13 03:56:54
+  audit.py runs (AUDIT=1)
+s8calc start 00:58:48.366Z, boot 2026-10-13 03:56:54, session up since вт жов 13 03:58:19 2026
+  window 60817412 mapped at 00:58:51.187Z
+  gnome-calculator pid 4115 window 60817412 (Калькулятор) active 60817412
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.111"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.Calculator"
+   - Калькулятор
+   ok app.new-window _Создать окно
+   ok win.clear _Очистить историю
+   - Формат результата
+   ok win.number-format _Автоматически
+   ok win.number-format _Фиксированный
+   ok win.number-format _Научный
+   ok win.number-format _Инженерный
+   ok win.preferences _Параметры
+   ok app.shortcuts _Комбинации клавиш
+   ok app.help Спра_вка
+   ok app.about _О приложении
+  menu labels: 10, with an underscore in the label: 10
+  ready 00:58:56.955Z
+== s8calc-before-key at 00:58:57.025Z, active window 60817412 (0x3a00004)
+  libappmenu.so id=0x5f58c50b5ff0 win=60817412 label='Калькулятор' sensitive=True visible=True prio=0
+  popwatch started: 00:58:57.351 panel-service visible windows 0, active 60817412
+== s8calc: popup watch
+  00:58:57.351 panel-service visible windows 0, active 60817412
+  00:59:01.168 panel-service visible windows 1, active 60817412
+  00:59:01.366 panel-service visible windows 2, active 60817412
+  00:59:14.508 panel-service visible windows 0, active 60817412
+== s8calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:58:47.424 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x1e00028
+  00:58:50.715 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+== s8calc: org.gtk.Menus / org.gtk.Actions calls
+  00:58:50.915 call   :1.102(unity-panel-ser) -> :1.111(gnome-calculato) Start | array [ | uint32 0
+  00:58:50.937 call   :1.108(hud-service) -> :1.111(gnome-calculato) Start | array [ | uint32 0
+  00:58:52.078 signal :1.111(gnome-calculato) -> (null() Changed | array [ | ]
+  00:58:52.079 signal :1.111(gnome-calculato) -> (null() Changed | array [ | ]
+  00:58:52.085 call   :1.108(hud-service) -> :1.111(gnome-calculato) Start | array [ | uint32 1
+  00:58:52.086 call   :1.102(unity-panel-ser) -> :1.111(gnome-calculato) Start | array [ | uint32 1
+  00:58:52.164 signal :1.102(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  00:58:52.165 call   :1.105(compiz) -> :1.102(unity-panel-ser) SyncOne | string "libappmenu.so"
+  00:58:52.187 call   :1.105(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel101424792581152_0" | array [
+  00:58:56.892 call   :1.112() -> :1.111(gnome-calculato) Start | array [ | uint32 0
+  00:58:57.120 call   :1.113() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  00:59:00.085 signal :1.102(unity-panel-ser) -> (null() ReSync | string "com.canonical.indicator.datetime"
+  00:59:00.088 call   :1.105(compiz) -> :1.102(unity-panel-ser) SyncOne | string "com.canonical.indicator.datetime"
+  00:59:00.890 call   :1.105(compiz) -> :1.102(unity-panel-ser) ShowEntry | string "0x5f58c50b5ff0" | uint32 60817412
+  00:59:01.132 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel101424792581152_0" | string "0x5f58c50b5ff0"
+  00:59:14.398 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+
+#### s8mn
+== s8mn on libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6; boot 2026-10-13 03:56:54
+  audit.py runs (AUDIT=1)
+s8mn start 00:59:25.849Z, boot 2026-10-13 03:56:54, session up since вт жов 13 03:58:19 2026
+  window 65011716 mapped at 00:59:26.855Z
+  python3 pid 5461 window 65011716 (MnemoTest) active 65011716
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.119"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.unitydistro.MnemoTest"
+   - _File
+   ok app.new _New
+   ok app.open _Open
+   ok app.quit _Quit
+   - _Edit
+   ok app.copy _Copy
+   ok app.paste _Paste
+   - _Help
+   ok app.about _About
+  menu labels: 6, with an underscore in the label: 6
+  ready 00:59:32.421Z
+== s8mn-before-key at 00:59:32.472Z, active window 65011716 (0x3e00004)
+  libappmenu.so id=0x5f58c50b5ff0 win=60817412 label='Калькулятор' sensitive=True visible=True prio=0
+  libappmenu.so id=0x7ba19c004390 win=65011716 label='_File' sensitive=True visible=True prio=0
+  libappmenu.so id=0x7ba19c0213a0 win=65011716 label='_Edit' sensitive=True visible=True prio=1
+  libappmenu.so id=0x7ba19c02e7c0 win=65011716 label='_Help' sensitive=True visible=True prio=2
+  popwatch started: 00:59:32.675 panel-service visible windows 0, active 65011716
+== s8mn: popup watch
+  00:59:32.675 panel-service visible windows 0, active 65011716
+  00:59:36.725 panel-service visible windows 2, active 65011716
+  00:59:47.866 panel-service visible windows 0, active 65011716
+== s8mn: _NET_ACTIVE_WINDOW changes (hex window id)
+  00:59:24.838 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+  00:59:26.631 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3e00004
+== s8mn: org.gtk.Menus / org.gtk.Actions calls
+  00:59:26.776 signal :1.119(python3) -> (null() Changed | array [ | ]
+  00:59:26.915 call   :1.102(unity-panel-ser) -> :1.119(python3) Start | array [ | uint32 0
+  00:59:26.918 call   :1.102(unity-panel-ser) -> :1.119(python3) Start | array [ | uint32 3
+  00:59:26.920 call   :1.102(unity-panel-ser) -> :1.119(python3) Start | array [ | uint32 2
+  00:59:26.922 call   :1.102(unity-panel-ser) -> :1.119(python3) Start | array [ | uint32 1
+  00:59:26.935 call   :1.108(hud-service) -> :1.119(python3) Start | array [ | uint32 0
+  00:59:26.939 call   :1.108(hud-service) -> :1.119(python3) Start | array [ | uint32 1
+  00:59:26.939 call   :1.108(hud-service) -> :1.119(python3) Start | array [ | uint32 2
+  00:59:26.940 call   :1.108(hud-service) -> :1.119(python3) Start | array [ | uint32 3
+  00:59:27.002 signal :1.102(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  00:59:27.007 call   :1.105(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel101424792581152_0" | array [
+  00:59:27.011 call   :1.105(compiz) -> :1.102(unity-panel-ser) SyncOne | string "libappmenu.so"
+  00:59:27.032 call   :1.105(compiz) -> :1.102(unity-panel-ser) SyncGeometries | string "UnityPanel101424792581152_0" | array [
+  00:59:32.353 call   :1.120() -> :1.119(python3) Start | array [ | uint32 0
+  00:59:32.510 call   :1.121() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  00:59:36.308 call   :1.105(compiz) -> :1.102(unity-panel-ser) ShowEntry | string "0x7ba19c004390" | uint32 65011716
+  00:59:36.374 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel101424792581152_0" | string "0x7ba19c004390"
+  00:59:47.729 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+
+#### s9mn
+== s9mn on libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6; boot 2026-10-13 04:00:40
+  audit.py runs (AUDIT=1)
+s9mn start 01:02:29.766Z, boot 2026-10-13 04:00:40, session up since вт жов 13 04:02:04 2026
+  window 60817412 mapped at 01:02:31.491Z
+  python3 pid 4070 window 60817412 (MnemoTest) active 60817412
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.110"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.unitydistro.MnemoTest"
+   - _File
+   ok app.new _New
+   ok app.open _Open
+   ok app.quit _Quit
+   - _Edit
+   ok app.copy _Copy
+   ok app.paste _Paste
+   - _Help
+   ok app.about _About
+  menu labels: 6, with an underscore in the label: 6
+  ready 01:02:37.015Z
+== s9mn-before-key at 01:02:37.079Z, active window 60817412 (0x3a00004)
+  libappmenu.so id=0x72d4f0025ea0 win=60817412 label='_File' sensitive=True visible=True prio=0
+  libappmenu.so id=0x72d4f0024440 win=60817412 label='_Edit' sensitive=True visible=True prio=1
+  libappmenu.so id=0x5b99a9d6a060 win=60817412 label='_Help' sensitive=True visible=True prio=2
+  popwatch started: 01:02:37.394 panel-service visible windows 0, active 60817412
+== s9mn: popup watch
+  01:02:37.394 panel-service visible windows 0, active 60817412
+  01:02:41.190 panel-service visible windows 2, active 60817412
+  01:02:49.146 panel-service visible windows 0, active 60817412
+== s9mn: _NET_ACTIVE_WINDOW changes (hex window id)
+  01:02:28.825 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x2000028
+  01:02:31.109 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+== s9mn: org.gtk.Menus / org.gtk.Actions calls
+  01:02:31.188 signal :1.110(python3) -> (null() Changed | array [ | ]
+  01:02:31.380 call   :1.101(unity-panel-ser) -> :1.110(python3) Start | array [ | uint32 0
+  01:02:31.384 call   :1.101(unity-panel-ser) -> :1.110(python3) Start | array [ | uint32 3
+  01:02:31.390 call   :1.101(unity-panel-ser) -> :1.110(python3) Start | array [ | uint32 2
+  01:02:31.390 call   :1.101(unity-panel-ser) -> :1.110(python3) Start | array [ | uint32 1
+  01:02:31.404 call   :1.107(hud-service) -> :1.110(python3) Start | array [ | uint32 0
+  01:02:31.409 call   :1.107(hud-service) -> :1.110(python3) Start | array [ | uint32 1
+  01:02:31.410 call   :1.107(hud-service) -> :1.110(python3) Start | array [ | uint32 2
+  01:02:31.410 call   :1.107(hud-service) -> :1.110(python3) Start | array [ | uint32 3
+  01:02:31.469 signal :1.101(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  01:02:31.656 call   :1.104(compiz) -> :1.101(unity-panel-ser) SyncOne | string "libappmenu.so"
+  01:02:31.687 call   :1.104(compiz) -> :1.101(unity-panel-ser) SyncGeometries | string "UnityPanel102519723494768_0" | array [
+  01:02:36.954 call   :1.112() -> :1.110(python3) Start | array [ | uint32 0
+  01:02:37.143 call   :1.113() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  01:02:40.923 call   :1.104(compiz) -> :1.101(unity-panel-ser) ShowEntry | string "0x72d4f0025ea0" | uint32 60817412
+  01:02:40.977 signal :1.101(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel102519723494768_0" | string "0x72d4f0025ea0"
+  01:02:49.015 signal :1.101(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+  01:03:00.084 signal :1.101(unity-panel-ser) -> (null() ReSync | string "com.canonical.indicator.datetime"
+  01:03:00.084 call   :1.104(compiz) -> :1.101(unity-panel-ser) SyncOne | string "com.canonical.indicator.datetime"
+
+#### s9calc
+== s9calc on libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6; boot 2026-10-13 04:00:40
+  audit.py runs (AUDIT=1)
+s9calc start 01:03:05.813Z, boot 2026-10-13 04:00:40, session up since вт жов 13 04:02:04 2026
+  window 62914564 mapped at 01:03:07.699Z
+  gnome-calculator pid 5652 window 62914564 (Калькулятор) active 62914564
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.118"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.Calculator"
+   - Калькулятор
+   ok app.new-window _Создать окно
+   ok win.clear _Очистить историю
+   - Формат результата
+   ok win.number-format _Автоматически
+   ok win.number-format _Фиксированный
+   ok win.number-format _Научный
+   ok win.number-format _Инженерный
+   ok win.preferences _Параметры
+   ok app.shortcuts _Комбинации клавиш
+   ok app.help Спра_вка
+   ok app.about _О приложении
+  menu labels: 10, with an underscore in the label: 10
+  ready 01:03:13.464Z
+== s9calc-before-key at 01:03:13.509Z, active window 62914564 (0x3c00004)
+  libappmenu.so id=0x72d4f0025ea0 win=60817412 label='_File' sensitive=True visible=True prio=0
+  libappmenu.so id=0x72d4f0024440 win=60817412 label='_Edit' sensitive=True visible=True prio=1
+  libappmenu.so id=0x5b99a9d6a060 win=60817412 label='_Help' sensitive=True visible=True prio=2
+  libappmenu.so id=0x72d4f00224d0 win=62914564 label='Калькулятор' sensitive=True visible=True prio=0
+  popwatch started: 01:03:13.749 panel-service visible windows 0, active 62914564
+== s9calc: popup watch
+  01:03:13.749 panel-service visible windows 0, active 62914564
+  01:03:17.319 panel-service visible windows 2, active 62914564
+  01:03:25.025 panel-service visible windows 0, active 62914564
+== s9calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  01:03:04.812 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+  01:03:07.450 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3c00004
+== s9calc: org.gtk.Menus / org.gtk.Actions calls
+  01:03:07.572 call   :1.104(compiz) -> :1.101(unity-panel-ser) SyncGeometries | string "UnityPanel102519723494768_0" | array [
+  01:03:07.592 call   :1.101(unity-panel-ser) -> :1.118(gnome-calculato) Start | array [ | uint32 0
+  01:03:07.632 call   :1.107(hud-service) -> :1.118(gnome-calculato) Start | array [ | uint32 0
+  01:03:08.711 signal :1.118(gnome-calculato) -> (null() Changed | array [ | ]
+  01:03:08.711 signal :1.118(gnome-calculato) -> (null() Changed | array [ | ]
+  01:03:08.714 call   :1.101(unity-panel-ser) -> :1.118(gnome-calculato) Start | array [ | uint32 1
+  01:03:08.720 call   :1.107(hud-service) -> :1.118(gnome-calculato) Start | array [ | uint32 1
+  01:03:08.792 signal :1.101(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  01:03:08.793 call   :1.104(compiz) -> :1.101(unity-panel-ser) SyncOne | string "libappmenu.so"
+  01:03:08.799 call   :1.104(compiz) -> :1.101(unity-panel-ser) SyncGeometries | string "UnityPanel102519723494768_0" | array [
+  01:03:13.358 call   :1.119() -> :1.118(gnome-calculato) Start | array [ | uint32 0
+  01:03:13.546 call   :1.120() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  01:03:17.032 call   :1.104(compiz) -> :1.101(unity-panel-ser) ShowEntry | string "0x72d4f00224d0" | uint32 62914564
+  01:03:17.207 signal :1.101(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel102519723494768_0" | string "0x72d4f00224d0"
+  01:03:24.943 signal :1.101(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+
+#### s10calc
+== s10calc on libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6; boot 2026-10-13 04:04:23
+  audit.py runs (AUDIT=1)
+s10calc start 01:06:19.228Z, boot 2026-10-13 04:04:23, session up since вт жов 13 04:05:55 2026
+  window 58720260 mapped at 01:06:21.345Z
+  gnome-calculator pid 4107 window 58720260 (Калькулятор) active 58720260
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.110"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.Calculator"
+   - Калькулятор
+   ok app.new-window _Создать окно
+   ok win.clear _Очистить историю
+   - Формат результата
+   ok win.number-format _Автоматически
+   ok win.number-format _Фиксированный
+   ok win.number-format _Научный
+   ok win.number-format _Инженерный
+   ok win.preferences _Параметры
+   ok app.shortcuts _Комбинации клавиш
+   ok app.help Спра_вка
+   ok app.about _О приложении
+  menu labels: 10, with an underscore in the label: 10
+  ready 01:06:26.952Z
+== s10calc-before-key at 01:06:27.043Z, active window 58720260 (0x3800004)
+  libappmenu.so id=0x63d0da2284e0 win=58720260 label='Калькулятор' sensitive=True visible=True prio=0
+  popwatch started: 01:06:27.348 panel-service visible windows 0, active 58720260
+== s10calc: popup watch
+  01:06:27.348 panel-service visible windows 0, active 58720260
+  01:06:31.332 panel-service visible windows 2, active 58720260
+  01:06:38.662 panel-service visible windows 0, active 58720260
+== s10calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  01:06:18.289 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x1a0004a
+  01:06:21.022 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800004
+== s10calc: org.gtk.Menus / org.gtk.Actions calls
+  01:06:21.280 call   :1.104(unity-panel-ser) -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  01:06:21.315 call   :1.108(hud-service) -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  01:06:22.473 signal :1.110(gnome-calculato) -> (null() Changed | array [ | ]
+  01:06:22.474 signal :1.110(gnome-calculato) -> (null() Changed | array [ | ]
+  01:06:22.478 call   :1.104(unity-panel-ser) -> :1.110(gnome-calculato) Start | array [ | uint32 1
+  01:06:22.480 call   :1.108(hud-service) -> :1.110(gnome-calculato) Start | array [ | uint32 1
+  01:06:22.560 signal :1.104(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  01:06:22.560 call   :1.105(compiz) -> :1.104(unity-panel-ser) SyncOne | string "libappmenu.so"
+  01:06:22.566 call   :1.105(compiz) -> :1.104(unity-panel-ser) SyncGeometries | string "UnityPanel109472085290256_0" | array [
+  01:06:26.875 call   :1.112() -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  01:06:27.116 call   :1.113() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  01:06:30.866 call   :1.105(compiz) -> :1.104(unity-panel-ser) ShowEntry | string "0x63d0da2284e0" | uint32 58720260
+  01:06:31.064 signal :1.104(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel109472085290256_0" | string "0x63d0da2284e0"
+  01:06:38.536 signal :1.104(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+
+#### s10te
+== s10te on libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3, unity 7.7.1+26.04.20260306-0ubuntu3+unity13, indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, bamfdaemon 0.5.6+22.04.20220217-0ubuntu6; boot 2026-10-13 04:04:23
+  audit.py runs (AUDIT=1)
+s10te start 01:06:56.151Z, boot 2026-10-13 04:04:23, session up since вт жов 13 04:05:55 2026
+  window 60817412 mapped at 01:06:58.326Z
+  gnome-text-editor pid 5632 window 60817412 (Новый документ (Черновик) - текстовый редактор) active 60817412
+  preload in the process: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.118"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "org.gnome.TextEditor"
+   - Текстовый редактор
+   ok app.new-window _Создать окно
+   ok win.unity-gtk4-menu-page-save Со_хранить
+   ok win.unity-gtk4-menu-page-save-as Сохранить _как…
+   disabled win.unity-gtk4-menu-page-discard-changes _Отменить изменения…
+   ok win.unity-gtk4-menu-page-begin-search _Найти/Заменить…
+   ok win.unity-gtk4-menu-page-print _Печать…
+   ok win.unity-gtk4-menu-win-fullscreen Полноэкранный режим
+   disabled win.unity-gtk4-menu-win-unfullscreen Выйти из полноэкранного режима
+   ok win.unity-gtk4-menu-win-show-preferences _Параметры
+   ok app.shortcuts _Комбинации клавиш
+   ok app.about _О приложении
+  menu labels: 11, with an underscore in the label: 9
+  ready 01:07:03.956Z
+== s10te-before-key at 01:07:04.026Z, active window 60817412 (0x3a00004)
+  libappmenu.so id=0x63d0da2246f0 win=60817412 label='Текстовый редактор' sensitive=True visible=True prio=0
+  libappmenu.so id=0x63d0da2284e0 win=58720260 label='Калькулятор' sensitive=True visible=True prio=0
+  popwatch started: 01:07:04.396 panel-service visible windows 0, active 60817412
+== s10te: popup watch
+  01:07:04.396 panel-service visible windows 0, active 60817412
+  01:07:08.022 panel-service visible windows 2, active 60817412
+  01:07:16.283 panel-service visible windows 0, active 60817412
+== s10te: _NET_ACTIVE_WINDOW changes (hex window id)
+  01:06:55.148 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800004
+  01:06:57.960 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+== s10te: org.gtk.Menus / org.gtk.Actions calls
+  01:06:56.714 signal :1.118(gnome-text-edit) -> (null() Changed | array [ | ]
+  01:06:58.286 call   :1.105(compiz) -> :1.104(unity-panel-ser) SyncGeometries | string "UnityPanel109472085290256_0" | array [
+  01:06:58.302 call   :1.104(unity-panel-ser) -> :1.118(gnome-text-edit) Start | array [ | uint32 0
+  01:06:58.349 call   :1.108(hud-service) -> :1.118(gnome-text-edit) Start | array [ | uint32 0
+  01:06:58.888 signal :1.118(gnome-text-edit) -> (null() Changed | array [ | ]
+  01:06:58.891 call   :1.108(hud-service) -> :1.118(gnome-text-edit) Start | array [ | uint32 1
+  01:06:58.891 call   :1.104(unity-panel-ser) -> :1.118(gnome-text-edit) Start | array [ | uint32 1
+  01:06:58.970 signal :1.104(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  01:06:58.975 call   :1.105(compiz) -> :1.104(unity-panel-ser) SyncOne | string "libappmenu.so"
+  01:06:58.994 call   :1.105(compiz) -> :1.104(unity-panel-ser) SyncGeometries | string "UnityPanel109472085290256_0" | array [
+  01:07:00.082 signal :1.104(unity-panel-ser) -> (null() ReSync | string "com.canonical.indicator.datetime"
+  01:07:00.083 call   :1.105(compiz) -> :1.104(unity-panel-ser) SyncOne | string "com.canonical.indicator.datetime"
+  01:07:03.892 call   :1.119() -> :1.118(gnome-text-edit) Start | array [ | uint32 0
+  01:07:04.077 call   :1.120() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  01:07:07.758 call   :1.105(compiz) -> :1.104(unity-panel-ser) ShowEntry | string "0x63d0da2246f0" | uint32 60817412
+  01:07:07.841 signal :1.104(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel109472085290256_0" | string "0x63d0da2246f0"
+  01:07:16.049 signal :1.104(unity-panel-ser) -> (null() EntryActivated | string "" | string ""

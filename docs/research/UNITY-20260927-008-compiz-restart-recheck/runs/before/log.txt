@@ -1,0 +1,22 @@
+packages: cinnamon-session=6.4.2-1 compiz-core=1:0.9.14.2+25.10.20250930-0ubuntu3 libgtk-nocsd0=3+0~20260321+0b77e1b-1 nux-tools=4.0.8+18.10.20180623-0ubuntu12 unity=7.7.1+26.04.20260306-0ubuntu3 
+geometry: 2560, 1600
+before:     compiz=2807 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+sighup 1:   compiz= gt-1280-0@1844,30 vp-0-0@200,200 vp-0-800@200,1000 vp-1280-0@1480,200 vp-1280-800@1480,1000 
+compiz: процесс не найден
+sighup 2:   compiz=4763 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1000 vp-1280-0@1480,232 vp-1280-800@1480,1000 
+sighup 3:   compiz=5782 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,968 vp-1280-0@1480,232 vp-1280-800@1480,968 
+sighup 4:   compiz=6799 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,936 vp-1280-0@1480,232 vp-1280-800@1480,936 
+sighup 5:   compiz=7861 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,904 vp-1280-0@1480,232 vp-1280-800@1480,904 
+journal since 2026-09-28 19:21:25: segfault|general protection|dumped core|g_hash_table: 80
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 
+unity7 restart: compiz=9046 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,872 vp-1280-0@1480,232 vp-1280-800@1480,872 
+journal since 2026-09-28 19:21:25: segfault|general protection|dumped core|g_hash_table: 100
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 
+--- gtk-nocsd crash handler
+pid 10277 argv ['/tmp/segv.py', 'first-run']
+Segmentation fault (core dumped)
+python exit=139
+вер 28 19:26:10 mike-virtualbox kernel: ld-linux-x86-64[10285]: segfault at 10 ip 00007b9241c42b47 sp 00007fffd59080a8 error 4 in libgtk-nocsd.so.0[8b47,7b9241c41000+9000] likely on CPU 0 (core 0, socket 0)
+2717 -- /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/python3 /usr/bin/unity-indicator-appearance
+journal since 2026-09-28 19:21:25: segfault|general protection|dumped core|g_hash_table: 101
+/var/crash: _usr_bin_compiz.1000.crash _usr_bin_light-locker.1000.crash _usr_lib_cargo_bin_coreutils_timeout.1000.crash _usr_lib_x86_64-linux-gnu_ld-linux-x86-64.so.2.1000.crash 

@@ -1,0 +1,21 @@
+# 2026-09-29T10:12:02Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity3
+## M1
+fresh process list_users: [('/org/freedesktop/Accounts/User1000', 'mike', True)]
+## M3 two real users
+10:12:07.576 with ik014two: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+10:12:09.706 ACTION restart accounts-daemon
+10:12:10.026 current: uint32 4294967295
+10:12:10.044 sources: @a(ss) []
+10:12:10.441 current: uint32 1
+10:12:10.458 current: uint32 0
+10:12:10.471 sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:12:17.816 end M3: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+## M2 service-only restart, then new user + daemon restart
+10:12:24.331 after service restart: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'de')] current=uint32 0
+10:12:26.678 ACTION restart accounts-daemon
+10:12:26.888 current: uint32 4294967295
+10:12:26.911 sources: @a(ss) []
+10:12:27.247 current: uint32 0
+10:12:27.269 sources: [('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')]
+10:12:34.754 end M2: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0
+10:12:39.505 test users removed: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0

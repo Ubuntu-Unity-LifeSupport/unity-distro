@@ -1,0 +1,51 @@
+# core 1: full suite, runner as shipped (core020.gtest-nux-slow.26984) - the reset race
+# (gdb on the unchanged binary, 2026-09-28 ~19:45Z; the binary was rebuilt afterwards)
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  (anonymous namespace)::EmbeddedContext::EmbeddedContext (this=this@entry=0x61b6a111ab90) at gtest-nux-windowthread.cpp:294
+#1  (anonymous namespace)::EmbeddedContextWindow::EmbeddedContextWindow (this=0x61b6a111ab90) at gtest-nux-windowthread.cpp:536
+#2  (anonymous namespace)::EmbeddedContextWindow_AllowPresentationAddsToPresentationList_Test::EmbeddedContextWindow_AllowPresentationAddsToPresentationList_Test at gtest-nux-windowthread.cpp:580
+Other threads: glib worker (ppoll), pango (g_async_queue_pop). Line 294 is DefaultRootWindow(_display), a macro that dereferences the Display.
+
+# gtest-nux-windowthread.cpp:290-296
+  public:
+
+    EmbeddedContext()
+      : _display(XOpenDisplay(NULL))
+      , _root(DefaultRootWindow(_display))
+      , _window(XCreateSimpleWindow(_display,
+                                    _root,
+
+# core 2: TestWindowThread.* on Xorg -noreset (core020w.57359) - the watchdog use-after-free
+# (same unchanged binary)
+Program terminated with signal SIGSEGV, Segmentation fault.
+#0  nux::SystemThread::Run (this=0x5a9ae4188070) at SystemThread.cpp:91      <- thread LWP 57376, the watchdog
+Main thread (LWP 57359) at the same time:
+#0  _int_free_merge_chunk (av=<main_arena>, p=0x5a9ae65bab00, size=32) at ./malloc/malloc.c:4414
+#1  _int_free_chunk at ./malloc/malloc.c:4368
+#2..#7 libgallium-26.0.8-1ubuntu0.3.so
+#8..#9 libGLX_mesa.so.0
+#10 nux::GraphicsDisplay::DestroyOpenGLWindow (this=0x5a9ae718a370) at GraphicsDisplayX11.cpp:1082
+#11 nux::GraphicsDisplay::~GraphicsDisplay (this=0x5a9ae718a370) at GraphicsDisplayX11.cpp:175
+i.e. the fixture's destructor body (delete quit_thread) has run and the members (wnd_thread) are being destroyed.
+core 3 (core020w.57381): the same frame #0 SystemThread::Run at SystemThread.cpp:91; main thread in ~GraphicsDisplay -> DestroyOpenGLWindow -> libGLX_mesa.
+
+# Nux/SystemThread.cpp:74-92 (SystemThread::Run)
+  int SystemThread::Run(void * /* arg */)
+  {
+    if (user_init_func_)
+    {
+      (*user_init_func_) (this, initialization_data_);
+    }
+
+    if (parent_)
+    {
+      if (parent_->Type().IsObjectType(SystemThread::StaticObjectType))
+        static_cast<SystemThread *> (parent_)->ChildHasFinished(this);
+
+      if (parent_->Type().IsObjectType(WindowThread::StaticObjectType))
+        static_cast<WindowThread *> (parent_)->ChildHasFinished(this);
+    }
+
+    SetThreadState(THREADSTOP);
+    TerminateChildThreads();
+    return 0;

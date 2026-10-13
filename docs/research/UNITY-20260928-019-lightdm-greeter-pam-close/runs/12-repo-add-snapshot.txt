@@ -1,0 +1,18 @@
+# UNITY-20260928-019, 2026-09-29 ~16:38Z (agent A), after the db backup (runs/11-db-backup.txt)
+repo show unity-resolute before: 292 packages; lightdm records: the 7 binaries 1.32.0-6ubuntu4+unity1 (no source, no dbgsym)
+snapshot list before: unity-resolute-20260927-021-r2, unity-resolute-20260927-047 (live "." is 021-r2 per the coordinator)
+repo add unity-resolute: exactly the manifest's source and binary artifacts of build-gated/ (1 .dsc, 7 .deb, 3 .ddeb):
+[+] gir1.2-lightdm-1_1.32.0-6ubuntu4+unity2_amd64 added
+[+] liblightdm-gobject-1-0-dbgsym_1.32.0-6ubuntu4+unity2_amd64 added
+[+] liblightdm-gobject-1-0_1.32.0-6ubuntu4+unity2_amd64 added
+[+] liblightdm-gobject-dev_1.32.0-6ubuntu4+unity2_amd64 added
+[+] liblightdm-qt5-3-0-dbgsym_1.32.0-6ubuntu4+unity2_amd64 added
+[+] liblightdm-qt5-3-0_1.32.0-6ubuntu4+unity2_amd64 added
+[+] liblightdm-qt5-3-dev_1.32.0-6ubuntu4+unity2_amd64 added
+[+] lightdm-dbgsym_1.32.0-6ubuntu4+unity2_amd64 added
+[+] lightdm-vala_1.32.0-6ubuntu4+unity2_amd64 added
+[+] lightdm_1.32.0-6ubuntu4+unity2_source added
+[+] lightdm_1.32.0-6ubuntu4+unity2_amd64 added
+repo show unity-resolute after: 303 packages (+11)
+snapshot create unity-resolute-20260928-019 from repo unity-resolute: successfully created
+snapshot search lightdm: the 11 +unity2 records and the 7 +unity1 binaries

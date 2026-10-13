@@ -1,0 +1,12 @@
+natural boot in the users environment, 2026-10-03T00:26:00Z:
+ uptime:  03:26:00 up 1 min
+ /proc/cmdline gnome.is_vm: absent
+ versions: cinnamon-session 6.4.2-1+unity3;cinnamon-session-common 6.4.2-1+unity3;libunity-settings-daemon1 15.04.1+21.10.20220802-0ubuntu7+unity11;unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity11;unity-settings-daemon-schemas 15.04.1+21.10.20220802-0ubuntu7+unity11;
+ cinnamon-session dbgsym: dpkg-query: шаблону cinnamon-session-dbgsym не соответствует ни один пакет
+ u-s-d pid 2260, replaced maps: 0
+ Power owner: (':1.41',)
+ NRestarts: 0
+ crash files (u-s-d/cinnamon): 0
+ dpkg -V: clean
+ ac-timeout: 0
+ SessionIsActive (published cinnamon-session, expected absent): Failed to get property SessionIsActive on interface org.gnom

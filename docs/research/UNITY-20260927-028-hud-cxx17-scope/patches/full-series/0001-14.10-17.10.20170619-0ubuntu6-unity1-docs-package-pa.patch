@@ -1,0 +1,124 @@
+From 621d1fcfa7e0cc39b958735ec2c79a30980f1783 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 22:53:03 +0000
+Subject: [PATCH 1/5] 14.10+17.10.20170619-0ubuntu6+unity1
+ (docs/package-patches-b/debdiff/hud_+unity1.debdiff)
+
+---
+ CMakeLists.txt                    |  4 ++--
+ cmake/GtkDocScanGObjWrapper.cmake |  2 +-
+ cmake/UseConstantBuilder.cmake    |  2 +-
+ cmake/UseGdbusCodegen.cmake       |  2 +-
+ cmake/UseGlibGeneration.cmake     |  2 +-
+ cmake/UseMscgen.cmake             |  2 +-
+ debian/changelog                  | 13 +++++++++++++
+ debian/control                    |  2 +-
+ 8 files changed, 21 insertions(+), 8 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 601b887..b8af051 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ project(hud C CXX)
+-cmake_minimum_required(VERSION 2.8.9)
++cmake_minimum_required(VERSION 3.10)
+ 
+ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
+ 
+@@ -138,7 +138,7 @@ add_definitions(
+ )
+ 
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -fPIC")
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fno-permissive")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fno-permissive")
+ 
+ include(GenerateExportHeader)
+ 
+diff --git a/cmake/GtkDocScanGObjWrapper.cmake b/cmake/GtkDocScanGObjWrapper.cmake
+index 761d631..b7821c8 100644
+--- a/cmake/GtkDocScanGObjWrapper.cmake
++++ b/cmake/GtkDocScanGObjWrapper.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ 
+ if(NOT APPLE)
+     # We use pkg-config to fing glib et al
+diff --git a/cmake/UseConstantBuilder.cmake b/cmake/UseConstantBuilder.cmake
+index 06c8d05..aafc8cd 100644
+--- a/cmake/UseConstantBuilder.cmake
++++ b/cmake/UseConstantBuilder.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ if(POLICY CMP0011)
+   cmake_policy(SET CMP0011 NEW)
+ endif(POLICY CMP0011)
+diff --git a/cmake/UseGdbusCodegen.cmake b/cmake/UseGdbusCodegen.cmake
+index aa23ca3..c50aff5 100644
+--- a/cmake/UseGdbusCodegen.cmake
++++ b/cmake/UseGdbusCodegen.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ if(POLICY CMP0011)
+   cmake_policy(SET CMP0011 NEW)
+ endif(POLICY CMP0011)
+diff --git a/cmake/UseGlibGeneration.cmake b/cmake/UseGlibGeneration.cmake
+index 67e34b9..5b92090 100644
+--- a/cmake/UseGlibGeneration.cmake
++++ b/cmake/UseGlibGeneration.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ if(POLICY CMP0011)
+   cmake_policy(SET CMP0011 NEW)
+ endif(POLICY CMP0011)
+diff --git a/cmake/UseMscgen.cmake b/cmake/UseMscgen.cmake
+index 5e3a1bf..f364bd7 100644
+--- a/cmake/UseMscgen.cmake
++++ b/cmake/UseMscgen.cmake
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.6)
++cmake_minimum_required(VERSION 3.10)
+ 
+ find_program(MSCGEN_EXECUTABLE NAMES mscgen DOC "mscgen executable")
+ if(NOT MSCGEN_EXECUTABLE)
+diff --git a/debian/changelog b/debian/changelog
+index 9075d72..0279d2e 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -1,3 +1,16 @@
++hud (14.10+17.10.20170619-0ubuntu6+unity1) resolute; urgency=medium
++
++  * CMakeLists.txt, cmake/*.cmake: require CMake 3.10. CMake 4 removed
++    compatibility with versions before 3.5, so the package no longer
++    configured in resolute.
++  * debian/control: build-depend on systemd-dev instead of systemd. systemd.pc
++    moved there, so systemduserunitdir came out empty and CMake refused to
++    install hud.service and window-stack-bridge.service.
++  * CMakeLists.txt: build with -std=c++17. The googletest of resolute needs
++    at least C++17, so the tests no longer compiled.
++
++ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 18:16:27 +0000
++
+ hud (14.10+17.10.20170619-0ubuntu6) noble; urgency=medium
+ 
+   * Bump C++ version to C++14 to make googletest happy.
+diff --git a/debian/control b/debian/control
+index 6edfcf2..0723013 100644
+--- a/debian/control
++++ b/debian/control
+@@ -30,7 +30,7 @@ Build-Depends: cmake (>= 3.4),
+                python3-setuptools,
+                qtbase5-dev,
+                qtdbustest-runner,
+-               systemd,
++               systemd-dev,
+                valac,
+                xvfb,
+ Standards-Version: 3.9.4
+-- 
+2.53.0
+

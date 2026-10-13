@@ -1,0 +1,5 @@
+manifest demo-bin sha256 4aa5599f2847 | in repository d07f71336fd6
+name check: pass | source check: pass
+snapshot demo-bin SHA256 field: ['d07f71336fd6'] | equals manifest: False
+RESULT (checks of main c672ce9): ACCEPTED
+RESULT (check_gated_snapshot): refused: aptly snapshot unity-resolute-20990101-001 does not hold the build's artifacts: missing [], other sha256 ['demo-bin 1.0+unity1 amd64']

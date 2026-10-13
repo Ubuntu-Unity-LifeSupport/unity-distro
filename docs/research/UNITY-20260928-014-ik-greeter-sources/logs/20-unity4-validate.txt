@@ -1,0 +1,45 @@
+# 2026-09-29T10:29:48Z indicator-keyboard=0.0.0+19.10.20240924-0ubuntu1+unity4 pid 1554
+## V1 daemon restart x3 (mike: gb, us)
+--- V1.1: pid 1554; before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+10:29:50.445 ACTION restart accounts-daemon
+10:29:54.962 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0; pid 1554
+--- V1.2: pid 1554; before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+10:29:56.690 ACTION restart accounts-daemon
+10:30:01.268 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0; pid 1554
+--- V1.3: pid 1554; before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+10:30:03.006 ACTION restart accounts-daemon
+10:30:07.601 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0; pid 1554
+## V2 daemon stopped 15 s, then started
+10:30:09.235 ACTION stop
+10:30:24.309 stopped: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+10:30:24.378 ACTION start
+10:30:31.791 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+## V3 service killed 0.3 s after a daemon restart (inside the window), then a new user + daemon restart
+10:30:33.408 ACTION restart accounts-daemon
+10:30:33.794 SIGKILL 1554
+10:30:44.052 after the kill: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0; pid 2342
+--- V3 new user de in the restarted instance: pid 2342; before: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0
+10:30:45.047 WRITE sources: [('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'de')]
+10:30:46.276 ACTION restart accounts-daemon
+10:30:52.824 after: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'de')] current=uint32 0; pid 2342
+## V4 multi-user daemon restarts x3 (mike gb,us + ik014two de + ik014new fr)
+--- V4.0 pick up fr: pid 2342; before: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'de')] current=uint32 0
+10:30:54.111 WRITE sources: [('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')]
+10:30:54.772 ACTION restart accounts-daemon
+10:31:01.792 after: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0; pid 2342
+--- V4.1: pid 2342; before: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0
+10:31:04.517 ACTION restart accounts-daemon
+10:31:09.100 after: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0; pid 2342
+--- V4.2: pid 2342; before: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0
+10:31:11.173 ACTION restart accounts-daemon
+10:31:15.684 after: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0; pid 2342
+--- V4.3: pid 2342; before: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0
+10:31:17.444 ACTION restart accounts-daemon
+10:31:22.064 after: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0; pid 2342
+## V5 service-only restart (M2), then remove the test users + daemon restart
+after service restart: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0; pid 2787
+--- V5 users removed: pid 2787; before: sources=[('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr'), ('xkb', 'de')] current=uint32 0
+10:31:29.254 WRITE sources: [('xkb', 'gb'), ('xkb', 'us'), ('xkb', 'fr')]
+10:31:29.268 WRITE sources: [('xkb', 'gb'), ('xkb', 'us')]
+10:31:30.591 ACTION restart accounts-daemon
+10:31:37.214 after: sources=[('xkb', 'gb'), ('xkb', 'us')] current=uint32 0; pid 2787

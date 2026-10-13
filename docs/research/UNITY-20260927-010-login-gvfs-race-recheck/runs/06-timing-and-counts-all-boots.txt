@@ -1,0 +1,53 @@
+# UNITY-20260927-010: per boot - mike's login, ibus's gvfs activation request, gvfs-daemon start job, graphical-session-pre reached, plus login-check.sh. Boots -25..-16 stock cold, -15..-13 stock + reproducer, -12..-10 +unity1 + reproducer, -9..0 +unity1 cold.
+b=-25 login=21:38:04.362100 gvfs-activation=21:38:15.006129 (comm="/usr/bin/ibus-daemon) gvfs-start-job=21:38:19.286100 graphical-session-pre=21:38:22.810562
+    23) login 21:38:04: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-24 login=21:42:33.289816 gvfs-activation=21:42:44.553323 (comm="/usr/bin/ibus-daemon) gvfs-start-job=21:42:48.944741 graphical-session-pre=21:42:52.417735
+    55) login 21:42:33: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-23 login=21:47:07.458717 gvfs-activation=21:47:19.348964 (comm="/usr/bin/ibus-daemon) gvfs-start-job=21:47:21.671887 graphical-session-pre=21:47:26.189602
+    28) login 21:47:07: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-22 login=21:51:42.371261 gvfs-activation=21:51:53.744207 (comm="/usr/bin/ibus-daemon) gvfs-start-job=21:51:58.218835 graphical-session-pre=21:52:01.912544
+    02) login 21:51:42: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-21 login=21:56:11.472603 gvfs-activation=21:56:24.751806 (comm="/usr/bin/ibus-daemon) gvfs-start-job=21:56:26.979878 graphical-session-pre=21:56:31.222004
+    34) login 21:56:11: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-20 login=22:00:42.186224 gvfs-activation=22:00:52.960209 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:00:57.202196 graphical-session-pre=22:01:00.660636
+    00) login 22:00:42: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-19 login=22:05:30.351748 gvfs-activation=22:05:43.440949 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:05:47.423825 graphical-session-pre=22:05:51.327636
+    42) login 22:05:30: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-18 login=22:10:34.026955 gvfs-activation=22:10:54.344378 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:11:00.191961 graphical-session-pre=22:11:04.092971
+    45) login 22:10:34: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-17 login=22:15:04.190496 gvfs-activation=22:15:14.642827 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:15:18.944678 graphical-session-pre=22:15:22.570445
+    25) login 22:15:04: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-16 login=22:19:40.862654 gvfs-activation=22:19:53.347569 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:19:57.560147 graphical-session-pre=22:20:01.629753
+    57) login 22:19:40: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-15 login=22:25:01.656098 gvfs-activation=22:25:15.180117 (comm="gdbus) gvfs-start-job=22:25:15.230900 graphical-session-pre=22:25:50.631518
+    19) login 22:25:01: injected=1 gvfs-daemon killed at start=1 dbus activation timeouts=3 client proxy timeouts=29
+b=-14 login=22:29:50.408000 gvfs-activation=22:30:05.239480 (comm="gdbus) gvfs-start-job=22:30:05.338552 graphical-session-pre=22:30:40.632338
+    59) login 22:29:50: injected=1 gvfs-daemon killed at start=1 dbus activation timeouts=3 client proxy timeouts=29
+b=-13 login=22:34:53.092560 gvfs-activation=22:35:11.215082 (comm="gdbus) gvfs-start-job=22:35:11.281118 graphical-session-pre=22:35:47.234326
+    58) login 22:34:53: injected=1 gvfs-daemon killed at start=1 dbus activation timeouts=3 client proxy timeouts=29
+b=-12 login=22:40:29.100430 gvfs-activation=22:40:39.225706 (comm="gdbus) gvfs-start-job=22:40:39.265091 graphical-session-pre=22:40:47.876481
+    51) login 22:40:29: injected=1 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-11 login=22:45:07.342404 gvfs-activation=22:45:16.973755 (comm="gdbus) gvfs-start-job=22:45:17.028697 graphical-session-pre=22:45:24.265314
+    24) login 22:45:07: injected=1 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-10 login=22:49:40.361347 gvfs-activation=22:49:50.534803 (comm="gdbus) gvfs-start-job=22:49:50.573778 graphical-session-pre=22:49:59.478839
+    01) login 22:49:40: injected=1 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-9 login=22:55:45.021753 gvfs-activation=22:55:56.083330 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:55:56.137008 graphical-session-pre=22:56:04.791781
+    58) login 22:55:45: injected=0 gvfs-daemon killed at start=1 dbus activation timeouts=0 client proxy timeouts=0
+b=-8 login=22:58:34.799494 gvfs-activation=22:58:52.331374 (comm="/usr/bin/ibus-daemon) gvfs-start-job=22:58:58.503494 graphical-session-pre=22:59:03.032439
+    46) login 22:58:34: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-7 login=23:03:02.288700 gvfs-activation=23:03:12.317616 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:03:15.787470 graphical-session-pre=23:03:19.318944
+    21) login 23:03:02: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-6 login=23:07:35.838802 gvfs-activation=23:07:47.069857 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:07:47.132608 graphical-session-pre=23:07:55.355981
+    56) login 23:07:35: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-5 login=23:12:14.312142 gvfs-activation=23:12:25.805441 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:12:29.596440 graphical-session-pre=23:12:33.768336
+    34) login 23:12:14: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-4 login=23:16:45.597620 gvfs-activation=23:16:56.212177 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:17:01.324090 graphical-session-pre=23:17:05.418199
+    07) login 23:16:45: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-3 login=23:21:24.144516 gvfs-activation=23:21:35.342557 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:21:35.385073 graphical-session-pre=23:21:44.214418
+    39) login 23:21:24: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-2 login=23:25:58.770792 gvfs-activation=23:26:10.520212 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:26:14.312872 graphical-session-pre=23:26:18.090902
+    17) login 23:25:58: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=-1 login=23:30:42.720254 gvfs-activation=23:30:53.676167 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:30:57.850655 graphical-session-pre=23:31:01.384939
+    51) login 23:30:42: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0
+b=0 login=23:35:15.944305 gvfs-activation=23:35:25.988638 (comm="/usr/bin/ibus-daemon) gvfs-start-job=23:35:26.045209 graphical-session-pre=23:35:35.036313
+    34) login 23:35:15: injected=0 gvfs-daemon killed at start=0 dbus activation timeouts=0 client proxy timeouts=0

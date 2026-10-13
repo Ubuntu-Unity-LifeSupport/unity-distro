@@ -1,0 +1,13 @@
+cinnamon-session PUBLIC unity/resolute
+compiz PUBLIC unity/resolute
+gtk-nocsd PUBLIC unity/resolute
+light-locker PUBLIC unity/resolute
+lightdm PUBLIC unity/resolute
+session-migration PUBLIC unity/resolute
+unity PUBLIC unity/resolute
+unity-control-center PUBLIC unity/resolute
+unity-distro PUBLIC main
+unity-greeter PUBLIC unity/resolute
+unity-gtk4-menu PUBLIC main
+unity-session PUBLIC unity/resolute
+unity-settings-daemon PUBLIC unity/resolute

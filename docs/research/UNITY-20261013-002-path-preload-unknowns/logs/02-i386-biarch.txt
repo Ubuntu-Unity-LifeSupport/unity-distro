@@ -1,0 +1,27 @@
+== biarch at 2026-10-13T03:07:07Z; foreign architectures: i386; libc6:amd64 2.43-2ubuntu2.4  libc6-i386:amd64 2.43-2ubuntu2.4  
+-- b1302/t64 (ELF 64-bit LSB pie executable, x86-64)
+  P t32 0: rc 0, stdout lines 1, stderr lines 0, mapped: nocsd 1 gtk4-menu 1
+  P t32 3: rc 0, stdout lines 4, stderr lines 0, mapped: nocsd 1 gtk4-menu 1
+  N t32 0: rc 0, stdout lines 1, stderr lines 0, mapped: nocsd 1 gtk4-menu 1
+  N t32 3: rc 0, stdout lines 4, stderr lines 0, mapped: nocsd 1 gtk4-menu 1
+  LD_DEBUG=libs for the path form (lines naming the two libraries):
+      	calling init: /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0
+      	calling init: /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0
+      	calling fini: /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 [0]
+      	calling fini: /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 [0]
+-- b1302/t32-biarch (ELF 32-bit LSB pie executable, Intel i386)
+  P t32 0: rc 0, stdout lines 1, stderr lines 2, mapped: nocsd 0 gtk4-menu 0
+            1 ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            1 ERROR: ld.so: object '/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  P t32 3: rc 0, stdout lines 4, stderr lines 8, mapped: nocsd 0 gtk4-menu 0
+            4 ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            4 ERROR: ld.so: object '/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  N t32 0: rc 0, stdout lines 1, stderr lines 2, mapped: nocsd 0 gtk4-menu 0
+            1 ERROR: ld.so: object 'libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            1 ERROR: ld.so: object 'libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  N t32 3: rc 0, stdout lines 4, stderr lines 8, mapped: nocsd 0 gtk4-menu 0
+            4 ERROR: ld.so: object 'libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+            4 ERROR: ld.so: object 'libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  LD_DEBUG=libs for the path form (lines naming the two libraries):
+ERROR: ld.so: object '/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.

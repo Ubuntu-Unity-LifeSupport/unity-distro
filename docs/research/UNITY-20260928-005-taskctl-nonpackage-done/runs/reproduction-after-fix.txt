@@ -1,0 +1,19 @@
+## taskctl: /home/claude/work/a/unity-distro/scripts/taskctl.py (629cb20)
+## fixtures:
+  e1.json: {"task_id": "UNITY-20990101-001", "package_change": false, "verification_result": "PASS", "review_status": "INDEPENDENTLY_REPRODUCED", "verification_record": "x", "terminal_evidence": "merged", "task_kind": "tool"}
+  e2.json: {"task_id": "UNITY-20990101-002", "package_change": false, "implementation_plan": "create repositories", "validation_record": "git ls-remote", "terminal_evidence": "done", "task_kind": "operation", "scope": "create repositories", "chosen_approach": "gh repo create + push", "correct_layer": "our GitHub organisation", "existing_state_check": "gh repo list: none of them exists", "architectural_task": false, "design_challenger_required": false, "authorization": {"approved_by": "May", "reference": "~/coordinator/PENDING-MAY.md 2099-01-01", "scope": "create repositories"}}
+  e3.json: {"task_id": "UNITY-20990101-003", "package_change": false, "validation_record": "unit tests", "terminal_evidence": "merged", "task_kind": "tool", "regression_test": "unit tests"}
+$ taskctl transition UNITY-20990101-001 DONE --evidence e1.json   [REVIEW]
+  rc=0 state now: DONE
+$ taskctl transition UNITY-20990101-002 IMPLEMENTING --evidence e2.json   [INVESTIGATING]
+  rc=2 taskctl: transition INVESTIGATING -> IMPLEMENTING is not allowed
+$ taskctl transition UNITY-20990101-002 READY_FOR_FIX --evidence e2.json   [INVESTIGATING]
+  rc=0 state now: READY_FOR_FIX
+$ taskctl transition UNITY-20990101-002 IMPLEMENTING --evidence e2.json   [READY_FOR_FIX]
+  rc=0 state now: IMPLEMENTING
+$ taskctl transition UNITY-20990101-002 VERIFYING --evidence e2.json   [IMPLEMENTING]
+  rc=0 state now: VERIFYING
+$ taskctl transition UNITY-20990101-002 DONE --evidence e2.json   [VERIFYING]
+  rc=0 state now: DONE
+$ taskctl transition UNITY-20990101-003 DONE --evidence e3.json   [VERIFYING]
+  rc=2 taskctl: tool tasks reach DONE only from REVIEW, after the Verifier

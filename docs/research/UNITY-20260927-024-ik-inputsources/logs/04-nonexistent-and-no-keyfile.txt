@@ -1,0 +1,16 @@
+# nonexistent-probe.py on target2, 2026-09-28 ~13:24Z, no daemon restart involved.
+# act_user_manager_get_user(NAME), wait for is-loaded, then read.
+$ python3 /tmp/nx.py mike nosuchuser "*other" "*guest"
+mike loaded=True nonexistent=False name='mike' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+nosuchuser loaded=True nonexistent=True name=None input_sources=NULL
+*other loaded=True nonexistent=True name=None input_sources=NULL
+*guest loaded=True nonexistent=True name=None input_sources=NULL
+(accountsservice-WARNING: ActUserManager: user (null) has no username (uid: -1), three times)
+
+# A real user with no keyfile in /var/lib/AccountsService/users/ (only 'mike' has one):
+$ sudo useradd -m -s /bin/bash ik024test; sudo systemctl restart accounts-daemon
+$ python3 /tmp/nx.py ik024test mike
+ik024test loaded=True nonexistent=False name='ik024test' input_sources=[]
+mike loaded=True nonexistent=False name='mike' input_sources=[{'xkb': 'gb'}, {'xkb': 'us'}]
+$ busctl --system get-property org.freedesktop.Accounts /org/freedesktop/Accounts/User$(id -u ik024test)   # 1001 org.freedesktop.Accounts.User InputSources
+aa{ss} 0

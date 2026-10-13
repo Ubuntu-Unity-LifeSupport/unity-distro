@@ -1,0 +1,46 @@
+== T5b
+13:36:01.094811 forcing SIGTERM into 109268 at fork(), handler installed, before the greeter exists
+13:36:01.117201 SIGTERM delivered to 109268, sa_handler caught
+13:36:01.117840 109268 _exit(0)
+13:36:01.117981 109268 gone
+== lightdm.log signal/exit lines (T6b and T5b)
+[+3301.93s] DEBUG: Session pid=60610: Exited with return value 0
+[+3314.27s] DEBUG: Session pid=63371: Exited with return value 0
+[+3351.92s] DEBUG: Session pid=63518: Exited with return value 0
+[+3363.94s] DEBUG: Session pid=66373: Exited with return value 0
+[+3411.91s] DEBUG: Session pid=66521: Exited with return value 0
+[+3423.37s] DEBUG: Session pid=69355: Exited with return value 1
+[+3460.92s] DEBUG: Session pid=69499: Exited with return value 0
+[+3471.51s] DEBUG: Session pid=72312: Exited with return value 1
+[+3511.40s] DEBUG: Session pid=72458: Exited with return value 0
+[+3522.03s] DEBUG: Session pid=75255: Exited with return value 0
+[+3555.63s] DEBUG: Session pid=75411: Exited with return value 0
+[+3569.69s] DEBUG: Session pid=77384: Exited with return value 0
+[+3618.18s] DEBUG: Session pid=77677: Exited with return value 0
+[+3640.75s] DEBUG: Session pid=80530: Terminated with signal 14
+[+3678.96s] DEBUG: Session pid=80732: Exited with return value 0
+[+3701.62s] DEBUG: Session pid=83435: Terminated with signal 14
+[+3739.09s] DEBUG: Session pid=83520: Exited with return value 0
+[+3761.20s] DEBUG: Session pid=86345: Terminated with signal 14
+[+3806.56s] DEBUG: Session pid=86432: Exited with return value 1
+[+3808.49s] DEBUG: Session pid=89248: Terminated with signal 15
+[+524.66s] DEBUG: Session pid=89346: Exited with return value 0
+[+536.00s] DEBUG: Session pid=92646: Exited with return value 0
+[+573.84s] DEBUG: Session pid=92791: Exited with return value 0
+[+586.67s] DEBUG: Session pid=95501: Exited with return value 0
+[+623.84s] DEBUG: Session pid=95656: Exited with return value 0
+[+635.25s] DEBUG: Session pid=98476: Exited with return value 1
+[+672.88s] DEBUG: Session pid=98621: Exited with return value 0
+[+684.94s] DEBUG: Session pid=101436: Exited with return value 0
+[+722.84s] DEBUG: Session pid=101594: Exited with return value 0
+[+734.30s] DEBUG: Session pid=104343: Exited with return value 0
+[+771.85s] DEBUG: Session pid=104491: Exited with return value 0
+[+783.43s] DEBUG: Session pid=107276: Exited with return value 0
+[+833.88s] DEBUG: Session pid=107419: Exited with return value 1
+[+850.94s] DEBUG: Session pid=109268: Exited with return value 0
+[+45.52s] DEBUG: Session pid=109525: Exited with return value 1
+[+37.93s] DEBUG: Session pid=111235: Exited with return value 1
+[+40.29s] DEBUG: Session pid=112945: Exited with return value 1
+[+36.06s] DEBUG: Session pid=113947: Exited with return value 1
+[+36.37s] DEBUG: Session pid=114655: Exited with return value 1
+[+36.37s] DEBUG: Session pid=115390: Exited with return value 1

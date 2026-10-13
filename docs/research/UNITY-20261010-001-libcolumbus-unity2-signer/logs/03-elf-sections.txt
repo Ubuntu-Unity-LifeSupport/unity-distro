@@ -1,0 +1,10 @@
+== libcolumbus.so.1.1.0 (libcolumbus1v5 +unity1 published vs +unity2 build)
+sections: 30 in A, 30 in B; all but .note.package/.note.gnu.build-id/.gnu_debuglink: identical (27 sections)
+differing among the version-carrying ones: .note.gnu.build-id .note.package .gnu_debuglink
+  package note 1: {"type":"deb","os":"ubuntu","name":"libcolumbus","version":"1.1.0+15.10.20150806-0ubuntu39+unity1","architecture":"amd64"}
+  package note 2: {"type":"deb","os":"ubuntu","name":"libcolumbus","version":"1.1.0+15.10.20150806-0ubuntu39+unity2","architecture":"amd64"}
+== columbus python module (python3-columbus)
+sections: 30 in A, 30 in B; all but .note.package/.note.gnu.build-id/.gnu_debuglink: identical (27 sections)
+differing among the version-carrying ones: .note.gnu.build-id .note.package .gnu_debuglink
+  package note 1: {"type":"deb","os":"ubuntu","name":"libcolumbus","version":"1.1.0+15.10.20150806-0ubuntu39+unity1","architecture":"amd64"}
+  package note 2: {"type":"deb","os":"ubuntu","name":"libcolumbus","version":"1.1.0+15.10.20150806-0ubuntu39+unity2","architecture":"amd64"}

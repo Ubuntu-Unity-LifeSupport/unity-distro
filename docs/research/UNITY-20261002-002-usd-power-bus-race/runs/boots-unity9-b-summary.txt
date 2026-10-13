@@ -1,0 +1,10 @@
+batch b (stopped by A after 9 of 20 boots, 2026-10-02; the +unity9 natural-boot count is 10 + 9 = 19, 0 stops, Power owned 19/19):
+boot-1: (':1.43',); stops: 0; window: 4846 ms
+boot-2: (':1.33',); stops: 0; window: 6128 ms
+boot-3: (':1.34',); stops: 0; window: boot 10: (':1.47',); stops: 0
+ops: 0; window: 11306 ms
+boot-5: (':1.44',); stops: 0; window: 7174 ms
+boot-6: (':1.45',); stops: 0; window: 8247 ms
+boot-7: (':1.41',); stops: 0; window: 6381 ms
+boot-8: (':1.37',); stops: 0; window: 7660 ms
+boot-9: (':1.45',); stops: 0; window: 5496 ms

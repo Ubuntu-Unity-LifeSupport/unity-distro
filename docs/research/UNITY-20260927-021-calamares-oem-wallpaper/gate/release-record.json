@@ -1,0 +1,23 @@
+{
+  "task_id": "UNITY-20260927-021",
+  "package": "calamares-settings-ubuntu",
+  "target_series": "resolute",
+  "candidate_version": "1:26.04.12+unity2",
+  "source_commit": "c03daf48d5dbb719d985f75d5e96cc2a6df04e84",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-021",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/gate/version-check-r2.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": true,
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/README.md",
+    "verification_record": "docs/research/UNITY-20260927-021-calamares-oem-wallpaper/verification.md",
+    "patch_record": "docs/PATCHES.md",
+    "decision_record": "docs/DECISIONS.md"
+  }
+}

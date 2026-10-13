@@ -1,0 +1,36 @@
+From 0274bc5ae114ed23537d503c925e8d72f4d90f75 Mon Sep 17 00:00:00 2001
+From: NeiroNext <mihail.rozshko@gmail.com>
+Date: Mon, 28 Sep 2026 20:43:58 +0000
+Subject: [PATCH 8/8] debian/changelog: the two test fixes in +unity3
+
+Assisted-by: LLM claude-opus-5-5
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ debian/changelog | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/debian/changelog b/debian/changelog
+index b89a959..e1c2350 100644
+--- a/debian/changelog
++++ b/debian/changelog
+@@ -12,8 +12,15 @@ nux (4.0.8+18.10.20180623-0ubuntu15+unity3) resolute; urgency=medium
+   * debian/patches/fix-fbo-attachment-arrays.patch: add a test in
+     gtest-nuxgraphics that the FBO keeps and releases its colour attachment
+     (LP: #2160298).
+-
+- -- NeiroNext <mihail.rozshko@gmail.com>  Mon, 28 Sep 2026 15:02:46 +0000
++  * debian/patches/tests-dummy-xorg-noreset.patch: start the tests' dummy X
++    server with -noreset. It reset whenever the last client disconnected,
++    about once per test, and a test connecting during a reset got no display
++    and crashed.
++  * debian/patches/tests-windowthread-join-watchdog.patch: join the
++    TestWindowThread watchdog thread instead of deleting it while it still
++    runs; the thread used the freed object and crashed.
++
++ -- NeiroNext <mihail.rozshko@gmail.com>  Mon, 28 Sep 2026 20:44:05 +0000
+ 
+ nux (4.0.8+18.10.20180623-0ubuntu15+unity2) resolute; urgency=medium
+ 
+-- 
+2.53.0
+

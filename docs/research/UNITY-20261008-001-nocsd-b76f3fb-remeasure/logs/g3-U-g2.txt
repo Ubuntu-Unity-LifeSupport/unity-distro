@@ -1,0 +1,98 @@
+=================== gnome-disks (pid 105213)
+  shim: NOT HOOKED in pid 105213
+  ok        app.new_disk_image                       Создать образ диска…
+  ok        app.attach_disk_image                    Подключить образ диска… (.iso, .img)
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        app.help                                 Справка
+  ok        app.about                                О приложении
+=================== gnome-connections (pid 105368)
+  shim: NOT HOOKED in pid 105368
+  ok        win.show-help-overlay                    Комбинации клавиш
+  ok        app.help                                 Справка
+  ok        app.about                                О приложении
+=================== gnome-taquin (pid 105510)
+  shim: NOT HOOKED in pid 105510
+=================== gnome-tetravex (pid 105585)
+  shim: NOT HOOKED in pid 105585
+  ok        app.new-game                             Новая игра
+            -                                        Размер
+    ok        app.size                                 2 × 2
+    ok        app.size                                 3 × 3
+    ok        app.size                                 4 × 4
+    ok        app.size                                 5 × 5
+    ok        app.size                                 6 × 6
+    ok        app.new-game                             Новая игра
+  ok        app.scores                               Результаты
+            -                                        Внешний вид
+    ok        app.theme                                Экструзия
+    ok        app.theme                                Нео Ретро
+    ok        app.theme                                Ностальгия
+    ok        app.theme                                Синестезия
+  ok        win.show-help-overlay                    Комбинации клавиш
+  ok        app.help                                 Справка
+  ok        app.about                                О приложении Тетравекс
+=================== four-in-a-row (pid 105722)
+  shim: NOT HOOKED in pid 105722
+            -                                        Appearance
+    ok        app.theme-id                             Высококонтрастная
+    ok        app.theme-id                             Высококонтрастная негативная
+    ok        app.theme-id                             Красные и зелёные шарики
+    ok        app.theme-id                             Синие и красные шарики
+    ok        app.theme-id                             Звёзды и кольца
+  ok        app.sound                                Sound
+  ok        win.show-help-overlay                    Keyboard Shortcuts
+  ok        app.help                                 Справка
+  ok        app.about                                About Four-in-a-row
+=================== five-or-more (pid 105799)
+  shim: NOT HOOKED in pid 105799
+  ok        win.new-game                             Новая игра
+            -                                        Размер
+    ok        win.change-size                          Маленький
+    ok        win.change-size                          Средний
+    ok        win.change-size                          Большой
+    ok        win.new-game                             Новая игра
+  ok        win.scores                               Результаты
+            -                                        Вид
+    ok        win.change-theme                         шары
+    ok        win.change-theme                         формы
+    ok        win.change-theme                         танго
+              -                                        Фон
+    ok        win.background                           Выберите цвет
+    disabled  win.reset-bg                             Цвет по умолчанию
+  ok        win.show-help-overlay                    Сочетания клавиш
+  ok        app.help                                 Справка
+  ok        app.about                                Об игре Пять или более
+=================== hitori (pid 105893)
+  shim: NOT HOOKED in pid 105893
+  ok        app.new-game                             Новая игра
+            -                                        Размер поля
+    ok        app.board-size                           5×5
+    ok        app.board-size                           6×6
+    ok        app.board-size                           7×7
+    ok        app.board-size                           8×8
+    ok        app.board-size                           9×9
+    ok        app.board-size                           10×10
+  ok        win.show-help-overlay                    Комбинации клавиш
+  ok        app.help                                 Справка
+  ok        app.about                                О приложении
+=================== gnome-klotski (pid 105992)
+  shim: NOT HOOKED in pid 105992
+  ok        win.show-scores                          Результаты
+  ok        win.show-help-overlay                    Keyboard Shortcuts
+  ok        win.help                                 Справка
+  ok        win.about                                About Klotski
+=================== dconf-editor (pid 106063)
+  shim: NOT HOOKED in pid 106063
+  ok        win.gtk-nocsd-ui-enter-delay-mode        Войти в режим задержки
+  ok        win.gtk-nocsd-ui-reset-current-non-recursively Сброс видимых ключей
+  ok        win.gtk-nocsd-ui-reset-current-recursively Сброс видимых ключей, включая подпапки
+  ok        win.show-help-overlay                    Комбинации клавиш
+  ok        win.gtk-nocsd-base-about                 О приложении
+=================== seahorse (pid 106262)
+  shim: NOT HOOKED in pid 106262
+  ok        win.gtk-nocsd-pgp-remote-find            Найти ключи в из сети…
+  ok        win.gtk-nocsd-pgp-remote-sync            Синхронизировать и опубликовать ключи…
+  ok        app.preferences                          Параметры
+  ok        app.help                                 Справка
+  ok        win.show-help-overlay                    Комбинации клавиш
+  ok        app.about                                О Паролях и ключах

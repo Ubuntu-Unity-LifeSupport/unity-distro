@@ -1,0 +1,34 @@
+#!/usr/bin/env bpftrace
+// UNITY-20260928-019: deterministic form of the race. When the greeter's
+// session-child has reaped the greeter, send it one extra SIGTERM at its
+// first pam_getenv() call - the XDG_SESSION_CLASS check that follows
+// `child_pid = 0` in src/session-child.c - i.e. exactly where the lightdm
+// daemon's second SIGTERM lands in most natural stops (stage 1). Unmodified
+// session-child then leaves from signal_cb()'s no-child branch and skips the
+// X authority removal, pam_close_session, pam_setcred and pam_end; a fixed
+// one finishes them. Run with tools/greeter-close-trace.bt alongside.
+// Needs bpftrace --unsafe (signal()).
+
+tracepoint:sched:sched_process_exec /str(args.filename) == "/usr/lib/lightdm/lightdm-greeter-session"/
+{
+  @g[curtask->real_parent->tgid] = 1;
+}
+
+tracepoint:syscalls:sys_exit_wait4 /@g[pid] && args.ret > 0/
+{
+  @reaped[pid] = 1;
+}
+
+uprobe:/lib/x86_64-linux-gnu/libpam.so.0:pam_getenv /@g[pid] && @reaped[pid] == 1/
+{
+  @reaped[pid] = 2;
+  printf("%s forcing SIGTERM into greeter session-child %d at pam_getenv after waitpid\n", strftime("%H:%M:%S.%f", nsecs), pid);
+  signal("SIGTERM");
+}
+
+tracepoint:sched:sched_process_exit /@g[pid] && pid == tid/
+{
+  delete(@g[pid]); delete(@reaped[pid]);
+}
+
+END { clear(@g); clear(@reaped); }

@@ -1,0 +1,40 @@
+UNITY-20261008-020 (with UNITY-20261008-009, UNITY-20261008-010): target test of unity-settings-daemon
+15.04.1+21.10.20220802-0ubuntu7+unity13
+
+Target: target-desktop on the live stack of 2026-10-08 (published stack restored and updated from the live
+repository: cinnamon-session +unity4, unity-settings-daemon +unity12, unity +unity13, light-locker +unity3),
+then the debs below from this build (build/) installed with apt, then a cold boot.
+
+Installed debs (sha256 equal to build/ and the build manifest):
+  b4d5fdc8cd13ff10067064575e0d44673a6ac4191c6012c93abfb89b4528e1bf  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity13_amd64.deb
+  0b025eb66b61bfd60cd40a7004f63f877c71a010424fb2c021a1236f488e38a0  unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity13_all.deb
+  1f4ff38a185aacd62f82accfad77bf8ddcc269da31d8451848392724d5b10d2a  libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity13_amd64.deb
+
+Build: make check runs test-automount (14 cases) and test-autorun (2 cases); both PASS in the build log.
+
+Run 1, published configuration (light-locker is the locker; autorun-never true by default):
+  unity-fallback-mount-helper runs from the new binary (no "(deleted)" mappings); SessionIsActive true,
+  logind Active=yes, LockedHint=no; no warnings from the helper in the journal.
+  A medium (an ISO image in the optical drive) inserted into the unlocked session: mounted; no autorun
+  dialog (autorun is off by default).
+  With autorun enabled for this run (autorun-never=false): a medium inserted into the unlocked session is
+  mounted and the autorun dialog of the helper appears ("Ubuntu-Unity 26.04 amd64"); it closed when the
+  medium was unmounted.
+
+Run 2, outside the published configuration (supporting; light-locker kept out of the session for one
+boot, autorun enabled, then the target restored):
+  compiz owns org.gnome.ScreenSaver. Lock requested through logind: Unity's lockscreen is shown,
+  com.canonical.Unity.Session IsLocked true, LockedHint "yes", the session stays active.
+  A medium inserted while locked: present in the drive, not mounted, no autorun dialog window.
+  The run ended with a power-off (no unlock); the target was restored afterwards (confirmed inside the
+  guest).
+  The medium is held back by the mount check under the lock, so this run shows the combined behaviour;
+  it does not by itself exercise the autorun check, which is covered by the test suite.
+  A first attempt at run 2 ended before the medium step: light-locker was still started by the session
+  and was the locker; the machine was powered off without an unlock.
+
+Not tested on the target: autorun after an unlock (it needs a login at the lock screen); the unlocked
+behaviour is covered by run 1 and by the test suite.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build).

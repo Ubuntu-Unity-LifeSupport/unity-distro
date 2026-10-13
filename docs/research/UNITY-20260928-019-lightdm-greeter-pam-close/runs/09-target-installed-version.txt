@@ -1,0 +1,5 @@
+вівторок, 29 вересень UTC 2026 10:46:03 +0000
+2026-09-29 12:17:33
+liblightdm-gobject-1-0:amd64	1.32.0-6ubuntu4+unity2
+lightdm	1.32.0-6ubuntu4+unity2
+815531b0f5038fc28b3d76cd6b384e09daabaed0c310e68fe7834cee74673570  /usr/sbin/lightdm

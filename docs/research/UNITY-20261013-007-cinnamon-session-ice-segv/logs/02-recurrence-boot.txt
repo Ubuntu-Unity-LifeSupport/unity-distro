@@ -1,0 +1,4 @@
+== recurrence check: cold boot with no changes, boot 2026-10-13 09:07:40, checked 2026-10-13T06:09:52Z
+  compiz: 2925 unity-panel-service: 2933 cinnamon-session: 2304
+  journal lines segfault|SmcOpenConnection failed|Invalid bytes|Failed to load plugin: 0
+  /var/crash newer than this boot: 0

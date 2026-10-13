@@ -1,0 +1,10 @@
+# new tests on main e9f83de scripts plus the branch's tested_build.py (main's gate and publisher do not call it)
+FAIL: test_create_release_gate 
+FAIL: test_gate_checks_tested_build  (case='no tested_build')
+FAIL: test_gate_checks_tested_build  (case='deb not of this build')
+FAIL: test_gate_checks_tested_build  (case='no chroot record')
+FAIL: test_publish_checks_tested_build  (case='gate without tested_build')
+FAIL: test_publish_checks_tested_build  (case='record changed after the gate')
+FAIL: test_publish_checks_tested_build  (case='mode altered in the gate')
+Ran 15 tests in 7.477s
+FAILED (failures=7)

@@ -1,0 +1,156 @@
+Started ld019tests3.service - [systemd-run] /bin/sh /home/mike/run-tests-3.sh Utest-019pw.
+=== phase T1b-natural (6 cycles) 10:30:32Z
+cycle 1: logout utest
+cycle 1: mike off seat0 after 2s
+cycle 1: greeter up after 2s, logging in
+cycle 1: utest session on seat0, greeter gone after 1s
+cycle 1: utest session on seat0, greeter gone after 1s
+--- state after cycle 1 (10:31:22.234Z)
+sessions: 326 1001 utest seat0 92791 user    - no -
+sessions: 327 1001 utest -     92865 manager - no -
+users: 1001 utest no active
+session: Id=326 Name=utest Scope=session-326.scope Leader=92791 Class=user State=active
+session: Id=327 Name=utest Scope= Leader=92865 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-326.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 2: logout utest
+cycle 2: utest off seat0 after 2s
+cycle 2: greeter up after 2s, logging in
+cycle 2: utest session on seat0, greeter gone after 1s
+cycle 2: utest session on seat0, greeter gone after 1s
+--- state after cycle 2 (10:32:12.777Z)
+sessions: 333 1001 utest seat0 95656 user    - no -
+sessions: 334 1001 utest -     95812 manager - no -
+users: 1001 utest no active
+session: Id=333 Name=utest Scope=session-333.scope Leader=95656 Class=user State=active
+session: Id=334 Name=utest Scope= Leader=95812 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-333.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 3: logout utest
+cycle 3: utest off seat0 after 1s
+cycle 3: utest session on seat0, greeter gone after 1s
+cycle 3: utest session on seat0, greeter gone after 1s
+--- state after cycle 3 (10:33:01.552Z)
+sessions: 338 1001 utest seat0 98621 user    - no -
+sessions: 339 1001 utest -     98702 manager - no -
+users: 1001 utest no active
+session: Id=338 Name=utest Scope=session-338.scope Leader=98621 Class=user State=active
+session: Id=339 Name=utest Scope= Leader=98702 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-338.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 4: logout utest
+cycle 4: utest off seat0 after 2s
+cycle 4: greeter up after 2s, logging in
+cycle 4: utest session on seat0, greeter gone after 1s
+cycle 4: utest session on seat0, greeter gone after 1s
+--- state after cycle 4 (10:33:51.064Z)
+sessions: 345 1001 utest seat0 101594 user    - no -
+sessions: 346 1001 utest -     101693 manager - no -
+users: 1001 utest no active
+session: Id=345 Name=utest Scope=session-345.scope Leader=101594 Class=user State=active
+session: Id=346 Name=utest Scope= Leader=101693 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-345.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 5: logout utest
+cycle 5: utest session on seat0, greeter gone after 1s
+cycle 5: utest session on seat0, greeter gone after 1s
+--- state after cycle 5 (10:34:40.508Z)
+sessions: 350 1001 utest seat0 104491 user    - no -
+sessions: 351 1001 utest -     104576 manager - no -
+sessions: 355 1000 mike  -     107026 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=350 Name=utest Scope=session-350.scope Leader=104491 Class=user State=active
+session: Id=351 Name=utest Scope= Leader=104576 Class=manager State=active
+session: Id=355 Name=mike Scope= Leader=107026 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-350.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 6: logout utest
+cycle 6: utest off seat0 after 2s
+cycle 6: greeter up after 1s, logging in
+cycle 6: utest session on seat0, greeter gone after 1s
+cycle 6: utest session on seat0, greeter gone after 1s
+--- state after cycle 6 (10:35:29.613Z)
+sessions: 357 1001 utest seat0 107419 user    - no -
+sessions: 358 1001 utest -     107513 manager - no -
+users: 1001 utest no active
+session: Id=357 Name=utest Scope=session-357.scope Leader=107419 Class=user State=active
+session: Id=358 Name=utest Scope= Leader=107513 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-357.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+phase T1b-natural end
+=== phase T5b-prefork 10:35:33Z
+greeter running after T5b: no
+T5b sessions: 364 1000 mike seat0 109525 user    - no -
+T5b sessions: 365 1000 mike -     109549 manager - no -
+=== phase T7-user-session-restart (6 restarts) 10:36:17Z
+cycle 1: mike's session leader (session-child) 109525; restarting lightdm
+  journal lightdm[109525] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=8 pid=0 line='tty7' id=':0' user='utest' time=10:35:43Z
+    type=7 pid=109610 line='tty7' id=':0' user='mike' time=10:36:15Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:36:49Z
+cycle 2: mike's session leader (session-child) 111235; restarting lightdm
+  journal lightdm[111235] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:36:49Z
+    type=7 pid=111317 line='tty7' id=':0' user='mike' time=10:37:07Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:37:35Z
+cycle 3: mike's session leader (session-child) 112945; restarting lightdm
+  journal lightdm[112945] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=112964 line='tty7' id=':0' user='mike' time=10:37:52Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:38:24Z
+    type=7 pid=113954 line='tty7' id=':0' user='mike' time=10:38:28Z
+cycle 4: mike's session leader (session-child) 113947; restarting lightdm
+  journal lightdm[113947] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=113954 line='tty7' id=':0' user='mike' time=10:38:28Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:39:02Z
+    type=7 pid=114670 line='tty7' id=':0' user='mike' time=10:39:08Z
+cycle 5: mike's session leader (session-child) 114655; restarting lightdm
+  journal lightdm[114655] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=114670 line='tty7' id=':0' user='mike' time=10:39:08Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:39:40Z
+    type=7 pid=115407 line='tty7' id=':0' user='mike' time=10:39:45Z
+cycle 6: mike's session leader (session-child) 115390; restarting lightdm
+  journal lightdm[115390] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=115407 line='tty7' id=':0' user='mike' time=10:39:45Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=10:40:19Z
+    type=7 pid=116621 line='tty7' id=':0' user='mike' time=10:40:25Z
+phase T7 end
+=== done 10:40:27Z
+ld019tests3.service: Deactivated successfully.
+ld019tests3.service: Consumed 10.228s CPU time over 9min 54.737s wall clock time, 4.9M memory peak.

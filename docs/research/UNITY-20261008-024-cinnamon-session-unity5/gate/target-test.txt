@@ -1,0 +1,41 @@
+UNITY-20261008-024 (with UNITY-20261008-022): target test of cinnamon-session 6.4.2-1+unity5
+
+Target: target-desktop on the live stack of 2026-10-09 (published stack restored and updated from the live
+repository: cinnamon-session +unity4, unity-settings-daemon +unity13, unity +unity13, light-locker +unity3,
+hud +unity5, libcolumbus +unity1), then the debs below from this build (build/) installed with apt, the
+cinnamon-session debug key (org.cinnamon.SessionManager debug) set for the run, then a cold boot.
+
+Installed debs (sha256 equal to build/ and the build manifest):
+  6b545e9eb0900774ae703c0893887506db1a77195452ef00a86b65af8a73da0f  cinnamon-session_6.4.2-1+unity5_amd64.deb
+  9deaf578609a21e16f60807b700b12cc6b1882efea7ab53184052b682c9ea883  cinnamon-session-common_6.4.2-1+unity5_all.deb
+
+logind sessions of the user at the start (loginctl show-session):
+  2: Class=manager Type=unspecified State=active (user@1000.service)
+  4: Class=user Type=x11 State=active (the display session, User.Display = 4)
+  ssh sessions of the tester: Class=user Type=tty, Remote=yes
+
+Session discovery (debug log of each new cinnamon-session; each case sets or unsets XDG_SESSION_ID in the
+user manager with systemctl --user set-environment / unset-environment and restarts unity-session.service,
+a fresh start of cinnamon-session in the same display session):
+  boot, no XDG_SESSION_ID:       "logind session 4 taken from User.Display"
+  XDG_SESSION_ID=2 (manager):    "rejected: class manager", then session 4 taken from User.Display
+  XDG_SESSION_ID=6 (an earlier ssh session of the tester, no longer known to sd-login at that moment):
+                                  "rejected: no owner: No such device or address", then 4 from User.Display
+  XDG_SESSION_ID=10 (live ssh session, class user, type tty): "rejected: type tty", then 4 from User.Display
+  XDG_SESSION_ID=4 (the display session): "logind session 4 taken from XDG_SESSION_ID"
+  unset again:                   session 4 taken from User.Display
+  In every case SessionIsActive (<true>,). Afterwards the user manager has no XDG_SESSION_ID.
+
+Regression:
+  Switch to VT 1 and back: SessionIsActive false, then true.
+  A medium (an ISO image in the optical drive) inserted into the unlocked session: mounted.
+  Relogin (LightDM restarted, automatic login): the previous cinnamon-session logged
+  "logind session 4 (/org/freedesktop/login1/session/_34) was removed"; the new one took session 13
+  from User.Display, SessionIsActive (<true>,). No cinnamon-session crash in the journal or /var/crash.
+  The debug key was reset; the target was restored afterwards (confirmed inside the guest).
+
+Not tested on the target: the paths without any logind session (switch-user query, idle hint); checked by
+review.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build).

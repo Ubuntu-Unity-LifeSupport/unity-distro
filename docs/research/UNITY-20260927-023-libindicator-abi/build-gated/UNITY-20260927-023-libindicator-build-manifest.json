@@ -1,0 +1,185 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-023",
+  "package": "libindicator",
+  "candidate_version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-li023/packages/libindicator",
+  "source_commit": "f8fa2993bdbdaafb54e1428e8468f84f9cca917a",
+  "source_tree_hash": "26b4500293aafa9c2453f58b61c876e146798eb2",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst"
+  ],
+  "build_started": "2026-10-02T15:48:37.651450+00:00",
+  "build_finished": "2026-10-02T15:54:11.817390+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-023-libindicator-16.10.0+18.04.20180321.1-0ubuntu8+unity3-sbuild.log",
+    "sha256": "09f8f538e8542c6cb7382a52c446a81ee234bc5f85cde29d3b25b5c0b51ffdb9"
+  },
+  "artifacts": [
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3.dsc",
+      "sha256": "e5dce9a5163d75c8a59bfa2511c3370a4bf0d3b24821682446e7ae07525aaa56",
+      "size": 1947,
+      "kind": "source",
+      "package": "libindicator",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.changes",
+      "sha256": "640fc7145b8c8c5d14e127d2619fcbd2d87239d1bbf187a8ee34789610a31b09",
+      "size": 5209,
+      "kind": "changes"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1.orig.tar.gz",
+      "sha256": "0029ac3aa8d5a339de252f66209b40c12e5bfa9072221b9b32d07844273f62fd",
+      "size": 70462,
+      "kind": "source_file",
+      "package": "libindicator",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3.diff.gz",
+      "sha256": "4c24f090b8d21e07b454a05a850260e1e921ad5f1cd4e5863563477bdd56ed4d",
+      "size": 15407,
+      "kind": "source_file",
+      "package": "libindicator",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3"
+    },
+    {
+      "file": "indicator-common_16.10.0+18.04.20180321.1-0ubuntu8+unity3_all.deb",
+      "sha256": "08384eb2f94a494687b9838d7df9ba1e218a934c4823c6511e566e43ca8332eb",
+      "size": 2628,
+      "kind": "binary",
+      "package": "indicator-common",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libindicator-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "21a6d85feb33b0b1cf3f84991950a5db8c5ace9a8721bb7b825b379ba2cdcadd",
+      "size": 28976,
+      "kind": "binary",
+      "package": "libindicator-dev",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-7-dbgsym_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.ddeb",
+      "sha256": "bd066712f904337e59c37e0dec052f7514f18f52c1567494092d8b35a309d07d",
+      "size": 93348,
+      "kind": "binary",
+      "package": "libindicator3-7-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "caac08af4472f33f91e6ae77ed97ba2e8df53e247ca0f6d3f48ec808e19b0767",
+      "size": 28720,
+      "kind": "binary",
+      "package": "libindicator3-7",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-dev_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "2cf1d468335ec02d896a309149f80902b58174698f7ab7b109a81d2b9b511598",
+      "size": 36514,
+      "kind": "binary",
+      "package": "libindicator3-dev",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-tools-dbgsym_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.ddeb",
+      "sha256": "d91514e11a9869c7d70b1b0e15ae6efba111ee73d769bcf5d4b840c8a5ec59f7",
+      "size": 17674,
+      "kind": "binary",
+      "package": "libindicator3-tools-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator3-tools_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "4e601346c0176c4a8baefb9f23d8f68a60b76ab4668c82293a34ee6d13032ba1",
+      "size": 8548,
+      "kind": "binary",
+      "package": "libindicator3-tools",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator7-dbgsym_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.ddeb",
+      "sha256": "29d67a316d1d19d1f2f22c8a916ef6a3b4aa9395a8cf5bac5ee19b0f29760127",
+      "size": 77180,
+      "kind": "binary",
+      "package": "libindicator7-dbgsym",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator7_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.deb",
+      "sha256": "8014b6d373fcd4cf5b44915bc8893edeafd64e7232c84cb8213dcc720e737e3b",
+      "size": 22770,
+      "kind": "binary",
+      "package": "libindicator7",
+      "version": "16.10.0+18.04.20180321.1-0ubuntu8+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libindicator_16.10.0+18.04.20180321.1-0ubuntu8+unity3_amd64.buildinfo",
+      "sha256": "f88d1b67d41885de590098f69cf60dc4f7f1eac40375be90245adf25fe5f793e",
+      "size": 20436,
+      "kind": "buildinfo"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst",
+    "sha256": "d48b78645647c32d4c649374fb6920b135028de2a62715d142938b1f05defe80",
+    "size": 143090706,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json",
+    "sidecar_sha256": "228d4a7f87daaac9957dbb5e2d62e3a4fb0449a1670dd34e141de19545d46640",
+    "snapshot": "20260929T201245Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Tue, 29 Sep 2026 19:18:11 UTC",
+        "sha256": "d6d58182351b401877a611adfb38c7a6a5c249de6f6d5cf84c08de66e7bd0b0d"
+      },
+      "resolute-security": {
+        "date": "Tue, 29 Sep 2026 18:35:33 UTC",
+        "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-li023/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

@@ -1,0 +1,4 @@
++unity10, toggle unit v2 (fixed harness), 3 boots: STOP 1-450 ms after ON-BUS-GOTTEN, Power owned 3/3 - same dispatch order as +unity9.
+boot 1: (':1.54',); stops: 1; toggled
+boot 2: (':1.45',); stops: 1; toggled
+boot 3: (':1.50',); stops: 1; toggled

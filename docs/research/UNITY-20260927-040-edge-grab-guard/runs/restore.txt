@@ -1,0 +1,20 @@
+Обрабатываются триггеры для libc-bin (2.43-2ubuntu2.4) …
+libunity-core-6.0-9:amd64	7.7.1+26.04.20260306-0ubuntu3+unity11
+unity	7.7.1+26.04.20260306-0ubuntu3+unity11
+unity-schemas	7.7.1+26.04.20260306-0ubuntu3+unity11
+unity-services	7.7.1+26.04.20260306-0ubuntu3+unity11
+unity-uwidgets	7.7.1+26.04.20260306-0ubuntu3+unity11
+hsize=1 vsize=1
+047-after-L-target-desktop.txt
+047-before-L-target-desktop.txt
+examples.desktop
+restore-040.sh
+snap
+Видео
+Документы
+Загрузки
+Изображения
+Музыка
+Общедоступные
+Рабочий стол
+Шаблоны

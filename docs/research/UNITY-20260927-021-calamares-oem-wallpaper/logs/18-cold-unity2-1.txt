@@ -1,0 +1,9 @@
+ssh as oem up at 192.168.56.105 (17:25:57)
+== cold-unity2-1 start at uptime 52.84s  basicwallpaper sha256 077f7c36fc6c
+60.83 xfwm4 pid 1965
+70.32 wallpaper viewable 4194311
+96.84 calamares viewable 16777223
+97.05 focus -> 6291506 (Xfwm4)
+  0x400007   "basicwallpaper", "basicwallpaper"   STICKY, SKIP_PAGER, SKIP_TASKBAR, BELOW | DESKTOP, _KDEOVERRIDE, NORMAL
+  0x1000007  "calamares", "calamares"             MAXIMIZED_HORZ, MAXIMIZED_VERT | _KDEOVERRIDE, NORMAL
+115.95 pixel 700,200: #EFEFEF -> Calamares on top

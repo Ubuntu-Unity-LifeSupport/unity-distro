@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 15.04.1+21.10.20220802-0ubuntu7+unity7 is newer than resolute 15.04.1+21.10.20220802-0ubuntu6",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity-settings-daemon",
+  "source_commit": "b570a220e5b3fbb28c7ec3fbbb53277491545f12",
+  "candidate_source_version": "15.04.1+21.10.20220802-0ubuntu7+unity7",
+  "pockets": {
+    "resolute": "15.04.1+21.10.20220802-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-28T23:15:47Z",
+  "mode": "pockets",
+  "view_sha256": "e61c55cc809654200d0d769d8bf18cf60e26425d8f2ac0a880ef29b2d1775348"
+}

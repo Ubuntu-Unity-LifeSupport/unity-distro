@@ -1,0 +1,28 @@
+# +unity3 (35ecca4, final: ASan test), all sbuilds 2026-09-28. Both new tests OK in each; gtest-nux segfaults each time.
+== out-unity3-asan-attempt1
+[  PASSED  ] 130 tests.
+[       OK ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (952 ms)
+[       OK ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (281 ms)
+[  PASSED  ] 11 tests.
+[  PASSED  ] 18 tests.
+Segmentation fault         (core dumped) $binary $@
+Status: attempted
+[ RUN      ] TestWindowThread.MultiWatchFd
+== out-unity3-asan-attempt2
+[  PASSED  ] 130 tests.
+[       OK ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (827 ms)
+[       OK ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (268 ms)
+[  PASSED  ] 11 tests.
+[  PASSED  ] 18 tests.
+Segmentation fault         (core dumped) $binary $@
+Status: attempted
+[ RUN      ] EmbeddedContext.WindowThreadIsEmbedded
+== out-unity3
+[  PASSED  ] 130 tests.
+[       OK ] TestGraphicsDisplayFullscreen.DestroyAfterModeSwitchFreesModeListOnce (1050 ms)
+[       OK ] TestFrameBufferObject.ColourAttachmentIsKeptAndReleased (915 ms)
+[  PASSED  ] 11 tests.
+[  PASSED  ] 18 tests.
+Segmentation fault         (core dumped) $binary $@
+Status: attempted
+[ RUN      ] TestWindowThread.MultiWatchFd

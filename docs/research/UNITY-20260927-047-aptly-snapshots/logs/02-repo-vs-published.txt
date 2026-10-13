@@ -1,0 +1,9 @@
+## in repo, not in the published index (2026-09-27T21:52:01Z)
+unity-scope-calculator_0.1+14.04.20140328-0ubuntu6+unity1_all
+unity-scope-devhelp_0.1+14.04.20140328-0ubuntu5+unity1_all
+unity-scope-gnote_0.1+13.10.20130723-0ubuntu4+unity1_all
+unity-scope-manpages_3.0+14.04.20140324-0ubuntu5+unity1_all
+unity-scope-tomboy_0.1+13.10.20130723-0ubuntu4+unity1_all
+unity-scope-virtualbox_0.1+13.10.20130723-0ubuntu4+unity1_all
+unity-scope-zotero_0.1+13.10.20130723-0ubuntu4+unity1_all
+## in the published index, not in repo

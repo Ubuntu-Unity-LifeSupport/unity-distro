@@ -1,0 +1,80 @@
+### round 1
+=================== gnome-calendar (pid 91818)
+  shim: NOT HOOKED in pid 91818
+  ok        app.sync                                 Синхронизировать календари
+  ok        win.open-date-time-settings              Настройки даты и времени…
+  ok        win.open-online-accounts                 Сетевые учётные записи…
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        app.about                                О приложении
+=================== showtime (pid 91870)
+  shim: NOT HOOKED in pid 91870
+  ok        app.new-window                           Новое окно
+  ok        win.open-video                           Открыть…
+  disabled  win.show-in-files                        Показать в Файлах
+  disabled  win.screenshot                           Сделать снимок экрана
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        win.about                                О приложении
+### round 2
+=================== gnome-calendar (pid 91989)
+  shim: NOT HOOKED in pid 91989
+  ok        app.sync                                 Синхронизировать календари
+  ok        win.open-date-time-settings              Настройки даты и времени…
+  ok        win.open-online-accounts                 Сетевые учётные записи…
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        app.about                                О приложении
+=================== showtime (pid 92038)
+  shim: NOT HOOKED in pid 92038
+  ok        app.new-window                           Новое окно
+  ok        win.open-video                           Открыть…
+  disabled  win.show-in-files                        Показать в Файлах
+  disabled  win.screenshot                           Сделать снимок экрана
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        win.about                                О приложении
+### round 3
+=================== gnome-calendar (pid 92152)
+  shim: NOT HOOKED in pid 92152
+  ok        app.sync                                 Синхронизировать календари
+  ok        win.open-date-time-settings              Настройки даты и времени…
+  ok        win.open-online-accounts                 Сетевые учётные записи…
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        app.about                                О приложении
+=================== showtime (pid 92208)
+  shim: NOT HOOKED in pid 92208
+  ok        app.new-window                           Новое окно
+  ok        win.open-video                           Открыть…
+  disabled  win.show-in-files                        Показать в Файлах
+  disabled  win.screenshot                           Сделать снимок экрана
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        win.about                                О приложении
+### round 4
+=================== gnome-calendar (pid 92325)
+  shim: NOT HOOKED in pid 92325
+  ok        app.sync                                 Синхронизировать календари
+  ok        win.open-date-time-settings              Настройки даты и времени…
+  ok        win.open-online-accounts                 Сетевые учётные записи…
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        app.about                                О приложении
+=================== showtime (pid 92378)
+  shim: NOT HOOKED in pid 92378
+  ok        app.new-window                           Новое окно
+  ok        win.open-video                           Открыть…
+  disabled  win.show-in-files                        Показать в Файлах
+  disabled  win.screenshot                           Сделать снимок экрана
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        win.about                                О приложении
+### round 5
+=================== gnome-calendar (pid 92500)
+  shim: NOT HOOKED in pid 92500
+  ok        app.sync                                 Синхронизировать календари
+  ok        win.open-date-time-settings              Настройки даты и времени…
+  ok        win.open-online-accounts                 Сетевые учётные записи…
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        app.about                                О приложении
+=================== showtime (pid 92547)
+  shim: NOT HOOKED in pid 92547
+  ok        app.new-window                           Новое окно
+  ok        win.open-video                           Открыть…
+  disabled  win.show-in-files                        Показать в Файлах
+  disabled  win.screenshot                           Сделать снимок экрана
+  ok        app.shortcuts                            Комбинации клавиш
+  ok        win.about                                О приложении

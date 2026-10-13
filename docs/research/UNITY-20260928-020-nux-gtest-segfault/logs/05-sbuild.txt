@@ -1,0 +1,5 @@
+# sbuild (build_sbuild.py) of packages/nux 0274bc5 (+unity3 = 027's 35ecca4 + the two test patches), three builds in a row, 2026-09-28.
+BUILD 1 EXIT=0 [  PASSED  ] 130 tests. [  PASSED  ] 11 tests. [  PASSED  ] 18 tests. [  PASSED  ] 113 tests. Status: successful 
+BUILD 2 EXIT=0 [  PASSED  ] 130 tests. [  PASSED  ] 11 tests. [  PASSED  ] 18 tests. [  PASSED  ] 113 tests. Status: successful 
+BUILD 3 EXIT=0 [  PASSED  ] 130 tests. [  PASSED  ] 11 tests. [  PASSED  ] 18 tests. [  PASSED  ] 113 tests. Status: successful 
+# Before (logs of UNITY-20260927-027 logs/03, 07, 08): 35ecca4 and 85c6c4a 1 clean of 5; unchanged +unity2 0 of 2.

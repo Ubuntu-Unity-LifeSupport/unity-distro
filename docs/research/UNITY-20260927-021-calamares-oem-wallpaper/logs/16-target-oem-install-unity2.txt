@@ -1,0 +1,92 @@
+# UNITY-20260927-021 target step 1'': Calamares OEM install from the live session carrying +unity2
+# Calamares -D8 log excerpt (full log: 848 lines, sha256 c966e241a183155e)
+    CppJobModule "shellprocess@oemprep" loading complete. 
+    CppJobModule "shellprocess@fix-oem-uid" loading complete. 
+    Starting job "Managing auto-mount settings…" ( 1 / 44 ) 
+    Starting job "Clearing all temporary mounts…" ( 2 / 44 ) 
+    Starting job "Clear mounts for partitioning operations on /dev/sda" ( 3 / 44 ) 
+    Starting job "Creating new msdos partition table on /dev/sda…" ( 4 / 44 ) 
+    Starting job "Create new 25599MiB partition on /dev/sda (VBOX HARDDISK) with file system ext4" ( 5 / 44 ) 
+    Starting job "Set flags on partition /dev/sda1" ( 6 / 44 ) 
+    Starting job "Set partition information" ( 7 / 44 ) 
+    Starting job "Managing auto-mount settings…" ( 8 / 44 ) 
+    Starting job "mount" ( 9 / 44 ) 
+    Starting job "unpackfs" ( 10 / 44 ) 
+    Starting job "Generate machine-id." ( 11 / 44 ) 
+    Starting job "fstab" ( 12 / 44 ) 
+    Starting job "Setting timezone to Europe/Berlin…" ( 13 / 44 ) 
+    Starting job "Setting keyboard model to pc105, layout as us-…" ( 14 / 44 ) 
+    Starting job "localecfg" ( 15 / 44 ) 
+    Starting job "Configuring LUKS key file." ( 16 / 44 ) 
+    Starting job "Configuring <pre>sudo</pre> users…" ( 17 / 44 ) 
+    Starting job "Preparing groups…" ( 18 / 44 ) 
+    Starting job "Create user oem" ( 19 / 44 ) 
+    Starting job "Set password for user oem" ( 20 / 44 ) 
+    Starting job "Set password for user root" ( 21 / 44 ) 
+    Starting job "Set hostname oem-virtualbox" ( 22 / 44 ) 
+    Starting job "displaymanager" ( 23 / 44 ) 
+    Starting job "networkcfg" ( 24 / 44 ) 
+    Starting job "hwclock" ( 25 / 44 ) 
+    Starting job "Running shell processes…" ( 26 / 44 ) 
+    Starting job "Running shell processes…" ( 27 / 44 ) 
+    Starting job "Running shell processes…" ( 28 / 44 ) 
+    Starting job "Running shell processes…" ( 29 / 44 ) 
+    Starting job "initramfscfg" ( 30 / 44 ) 
+    Starting job "Creating initramfs…" ( 31 / 44 ) 
+    Starting job "grubcfg" ( 32 / 44 ) 
+    Starting job "Performing contextual processes' job…" ( 33 / 44 ) 
+    Starting job "bootloader" ( 34 / 44 ) 
+    Starting job "Running shell processes…" ( 35 / 44 ) 
+    Starting job "automirror" ( 36 / 44 ) 
+    Starting job "packages" ( 37 / 44 ) 
+    Starting job "Running shell processes…" ( 38 / 44 ) 
+    .. Running QList("/bin/sh", "-c", "/usr/libexec/calamares-oemprep.sh /tmp/calamares-root-8dchtpwf") 
+    Starting job "Running shell processes…" ( 39 / 44 ) 
+    Starting job "Performing contextual processes' job…" ( 40 / 44 ) 
+    Starting job "Performing contextual processes' job…" ( 41 / 44 ) 
+    Starting job "Running shell processes…" ( 42 / 44 ) 
+    Starting job "Running shell processes…" ( 43 / 44 ) 
+    Starting job "Unmounting file systems…" ( 44 / 44 ) 
+    Notification not sent; completion: succeeded 
+
+# checks on the installed disk and instrumentation (first run stopped at install -o with a uid unknown to the live system; finished by hand)
+== date (UTC)
+2026-09-29T17:15:24Z
+== target basicwallpaper
+-rwxr-xr-x 1 root root 1240448 Sep 29 17:58 /mnt/t/usr/bin/basicwallpaper
+077f7c36fc6c90d046282775fc3d52515d367e58a055a4e89720c9caa444ff9f  /mnt/t/usr/bin/basicwallpaper
+== target OEM files
+-rwxr-xr-x 1 root root 401 Sep 29 17:58 /mnt/t/usr/libexec/start-ubuntu-unity-oem-env
+-rw-r--r-- 1 root root 160 Sep 29 17:58 /mnt/t/usr/share/xsessions/ubuntu-unity-oem-environment.desktop
+
+/mnt/t/home/oem/Desktop/:
+total 12
+drwxr-xr-x 2 60999 60999 4096 Sep 29 17:58 .
+drwxr-xr-x 3 60999 60999 4096 Sep 29 17:58 ..
+-rw-r--r-- 1 60999 60999  223 Sep 29 17:58 calamares-finish-oem.desktop
+== target calamares packages
+calamares 3.3.14-0ubuntu25 ii 
+calamares-data 3.3.14-0ubuntu25 ii 
+== target sources
+ubuntu.sources
+== oem id
+oem:x:60999:60999:OEM configuration:/home/oem:/bin/bash
+== instrumentation: openssh-server + key for oem
+/usr/sbin/policy-rc.d returned 101, not running 'restart ssh.socket'
+Processing triggers for man-db (2.13.1-1build1) ...
+Processing triggers for ufw (0.36.2-9build1) ...
+oem home owner 60999:60999
+install: invalid user: '60999'
+ls: cannot access '/mnt/t/usr/sbin/policy-rc.d': No such file or directory
+lrwxrwxrwx 1 root root 39 Sep 29 18:45 /mnt/t/etc/resolv.conf -> ../run/systemd/resolve/stub-resolv.conf
+ls: cannot open directory '/mnt/t/home/oem/.ssh': Permission denied
+total 12
+drwx------ 2 60999 60999 4096 Sep 29 19:16 .
+drwxr-xr-x 4 60999 60999 4096 Sep 29 19:16 ..
+-rw------- 1 60999 60999   98 Sep 29 19:16 authorized_keys
+enabled
+disabled
+== basicwallpaper unchanged after instrumentation
+077f7c36fc6c90d046282775fc3d52515d367e58a055a4e89720c9caa444ff9f  /mnt/t/usr/bin/basicwallpaper
+sda1 unmounted
+R021-AFTER-OK

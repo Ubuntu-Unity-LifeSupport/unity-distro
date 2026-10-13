@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261002-002",
+  "package": "unity-settings-daemon",
+  "source_commit": "122c4137bc38a141ec5536125a44839ec06c09fd",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/README.md",
+      "sha256": "8458087f7e76008e0d4cdc9bc4889ee12793a77e6502dd060739f157deaae2e9"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/README.md",
+      "sha256": "8458087f7e76008e0d4cdc9bc4889ee12793a77e6502dd060739f157deaae2e9"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "0461a868effa5775c767d94278beeef6e4e896b2c110985887367c847239555a"
+    },
+    "decision_record": {
+      "file": "docs/DECISIONS.md",
+      "sha256": "2ff6c214a783eb4a15801e4bb75a7be0d86b86a1341abdca244a9dde8b2d3c3a"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/gate/release-record.json",
+      "sha256": "6a4887d20b694dced7cc009de51b19e629aac1f97b68aaf36fc6ddd29e44922c"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261002-002-usd-power-bus-race/gate/version-check.json",
+      "sha256": "4c494d8eeb86d14ce96582d71c2b92393a243688efaf0382e4ce4063d92914a7"
+    }
+  }
+}

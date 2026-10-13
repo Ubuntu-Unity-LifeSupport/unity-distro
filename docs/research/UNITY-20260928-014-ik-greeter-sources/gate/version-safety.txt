@@ -1,0 +1,45 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 0.0.0+19.10.20240924-0ubuntu1+unity4 is newer than resolute 0.0.0+19.10.20240924-0ubuntu1",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "indicator-keyboard",
+  "source_commit": "5d6a8c57443061f624258c43d39fc7cee36bb759",
+  "candidate_source_version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+  "pockets": {
+    "resolute": "0.0.0+19.10.20240924-0ubuntu1"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T21:48:54Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "indicator-keyboard-dbgsym",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+      "architecture": "amd64",
+      "apt_candidate": "0.0.0+19.10.20240924-0ubuntu1+unity4"
+    },
+    {
+      "package": "indicator-keyboard",
+      "version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+      "architecture": "amd64",
+      "apt_candidate": "0.0.0+19.10.20240924-0ubuntu1+unity4"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260928-014",
+    "packages": 324,
+    "list_sha256": "f38fdce96004cef7ac0b0134dcdae333e11013d6a36109eafa541ff1c3ba69af",
+    "model_entries": 292,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "f4174efbbc10924f2acfdbf494fe70aa1c244124bb22a8240b4e2dc05b8b46c9"
+}

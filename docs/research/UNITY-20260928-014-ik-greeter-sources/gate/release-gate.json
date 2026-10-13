@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260928-014",
+  "package": "indicator-keyboard",
+  "target_series": "resolute",
+  "candidate_version": "0.0.0+19.10.20240924-0ubuntu1+unity4",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/b/unity-distro-014/packages/indicator-keyboard",
+  "source_remote_ref": "origin/b/UNITY-20260928-014",
+  "source_commit": "5d6a8c57443061f624258c43d39fc7cee36bb759",
+  "source_tree_hash": "07661b25891c6a352451f942cf034243bbd6e9e8",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20260928-014"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20260928-014-ik-greeter-sources/build-gated/UNITY-20260928-014-indicator-keyboard-build-manifest.json",
+    "sha256": "8ab698504eb00fc2adc3ddbde91d7e51c7618abfa961146b22044c30cba24635"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20260928-014-ik-greeter-sources/gate/evidence-manifest.json",
+    "sha256": "ae6bc39a8e3cc97f6751d5f33085af146a679658a8fde0a5483c9411b89d62fe"
+  }
+}

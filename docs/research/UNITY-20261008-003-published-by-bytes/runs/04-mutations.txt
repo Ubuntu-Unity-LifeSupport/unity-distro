@@ -1,0 +1,33 @@
+== none: 49 passed, 85 subtests passed
+== names-only (rule 1 by names): 15 failed, 34 passed, 85 subtests passed
+   FAILED PublishedByTest::test_ancestor_commit_refused
+   FAILED PublishedByTest::test_artifact_sets_compared_by_bytes_both_ways
+   FAILED PublishedByTest::test_buildinfo_identity_field_refused
+   FAILED PublishedByTest::test_buildinfo_other_sha_refused
+   FAILED PublishedByTest::test_gate_of_another_task_refused
+   FAILED PublishedByTest::test_gate_sha_mismatch_refused
+   FAILED PublishedByTest::test_gate_uncommitted_or_missing_refused
+   FAILED PublishedByTest::test_names_equal_bytes_differ_without_buildinfo_refused
+   FAILED PublishedByTest::test_other_tree_or_build_dependencies_refused
+   FAILED PublishedByTest::test_published_buildinfo_uncommitted_refused
+   FAILED PublishedByTest::test_published_manifest_sha_mismatch_refused
+   FAILED PublishedByTest::test_rebuild_other_installed_build_depends_refused
+   FAILED PublishedByTest::test_two_or_no_buildinfo_refused
+   FAILED PublishedByTest::test_uncommitted_buildinfo_refused
+   FAILED PublishedByTest::test_unhashable_artifact_field_is_a_refusal_not_a_crash
+== IBD comparison skipped: 5 failed, 48 passed, 81 subtests passed
+   FAILED PublishedByTest::test_rebuild_other_installed_build_depends_refused
+== uncommitted .buildinfo accepted: 4 failed, 45 passed, 85 subtests passed
+   FAILED PublishedByTest::test_published_buildinfo_uncommitted_refused
+   FAILED PublishedByTest::test_uncommitted_buildinfo_refused
+   FAILED TestedBuildEndToEndTest::test_gate_refuses_uncommitted_buildinfo
+   FAILED TestedBuildEndToEndTest::test_publish_refuses_buildinfo_removed_from_git_after_the_gate
+== gate sha check skipped: 1 failed, 48 passed, 85 subtests passed
+   FAILED PublishedByTest::test_gate_sha_mismatch_refused
+== gate task_id check skipped: 1 failed, 48 passed, 85 subtests passed
+   FAILED PublishedByTest::test_gate_of_another_task_refused
+== commit comparison skipped: 2 failed, 47 passed, 85 subtests passed
+   FAILED PublishedByTest::test_ancestor_commit_refused
+   FAILED PublishedByTest::test_other_tree_or_build_dependencies_refused
+== gate buildinfo check removed: 1 failed, 48 passed, 85 subtests passed
+   FAILED TestedBuildEndToEndTest::test_gate_refuses_uncommitted_buildinfo

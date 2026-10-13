@@ -1,0 +1,8 @@
++unity9, toggle unit v1 (active=false, sleep 0.3, active=true, no wait), 6 boots: no STOP in any trace, Power owned 6/6.
+Both writes land while the main loop is blocked in the plugin-start phase (window 4.5-19.7 s here); when it resumes the key reads true: nothing is stopped. Not a reproduction; kept as evidence of the coalescing.
+boot 1: (':1.43',); stops: 0; toggled
+boot 2: (':1.50',); stops: 0; toggled
+boot 3: (':1.31',); stops: 0; toggled
+boot 4: (':1.44',); stops: 0; toggled
+boot 5: (':1.55',); stops: 0; toggled
+boot 6: (':1.54',); stops: 0; toggled

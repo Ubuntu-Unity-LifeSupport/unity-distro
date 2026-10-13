@@ -1,0 +1,17 @@
+# UNITY-20260927-040, 2026-09-29 ~18:17Z (agent A), after C's "-041 switched" and the db backup (runs/db-backup.txt)
+repo show unity-resolute before: 310 packages (303 + the 7 records of UNITY-20260927-041); unity records: +unity1..+unity11 binaries, no +unity12
+snapshot list before: unity-resolute-20260927-021-r2, -20260927-041 (live . per the coordinator), -20260927-047, -20260928-019
+repo add unity-resolute: exactly the manifest's source and binary artifacts of build-gated/ (1 .dsc, 7 .deb, 3 .ddeb):
+[+] libunity-core-6.0-9-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+[+] libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+[+] libunity-core-6.0-dev_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+[+] unity-autopilot_7.7.1+26.04.20260306-0ubuntu3+unity12_all added
+[+] unity-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+[+] unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity12_all added
+[+] unity-services-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+[+] unity-services_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+[+] unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity12_all added
+[+] unity_7.7.1+26.04.20260306-0ubuntu3+unity12_source added
+[+] unity_7.7.1+26.04.20260306-0ubuntu3+unity12_amd64 added
+repo show unity-resolute after: 321 packages (+11)
+snapshot create unity-resolute-20260927-040 from repo unity-resolute: successfully created

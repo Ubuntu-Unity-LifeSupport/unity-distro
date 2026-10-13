@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260929-016",
+  "package": "tiny013",
+  "candidate_version": "1.0",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/016-real/tiny013",
+  "source_commit": "94b6627b8139935fc76e7f75ba8dd3b6f69ea321",
+  "source_tree_hash": "5993899cb638e7c24ee74afafcb53d03af41b3e4",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst"
+  ],
+  "build_started": "2026-09-29T20:14:35.177802+00:00",
+  "build_finished": "2026-09-29T20:17:30.670287+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260929-016-tiny013-1.0-sbuild.log",
+    "sha256": "32dc8faf7a3fcf047015be1f2e836f49da2996be2355bec6dd15e98a7dbabe2d"
+  },
+  "artifacts": [
+    {
+      "file": "tiny013_1.0.dsc",
+      "sha256": "c3c231052ab9a367fdbee99b61be02472a8e02e81092a40952395d13f60888ca",
+      "size": 499,
+      "kind": "source",
+      "package": "tiny013",
+      "version": "1.0"
+    },
+    {
+      "file": "tiny013_1.0_amd64.changes",
+      "sha256": "8f0476c037b7f059a79a66b7c9069deb71851f0da24b673a26de587676dffe5f",
+      "size": 902,
+      "kind": "changes"
+    },
+    {
+      "file": "tiny013_1.0.tar.xz",
+      "sha256": "be95cbf8fd4567750190dd43e9cefa5d002310c0016cc2c6fcf1c2f37b78bece",
+      "size": 608,
+      "kind": "source_file",
+      "package": "tiny013",
+      "version": "1.0"
+    },
+    {
+      "file": "tiny013_1.0_all.deb",
+      "sha256": "4482357ad3a55beedd81a38b868aa906371d1fa4aeef88d1f2c2417c5cbcb9fc",
+      "size": 854,
+      "kind": "binary",
+      "package": "tiny013",
+      "version": "1.0",
+      "architecture": "all"
+    },
+    {
+      "file": "tiny013_1.0_amd64.buildinfo",
+      "sha256": "811be5e543607cf3e0dd504a3400e0c387bdabe4bf1c63dfc4c46a69391dd264",
+      "size": 5578,
+      "kind": "buildinfo"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.tar.zst",
+    "sha256": "d48b78645647c32d4c649374fb6920b135028de2a62715d142938b1f05defe80",
+    "size": 143090706,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20260929T201245Z.json",
+    "sidecar_sha256": "228d4a7f87daaac9957dbb5e2d62e3a4fb0449a1670dd34e141de19545d46640",
+    "snapshot": "20260929T201245Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Tue, 29 Sep 2026 19:18:11 UTC",
+        "sha256": "d6d58182351b401877a611adfb38c7a6a5c249de6f6d5cf84c08de66e7bd0b0d"
+      },
+      "resolute-security": {
+        "date": "Tue, 29 Sep 2026 18:35:33 UTC",
+        "sha256": "4161284ce550b462fce5d99230b87be775f3b35a68e1f3c9e41c56295986f0ea"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20260929T201245Z resolute-security InRelease [137 kB]"
+    ]
+  }
+}

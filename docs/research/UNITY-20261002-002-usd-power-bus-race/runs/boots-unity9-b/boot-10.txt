@@ -1,0 +1,18 @@
+boot_id 7f7b4bdb-4f6c-444c-a998-d52f9e04ccb4 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2557 drop-ins:  power-owner: (':1.47',)
+62432 ms pid 2557 MANAGER-NEW (register_manager_dbus, inlined)
+62432 ms pid 2557 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x756375947b05
+        0x756375947d44
+        0x756375936920
+        0x75637572bc1b
+        0x75637572d257
+        g_main_loop_run+311
+
+68546 ms pid 2557 ON-BUS-GOTTEN

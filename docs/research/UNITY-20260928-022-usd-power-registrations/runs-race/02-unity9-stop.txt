@@ -1,0 +1,15 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9, mode stop, 18:49:26
+after start: owner Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwner: Could n
+after plugin off/on: owner Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwner: Could n
+Power Get Icon: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.Settings
+START-RETURNED bus_cancellable=0x55555562f8b0
+STOP-CALLED bus_cancellable=(nil)
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+ON-BUS-GOTTEN
+u-s-d back under systemd: owner (':1.108',)

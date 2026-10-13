@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "result": "UNKNOWN",
+  "reasons": [
+    "candidate 15.10+21.04.20210304-0ubuntu6+unity3 is newer than resolute 15.10+21.04.20210304-0ubuntu6",
+    "pre-build check: ordering only; apt selection not measured, never SAFE"
+  ],
+  "target_series": "resolute",
+  "source_package": "indicator-datetime",
+  "source_commit": "9a004468998ce694079698ae7225b52e23efe28c",
+  "candidate_source_version": "15.10+21.04.20210304-0ubuntu6+unity3",
+  "pockets": {
+    "resolute": "15.10+21.04.20210304-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T16:28:12Z",
+  "mode": "pockets",
+  "view_sha256": "775c6433bdaa89b519504007c93863c750a8d957efe86c1d565a1bb26ace0a5d"
+}

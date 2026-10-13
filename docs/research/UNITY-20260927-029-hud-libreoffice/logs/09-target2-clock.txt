@@ -1,0 +1,2 @@
+2026-10-02T15:06:57Z builder=2026-10-02T15:06:57Z target2 (running, pre-rollback, current_snapshot Clean-2, up 15:14): NTP=yes NTPSynchronized=no guest_utc=2026-09-30T14:15:26Z skew~-2d00h51m
+2026-10-02T15:38:29Z builder=2026-10-02T15:38:19Z target2 after restore Clean-2 + cold boot (no ~/.dirty before touch): NTP=yes NTPSynchronized=yes guest_utc=2026-10-02T15:38:24Z skew~+5s (ssh latency incl.); no set-ntp/date -s needed

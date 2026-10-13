@@ -1,0 +1,3 @@
+# UNITY-20260928-014 peer notice (ENGINEERING-PROCESS section 6)
+2026-09-29 21:49Z B -> A: indicator-keyboard 0.0.0+19.10.20240924-0ubuntu1+unity4, 3 records, snapshot unity-resolute-20260928-014 (= live -040 + 3), switch after C and May
+A -> B: A ACK UNITY-20260928-014 indicator-keyboard +unity4, no conflict; no repo add/snapshot/switch or apt against our repository planned (-020 is a tool task with a fake aptly)

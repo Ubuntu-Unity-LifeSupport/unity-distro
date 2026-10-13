@@ -1,0 +1,39 @@
+Started ld019r1.service - [systemd-run] /bin/sh /home/mike/restart-cycles.sh 6.
+cycle 1: utest's session leader (session-child) 40199; restarting lightdm
+  journal lightdm[40199] 'session closed for user utest': 1
+  wtmp after restart (last 3):
+    type=7 pid=40467 line='tty7' id=':0' user='utest' time=08:38:18Z
+    type=8 pid=0 line='tty7' id=':0' user='utest' time=08:41:45Z
+    type=7 pid=43904 line='tty7' id=':0' user='mike' time=08:41:46Z
+cycle 2: mike's session leader (session-child) 43894; restarting lightdm
+  journal lightdm[43894] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=43904 line='tty7' id=':0' user='mike' time=08:41:46Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=08:42:21Z
+    type=7 pid=46776 line='tty7' id=':0' user='mike' time=08:42:29Z
+cycle 3: mike's session leader (session-child) 46742; restarting lightdm
+  journal lightdm[46742] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=46776 line='tty7' id=':0' user='mike' time=08:42:29Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=08:43:02Z
+    type=7 pid=48266 line='tty7' id=':0' user='mike' time=08:43:06Z
+cycle 4: mike's session leader (session-child) 48260; restarting lightdm
+  journal lightdm[48260] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=48266 line='tty7' id=':0' user='mike' time=08:43:06Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=08:43:40Z
+    type=7 pid=49845 line='tty7' id=':0' user='mike' time=08:43:45Z
+cycle 5: mike's session leader (session-child) 49828; restarting lightdm
+  journal lightdm[49828] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=49845 line='tty7' id=':0' user='mike' time=08:43:45Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=08:44:18Z
+    type=7 pid=50909 line='tty7' id=':0' user='mike' time=08:44:23Z
+cycle 6: mike's session leader (session-child) 50903; restarting lightdm
+  journal lightdm[50903] 'session closed for user mike': 1
+  wtmp after restart (last 3):
+    type=7 pid=50909 line='tty7' id=':0' user='mike' time=08:44:23Z
+    type=8 pid=0 line='tty7' id=':0' user='mike' time=08:44:56Z
+    type=7 pid=52695 line='tty7' id=':0' user='mike' time=08:45:10Z
+ld019r1.service: Deactivated successfully.
+ld019r1.service: Consumed 2.423s CPU time over 3min 57.447s wall clock time, 4.3M memory peak.

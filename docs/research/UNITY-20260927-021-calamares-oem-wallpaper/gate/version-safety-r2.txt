@@ -1,0 +1,69 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 1:26.04.12+unity2 is newer than resolute 1:26.04.12",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "calamares-settings-ubuntu",
+  "source_commit": "c03daf48d5dbb719d985f75d5e96cc2a6df04e84",
+  "candidate_source_version": "1:26.04.12+unity2",
+  "pockets": {
+    "resolute": "1:26.04.12"
+  },
+  "in_archive": true,
+  "checked_at": "2026-09-29T16:07:38Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "calamares-settings-kubuntu",
+      "version": "1:26.04.12+unity2",
+      "architecture": "all",
+      "apt_candidate": "1:26.04.12+unity2"
+    },
+    {
+      "package": "calamares-settings-lubuntu",
+      "version": "1:26.04.12+unity2",
+      "architecture": "all",
+      "apt_candidate": "1:26.04.12+unity2"
+    },
+    {
+      "package": "calamares-settings-ubuntu-common-data",
+      "version": "1:26.04.12+unity2",
+      "architecture": "all",
+      "apt_candidate": "1:26.04.12+unity2"
+    },
+    {
+      "package": "calamares-settings-ubuntu-common-dbgsym",
+      "version": "1:26.04.12+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1:26.04.12+unity2"
+    },
+    {
+      "package": "calamares-settings-ubuntu-common",
+      "version": "1:26.04.12+unity2",
+      "architecture": "amd64",
+      "apt_candidate": "1:26.04.12+unity2"
+    },
+    {
+      "package": "calamares-settings-ubuntu-unity",
+      "version": "1:26.04.12+unity2",
+      "architecture": "all",
+      "apt_candidate": "1:26.04.12+unity2"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-021-r2",
+    "packages": 292,
+    "list_sha256": "99d9c04103a61475152e370aee3a0728413c1087f95aff8c55fe763c663b3f01",
+    "model_entries": 264,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "f7d8d71c15db6ce5b63c96288110cf8f07af6ab396eec99addf54db3a444c4d3"
+}

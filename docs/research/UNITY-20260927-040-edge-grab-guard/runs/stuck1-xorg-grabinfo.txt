@@ -1,0 +1,40 @@
+[   696.480] (II) Printing all currently active device grabs:
+[   696.480] Active grab 0x434012c3 (core) on device 'Virtual core pointer' (2):
+[   696.480]       client pid 2563 /usr/bin/compiz 
+[   696.480]       at 454281 (from passive grab) (device frozen, state 6)
+[   696.480]         core event mask 0x4c
+[   696.480]       passive grab type 4, detail 0x0, activating key 0
+[   696.480]       owner-events false, kb 1 ptr 0, confine 0, cursor 0x34001ac
+[   696.480] (II) End list of active device grabs
+[   696.480] Printing all currently registered grabs
+[   696.480]   Printing all registered grabs of client pid 1064 /usr/sbin/lightdm 
+[   696.480]   Printing all registered grabs of client pid 1701 /usr/libexec/ibus-x11 --kill-daemon
+[   696.480]   Printing all registered grabs of client pid 1689 /usr/libexec/ibus-ui-gtk3 
+[   696.480]   grab 0x4060001a (xi2), type 'KeyPress' on window 0x324
+[   696.480]     detail 65 (mask 0), modifiersDetail 66 (mask 0)
+[   696.480]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   696.480]       xi2 event mask 0xc 0 0 0 42 
+[   696.480]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   696.480]   grab 0x4060001b (xi2), type 'KeyPress' on window 0x324
+[   696.480]     detail 65 (mask 0), modifiersDetail 80 (mask 0)
+[   696.480]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   696.480]       xi2 event mask 0xc 0 0 0 42 
+[   696.480]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   696.480]   grab 0x4060001c (xi2), type 'KeyPress' on window 0x324
+[   696.480]     detail 65 (mask 0), modifiersDetail 82 (mask 0)
+[   696.480]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   696.480]       xi2 event mask 0xc 0 0 0 42 
+[   696.480]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   696.480]   grab 0x4060001d (xi2), type 'KeyPress' on window 0x324
+[   696.480]     detail 65 (mask 0), modifiersDetail 192 (mask 0)
+[   696.480]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   696.480]       xi2 event mask 0xc 0 0 0 42 
+[   696.480]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   696.480]   grab 0x4060001e (xi2), type 'KeyPress' on window 0x324
+[   696.480]     detail 65 (mask 0), modifiersDetail 194 (mask 0)
+[   696.480]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)
+[   696.480]       xi2 event mask 0xc 0 0 0 42 
+[   696.480]     owner-events true, kb 1 ptr 1, confine 0x0, cursor 0x0
+[   696.480]   grab 0x4060001f (xi2), type 'KeyPress' on window 0x324
+[   696.480]     detail 65 (mask 0), modifiersDetail 208 (mask 0)
+[   696.480]     device 'XIAllMasterDevices' (1), modifierDevice 'XIAllMasterDevices' (1)

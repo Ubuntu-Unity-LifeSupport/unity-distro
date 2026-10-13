@@ -1,0 +1,37 @@
+# UNITY-20260929-015 tests (2026-09-29T17:44:01Z, branch b/UNITY-20260929-015, working tree)
+## new tests
+test_real_snapshots (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationAptlyTest.test_real_snapshots) ... ok
+test_binary_rebuilt_same_version_other_bytes_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_binary_rebuilt_same_version_other_bytes_refused) ... ok
+test_binary_removed_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_binary_removed_refused) ... ok
+test_binary_replaced_by_other_version_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_binary_replaced_by_other_version_refused) ... ok
+test_binary_twice_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_binary_twice_refused) ... ok
+test_later_superset_snapshot_accepted (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_later_superset_snapshot_accepted)
+The regression: -021 after -019 switched ./resolute. ... ok
+test_local_repo_source_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_local_repo_source_refused) ... ok
+test_prefix_passed_when_not_dot (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_prefix_passed_when_not_dot) ... ok
+test_publish_show_failure_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_publish_show_failure_refused) ... ok
+test_record_without_binary_or_source_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_record_without_binary_or_source_refused) ... ok
+test_recorded_snapshot_live (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_recorded_snapshot_live) ... ok
+test_source_file_other_hash_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_source_file_other_hash_refused) ... ok
+test_source_missing_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_source_missing_refused) ... ok
+test_two_components_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_two_components_refused) ... ok
+test_two_source_packages_same_version_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_two_source_packages_same_version_refused) ... ok
+test_unknown_artifact_kind_refused (scripts.tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_unknown_artifact_kind_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.287s
+
+OK
+## full suite
+Ran 196 tests in 69.024s
+
+OK (skipped=1)
+## the same new tests against origin/main 8818028 scripts/taskctl.py (before the fix)
+     19 AttributeError: module 'taskctl' has no attribute 'confirm_live_publication'
+      1 Ran 16 tests in 0.942s
+      1 FAILED (errors=19)
+      1 ERROR: test_unknown_artifact_kind_refused (tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_unknown_artifact_kind_refused)
+      1 ERROR: test_two_source_packages_same_version_refused (tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_two_source_packages_same_version_refused)
+      1 ERROR: test_two_components_refused (tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_two_components_refused)
+      1 ERROR: test_source_missing_refused (tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_source_missing_refused)
+      1 ERROR: test_source_file_other_hash_refused (tests.test_taskctl_live_snapshot.ConfirmLivePublicationTest.test_source_file_other_hash_refused)

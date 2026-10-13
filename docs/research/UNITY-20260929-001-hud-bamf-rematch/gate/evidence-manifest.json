@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260929-001",
+  "package": "hud",
+  "source_commit": "b0c2444561557bb91d4b045bac73f1b6b5f0f6f4",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20260929-001-hud-bamf-rematch/README.md",
+      "sha256": "497083d6bcaf94f5266447a953af2af600f29293cfc9eccaf8f09c6dd0ec490a"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20260929-001-hud-bamf-rematch/README.md",
+      "sha256": "497083d6bcaf94f5266447a953af2af600f29293cfc9eccaf8f09c6dd0ec490a"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "8a8d1c7fb0e028f041f91723814cb30dbb862999360b1d953466741351a4162d"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20260929-001-hud-bamf-rematch/gate/release-record.json",
+      "sha256": "31a1e6353ae744c672037abf261760e20149f440630a000f21844cf30c9c7b7a"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20260929-001-hud-bamf-rematch/gate/version-check.json",
+      "sha256": "bac3935961c5a281f9cd67e290690acdbd2f0f2667edccef397c75133a0f24ee"
+    }
+  }
+}

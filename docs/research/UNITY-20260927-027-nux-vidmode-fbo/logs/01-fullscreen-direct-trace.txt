@@ -1,0 +1,55 @@
+# fullscreen-trace.bt while fullscreen-direct 1280 800 ran as mike on target2 display :0 (Xorg, XFree86-VidModeExtension,
+# 1280x800), archive libnux 0ubuntu12 (same fullscreen code as 0ubuntu15+unity2), 2026-09-28 ~17:59 EEST. The program exits 0.
+# 0x627b94ff6fc0 is the mode list: XFreed after the switch and again in ~GraphicsDisplay.
+# Four runs are in this trace: the first without malloc checking, then the three of logs/02 (each aborts inside the
+# second XFree of its list). The second XF86VidModeSwitchToMode per run is DestroyOpenGLWindow restoring the
+# original mode (GraphicsDisplayX11.cpp:1101), which uses its own copy, not the list. The @modes_out lines are
+# bpftrace dumping its map at exit.
+Attached 4 probes
+XF86VidModeGetAllModeLines -> list 0x627b94ff6fc0
+XFree(0)
+XFree(0)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x627b94ff6fc0)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x627b94fe7b50)
+XFree(0x627b94fe7a70)
+XFree(0x627b94fe7e00)
+XFree(0x627b94ff6fc0)
+XFree(0x627b950afc80)
+XF86VidModeGetAllModeLines -> list 0x57ab26d34f70
+XFree(0)
+XFree(0)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x57ab26d34f70)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x57ab26d33ec0)
+XFree(0x57ab26d33f80)
+XFree(0x57ab26d33e60)
+XFree(0x57ab26d34f70)
+XF86VidModeGetAllModeLines -> list 0x5f6853603f70
+XFree(0)
+XFree(0)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x5f6853603f70)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x5f6853602ec0)
+XFree(0x5f6853602f80)
+XFree(0x5f6853602e60)
+XFree(0x5f6853603f70)
+XF86VidModeGetAllModeLines -> list 0x6545a7da4f70
+XFree(0)
+XFree(0)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x6545a7da4f70)
+XF86VidModeSwitchToMode (fullscreen branch)
+XFree(0x6545a7da3ec0)
+XFree(0x6545a7da3f80)
+XFree(0x6545a7da3e60)
+XFree(0x6545a7da4f70)
+
+
+@modes_out[4766]: 96392602331008
+@modes_out[4777]: 104901679978368
+@modes_out[4725]: 108282920192144
+@modes_out[4786]: 111349843175296

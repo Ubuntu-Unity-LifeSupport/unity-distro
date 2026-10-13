@@ -1,0 +1,16 @@
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity10 pid 5550 01:08:52
+plugin restarted under gdb at 01:09:08; after start: 1 forced
+watches state is printed at STOP; plugin off at 01:09:18
+input injected at 01:09:22 (idle reset after stop)
+25 s after the input: 01:09:47
+input injected again
+--- gdb events:
+STOP dim=0 blank=0 sleep=0 warn=0 mode=0
+START
+FORCED cached SessionIsActive=1, is_virtual_machine=0
+IDLE-CB watch=4
+STOP dim=0 blank=0 sleep=4 warn=0 mode=0
+IDLE-CB watch=4
+START
+Thread 1 "unity-settings-" received signal SIGINT, Interrupt.
+callbacks after the last STOP: 1

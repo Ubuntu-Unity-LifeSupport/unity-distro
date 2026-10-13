@@ -1,0 +1,18 @@
+=== stop-cb run 1
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2290
+session manager PropertiesChanged signals: 2
+criticals since 23:51:15: 2
+      2 ettings-daemon[2290]: cd_client_get_connected: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 2290
+=== stop-cb run 2
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2290
+session manager PropertiesChanged signals: 2
+criticals since 23:51:45: 2
+      2 ettings-daemon[2290]: cd_client_get_connected: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 2290
+=== stop-cb run 3
+u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity5 pid 2290
+session manager PropertiesChanged signals: 2
+criticals since 23:52:13: 2
+      2 ettings-daemon[2290]: cd_client_get_connected: assertion 'CD_IS_CLIENT (client)' failed
+u-s-d pid now 2290

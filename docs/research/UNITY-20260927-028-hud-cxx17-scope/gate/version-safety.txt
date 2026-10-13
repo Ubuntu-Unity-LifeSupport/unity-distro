@@ -1,0 +1,147 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 14.10+17.10.20170619-0ubuntu6+unity3 is newer than resolute 14.10+17.10.20170619-0ubuntu6",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "hud",
+  "source_commit": "9e7c0939e236e92f6b9bc8ceecbed21d8bd51f93",
+  "candidate_source_version": "14.10+17.10.20170619-0ubuntu6+unity3",
+  "pockets": {
+    "resolute": "14.10+17.10.20170619-0ubuntu6"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-02T17:27:23Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "gir1.2-hud-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "gir1.2-hud-client-2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "hud-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "hud-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "hud-tools-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "hud-tools",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "hud",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-client2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-client2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-client2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-client2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-gtk1-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-gtk1-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-gtk1-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud-gtk1",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud2-dbgsym",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud2-dev",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud2-doc",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "all",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    },
+    {
+      "package": "libhud2",
+      "version": "14.10+17.10.20170619-0ubuntu6+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "14.10+17.10.20170619-0ubuntu6+unity3"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-028",
+    "packages": 387,
+    "list_sha256": "63866699fdedd63ee69a8d6746f5f1d8cdb783ff1969110519be9713f306d562",
+    "model_entries": 350,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "21be9e763c2218b7daaef08ea16c63ed8b86dbbe03b76f8662bbbb641e14a40f"
+}

@@ -1,0 +1,14 @@
+# existing-fix check 2026-09-27
+stonking (26.10.5, 64cfce8):
+18:	(cp lubuntu/oem/sudoers.oem lubuntu/oemconfig/etc/ && chmod 400 lubuntu/oemconfig/etc/sudoers.oem)
+34:	(cp kubuntu/oem/sudoers.oem kubuntu/oemconfig/etc/ && chmod 400 kubuntu/oemconfig/etc/sudoers.oem)
+51:	(cp ubuntuunity/oem/sudoers.oem ubuntuunity/oemconfig/etc/ && chmod 400 kubuntu/oemconfig/etc/sudoers.oem)
+resolute (c699701):
+18:	(cp lubuntu/oem/sudoers.oem lubuntu/oemconfig/etc/ && chmod 400 lubuntu/oemconfig/etc/sudoers.oem)
+34:	(cp kubuntu/oem/sudoers.oem kubuntu/oemconfig/etc/ && chmod 400 kubuntu/oemconfig/etc/sudoers.oem)
+51:	(cp ubuntuunity/oem/sudoers.oem ubuntuunity/oemconfig/etc/ && chmod 400 kubuntu/oemconfig/etc/sudoers.oem)
+history of the ubuntuunity sudoers line:
+c8f33d6 2024-03-17 Add Ubuntu Unity config, fix some bugs
+f777bbf 2024-02-12 Sync with archive.
+Launchpad calamares-settings-ubuntu, search 'sudoers' (all statuses):
+total 0

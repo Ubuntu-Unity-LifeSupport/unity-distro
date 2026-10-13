@@ -1,0 +1,30 @@
+e9109214717fbec99d74b249cdf148d9d12398ba5b4806a8a2a393127121cd99  /etc/apt/keyrings/unity-distro.asc
+Пол:31 http://de.archive.ubuntu.com/ubuntu resolute-backports/universe amd64 Packages [3 136 B]
+Пол:32 http://de.archive.ubuntu.com/ubuntu resolute-backports/universe amd64 Components [1 060 B]
+Получено 5 319 kB за 5с (998 kB/s)
+Чтение списков пакетов…
+unity-settings-daemon:
+  Установлен: 15.04.1+21.10.20220802-0ubuntu6
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity11
+  Таблица версий:
+     15.04.1+21.10.20220802-0ubuntu7+unity11 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity10 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity9 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity7 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity5 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity4 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity3 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity2 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+     15.04.1+21.10.20220802-0ubuntu7+unity1 500
+        500 http://192.168.56.10:8080 resolute/main amd64 Packages
+ *** 15.04.1+21.10.20220802-0ubuntu6 500
+        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status

@@ -1,0 +1,18 @@
+boot_id 22af9b10-b6f2-4e17-acef-5d3d90fee5d3 u-s-d 15.04.1+21.10.20220802-0ubuntu7+unity9 pid 2246 drop-ins:  power-owner: (':1.43',)
+68060 ms pid 2246 MANAGER-NEW (register_manager_dbus, inlined)
+68061 ms pid 2246 START
+
+        gsd_power_manager_start+0
+        gnome_settings_plugin_info_activate+95
+        maybe_activate_plugin+33
+        g_slist_foreach+48
+        gnome_settings_manager_start+459
+        name_acquired_handler+170
+        0x704107747b05
+        0x704107747d44
+        0x704107736920
+        0x70410752bc1b
+        0x70410752d257
+        g_main_loop_run+311
+
+73119 ms pid 2246 ON-BUS-GOTTEN

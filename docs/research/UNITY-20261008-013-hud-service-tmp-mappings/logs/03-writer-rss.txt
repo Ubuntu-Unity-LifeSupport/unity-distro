@@ -1,0 +1,10 @@
+# UNITY-20261008-013 writer-rss.sh 30 on target2 (hud +unity5, the session of the +unity5 leak run, after its 20 queries), 2026-10-08 ~22:15Z
+hud 14.10+17.10.20170619-0ubuntu6+unity5, hud-service pid 3638
+after  0 Writer starts: rss_kB   44216 tmp-maps  63 fds  15
+after  5 Writer starts: rss_kB   44216 tmp-maps  63 fds  15
+after 10 Writer starts: rss_kB   44216 tmp-maps  63 fds  15
+after 15 Writer starts: rss_kB   44216 tmp-maps  63 fds  15
+after 20 Writer starts: rss_kB   44260 tmp-maps  63 fds  15
+after 25 Writer starts: rss_kB   44260 tmp-maps  63 fds  15
+after 30 Writer starts: rss_kB   44260 tmp-maps  63 fds  15
+after 30 +30 s Writer starts: rss_kB   44260 tmp-maps  63 fds  15

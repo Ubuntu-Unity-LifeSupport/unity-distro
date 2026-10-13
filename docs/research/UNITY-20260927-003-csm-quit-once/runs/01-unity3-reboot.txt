@@ -1,0 +1,22 @@
+вер 28 08:05:03.487576 mike-virtualbox delaytest[20845]: action=reboot cinnamon-session 6.4.2-1+unity3; inhibitors: 1
+вер 28 08:05:08.774199 mike-virtualbox delaytest[20970]: clicking Перезагрузить
+вер 28 08:05:09.140577 mike-virtualbox cinnamon-session[2245]: cinnamon-session-binary[2245]: WARNING: t+33064.58923s: Requesting system restart...
+вер 28 08:05:09.140491 mike-virtualbox cinnamon-session-binary[2245]: WARNING: t+33064.58923s: Requesting system restart...
+вер 28 08:05:09.190399 mike-virtualbox delaytest[20981]: t=1 seat0=3/mike compiz=17564 csm=2245
+вер 28 08:05:10.584351 mike-virtualbox delaytest[21056]: t=2 seat0= compiz=17564 csm=
+вер 28 08:05:11.743342 mike-virtualbox delaytest[21117]: t=3 seat0= compiz= csm=
+вер 28 08:05:13.335304 mike-virtualbox delaytest[21132]: t=4 seat0= compiz= csm=
+вер 28 08:05:14.431516 mike-virtualbox delaytest[21200]: t=5 seat0=c1/lightdm compiz= csm=
+вер 28 08:05:15.506121 mike-virtualbox delaytest[21239]: t=6 seat0=c1/lightdm compiz= csm=
+вер 28 08:05:20.023328 mike-virtualbox delaytest[21412]: t=10 seat0=c1/lightdm compiz= csm=
+вер 28 08:05:42.692937 mike-virtualbox delaytest[21623]: t=30 seat0=c1/lightdm compiz= csm=
+вер 28 08:06:09.358273 mike-virtualbox systemd-logind[20805]: System is rebooting.
+--- counts (cinnamon-session-binary tag only, to avoid the doubled stderr copy)
+Requesting system restart: 1
+Requesting system shutdown: 0
+OperationInProgress: 0
+not confirmed by logind: 0
+--- last delaytest tick with the session manager alive
+вер 28 08:05:09.190399 mike-virtualbox delaytest[20981]: t=1 seat0=3/mike compiz=17564 csm=2245
+--- first tick without it
+вер 28 08:05:10.584351 mike-virtualbox delaytest[21056]: t=2 seat0= compiz=17564 csm=

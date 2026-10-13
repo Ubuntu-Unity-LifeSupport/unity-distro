@@ -1,0 +1,23 @@
+packages: cinnamon-session=6.4.2-1+unity3 compiz-core=1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 libgtk-nocsd0=4.8-1+unity3 nux-tools=4.0.8+18.10.20180623-0ubuntu15+unity2 unity=7.7.1+26.04.20260306-0ubuntu3+unity11 
+geometry: 2560, 1600
+before:     compiz=2781 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+sighup 1:   compiz=2781 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+sighup 2:   compiz=2781 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+sighup 3:   compiz=2781 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+sighup 4:   compiz=2781 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+sighup 5:   compiz=2781 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+journal since 2026-09-28 19:31:41: segfault|general protection|dumped core|g_hash_table: 0
+/var/crash: 
+unity7 restart: compiz=9370 gt-1280-0@1844,62 vp-0-0@200,232 vp-0-800@200,1032 vp-1280-0@1480,232 vp-1280-800@1480,1032 
+journal since 2026-09-28 19:31:41: segfault|general protection|dumped core|g_hash_table: 0
+/var/crash: 
+--- gtk-nocsd crash handler
+pid 10564 argv ['/tmp/segv.py', 'first-run']
+pid 10569 argv ['/tmp/segv.py', 'first-run']
+Segmentation fault (core dumped)
+python exit=139
+2574 /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/python3 /usr/bin/unity-indicator-appearance
+3064 /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/python3 /usr/bin/onboard --not-show-in=GNOME,GNOME-Classic:GNOME --startup-delay=3.0
+10688 /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/python3 /usr/share/apport/apport-gtk
+journal since 2026-09-28 19:31:41: segfault|general protection|dumped core|g_hash_table: 0
+/var/crash: _usr_lib_cargo_bin_coreutils_timeout.1000.crash 

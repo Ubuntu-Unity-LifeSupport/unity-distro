@@ -1,0 +1,15 @@
+Устанавливается новая версия файла настройки /etc/xdg/autostart/unity-settings-daemon.desktop …
+== run 1
+watch id 4 from :1.118
+watch id 5 from :1.119
+u-s-d 15.04.1+21.10.20220802-0ubuntu6: pid 6079 -> 6150: DIED
+  вер 28 04:46:43.554801 mike-virtualbox unity-settings-daemon-localeexec[6079]: double free or corruption (!prev)
+  вер 28 04:46:44.820565 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+  вер 28 04:46:45.098057 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 1.
+== run 2
+watch id 4 from :1.122
+watch id 5 from :1.123
+u-s-d 15.04.1+21.10.20220802-0ubuntu6: pid 6150 -> 6227: DIED
+  вер 28 04:47:21.473375 mike-virtualbox unity-settings-daemon-localeexec[6150]: double free or corruption (!prev)
+  вер 28 04:47:22.795103 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Main process exited, code=dumped, status=6/ABRT
+  вер 28 04:47:23.098435 mike-virtualbox systemd[1262]: unity-settings-daemon.service: Scheduled restart job, restart counter is at 2.

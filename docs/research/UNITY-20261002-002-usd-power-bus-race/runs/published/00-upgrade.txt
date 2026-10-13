@@ -1,0 +1,15 @@
+2
+  Установлен: 15.04.1+21.10.20220802-0ubuntu7+unity10
+  Кандидат:   15.04.1+21.10.20220802-0ubuntu7+unity10
+  Таблица версий:
+ *** 15.04.1+21.10.20220802-0ubuntu7+unity10 500
+Обновлено 0 пакетов, установлено 0 новых пакетов, переустановлено 3 пакетов, для удаления отмечено 0 пакетов, и 42 пакетов не обновлено.
+Пол:1 http://192.168.56.10:8080 resolute/main amd64 libunity-settings-daemon1 amd64 15.04.1+21.10.20220802-0ubuntu7+unity10 [67,9 kB]
+Пол:2 http://192.168.56.10:8080 resolute/main amd64 unity-settings-daemon amd64 15.04.1+21.10.20220802-0ubuntu7+unity10 [1 730 kB]
+Пол:3 http://192.168.56.10:8080 resolute/main amd64 unity-settings-daemon-schemas all 15.04.1+21.10.20220802-0ubuntu7+unity10 [14,0 kB]
+525413cff756b9bbbe2f0384dcf4a4ba057b9deb5c878873a96c5a219f60f786  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity10_amd64.deb
+37115e246466ddd548af6d0a942c6f6f9830e201acdc963d2bb03dc99aa78e38  libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity10_amd64.deb
+8f3192d411967342f312dc0fc21ca6eb66eb79019d7391332e4db58b8ec87742  unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity10_all.deb
+dpkg-V-clean
+0
+0

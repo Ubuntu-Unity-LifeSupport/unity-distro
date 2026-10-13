@@ -1,0 +1,231 @@
+Started ld019tests2.service - [systemd-run] /bin/sh /home/mike/run-tests-2.sh Utest-019pw.
+=== phase T3b-forced-in-pam_systemd-close (4 cycles) 10:11:16Z
+cycle 1: logout utest
+Ошибка: GDBus.Error:org.gnome.SessionManager.NotInRunning: Logout interface is only available during the Running phase
+cycle 1: Logout did not end session 181 in 20 s, loginctl terminate-session
+cycle 1: utest session on seat0, greeter gone after 1s
+--- state after cycle 1 (10:12:33.131Z)
+sessions: 245 1001 utest seat0 57505 user    - no -
+sessions: 246 1001 utest -     57764 manager - no -
+sessions: 248 1000 mike  -     60201 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=245 Name=utest Scope=session-245.scope Leader=57505 Class=user State=active
+session: Id=246 Name=utest Scope= Leader=57764 Class=manager State=active
+session: Id=248 Name=mike Scope= Leader=60201 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-245.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 2: logout utest
+cycle 2: utest off seat0 after 1s
+cycle 2: greeter up after 2s, logging in
+cycle 2: utest session on seat0, greeter gone after 1s
+--- state after cycle 2 (10:13:21.578Z)
+sessions: 250 1001 utest seat0 60610 user    - no -
+sessions: 251 1001 utest -     60700 manager - no -
+users: 1001 utest no active
+session: Id=250 Name=utest Scope=session-250.scope Leader=60610 Class=user State=active
+session: Id=251 Name=utest Scope= Leader=60700 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-250.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 3: logout utest
+cycle 3: utest off seat0 after 2s
+cycle 3: greeter up after 2s, logging in
+cycle 3: utest session on seat0, greeter gone after 1s
+--- state after cycle 3 (10:14:11.423Z)
+sessions: 257 1001 utest seat0 63518 user    - no -
+sessions: 258 1001 utest -     63688 manager - no -
+users: 1001 utest no active
+session: Id=257 Name=utest Scope=session-257.scope Leader=63518 Class=user State=active
+session: Id=258 Name=utest Scope= Leader=63688 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-257.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 4: logout utest
+cycle 4: greeter up after 2s, logging in
+cycle 4: utest session on seat0, greeter gone after 1s
+cycle 4: utest session on seat0, greeter gone after 1s
+--- state after cycle 4 (10:15:01.046Z)
+sessions: 262 1001 utest seat0 66521 user    - no -
+sessions: 263 1001 utest -     66600 manager - no -
+sessions: 267 1000 mike  -     69058 manager - no -
+users: 1000 mike  no closing
+users: 1001 utest no active
+session: Id=262 Name=utest Scope=session-262.scope Leader=66521 Class=user State=active
+session: Id=263 Name=utest Scope= Leader=66600 Class=manager State=active
+session: Id=267 Name=mike Scope= Leader=69058 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-262.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+=== phase T4b-forced-at-pam_end (4 cycles) 10:15:03Z
+phase T4b-forced-at-pam_end start
+cycle 1: logout utest
+cycle 1: utest off seat0 after 2s
+cycle 1: greeter up after 2s, logging in
+cycle 1: utest session on seat0, greeter gone after 1s
+cycle 1: utest session on seat0, greeter gone after 1s
+--- state after cycle 1 (10:16:00.515Z)
+sessions: 269 1001 utest seat0 69499 user    - no -
+sessions: 270 1001 utest -     69578 manager - no -
+users: 1001 utest no active
+session: Id=269 Name=utest Scope=session-269.scope Leader=69499 Class=user State=active
+session: Id=270 Name=utest Scope= Leader=69578 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-269.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 2: logout utest
+cycle 2: utest session on seat0, greeter gone after 1s
+cycle 2: utest session on seat0, greeter gone after 1s
+--- state after cycle 2 (10:16:48.638Z)
+sessions: 276 1001 utest seat0 72458 user    - no -
+sessions: 277 1001 utest -     72538 manager - no -
+users: 1001 utest no active
+session: Id=276 Name=utest Scope=session-276.scope Leader=72458 Class=user State=active
+session: Id=277 Name=utest Scope= Leader=72538 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-276.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 3: logout utest
+cycle 3: utest off seat0 after 4s
+cycle 3: utest session on seat0, greeter gone after 1s
+cycle 3: utest session on seat0, greeter gone after 1s
+--- state after cycle 3 (10:17:39.195Z)
+sessions: 283 1001 utest   -     75492 manager       - no -
+sessions: 287 1000 mike    -     77212 manager       - no -
+sessions: 288  109 lightdm -     77398 manager-early - no -
+sessions: c21  109 lightdm seat0 77384 greeter       - no -
+users:  109 lightdm no online
+users: 1000 mike    no closing
+users: 1001 utest   no closing
+session: Id=283 Name=utest Scope= Leader=75492 Class=manager State=active
+session: Id=287 Name=mike Scope= Leader=77212 Class=manager State=active
+session: Id=288 Name=lightdm Scope= Leader=77398 Class=manager-early State=active
+session: Id=c21 Name=lightdm Scope=session-c21.scope Leader=77384 Class=greeter State=opening
+lightdm-uid processes:   77398 systemd   77404 (sd-pam)   77457 systemctl   77461 9   77466 (systemctl)
+user@109: activating runtime-dir: /run/user/109
+greeter scopes: session-c21.scope inactive dead
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 3
+Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+cycle 4: greeter up after 1s, logging in
+cycle 4: utest session on seat0, greeter gone after 1s
+--- state after cycle 4 (10:18:26.407Z)
+sessions: 289 1001 utest seat0 77677 user    - no -
+sessions: 290 1001 utest -     77819 manager - no -
+users: 1001 utest no active
+session: Id=289 Name=utest Scope=session-289.scope Leader=77677 Class=user State=active
+session: Id=290 Name=utest Scope= Leader=77819 Class=manager State=active
+lightdm-uid processes:
+user@109: inactive runtime-dir: none
+greeter scopes: session-289.scope active running
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 1
+phase T4b-forced-at-pam_end end
+21:session optional pam_exec.so type=close_session /usr/local/sbin/ld019-stall
+=== phase T6b-stalled-close-forced-stage1 (3 cycles) 10:18:29Z
+phase T6b-stalled-close-forced-stage1 start
+cycle 1: utest off seat0 after 2s
+cycle 1: greeter up after 2s, logging in
+cycle 1: utest session on seat0, greeter gone after 10s
+cycle 1: utest session on seat0, greeter gone after 10s
+--- state after cycle 1 (10:19:37.321Z)
+sessions: 295  109 lightdm -     80557 manager-early - no -
+sessions: 296 1001 utest   seat0 80732 user          - no -
+sessions: 297 1001 utest   -     80853 manager       - no -
+sessions: c22  109 lightdm seat0 80530 greeter       - no -
+users:  109 lightdm no closing
+users: 1001 utest   no active
+session: Id=295 Name=lightdm Scope= Leader=80557 Class=manager-early State=active
+session: Id=296 Name=utest Scope=session-296.scope Leader=80732 Class=user State=active
+session: Id=297 Name=utest Scope= Leader=80853 Class=manager State=active
+session: Id=c22 Name=lightdm Scope=session-c22.scope Leader=80530 Class=greeter State=closing
+lightdm-uid processes:   80557 systemd   80573 (sd-pam)   80620 pulseaudio   80627 dbus-daemon   80629 at-spi-bus-laun   80638 dbus-daemon   80643 gvfsd   80651 gvfsd-fuse   80699 gvfsd-metadata   80735 at-spi2-registr
+user@109: active runtime-dir: /run/user/109
+greeter scopes: session-296.scope active running,● loaded deactivating
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 2: logout utest
+cycle 2: utest off seat0 after 2s
+cycle 2: greeter up after 2s, logging in
+cycle 2: utest session on seat0, greeter gone after 10s
+--- state after cycle 2 (10:20:38.090Z)
+sessions: 295  109 lightdm -     80557 manager-early - no -
+sessions: 302 1001 utest   seat0 83520 user          - no -
+sessions: 303 1001 utest   -     83751 manager       - no -
+sessions: c23  109 lightdm seat0 83435 greeter       - no -
+users:  109 lightdm no closing
+users: 1001 utest   no active
+session: Id=295 Name=lightdm Scope= Leader=80557 Class=manager-early State=active
+session: Id=302 Name=utest Scope=session-302.scope Leader=83520 Class=user State=active
+session: Id=303 Name=utest Scope= Leader=83751 Class=manager State=active
+session: Id=c23 Name=lightdm Scope=session-c23.scope Leader=83435 Class=greeter State=closing
+lightdm-uid processes:   80557 systemd   80573 (sd-pam)   80620 pulseaudio   80627 dbus-daemon   80629 at-spi-bus-laun   80638 dbus-daemon   80643 gvfsd   80651 gvfsd-fuse   80699 gvfsd-metadata   80735 at-spi2-registr
+user@109: active runtime-dir: /run/user/109
+greeter scopes: session-302.scope active running,● loaded deactivating
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+cycle 3: logout utest
+cycle 3: utest off seat0 after 2s
+cycle 3: greeter up after 2s, logging in
+cycle 3: utest session on seat0, greeter gone after 10s
+cycle 3: utest session on seat0, greeter gone after 10s
+--- state after cycle 3 (10:21:38.131Z)
+sessions: 295  109 lightdm -     80557 manager-early - no -
+sessions: 308 1001 utest   seat0 86432 user          - no -
+sessions: 309 1001 utest   -     86651 manager       - no -
+sessions: c24  109 lightdm seat0 86345 greeter       - no -
+users:  109 lightdm no closing
+users: 1001 utest   no active
+session: Id=295 Name=lightdm Scope= Leader=80557 Class=manager-early State=active
+session: Id=308 Name=utest Scope=session-308.scope Leader=86432 Class=user State=active
+session: Id=309 Name=utest Scope= Leader=86651 Class=manager State=active
+session: Id=c24 Name=lightdm Scope=session-c24.scope Leader=86345 Class=greeter State=closing
+lightdm-uid processes:   80557 systemd   80573 (sd-pam)   80620 pulseaudio   80627 dbus-daemon   80629 at-spi-bus-laun   80638 dbus-daemon   80643 gvfsd   80651 gvfsd-fuse   80699 gvfsd-metadata   80735 at-spi2-registr
+user@109: active runtime-dir: /run/user/109
+greeter scopes: session-308.scope active running,● loaded deactivating
+lightdm Xauthority entries: /var/lib/lightdm/.Xauthority:0
+uid lightdm with its .Xauthority opens :0: no
+journal 'session closed for user lightdm' since cycle start: 2
+journal 'session opened for user lightdm' since cycle start: 2
+phase T6b-stalled-close-forced-stage1 end
+no pam_exec line in /etc/pam.d/lightdm-greeter
+=== phase T5-preexec 10:21:39Z
+greeter running after T5: no
+T5 sessions: 312 1000 mike seat0 89346 user    - no -
+T5 sessions: 313 1000 mike -     89384 manager - no -
+=== done 10:22:18Z
+ld019tests2.service: Deactivated successfully.
+ld019tests2.service: Consumed 10.540s CPU time over 11min 2.388s wall clock time, 4.2M memory peak.
