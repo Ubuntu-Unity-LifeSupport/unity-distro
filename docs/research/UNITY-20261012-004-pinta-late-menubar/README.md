@@ -8,7 +8,7 @@ title: Pinta 3.1.2 gets no global menu on our packaged stack (no _GTK_MENUBAR_OB
 found_in: UNITY-20261012-001 logs/03-mnemonics-start.txt (audit.py NO-MENUBAR, no _GTK_MENUBAR_OBJECT_PATH)
 package: unity-gtk4-menu (0.9 live; 0.10, UNITY-20261012-006, changes no src/ code)
 target_series: resolute
-status: READY_FOR_FIX - variant A (May), design APPROVE in round 3 (2026-10-13); code after UNITY-20261013-007
+status: VERIFYING - unity-gtk4-menu 0.12 (variant A, design APPROVE round 3) built and tested on target2 (2026-10-13)
 ```
 
 ## Reading the code
@@ -349,8 +349,53 @@ class-offset signal (`gtkwidget.c:1742-1746`), GtkMenuButton does not override i
 
 The non-blocking points are requirements for the code, listed at the end of DESIGN.md.
 
-## Not yet done
+## The implementation: unity-gtk4-menu 0.12 (2026-10-13)
 
-- **For C and May,** with no design until then: a small unity-gtk4-menu change, or moving to the upstream
-  gtk-nocsd menu code. That is the architecture question open since DECISIONS 2026-09-25.
-- **Whatever is chosen:** the Design Challenger before any code. A owns the unity-gtk4-menu packaging.
+Version: UNITY-20261013-013 became 0.11 (the PyGObject fix) and was published first. This task is 0.12, rebased
+onto the published 0.11 (`00fabde`). Following later menu changes (`items-changed`: Nautilus, Papers, Console)
+stays out of it: UNITY-20261013-008, for 0.13.
+
+Commits on unity-gtk4-menu `b/UNITY-20261012-004`:
+- `1e672ae` Give a menu that appears after realize to the global menu. This is the code of the round-3 design. It
+  is unchanged by the rebase; the diff against the commit before the rebase is the 0.11 hunk under it.
+- `02fb9ab` Release 0.12.
+- `83e244f` and `beabb57` the tests (case 10 dropped: GTK refuses an application window before the application's
+  startup, so the "not registered" check is defensive only).
+- `569366d` README: the libgtk-4 fallback of 0.11 (UNITY-20261013-017).
+- `910f912` the test fix (below).
+
+Build: `build-0.12/`, sbuild resolute, PASS, `source_commit` 910f912. The library deb is byte-identical to the
+build of 569366d (sha256 `1e5d6040…`), on which the first runs were made: the test fix changes only `tests/`.
+
+### The test fix
+
+On 0.12 the first run failed cases 1, 2 and 9. The library's log said "menubar filled late" each time. Measured with
+debug copies of the test (scratchpad):
+- **Timing.** The library fills the menubar about 20 ms after the late widget's map, in 10 of 10 runs. But the
+  map itself comes 0.5-0.8 s after packing under Xvfb. With the library preloaded alone, the widget maps at once,
+  inside a frame that takes 0.3 s. A fixed 500 ms wait fits neither case. The cases now wait for the map and then
+  for the filled holder, up to 3 s each.
+- **The D-Bus client.** `client_items()` dropped the holder's submenu proxy right after asking for its items.
+  That ends the GDBusMenuModel subscription before the reply arrives. With the proxy held, a client subscribed
+  before the fill sees the late menu. The test now keeps it while waiting.
+
+### Target tests (target2: Clean-2 → live, then the 0.12 deb; logs/05-15)
+
+| test | log | result |
+|---|---|---|
+| latetest + latetest-adw against 0.11 (base-red) | 05 | 6 fail as expected: 1, 2, 4, 9, 11, 6a, each with "the late … is not in the menubar"; 3, 5, 7, 8, 12, 6 pass |
+| the same against 0.12, session order (menu:nocsd) | 06 | 12 of 12 pass, with the library's log lines |
+| the same against 0.12 preloaded alone (the gtk-nocsd opt-out) | 07 | 12 of 12 pass, the Adw cases included |
+| Pinta 3.1.2, header-bar layout, cold session | 09 | the empty menubar is set at realize; the late look ran 4.7 s after the window mapped, on the map of its header-bar buttons; it chose the main menu (39 labels, `_File` … `_Help` under the "Pinta" holder); the panel shows the "Pinta" entry; Alt+F10 opens the panel popup and Escape closes it (popwatch); the HUD returns Pinta's commands ("Save As… (Pinta, File)") |
+| the UNITY-20261012-003 set, debug log | 10 | Text Editor and Calculator: the menu is found at realize, no wait, no late look, and the map shims are never installed; mnemo.py: its own menubar, untouched; gnome-tour (no menu): its window waits, no look, no fill |
+| the same set by events | 11-13 | Calculator (Alt+F10), Text Editor (Alt+F10) and mnemo.py (Alt+F) open their panel popup, and Escape closes it. Calculator's first attempt went to the Accessibility indicator: the Calculator window was not the active one. The retry with the window activated opened its menu |
+| cost: 10 000 map/unmap cycles of a menu button in an application window without a menu | 14 | per cycle, 5 runs each: no preload 5.1-8.2 µs, 0.11 + gtk-nocsd 6.9-11.2 µs, 0.12 + gtk-nocsd 7.4-8.5 µs (medians 7.48 and 7.75); the shim's cost is within the spread |
+| shim calls (bpftrace by name, on the shipped file joined with its dbgsym, same `.text`) | 15 | maptest: 10 001 calls of the button shim, 3 looks (2 idle looks) for 10 000 maps; Pinta, 20 s from start: 6 button-shim calls (1.1 ms with the probes' overhead), 2 looks (6.4 ms), 1 idle look, 1 late fill |
+
+Notes on the cost runs:
+- bpftrace does not place probes by offset in the stripped library ("Could not resolve address"). The by-name
+  probes therefore ran on the shipped file joined with its dbgsym by `eu-unstrip`; its `.text` is identical.
+- Under the probes the maptest loop takes 132 µs per cycle, so the time inside the shims there is the probes'
+  overhead. The cost is the wall-clock comparison of 0.11 and 0.12 above.
+- In the second probe run, bpftrace printed no counters for Pinta, and the late-look count (2) also includes the
+  first run, because the log was not removed in between. Pinta's numbers are from the first run.

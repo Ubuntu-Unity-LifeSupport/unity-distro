@@ -1,0 +1,39 @@
+== tests-0.12 at 2026-10-13T13:22:56Z; libunity-gtk4-menu0 0.12; library sha256 7e630da38b4f6e20
+  build latetest rc=0 (2 warnings)
+  case 1: rc 0 PASS case 1
+      (latetest:23077): Gdk-WARNING **: 16:22:58.296: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23077): Gtk-WARNING **: 16:22:58.545: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x589cb5164550 with width 6 and height -1
+  case 2: rc 0 PASS case 2
+      (latetest:23225): Gdk-WARNING **: 16:23:01.074: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23225): Gtk-WARNING **: 16:23:01.312: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5abc0cf9b4a0 with width 6 and height -1
+  case 3: rc 0 PASS case 3
+      (latetest:23373): Gdk-WARNING **: 16:23:03.375: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23373): Gtk-WARNING **: 16:23:03.577: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5e04a7a02470 with width 6 and height -1
+  case 4: rc 0 PASS case 4
+      (latetest:23519): Gdk-WARNING **: 16:23:05.612: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23519): Gtk-WARNING **: 16:23:05.817: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x641811b91c60 with width 6 and height -1
+  case 5: rc 0 PASS case 5
+      (latetest:23666): Gdk-WARNING **: 16:23:07.884: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23666): Gtk-WARNING **: 16:23:08.106: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5591d6392380 with width 6 and height -1
+  case 7: rc 0 PASS case 7
+      (latetest:23816): Gdk-WARNING **: 16:23:10.452: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23816): Gtk-WARNING **: 16:23:10.874: Trying to snapshot GtkLabel 0x61ef4397f210 without a current allocation
+  case 8: rc 0 PASS case 8
+      (latetest:23966): Gdk-WARNING **: 16:23:12.435: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:23966): Gtk-WARNING **: 16:23:12.635: Trying to snapshot GtkLabel 0x5c34a4d5ab10 without a current allocation
+  case 9: rc 0 PASS case 9
+      (latetest:24108): Gdk-WARNING **: 16:23:14.153: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:24108): Gtk-WARNING **: 16:23:14.393: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x6441e4491d40 with width 6 and height -1
+  case 11: rc 0 PASS case 11
+      (latetest:24253): Gdk-WARNING **: 16:23:16.530: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest:24253): Gtk-WARNING **: 16:23:16.741: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x5da3e843a7f0 with width 6 and height -1
+  case 12: rc 0 PASS case 12
+      (latetest:24398): Gdk-WARNING **: 16:23:19.929: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case adw6: rc 0 PASS case 6
+      (latetest-adw.py:24544): Gdk-WARNING **: 16:23:21.940: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest-adw.py:24544): Gtk-WARNING **: 16:23:22.327: Trying to snapshot GtkLabel 0xce4bff0 without a current allocation
+  case adw6a: rc 0 PASS case 6a
+      (latetest-adw.py:24698): Gdk-WARNING **: 16:23:24.814: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      (latetest-adw.py:24698): Gtk-WARNING **: 16:23:25.148: Trying to snapshot GtkLabel 0x2c0d0140 without a current allocation
+      (latetest-adw.py:24698): Gtk-WARNING **: 16:23:25.452: Trying to snapshot GtkLabel 0x2c0d0140 without a current allocation
+  total: 12 passed, 0 failed

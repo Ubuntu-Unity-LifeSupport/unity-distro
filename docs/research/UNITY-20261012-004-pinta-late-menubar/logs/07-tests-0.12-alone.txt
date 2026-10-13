@@ -1,0 +1,27 @@
+== tests-0.12-alone at 2026-10-13T13:23:26Z; libunity-gtk4-menu0 0.12; library sha256 7e630da38b4f6e20; alone
+  build latetest rc=0 (2 warnings)
+  case 1: rc 0 PASS case 1
+      (latetest:24894): Gdk-WARNING **: 16:23:28.782: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 2: rc 0 PASS case 2
+      (latetest:25040): Gdk-WARNING **: 16:23:30.979: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 3: rc 0 PASS case 3
+      (latetest:25188): Gdk-WARNING **: 16:23:32.971: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 4: rc 0 PASS case 4
+      (latetest:25337): Gdk-WARNING **: 16:23:35.116: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 5: rc 0 PASS case 5
+      (latetest:25484): Gdk-WARNING **: 16:23:37.518: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 7: rc 0 PASS case 7
+      (latetest:25635): Gdk-WARNING **: 16:23:39.944: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 8: rc 0 PASS case 8
+      (latetest:25787): Gdk-WARNING **: 16:23:42.049: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 9: rc 0 PASS case 9
+      (latetest:25931): Gdk-WARNING **: 16:23:43.861: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 11: rc 0 PASS case 11
+      (latetest:26077): Gdk-WARNING **: 16:23:46.017: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case 12: rc 0 PASS case 12
+      (latetest:26226): Gdk-WARNING **: 16:23:48.324: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case adw6: rc 0 PASS case 6
+      (latetest-adw.py:26371): Gdk-WARNING **: 16:23:50.310: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  case adw6a: rc 0 PASS case 6a
+      (latetest-adw.py:26521): Gdk-WARNING **: 16:23:53.241: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+  total: 12 passed, 0 failed
