@@ -1,0 +1,24 @@
+== 2026-10-13 13:31:35 EEST medium inserted (autorun off)
+Id=2
+Active=yes
+LockedHint=no
+helper pid=2275 started=вт жов 13 13:24:38 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: /run/media/mike/Ubuntu-Unity 26.04 amd64 iso9660
+visible helper windows:
+visible apport windows:
+VBOX CD-ROM можно безопасно отключить - Устройство может быть извлечено.
+== 2026-10-13 13:31:38 EEST ejected from the guest
+Id=2
+Active=yes
+LockedHint=no
+helper pid=2275 started=вт жов 13 13:24:38 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: none
+visible helper windows:
+visible apport windows:
+== helper journal lines above (empty = none)
