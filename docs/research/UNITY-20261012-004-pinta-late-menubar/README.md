@@ -450,3 +450,18 @@ logs/15 rerun).
 **Builds compared.** The builds of 569366d, 910f912 and 4b7a537 give a byte-identical library deb (sha256
 `1e5d6040…`, the same build-id 28258fee…). Every target test above ran on this deb, the one in `build-0.12/`
 (source_commit 4b7a537).
+
+**Round 2 (Verifier, 2026-10-13): PASS** (PATCH_CORRECT, REVIEWED; not an independent reproduction, since the
+builder has no GTK 4 or libadwaita; the target runs above are the reproduction). The Verifier confirmed:
+- the code is unchanged since round 1;
+- the build and every sha256 match;
+- case 4 proves the notify path and case 11 the empty-menu path;
+- both branches of Adw case 6 are correct, and the AdwDialog exclusion is exercised in the run with the library
+  alone;
+- the control is still red for the right reasons;
+- the Pinta cost is in logs/15;
+- neither item under "Not covered" blocks; they are follow-ups.
+
+The tests ran from the working tree minutes before 4b7a537 was committed. latetest.c, latetest-adw.py and
+runtests.sh on target2 have the same sha256 as the committed files (`753c6d1f…`, `9f30fcc9…`, and the card's
+`d9509f01…`).
