@@ -1,0 +1,36 @@
+== s2-xsession-optout at 2026-10-13T02:23:53Z, boot 2026-10-13 05:21:55; libgtk-nocsd0 4.8-1+unity4, libunity-gtk4-menu0 0.10
+-- how the session was started
+  lightdm config: G  session-wrapper=/etc/X11/Xsession
+  lightdm.log: [+20.03s] DEBUG: Session pid=1330: Running command /usr/sbin/lightdm-session /usr/bin/unity-session
+  lightdm.log: [+12.05s] DEBUG: Session pid=1291: Started with service 'lightdm-autologin', username 'mike'
+  lightdm.log: [+12.17s] DEBUG: Session pid=1291: Running command /etc/X11/Xsession /usr/bin/unity-session
+  lightdm.log: [+13.44s] DEBUG: Session pid=1264: Started with service 'lightdm-autologin', username 'mike'
+  lightdm.log: [+13.61s] DEBUG: Session pid=1264: Running command /etc/X11/Xsession /usr/bin/unity-session
+  trace: 2026-10-13T02:23:05.621383488Z pid=1293 exe=/usr/bin/dash LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+  ~/.xsession-errors: 2026-10-13 05:23:15.712051973 +0300 3752 bytes
+    dbus-update-activation-environment: setting LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+-- user manager
+  started вт жов 13 05:22:51 2026
+  show-environment: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0'
+  generator now: LD_PRELOAD="/usr/\$LIB/libunity-gtk4-menu.so.0"
+-- session processes
+  logind session 3: Leader 1264 (lightdm --session-child 13 16 ), its child 1293
+  session process (the wrapper's exec) pid 1293 (/bin/sh /usr/bin/unity-session ): LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+    maps: libunity-gtk4-menu.so.0
+  compiz pid 2775 (/usr/bin/compiz ): LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+    maps: libunity-gtk4-menu.so.0
+  unity-panel-service pid 2782 (/usr/lib/x86_64-linux-gnu/unity/unity-panel-service ): LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+    maps: libunity-gtk4-menu.so.0
+-- applications
+  gnome-disks (GTK3, via the user manager) pid 3916 (/usr/bin/gnome-disks ): LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+    maps: libunity-gtk4-menu.so.0
+  gnome-calculator (GTK4, from the session leader's environment) pid 4121 (gnome-calculator ): LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+    maps: libunity-gtk4-menu.so.0
+  gnome-calculator window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+-- privileged programs with the session's LD_PRELOAD
+  sudo -n true: ld.so lines 0
+  su -c true: ld.so lines 0
+  ping -c1 -W1 127.0.0.1: ld.so lines 0
+  pkexec true: ld.so lines 0
+-- journals of this boot
+  system: 0, user: 0 lines 'ld.so: object'
