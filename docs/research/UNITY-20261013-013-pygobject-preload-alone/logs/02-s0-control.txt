@@ -1,0 +1,28 @@
+== s0-control-cold at 2026-10-13T09:22:43Z, boot 2026-10-13 12:19:47; libunity-gtk4-menu0 0.10, libgtk-nocsd0 4.8-1+unity4
+-- preload
+  opt-out file: ls: cannot access '/home/mike/.config/environment.d/50-gtk-nocsd.conf': No such file or directory
+  user manager: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+  compiz: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  compiz maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+-- Python session components (autostart)
+  onboard-autostart.desktop -> /usr/bin/onboard: running pid 2501 [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-keyboard-enabled X-GNOME-AutoRestart=true OnlyShowIn=Unity;MATE;]
+  orca-autostart.desktop -> /usr/bin/orca: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-reader-enabled X-GNOME-AutoRestart=true OnlyShowIn=GNOME;MATE;Unity;Cinnamon;]
+  unity-indicator-appearance.desktop -> /usr/bin/unity-indicator-appearance: running pid 2505 [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+  uwidgets-runner.desktop -> /usr/bin/uwidgets-runner: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+-- GObject Introspection errors of this boot
+  user journal: 0 lines; ~/.xsession-errors: 0 lines
+-- Python programs through the user manager
+  meld: unit active success 0, main pid 4779, window 54525965 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/window/0"
+      Started b1313-meld.service - [systemd-run] /usr/bin/meld.
+  gnome-tweaks: unit active success 0, main pid 5077, window 54525956 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/tweaks/menus/menub
+              self.method_name, arg_variant, flags, timeout, None
+          )
+      gi.repository.GLib.GError: g-dbus-error-quark: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Не существует интерфейса “org.gnome.Shell.Extensions” на объекте по пути /org/gnome/Shell (19)
+  python3 /home/mike/b1313/apps.py 3: unit active success 0, main pid 5140, window 54525955 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/window/0"
+      Started b1313-python3--home-mike-b1313-apps-.service - [systemd-run] /usr/bin/python3 /home/mike/b1313/apps.py 3.
+      window shown
+  python3 /home/mike/b1313/apps.py 4: unit active success 0, main pid 5256, window 54525956 _GTK_MENUBAR_OBJECT_PATH:  not found.
+      Stopped b1313-python3--home-mike-b1313-apps-.service - [systemd-run] /usr/bin/python3 /home/mike/b1313/apps.py 3.
+      Started b1313-python3--home-mike-b1313-apps-.service - [systemd-run] /usr/bin/python3 /home/mike/b1313/apps.py 4.
+      window shown
+(log 02: pid shown once; the script printed it twice, fixed after this run)
