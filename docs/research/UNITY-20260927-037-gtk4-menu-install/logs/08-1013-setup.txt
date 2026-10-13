@@ -1,0 +1,45 @@
+== setup at 2026-10-13T15:29:48Z, boot 2026-10-13 18:28:46
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b1204t': No such file or directory
+  ls: cannot access '/home/mike/b1313': No such file or directory
+  sources.list.d: ubuntu.sources
+  dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+  unity-session	49.4
+  update rc=0
+  live Date: Tue, 13 Oct 2026 14:31:08 UTC
+  unity-session:
+    Установлен: 49.4
+    Кандидат:   49.4+unity2
+    Таблица версий:
+       49.4+unity2 500
+          500 file:/home/mike/b037/repo ./ Packages
+       49.4+unity1 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+   *** 49.4 500
+          500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+          500 http://de.archive.ubuntu.com/ubuntu resolute/universe i386 Packages
+          100 /var/lib/dpkg/status
+  libunity-gtk4-menu0:
+    Установлен: (отсутствует)
+    Кандидат:   0.12
+    Таблица версий:
+       0.12 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.11 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.10 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.9 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.8 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.7 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.6 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.5 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.4 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.3 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages

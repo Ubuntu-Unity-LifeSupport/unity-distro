@@ -1,0 +1,3 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | unity-session                            | -                                        | 49.4+unity2                             
++ source | unity-session                            | -                                        | 49.4+unity2                             

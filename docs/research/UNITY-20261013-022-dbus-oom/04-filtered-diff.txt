@@ -1,0 +1,16 @@
+2c2
+< RequiredBy=xdg-permission-store.service xdg-document-portal.service xdg-desktop-portal.service
+---
+> RequiredBy=xdg-permission-store.service xdg-desktop-portal.service xdg-document-portal.service
+4,5c4,5
+< Before=xdg-permission-store.service xdg-document-portal.service mpris-proxy.service shutdown.target xdg-desktop-portal.service
+< After=basic.target session.slice -.mount dbus.socket
+---
+> Before=shutdown.target xdg-document-portal.service xdg-desktop-portal.service xdg-permission-store.service mpris-proxy.service
+> After=basic.target session.slice dbus.socket -.mount
+10a11
+> DropInPaths=/usr/lib/systemd/user/dbus.service.d/dbus-override.service.conf
+64c65
+< OOMPolicy=stop
+---
+> OOMPolicy=continue

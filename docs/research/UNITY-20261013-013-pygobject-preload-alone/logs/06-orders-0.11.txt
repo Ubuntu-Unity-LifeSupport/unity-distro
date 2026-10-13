@@ -1,0 +1,100 @@
+== orders-0.11 at 2026-10-13T10:18:01Z; libunity-gtk4-menu0 0.11
+-- LD_PRELOAD=[]
+  python3 -c 'from gi.repository import GLib; GLib rc=0   tracebacks=0 
+  python3 /home/mike/b1313/apps.py 3               rc=124 tracebacks=0 
+  python3 /home/mike/b1313/apps.py 4               rc=124 tracebacks=0 
+  meld                                             rc=124 tracebacks=0 
+  gnome-tweaks                                     rc=124 tracebacks=1 
+  unity-indicator-appearance                       rc=124 tracebacks=0 
+  /home/mike/b1313/localhost /home/mike/b1313/loca rc=0   tracebacks=0 libgtk-4 in the global scope: no activations: 1 
+-- LD_PRELOAD=[libunity-gtk4-menu.so.0]
+  python3 -c 'from gi.repository import GLib; GLib rc=0   tracebacks=0 [not in the global scope; taking libgmodule-2.0.so.0's ] 
+  python3 /home/mike/b1313/apps.py 3               rc=124 tracebacks=0 [not in the global scope; taking libgmodule-2.0.so.0's ] 
+  python3 /home/mike/b1313/apps.py 4               rc=124 tracebacks=0 [not in the global scope; taking libgmodule-2.0.so.0's ] 
+  meld                                             rc=124 tracebacks=0 [not in the global scope; taking libgmodule-2.0.so.0's ] 
+  gnome-tweaks                                     rc=124 tracebacks=1 [not in the global scope; taking libgmodule-2.0.so.0's ] 
+  unity-indicator-appearance                       rc=124 tracebacks=0 [not in the global scope; taking libgmodule-2.0.so.0's ] 
+  /home/mike/b1313/localhost /home/mike/b1313/loca rc=0   tracebacks=0 [not in the global scope; taking libgmodule-2.0.so.0's not in the global scope; taking libgtk-4.so.1's ] libgtk-4 in the global scope: no activations: 1 
+-- LD_PRELOAD=[libunity-gtk4-menu.so.0:libgtk-nocsd.so.0]
+  python3 -c 'from gi.repository import GLib; GLib rc=0   tracebacks=0 
+  python3 /home/mike/b1313/apps.py 3               rc=124 tracebacks=0 
+  python3 /home/mike/b1313/apps.py 4               rc=124 tracebacks=0 
+  meld                                             rc=124 tracebacks=0 
+  gnome-tweaks                                     rc=124 tracebacks=1 
+  unity-indicator-appearance                       rc=124 tracebacks=0 
+  /home/mike/b1313/localhost /home/mike/b1313/loca rc=0   tracebacks=0 [not in the global scope; taking libgtk-4.so.1's ] libgtk-4 in the global scope: no activations: 1 
+-- LD_PRELOAD=[libgtk-nocsd.so.0:libunity-gtk4-menu.so.0]
+  python3 -c 'from gi.repository import GLib; GLib rc=0   tracebacks=0 
+  python3 /home/mike/b1313/apps.py 3               rc=124 tracebacks=0 
+  python3 /home/mike/b1313/apps.py 4               rc=124 tracebacks=0 
+  meld                                             rc=124 tracebacks=0 
+  gnome-tweaks                                     rc=124 tracebacks=1 
+  unity-indicator-appearance                       rc=124 tracebacks=0 
+  /home/mike/b1313/localhost /home/mike/b1313/loca rc=0   tracebacks=0 [not in the global scope; taking libgtk-4.so.1's ] libgtk-4 in the global scope: no activations: 1 
+-- LD_PRELOAD=[libunity-gtk4-menu.so.0:/home/mike/b/nocsd-head/libgtk-nocsd.so.0]
+  python3 -c 'from gi.repository import GLib; GLib rc=0   tracebacks=0 
+  python3 /home/mike/b1313/apps.py 3               rc=124 tracebacks=0 
+  python3 /home/mike/b1313/apps.py 4               rc=124 tracebacks=0 
+  meld                                             rc=124 tracebacks=0 
+  gnome-tweaks                                     rc=124 tracebacks=1 
+  unity-indicator-appearance                       rc=124 tracebacks=0 
+  /home/mike/b1313/localhost /home/mike/b1313/loca rc=0   tracebacks=0 [not in the global scope; taking libgtk-4.so.1's ] libgtk-4 in the global scope: no activations: 1 
+-- LD_PRELOAD=[/home/mike/b/nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0]
+  python3 -c 'from gi.repository import GLib; GLib rc=0   tracebacks=0 
+  python3 /home/mike/b1313/apps.py 3               rc=124 tracebacks=0 
+  python3 /home/mike/b1313/apps.py 4               rc=124 tracebacks=0 
+  meld                                             rc=124 tracebacks=0 
+  gnome-tweaks                                     rc=124 tracebacks=1 
+  unity-indicator-appearance                       rc=124 tracebacks=0 
+  /home/mike/b1313/localhost /home/mike/b1313/loca rc=0   tracebacks=0 [not in the global scope; taking libgtk-4.so.1's ] libgtk-4 in the global scope: no activations: 1 
+-- the 0.9 card's order-0.9.sh, unchanged (M = the installed library, N0 = ~/b/nocsd-head)
+classtestclasstest libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+classtestclasstest libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+classtestclasstest nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+classtestclasstest libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+classtestclasstest libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gjsgjstest.js libunity-gtk4-menu.so.0                  rc=1   menu-lines=0
+gjsgjstest.js libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=1   menu-lines=0
+gjsgjstest.js nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=1   menu-lines=0
+gjsgjstest.js libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=1   menu-lines=0
+gjsgjstest.js libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=1   menu-lines=0
+gnome-text-editorgnome-text-editor libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-text-editorgnome-text-editor libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-text-editorgnome-text-editor nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-text-editorgnome-text-editor libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-text-editorgnome-text-editor libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-charactersgnome-characters libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-charactersgnome-characters libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-charactersgnome-characters nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=0
+gnome-charactersgnome-characters libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-charactersgnome-characters libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=0
+gnome-calculatorgnome-calculator libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-calculatorgnome-calculator libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-calculatorgnome-calculator nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-calculatorgnome-calculator libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-calculatorgnome-calculator libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+nautilusnautilus           libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+nautilusnautilus           libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+nautilusnautilus           nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+nautilusnautilus           libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+nautilusnautilus           libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-clocksgnome-clocks   libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-clocksgnome-clocks   libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-clocksgnome-clocks   nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-clocksgnome-clocks   libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-clocksgnome-clocks   libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-contactsgnome-contacts libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-contactsgnome-contacts libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-contactsgnome-contacts nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-contactsgnome-contacts libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-contactsgnome-contacts libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-font-viewergnome-font-viewer libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-font-viewergnome-font-viewer libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-font-viewergnome-font-viewer nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-font-viewergnome-font-viewer libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-font-viewergnome-font-viewer libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=2
+gnome-weathergnome-weather libunity-gtk4-menu.so.0                  rc=124 menu-lines=2
+gnome-weathergnome-weather libunity-gtk4-menu.so.0:nocsd-head/libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-weathergnome-weather nocsd-head/libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=0
+gnome-weathergnome-weather libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 rc=124 menu-lines=2
+gnome-weathergnome-weather libgtk-nocsd.so.0:libunity-gtk4-menu.so.0 rc=124 menu-lines=0

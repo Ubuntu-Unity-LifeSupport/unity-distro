@@ -1,0 +1,50 @@
+== both-0.11 at 2026-10-13T10:32:41Z, boot 2026-10-13 13:30:00; libunity-gtk4-menu0 0.11, libgtk-nocsd0 4.8-1+unity4
+-- preload
+  opt-out file: ls: cannot access '/home/mike/.config/environment.d/50-gtk-nocsd.conf': No such file or directory
+  user manager: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+  compiz: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  compiz maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+-- Python session components (autostart)
+  onboard-autostart.desktop -> /usr/bin/onboard: running pid 2368 [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-keyboard-enabled X-GNOME-AutoRestart=true OnlyShowIn=Unity;MATE;]
+  orca-autostart.desktop -> /usr/bin/orca: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-reader-enabled X-GNOME-AutoRestart=true OnlyShowIn=GNOME;MATE;Unity;Cinnamon;]
+  unity-indicator-appearance.desktop -> /usr/bin/unity-indicator-appearance: running pid 2372 [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+  uwidgets-runner.desktop -> /usr/bin/uwidgets-runner: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+-- GObject Introspection errors of this boot
+  user journal: 0 lines; ~/.xsession-errors: 0 lines
+-- Python programs through the user manager (12 s each; the session components are started again by hand)
+  meld: unit active success 0, main pid 4529, window 58720269 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/wi; Traceback/AssertionError lines 0
+  gnome-tweaks: unit active success 0, main pid 4939, window 58720260 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/tweaks/m; Traceback/AssertionError lines 1
+          )
+      gi.repository.GLib.GError: g-dbus-error-quark: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Не существует интерфейса “org.gnome.Shell.Extensi
+  python3 /home/mike/b1313/apps.py 3: unit active success 0, main pid 4996, window 58720259 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/wi; Traceback/AssertionError lines 0
+      window shown
+  python3 /home/mike/b1313/apps.py 4: unit active success 0, main pid 5040, window 58720260 _GTK_MENUBAR_OBJECT_PATH:  not found.; Traceback/AssertionError lines 0
+      window shown
+  unity-indicator-appearance: unit active success 0, main pid 5080, window none; Traceback/AssertionError lines 0
+      libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+  onboard: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+  orca: unit active success 0, main pid 5222, window none; Traceback/AssertionError lines 0
+  uwidgets-runner: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+      No widgets found.
+  update-manager: unit active success 0, main pid 5335, window 58720259 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/wi; Traceback/AssertionError lines 0
+  software-properties-gtk: unit active success 0, main pid 5442, window 58720260 _GTK_MENUBAR_OBJECT_PATH:  not found.; Traceback/AssertionError lines 0
+  /usr/share/apport/apport-gtk: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+-- GIO modules in a PyGObject process (the dconf backend is a GIO module); the session's LD_PRELOAD, from compiz
+  LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  backend: DConfSettingsBackend GSETTINGS_BACKEND: None
+  write: False -> True
+  read back from dconf: true
+-- maps of non-GTK processes with the session's LD_PRELOAD
+  cat: ours mapped 5, libgmodule/libgtk-4 mapped 0; python3 without gi: libgmodule/libgtk-4 mapped 0
+-- classtest in the session (the 0.9 card classlive.sh, unchanged)
+maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0 
+class-hello stand-in: ((true, signature '', @av []),)
+class-off stand-in:   ((false, signature '', @av []),)
+after toggle-hello:   ((false, signature '', @av []),)
+after 2nd toggle:     ((true, signature '', @av []),)
+b/classlive.sh: строка 20: import: command not found
+-- app stdout:
+(classtest:5714): Gtk-WARNING **: 13:35:00.238: Trying to snapshot GtkLabel 0x61e370bc2e20 without a current allocation
+CLASS-HELLO disabled
+CLASS-HELLO enabled
+ACTIVATED win.class-hello

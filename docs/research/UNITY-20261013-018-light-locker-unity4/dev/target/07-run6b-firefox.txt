@@ -1,0 +1,4 @@
+== run6b: firefox started, first inhibitor after 7s
+/org/gnome/SessionManager/Inhibitor6 app=('firefox_firefox',) reason=('Воспроизведение звука',) flags=(uint32 8,)
+inhibitors: (@ao [],)
+12

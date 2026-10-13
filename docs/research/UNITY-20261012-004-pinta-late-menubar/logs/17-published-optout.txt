@@ -1,0 +1,38 @@
+== pub-0.12-optout at 2026-10-13T14:45:14Z, boot 2026-10-13 17:42:59; libunity-gtk4-menu0 0.12, libgtk-nocsd0 4.8-1+unity4
+-- preload
+  opt-out file: -rw-rw-r-- 1 mike mike 0 Oct 13 17:42 /home/mike/.config/environment.d/50-gtk-nocsd.conf
+  user manager: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0'
+  compiz: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+  compiz maps: libunity-gtk4-menu.so.0
+-- Python session components (autostart)
+  onboard-autostart.desktop -> /usr/bin/onboard: running pid 2320 [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-keyboard-enabled X-GNOME-AutoRestart=true OnlyShowIn=Unity;MATE;]
+  orca-autostart.desktop -> /usr/bin/orca: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-reader-enabled X-GNOME-AutoRestart=true OnlyShowIn=GNOME;MATE;Unity;Cinnamon;]
+  unity-indicator-appearance.desktop -> /usr/bin/unity-indicator-appearance: running pid 2327 [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+  uwidgets-runner.desktop -> /usr/bin/uwidgets-runner: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+-- GObject Introspection errors of this boot
+  user journal: 0 lines; ~/.xsession-errors: 0 lines
+-- Python programs through the user manager (12 s each; the session components are started again by hand)
+  meld: unit active success 0, main pid 4410, window 60817421 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/wi; Traceback/AssertionError lines 0
+  gnome-tweaks: unit active success 0, main pid 4827, window 60817412 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/tweaks/m; Traceback/AssertionError lines 1
+          )
+      gi.repository.GLib.GError: g-dbus-error-quark: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Не существует интерфейса “org.gnome.Shell.Extensi
+  python3 /home/mike/b1313/apps.py 3: unit active success 0, main pid 4892, window 60817411 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/wi; Traceback/AssertionError lines 0
+      window shown
+  python3 /home/mike/b1313/apps.py 4: unit active success 0, main pid 4937, window 60817412 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/B1; Traceback/AssertionError lines 0
+      window shown
+  unity-indicator-appearance: unit active success 0, main pid 4973, window none; Traceback/AssertionError lines 0
+      libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+  onboard: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+  orca: unit active success 0, main pid 5117, window none; Traceback/AssertionError lines 0
+  uwidgets-runner: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+      No widgets found.
+  update-manager: unit active success 0, main pid 5229, window 60817411 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/appmenu/gtk/wi; Traceback/AssertionError lines 0
+  software-properties-gtk: unit active success 0, main pid 5304, window 60817412 _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/com/ubuntu/Softwar; Traceback/AssertionError lines 0
+  /usr/share/apport/apport-gtk: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+-- GIO modules in a PyGObject process (the dconf backend is a GIO module); the session's LD_PRELOAD, from compiz
+  LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+  backend: DConfSettingsBackend GSETTINGS_BACKEND: None
+  write: False -> True
+  read back from dconf: true
+-- maps of non-GTK processes with the session's LD_PRELOAD
+  cat: ours mapped 5, libgmodule/libgtk-4 mapped 0; python3 without gi: libgmodule/libgtk-4 mapped 0

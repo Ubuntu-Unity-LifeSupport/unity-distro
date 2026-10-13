@@ -1,0 +1,26 @@
+== 1 restore, checked inside at 2026-10-13T11:28:01Z, boot 2026-10-13 14:26:53
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b1302': No such file or directory
+  ls: cannot access '/home/mike/b1204': No such file or directory
+  sources.list.d: ubuntu.sources
+  cinnamon-session	6.4.2-1
+== 2 live archive
+  update rc=0
+  Date: Tue, 13 Oct 2026 10:44:09 UTC
+  full-upgrade rc=0
+  left to upgrade: 0
+== 3 this build, bpftrace, xterm
+  e528f0b59ae01dfa  /home/mike/b1307/cinnamon-session_6.4.2-1+unity6_amd64.deb
+  d7967587cce1b2f6  /home/mike/b1307/cinnamon-session-common_6.4.2-1+unity6_all.deb
+  install rc=0
+  dpkg -i rc=0
+  bpftrace	0.25.0-1ubuntu1
+  cinnamon-session	6.4.2-1+unity6
+  cinnamon-session-common	6.4.2-1+unity6
+  compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+  libgtk-nocsd0:amd64	4.8-1+unity4
+  libice6:amd64	2:1.1.1-1build1
+  libsm6:amd64	2:1.2.6-1build1
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+  xterm	407-1ubuntu1
+  dpkg -V rc=0

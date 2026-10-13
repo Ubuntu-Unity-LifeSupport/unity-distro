@@ -1,0 +1,14 @@
+== fresh-install resolution at 2026-10-13T15:31:04Z
+  apt-get -s install rc=0
+  packages in the plan: 1165
+  Inst libgtk-nocsd0 (4.8-1+unity4 . resolute:resolute [amd64])
+  Inst libunity-gtk4-menu0 (0.12 . resolute:resolute [amd64])
+  Inst unity-session (49.4+unity2 localhost [all])
+  the same with --no-install-recommends:
+  Inst unity-session (49.4+unity2 localhost [all])
+  (libunity-gtk4-menu0 lines without recommends: 0)
+== full-upgrade --no-install-recommends, simulated, at 2026-10-13T15:31:32Z
+  rc=0
+  Inst libgtk-nocsd0 [3+0~20260321+0b77e1b-1] (4.8-1+unity4 . resolute:resolute [amd64])
+  Inst unity-session [49.4] (49.4+unity2 localhost [all])
+  (libunity-gtk4-menu0 lines: 0)

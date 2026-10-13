@@ -1,0 +1,36 @@
+UNITY-20261013-013 (with UNITY-20261013-015): target test of unity-gtk4-menu 0.11
+(2026-10-13 09:54-10:37Z, target2)
+
+Target: target-desktop-2 from Clean-2, updated from the live repository (full-upgrade; Date of InRelease
+2026-10-13 07:56:30Z), libunity-gtk4-menu0 0.10 and libgtk-nocsd0 4.8-1+unity4 from live. Autologin of user mike
+into the Unity session through lightdm. Every session below is a cold boot (clean poweroff over ssh, then start).
+Test tools and test programs installed besides: gcc, pkg-config, libgtk-4-dev, libx11-dev, libadwaita-1-dev,
+xvfb, xdotool, x11-utils, meld, gnome-tweaks, gjs, gnome-text-editor, gnome-characters, gnome-calculator,
+nautilus, gnome-clocks, gnome-contacts, gnome-font-viewer, gnome-weather.
+
+Installed from this build with dpkg (dpkg.log: upgrade 0.10 -> 0.11), then a cold boot:
+  172854bb639008009d159fd012e7715b5b26a48c771a6099ad1f7acf2098bd48  libunity-gtk4-menu0_0.11_amd64.deb
+The same file as in build/UNITY-20261013-013-unity-gtk4-menu-build-manifest.json (source_commit 00fabde).
+
+1. Control, 0.10, opt-out session (an empty ~/.config/environment.d/50-gtk-nocsd.conf; the user manager and
+   compiz preload /usr/$LIB/libunity-gtk4-menu.so.0 only): 25 AssertionError lines in the user journal;
+   meld, gnome-tweaks, apps.py 3 and 4, unity-indicator-appearance and onboard exit 1; a PyGObject Gio check
+   fails at import. logs/04-optout-control-0.10.txt.
+2. 0.11, opt-out session: 0 AssertionError lines; unity-indicator-appearance and onboard run from autostart;
+   meld, gnome-tweaks, apps.py 3 and 4, update-manager, software-properties-gtk and apport-gtk show their
+   windows (menubar property where the program has a menu); orca runs; Gio.SettingsBackend is
+   DConfSettingsBackend and a write reads back through dconf; cat and a python3 without gi, with the session's
+   LD_PRELOAD, map neither libgmodule nor libgtk-4. logs/05-optout-0.11.txt.
+3. 0.11 under Xvfb in six preload orders (none; ours alone; ours before and after Ubuntu's gtk-nocsd; ours
+   before and after gtk-nocsd built by its own make from 6b1f70a): a GLib import, apps.py 3 and 4, meld,
+   gnome-tweaks and unity-indicator-appearance are alive at the timeout in every order with no AssertionError;
+   alone, the library's debug log shows libgmodule's own g_module_symbol taken. The 0.9 card's order-0.9.sh,
+   unchanged: identical to docs/research/nocsd-order/order-0.9.txt in all 50 rows. logs/06-orders-0.11.txt.
+4. 0.11, the session's default (both libraries): the same checks as 2, 0 AssertionError lines; classlive.sh of
+   the 0.9 card, unchanged: the stand-in for win.class-hello follows gtk_widget_action_set_enabled both ways
+   and activating it while enabled prints ACTIVATED once. logs/07-both-0.11.txt.
+5. UNITY-20261013-015: a GTK4 plugin opened RTLD_LOCAL by a host without GTK (localplugin.c), disable,
+   activate, enable, activate: activations 1 with no preload, 2 with 0.10, 1 with 0.11 (the libgtk-4
+   fallback in the debug log). logs/08-localplugin.txt.
+
+Result: PASS.

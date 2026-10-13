@@ -1,0 +1,24 @@
+== restore, checked inside at 2026-10-13T16:08:59Z, boot 2026-10-13 19:08:00
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b037/repo': No such file or directory
+  sources.list.d: ubuntu.sources
+  dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+  unity-session	49.4
+  update rc=0
+  live Date: Tue, 13 Oct 2026 16:01:50 UTC
+  unity-session:
+    Установлен: 49.4
+    Кандидат:   49.4+unity2
+    Таблица версий:
+== full-upgrade (install-recommends "1";) at 16:10:09Z
+  full-upgrade rc=0
+  Пол:44 http://192.168.56.10:8080 resolute/main amd64 libunity-gtk4-menu0 amd64 0.12 [18,6 kB]
+  Пол:56 http://192.168.56.10:8080 resolute/main amd64 unity-session all 49.4+unity2 [8 170 B]
+  libgtk-nocsd0:amd64	4.8-1+unity4
+  libunity-gtk4-menu0:amd64	0.12
+  unity-session	49.4+unity2
+  automatically installed: libunity-gtk4-menu0
+  ff1339f26e2980269083f385f2db0bac5e97a0d0bebf233fa05ca09c3820c8dd  /var/cache/apt/archives/unity-session_49.4+unity2_all.deb
+  1e5d6040b9aa689c7e4311aa9d30e4f2275833e499e092aec7efaa29e1c3c662  /var/cache/apt/archives/libunity-gtk4-menu0_0.12_amd64.deb
+  2026-10-13 19:16:15 install libunity-gtk4-menu0:amd64 <none> 0.12
+  2026-10-13 19:17:35 upgrade unity-session:all 49.4 49.4+unity2

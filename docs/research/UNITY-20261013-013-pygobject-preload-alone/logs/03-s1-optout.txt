@@ -1,0 +1,68 @@
+== s1-optout-cold at 2026-10-13T09:26:40Z, boot 2026-10-13 12:24:24; libunity-gtk4-menu0 0.10, libgtk-nocsd0 4.8-1+unity4
+-- preload
+  opt-out file: -rw-rw-r-- 1 mike mike 0 Oct 13 12:23 /home/mike/.config/environment.d/50-gtk-nocsd.conf
+  user manager: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0'
+  compiz: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+  compiz maps: libunity-gtk4-menu.so.0
+-- Python session components (autostart)
+  onboard-autostart.desktop -> /usr/bin/onboard: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-keyboard-enabled X-GNOME-AutoRestart=true OnlyShowIn=Unity;MATE;]
+  orca-autostart.desktop -> /usr/bin/orca: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-reader-enabled X-GNOME-AutoRestart=true OnlyShowIn=GNOME;MATE;Unity;Cinnamon;]
+  unity-indicator-appearance.desktop -> /usr/bin/unity-indicator-appearance: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+  uwidgets-runner.desktop -> /usr/bin/uwidgets-runner: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+-- GObject Introspection errors of this boot
+  user journal: 10 lines; ~/.xsession-errors: 0 lines
+      File "/usr/lib/python3/dist-packages/gi/overrides/__init__.py", line 209, in override
+        assert g_type != TYPE_NONE
+               ^^^^^^^^^^^^^^^^^^^
+    AssertionError
+    --
+      File "/usr/lib/python3/dist-packages/gi/overrides/__init__.py", line 209, in override
+        assert g_type != TYPE_NONE
+               ^^^^^^^^^^^^^^^^^^^
+    AssertionError
+-- Python programs through the user manager
+  meld: unit failed exit-code 1, main pid 0, window none
+      Meld requires Gtk+ 3.20 or higher.
+      b1313-meld.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-meld.service: Failed with result 'exit-code'.
+  gnome-tweaks: unit active success 0, main pid 4380, window none
+      Started b1313-gnome-tweaks.service - [systemd-run] /usr/bin/gnome-tweaks.
+  python3 /home/mike/b1313/apps.py 3: unit failed exit-code 1, main pid 0, window none
+      AssertionError
+      b1313-python3--home-mike-b1313-apps-.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-python3--home-mike-b1313-apps-.service: Failed with result 'exit-code'.
+  python3 /home/mike/b1313/apps.py 4: unit failed exit-code 1, main pid 0, window none
+      AssertionError
+      b1313-python3--home-mike-b1313-apps-.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-python3--home-mike-b1313-apps-.service: Failed with result 'exit-code'.
+-- the panel indicator of unity-indicator-appearance, its unit/journal:
+Starting app-notify\x2dosd@autostart.service - Notify OSD...
+GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+Starting app-onboard\x2dautostart@autostart.service - Onboard...
+Starting app-org.gnome.Evolution\x2dalarm\x2dnotify@autostart.service - Events and Tasks Reminders...
+Starting app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service - gnome-disk-utility notification plugin for GNOME Settings Daemon...
+Starting app-polkit\x2dgnome\x2dauthentication\x2dagent\x2d1@autostart.service - PolicyKit Authentication Agent...
+Starting app-print\x2dapplet@autostart.service - Print Queue Applet...
+Starting app-pulseaudio@autostart.service - PulseAudio Sound System...
+Starting app-snap\x2duserd\x2dautostart@autostart.service - Snap user application autostart helper...
+Starting app-ubuntu\x2dadvantage\x2dnotification@autostart.service - Ubuntu Advantage Notification...
+Starting app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service - Mount Helper...
+--
+discover_other_daemon: 1
+discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+Started app-onboard\x2dautostart@autostart.service - Onboard.
+Started app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service - Mount Helper.
+Started app-notify\x2dosd@autostart.service - Notify OSD.
+Started app-xapp\x2dsn\x2dwatcher@autostart.service - xapp-sn-watcher.
+Started app-gnome\x2dkeyring\x2dsecrets@autostart.service - Secret Storage Service.
+Started app-uwidgets\x2drunner@autostart.service - UWidgets Runner.
+volume-control-pulse.vala:750: Unable to connect to dbus server at 'unix:path=/run/user/1000/pulse/dbus-socket': Не удалось подключиться: Нет такого файла или каталога
+Started app-update\x2dnotifier@autostart.service - Update Notifier.
+Started app-unity\x2dindicator\x2dappearance@autostart.service - Unity Indicator Appearance.
+--
+libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+Traceback (most recent call last):
+  File "/usr/bin/onboard", line 33, in <module>
+    from Onboard.Exceptions import chain_handler
+  File "/usr/lib/python3/dist-packages/Onboard/__init__.py", line 23, in <module>
+    from Onboard.utils import Translation

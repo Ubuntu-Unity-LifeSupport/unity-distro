@@ -1,0 +1,17 @@
+IsSessionRunning: (true,)
+== 20:39:02 gnome 60 set on the restarted session, last input now
+ошибка: list of process IDs must follow -p
+
+Использование:
+ ps [опции]
+
+ Попробуйте 'ps --help <simple|list|output|threads|misc|all>'
+  или 'ps --help <s|l|o|t|m|a>'
+ для дополнительной справки.
+
+Для дополнительных подробностей смотрите ps(1).
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+idletime (Mutter core): Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.Mutter.IdleMonitor was not provided by any .service files
+sha256sum: /proc//exe: No such file or directory

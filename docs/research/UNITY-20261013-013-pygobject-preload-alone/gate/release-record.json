@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261013-013",
+  "package": "unity-gtk4-menu",
+  "target_series": "resolute",
+  "candidate_version": "0.11",
+  "source_commit": "00fabde52b14b4452dd3e74ed57c908dc3c2a363",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20261013-013",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261013-013-pygobject-preload-alone/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261013-013-pygobject-preload-alone/gate/target-test.txt",
+    "debs": {
+      "libunity-gtk4-menu0_0.11_amd64.deb": "172854bb639008009d159fd012e7715b5b26a48c771a6099ad1f7acf2098bd48"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261013-013-pygobject-preload-alone/README.md",
+    "verification_record": "docs/research/UNITY-20261013-013-pygobject-preload-alone/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

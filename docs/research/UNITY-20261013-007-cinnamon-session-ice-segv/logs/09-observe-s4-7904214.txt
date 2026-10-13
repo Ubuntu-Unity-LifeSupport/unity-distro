@@ -1,0 +1,39 @@
+== s4 at 2026-10-13T12:34:31Z, boot 2026-10-13 15:32:19; cinnamon-session 6.4.2-1+unity6; cinnamon-session pid 2274
+  bpftrace: Attached 3 probes
+  [140.30 s since boot] before the clients; connections to /tmp/.ICE-unix/2274: 2
+-- xterm, normal exit
+  [142.61 s since boot] xterm 1 running; connections to /tmp/.ICE-unix/2274: 3
+  xterm 1 exited: 0
+  [147.72 s since boot] after xterm 1; connections to /tmp/.ICE-unix/2274: 2
+-- xterm, SIGKILL
+  [152.79 s since boot] xterm 2 running; connections to /tmp/.ICE-unix/2274: 3
+  xterm 2 killed: status 137
+  [155.84 s since boot] after the kill; connections to /tmp/.ICE-unix/2274: 2
+  cinnamon-session still running: 2274
+  [155.90 s since boot] before logout; connections to /tmp/.ICE-unix/2274: 2
+-- logout
+/usr/share/cinnamon-session/cinnamon-session-quit.py:91: PyGIDeprecationWarning: GLib.unix_signal_add is deprecated; use GLibUnix.signal_add instead
+  GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  cinnamon-session-quit rc=0
+  cinnamon-session pid 2274 gone after logout: yes
+  crash reports newer than boot: 0
+  journal: segfault lines 0, cinnamon-session criticals 0
+Attached 3 probes
+141178125985 accept 0x5f67a7c51800
+146131542754 close 0x5f67a7c51800
+146131642141 free 0x5f67a7c51800
+147765968848 accept 0x5f67a7c51800
+152818562100 close 0x5f67a7c51800
+152818683201 free 0x5f67a7c51800
+156689839203 close 0x5f67a7c42800
+156691642906 free 0x5f67a7c42800
+156692527316 close 0x5f67a7c455a0
+156692919262 free 0x5f67a7c455a0
+
+
+-- summary.py
+  0x5f67a7c51800: accept close free  -> closes 1 frees 1
+  0x5f67a7c51800: accept close free  -> closes 1 frees 1
+  0x5f67a7c42800: close free  -> closes 1 frees 1
+  0x5f67a7c455a0: close free  -> closes 1 frees 1
+events 10, connections 4, not ok 0

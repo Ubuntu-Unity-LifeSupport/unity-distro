@@ -1,0 +1,15 @@
+UNITY-20261013-018: target test of light-locker 1.8.0-3ubuntu4+unity4
+
+The deb of this gate build (build/, source 56582ba) is byte-identical to the dev build tested on
+target-desktop on 2026-10-13 (dev build of 66e1974; the sources differ only in comments and in one added
+test assertion, which is not shipped; sha256 equal):
+  e493b6aa54043bee180a7eab092bcd7c07b4b7ee2385914cf96a970f28cba26d  light-locker_1.8.0-3ubuntu4+unity4_amd64.deb
+
+Records: dev/target/README.txt (with u-s-d +unity16 dev, byte-identical to its gate): VLC and Firefox
+inhibitors reach the session manager, no idle/lock during playback, released on close / kill -9 /
+light-locker-command -i kill, one-shot leaves none, idle+lock without inhibitor, manual lock during playback.
+Again with cinnamon-session +unity7 and u-s-d +unity16 installed together:
+docs/research/UNITY-20261013-016-cinnamon-session-unity7/dev/target/ (session up, light-locker the new binary).
+
+Result: PASS.
+tested_build: this_build (sha256 of the tested deb equals the deb above).

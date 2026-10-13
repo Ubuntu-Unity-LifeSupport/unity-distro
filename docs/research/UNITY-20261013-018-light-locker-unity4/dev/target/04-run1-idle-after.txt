@@ -1,0 +1,5 @@
+IdleHint=yes
+LockedHint=yes
+presence status: (<uint32 3>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 96554,)
+inhibitors: (@ao [],)

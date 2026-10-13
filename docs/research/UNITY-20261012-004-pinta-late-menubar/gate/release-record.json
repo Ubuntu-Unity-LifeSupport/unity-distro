@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261012-004",
+  "package": "unity-gtk4-menu",
+  "target_series": "resolute",
+  "candidate_version": "0.12",
+  "source_commit": "4b7a537770f5ad90f44c328a5af017c3ffe70643",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20261012-004",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261012-004-pinta-late-menubar/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261012-004-pinta-late-menubar/gate/target-test.txt",
+    "debs": {
+      "libunity-gtk4-menu0_0.12_amd64.deb": "1e5d6040b9aa689c7e4311aa9d30e4f2275833e499e092aec7efaa29e1c3c662"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261012-004-pinta-late-menubar/README.md",
+    "verification_record": "docs/research/UNITY-20261012-004-pinta-late-menubar/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}
