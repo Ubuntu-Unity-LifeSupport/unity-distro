@@ -270,6 +270,45 @@ UNKNOWN:
 - what the HUD shows for an empty menubar filled later;
 - whether Pinta's "Main Menu" button wins the candidate ranking (inferred from the scoring, not measured).
 
+## Design review round 1 (Design Challenger, 2026-10-13): REVISE
+
+The design is in DESIGN.md (round 1 at `92666f6`).
+
+**Confirmed:**
+- `attach_menubar` runs before the chain-up, and `publish_menu` sets the path synchronously
+  (`gtkapplication-dbus.c:468-503`), so `gtkwindow.c:4578` writes the property for that same window.
+- `gtk_window_show` maps synchronously, so Pinta's buttons are mapped while still inside its constructor.
+- `map` is emitted through `g_signal_emit` (`gtkwidget.c:2974`).
+- Everything runs on the main thread.
+
+**Blocking:**
+1. **The second-window branch takes the wrong path.** With the container set at the first realize, `existing` is
+   never NULL again. A second window with a menu would take the "already ours" path, and its menu would be lost.
+   The states must be explicit, and "filled" means `n_items > 0`.
+2. **The candidate filter misses dialogs inside the window.** libadwaita 1.8 presents an `AdwDialog` inside the
+   window's child (`adw-application-window.c:253-259`), so a dialog's MenuButton, or a list row's menu button, has
+   the main window as its root. Late finds must be limited to the titlebar, or to a GtkHeaderBar/AdwHeaderBar
+   ancestor, with no AdwDialog/GtkPopover ancestor.
+3. **The emission hook must not be removed from inside itself.** Measured on GLib 2.88.0: doing so gives
+   `G_HOOK_IN_CALL` criticals and leaves the hook list corrupt.
+
+**Recommended:**
+- Override the `map` vfunc of GtkMenuButtonClass and GtkPopoverMenuBarClass instead of adding an emission hook.
+  The classes are private, so there are no subclasses.
+- Handle unrealize and destroy, since a weak reference fires only at finalize, which is late under .NET.
+- Hold strong references on our menus, and make an application's takeover permanent.
+- Skip our own container. GTK can build an in-window PopoverMenuBar holding it, which
+  `gtkapplicationwindow.c:218-269` shows.
+- Fixes to the RESOLVE list, and test-plan additions: `G_DEBUG=fatal-criticals`, and a real GDBusMenuModel client
+  subscribed to the empty container.
+
+**Answers to the four questions:**
+1. Waiting for the window's life is acceptable with the narrowed late-find filter.
+2. Only GtkApplicationWindow should wait.
+3. `items-changed` should be a separate step, because rebuilding with remove-all plus appends sends N+1 `Changed`
+   signals and collapses an open menu.
+4. No menubar-shaped placement in 0.11.
+
 ## Not yet done
 
 - **For C and May,** with no design until then: a small unity-gtk4-menu change, or moving to the upstream

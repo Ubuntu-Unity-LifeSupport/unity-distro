@@ -1,201 +1,238 @@
 # UNITY-20261012-004 design: unity-gtk4-menu 0.11, menus that appear after realize (variant A)
 
-Agent B, 2026-10-13. For the Design Challenger, round 1. No code exists. May chose variant A (README, "Variants"):
-event-driven, no timer.
+Agent B, 2026-10-13. **Round 2**, for the Design Challenger. Round 1 (`92666f6`) was REVISE; its findings are in
+README.md, "Design review round 1", and the table at the end says where each one is answered. No code exists.
 
-Base: unity-gtk4-menu 0.10 (`aa00846`, branch `a/UNITY-20261012-006`). Its `src/` is the same as 0.9 (`7ce9092`);
-the line numbers below are 0.9's.
+**Scope** (May's decision through C): 0.11 covers late menus only, which is Pinta's case. "An empty menu at
+realize, filled when the menu button appears." Following later changes of a menu (`items-changed`: Nautilus,
+Papers, Console) is UNITY-20261013-008, for 0.12.
+
+**Base:** unity-gtk4-menu 0.10 (`aa00846`). Its `src/` is the same as 0.9's (`7ce9092`), and line numbers are 0.9's.
 
 ## The problem in one paragraph
 
-`attach_menubar()` (:900-950) runs once per window, from the realize hooks (:956-971). It looks for a
-`GtkMenuButton` or `GtkPopoverMenuBar` model in the window (`find_menu_model`, :435), and if it finds one it sets a
-holder menubar with `gtk_application_set_menubar`. If it finds none, it returns ("no menu model in this window"),
-and nothing ever looks again. GTK writes `_GTK_MENUBAR_OBJECT_PATH` only at realize, and only if a menubar is set at
-that moment (gtk 4.22.4 `gtkapplication-x11.c:41-65`). Pinta 3.1.2 realizes its window (`Present()`) and only then
-packs its header-bar MenuButtons, so it has no global menu (logs/02 p1).
+`attach_menubar()` (:900-950) runs once per window, from the realize hooks (:956-971). If no `GtkMenuButton` or
+`GtkPopoverMenuBar` model is in the window at that moment, it gives up for good. GTK writes
+`_GTK_MENUBAR_OBJECT_PATH` only at realize, and only with a menubar already set (gtk 4.22.4
+`gtkapplication-x11.c:41-65`). Pinta 3.1.2 realizes its window (`Present()`) before it packs its header-bar
+MenuButtons, so it has no global menu (logs/02 p1).
 
-## Mechanism
+## States
 
-### 1. The menubar exists from the first realize
+The library keeps one record for the application it runs in. A process has one GtkApplication with windows; a
+second GtkApplication in the same process is ignored, as 0.10 ignores it. The record is in one of four states:
 
-The menubar becomes two GMenus kept for the application's life:
+| state | meaning | `container` | `inner` |
+|---|---|---|---|
+| `NONE` | nothing set yet; the application has no menubar | - | - |
+| `OURS_EMPTY` | our menubar is set, no menu found yet | ours, 0 items | ours, empty, not linked |
+| `OURS_FILLED` | our menubar holds the holder item | ours, 1 item (the holder) | ours, the cleaned copy, linked from the holder |
+| `TAKEN` | the application set a menubar of its own | released | released |
 
-- **`container`**, the menubar itself. It is set with `gtk_application_set_menubar` at the first realize, if the
-  application has no menubar of its own (the existing check, :908). At first it has **0 items**. GTK then writes
-  `_GTK_MENUBAR_OBJECT_PATH` on every window realized from now on, the first one included, since we act before
-  chaining up (:956-971 order unchanged).
-- **`inner`**, the holder's submenu. When a menu is found, `container` gets one item: the existing holder,
-  labelled with the application's name (`menu_label`, :468), with `inner` as its submenu. `inner` holds the
-  cleaned copy (`clean_model`, :851).
+- **`container` is the menubar.** `gtk_application_set_menubar(app, container)` is called exactly once, at the
+  first realize in `NONE`.
+- **The holder** is the existing single item labelled with the application's name (`menu_label`, :468), whose
+  submenu is `inner`. `inner` holds the cleaned copy (`clean_model`, :851).
+- **Strong references:** we hold strong references on `container` and `inner` from creation until `TAKEN` or the
+  end of the process. 0.10's borrowed `our_menubar` pointer (:945) goes, so a stale address can never be confused
+  with the application's menubar.
+- **`TAKEN` is final:** a later `gtk_application_set_menubar(app, NULL)` by the application does not bring us back.
 
-Every later change edits these two GMenus in place: `g_menu_remove_all(inner)` and appending. GTK keeps one
-exporter, so the panel's subscription stays valid and gets `org.gtk.Menus.Changed`. Replacing the model would leave
-current subscribers with nothing (glib 2.88 `gmenuexporter.c:265`, :710). That is why it is not done.
+### Transitions
 
-A window found with a menu at realize (every application that works today) takes exactly today's path, except that
-the holder now goes into `container` instead of being the whole menubar. The model the panel sees is the same: one
-holder item with the cleaned copy as its submenu.
+**At every realize of a window with an application** (the hook, before chaining up, as today):
 
-### 2. Windows that are still waiting
+- **`NONE`:**
+  - If `gtk_application_get_menubar(app)` is non-NULL, go to `TAKEN`. The application set its own, which is
+    today's "already has a menubar".
+  - Otherwise create `container` and `inner`, set `container`, and go to `OURS_EMPTY`. GTK then writes the
+    property for this window and every later one.
+  - Then, as for `OURS_EMPTY`, look in this window.
+- **`OURS_EMPTY`:** run today's `find_menu_model` on this window, with today's realize-time rules. If a menu is
+  found, fill (below) and go to `OURS_FILLED`. If not, and the window is a `GtkApplicationWindow`, put it on the
+  waiting list.
+- **`OURS_FILLED`:** this is today's second-window case. Clean this window's own menu and keep only its stand-ins
+  (:921-928). Nothing is waited for.
+- **`TAKEN`:** do nothing.
 
-A window whose realize finds no menu is put on a **waiting list** if it is a candidate:
+**Fill:** clean the found model into `inner` (append into the empty `inner`), then append the holder item, with
+`inner` as its submenu, to the empty `container`. That is one `items-changed` on `container` after `inner` is
+complete, so a panel subscribed to the empty `container` sees one change, from 0 items to the holder. Every waiting
+window then leaves the list.
 
-- **The window is a `GtkApplicationWindow`, or a `GtkWindow` with an application.** A window without an
-  application is not a candidate, as today (:904).
-- **It has no transient parent** (`gtk_window_get_transient_for == NULL`) and is not modal. This keeps dialogs out.
-  A file chooser or a preferences dialog has its own MenuButtons, and one mapped later must not become the
-  application's menubar. Today this risk exists only at realize time.
-- **The application's `container` is still empty.**
+**Round-1 blocking 1:** the gnome-contacts order (a setup window without a menu, then the main window with one) now
+works. The setup window puts the record in `OURS_EMPTY` and does not wait, because it is a plain `GtkWindow`; if it
+were an application window it would wait. The main window's realize finds its menu and fills. 0.10 ends the same
+way; 0.11 additionally keeps the property on the setup window.
 
-**The list holds windows by weak reference** (`g_object_weak_ref`). A window leaves the list when the first of these
-happens:
-- **(a) A menu was found** for it, so `container` is filled.
-- **(b) `container` was filled from another window** of the same application. Since the menubar is per
-  application, once it is filled every window leaves the list: they get stand-ins as today (:921-928).
-- **(c) The window is unrealized or finalized**, through the weak reference.
-- **(d) The application set a menubar of its own**, see 5.
+**`TAKEN` from `OURS_*`:** a per-instance `notify::menubar` on the GtkApplication, connected when we enter
+`OURS_EMPTY` (`g_signal_connect_object`; the signal fires synchronously on change, `gtkapplication.c:1024-1028`),
+sees that `gtk_application_get_menubar(app)` is no longer `container`. GTK has already unexported ours at that point,
+so it is safe to clear the waiting list, drop the window handlers and release `container` and `inner`.
 
-Nothing else ends the wait: no timer, no count. A window of an application that never builds a menu waits for its
-whole life. Point 4 bounds what that costs.
+## Waiting windows and late finds
 
-### 3. Events that trigger a look
+### Who waits
 
-**A `GtkWidget::map` emission hook.**
-- **When it exists:** it is installed when the waiting list goes from empty to non-empty, with
-  `g_signal_add_emission_hook(g_signal_lookup("map", GTK_TYPE_WIDGET), 0, …)`. It is removed
-  (`g_signal_remove_emission_hook`) when the list becomes empty again.
-- **Applications that never use it:** an application whose menu is found at realize (Text Editor, Calculator, and
-  every other one that works today) never installs it.
-- **What it does,** in order:
-  1. returns TRUE at once unless the instance is a `GtkMenuButton` or a `GtkPopoverMenuBar`, which is two
-     `g_type_check_instance_is_a` calls;
-  2. takes `gtk_widget_get_root()`;
-  3. returns TRUE unless the root is on the waiting list;
-  4. otherwise schedules a **look** for that window: one `g_idle_add` per window, coalesced, so Pinta's five buttons
-     produce one look.
-- **Why `map` works:** it is not `G_SIGNAL_NO_HOOKS` (gtkwidget.c:1743). `GObject::notify` is (gobject.c:1083), so
-  notify cannot be hooked class-wide.
-- **Why it catches Pinta:** `adw_header_bar_pack_end` → `gtk_box_prepend` maps a visible child of a mapped parent
-  synchronously (gtkwidget.c:6336-6342). The model is already set when the button is constructed
-  (`new Gtk.MenuButton { MenuModel = … }`).
+**Only a `GtkApplicationWindow` waits,** in `OURS_EMPTY`, when its realize found no menu. A plain `GtkWindow` with
+an application is still looked at during its realize, as today, but does not wait. Round-1 Q2.
 
-**Per-instance `notify` for buttons mapped without a menu.**
-- During a look, a mapped `GtkMenuButton` in a waiting window that has neither a menu model nor a `GtkPopoverMenu`
-  popover gets `notify::menu-model` and `notify::popover` connected. A `GtkPopoverMenu` popover gets
-  `notify::menu-model`, and so does a `GtkPopoverMenuBar` without a model.
-- They use `g_signal_connect_object` with the window as the gobject, so they go away with the window.
-- Each schedules a look, and they are disconnected when the window leaves the list.
+**A window leaves the list when the first of these happens:**
+- (a) the application is filled, from this window or another;
+- (b) the window is unrealized or destroyed: per-instance `unrealize` and `destroy` handlers, because a weak
+  reference fires only at finalize, and under .NET that waits for the garbage collector (round-1 #5);
+- (c) `TAKEN`.
 
-**Setters are not interposed.** GTK links with `-Bsymbolic`, so its own property-to-setter calls never go through the
-PLT, and .NET resolves its calls through `dlsym` on libgtk's handle. Interposing would miss Pinta.
+A weak reference stays only as a safety net. A window that is realized again after an unrealize goes through realize
+again like any window. Nothing else ends the wait: no timer, no count. Round-1 Q1: waiting for the window's life is
+acceptable with the narrowed late-find filter below.
 
-### 4. The look
+### The trigger: the `map` vfunc of the two menu widgets
 
-A look is the existing `find_menu_model()`, `clean_model()` and stand-ins, applied to a waiting window from an idle
-callback. If it finds a menu, `inner` is filled and the holder item goes into `container`. All windows leave the
-list, and the `map` hook is removed when the list is empty.
+When the first window starts waiting, we replace `map` in the classes `GtkMenuButtonClass` and
+`GtkPopoverMenuBarClass` with a shim. It is the same technique as the existing realize hook (`hook_class`, :1017),
+and it is installed once. These classes are private (`gtkmenubutton.c:140`, `gtkpopovermenubar.c:98`), so there are
+no subclasses to miss. Doing it then, not at load, keeps the classes from being initialised early (:1139-1146).
 
-### 5. Following the source menu (`items-changed`)
+**The shim:**
+1. chains up to the real `map` first;
+2. returns at once if the waiting list is empty, which is one integer test;
+3. takes `gtk_widget_get_root()`, which is O(1): a cached pointer (`gtkwidget.c:6432`);
+4. if the root is a waiting window, schedules one **late look** for it: one `g_idle_add` per window, kept in the
+   window's entry and coalesced. Pinta's five buttons give one look.
 
-`clean_model` copies; the copy is static (comment at :838-840). After a fill, `items-changed` is connected on the
-source model and on every section and submenu, to depth 16, as `reachable_items` walks them. Any signal schedules
-one idle rebuild: `clean_model` again into `inner`, through `g_menu_remove_all` and appending. The connections
-are dropped and re-made on each rebuild, since the submenus may be new objects, and held weakly against the
-source.
+**Why this design avoids the old problems:**
+- No emission hook is added or removed, so round-1 blocking 3 does not arise.
+- Other widgets pay nothing, and these two pay only while a window waits (round-1 #4).
+- Pinta is caught: `adw_header_bar_pack_end` → `gtk_box_prepend` maps a visible child of a mapped parent
+  synchronously (`gtkwidget.c:6336-6342`), with the button's model already set.
 
-- **Why it is in 0.11:** May's variant A names it, and without it a filled-late menu could be stale from the
-  start. Pinta fills its submenus while it registers actions, at Startup, before the window exists, so that case
-  is unlikely.
-- **Side effect:** it also fixes the "menu changes later" cases (Nautilus' Undo relabel; the -034 survey).
-- **Not in 0.11:** following a *different* button being shown later (Papers, Console). gtk-nocsd's `a450853` does
-  that with its `map` hook's refind, and it is a separate behaviour change.
+**Per-instance notify, for a button mapped without a menu.** During a late look, a candidate button (filter below)
+that has neither a menu model nor a `GtkPopoverMenu` popover gets `notify::menu-model` and `notify::popover`. A
+`GtkPopoverMenu` popover gets `notify::menu-model`.
+- They are connected with `g_signal_connect_object` to the window, and the button is marked with
+  `g_object_set_data`, so a second look does not connect it again (round-1 #9).
+- The handler only schedules a look if the window is still waiting. It is not disconnected explicitly; the
+  connection ends with the window.
 
-### 6. An application that sets its own menubar later
+### What a late look accepts
 
-- **At realize:** "already has a menubar", unchanged.
-- **Later:** if `gtk_application_get_menubar(app)` is no longer our `container`, we stop. Every window leaves the
-  list, the `map` hook goes, the `items-changed` connections go, and our objects are released. We never set ours
-  back over theirs. We notice this through a per-instance `notify::menubar` on the GtkApplication
-  (`g_signal_connect_object`) and at every look.
-- **The remaining risk:** GTK re-exports at the same path, `<app path>/menus/menubar` (gtkapplication-dbus.c:492),
-  but the panel's existing subscription to the old export gets no `Changed`. Whether unity-panel-service then
-  shows the application's menu, or nothing until the window is focused again, is not known; it is to be measured
-  (tests, case 5). Today such an application has no global menu at all, because the property is missing.
+A late look is `find_menu_model` on the waiting window, with a narrower filter than at realize (round-1 blocking 2).
 
-### 7. The empty `container`
+**An owner is accepted only if:**
+- it is in the window's titlebar (`gtk_window_get_titlebar` subtree), **or** it has a `GtkHeaderBar` or
+  `AdwHeaderBar` ancestor below the window;
+- **and** it has no `AdwDialog`, `GtkPopover` or `AdwBottomSheet` ancestor.
 
-- **Panel:** for a window that never gets a menu, the panel shows nothing. That was measured with gtk-nocsd's
-  equivalent (research/nocsd-gaps, gnome-tour), and GTK shows no in-window bar for 0 items
-  (gtkapplicationwindow.c:218).
-- **HUD:** what it shows for an empty menubar is not known; to be measured (tests, case 3).
-- **Applications that read their own menubar:** `gtk_application_get_menubar()` now returns our empty
-  `container` for applications without a menu. Today it returns NULL. An application that reads it and acts on
-  non-NULL is a risk. No such application is known; measured in the regression run (tests, 9).
+Adw types are looked up with `g_type_from_name`, which returns 0 when libadwaita is not loaded; a 0 type matches
+nothing.
 
-## Cost of the `map` hook
+**Also skipped:**
+- a candidate whose model is `container` or `inner`, or a `GtkPopoverMenuBar` whose parent is the window itself. GTK
+  builds such a bar with our menubar when `show-menubar` is TRUE and `gtk-shell-shows-menubar` is FALSE, for example
+  under Xvfb without XSettings (`gtkapplicationwindow.c:218-269`; round-1 #7).
 
-- **When it costs nothing:** while no window waits, the hook does not exist. That is the case for every
-  application whose menu is found at realize, and for every process without GTK4 (the RTLD_NOLOAD check, :1043).
-- **When it does cost:** for a waiting window, each `map` emission of any widget in the process runs two
-  type-instance checks.
-- **To measure** before APPROVE, with a scratchpad prototype, no package code:
-  - the number of hook calls and their total time, through a debug counter logged with `note()`;
-  - in Pinta from start to idle;
-  - in an application without a menu that keeps waiting, for its life (gnome-tour, or a test window that maps and
-    unmaps 10 000 buttons);
-  - in Nautilus browsing a large directory, if it ever waits.
-- **Expected:** well under 1% of the map cost, since `map` itself runs layout and CSS. This is to be shown, not
-  assumed.
+**The ranking is unchanged:** shown, then primary, then the most reachable app./win. items. A late look also needs a
+score above 0, so a menu that reaches no application or window action does not become the application menu.
+
+**Pinta passes:**
+- its buttons are in an `Adw.HeaderBar` (`WindowShell.cs`), and none is in a dialog;
+- "Main Menu" has the most app. items (`app.new`, `app.open`, … under File and Edit);
+- the Effects, Adjustments, Image and View buttons score lower.
+
+That ranking is to be confirmed on target (tests, 9).
+
+**C's question: Text Editor and Calculator have a ⋮ menu in the header bar.** Their menu is found at their first
+realize (UNITY-20261012-003 logs: the panel shows "Текстовый редактор" and "Калькулятор" at once). The record goes
+from `NONE` straight to `OURS_FILLED`: nothing waits, the `map` shim is never installed, and no late look ever
+runs. Later menu buttons in these applications, such as a dialog's, a row's or another header-bar button, are
+ignored, exactly as in 0.10. The late path exists only for an application whose menubar is still empty. Tests 8 and
+9 check this on target.
+
+### The late look's fill
+
+The same as at realize: `clean_model` into `inner`, then the holder into `container`. The record goes to
+`OURS_FILLED`, the waiting list is cleared, and the shim's second test makes it return at once from then on.
+
+## Remaining downsides, stated
+
+- **`gtk_application_get_menubar()` is non-NULL** in `OURS_EMPTY` for applications without a menu. Today it is NULL.
+  No application relying on NULL is known; tests 3 and 9 look.
+- **Panel and HUD:** for an application that never gets a menu, the panel shows nothing (gnome-tour under gtk-nocsd,
+  research/nocsd-gaps). The HUD with an empty menubar, and Unity's locally integrated menus (LIM), are measured in
+  test 3.
+- **After `TAKEN`:** the panel may keep showing our last exported items rather than the application's, because GTK
+  sends no signal when it unexports. Today such an application has no property at all, and so no global menu.
+  Test 5 measures which it is.
+- **Stand-ins (round-1 #10):** a window that arrives in `OURS_FILLED` and whose buttons appear only after its
+  realize, a second window in Pinta's order, gets no stand-ins of its own. That matters only for class actions
+  (`find_class_action`), and Pinta has none; it is documented in the card. A stand-in for an item that later
+  disappears stays tied to its first owner, as today (`proxy_for` :727).
 
 ## Tests
 
-**In `tests/`,** a C test like `tests/classtest.c`, run under `xvfb-run` with `UNITY_GTK4_MENU_FORCE=1`. Each case
-checks `_GTK_MENUBAR_OBJECT_PATH` on the window, `gtk_application_get_menubar()`, and the exported items over
-`org.gtk.Menus`:
+**In `tests/`:** a new C test, `tests/latetest.c`, modelled on `tests/classtest.c` and on the shelved
+`research/layer-b/latetest.c`. It runs under `dbus-run-session -- xvfb-run`, with `UNITY_GTK4_MENU_FORCE=1` and
+`G_DEBUG=fatal-criticals` for every case (round-1 #3, #12). Each case reads the window's
+`_GTK_MENUBAR_OBJECT_PATH`, the record's state and a debug counter (shim calls, late looks), and lists the exported
+items through a real `GDBusMenuModel` client.
 
-1. A MenuButton packed after `gtk_window_present()`, Pinta's order: the menu appears in `container` without a
-   timer.
-2. A `GtkPopoverMenuBar` added after present.
-3. A window with no menu: `container` stays empty. The waiting list is emptied and the hook removed when the window
-   is destroyed. Also: the HUD and the panel with it, on target.
-4. A MenuButton mapped without a model and given one later (`gtk_menu_button_set_menu_model` after map): the
-   per-instance notify fills the menu.
-5. The application sets its own menubar after realize: ours is released and not set back. The application's menu
-   is what the panel shows, measured on target.
-6. A transient dialog with a MenuButton, opened while the main window waits: it does not become the menubar.
-7. `items-changed`: an item is added to the source after the fill, and the exported copy follows.
-8. The existing realize path is unchanged: a menu found at realize gives the same exported model as 0.10
-   (`tests/gjstest.js` and classtest).
-
-**On target2** (Clean-2 → live → install the build):
-
-9. Pinta 3.1.2 in header-bar mode: File … Help under the holder on the panel, with Alt+F10 and the HUD. Then the
-   regression set from UNITY-20261012-003: Text Editor, Calculator, mnemo.py, judged by events.
-10. Nautilus' Undo relabel after a rename (items-changed).
+1. **Pinta's order:** a MenuButton packed into a GtkHeaderBar after `gtk_window_present()`. The menu appears without
+   a timer, and the GDBusMenuModel client, subscribed to the empty container before the fill, receives the change.
+2. The same with a `GtkPopoverMenuBar` in the titlebar.
+3. **No menu at all:** the state stays `OURS_EMPTY`, the window leaves the list at destroy, and the shim's counter
+   stops. On target: the panel shows nothing; the HUD and LIM with it.
+4. **A MenuButton mapped without a model,** given one later by `gtk_menu_button_set_menu_model`: the per-instance
+   notify fills.
+5. **The application sets its own menubar after realize:** `TAKEN`. Ours is released and not set back, also after
+   the application sets NULL. On target: what the panel shows.
+6. **A dialog in the window:** while the main window waits, an AdwDialog containing a MenuButton is presented inside
+   an AdwApplicationWindow (built only if libadwaita headers are available). It does not become the menubar, and
+   neither does a MenuButton in a list row or a `GtkPopover`.
+7. **The gnome-contacts order:** first a plain window without a menu, then an application window with a menu at
+   realize. The menu is exported; this is the round-1 blocking 1 regression.
+8. **The realize path is unchanged:** a menu found at realize gives the same exported model as 0.10, and the shim is
+   never installed (`tests/gjstest.js`, classtest).
+9. **On target2** (Clean-2 → live → this build):
+   - Pinta 3.1.2 in header-bar mode: File … Help under the holder, with Alt+F10 and the HUD, judged by events.
+   - The UNITY-20261012-003 regression set (Text Editor, Calculator, mnemo.py) by events. Their ⋮ and other
+     header-bar buttons have no effect, and the debug log shows no late look.
+   - gnome-tour, or another application without a menu.
+10. **Cost:** with a scratchpad prototype before APPROVE if the Challenger asks for it, and with the build on target
+    otherwise. The shim calls and their total time in Pinta from start to idle, and in a menu-less application that
+    maps and unmaps 10 000 menu buttons.
 
 ## Packaging
 
 - **Version:** unity-gtk4-menu 0.11.
-- **`debian/control`:** unchanged; no new dependency. GLib and GTK are already resolved at run time through
-  `dlsym`.
-- **New symbols** go through `RESOLVE`, which does nothing if one is missing:
-  - `g_signal_lookup`, `g_signal_add_emission_hook`, `g_signal_remove_emission_hook`;
+- **`debian/control`:** unchanged. The library has no NEEDED entries on GLib or GTK; everything is resolved at run
+  time.
+- **New symbols through `RESOLVE`:**
   - `g_idle_add`, `g_source_remove`;
-  - `g_menu_remove_all`;
-  - `g_object_weak_ref`, `g_object_weak_unref`;
-  - `g_signal_handler_disconnect`, `g_signal_handlers_disconnect_matched`;
-  - `gtk_widget_get_root`, `gtk_window_get_transient_for`, `gtk_window_get_modal`;
-  - `gtk_widget_get_mapped`.
-- **Size estimate:** 150-200 lines in `src/unity-gtk4-menu.c`, plus the test.
+  - `g_object_ref`, `g_object_weak_ref`, `g_object_weak_unref`;
+  - `g_type_from_name`, `g_type_class_peek`;
+  - `gtk_widget_get_root`, `gtk_window_get_titlebar` (already resolved), `gtk_widget_get_mapped`;
+  - `gtk_menu_button_get_type` and `gtk_popover_menu_bar_get_type` (already resolved), `gtk_popover_get_type`,
+    `gtk_header_bar_get_type`.
+
+  RESOLVE is fail-closed: one missing symbol disables the whole library, as today. All of these exist since GTK 4.0
+  and GLib 2.38 (round-1 #11).
+- **Size estimate:** 130-180 lines in `src/unity-gtk4-menu.c`, plus the test.
 - **Not changed:** the environment.d file, the gsettings schema, the label logic.
 
-## Questions for the Challenger
+## Round-1 findings and where they are answered
 
-1. Is "a waiting window waits for its life, and the hook exists only while some window waits" bounded enough, or
-   should a window also leave the list at its first unmap?
-2. Is the candidate filter (no transient parent, not modal) right? Should plain `GtkWindow`s with an application be
-   candidates at all, or only `GtkApplicationWindow`?
-3. Should `items-changed` following be in this release, or be a separate step after the late-menu fix?
-4. Placing a menubar-shaped menu (all top-level items submenus, as Pinta's) on the panel without the holder, as
-   gtk-nocsd does: proposed **not** in 0.11, because it changes how existing applications look. Agreed?
+| # | finding | here |
+|---|---|---|
+| 1 B | the second-window branch with a non-NULL empty menubar | States, transitions; test 7 |
+| 2 B | dialogs and rows inside the window | "What a late look accepts"; only application windows wait; test 6 |
+| 3 B | removing an emission hook inside itself | no emission hook: a class `map` vfunc shim; tests under fatal-criticals |
+| 4 | class vfunc instead of a global hook | taken |
+| 5 | weak ref fires only at finalize | `unrealize`/`destroy` handlers |
+| 6 | borrowed pointer, permanent takeover | strong references, `TAKEN` final |
+| 7 | the in-window bar holds our container | skip our own models and the window's own PopoverMenuBar |
+| 8 | the rebuild cost | not in 0.11: UNITY-20261013-008 |
+| 9 | notify bookkeeping | `g_object_set_data` mark; the handler checks waiting |
+| 10 | stand-ins for late buttons in other windows | documented in "Remaining downsides" |
+| 11 | RESOLVE list | updated |
+| 12 | test gaps | tests 1-8 |
