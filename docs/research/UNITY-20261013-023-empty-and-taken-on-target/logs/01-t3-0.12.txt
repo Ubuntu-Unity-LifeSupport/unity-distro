@@ -1,0 +1,37 @@
+== t3b-012 t3 at 2026-10-13T15:01:28Z; libunity-gtk4-menu0 0.12; integrated-menus false
+  15:01:57Z window 60817412 (Экскурсия), active 58720262
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Tour/menus/menubar"
+  panel entries for the window:
+    (0 entries for window 60817412)
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  popwatch: 15:01:59.355 panel-service visible windows 0, active 58720262
+  re-activated: window 60817412, active 58720262
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  the HUD window had the focus (58720262 "Hud", a compiz dock window, left open by the first attempt); Escape from the host
+  re-activated: window 60817412, active 60817412
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  popwatch restarted: 15:02:59.828 panel-service visible windows 0, active 60817412
+  Alt+F10 from the host at 15:03:08Z; screenshot at 15:03:17Z: the Accessibility indicator menu is open (the panel has no application menu for the window; its title is shown)
+-- t3b-012 end at 15:03:28Z
+  popwatch:
+    15:02:59.828 panel-service visible windows 0, active 60817412
+    15:03:08.594 panel-service visible windows 2, active 60817412
+  panel service calls and signals:
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  library log:
+    [unity-gtk4-menu 5235] GTK4 found at load
+    [unity-gtk4-menu 5235] hooked GtkWindow::realize
+    [unity-gtk4-menu 5235] hooked GtkApplicationWindow::realize
+    [unity-gtk4-menu 5235] empty menubar set
+    [unity-gtk4-menu 5235] no menu model in this window
+    [unity-gtk4-menu 5235] hooked GtkMenuButton::map
+    [unity-gtk4-menu 5235] hooked GtkPopoverMenuBar::map
+    [unity-gtk4-menu 5235] the window waits for a menu (1 waiting)
+    [unity-gtk4-menu 5274] GTK4 is not loaded in this process yet
+    [unity-gtk4-menu 5278] GTK4 is not loaded in this process yet
+  panel entries now:
+    (0 entries for window 60817412)

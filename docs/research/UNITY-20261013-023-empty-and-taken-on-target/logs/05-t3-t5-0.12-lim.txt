@@ -1,0 +1,61 @@
+== t3-012-lim t3 at 2026-10-13T15:12:38Z; libunity-gtk4-menu0 0.12; integrated-menus true
+  15:12:42Z window 60817412 (Экскурсия), active 60817412
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Tour/menus/menubar"
+  panel entries for the window:
+    (0 entries for window 60817412)
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  popwatch: 15:12:43.496 panel-service visible windows 0, active 60817412
+-- t3-012-lim end at 15:12:46Z
+  popwatch:
+    15:12:43.496 panel-service visible windows 0, active 60817412
+  panel service calls and signals:
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  library log:
+    [unity-gtk4-menu 4036] GTK4 found at load
+    [unity-gtk4-menu 4036] hooked GtkWindow::realize
+    [unity-gtk4-menu 4036] hooked GtkApplicationWindow::realize
+    [unity-gtk4-menu 4036] empty menubar set
+    [unity-gtk4-menu 4036] no menu model in this window
+    [unity-gtk4-menu 4036] hooked GtkMenuButton::map
+    [unity-gtk4-menu 4036] hooked GtkPopoverMenuBar::map
+    [unity-gtk4-menu 4036] the window waits for a menu (1 waiting)
+    [unity-gtk4-menu 4080] GTK4 is not loaded in this process yet
+    [unity-gtk4-menu 4086] GTK4 is not loaded in this process yet
+  panel entries now:
+    (0 entries for window 60817412)
+== t5-012-lim t5 at 2026-10-13T15:12:46Z; libunity-gtk4-menu0 0.12; integrated-menus true
+  15:12:50Z window 62914564 (takeover), active 62914564
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/TakeOver/menus/menubar"
+  panel entries for the window, before the takeover:
+    (0 entries for window 62914564)
+  app: 15:12:47Z window presented, own menubar in 5.0 s
+  app: 
+  app: (takeover.py:4412): Gtk-WARNING **: 18:12:48.063: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x6b20400 with width 6 and height -1
+  app: 15:12:52Z the application set its own menubar
+  panel entries for the window, after:
+    (0 entries for window 62914564)
+  popwatch: 15:12:58.536 panel-service visible windows 0, active 62914564
+-- t5-012-lim end at 15:13:01Z
+  popwatch:
+    15:12:58.536 panel-service visible windows 0, active 62914564
+  panel service calls and signals:
+  library log:
+    [unity-gtk4-menu 4412] GTK4 is not loaded in this process yet
+    [unity-gtk4-menu 4412] GTK4 found through GObject Introspection
+    [unity-gtk4-menu 4412] hooked GtkWindow::realize
+    [unity-gtk4-menu 4412] hooked GtkApplicationWindow::realize
+    [unity-gtk4-menu 4412] empty menubar set
+    [unity-gtk4-menu 4412] no menu model in this window
+    [unity-gtk4-menu 4412] hooked GtkMenuButton::map
+    [unity-gtk4-menu 4412] hooked GtkPopoverMenuBar::map
+    [unity-gtk4-menu 4412] the window waits for a menu (1 waiting)
+    [unity-gtk4-menu 4412] the application set a menubar of its own; ours is released
+    [unity-gtk4-menu 4412] a window stopped waiting (0 waiting)
+  app: 15:12:47Z window presented, own menubar in 5.0 s
+  app: 
+  app: (takeover.py:4412): Gtk-WARNING **: 18:12:48.063: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x6b20400 with width 6 and height -1
+  app: 15:12:52Z the application set its own menubar
+  panel entries now:
+    (0 entries for window 62914564)
