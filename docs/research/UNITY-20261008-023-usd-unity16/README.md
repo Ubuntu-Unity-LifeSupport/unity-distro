@@ -50,6 +50,18 @@ There is no library or ABI change.
   again. Video players' screensaver inhibitors did not reach the session
   manager - fixed by light-locker +unity4 (UNITY-20261013-018).
 
+## Verification
+
+- Target test before publication: PASS (`gate/target-test.txt`).
+- Check on the target after publication, of the whole series: PASS.
+  Published 2026-10-13 19:56:20Z as `unity-resolute-20261008-023`; the
+  target restored and updated from the live repository (u-s-d +unity16,
+  cinnamon-session +unity7, light-locker +unity4), cold boot: the session
+  goes idle and locks after the Control Center's delay; while VLC plays it
+  does not go idle; without an inhibitor it goes idle and locks as before
+  (`gate/target-verification.txt`).
+- Independent verification: PASS.
+
 ## Not changed / known limits
 
 - The power plugin's screen blanking follows light-locker's activation,
