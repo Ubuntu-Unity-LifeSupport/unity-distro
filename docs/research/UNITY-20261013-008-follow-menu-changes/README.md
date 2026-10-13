@@ -263,3 +263,10 @@ Non-blocking notes:
 - The oracle shows a submenu collapse only. That the holder's own popup would collapse the same way rests on the same
   mechanism.
 - A closed Nautilus window that has not been finalized is still followed (above).
+
+## Known gaps (named for the release)
+
+- UNITY-20261013-028: Papers' document menu is a different menu, shown later, and is not followed.
+- UNITY-20261013-024 (BACKLOG): a menubar the application sets after realize.
+- UNITY-20261013-030: `add_stand_ins()` looks up the menu in every other window at every rebuild (the cost grows with
+  the number of windows).
