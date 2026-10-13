@@ -1,0 +1,20 @@
+== A baseline 14:21:18
+  BlockWeakInhibited (manager property): s ""
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B hold a session-manager inhibitor with flags 4 (suspend)
+inhibit cookie 206315028 flags 4
+== C
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2008 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block
+== D
+  CanSuspend s "challenge"
+  CanReboot s "challenge"
+  CanPowerOff s "challenge"
+== E release (kill 4186)
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"

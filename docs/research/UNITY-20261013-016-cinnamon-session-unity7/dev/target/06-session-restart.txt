@@ -1,0 +1,12 @@
+19 1000 mike -     5174 user    - no -
+ 2 1000 mike -     1192 manager - no -
+22 1000 mike seat0 5481 user    - no -
+23 1000 mike -     7395 user    - no -
+active
+== 17:55:15 old cinnamon-session pid 7204; systemctl --user restart unity-session.service
+== 17:57:15 new cinnamon-session pid 8901 started вт жов 13 17:56:44 2026
+new cinnamon-session unique name: :1.283
+AddIdleWatch from it: 1
+   uint64 300000
+AddIdleWatch total in log: 2
+active

@@ -1,0 +1,13 @@
+2026-10-13 21:29:05
+-rw-rw-r-- 1 mike mike 0 Oct  8 10:29 /home/mike/.dirty
+ls: cannot access '/home/mike/tg': No such file or directory
+cinnamon-session	6.4.2-1+unity3
+Настраивается пакет cinnamon-session-common (6.4.2-1+unity7) …
+Настраивается пакет cinnamon-session (6.4.2-1+unity7) …
+cinnamon-session	6.4.2-1+unity7
+cinnamon-session-common	6.4.2-1+unity7
+light-locker	1.8.0-3ubuntu4+unity3
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+65570d04a299bc7d905b001c566d65d7894f1dcd194adec82dae5a698617193e  /var/cache/apt/archives/cinnamon-session_6.4.2-1+unity7_amd64.deb
+f3ee952b1cc51656cb7a5ae3024e25a821435395cc4d6f374a13e9bcdffb86d9  /var/cache/apt/archives/cinnamon-session-common_6.4.2-1+unity7_all.deb
+0

@@ -1,0 +1,7 @@
+2026-10-13 17:47:32
+cinnamon-session 6.4.2-1+unity7
+light-locker 1.8.0-3ubuntu4+unity4
+unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16
+cinnamon-session-binary pid=2247 deleted-maps=0 exe=7f1ac764185ba29a
+unity-settings-daemon pid=2251 deleted-maps=5 exe=0c1ab496ad3d8386
+light-locker pid=2732 deleted-maps=0 exe=7cce20ba74bdadad
