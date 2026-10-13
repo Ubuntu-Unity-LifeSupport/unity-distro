@@ -1,0 +1,24 @@
+UNITY-20261013-003/-004: the new tests on +unity2 (base-red).
+Tree: compiz +unity2 (5610bd4) with the test commits e758979 and 4d7ead5 only (scratch branch, not published). Built 2026-10-13 with build_sbuild.py, chroot T=20261008T083223Z; sbuild log sha256 83edacc1652f1d829b794be676e623a0ac8cfa68a23659ab67503724e4cdc70d; the build stops at make check, as expected.
+
+506/1439 Test  #506: CCSUnixTextFileTest.ReadAppendRead    Passed    0.01 sec
+507/1439 Test  #507: CCSUnixTextFileTest.UnseekableFileIsNotRead ***Failed    0.37 sec
+508/1439 Test  #508: CCSUnixTextFileTest.ClosedDescriptorIsNotRead ***Failed    0.38 sec
+509/1439 Test  #509: CCSFdOwnership.IniSaveWithSectionsClosesOnce ***Failed    0.01 sec
+510/1439 Test  #510: CCSFdOwnership.IniSaveWithoutSectionsClosesOnce ***Failed    0.01 sec
+511/1439 Test  #511: CCSFdOwnership.MetadataCacheClosesOnce ***Failed    0.02 sec
+99% tests passed, 5 tests failed out of 1439
+
+Failure messages:
+  507: ./compizconfig/libcompizconfig/tests/compizconfig_test_ccs_text_file.cpp:135: Failure
+  507: [  DEATH   ] *** buffer overflow detected ***: terminated
+  508: ./compizconfig/libcompizconfig/tests/compizconfig_test_ccs_text_file.cpp:155: Failure
+  508: [  DEATH   ] *** buffer overflow detected ***: terminated
+  509: ./compizconfig/libcompizconfig/tests/compizconfig_test_fd_ownership.cpp:127: Failure
+  509:     Which is: 1
+  510: ./compizconfig/libcompizconfig/tests/compizconfig_test_fd_ownership.cpp:152: Failure
+  510:     Which is: 1
+  511: ./compizconfig/libcompizconfig/tests/compizconfig_test_fd_ownership.cpp:186: Failure
+  511: [  DEATH   ] close EBADF 4, fclose on a closed descriptor 2, cache written
+
+All other 1434 tests pass. An earlier run with the first version of the tests (before 4d7ead5) is superseded: its no-sections case used a key that iniparser counts as a section. Two attempts in between stopped at 503 errors from snapshot.ubuntu.com before the build.

@@ -1,0 +1,67 @@
+UNITY-20261013-003 and UNITY-20261013-004: target test of compiz 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+
+Target: target-desktop on the live stack of 2026-10-13 (restored from Published-stack-2026-10-08 and updated
+from the live repository: unity-settings-daemon +unity14, gtk-nocsd +unity4, unity-gtk4-menu 0.10, hud
++unity7, compiz +unity2). The "before" numbers below were taken there; then the compiz packages installed
+on the target were replaced by these debs from this build (build/), with apt:
+
+  6958264ee61c1b2eb0528a909002f23d6b78d33a9b9ec3242d05e3573b8b95d6  compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb
+  27adc71551d0ec3513bfebefa10ea1d1780627a7d90c645f4b1707ed5dadfeca  compiz-core_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb
+  2024d0fd3b84a029fb1e1d8fe53615e30c569feb2d64fc38810e26b0fe711310  compiz-gnome_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb
+  d87399c221f78e09adccb49ff47f0dce2d30f4127d7e0e1e76900eb609f16e2d  compiz-plugins-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb
+  9a4a8edee5aa8b13a6ac068b6c914ff94ce70fb5ff963212ae3958dee6f52e92  libcompizconfig0_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb
+  37da6a9e0b46258a438e3a7b281c6f1714f282bccd5cf25a6e7fe1c9b9b3fa3d  libdecoration0t64_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb
+
+Build: make check (ctest) 1439 tests, all pass, including compizconfig_test_fd_ownership (ini save with
+and without sections, plugin metadata cache write and read: no close() failing with EBADF, no fclose() on
+an already closed descriptor) and the completed-upgrades reader tests (FIFO, closed descriptor, regular
+file). The same tests on +unity2: five of the six new tests fail (gate/base-red.txt).
+
+Measure 1: closes of an already closed descriptor (close() returning EBADF; glibc's own close inside
+fclose included) in the three programs that load libcompizconfig at session start, counted with bpftrace
+from early boot over the whole session start.
+                                          +unity2 (one start)   +unity3 (cold boots 3, 4, 5)
+  compiz                                        106                  0, 0, 0
+  compiz-config-profile-setter                  258                  0, 0, 0
+  unity-active-plugins-safety-check              99                  0, 0, 0
+  dconf "will not work properly" lines            0                  0, 0, 0
+  "Failed to load plugin" / xml encoding errors   0                  0, 0, 0
+  Other processes in both (lightdm-session 82, sh, im-launch, gpu-manager, chronyd, ...) close
+  descriptors that are already closed on purpose or by habit; they are not part of this change and are
+  not counted. On +unity2 the compiz stack was close <- fclose <- the plugin metadata cache loader <-
+  ccsLoadPluginsDefault <- ccsContextNew <- CcpScreen::CcpScreen.
+  Counted boots, with the tracer window and compiz's start from the journal (EEST):
+    boot 3: tracer 09:57:13-09:59:49, unity7 09:58:57, compiz 09:58:58
+    boot 4: tracer 10:01:01-10:07:45, unity7 10:02:16, compiz 10:02:17
+    boot 5: tracer 10:12:06-10:18:48, unity7 10:13:19, compiz 10:13:19 (the done_upgrades FIFO of
+            measure 3 was in place in this boot)
+  Not counted: boot 1 - the 150 s window ended at 09:47:02, before unity7 and compiz started (09:47:04),
+  so its zeros say nothing about them; boot 2 - lightdm started after the window ended. The window was
+  150 s up to boot 3 and 400 s from boot 4 on. The tracer's map lists only processes that had such a close; that compiz, the
+  profile setter and the safety check ran inside the window is shown by the journal times above.
+
+Measure 2: 100 direct runs of unity-active-plugins-safety-check under the user manager (session bus,
+gsettings/dconf), each under strace -f -k, close() = EBADF by the first frame outside libc:
+                                          +unity2      +unity3 (first run with the metadata cache removed)
+  from libcompizconfig                     3157            0
+  from GLib/GIO                              18            0
+  other                                      10            0
+  runs with any                             100            0
+  dconf "will not work properly" lines        4            0
+  failed runs                                 0            0
+  The cache was written again by +unity3 (31 .pb files).
+  A further 200 runs without strace on +unity3: no failed run, no dconf message, no crash report.
+
+Measure 3 (the reader): ~/.config/compiz-1/compizconfig/done_upgrades replaced by a FIFO, cold boot:
+the session starts, unity7.service and unity-session.target active, no restart of unity7.service;
+compiz-config-profile-setter, unity-active-plugins-safety-check and compiz each log
+"Unable to read the completed upgrades file: Illegal seek" and "Error opening done_upgrades" and go on;
+no crash report. The file was restored afterwards.
+With a new HOME, compiz-config-profile-setter writes done_upgrades with 8 lines (unity .01-.07 and
+lowgfx .01); a second run adds none.
+
+Observation: processes, services and files over ssh; bpftrace from a temporary system unit started before
+lightdm (removed after the test); strace through systemd-run --user; the user journal.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build).
