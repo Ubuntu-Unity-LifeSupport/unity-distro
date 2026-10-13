@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261012-006",
+  "package": "unity-gtk4-menu",
+  "target_series": "resolute",
+  "candidate_version": "0.10",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1012-006/packages/unity-gtk4-menu",
+  "source_remote_ref": "origin/a/UNITY-20261012-006",
+  "source_commit": "aa008465773f2571983f6fdc6c277f0a289bcfcb",
+  "source_tree_hash": "7b16356241dee3e9d007dfe9caf30eb3ba87cf60",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261012-006"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/build/UNITY-20261012-006-unity-gtk4-menu-build-manifest.json",
+    "sha256": "2aa58574f5ff7597d9d0a65d328a96550039e2eb4478620b8ece0bab655b3fee"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/gate/evidence-manifest.json",
+    "sha256": "ca324444b9f05004a90a7fef8c092e4d23fd85065948c5f35de96af1f9fe53af"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/gate/target-test.txt",
+        "sha256": "566481ebf683a8564de6f229ab340a5aa392bd61e4cea04a5b490896c5168d34"
+      },
+      "debs": {
+        "libunity-gtk4-menu0_0.10_amd64.deb": "4420b1a07e081945754c9fa7c5bfbe6796085cc964fb2045ddf1fd07e6731324"
+      }
+    }
+  }
+}

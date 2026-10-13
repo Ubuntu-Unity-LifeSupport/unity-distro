@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261012-006",
+  "package": "unity-gtk4-menu",
+  "source_commit": "aa008465773f2571983f6fdc6c277f0a289bcfcb",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/README.md",
+      "sha256": "b328f31ef0cfa9897b1df0f9a7d196abd84fef8b9cee6fd5d1124cd957627c3f"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/README.md",
+      "sha256": "b328f31ef0cfa9897b1df0f9a7d196abd84fef8b9cee6fd5d1124cd957627c3f"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "54b02e8c305c2c7dba1e60bdb3693a795da1601632ce9f3c0de2824462e50f20"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/gate/release-record.json",
+      "sha256": "9238c2425835504b86cca681bf164798e1aaeba3b88859866264d6911697a38b"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261012-006-unity-gtk4-menu-0.10/gate/version-check.json",
+      "sha256": "82f17bf89a126be01a951d23060d4379889baab59a8b3394829628efde857ba6"
+    }
+  }
+}
