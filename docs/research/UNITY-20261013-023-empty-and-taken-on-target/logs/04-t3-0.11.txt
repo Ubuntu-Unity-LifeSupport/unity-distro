@@ -1,0 +1,35 @@
+== t3-011 t3 at 2026-10-13T15:08:53Z; libunity-gtk4-menu0 0.11; integrated-menus false
+  15:08:57Z window 60817412 (Экскурсия), active 60817412
+  _GTK_MENUBAR_OBJECT_PATH:  not found.
+  panel entries for the window:
+    (0 entries for window 60817412)
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  popwatch: 15:08:58.401 panel-service visible windows 0, active 60817412
+  Alt+F10 from the host at 15:09:03Z, Escape at ~15:09:10Z
+-- t3-011 end at 15:09:15Z
+  popwatch:
+    15:08:58.401 panel-service visible windows 0, active 60817412
+    15:09:04.106 panel-service visible windows 1, active 60817412
+    15:09:04.422 panel-service visible windows 2, active 60817412
+  panel service calls and signals:
+    method call time=1791904143.927998 sender=:1.89 -> destination=:1.88 serial=981 path=/com/canonical/Unity/Panel/Service; interface=com.canonical.Unity.Panel.Service; member=ShowEntry
+       string "0x56bfd47e71e0"
+    signal time=1791904144.165029 sender=:1.88 -> destination=(null destination) serial=440 path=/com/canonical/Unity/Panel/Service; interface=com.canonical.Unity.Panel.Service; member=EntryActivated
+       string "UnityPanel109351640734144_0"
+       string "0x56bfd47e71e0"
+    signal time=1791904153.998396 sender=:1.88 -> destination=(null destination) serial=443 path=/com/canonical/Unity/Panel/Service; interface=com.canonical.Unity.Panel.Service; member=EntryActivated
+       string ""
+       string ""
+    entry 0x56bfd47e71e0 is: 'libapplication.so', '0x56bfd47e71e0', 'a11y-profile-manager-indicator', 0, '', false, false, 6, '. GThemedIcon accessibility-directory-pane
+  HUD query "a": target "a", 0 result(s)
+  HUD query "tour": target "tour", 0 result(s)
+  library log:
+    [unity-gtk4-menu 5083] GTK4 found at load
+    [unity-gtk4-menu 5083] hooked GtkWindow::realize
+    [unity-gtk4-menu 5083] hooked GtkApplicationWindow::realize
+    [unity-gtk4-menu 5083] no menu model in this window
+    [unity-gtk4-menu 5128] GTK4 is not loaded in this process yet
+    [unity-gtk4-menu 5137] GTK4 is not loaded in this process yet
+  panel entries now:
+    (0 entries for window 60817412)
