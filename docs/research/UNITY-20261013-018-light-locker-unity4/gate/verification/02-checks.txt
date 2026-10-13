@@ -1,0 +1,22 @@
+2026-10-13 22:03:02
+active
+active
+light-locker pid=2770 exe=7cce20ba74bdadad installed=7cce20ba74bdadad
+== 22:04:55 baseline
+  IsInhibited(8): (false,)
+== 22:05:05 VLC playing (pid 4019)
+  IsInhibited(8): (true,)
+  /org/gnome/SessionManager/Inhibitor1 app=('vlc',) flags=(uint32 8,)
+== 22:05:09 VLC closed (SIGTERM)
+  IsInhibited(8): (false,)
+== 22:05:19 VLC playing again (pid 4281)
+  IsInhibited(8): (true,)
+  /org/gnome/SessionManager/Inhibitor2 app=('vlc',) flags=(uint32 8,)
+== 22:05:22 VLC killed (SIGKILL)
+  IsInhibited(8): (false,)
+== 22:05:25 after a one-shot dbus-send Inhibit
+  IsInhibited(8): (false,)
+(end)
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash

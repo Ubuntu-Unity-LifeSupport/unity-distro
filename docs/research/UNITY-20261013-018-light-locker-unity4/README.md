@@ -41,6 +41,16 @@ during playback.
   inhibitor the session goes idle and locks as before; a manual lock during
   playback still locks.
 
+## Verification
+
+- Target test before publication: PASS (`gate/target-test.txt`).
+- Check on the target after publication: PASS. Published 2026-10-13
+  18:57:21Z as `unity-resolute-20261013-018`; the target restored and
+  updated from the live repository, cold boot: VLC's inhibitor is held by
+  the session manager while it plays and released when VLC is closed or
+  killed (`gate/target-verification.txt`).
+- Independent verification: PASS.
+
 ## Publication
 
 - **Database backup:** `/home/claude/backups/UNITY-20261013-018-20261013T184634Z`.
