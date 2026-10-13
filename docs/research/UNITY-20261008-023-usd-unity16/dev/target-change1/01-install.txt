@@ -1,0 +1,40 @@
+вівторок, 13 жовтень UTC 2026 11:35:07 +0000
+-rw-rw-r-- 1 mike mike 0 Oct  8 10:29 /home/mike/.dirty
+e872832794171a068227578d907c6f486f877f96103a7ce4bab3c85a9ab22c24  usd16/libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+7afa6887ff65d9b4866142fe823faf5ffbd6c94b5da3f71849d4d37f50ac4610  usd16/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+97f7abd1968ef9fbfb3b175fb14d0e435f445147f18004e800fc408b39669884  usd16/unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity16_all.deb
++ sudo dpkg -i --force-breaks usd16/*.deb
+Настраивается пакет libunity-settings-daemon1:amd64 (15.04.1+21.10.20220802-0ubuntu7+unity16) …
+Настраивается пакет unity-settings-daemon-schemas (15.04.1+21.10.20220802-0ubuntu7+unity16) …
+Настраивается пакет unity-settings-daemon (15.04.1+21.10.20220802-0ubuntu7+unity16) …
+cinnamon-session	6.4.2-1+unity5
+light-locker	1.8.0-3ubuntu4+unity3
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity16
+firefox 1:1snap1-0ubuntu9.1
+firefox-locale-de 1:1snap1-0ubuntu9.1
+firefox-locale-en 1:1snap1-0ubuntu9.1
+firefox-locale-es 1:1snap1-0ubuntu9.1
+firefox-locale-fr 1:1snap1-0ubuntu9.1
+firefox-locale-it 1:1snap1-0ubuntu9.1
+firefox-locale-pt 1:1snap1-0ubuntu9.1
+firefox-locale-ru 1:1snap1-0ubuntu9.1
+firefox-locale-zh-hans 1:1snap1-0ubuntu9.1
+rhythmbox 3.4.9-3ubuntu3
+rhythmbox-data 3.4.9-3ubuntu3
+rhythmbox-plugin-alternative-toolbar 0.21.0-1
+rhythmbox-plugin-zeitgeist 3.4.9-3ubuntu3
+rhythmbox-plugins 3.4.9-3ubuntu3
+vlc 3.0.23-1
+vlc-bin 3.0.23-1
+vlc-data 3.0.23-1
+vlc-l10n 3.0.23-1
+vlc-plugin-access-extra:amd64 3.0.23-1
+vlc-plugin-base:amd64 3.0.23-1
+vlc-plugin-notify:amd64 3.0.23-1
+vlc-plugin-qt:amd64 3.0.23-1
+vlc-plugin-samba:amd64 3.0.23-1
+vlc-plugin-skins2:amd64 3.0.23-1
+vlc-plugin-video-output:amd64 3.0.23-1
+vlc-plugin-video-splitter:amd64 3.0.23-1
+vlc-plugin-visualization:amd64 3.0.23-1
+firefox            149.0.2-1                       8107    latest/stable/…  mozilla**    -

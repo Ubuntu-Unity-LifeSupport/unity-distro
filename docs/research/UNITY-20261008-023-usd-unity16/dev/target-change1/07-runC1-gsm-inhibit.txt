@@ -1,0 +1,12 @@
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+== 14:41:18 gnome-session-inhibit --inhibit idle sleep 100 (background), last input now
+IdleHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 80375,)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)

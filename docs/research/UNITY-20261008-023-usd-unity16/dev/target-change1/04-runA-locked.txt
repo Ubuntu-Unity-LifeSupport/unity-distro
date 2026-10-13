@@ -1,0 +1,31 @@
+== 2026-10-13 14:39:12 EEST locked screen up (t+~80s)
+Id=3
+Active=yes
+IdleHint=yes
+IdleSinceHint=1791891525308036
+LockedHint=yes
+presence status: (<uint32 3>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2283 unity-settings-
+owner org.gnome.Mutter.IdleMonitor: 2283 unity-settings-
+owner org.gnome.ScreenSaver: 2864 light-locker
+owner org.freedesktop.ScreenSaver: 2864 light-locker
+idletime (Mutter core): (uint64 87546,)
+screensaver active (org.gnome.ScreenSaver): (false,)
+keys: gnome idle-delay=uint32 300 cinnamon idle-delay=uint32 60 lock-enabled=true lock-delay=uint32 0
+inhibitors: (@ao [],)
+u-s-d pid=2283 started=вт жов 13 14:37:04 2026 exe=0c1ab496ad3d8386
+== active VT: tty7
+10 1000 mike -     4101 user    - no  -
+11 1000 mike -     4581 user    - no  -
+ 2 1000 mike -     1221 manager - no  -
+ 3 1000 mike seat0 1332 user    - yes 27s ago
+== monitor so far:
+method call time=1791891465.314119 sender=:1.53 -> destination=:1.58 serial=95 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=RemoveWatch
+   uint32 4
+method call time=1791891465.314136 sender=:1.53 -> destination=:1.58 serial=96 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 60000
+signal time=1791891525.306559 sender=:1.58 -> destination=:1.53 serial=212 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 5
+signal time=1791891525.308317 sender=:1.53 -> destination=(null destination) serial=107 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1791891525.308334 sender=:1.53 -> destination=:1.58 serial=108 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddUserActiveWatch

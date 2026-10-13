@@ -1,0 +1,15 @@
+2026-10-13 14:56:08
+light-locker	1.8.0-3ubuntu4+unity3
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+org.freedesktop.ScreenSaver owner: 2969 light-locker
+  queued: ([':1.101', ':1.64'],)
+org.gnome.ScreenSaver owner: 2969 light-locker
+  queued: ([':1.101'],)
+org.cinnamon.ScreenSaver owner: none 
+  queued: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwner: Could not get owners of name 'org.cinnamon.ScreenSaver': no such name
+org.cinnamon.Muffin.IdleMonitor owner: none 
+  queued: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwner: Could not get owners of name 'org.cinnamon.Muffin.IdleMonitor': no such name
+== unique names -> process:
+:1.101 pid=2969 light-locker
+:1.64 pid=2433 unity-settings-
+Схема «org.gnome.settings-daemon.plugins.screensaver-proxy» не существует

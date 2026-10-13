@@ -1,0 +1,61 @@
+2026-10-13 23:03:13
+active
+active
+== 23:05:15 versions
+cinnamon-session	6.4.2-1+unity7
+light-locker	1.8.0-3ubuntu4+unity4
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity16
+  unity-settings-daemon pid=2212 exe=0c1ab496ad3d8386
+  cinnamon-session-binary pid=2208 exe=7f1ac764185ba29a
+  light-locker pid=2740 exe=7cce20ba74bdadad
+== 23:05:16 A: gnome idle-delay 60, cinnamon 600, no inhibitor, last input now
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 244,)
+inhibitors: (@ao [],)
+IdleHint=yes
+LockedHint=yes
+presence status: (<uint32 3>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 80635,)
+inhibitors: (@ao [],)
+== 23:06:39 B: VLC playing, last input now
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 297,)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 90649,)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)
+== 23:08:20 C: VLC closed, no input
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 3088,)
+inhibitors: (@ao [],)
+IdleHint=yes
+LockedHint=yes
+presence status: (<uint32 3>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 78351,)
+inhibitors: (@ao [],)
+== 23:09:38 D: Firefox playing a local copy
+IdleHint=yes
+LockedHint=no
+presence status: (<uint32 3>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2212 unity-settings-
+idletime (Mutter core): (uint64 65900,)
+inhibitors: (@ao [],)
+== keys reset: uint32 300 / uint32 900
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash
+(end)
