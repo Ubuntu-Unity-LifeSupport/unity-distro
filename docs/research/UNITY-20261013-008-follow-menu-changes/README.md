@@ -7,7 +7,7 @@ task: UNITY-20261013-008
 title: unity-gtk4-menu 0.12 exports a copy made when the menu is found and never updates it; stale or wrong global menus in Nautilus, Papers (and Console, per the UNITY-20261012-004 survey)
 package: unity-gtk4-menu (0.12 live)
 target_series: resolute
-status: INVESTIGATING - staleness measured; design next (Design Challenger before code)
+status: IMPLEMENTING - 0.13 built and tested on target2 (below); Verifier next
 ```
 
 ## Measurement (2026-10-13, target2)
@@ -136,3 +136,110 @@ Notes for the implementation:
 - a hard depth cap of 16 in `sync()`.
 
 The tests that guard the riskiest paths are 13, 14, 19, 22 and target 5, the last only after the oracle check.
+
+## Implementation (0.13, package branch b/UNITY-20261013-008)
+
+Per DESIGN.md round 3, in `src/unity-gtk4-menu.c`:
+- **The copy mark.** `clean_model()` puts the mark `unity-gtk4-menu-copy` on every GMenu of a copy, and on
+  `inner`. `is_copy()` reads it.
+- **Following.** After a fill, `look()` calls `start_following()`, which keeps:
+  - the source model (a ref);
+  - the owner and the window (weak pointers);
+  - the source's action names (seeded at the fill).
+
+  `watch_model()` connects `items-changed` on the source and on every section and submenu down to depth 16, the
+  depth `clean_model()` copies to (`MAX_DEPTH`). Below it the copy links the application's own models, and the
+  exporter watches those itself. Our container and inner, and models already watched, are skipped.
+- **One rebuild per burst.** `on_source_changed()` schedules one default-priority idle unless one is pending or a
+  sync is running. `rebuild_idle()` works on a state of `OURS_FILLED` only.
+  - If the window or widget is gone, it logs "no longer followed" once and stops following. The copy is kept.
+  - Otherwise it unwatches, copies the source again with the same scope, and syncs the copy into `inner`. It then
+    adds stand-ins in the other application windows for action names new since the last copy, and watches again.
+    It logs "menu changed (rebuild N): K item(s) replaced".
+- **`sync_menu()`.**
+  - It keeps the common prefix and suffix; the suffix is bounded by min − prefix.
+  - Kept items have their links synced: recursion happens only when both link objects carry the mark and differ.
+    An unmarked link of the application that differs replaces the item.
+  - Only the middle is edited: item by item when both middles have the same length, otherwise the old middle is
+    removed and the new one inserted.
+  - The suffix is processed first, then the prefix, then the middle.
+  - Depth cap 16.
+- **`same_item()`** compares every attribute (names and values with `g_variant_equal`, both ways) and the link
+  names.
+- **Stopping.** Following stops on TAKEN and in `record_free()`: the idle is removed, every handler disconnected,
+  the source dropped, and the weak pointers removed.
+- **New symbols**, resolved like all others: `g_menu_remove`, `g_menu_insert_item`, the attribute and link
+  iterators, `g_variant_equal`, `gtk_application_get_windows`. NEEDED stays libc only.
+- An off-by-one found while writing test 19: the watch first stopped at depth 15 while the copy reaches 16, so a
+  change at depth 16 would have been missed. It was fixed before any test ran (commit d377096).
+
+## Tests
+
+### latetest 13-22 (`tests/latetest.c`), Xvfb, target2
+
+The cases are described in the file's header.
+- A D-Bus side reads the export the way the panel does: org.gtk.Menus Start on every reachable group, and a count
+  of the Changed signals with their group/menu ids.
+- Counters of `items-changed` are connected to our copies and to the application's models.
+
+Results:
+- **0.13** (the sbuild deb, `libunity-gtk4-menu0_0.13_amd64.deb` sha256 e979cf29…, installed on target2;
+  `logs/06-latetest-0.13.txt`): 20 of 20 pass (cases 1-12 and 13-22). Case 21 timed the rebuild of 200 items at
+  2.8 ms, from the change to the log line. NEEDED is libc only.
+- **valgrind** (memcheck): 0 errors on 13, 18, 19 and 22 against the deb (`logs/07`), and on 13, 17, 18 and 22
+  against the same source built on target2.
+- **0.12 control** (`logs/05-latetest-0.12-control.txt`, `LATETEST_CONTROL=1`): 13, 14, 15, 16, 19, 20 and 22 fail,
+  because nothing follows. 17, 18 and 21 pass, as they should on both versions: they check that nothing breaks
+  or is rebuilt when nothing may be.
+
+### Regression (`logs/07-regression-0.13.txt`)
+
+The UNITY-20261012-004 set (`runtests.sh`: latetest 1, 1f, 2, 3, 3f, 4, 5, 7, 8, 9, 11, 12, adw6 and adw6a) against
+the installed 0.13:
+- 14 of 14 with the session's preload;
+- 14 of 14 with the library preloaded alone.
+
+### Target 4: Nautilus (`t4-nautilus.sh`)
+
+A cold Unity session on target2. F2, Enter, Ctrl+Z and Ctrl+N come from the host (vbox `send_keys`): xdotool's F2
+opens Unity's run dialog on this keymap and never reaches the window. The judges are the export (`menudump.py`) and
+the HUD (`hudq.py "переименование"`).
+
+| step | 0.12 (`logs/04`, control) | 0.13 (`logs/08`) |
+|---|---|---|
+| a rename by keys | export "_Отменить", HUD 0 results: **stale** | "_Отменить переименование"; HUD "Отменить переименование (Файлы)" |
+| Ctrl+Z | - | "_Отменить" and "_Повторить переименование"; HUD "Повторить переименование" |
+| a rename through FileOperations2 RenameURI | "_Отменить", HUD 0: **stale** | "_Отменить переименование"; HUD finds it |
+| a second window (Ctrl+N): a rename and Ctrl+Z in window 2 | - | both windows' exports follow each step |
+| window 1 closed, then a rename | - | window 2's export follows (rebuild 3) |
+
+The 0.12 control directory also held a file left by an earlier dry run (`alpha-renamed`). `t4-nautilus.sh` now
+clears the directory.
+
+Nautilus's undo menu belongs to the application, so window 1's copy follows a change made in window 2. After window 1
+was closed (xdotool windowclose), the rebuild still ran: its window and menu button were not finalized yet, so the
+weak pointers were still set. "No longer followed" is covered by latetest 17 (and under valgrind) rather than here.
+
+### Target 5: an open panel menu (`t5.sh`, `t5app.py`, `popwatch2.c`), `logs/09`
+
+`t5app.py` changes its menu every 2 s. The judges are events:
+- `popwatch2`, an Xlib poll every 20 ms of unity-panel-service's mapped override-redirect popups with their geometry;
+- `sync.sh`, the panel's entry id;
+- the application's change lines;
+- the export and the library log.
+
+`popwatch.sh` from UNITY-20261012-003 counts windows through xdotool, and its count did not change when a submenu
+opened or closed, so it cannot see a collapse. `popwatch2` sees the holder's menu (89,30 125x104) and "Sub" (212,82
+108x52) as separate windows.
+
+| mode, what is open | what changes | popups | entry id | result |
+|---|---|---|---|---|
+| `sub` (the oracle), Sub open | "Sub" itself relabelled | Sub's window goes away 1.3 s after it opened, right after a change | kept | **collapse seen**: the probe works |
+| (a) the holder's menu | "Tick N", a sibling | the holder's menu stays, 0 changes over 16 s; the label updates in the open menu (Tick 9) | kept | PASS |
+| (b) Sub | "Inner N", inside Sub | both stay to the end | kept | PASS |
+| (c) Sub | "Outside N", outside Sub | both stay to the end | kept | PASS |
+| `all`, Sub open | every item removed and added again (`remove_all`), only "Tick N" new | both stay; "1 item(s) replaced" per change | kept | PASS |
+
+The design named `remove_all` as the oracle. With 0.13 it cannot collapse anything: the burst is coalesced and the
+sync replaces only the changed item, as mode `all` shows. So the oracle is the one change that must collapse: a
+relabel of the item whose submenu is open, the accepted cost.
