@@ -53,6 +53,12 @@ in `build/`.
 ## Verification
 
 - Target test before publication: PASS (`gate/target-test.txt`).
+- Check on the target after publication: PASS. Published 2026-10-13
+  00:08:28Z as `unity-resolute-20261012-005`; the target updated from the
+  live repository, cold boot: the session has the path form, both
+  libraries are loaded, privileged programs print nothing
+  (`gate/target-verification.txt`). The first boot ended at start with an
+  abort in libcompizconfig, recorded there; the second boot was normal.
 - Independent verification: PASS (the Verifier reviewed the diffs against the
   approved design, ran the script tests and the environment.d generator, and
   checked the build records and the target record against its raw outputs
