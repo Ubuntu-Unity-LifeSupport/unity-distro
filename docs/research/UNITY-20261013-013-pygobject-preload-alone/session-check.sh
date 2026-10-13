@@ -29,16 +29,28 @@ done
 echo "-- GObject Introspection errors of this boot"
 echo "  user journal: $(journalctl --user -b --no-pager -q | grep -cE 'AssertionError|g_type != TYPE_NONE|gi/overrides') lines; ~/.xsession-errors: $(grep -cE 'AssertionError|gi/overrides' ~/.xsession-errors 2>/dev/null) lines"
 journalctl --user -b --no-pager -q -o cat | grep -B3 -E 'AssertionError' | head -12 | sed 's/^/    /'
-echo "-- Python programs through the user manager"
-for a in meld gnome-tweaks "python3 $B/apps.py 3" "python3 $B/apps.py 4"; do
-  u=b1313-$(echo "$a" | tr -c 'a-z0-9\n' '-' | cut -c1-30)
-  systemctl --user reset-failed "$u" 2>/dev/null
-  systemd-run --user --quiet --unit="$u" $a; sleep 8
+echo "-- Python programs through the user manager (12 s each; the session components are started again by hand)"
+n=0
+for a in meld gnome-tweaks "python3 $B/apps.py 3" "python3 $B/apps.py 4" unity-indicator-appearance onboard orca \
+         uwidgets-runner update-manager software-properties-gtk /usr/share/apport/apport-gtk; do
+  n=$((n+1)); u=b1313-$tag-$n
+  systemd-run --user --quiet --unit="$u" $a; sleep 12
   st=$(systemctl --user show "$u" -p ActiveState -p Result -p ExecMainStatus --value | xargs)
   pid=$(systemctl --user show "$u" -p MainPID --value)
   w=$([ "$pid" -gt 0 ] && xdotool search --onlyvisible --pid "$pid" 2>/dev/null | head -1)
-  echo "  $a: unit $st, main pid $pid, window ${w:-none}${w:+ $(xprop -id "$w" _GTK_MENUBAR_OBJECT_PATH 2>&1 | cut -c1-70)}"
-  journalctl --user -b --no-pager -q -o cat -u "$u" | grep -vE 'xdg-desktop-portal|portal.Inhibit' | tail -3 | sed 's/^/      /'
+  tb=$(journalctl --user -b --no-pager -q -o cat -u "$u" | grep -cE 'AssertionError|Traceback')
+  echo "  $a: unit $st, main pid $pid, window ${w:-none}${w:+ $(xprop -id "$w" _GTK_MENUBAR_OBJECT_PATH 2>&1 | cut -c1-60)}; Traceback/AssertionError lines $tb"
+  journalctl --user -b --no-pager -q -o cat -u "$u" | grep -vE 'xdg-desktop-portal|portal.Inhibit|^Started |^Stopp|Consumed' | tail -2 | cut -c1-150 | sed 's/^/      /'
   systemctl --user stop "$u" 2>/dev/null; systemctl --user reset-failed "$u" 2>/dev/null
 done
+echo "-- GIO modules in a PyGObject process (the dconf backend is a GIO module); the session's LD_PRELOAD, from compiz"
+export LD_PRELOAD="$(tr '\0' '\n' < /proc/$cp/environ | sed -n 's/^LD_PRELOAD=//p')"
+echo "  LD_PRELOAD=$LD_PRELOAD"
+python3 -c 'from gi.repository import Gio; b = Gio.SettingsBackend.get_default(); print("  backend:", type(b).__name__, "GSETTINGS_BACKEND:", __import__("os").environ.get("GSETTINGS_BACKEND"))' 2>&1 | tail -1
+python3 -c 'from gi.repository import Gio; s = Gio.Settings.new("org.gnome.desktop.interface"); v = s.get_boolean("clock-show-seconds"); s.set_boolean("clock-show-seconds", not v); Gio.Settings.sync(); print("  write:", v, "->", not v)' 2>&1 | tail -1
+echo "  read back from dconf: $(dconf read /org/gnome/desktop/interface/clock-show-seconds)"
+python3 -c 'from gi.repository import Gio; s = Gio.Settings.new("org.gnome.desktop.interface"); s.reset("clock-show-seconds"); Gio.Settings.sync()' 2>&1 | tail -1
+echo "-- maps of non-GTK processes with the session's LD_PRELOAD"
+echo "  cat: ours mapped $(cat /proc/self/maps | grep -c libunity-gtk4-menu), libgmodule/libgtk-4 mapped $(cat /proc/self/maps | grep -cE 'libgmodule|libgtk-4'); python3 without gi: libgmodule/libgtk-4 mapped $(python3 -c 'print(sum(1 for l in open("/proc/self/maps") if "libgmodule" in l or "libgtk-4" in l))')"
+unset LD_PRELOAD
 true

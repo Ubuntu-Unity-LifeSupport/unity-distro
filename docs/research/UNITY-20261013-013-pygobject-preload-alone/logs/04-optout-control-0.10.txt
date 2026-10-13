@@ -1,0 +1,62 @@
+== optout-0.10 at 2026-10-13T09:54:48Z, boot 2026-10-13 12:24:24; libunity-gtk4-menu0 0.10, libgtk-nocsd0 4.8-1+unity4
+-- preload
+  opt-out file: -rw-rw-r-- 1 mike mike 0 Oct 13 12:23 /home/mike/.config/environment.d/50-gtk-nocsd.conf
+  user manager: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0'
+  compiz: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+  compiz maps: libunity-gtk4-menu.so.0
+-- Python session components (autostart)
+  onboard-autostart.desktop -> /usr/bin/onboard: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-keyboard-enabled X-GNOME-AutoRestart=true OnlyShowIn=Unity;MATE;]
+  orca-autostart.desktop -> /usr/bin/orca: not running [AutostartCondition=GSettings org.gnome.desktop.a11y.applications screen-reader-enabled X-GNOME-AutoRestart=true OnlyShowIn=GNOME;MATE;Unity;Cinnamon;]
+  unity-indicator-appearance.desktop -> /usr/bin/unity-indicator-appearance: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+  uwidgets-runner.desktop -> /usr/bin/uwidgets-runner: not running [OnlyShowIn=Unity X-GNOME-AutoRestart=true]
+-- GObject Introspection errors of this boot
+  user journal: 25 lines; ~/.xsession-errors: 0 lines
+      File "/usr/lib/python3/dist-packages/gi/overrides/__init__.py", line 209, in override
+        assert g_type != TYPE_NONE
+               ^^^^^^^^^^^^^^^^^^^
+    AssertionError
+    --
+      File "/usr/lib/python3/dist-packages/gi/overrides/__init__.py", line 209, in override
+        assert g_type != TYPE_NONE
+               ^^^^^^^^^^^^^^^^^^^
+    AssertionError
+    --
+      File "/usr/lib/python3/dist-packages/gi/overrides/__init__.py", line 209, in override
+        assert g_type != TYPE_NONE
+-- Python programs through the user manager (12 s each; the session components are started again by hand)
+  meld: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 0
+      b1313-optout-0.10-1.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-1.service: Failed with result 'exit-code'.
+  gnome-tweaks: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 2
+      b1313-optout-0.10-2.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-2.service: Failed with result 'exit-code'.
+  python3 /home/mike/b1313/apps.py 3: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 2
+      b1313-optout-0.10-3.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-3.service: Failed with result 'exit-code'.
+  python3 /home/mike/b1313/apps.py 4: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 2
+      b1313-optout-0.10-4.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-4.service: Failed with result 'exit-code'.
+  unity-indicator-appearance: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 2
+      b1313-optout-0.10-5.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-5.service: Failed with result 'exit-code'.
+  onboard: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 2
+      b1313-optout-0.10-6.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-6.service: Failed with result 'exit-code'.
+  orca: unit active success 0, main pid 5991, window none; Traceback/AssertionError lines 2
+      b1313-optout-0.10-7.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-7.service: Failed with result 'exit-code'.
+  uwidgets-runner: unit inactive success 0, main pid 0, window none; Traceback/AssertionError lines 0
+      No widgets found.
+  update-manager: unit active success 0, main pid 6054, window none; Traceback/AssertionError lines 0
+  software-properties-gtk: unit active success 0, main pid 6087, window none; Traceback/AssertionError lines 0
+  /usr/share/apport/apport-gtk: unit failed exit-code 1, main pid 0, window none; Traceback/AssertionError lines 0
+      b1313-optout-0.10-11.service: Main process exited, code=exited, status=1/FAILURE
+      b1313-optout-0.10-11.service: Failed with result 'exit-code'.
+-- GIO modules in a PyGObject process (the dconf backend is a GIO module); the session's LD_PRELOAD, from compiz
+  LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0
+AssertionError
+AssertionError
+  read back from dconf: 
+AssertionError
+-- maps of non-GTK processes with the session's LD_PRELOAD
+  cat: ours mapped 5, libgmodule/libgtk-4 mapped 0; python3 without gi: libgmodule/libgtk-4 mapped 0
