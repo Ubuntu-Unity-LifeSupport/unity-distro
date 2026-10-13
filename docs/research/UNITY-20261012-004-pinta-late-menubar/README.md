@@ -309,6 +309,34 @@ The design is in DESIGN.md (round 1 at `92666f6`).
    signals and collapses an open menu.
 4. No menubar-shaped placement in 0.11.
 
+## Design review round 2 (Design Challenger, 2026-10-13): REVISE
+
+The design is in DESIGN.md (round 2 at `5ba5d45`).
+
+**Resolved:** the round-1 blocking findings, in principle. The `map` shim is the right mechanism: `map` is a
+class-offset signal (`gtkwidget.c:1742-1746`), GtkMenuButton does not override it, and Pinta's buttons map through
+`gtk_widget_set_parent`. gtk-nocsd 0b77e1b patches no GtkMenuButton vfunc, and "score > 0" is safe for Pinta.
+
+**Blocking:**
+1. **`g_type_class_peek` would install no shim in Pinta.** Its first GtkMenuButton is created after `Present()`,
+   so the class is not initialised yet.
+2. **The Adw types must be looked up at each late look.** libadwaita is loaded after GTK in GI and .NET
+   applications, so a lookup at hook time returns 0. AdwHeaderBar would then never match, and Pinta would be
+   rejected.
+
+**Non-blocking:**
+- the in-window empty bar exists when `gtk-shell-shows-menubar` is FALSE;
+- no fill with 0 items;
+- check `set_menubar`'s preconditions first;
+- runtime subclasses of GtkMenuButton;
+- one record per GtkApplication;
+- filter before `add_candidate`, and require `shown`;
+- re-entrancy during the fill;
+- Pinta's small ranking margin;
+- titlebars under gtk-nocsd;
+- test hooks through the debug log;
+- the Adw tests are required, but neither the builder nor `debian/control` has libadwaita headers.
+
 ## Not yet done
 
 - **For C and May,** with no design until then: a small unity-gtk4-menu change, or moving to the upstream
