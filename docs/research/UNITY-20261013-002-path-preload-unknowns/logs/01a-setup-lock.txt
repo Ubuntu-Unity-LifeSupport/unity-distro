@@ -1,0 +1,30 @@
+== 1 restore, checked inside at 2026-10-13T02:37:41Z, boot 2026-10-13 05:36:39
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b1301': No such file or directory
+  sources.list.d: ubuntu.sources; foreign architectures: i386
+== 2 live archive
+  update rc=0
+  Date: Tue, 13 Oct 2026 01:41:51 UTC
+  full-upgrade rc=100
+  left to upgrade: 213
+== 3 packages
+  install rc=100
+    libunity-gtk4-menu0 not installed
+  gcc	4:15.2.0-5ubuntu1
+  gcc-multilib	
+  tmux	
+  x11-utils	7.7+7build1
+  libgtk-nocsd0	3+0~20260321+0b77e1b-1
+  libc6	2.43-2ubuntu2.4
+    libc6-i386 not installed
+  snapd	2.76.3+ubuntu26.04
+    flatpak not installed
+ls: cannot access '/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0': No such file or directory
+  -rwSr--r-- 1 root root 84048 Mar 21  2026 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0
+== 4 t32
+  t64: ELF 64-bit LSB pie executable, x86-64
+In file included from /home/mike/b1302/t32.c:4:
+/usr/include/stdio.h:28:10: fatal error: bits/libc-header-start.h: Нет такого файла или каталога
+   28 | #include <bits/libc-header-start.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
