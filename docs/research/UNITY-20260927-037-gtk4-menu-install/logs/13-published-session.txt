@@ -1,0 +1,17 @@
+== session host=target2 boot=225a118f-0282-404a-ac36-46c5a7315ec4 utc=2026-10-13T16:23:30Z
+== compiz pid=2809: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu 
+== systemd user manager LD_PRELOAD
+LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+== starting GTK4 application: file-roller
+pid=4016
+== LD_PRELOAD in its environment
+LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+== preload libraries mapped
+libgtk-nocsd.so.0
+libunity-gtk4-menu.so.0
+== window properties (_GTK_MENUBAR_OBJECT_PATH is set when the menu is exported)
+WM_NAME(STRING) = "File Roller"
+_GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.98"
+_GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/FileRoller/menus/menubar"
+_GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/FileRoller"
+== done

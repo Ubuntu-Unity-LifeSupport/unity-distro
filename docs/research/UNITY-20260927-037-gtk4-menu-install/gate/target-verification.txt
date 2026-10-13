@@ -1,0 +1,23 @@
+UNITY-20260927-037: target verification of the publication of unity-session 49.4+unity2
+
+Published 2026-10-13 16:06:53Z as snapshot unity-resolute-20260927-037 (publish record
+~/coordinator/publish-records/UNITY-20260927-037.json: aptly PASS, post-publish check PASS; signer mode, approved by
+policy). On builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 16:01:50 UTC, sha256
+fa238772... (the signer's inrelease_sha256). The pool file unity-session_49.4+unity2_all.deb has the gated sha256
+ff1339f2...
+
+target2, restored to Clean-2 again and confirmed inside (no ~/.dirty, only ubuntu.sources, unity-session 49.4, no
+libunity-gtk4-menu0), with the live repository alone (no local repository), logs/12-published-upgrade.txt:
+- apt-get update: rc 0 (InRelease Date 16:01:50 UTC); unity-session candidate 49.4+unity2.
+- apt-get full-upgrade with apt's default (install-recommends "1"): rc 0; "Get ... unity-session all 49.4+unity2"
+  and "Get ... libunity-gtk4-menu0 amd64 0.12" from http://192.168.56.10:8080; dpkg.log "install
+  libunity-gtk4-menu0 <none> 0.12" and "upgrade unity-session 49.4 49.4+unity2"; libunity-gtk4-menu0 is marked
+  automatic. The downloaded files:
+    ff1339f26e2980269083f385f2db0bac5e97a0d0bebf233fa05ca09c3820c8dd  unity-session_49.4+unity2_all.deb
+    1e5d6040b9aa689c7e4311aa9d30e4f2275833e499e092aec7efaa29e1c3c662  libunity-gtk4-menu0_0.12_amd64.deb
+  the gated unity-session file and the published unity-gtk4-menu 0.12 file.
+- A cold boot with autologin (logs/13-published-session.txt): compiz and the systemd user manager preload
+  /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0; file-roller maps libunity-gtk4-menu.so.0 and
+  exports its menu (_GTK_MENUBAR_OBJECT_PATH).
+
+Result: PASS.

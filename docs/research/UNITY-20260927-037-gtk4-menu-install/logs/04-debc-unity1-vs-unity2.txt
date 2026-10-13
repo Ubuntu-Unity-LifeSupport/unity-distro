@@ -1,0 +1,15 @@
+# +unity1 (/srv/aptly/pool/6e/ba/77eb6db549f81a96f90007c3be79_unity-session_49.4+unity1_all.deb) vs +unity2 (build/unity-session_49.4+unity2_all.deb)
+## control diff
+2c2
+< Version: 49.4+unity1
+---
+> Version: 49.4+unity2
+7c7
+< Recommends: libgtk-nocsd0, rhythmbox-plugin-zeitgeist, zeitgeist-datahub
+---
+> Recommends: libgtk-nocsd0, libunity-gtk4-menu0, rhythmbox-plugin-zeitgeist, zeitgeist-datahub
+## file list diff (paths, modes, sizes)
+22c22
+< -rw-r--r-- 811 ./usr/share/doc/unity-session/changelog.gz
+---
+> -rw-r--r-- 952 ./usr/share/doc/unity-session/changelog.gz
