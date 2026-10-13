@@ -186,6 +186,90 @@ carried patch (DECISIONS, the "unity-gtk4-menu inside gtk-nocsd" entry).
   - Epiphany: items removed after realize, from a code comment only, not measured.
 - How unity-gtk4-menu 0.9 itself behaves on Papers and Console has not been measured.
 
+## Is there a more elegant way than a retry timer? (subagent, read-only, 2026-10-13)
+
+The question came from the decision on the fix. Sources are cited inline; the subagent's scratch clones are not
+kept.
+
+### Precedents: none of them uses a timer
+
+- **unity-gtk-module** (GTK2/3, `0.0.0+18.04.20171202`, `src/main.c`):
+  - It overrides class `realize` of GtkWindow, GtkApplicationWindow and GtkMenuBar (:550-635, :760-866).
+  - At window realize it exports an **empty per-window GMenu** and writes `_GTK_MENUBAR_OBJECT_PATH` itself
+    (:367-428).
+  - A GtkMenuBar realized later is appended to that menu. Later changes follow GtkMenuShell `insert`.
+- **appmenu-gtk-module** (ours, 25.04-1build1+unity1) is the same design: realize hooks (`src/hijack.c:69-163`),
+  an empty GMenu exported at realize with the property written by XChangeProperty (`src/platform.c:90-220`), late
+  menubars appended in place (`src/datastructs.c:239`).
+- **vala-panel-appmenu** ships the same GTK module and has no GTK4 support.
+- **KDE Plasma** (`gmenu-dbusmenu-proxy`, `menuproxy.cpp:271-326`) reads the `_GTK_*` properties once, when the
+  window is added. It relies on "an empty menubar announced at realize, filled later" (`window.cpp:204`).
+- **Our gtk-nocsd series `a450853`:** the 250 ms × 12 retry is the only part that finds a menu that does not exist
+  yet at realize, which is Pinta's case. Its `map` hook and its `items-changed` watch are installed only after the
+  first menu has been found (`GTKNoCSDMenuFill`, `GTKNoCSDMenuFollowShown` :5420-5434).
+
+### An event-driven variant for GTK 4.22
+
+**Which hooks are available** (glib 2.88.0, GTK 4.22.4):
+- GtkWidget `map` and `realize` take emission hooks (`gtkwidget.c:1743`, `:1782`).
+- `GObject::notify` is `G_SIGNAL_NO_HOOKS` (`gobject.c:1083`), so `notify::menu-model` can be followed only per
+  instance.
+- `root`/`unroot` are vfuncs only, not signals.
+
+**Pinta's case is caught by `map`.** Pinta passes the `MenuButton` with its `MenuModel` already set to
+`adw_header_bar_pack_end` → `gtk_box_prepend`. That maps the button synchronously, because the header bar is
+already mapped (`gtkwidget.c:6336-6342`, `:2974`).
+
+**Interposing the setters would not catch it.** GTK links with `-Bsymbolic`, so its internal calls never go
+through the PLT. .NET resolves its calls with `dlsym` on libgtk's own handle, which does not include our library.
+
+**So the variant would be:**
+1. At realize, set an empty GMenu as the menubar.
+2. Install one `map` emission hook up front. It filters for GtkMenuButton and GtkPopoverMenuBar whose window is
+   still waiting, then coalesces through one idle.
+3. For a mapped button without a model, connect per-instance `notify::menu-model` and `notify::popover`.
+4. After the first fill, keep following `items-changed`.
+
+No case needing a timer was found. A menu in a widget that is never mapped stays uncaught, but the user cannot see
+that menu either.
+
+### Upstream options
+
+- **GTK.** No issue or MR was found about writing `_GTK_MENUBAR_OBJECT_PATH` when `set_menubar` comes after
+  realize. GitLab search could not be read, so this is UNKNOWN.
+  - The change would be about 30-40 lines in `gtkapplication-x11.c`, plus Wayland.
+  - It only helps panels that re-read the property: KDE does not, and Unity is UNKNOWN.
+- **Pinta.** No issue asks for `app.Menubar` in header-bar mode. Related: #781 (closed by PR #1418) and #1951
+  (open; the maintainer: "Pinta's really just relying on GTK doing the right thing here").
+  - `AdwApplicationWindow` forces `show-menubar` off (libadwaita `adw-application-window.c:298`), so exporting
+    the menubar would add no in-window bar.
+  - The header-bar model leaves out View, Image, Adjustments and Effects (`MainWindow.cs:396-405`), so a full
+    model would have to be built: about 10-20 lines.
+
+### The empty menubar
+
+- **On the panel:** an empty menubar shows nothing until it is filled (research/nocsd-gaps, gnome-tour), and GTK
+  shows no in-window bar for 0 items (`gtkapplicationwindow.c:218`).
+- **Side effect:** `gtk_application_get_menubar()` is no longer NULL. An application that sets its own menubar
+  later replaces ours, and `a450853` guards against that.
+- **Writing the property after realize:** possible with the deprecated `gdk_x11_surface_set_utf8_property`, but
+  without a confirmed benefit.
+
+### Variants (estimates)
+
+| variant | where | event-driven | size | risk | Pinta's default mode |
+|---|---|---|---|---|---|
+| A: empty GMenu at realize + `map` hook + per-instance notify + `items-changed` | unity-gtk4-menu | yes (one idle) | ~150-200 lines | low-medium: one global hook with a type filter | yes |
+| B: a450853-style retry 250 ms × 12 | unity-gtk4-menu | no | ~250 lines | medium: 3 s limit, polling | yes, within 3 s |
+| C: GTK writes the property on a later `set_menubar` | GTK | yes | ~30-40 lines + Wayland | upstream timeline; needs a panel that re-reads | only if the panel re-reads |
+| D: Pinta exports its menubar in header-bar mode | Pinta | - | ~10-20 lines | acceptance unknown, no issue exists | yes |
+| E: gtk-nocsd's menu code (`a450853`) | gtk-nocsd | partly (retry) | +277 (exists) | timer; duplicates unity-gtk4-menu | yes, within 3 s |
+
+UNKNOWN:
+- whether Unity's indicator-appmenu re-reads the property on PropertyNotify;
+- what the HUD shows for an empty menubar filled later;
+- whether Pinta's "Main Menu" button wins the candidate ranking (inferred from the scoring, not measured).
+
 ## Not yet done
 
 - **For C and May,** with no design until then: a small unity-gtk4-menu change, or moving to the upstream
