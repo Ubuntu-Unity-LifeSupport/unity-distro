@@ -165,3 +165,7 @@ s3calc start 00:28:59.213Z, boot 2026-10-13 03:26:47, session up since вт жо
   00:35:25.153 call   :1.104(compiz) -> :1.102(unity-panel-ser) ShowEntry | string "0x730d9c017d10" | uint32 62914564
   00:35:25.202 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel94501850144368_0" | string "0x730d9c017d10"
   00:35:39.630 signal :1.102(unity-panel-ser) -> (null() EntryActivated | string "" | string ""
+
+Precision (after the Verifier's round 2): the header above says the early screenshot came before the popup map for
+sessions 2 and 3. Only session 3 shows that (its later screenshot); session 2 has no ShowEntry or popup timing, so
+for session 2 it is not shown.

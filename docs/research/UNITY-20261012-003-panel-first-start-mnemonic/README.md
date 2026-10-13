@@ -44,11 +44,13 @@ starts were correct (`audit.py`).
   popup is mapped.
 - `mnemo.py`: a GTK4 application with its own menubar `_File`, `_Edit`, `_Help`. Alt+F can be typed on the
   guest's gb/us layouts. The holder labels of Calculator and Text Editor carry no underscore.
-- `trial.sh begin|end`: one counted attempt. It prints the package versions and boot time. Then it runs `start.sh`,
+- `trial.sh begin|end`: one counted attempt. It prints the package versions and boot time (the version of logs/04
+  printed three packages and no boot time on its `==` line; the boot time is on its start lines). Then it runs `start.sh`,
   `sync.sh` and `popwatch.sh`. By default `start.sh` gets `NOAUDIT=1`. With `AUDIT=1`, audit.py subscribes to the
   menu between the focus and the key, which is the UNITY-20261012-001 rig's condition. Exactly one key comes from
   the host. After Escape, the unmap is confirmed before the next attempt.
-- `table.py`: computes the results table from the trial logs: the active window, the panel's first `Start`,
+- `table.py`: computes the results table from the trial logs: the active window, the panel's first `Start`, compiz's
+  first `SyncOne libappmenu.so` after the activation,
   `ShowEntry`, `EntryActivated` and the popup map.
 
 ## Where it ran
@@ -62,7 +64,7 @@ packages; the `==` lines of logs/04 and logs/05 print them:
 - unity 7.7.1+26.04.20260306-0ubuntu3+unity13.
 
 logs/05 also prints indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1 and bamfdaemon 0.5.6+22.04.20220217-0ubuntu6,
-as does logs/01. apt did not run on target2 after logs/01, so later publications are not installed. The session
+as does logs/01. The version lines are the record of what ran; later publications do not appear in them. The session
 preloads `libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`, and each session is a cold boot.
 
 ## Results
@@ -75,8 +77,8 @@ Session 1 looked like a reproduction:
   activate.
 - That Calculator start ran with audit.py; the Text Editor start ran without it.
 
-Those outcomes were judged from vbox screenshots taken right after the key. Sessions 3 and 4 showed that such a
-screenshot can come before the popup is mapped:
+Those outcomes were judged from vbox screenshots taken right after the key. Session 3 showed that such a screenshot
+can come before the popup is mapped, and session 4 timed the map:
 - **Session 3:** the screenshot right after the key shows nothing. A screenshot 15 s later (00:29:29Z, after
   `ShowEntry` at 00:29:14.147 and `EntryActivated` at 14.441) shows Calculator's menu open. This is logs/03's text;
   the screenshots are not in the repository.
@@ -90,7 +92,8 @@ condition, audit.py running with the first start, was measured by events later (
 Before the key, the panel service's entry table (`sync.sh`) was logged in sessions 3 and 5-10. Each time it
 already held the window's entry, with its label, sensitive and visible flags and the right parent window.
 Sessions 1, 2 and 4 have no such table in the logs. Sessions 3-10 show compiz fetching the entries
-(`ReSync` → `SyncOne libappmenu.so`). In sessions 1 and 2 the monitor did not yet record that interface.
+(`ReSync` → `SyncOne libappmenu.so`). Sessions 1 and 2 show no such lines; the monitor of that time had no match rule for the panel service's interface
+(added to `start.sh` before session 3).
 
 ### Sessions 5-10: the counted series (logs/04, logs/05)
 
@@ -99,13 +102,14 @@ each attempt there is exactly one `ShowEntry` and one non-empty `EntryActivated`
 `ShowEntry`, which unity sends when it takes the key.
 
 "Popup first" is the first popwatch line with a visible window of unity-panel-service; "popup full" is the line
-where the count reaches its maximum (2). popwatch polls every 50 ms, about ±0.1 s. The last column is the time from
+where the count reaches its maximum (2). popwatch sleeps 50 ms between polls, and each poll runs two `xdotool` calls; the real period was not measured
+(estimated ±0.1 s). The last column is the time from
 the window becoming active (`_NET_ACTIVE_WINDOW`) to unity-panel-service's first `org.gtk.Menus.Start` to it.
 Everything is computed by `table.py` from the logs.
 
 | session | application, key | audit.py | opened on the first press | → `EntryActivated` | → popup first / full | active → panel `Start` |
 |---|---|---|---|---|---|---|
-| 5 | mnemo.py, Alt+F (`_File`) | no | yes | 47 ms | 0.15 / 0.15 s | 0.18 s |
+| 5 | mnemo.py, Alt+F (`_File`, first application) | no | yes | 47 ms | 0.15 / 0.15 s | 0.18 s |
 | 5 | Calculator, Alt+F10 | no | yes | 238 ms | 0.43 / 0.43 s | 0.16 s |
 | 5 | Text Editor, Alt+F10 | no | yes | 79 ms | 0.27 / 0.27 s | 0.21 s |
 | 6 | Calculator, Alt+F10 (first application of the session) | no | yes | 323 ms | 0.45 / 0.62 s | 0.22 s |
@@ -126,8 +130,9 @@ That includes 6 of 6 with audit.py running. The two uncounted session 4 attempts
 - **Latency:** in the counted series, `ShowEntry` → `EntryActivated` is 175-323 ms for Calculator and 47-167 ms for
   the other two applications; 667 ms for Calculator in session 4. Calculator's popup is not always the last to map
   (session 7: Calculator 0.25 s, mnemo.py 0.29 s).
-- **Panel subscription:** the panel subscribes to the menu 0.14-0.54 s after the window becomes active, never
-  before.
+- **Panel subscription:** the panel service subscribes to the menu (`org.gtk.Menus.Start`) 0.14-0.54 s after the
+  window becomes active, never before. compiz takes the entries (`SyncOne libappmenu.so`) 0.38-1.60 s after the
+  activation.
 - **Contents:** "opened" means the popup was mapped and `EntryActivated` named the application's entry: `_File`
   for mnemo.py, the holder for the others. No other indicator entry was activated within any attempt. The contents
   were checked by eye once per application in session 8: a vbox screenshot after the map shows Calculator's holder
@@ -183,5 +188,6 @@ Searched against the sources linked below, not reproduced in a log here.
     window (`unity-shared/MenuManager.cpp:145-147`); otherwise only on a focus change (`:78`, `:133`).
   - `PanelMenuView::OnEntryAdded` keeps entries only for its active window (`panel/PanelMenuView.cpp:950`).
   - So entries that arrive *before* their window becomes active could be missed until a focus change. In this
-    series they always arrived after, 0.14-0.54 s later.
+    series unity took them always after: compiz's first `SyncOne libappmenu.so` came 0.38-1.60 s after the window
+    became active (`table.py`; the panel service's `ReSync` before it, 0.27 s at the earliest).
 - **Newer release:** not needed, because nothing reproduced.
