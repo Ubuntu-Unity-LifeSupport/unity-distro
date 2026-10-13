@@ -17,6 +17,8 @@ UNITY-20261013-016 (idle delay from the Control Center):
   restart-monitor.log; the other AddIdleWatch in the log, from :1.231 at 17:55:16, is not mapped to a
   process in the raw files).
 - Keys reset afterwards (300 / 900).
+  (In the gate run a restart of unity-session.service also stopped unity-settings-daemon, which did not
+  come back; the gate run counted AddIdleWatch after a new login instead: gate/target-test.txt.)
 Method note: a first attempt restarted LightDM (05-relogin.txt) and checked before the new session had
 replaced the old process, so it counted a live re-add instead - not used. The next restart of
 unity-session.service overlapped with the session LightDM was still starting and its stop timed out after
