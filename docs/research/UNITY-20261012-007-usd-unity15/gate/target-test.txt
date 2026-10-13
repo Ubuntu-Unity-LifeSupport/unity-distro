@@ -7,7 +7,8 @@ Target: target-desktop on the live stack of 2026-10-13 (restored from Published-
 compiz +unity3 verification and updated from the live repository then; apt full-upgrade has nothing left
 to install; ~/.dirty from the snapshot). An earlier +unity15 build (cacd400) had been installed and
 tested there; its debs were replaced by the debs below from this build (build/), installed with apt
-(--reinstall, same version) on 2026-10-13 09:54Z, then a cold boot (01-install.txt).
+(--reinstall, same version; the command line is not in the raw file) on 2026-10-13 09:54Z, then a cold
+boot (01-install.txt).
 
 Installed debs (sha256 equal to build/ and the build manifest):
   e2516cdaca43295ca798c8629a3a6b211b5607d19136129c10a5842ffef993d5  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
@@ -46,10 +47,11 @@ Run 1, published configuration (light-locker is the locker), unlocked session:
      26.04 amd64", with its Eject button) (05-run1-step2-dialog.png). Eject pressed: the medium is
      unmounted, no helper window left, no error dialog (05-run1-step2.txt, -after-eject.png).
   3. Medium inserted, dialog up, medium unmounted from outside (gio mount -u): no helper window left
-     (06-run1-step3.txt, .png).
+     (06-run1-step3.txt; the screenshot is identical to 04-run1-step1.png - same minute, the launcher
+     keeps the medium's icon - so the state rests on the text file).
   The helper is the same process (pid 2247) through all steps. From step 2 on it has "(deleted)"
   mappings; the one inspected in step 2 is a SysV shared memory segment (/SYSV00000000), not a file of
-  the package.
+  the package; the three in Run 2 were not inspected (the running exe has this build's sha256).
 
 Run 2, same boot, published configuration (07-run2.txt, 07-run2-dialog.png):
   Medium inserted, autorun dialog up; the session locked (loginctl lock-session; LockedHint=yes, the

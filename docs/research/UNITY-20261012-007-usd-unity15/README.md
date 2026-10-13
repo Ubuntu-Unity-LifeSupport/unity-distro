@@ -48,6 +48,10 @@ gcm-self-test PASS; test-mount-guard is compiled and linked with
 ## Verification
 
 - Target test before publication: PASS (`gate/target-test.txt`).
+- Independent verification: PASS (the Verifier reviewed the diff against the
+  approved design, the tests on +unity14 and +unity15 and ran the new
+  test-mount-guard case itself, the build record, and the target record
+  against its raw files).
 
 ## Not changed / known limits
 
