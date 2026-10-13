@@ -37,6 +37,8 @@ cs_pid() {   # the session manager of mike's Unity session
 session_env() {
   local cp; cp=$(pgrep -x compiz | head -1)
   export $(tr '\0' '\n' < /proc/$cp/environ | grep -E '^(DISPLAY|XAUTHORITY|DBUS_SESSION_BUS_ADDRESS|XDG_RUNTIME_DIR|SESSION_MANAGER|XDG_SEAT_PATH|XDG_SESSION_PATH)=')
+  # dm-tool needs lightdm's seat object; the session's environment does not carry it here
+  [ -n "${XDG_SEAT_PATH:-}" ] || export XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
 }
 trace_start() {   # $1 tag; probes filtered to the session manager's pid
   local cs=$1 t=$2
