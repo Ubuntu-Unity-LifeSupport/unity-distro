@@ -1,0 +1,7 @@
+  off: lightdm.conf.d: 01_debian.conf 02_ubuntu.conf 50-autologin.conf; Xsession.d has b1301: 0
+  lightdm: E  session-wrapper=/usr/sbin/lightdm-session
+  opt-out file removed: ls: cannot access '/home/mike/.config/environment.d/50-gtk-nocsd.conf': No such file or directory
+01_debian.conf
+02_ubuntu.conf
+50-autologin.conf
+0
