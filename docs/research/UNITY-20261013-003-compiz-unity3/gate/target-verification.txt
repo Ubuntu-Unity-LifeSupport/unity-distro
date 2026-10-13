@@ -1,0 +1,26 @@
+UNITY-20261013-003 (with UNITY-20261013-004): target verification of the publication of compiz
+1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+
+Published 2026-10-13 08:01:51Z as snapshot unity-resolute-20261013-003 (publish record
+~/coordinator/publish-records/UNITY-20261013-003.json: aptly PASS, post-publish check PASS; signer mode,
+proposal 6e153ab65c64a404 approved by May on the signer console (the first -dbgsym packages of compiz),
+refresh OK, live OK). On builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026
+07:56:30 UTC, Valid-Until Fri, 16 Oct 2026 07:56:30 UTC, sha256 4d35b52b..., gpgv Good signature (the
+repository key); 24 binary records of +unity3 in main/binary-amd64/Packages.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: fresh boot,
+~/.dirty from the snapshot, compiz +unity2 installed),
+apt-get update and full-upgrade from the live repository: compiz, compiz-core, compiz-gnome,
+compiz-plugins-default, libcompizconfig0 and libdecoration0t64 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3;
+the downloaded debs have the sha256 of the gated build (6958264e..., 27adc715..., 2024d0fd...,
+d87399c2..., 9a4a8ede..., 37da6a9e...).
+Then a cold boot, with the temporary bpftrace unit of the target test (close() returning EBADF per
+process name, from before lightdm, 400 s window; removed afterwards):
+  tracer 11:08:39-11:15:21 EEST; unity7.service started 11:09:48, compiz 11:09:49 - inside the window.
+  compiz, compiz-config-profile-setter, unity-active-plugins-safety-check: no close() returning EBADF
+  (on +unity2: 106, 258, 99). (lightdm-session 82, not part of this change.)
+  The session is up: seat0 session active, unity7.service and unity-session.target active.
+  No dconf "will not work properly" line, no "Failed to load plugin" or xml encoding error, no crash
+  report of compiz or the safety check.
+
+Result: PASS.

@@ -87,6 +87,11 @@ T=20261008T083223Z. `make check`: 1439 tests, all pass. The manifest is in
 ## Verification
 
 - Target test before publication: PASS (`gate/target-test.txt`).
+- Check on the target after publication: PASS. Published 2026-10-13
+  08:01:51Z as `unity-resolute-20261013-003`; the target updated from the
+  live repository, cold boot: the session is up, and compiz, the profile
+  setter and the safety check close no descriptor twice
+  (`gate/target-verification.txt`).
 - Independent verification: PASS (the Verifier reviewed the diff against the
   approved design, the tests on +unity2 and +unity3, the build record and
   the target record against its raw measurements).
