@@ -14,7 +14,7 @@ Checksums-Sha256:
  1e5d6040b9aa689c7e4311aa9d30e4f2275833e499e092aec7efaa29e1c3c662 18594 libunity-gtk4-menu0_0.12_amd64.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Tue, 13 Oct 2026 13:35:07 +0000
+Build-Date: Tue, 13 Oct 2026 14:26:02 +0000
 Build-Path: /build/reproducible-path/unity-gtk4-menu-0.12
 Installed-Build-Depends:
  adwaita-icon-theme (= 50.0-1),

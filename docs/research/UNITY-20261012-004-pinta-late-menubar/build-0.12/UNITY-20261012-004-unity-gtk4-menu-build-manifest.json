@@ -5,8 +5,8 @@
   "candidate_version": "0.12",
   "target_series": "resolute",
   "source_repo": "/home/claude/work/b/unity-distro-1012-004/packages/unity-gtk4-menu",
-  "source_commit": "910f9127ffb3751c8c739def7007166e0c2bfc70",
-  "source_tree_hash": "40c3e219f0356c25bb19735d5989dc0a8d6ac1d7",
+  "source_commit": "4b7a537770f5ad90f44c328a5af017c3ffe70643",
+  "source_tree_hash": "4d7e6db7aa4b6052ef81bc5308c3c7d7a50074c9",
   "build_command": [
     "sbuild",
     "-d",
@@ -18,17 +18,17 @@
     "--chroot-mode=unshare",
     "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
   ],
-  "build_started": "2026-10-13T13:25:50.630182+00:00",
-  "build_finished": "2026-10-13T13:39:54.442254+00:00",
+  "build_started": "2026-10-13T14:12:37.414302+00:00",
+  "build_finished": "2026-10-13T14:28:22.356550+00:00",
   "result": "PASS",
   "log": {
     "file": "UNITY-20261012-004-unity-gtk4-menu-0.12-sbuild.log",
-    "sha256": "b4b173318100db95c07a031592b1efe062fe48621d835a707ed8d66d60090488"
+    "sha256": "df96bfcfe13108368c0db5e1b5128ce2553ff3986d8fc26b38c9f7a2449710cc"
   },
   "artifacts": [
     {
       "file": "unity-gtk4-menu_0.12.dsc",
-      "sha256": "59efa0f34e0c0c055dbe569b9e92ab3b06e5f430eaacde4a7e834344ec10cdbf",
+      "sha256": "d41ce5e577fd4dcc02a45a631e3188a554952b5bb75e49875855ddd4ea2c45a3",
       "size": 839,
       "kind": "source",
       "package": "unity-gtk4-menu",
@@ -36,14 +36,14 @@
     },
     {
       "file": "unity-gtk4-menu_0.12_amd64.changes",
-      "sha256": "bfaae27327a69024df6cf8eb7aec7881a7c7685c3cd78d5f9e94846998f936fa",
+      "sha256": "4920b7a2d2ac083c622c3c552a3f79968e5ce1cdeb651668b6fa564cdf6cc88c",
       "size": 1871,
       "kind": "changes"
     },
     {
       "file": "unity-gtk4-menu_0.12.tar.xz",
-      "sha256": "4c40cd49246c22ba8ee2cff195658ec6b5fb3c423421f07cf316731f60faf474",
-      "size": 28708,
+      "sha256": "2be4170d0eea0f221028af705e55c1d9a22bae7178f1fdbd2e008c6a12d7ffe3",
+      "size": 29488,
       "kind": "source_file",
       "package": "unity-gtk4-menu",
       "version": "0.12"
@@ -68,7 +68,7 @@
     },
     {
       "file": "unity-gtk4-menu_0.12_amd64.buildinfo",
-      "sha256": "7456d9b5d09be21f781d0b07728a0803d90c31db127100fac37ad2ba7e031232",
+      "sha256": "aa7333d59e66571a7b9c804234a99e7b7338532a1806e70be0ecdccb7793a64a",
       "size": 15248,
       "kind": "buildinfo"
     }

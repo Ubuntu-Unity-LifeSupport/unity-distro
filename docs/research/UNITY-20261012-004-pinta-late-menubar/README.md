@@ -363,9 +363,10 @@ Commits on unity-gtk4-menu `b/UNITY-20261012-004`:
   startup, so the "not registered" check is defensive only).
 - `569366d` README: the libgtk-4 fallback of 0.11 (UNITY-20261013-017).
 - `910f912` the test fix (below).
+- `4b7a537` the test rework after the Verifier's first review (below), and a comment in `src/` that still said 0.11.
 
-Build: `build-0.12/`, sbuild resolute, PASS, `source_commit` 910f912. The library deb is byte-identical to the
-build of 569366d (sha256 `1e5d6040…`), on which the first runs were made: the test fix changes only `tests/`.
+Build: `build-0.12/`, sbuild resolute, `source_commit` 4b7a537 (see "Verification" for the comparison with the
+earlier builds of 569366d and 910f912).
 
 ### The test fix
 
@@ -383,14 +384,14 @@ debug copies of the test (scratchpad):
 
 | test | log | result |
 |---|---|---|
-| latetest + latetest-adw against 0.11 (base-red) | 05 | 6 fail as expected: 1, 2, 4, 9, 11, 6a, each with "the late … is not in the menubar"; 3, 5, 7, 8, 12, 6 pass |
-| the same against 0.12, session order (menu:nocsd) | 06 | 12 of 12 pass, with the library's log lines |
-| the same against 0.12 preloaded alone (the gtk-nocsd opt-out) | 07 | 12 of 12 pass, the Adw cases included |
+| latetest + latetest-adw against 0.11 (base-red) | 05 | 7 fail as expected: 1, 1f, 2, 9 ("the late … is not in the menubar", and the D-Bus client sees nothing), 4 ("the menu given later is not in the menubar"), 11 ("the valid menu after an empty one was not used"), 6a ("the late header-bar menu is not in the menubar"); 3, 3f, 5, 7, 8, 12, 6 pass |
+| the same against 0.12, session order (menu:nocsd) | 06 | 14 of 14 pass; each case's library log is in the file (`lib:` lines) |
+| the same against 0.12 preloaded alone (the gtk-nocsd opt-out) | 07 | 14 of 14 pass, the Adw cases included |
 | Pinta 3.1.2, header-bar layout, cold session | 09 | the empty menubar is set at realize; the late look ran 4.7 s after the window mapped, on the map of its header-bar buttons; it chose the main menu (39 labels, `_File` … `_Help` under the "Pinta" holder); the panel shows the "Pinta" entry; Alt+F10 opens the panel popup and Escape closes it (popwatch); the HUD returns Pinta's commands ("Save As… (Pinta, File)") |
 | the UNITY-20261012-003 set, debug log | 10 | Text Editor and Calculator: the menu is found at realize, no wait, no late look, and the map shims are never installed; mnemo.py: its own menubar, untouched; gnome-tour (no menu): its window waits, no look, no fill |
 | the same set by events | 11-13 | Calculator (Alt+F10), Text Editor (Alt+F10) and mnemo.py (Alt+F) open their panel popup, and Escape closes it. Calculator's first attempt went to the Accessibility indicator: the Calculator window was not the active one. The retry with the window activated opened its menu |
 | cost: 10 000 map/unmap cycles of a menu button in an application window without a menu | 14 | per cycle, 5 runs each: no preload 5.1-8.2 µs, 0.11 + gtk-nocsd 6.9-11.2 µs, 0.12 + gtk-nocsd 7.4-8.5 µs (medians 7.48 and 7.75); the shim's cost is within the spread |
-| shim calls (bpftrace by name, on the shipped file joined with its dbgsym, same `.text`) | 15 | maptest: 10 001 calls of the button shim, 3 looks (2 idle looks) for 10 000 maps; Pinta, 20 s from start: 6 button-shim calls (1.1 ms with the probes' overhead), 2 looks (6.4 ms), 1 idle look, 1 late fill |
+| shim calls (bpftrace by name, on the shipped file joined with its dbgsym, same `.text`) | 15 | maptest: 10 001 calls of the button shim, 2 looks (1 idle look) for 10 000 maps; Pinta, 20 s from start (fresh log): 6 button-shim calls (3.0 ms with the probes' overhead), 2 looks (6.2 ms), 1 idle look, 1 late look and 1 late fill in the library's log |
 
 An application window without a menu (gnome-tour) waits without any panel entry. Its window has
 `_GTK_MENUBAR_OBJECT_PATH` for the empty menubar, but the panel lists no entry for it (`sync.sh`, measured in the
@@ -404,7 +405,48 @@ same session). Its wait ends in one of these ways, with no timer:
 Notes on the cost runs:
 - bpftrace does not place probes by offset in the stripped library ("Could not resolve address"). The by-name
   probes therefore ran on the shipped file joined with its dbgsym by `eu-unstrip`; its `.text` is identical.
-- Under the probes the maptest loop takes 132 µs per cycle, so the time inside the shims there is the probes'
+- Under the probes the maptest loop takes 112 µs per cycle (logs/15), so the time inside the shims there is the probes'
   overhead. The cost is the wall-clock comparison of 0.11 and 0.12 above.
-- In the second probe run, bpftrace printed no counters for Pinta, and the late-look count (2) also includes the
-  first run, because the log was not removed in between. Pinta's numbers are from the first run.
+- An earlier probe run printed no counters for Pinta (bpftrace was stopped too soon) and did not clear the
+  library's log. logs/15 is the rerun with a fresh log and a longer stop, and every number in the row is in it.
+
+### The test rework after the first review (`4b7a537`)
+
+The first Verifier review (INCOMPLETE) found no defect in the code. It found tests that could pass without
+exercising the path they name. Changes:
+- **Case 4** waits for "late look: no menu yet" (the map of the empty button) and checks it. Only then does it give
+  the model, and it checks the late fill. The library logs show the two looks: the first finds nothing, the second
+  (through the per-instance notify) fills.
+- **Case 11** waits for and checks "the menu found has no item that can cross D-Bus; not used" before it packs the
+  valid menu, then checks the late fill.
+- **Adw case 6.** The dialog has its own `AdwToolbarView` with an `AdwHeaderBar`, so the AdwDialog exclusion is
+  what keeps it out, not the header-bar rule. Measured with `dlgroot.py`:
+  - without gtk-nocsd, an `AdwDialog` is a sheet in the window. Its button's map makes a late look, and the case
+    checks that look and that nothing is filled (logs/07);
+  - with gtk-nocsd it is a `GtkWindow` of its own. Its map is not the waiting window's, so the case expects no
+    look (logs/06).
+  The case prints which of the two it took. The popover's button makes a look of its own, and the case checks
+  that.
+- **Case 6a** waits for the filled holder, not a fixed time.
+- **`gtk-shell-shows-menubar`** is TRUE in every case, as under Unity. Cases 1 and 3 also run with FALSE (`1f`,
+  `3f`, `LATETEST_SHELL_MENUBAR=0`). The design asks for that; the first runs had GTK's default.
+
+### Not covered
+
+- **Design test 3 on target:** what the HUD and the panel's menu do for a window with an empty menubar. Only the
+  missing panel entry is measured, for gnome-tour.
+- **Design test 5 on target:** the panel after an application sets a menubar of its own (TAKEN). latetest case 5
+  covers it under Xvfb.
+- **Pinta's choice:** Pinta's main menu wins with 39 reachable items against Effects' 37, a thinner margin than
+  the design's estimate. The 4.7 s from Pinta's map to the late look is Pinta's own build-up; the log has no line
+  for the moment the shim fired.
+
+## Verification
+
+**Round 1 (Verifier, 2026-10-13): INCOMPLETE.** No defect was found in the code. Tests could pass without
+exercising their path, and the Pinta cost numbers had no log. Both are answered above ("The test rework", and
+logs/15 rerun).
+
+**Builds compared.** The builds of 569366d, 910f912 and 4b7a537 give a byte-identical library deb (sha256
+`1e5d6040…`, the same build-id 28258fee…). Every target test above ran on this deb, the one in `build-0.12/`
+(source_commit 4b7a537).

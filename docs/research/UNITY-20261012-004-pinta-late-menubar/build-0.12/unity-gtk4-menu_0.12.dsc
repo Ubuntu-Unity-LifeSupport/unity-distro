@@ -12,8 +12,8 @@ Build-Depends: debhelper-compat (= 13), libgtk-4-dev, libglib2.0-dev, pkg-config
 Package-List:
  libunity-gtk4-menu0 deb libs optional arch=any
 Checksums-Sha1:
- 771beb4ee02de1401142cbaf064924fdf713b670 28708 unity-gtk4-menu_0.12.tar.xz
+ 84ad0e48fc329ff856bebd021be227f56a557e4d 29488 unity-gtk4-menu_0.12.tar.xz
 Checksums-Sha256:
- 4c40cd49246c22ba8ee2cff195658ec6b5fb3c423421f07cf316731f60faf474 28708 unity-gtk4-menu_0.12.tar.xz
+ 2be4170d0eea0f221028af705e55c1d9a22bae7178f1fdbd2e008c6a12d7ffe3 29488 unity-gtk4-menu_0.12.tar.xz
 Files:
- 05e67c916e3c17f80274f44ac78f4f71 28708 unity-gtk4-menu_0.12.tar.xz
+ 06adf033c467a0962938ac4fbf1221f1 29488 unity-gtk4-menu_0.12.tar.xz

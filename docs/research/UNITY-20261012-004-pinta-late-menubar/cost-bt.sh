@@ -27,11 +27,11 @@ timeout 120 dbus-run-session -- xvfb-run -a env UNITY_GTK4_MENU_FORCE=1 LD_PRELO
 sleep 3; sudo kill -INT $(pgrep -x bpftrace) 2>/dev/null; sleep 5; grep -vE '^Attaching|^$' /tmp/bt-map.txt | sed 's/^/  /'
 echo "-- Pinta, 20 s from start"
 sp=$(pgrep -x compiz); mapfile -d '' envs < /proc/$sp/environ
-pkill -x Pinta; sleep 1
+pkill -x Pinta; sleep 1; rm -f /tmp/ugm-cost-pinta.log
 bt=$(probe /tmp/bt-pinta.txt); sleep 6
 env -i "${envs[@]}" LD_PRELOAD=$U:$N UNITY_GTK4_MENU_DEBUG=1 UNITY_GTK4_MENU_LOG=/tmp/ugm-cost-pinta.log DOTNET_ROLL_FORWARD=Major \
   ~/b1204/Pinta-3.1.2/build/bin/Pinta > /dev/null 2>&1 & p=$!
 sleep 20
 echo "  Pinta pid $p, maps: $(grep -oE 'libunity-gtk4-menu[^ ]*' /proc/$p/maps | sort -u | xargs); log: $(grep -c 'late look' /tmp/ugm-cost-pinta.log) late looks, $(grep -c 'filled late' /tmp/ugm-cost-pinta.log) late fills"
-sudo kill -INT $(pgrep -x bpftrace) 2>/dev/null; sleep 2; grep -vE '^Attaching|^$' /tmp/bt-pinta.txt | sed 's/^/  /'
+sleep 3; sudo kill -INT $(pgrep -x bpftrace) 2>/dev/null; sleep 5; grep -vE '^Attaching|^$' /tmp/bt-pinta.txt | sed 's/^/  /'
 kill $p 2>/dev/null
