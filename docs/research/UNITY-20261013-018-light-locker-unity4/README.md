@@ -34,8 +34,9 @@ during playback.
 
 - **Tests:** on +unity3 with the new test, the forwarding cases and the
   bus-name case fail; on +unity4 all pass.
-- **Target** (with unity-settings-daemon +unity16): while VLC or Firefox
-  play, their inhibitors are held by the session manager and the session
-  does not go idle; closing or killing the player releases them; without an
+- **Target** (with unity-settings-daemon +unity16): VLC's and Firefox's
+  inhibitors reach the session manager and are released when the player is
+  closed or killed; while VLC played, the session did not go idle past the
+  delay; without an
   inhibitor the session goes idle and locks as before; a manual lock during
   playback still locks.

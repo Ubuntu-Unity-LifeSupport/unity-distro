@@ -9,7 +9,9 @@ Without UNITY-20261013-016, cinnamon-session takes its delay from org.cinnamon.d
 set to 60 for the runs, reset to 900 afterwards. The running light-locker is the installed binary
 (exe sha256 7cce20ba...). dbus-monitor recorded Inhibit/UnInhibit/Uninhibit (monitor-inhibit.log).
 xdotool is not in the snapshot and its installation did not happen (apt), so the runs give no synthetic
-input; the idle times printed show when input was last seen.
+input; the idle times printed show when input was last seen. (03-run1-close.txt starts with the
+line "xdotool installed for the observation", printed by the script after the apt call whether or not it
+installed; 05 shows that it was not.)
 
 Run 1 (02-04): VLC 3.0.23 playing a video in a loop. VLC's org.freedesktop.ScreenSaver.Inhibit ("vlc",
 "Воспроизведение мультимедиа.") was followed by light-locker's org.gnome.SessionManager.Inhibit with the
