@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20260927-037",
+  "package": "unity-session",
+  "target_series": "resolute",
+  "candidate_version": "49.4+unity2",
+  "source_commit": "e137fb19193943e3fd687c8ff62324f9aceaeb00",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20260927-037",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20260927-037-gtk4-menu-install/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20260927-037-gtk4-menu-install/gate/target-test.txt",
+    "debs": {
+      "unity-session_49.4+unity2_all.deb": "ff1339f26e2980269083f385f2db0bac5e97a0d0bebf233fa05ca09c3820c8dd"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20260927-037-gtk4-menu-install/README.md",
+    "verification_record": "docs/research/UNITY-20260927-037-gtk4-menu-install/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

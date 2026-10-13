@@ -1,0 +1,25 @@
+UNITY-20260927-037: target test of unity-session 49.4+unity2 (source commit e137fb1)
+(2026-10-13 15:29-16:02Z, target2)
+
+Target: target-desktop-2 restored to Clean-2 and confirmed inside (logs/08: no ~/.dirty, only ubuntu.sources,
+unity-session 49.4 from the archive, no libunity-gtk4-menu0). The live repository was added (InRelease Date 2026-10-13
+14:31:08 UTC: libunity-gtk4-menu0 0.12, unity-session 49.4+unity1). Before publication this build was offered
+from a local file repository next to it (the deb and a Packages index; the only source of 49.4+unity2):
+  ff1339f26e2980269083f385f2db0bac5e97a0d0bebf233fa05ca09c3820c8dd  unity-session_49.4+unity2_all.deb
+The same file as in build-1013/UNITY-20260927-037-unity-session-build-manifest.json (source_commit e137fb1).
+
+1. Fresh-install resolution (logs/09): apt-get -s install unity-session against an empty dpkg status. The plan has
+   unity-session 49.4+unity2, libunity-gtk4-menu0 0.12 and libgtk-nocsd0 4.8-1+unity4; with
+   --no-install-recommends it has neither library.
+2. Upgrade without Recommends (logs/09, simulated): unity-session goes to 49.4+unity2, and libunity-gtk4-menu0 is
+   not pulled.
+3. Upgrade with apt's default, install-recommends "1" (logs/10): apt-get full-upgrade installed unity-session
+   49.4+unity2 from the local repository and libunity-gtk4-menu0 0.12 from the live repository, new and marked
+   automatic. dpkg.log: "install libunity-gtk4-menu0 <none> 0.12", "upgrade unity-session 49.4 49.4+unity2";
+   dpkg -V of both is clean. A first attempt failed on the dpkg lock held by unattended-upgrades and installed
+   nothing.
+4. A cold boot with autologin (logs/11): compiz and the systemd user manager preload
+   /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0; file-roller (GTK 4) maps both libraries and
+   exports its menu (_GTK_MENUBAR_OBJECT_PATH).
+
+Result: PASS.

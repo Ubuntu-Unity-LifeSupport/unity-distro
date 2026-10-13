@@ -1,0 +1,50 @@
+== r1-0.12 at 2026-10-13T13:47:06Z, boot 2026-10-13 16:41:11, libunity-gtk4-menu0 0.12
+-- gnome-text-editor (pid 6597, window 41943044)
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor/menus/menubar"
+  menubar filled,:     1
+  empty menubar set:   1
+  waits for a menu:    0
+  late look:           0
+  filled late:         0
+  stopped waiting:     0
+    log: [unity-gtk4-menu 6597] empty menubar set
+    log: [unity-gtk4-menu 6597] candidate 1 at depth 25: shown=0 primary=0 app./win. items=0
+    log: [unity-gtk4-menu 6597] candidate 2 at depth 15: shown=1 primary=0 app./win. items=6
+    log: [unity-gtk4-menu 6597] chose candidate 2 of 2
+-- gnome-calculator (pid 6710, window 41943044)
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+  menubar filled,:     1
+  empty menubar set:   1
+  waits for a menu:    0
+  late look:           0
+  filled late:         0
+  stopped waiting:     0
+    log: [unity-gtk4-menu 6710] empty menubar set
+    log: [unity-gtk4-menu 6710] candidate 1 at depth 11: shown=1 primary=0 app./win. items=6
+    log: [unity-gtk4-menu 6710] candidate 2 at depth 12: shown=1 primary=1 app./win. items=10
+    log: [unity-gtk4-menu 6710] chose candidate 2 of 2
+-- python3 /home/mike/b1203/mnemo.py (pid 6774, window 41943044)
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest/menus/menubar"
+  menubar filled,:     0
+  empty menubar set:   0
+  waits for a menu:    0
+  late look:           0
+  filled late:         0
+  stopped waiting:     0
+    log: [unity-gtk4-menu 6774] the application already has a menubar
+-- gnome-tour (pid 6815, window 41943044)
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Tour/menus/menubar"
+  menubar filled,:     0
+  empty menubar set:   1
+  waits for a menu:    1
+  late look:           0
+  filled late:         0
+  stopped waiting:     0
+    log: [unity-gtk4-menu 6815] empty menubar set
+    log: [unity-gtk4-menu 6815] no menu model in this window
+    log: [unity-gtk4-menu 6815] the window waits for a menu (1 waiting)
+-- hooks installed per application (the map shims only where a window waits):
+  gnome-text-editor: GtkWindow::realize GtkApplicationWindow::realize 
+  gnome-calculator: GtkWindow::realize GtkApplicationWindow::realize 
+  mnemo: GtkWindow::realize GtkApplicationWindow::realize 
+  gnome-tour: GtkWindow::realize GtkApplicationWindow::realize GtkMenuButton::map GtkPopoverMenuBar::map 

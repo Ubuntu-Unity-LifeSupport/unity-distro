@@ -1,0 +1,31 @@
+== t5-011 t5 at 2026-10-13T15:08:24Z; libunity-gtk4-menu0 0.11; integrated-menus false
+  15:08:28Z window 62914564 (takeover), active 62914564
+  _GTK_MENUBAR_OBJECT_PATH:  not found.
+  panel entries for the window, before the takeover:
+    (0 entries for window 62914564)
+  app: 15:08:25Z window presented, own menubar in 5.0 s
+  app: 
+  app: (takeover.py:4020): Gtk-WARNING **: 18:08:25.375: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x2628f560 with width 6 and height -1
+  app: 15:08:30Z the application set its own menubar
+  panel entries for the window, after:
+    (0 entries for window 62914564)
+  popwatch: 15:08:35.870 panel-service visible windows 0, active 62914564
+  application bus :1.99; exported at its menubar path:
+([(uint32 0, uint32 0, [{'label': <'_File'>, ':submenu': <(uint32 1, uint32 0)>}, {'label': <'_Edit'>, ':submenu': <(uint32 2, uint32 0)>}, {'label': <'_Help'>, ':submenu': <(uint32 3, uint32 0)>}])],
+  Alt+F from the host at 15:08:50Z
+-- t5-011 end at 15:08:52Z
+  popwatch:
+    15:08:35.870 panel-service visible windows 0, active 62914564
+  panel service calls and signals:
+  library log:
+    [unity-gtk4-menu 4020] GTK4 is not loaded in this process yet
+    [unity-gtk4-menu 4020] GTK4 found through GObject Introspection
+    [unity-gtk4-menu 4020] hooked GtkWindow::realize
+    [unity-gtk4-menu 4020] hooked GtkApplicationWindow::realize
+    [unity-gtk4-menu 4020] no menu model in this window
+  app: 15:08:25Z window presented, own menubar in 5.0 s
+  app: 
+  app: (takeover.py:4020): Gtk-WARNING **: 18:08:25.375: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x2628f560 with width 6 and height -1
+  app: 15:08:30Z the application set its own menubar
+  panel entries now:
+    (0 entries for window 62914564)

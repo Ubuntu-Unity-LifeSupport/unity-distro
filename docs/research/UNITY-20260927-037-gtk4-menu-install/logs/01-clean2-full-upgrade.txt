@@ -1,0 +1,79 @@
+== before host=target2 boot=f6a60de8-8685-47ac-8d38-9fe8e43f1080 utc=2026-09-28T08:13:09Z
+== snapshot marker: ~/.dirty absent
+== sources
+Types: deb
+URIs: http://192.168.56.10:8080/
+Suites: resolute
+Components: main
+Architectures: amd64
+Signed-By: /etc/apt/keyrings/unity-distro.asc
+== apt-get update
+Пол:1 http://192.168.56.10:8080 resolute InRelease [4 314 B]
+Пол:2 http://192.168.56.10:8080 resolute/main amd64 Packages [62,6 kB]
+== policy ubuntu-unity-desktop
+ubuntu-unity-desktop:
+  Установлен: 0.29
+  Кандидат:   0.29+unity1
+  Таблица версий:
+== policy libunity-gtk4-menu0
+libunity-gtk4-menu0:
+  Установлен: (отсутствует)
+  Кандидат:   0.9
+  Таблица версий:
+== policy libgtk-nocsd0
+libgtk-nocsd0:
+  Установлен: 3+0~20260321+0b77e1b-1
+  Кандидат:   4.8-1+unity3
+  Таблица версий:
+== policy unity-gtk-module-common
+unity-gtk-module-common:
+  Установлен: (отсутствует)
+  Кандидат:   0.0.0+18.04.20171202-0ubuntu7
+  Таблица версий:
+== dpkg-query before upgrade
+dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+libgtk-nocsd0 3+0~20260321+0b77e1b-1 ii 
+ubuntu-unity-desktop 0.29 ii 
+== simulate full-upgrade: packages to be newly installed
+== full-upgrade
+  overlay-scrollbar overlay-scrollbar-gtk2 session-migration
+  ayatana-indicator-common ayatana-indicator-messages liburing2 plocate
+  python3-certifi python3-chardet python3-idna python3-requests
+  python3-urllib3
+  python3-software-properties software-properties-common
+  software-properties-gtk
+  appmenu-gtk-module-common appmenu-gtk3-module cinnamon-session
+  cinnamon-session-common compiz compiz-core compiz-gnome
+  compiz-plugins-default gir1.2-unity-7.0 hud indicator-bluetooth
+  indicator-common indicator-datetime indicator-keyboard indicator-power
+  indicator-printers indicator-session indicator-sound libappmenu-gtk3-parser0
+  libcompizconfig0 libcurl3t64-gnutls libcurl4t64 libdecoration0t64 libexpat1
+  libexpat1-dev libgtk-nocsd0 libindicator3-7 liblightdm-gobject-1-0
+  libmessaging-menu0 libnautilus-extension4 libnm0 libnux-4.0-0
+  libnux-4.0-common libpcap0.8t64 libunity-control-center1 libunity-core-6.0-9
+  libunity-protocol-private0 libunity-scopes-json-def-desktop
+  libunity-settings-daemon1 libunity9 light-locker lightdm nautilus-data
+  network-manager network-manager-l10n nux-tools overlay-scrollbar
+  overlay-scrollbar-gtk2 python3-distupgrade python3-jwt rust-coreutils
+  session-migration ubuntu-kernel-accessories ubuntu-minimal
+  ubuntu-release-upgrader-core ubuntu-release-upgrader-gtk ubuntu-standard
+  ubuntu-unity-desktop unity unity-control-center unity-greeter
+  unity-lens-files unity-schemas unity-scopes-runner unity-services
+  unity-session unity-settings-daemon unity-settings-daemon-schemas
+  unity-uwidgets xdg-desktop-portal xserver-common xserver-xorg-core
+  xserver-xorg-legacy
+== dpkg-query after upgrade
+dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+libgtk-nocsd0 4.8-1+unity3 ii 
+ubuntu-unity-desktop 0.29+unity1 ii 
+== who depends on or recommends libunity-gtk4-menu0 (reverse, installed and candidates)
+libunity-gtk4-menu0
+Reverse Depends:
+== ubuntu-unity-desktop candidate Recommends containing gtk4-menu / gtk-nocsd
+Version: 0.29+unity1
+    libgtk-nocsd0
+Version: 0.29
+    libgtk-nocsd0
+== environment.d snippet present
+ls: cannot access '/usr/lib/environment.d/60-unity-gtk4-menu.conf': No such file or directory
+== done
