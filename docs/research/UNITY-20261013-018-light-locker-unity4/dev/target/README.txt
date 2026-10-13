@@ -17,7 +17,8 @@ same strings, xid 0; cinnamon-session lists Inhibitor1 (app vlc, flags 8), IsInh
 113 s without input (delay 60 s) presence available, IdleHint no, not locked (screenshot 02).
 VLC closed normally: its UnInhibit was followed by light-locker's Uninhibit to the session manager's
 unique name (:1.51); no inhibitor left. About 85 s later, with no inhibitor: presence idle, IdleHint
-yes, Unity's lock screen (LockedHint yes) - normal idle blank+lock unchanged.
+yes, LockedHint yes and a lock screen on the display (which locker locked was not recorded) - normal
+idle blank+lock unchanged.
 Run 2 (05): VLC playing (Inhibitor2), kill -9 VLC: inhibitor gone within 3 s.
 Run 3 (05): light-locker-command -i held: Inhibitor3 (app "Unknown", flags 8); kill -9 of it: gone.
 Run 4 (06): a one-shot dbus-send Inhibit (the caller exits at once): no inhibitor left - intended.
