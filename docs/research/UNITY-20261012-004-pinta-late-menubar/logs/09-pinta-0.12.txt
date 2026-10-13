@@ -1,0 +1,62 @@
+  pinta setting menubar-shown = False in /home/mike/.config/Pinta/settings.xml
+== p3-0.12 (default) start 13:43:17.738Z, boot 2026-10-13 16:41:11, libunity-gtk4-menu0 0.12
+  13:43:18.043 log: [unity-gtk4-menu 4097] GTK4 is not loaded in this process yet
+  13:43:19.934 log: [unity-gtk4-menu 4097] GTK4 found through GObject Introspection
+  13:43:19.934 log: [unity-gtk4-menu 4097] hooked GtkWindow::realize
+  13:43:19.934 log: [unity-gtk4-menu 4097] hooked GtkApplicationWindow::realize
+  13:43:21.334 log: [unity-gtk4-menu 4097] empty menubar set
+  13:43:21.334 log: [unity-gtk4-menu 4097] no menu model in this window
+  13:43:21.334 log: [unity-gtk4-menu 4097] hooked GtkMenuButton::map
+  13:43:21.334 log: [unity-gtk4-menu 4097] hooked GtkPopoverMenuBar::map
+  13:43:21.334 log: [unity-gtk4-menu 4097] the window waits for a menu (1 waiting)
+  13:43:21.788 window 62914564 mapped
+  13:43:26.486 log: [unity-gtk4-menu 4097] late look
+  13:43:26.486 log: [unity-gtk4-menu 4097] candidate 1 at depth 12: shown=1 primary=0 app./win. items=16
+  13:43:26.486 log: [unity-gtk4-menu 4097] candidate 2 at depth 12: shown=1 primary=0 app./win. items=10
+  13:43:26.486 log: [unity-gtk4-menu 4097] candidate 3 at depth 12: shown=1 primary=0 app./win. items=9
+  13:43:26.486 log: [unity-gtk4-menu 4097] candidate 4 at depth 12: shown=1 primary=0 app./win. items=37
+  13:43:26.486 log: [unity-gtk4-menu 4097] candidate 5 at depth 12: shown=1 primary=0 app./win. items=39
+  13:43:26.486 log: [unity-gtk4-menu 4097] chose candidate 5 of 5
+  13:43:26.486 log: [unity-gtk4-menu 4097] dropped 2 item(s) that cannot cross D-Bus
+  13:43:26.486 log: [unity-gtk4-menu 4097] a window stopped waiting (0 waiting)
+  13:43:26.486 log: [unity-gtk4-menu 4097] menubar filled late, labelled "Pinta"
+  Pinta pid 4097 window 62914564 (Unsaved Image 1 - Pinta)
+  preload in the process: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.96"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "com.github.PintaProject.Pinta"
+   - Pinta
+   - _File
+   ok app.new New...
+   ok app.NewScreenshot New Screenshot...
+   ok app.open Open...
+   ok app.save Save
+   ok app.saveAs Save As...
+   ok app.close Close
+   ok app.quit Quit
+   - _Edit
+   disabled app.undo Undo
+   disabled app.redo Redo
+  menu labels: 39
+  == p3-0.12 at 13:43:49.302Z, active window 62914564 (0x3c00004)
+    libappmenu.so id=0x703ec0026cb0 win=62914564 label='Pinta' sensitive=True visible=True prio=0
+method call time=1791899079.529426 sender=:1.90 -> destination=:1.92 serial=972 path=/com/canonical/hud; interface=com.canonical.hud; member
+         string "<b>Save As</b>... (Pinta, Edit, Palette)"
+         string "<b>Save As</b>... (Pinta, File)"
+         string "Save All (Pinta, Window)"
+         string "Save (Pinta, File)"
+         string "Set Number of Colors (Pinta, Edit, Palette)"
+         string "Rotate / Zoom Layer... (Pinta, Layers)"
+method call time=1791899088.271383 sender=:1.90 -> destination=:1.92 serial=973 path=/com/canonical/hud; interface=com.canonical.hud; member
+method call time=1791899088.271435 sender=:1.90 -> destination=:1.92 serial=974 path=/com/canonical/hud; interface=com.canonical.hud; member
+lines: 131
+-- Alt+F10 from the host (vbox send_keys), then Escape; popwatch.sh (unity-panel-service's visible windows):
+  13:44:02.309 panel-service visible windows 0, active 62914564
+  13:44:03.712 panel-service visible windows 1, active 62914564
+  13:44:03.920 panel-service visible windows 2, active 62914564
+  13:44:07.559 panel-service visible windows 0, active 62914564
+-- HUD: Alt tapped, "save as" typed, Escape; dbus-monitor on com.canonical.hud above

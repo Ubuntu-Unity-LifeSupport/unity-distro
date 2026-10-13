@@ -1,0 +1,9 @@
+    _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/TextEditor/menus/menubar"
+    ready 13:50:30.454Z
+  window 62914564, active 62914564
+    libappmenu.so id=0x703ec0010300 win=62914564 label='Текстовый редактор' sensitive=True visible=True prio=0
+  popwatch: 13:50:31.640 panel-service visible windows 0, active 62914564
+-- Alt+F10 from the host at ~13:50:36Z; popwatch.sh:
+  13:50:31.640 panel-service visible windows 0, active 62914564
+  13:50:36.449 panel-service visible windows 2, active 62914564
+  after Escape at 13:51:11: panel popups 0

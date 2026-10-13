@@ -1,0 +1,203 @@
+== tests-0.12-alone at 2026-10-13T14:10:00Z; libunity-gtk4-menu0 0.12; library sha256 7e630da38b4f6e20; alone
+  build latetest rc=0 (2 warnings)
+  case 1: rc 0 PASS case 1
+      (latetest:21833): Gdk-WARNING **: 17:10:02.435: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 1f: rc 0 PASS case 1
+      (latetest:21976): Gdk-WARNING **: 17:10:04.374: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 is not loaded in this process yet
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 2: rc 0 PASS case 2
+      (latetest:22118): Gdk-WARNING **: 17:10:06.414: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 3: rc 0 PASS case 3
+      (latetest:22261): Gdk-WARNING **: 17:10:08.194: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: a window stopped waiting (0 waiting)
+  case 3f: rc 0 PASS case 3
+      (latetest:22402): Gdk-WARNING **: 17:10:11.211: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 is not loaded in this process yet
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: a window stopped waiting (0 waiting)
+  case 4: rc 0 PASS case 4
+      (latetest:22545): Gdk-WARNING **: 17:10:13.930: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: late look: no menu yet
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 5: rc 0 PASS case 5
+      (latetest:22687): Gdk-WARNING **: 17:10:16.169: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: the application set a menubar of its own; ours is released
+      lib: a window stopped waiting (0 waiting)
+      lib: the application has a menubar of its own
+  case 7: rc 0 PASS case 7
+      (latetest:22833): Gdk-WARNING **: 17:10:18.733: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: menubar filled, labelled "latetest"
+  case 8: rc 0 PASS case 8
+      (latetest:22980): Gdk-WARNING **: 17:10:20.390: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: menubar filled, labelled "latetest"
+  case 9: rc 0 PASS case 9
+      (latetest:23116): Gdk-WARNING **: 17:10:22.335: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: chose candidate 1 of 1
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 11: rc 0 PASS case 11
+      (latetest:23256): Gdk-WARNING **: 17:10:24.506: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 1
+      lib: dropped 1 item(s) that cannot cross D-Bus
+      lib: the menu found has no item that can cross D-Bus; not used
+      lib: late look
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=2
+      lib: candidate 2 at depth 4: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 2
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest"
+  case 12: rc 0 PASS case 12
+      (latetest:23398): Gdk-WARNING **: 17:10:26.114: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: a window stopped waiting (0 waiting)
+  case adw6: rc 0 PASS case 6
+      (latetest-adw.py:23537): Gdk-WARNING **: 17:10:27.866: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      case 6: the dialog is a sheet in the window
+      lib: GTK4 is not loaded in this process yet
+      lib: g_module_symbol is not in the global scope; taking libgmodule-2.0.so.0's own
+      lib: GTK4 found through GObject Introspection
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: late look: no menu yet
+      lib: late look
+      lib: late look: no menu yet
+  case adw6a: rc 0 PASS case 6a
+      (latetest-adw.py:23682): Gdk-WARNING **: 17:10:30.114: Cannot get portal org.freedesktop.portal.Inhibit version: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.Inhibit”
+      lib: GTK4 is not loaded in this process yet
+      lib: g_module_symbol is not in the global scope; taking libgmodule-2.0.so.0's own
+      lib: GTK4 found through GObject Introspection
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: no menu model in this window
+      lib: hooked GtkMenuButton::map
+      lib: hooked GtkPopoverMenuBar::map
+      lib: the window waits for a menu (1 waiting)
+      lib: late look
+      lib: candidate 1 at depth 12: shown=1 primary=0 app./win. items=3
+      lib: candidate 2 at depth 12: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 2
+      lib: a window stopped waiting (0 waiting)
+      lib: menubar filled late, labelled "latetest-adw.py"
+  total: 14 passed, 0 failed

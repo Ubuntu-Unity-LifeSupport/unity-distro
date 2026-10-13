@@ -1,0 +1,12 @@
+== 2026-10-13T13:53:15Z; 0.12 28258feeeec7b309
+  none: 5,14 5,26 5,34 5,58 8,22 us per cycle
+  0.11: 7,48 7,48 7,50 6,94 11,18 us per cycle
+  0.12: 8,52 7,39 8,06 7,75 7,70 us per cycle
+-- 0.12 under bpftrace (uprobes on /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0)
+  run under bpftrace: 8,92 us per cycle
+kill: (13502): Нет такого процесса
+  stdin:3:119-134: WARNING: Return value discarded.
+  uretprobe:/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0:0x1aa0 /@t[tid]/ { @button_map_ns = sum(nsecs - @t[tid]); delete(@t[tid]); }
+                                                                                                                        ~~~~~~~~~~~~~~~
+  ERROR: Could not resolve address: /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0:0x2f90
+  ERROR: Unable to attach probe: uprobe:/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0:12176. If this is expected, set the 'missing_probes' config variable to 'warn'.
