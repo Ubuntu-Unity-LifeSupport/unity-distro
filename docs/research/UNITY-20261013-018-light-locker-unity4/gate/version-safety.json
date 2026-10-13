@@ -1,0 +1,46 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 1.8.0-3ubuntu4+unity4 is newer than resolute 1.8.0-3ubuntu4",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "light-locker",
+  "source_commit": "56582bab922766a7068e7308ae3a28cae4f573be",
+  "candidate_source_version": "1.8.0-3ubuntu4+unity4",
+  "pockets": {
+    "resolute": "1.8.0-3ubuntu4"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-13T18:46:50Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "light-locker-dbgsym",
+      "version": "1.8.0-3ubuntu4+unity4",
+      "architecture": "amd64",
+      "apt_candidate": "1.8.0-3ubuntu4+unity4"
+    },
+    {
+      "package": "light-locker",
+      "version": "1.8.0-3ubuntu4+unity4",
+      "architecture": "amd64",
+      "apt_candidate": "1.8.0-3ubuntu4+unity4"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261013-018",
+    "packages": 616,
+    "list_sha256": "584b9af3cb55fe9769381fbe46660b53ef5e79791a85f9b20fba35768ce0b81e",
+    "content_sha256": "79b0c666aacc346306bce5f637ac6b7ef144d166939d03077a3f2b157b8573c8",
+    "model_entries": 552,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "9f3fdb16e973ac5ea3d6c2347f21f8ea3fd179b243c940c3f4e5b834a3c4ccc3"
+}

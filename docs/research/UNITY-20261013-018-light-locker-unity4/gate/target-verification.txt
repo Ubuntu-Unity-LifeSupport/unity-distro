@@ -1,0 +1,25 @@
+UNITY-20261013-018: target verification of the publication of light-locker 1.8.0-3ubuntu4+unity4
+
+Raw files: gate/verification/ (times EEST on the target).
+
+Published 2026-10-13 18:57:21Z as snapshot unity-resolute-20261013-018 (publish record
+~/coordinator/publish-records/UNITY-20261013-018.json: post-publish check PASS; signer mode, proposal
+5898c88d44532c8c approved by May on the signer console (the day's automatic approvals were used up)). On
+builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 18:52:18 UTC, Valid-Until Fri, 16 Oct
+2026 18:52:18 UTC; light-locker and light-locker-dbgsym 1.8.0-3ubuntu4+unity4 in main/binary-amd64/Packages.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at 21:58:17,
+~/.dirty from the snapshot, light-locker +unity2), apt-get update and full-upgrade from the live repository:
+light-locker 1.8.0-3ubuntu4+unity4 (deb sha256 e493b6aa..., the gated build), cinnamon-session +unity7,
+unity-settings-daemon +unity15; nothing left to upgrade (01-restore-upgrade.txt). xdotool installed for
+observation. Cold boot (02-checks.txt): unity-session.target and unity7.service active; light-locker runs the
+installed binary.
+- VLC playing: the session manager holds Inhibitor1 (app vlc, flags 8), IsInhibited(8) true; VLC closed with
+  SIGTERM: no inhibitor, IsInhibited(8) false.
+- VLC playing again: Inhibitor2 (vlc, 8); VLC killed with SIGKILL: no inhibitor.
+- A one-shot dbus-send Inhibit (the caller exits at once): no inhibitor.
+- No new crash report (/var/crash: the two files from the snapshot).
+The idle hold-off itself needs unity-settings-daemon +unity16 (the idle monitor, published after this) and is
+checked on target after that publication.
+
+Result: PASS.

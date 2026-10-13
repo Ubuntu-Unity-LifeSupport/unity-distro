@@ -1,0 +1,9 @@
+2026-10-13 21:58:17
+-rw-rw-r-- 1 mike mike 0 Oct  8 10:29 /home/mike/.dirty
+light-locker	1.8.0-3ubuntu4+unity2
+Настраивается пакет light-locker (1.8.0-3ubuntu4+unity4) …
+cinnamon-session	6.4.2-1+unity7
+light-locker	1.8.0-3ubuntu4+unity4
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+e493b6aa54043bee180a7eab092bcd7c07b4b7ee2385914cf96a970f28cba26d  /var/cache/apt/archives/light-locker_1.8.0-3ubuntu4+unity4_amd64.deb
+0
