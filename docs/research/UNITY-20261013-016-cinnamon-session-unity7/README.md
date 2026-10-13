@@ -38,7 +38,8 @@ the Unity session), to be published before light-locker +unity4
   stop the session bus. It is installed in
   `/usr/lib/systemd/user/dbus.service.d/` and applies to every user's
   `dbus.service` on the machine.
-- `954e756`: changelog.
+- `954e756`: changelog; `7393f0e`: patch headers (Forwarded field of PR #219,
+  the G_MAXINT limit) and the changelog wording.
 
 UNITY-20261013-021 (upstream 51cb449) was checked and does not apply: it
 changes the ConsoleKit backend only; the Unity session runs under logind.
