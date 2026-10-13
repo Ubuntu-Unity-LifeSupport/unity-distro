@@ -1,0 +1,23 @@
+== 2026-10-13 12:58:04 EEST run1 step1: medium inserted, autorun off
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2247 started=вт жов 13 12:56:37 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: /run/media/mike/Ubuntu-Unity 26.04 amd64 iso9660
+visible helper windows:
+visible apport windows:
+VBOX CD-ROM можно безопасно отключить - Устройство может быть извлечено.
+== 2026-10-13 12:58:08 EEST run1 step1: ejected from the guest (gio mount -e)
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2247 started=вт жов 13 12:56:37 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: none
+visible helper windows:
+visible apport windows:

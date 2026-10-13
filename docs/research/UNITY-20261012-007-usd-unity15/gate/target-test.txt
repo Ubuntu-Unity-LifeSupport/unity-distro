@@ -1,0 +1,72 @@
+UNITY-20261012-007 (with UNITY-20261012-008, UNITY-20261012-009): target test of unity-settings-daemon
+15.04.1+21.10.20220802-0ubuntu7+unity15 (build of 2d0e9bf)
+
+Raw files: target-raw/ (ssh output 01-08 and screenshots; times EEST on the target, UTC where marked).
+
+Target: target-desktop on the live stack of 2026-10-13 (restored from Published-stack-2026-10-08 for the
+compiz +unity3 verification and updated from the live repository then; apt full-upgrade has nothing left
+to install; ~/.dirty from the snapshot). An earlier +unity15 build (cacd400) had been installed and
+tested there; its debs were replaced by the debs below from this build (build/), installed with apt
+(--reinstall, same version; the command line is not in the raw file) on 2026-10-13 09:54Z, then a cold
+boot (01-install.txt).
+
+Installed debs (sha256 equal to build/ and the build manifest):
+  e2516cdaca43295ca798c8629a3a6b211b5607d19136129c10a5842ffef993d5  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+  0b5fecd88ce2e105e9641f748587e821fd4028ac506847453e4784e0a82aaf3f  unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity15_all.deb
+  409d285be9c0bcf178cac4fd362f0b597b71aee50c2561bbf86a96cb020d9bf6  libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+The installed /usr/lib/unity-settings-daemon/unity-fallback-mount-helper has the sha256 of the one in
+this build's deb (f0764bc2...), and so does /proc/<pid>/exe of the running helper in every step.
+
+Versions on the target during the test:
+  cinnamon-session	6.4.2-1+unity5
+  compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+  libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity15
+  light-locker	1.8.0-3ubuntu4+unity3
+  unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+  unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+  unity-settings-daemon-schemas	15.04.1+21.10.20220802-0ubuntu7+unity15
+
+Build: make check runs test-mount-guard, test-automount, test-autorun and gcm-self-test; all PASS in
+the build log (build/), test-mount-guard compiled and linked with -fsanitize=address.
+
+Observation: a snapshot script over ssh at each step (seat0 session Active/LockedHint, the helper's pid,
+start time, exe sha256 and "(deleted)" mapping count, autorun-never, the mount of /dev/sr0, visible
+windows of class unity-fallback-mount-helper via xdotool search --onlyvisible on DISPLAY=:0);
+screenshots with gnome-screenshot; dialog buttons pressed with xdotool. The medium is the ISO image in
+the optical drive, inserted and removed through the vbox MCP.
+
+Boot (02-boot.txt, 02-boot.png, 03-apport.txt): session up 12:57, helper pid 2247 started 12:56:37, no
+"(deleted)" mapping. At login update-notifier showed its "system program error" prompt; /var/crash
+holds only the two files from the snapshot (light-locker and do-release-upgrade, 2026-10-08); dismissed
+with Cancel. Not related to this package.
+
+Run 1, published configuration (light-locker is the locker), unlocked session:
+  1. autorun-never=true (the default on this machine), medium inserted: mounted, no visible helper
+     window (04-run1-step1.txt, .png). Ejected from the guest.
+  2. autorun-never=false, medium inserted: mounted, the helper's autorun dialog appears ("Ubuntu-Unity
+     26.04 amd64", with its Eject button) (05-run1-step2-dialog.png). Eject pressed: the medium is
+     unmounted, no helper window left, no error dialog (05-run1-step2.txt, -after-eject.png).
+  3. Medium inserted, dialog up, medium unmounted from outside (gio mount -u): no helper window left
+     (06-run1-step3.txt; the screenshot is identical to 04-run1-step1.png - same minute, the launcher
+     keeps the medium's icon - so the state rests on the text file).
+  The helper is the same process (pid 2247) through all steps. From step 2 on it has "(deleted)"
+  mappings; the one inspected in step 2 is a SysV shared memory segment (/SYSV00000000), not a file of
+  the package; the three in Run 2 were not inspected (the running exe has this build's sha256).
+
+Run 2, same boot, published configuration (07-run2.txt, 07-run2-dialog.png):
+  Medium inserted, autorun dialog up; the session locked (loginctl lock-session; LockedHint=yes, the
+  session stays active): no visible helper window, the dialog's window no longer exists (X error Bad
+  Drawable on it). Same helper process. The helper wrote nothing to the journal in this boot.
+  Then a power-off with the medium still mounted and the session locked (09:59:07Z).
+
+After the power-off (08-after-poweroff.txt): a new boot; the previous boot's journal ends with
+"Journal stopped" at 12:59:11 and has no line from the helper other than D-Bus activation, no segfault
+and no core dump; /var/crash holds only the two files from the snapshot. The new session is up with the
+same helper binary.
+
+Not tested on the target: prompts from a mount operation (they need a medium that asks for a password
+or a busy unmount) and the cleanup changed in this build, which runs when the helper stops; they are
+covered by the test suite.
+
+Result: PASS.
+tested_build: this_build (the debs above are this gate's build).
