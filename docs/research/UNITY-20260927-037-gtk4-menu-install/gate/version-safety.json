@@ -1,0 +1,40 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 49.4+unity2 is newer than resolute 49.4",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity-session",
+  "source_commit": "e137fb19193943e3fd687c8ff62324f9aceaeb00",
+  "candidate_source_version": "49.4+unity2",
+  "pockets": {
+    "resolute": "49.4"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-13T16:03:44Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "unity-session",
+      "version": "49.4+unity2",
+      "architecture": "all",
+      "apt_candidate": "49.4+unity2"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20260927-037",
+    "packages": 609,
+    "list_sha256": "5f7652e3a558df4682868b31c8b88db0052deff27199895d9dddb4f20ae6082e",
+    "content_sha256": "7278659890bdabc6669e319e138cfb602a6db4de939b81e270254e802f35a14c",
+    "model_entries": 547,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "10642927ed92b689ba85c715a13f613d503af23b06bc4ac4a3f834c9469cdc3a"
+}
