@@ -6,7 +6,7 @@ Owner: agent B (target2).
 task: UNITY-20261013-007
 package: cinnamon-session (6.4.2-1+unity5 installed from live)
 target_series: resolute
-status: INVESTIGATING
+status: REVIEW - fixed in 6.4.2-1+unity6 (local build), target check PASS, independent Verifier PASS (2026-10-13)
 ```
 
 ## What happened (target2, 2026-10-13, logs/01)
@@ -68,3 +68,40 @@ with no task; a task follows only if it shows up outside an upgrade.
 - **The cause:** a code reading of cinnamon-session and libICE 1.1.1 is in progress. libice6 2:1.1.1-1build1 carries
   no source patches.
 - **Reproduction:** none. A reproduction with a test client is not part of this task.
+
+## Fix: 6.4.2-1+unity6 (2026-10-13)
+
+`Fix-connection-lifetime-in-the-XSMP-server.patch`, the last patch in the series. Each ICE connection of the XSMP
+server is closed once, by its owner: the authentication watch or its protocol timeout until the XSMP client is set up,
+the client after that. The ICE error handler only logs. No behaviour change for normal clients. The earlier patches
+are unchanged, and `debian/control` is unchanged.
+
+**Build:** sbuild (chroot 20261008T083223Z), successful in 30 s, `dh_auto_test` ran (build/). The orig tarball is
+the +unity5 one.
+
+## Target check (target2, two cold sessions, logs/03-06)
+
+The setup was Clean-2 → live (Release Date 2026-10-13 01:41:51 UTC), then this build with `dpkg -i`; `dpkg -V` is
+clean. Ordinary use only, with passive bpftrace uprobes on `IceAcceptConnection`, `IceCloseConnection` and
+`_IceFreeConnection` in cinnamon-session (`observe.sh`, `summary.py`):
+
+- an xterm that exits normally;
+- an xterm killed with SIGKILL;
+- then a logout.
+
+**Result,** in both sessions:
+- every connection lifetime has exactly one close followed by one free (4 of 4);
+- cinnamon-session survives the SIGKILL and ends cleanly at logout;
+- no crash report, segfault or critical.
+
+Session 2 has step timestamps; session 1 was recorded with an earlier `observe.sh` without them. target2 was
+restored to Clean-2 afterwards and confirmed inside.
+
+**Not run:** restart, an explicit Save-Yourself, and the UNITY-20261012-003 regression set.
+
+## Verification
+
+Independent Verifier, 2026-10-13: **PASS**, REVIEWED. The Verifier checked the diff against the approved design, the
+build against its manifest, and the target records (it ran `summary.py` itself). It found no blocking issue.
+
+Known gaps: UNITY-20261013-009, -010 and -011.
