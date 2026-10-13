@@ -1,0 +1,32 @@
+UNITY-20261013-008: target verification of the published unity-gtk4-menu 0.13
+(2026-10-13 20:40-20:48Z, target2)
+
+Publication: snapshot unity-resolute-20261013-008, published_at 2026-10-13T20:39:06Z
+(~/coordinator/publish-records/UNITY-20261013-008.json); InRelease Date 2026-10-13 20:34:01 UTC.
+
+1. Setup (logs/10): target-desktop-2 restored to Clean-2 at 20:13Z and confirmed inside (no ~/.dirty, no test
+   files, only ubuntu.sources; UNITY-20261013-027 logs/08), then before the publication the live repository and apt
+   full-upgrade (InRelease 19:51:15 UTC: libunity-gtk4-menu0 0.12, libgtk-nocsd0 4.8-1+unity4, unity-session
+   49.4+unity2), and nautilus, meld, gnome-tweaks, onboard, xdotool.
+2. Upgrade from live after the publication (logs/11): apt candidate 0.13 from 192.168.56.10:8080; full-upgrade
+   0.12 -> 0.13. The downloaded deb:
+     e979cf29092d72ecdc62da988fdc943d5c51fa5ad750e58b27760597d07af99c  libunity-gtk4-menu0_0.13_amd64.deb
+   equal to the gated build's (build-0.13 manifest, gate/target-test.txt); dpkg -V clean; the installed library
+   sha256 9cd5e7aa081bc077..., as in the target test.
+3. A cold Unity session, Nautilus 1:50.2.2-0ubuntu0.2 (logs/12, t4-nautilus.sh; keys from the host): the export
+   (menudump.py) and the HUD (hudq.py) follow each step:
+   - at start "_Отменить", HUD 0 results;
+   - after a rename by keys "_Отменить переименование", HUD "Отменить переименование (Файлы)";
+   - after Ctrl+Z "_Отменить" and "_Повторить переименование", HUD finds it;
+   - after a rename through FileOperations2 RenameURI "_Отменить переименование" again.
+4. The gtk-nocsd opt-out (an empty ~/.config/environment.d/50-gtk-nocsd.conf), a cold session (logs/13, the
+   UNITY-20261013-013 session-check.sh unchanged): LD_PRELOAD of the user manager and of compiz is
+   libunity-gtk4-menu.so.0 alone; 0 AssertionError lines in the user journal and ~/.xsession-errors; meld,
+   gnome-tweaks, apps.py 3 and 4, update-manager and software-properties-gtk show windows with menubars,
+   unity-indicator-appearance and orca run; the dconf backend works and a write reads back. gnome-tweaks' one
+   Traceback is its org.gnome.Shell.Extensions call (no GNOME Shell), the same as in UNITY-20261013-013 logs/09 with
+   0.11.
+
+target2 restored to Clean-2 afterwards (logs/14).
+
+Result: PASS.

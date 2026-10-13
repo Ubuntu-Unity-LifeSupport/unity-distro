@@ -1,0 +1,33 @@
+  session run 1: before the start no epiphany; after it: 10499; exit status 134 (SIGABRT)
+      **
+      epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+      Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+  session run 2: before the start no epiphany; after it: 10690; exit status 134 (SIGABRT)
+      **
+      epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+      Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+  session run 3: before the start no epiphany; after it: 10869; exit status 134 (SIGABRT)
+      **
+      epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+      Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+  nocsd-only run 1: before the start no epiphany; after it: 11036; exit status 134 (SIGABRT)
+      **
+      epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+      Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+  nocsd-only run 2: before the start no epiphany; after it: 11222; exit status 134 (SIGABRT)
+      **
+      epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+      Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+  nocsd-only run 3: before the start no epiphany; after it: 11399; exit status 134 (SIGABRT)
+      **
+      epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+      Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+  none run 1: before the start no epiphany; after it: 11656; exit status 143
+      (epiphany:11656): Adwaita-WARNING **: 19:51:13.611: The resource style-dark.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.
+      (epiphany:11656): Adwaita-WARNING **: 19:51:13.611: The resource style-hc.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.
+  none run 2: before the start no epiphany; after it: 11755; exit status 143
+      (epiphany:11755): Adwaita-WARNING **: 19:51:33.372: The resource style-dark.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.
+      (epiphany:11755): Adwaita-WARNING **: 19:51:33.372: The resource style-hc.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.
+  none run 3: before the start no epiphany; after it: 11852; exit status 143
+      (epiphany:11852): Adwaita-WARNING **: 19:51:52.811: The resource style-dark.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.
+      (epiphany:11852): Adwaita-WARNING **: 19:51:52.811: The resource style-hc.css is deprecated and shouldn't be used anymore. Use style.css with media queries instead.

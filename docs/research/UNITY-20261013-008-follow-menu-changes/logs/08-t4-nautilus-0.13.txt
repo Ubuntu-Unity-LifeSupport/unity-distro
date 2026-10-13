@@ -1,0 +1,133 @@
+== 2026-10-13T18:07:20Z; nautilus 1:50.2.2-0ubuntu0.2; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+-- 1 at start (18:07:25Z)
+  files: alpha.txt beta.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 0 result(s)
+-- 2 after a rename by keys (window 1) (18:07:33Z)
+  files: alpha-renamed.txt beta.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- 3 after Ctrl+Z (18:07:39Z)
+  files: alpha.txt beta.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить переименование  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Повторить переименование (Файлы) | org.gnome.Nautilus
+  RenameURI rc=0
+-- 4 after a rename through FileOperations2 (18:07:42Z)
+  files: alpha.txt beta-renamed.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- 5 a second window (Ctrl+N), a rename by keys in it, window 2 active (18:08:04Z)
+  files: alpha.txt beta-renamed.txt gamma-renamed.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+  window 56623617 (r):
+    export: window 56623617: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- 6 the same, window 1 active (18:08:06Z)
+  files: alpha.txt beta-renamed.txt gamma-renamed.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+  window 56623617 (r):
+    export: window 56623617: :1.271 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- library log
+  lib: GTK4 found at load
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 5 of 5
+  lib: menubar filled, labelled "Файлы"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 2 item(s) replaced
+  lib: menu changed (rebuild 3): 2 item(s) replaced
+  lib: chose candidate 5 of 5
+  lib: menubar already ours, stand-ins added for this window
+  lib: chose candidate 5 of 5
+  lib: menu changed (rebuild 4): 0 item(s) replaced
+
+== the second run: two windows from the start
+== 2026-10-13T18:08:17Z; nautilus 1:50.2.2-0ubuntu0.2; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+-- 7 two windows at start (18:08:27Z)
+  files: alpha.txt beta.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+  window 56623611 (r):
+    export: window 56623611: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 0 result(s)
+-- 8 a rename by keys in window 2 (18:08:35Z)
+  files: alpha-w2.txt beta.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+  window 56623611 (r):
+    export: window 56623611: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- 9 Ctrl+Z in window 2 (18:08:41Z)
+  files: alpha.txt beta.txt gamma.txt 
+  window 56623108 (r):
+    export: window 56623108: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить переименование  [win.redo]
+  window 56623611 (r):
+    export: window 56623611: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить переименование  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Повторить переименование (Файлы) | org.gnome.Nautilus
+  RenameURI rc=0
+-- 10 window 1 closed, then a rename through FileOperations2 (18:08:47Z)
+  files: alpha.txt beta-renamed.txt gamma.txt 
+  window 56623611 (r):
+    export: window 56623611: :1.287 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- library log
+  lib: GTK4 found at load
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 5 of 5
+  lib: menubar filled, labelled "Файлы"
+  lib: chose candidate 5 of 5
+  lib: menubar already ours, stand-ins added for this window
+  lib: chose candidate 5 of 5
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: chose candidate 5 of 5
+  lib: menu changed (rebuild 2): 2 item(s) replaced
+  lib: chose candidate 5 of 5
+  lib: menu changed (rebuild 3): 2 item(s) replaced

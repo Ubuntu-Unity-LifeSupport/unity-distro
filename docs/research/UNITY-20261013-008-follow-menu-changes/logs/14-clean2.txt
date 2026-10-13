@@ -1,0 +1,8 @@
+restore checked inside at 2026-10-13T20:50:39Z, boot 2026-10-13 23:49:38
+ls: cannot access '/home/mike/.dirty': No such file or directory
+ls: cannot access '/home/mike/b008': No such file or directory
+ls: cannot access '/home/mike/b008p': No such file or directory
+ls: cannot access '/home/mike/b1313': No such file or directory
+ls: cannot access '/home/mike/.config/environment.d/50-gtk-nocsd.conf': No such file or directory
+ubuntu.sources
+dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет

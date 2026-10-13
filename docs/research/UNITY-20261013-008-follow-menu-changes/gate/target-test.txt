@@ -1,0 +1,28 @@
+UNITY-20261013-008: target test of unity-gtk4-menu 0.13 (source commit d377096)
+(2026-10-13 18:03-18:11Z, target2)
+
+Target: target-desktop-2 at Clean-2 with the live repository and apt full-upgrade, as for this task's measurement
+(README, Measurement: unity-gtk4-menu 0.12 and unity-session 49.4+unity2 from live, nautilus, papers and
+gnome-console installed). For the tests libgtk-4-dev, libx11-dev, xvfb, xauth and valgrind were added (target2 was
+marked dirty and restored to Clean-2 afterwards, confirmed inside at 18:18Z).
+
+Installed from this build with dpkg -i:
+  e979cf29092d72ecdc62da988fdc943d5c51fa5ad750e58b27760597d07af99c  libunity-gtk4-menu0_0.13_amd64.deb
+The same file as in build-0.13/UNITY-20261013-008-unity-gtk4-menu-build-manifest.json (source_commit d377096). The
+installed /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 has sha256 9cd5e7aa081bc077..., the value every log below
+prints; NEEDED is libc.so.6 only.
+
+1. tests/latetest.c from d377096, under Xvfb and dbus-run-session, G_DEBUG=fatal-criticals, against the installed
+   0.13 (logs/06): cases 1-5, 7-9, 11-22, 20 of 20 pass. valgrind memcheck on 13, 18, 19, 22: 0 errors (logs/07).
+   Control against 0.12 (logs/05, LATETEST_CONTROL=1): 13, 14, 15, 16, 19, 20, 22 fail, 17, 18, 21 pass.
+2. The UNITY-20261012-004 set (runtests.sh: latetest 1, 1f, 2, 3, 3f, 4, 5, 7, 8, 9, 11, 12, latetest-adw 6, 6a),
+   against 0.13 (logs/07): 14 of 14 in the session's preload order, 14 of 14 preloaded alone.
+3. Nautilus 1:50.2.2-0ubuntu0.2 in the running Unity session (logs/08; 0.12 control logs/04): after a rename by keys,
+   Ctrl+Z, a rename through FileOperations2 RenameURI, and with two windows, the export (menudump.py) and the HUD
+   (hudq.py) follow "Отменить переименование" / "Повторить переименование"; on 0.12 they stay "_Отменить".
+4. An open panel menu while t5app.py changes its menu every 2 s, by events (logs/09: popwatch2 popups with geometry,
+   sync.sh entry id): the oracle (relabelling the open submenu's own item) collapses the submenu; (a) a sibling, (b)
+   an item inside the open submenu, (c) an item outside it, and remove_all with one changed item keep their popups and
+   the entry id.
+
+Result: PASS.
