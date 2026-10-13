@@ -1,0 +1,48 @@
+== stand: Clean-2 -> live (Release 2026-10-13 01:41:51 UTC) + gcc-multilib, libc6-i386, libc6:i386 and the dbgsym packages of cinnamon-session/light-locker installed (not a clean live); cold boot 2026-10-13 09:07:40 after the UNITY-20261013-007 recurrence check, session up
+  before the run: user manager LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+  before the run: compiz pid 2925 LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+== envtools at 2026-10-13T06:10:20Z, boot 2026-10-13 09:07:40; libgtk-nocsd0 4.8-1+unity4, libunity-gtk4-menu0 0.10
+  0 the session's own value (compiz): /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+      t64: ld.so lines 0, nocsd 1 gtk4-menu 1
+  (systemctl --user show-environment prints: LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0')
+ERROR: ld.so: object '$'/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0'' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  1 env $(systemctl --user show-environment): $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+      t64: ld.so lines 2, nocsd 0 gtk4-menu 0
+        ERROR: ld.so: object '$'/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+        ERROR: ld.so: object '/usr/$LIB/libgtk-nocsd.so.0'' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  2a eval "export <show-environment line>" in dash: $/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+      t64: ld.so lines 1, nocsd 1 gtk4-menu 0
+        ERROR: ld.so: object '$/usr/$LIB/libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  2b eval "export <show-environment line>" in bash: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+      t64: ld.so lines 0, nocsd 1 gtk4-menu 1
+  3 a script that splices the value into code unquoted (sh -c "X=$LD_PRELOAD"): /usr//libunity-gtk4-menu.so.0:/usr//libgtk-nocsd.so.0
+      t64: ld.so lines 2, nocsd 0 gtk4-menu 0
+        ERROR: ld.so: object '/usr//libunity-gtk4-menu.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+        ERROR: ld.so: object '/usr//libgtk-nocsd.so.0' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  4 systemctl --user show-environment --output=json: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+      t64: ld.so lines 0, nocsd 1 gtk4-menu 1
+  5 a unit of the user manager (systemd-run --user): 
+      t64: ld.so lines 0, nocsd 0 gtk4-menu 0
+  6 dbus-update-activation-environment --systemd LD_PRELOAD=<session value>: rc 0 
+  6 then a unit of the user manager: 
+      t64: ld.so lines 0, nocsd 0 gtk4-menu 0
+  7 systemctl --user import-environment LD_PRELOAD: rc 0
+  7 then a unit of the user manager: 
+      t64: ld.so lines 0, nocsd 0 gtk4-menu 0
+  8 sudo -E: LD_PRELOAD unset
+  9 sudo --preserve-env=LD_PRELOAD: LD_PRELOAD unset
+  10 su <user> -c (from root): LD_PRELOAD unset
+  11 su - <user> (login shell, from root): LD_PRELOAD unset
+  12 tmux new-session (server started with the value): /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+      t64: ld.so lines 0, nocsd 1 gtk4-menu 1
+      tmux show-environment -g LD_PRELOAD: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  13 this ssh session (sshd, PAM, no session environment): LD_PRELOAD unset
+
+Correction to cases 5, 6 and 7 above (06:11Z, same session): the empty value is an artefact of the rig. systemd
+substitutes ${...} in a unit's command line itself, so `sh -c 'printf %s "${LD_PRELOAD-__UNSET__}"'` reached sh as
+`printf %s ""`. Re-checked with no $ in the command line, after cases 6 and 7 had been applied:
+  systemd-run --user --wait -p StandardOutput=file:... /usr/bin/env   -> LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  systemd-run --user --wait ... t64 0                                  -> t32 pid 4668 bits 64 nocsd 1 gtk4-menu 1
+So a unit of the user manager gets the path form, before and after dbus-update-activation-environment --systemd
+and systemctl --user import-environment, and loads both libraries.

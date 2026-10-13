@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261012-007",
+  "package": "unity-settings-daemon",
+  "target_series": "resolute",
+  "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity15",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1012-007/packages/unity-settings-daemon",
+  "source_remote_ref": "origin/a/UNITY-20261012-007",
+  "source_commit": "2d0e9bfe1d490703593f724e089f39c0efcf0e9d",
+  "source_tree_hash": "74845054b6ebdbad609d5d5fab58f9ffb8b50258",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261012-007"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261012-007-usd-unity15/build/UNITY-20261012-007-unity-settings-daemon-build-manifest.json",
+    "sha256": "d4b1c5811959858ba15c60db998af6cb8b2d954e954bff478156aff06754c53c"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261012-007-usd-unity15/gate/evidence-manifest.json",
+    "sha256": "e1aefe6080c7452ff34b3466502e5ef6049cd6ebecbf9c8eece1c21db66ec81d"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261012-007-usd-unity15/gate/target-test.txt",
+        "sha256": "77d32faf349f9a6b115a16e1583dfae22d2214201b59ef0b9e6dc360db57a847"
+      },
+      "debs": {
+        "libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb": "409d285be9c0bcf178cac4fd362f0b597b71aee50c2561bbf86a96cb020d9bf6",
+        "unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity15_all.deb": "0b5fecd88ce2e105e9641f748587e821fd4028ac506847453e4784e0a82aaf3f",
+        "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb": "e2516cdaca43295ca798c8629a3a6b211b5607d19136129c10a5842ffef993d5"
+      }
+    }
+  }
+}

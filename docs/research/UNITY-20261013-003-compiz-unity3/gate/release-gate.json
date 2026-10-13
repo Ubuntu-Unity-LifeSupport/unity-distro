@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-003",
+  "package": "compiz",
+  "target_series": "resolute",
+  "candidate_version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1013-003/packages/compiz",
+  "source_remote_ref": "origin/a/UNITY-20261013-003",
+  "source_commit": "4d7ead588f0ac3bffaf3daac63e0fb795263c6e9",
+  "source_tree_hash": "a2a1b54e029dcd85eca26eb5012689751106da0e",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261013-003"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261013-003-compiz-unity3/build/UNITY-20261013-003-compiz-build-manifest.json",
+    "sha256": "3d11f6bd69fb8c55be195d1976b13f9b5604e608f7460768269f543ecadd49b0"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261013-003-compiz-unity3/gate/evidence-manifest.json",
+    "sha256": "17ccf585bff03ebe3ef9bd30c1cd150fbaf0124181f735c662cc146c3101d9d2"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261013-003-compiz-unity3/gate/target-test.txt",
+        "sha256": "4c04c78054e0bba69410668dda9892391f651f747f208e2cc91cce040852d9b6"
+      },
+      "debs": {
+        "compiz-core_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "27adc71551d0ec3513bfebefa10ea1d1780627a7d90c645f4b1707ed5dadfeca",
+        "compiz-gnome_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "2024d0fd3b84a029fb1e1d8fe53615e30c569feb2d64fc38810e26b0fe711310",
+        "compiz-plugins-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "d87399c221f78e09adccb49ff47f0dce2d30f4127d7e0e1e76900eb609f16e2d",
+        "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb": "6958264ee61c1b2eb0528a909002f23d6b78d33a9b9ec3242d05e3573b8b95d6",
+        "libcompizconfig0_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "9a4a8edee5aa8b13a6ac068b6c914ff94ce70fb5ff963212ae3958dee6f52e92",
+        "libdecoration0t64_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb": "37da6a9e0b46258a438e3a7b281c6f1714f282bccd5cf25a6e7fe1c9b9b3fa3d"
+      }
+    }
+  }
+}

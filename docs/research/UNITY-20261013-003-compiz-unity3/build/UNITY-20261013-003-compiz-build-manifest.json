@@ -1,0 +1,312 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-003",
+  "package": "compiz",
+  "candidate_version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/unity-distro-1013-003/packages/compiz",
+  "source_commit": "4d7ead588f0ac3bffaf3daac63e0fb795263c6e9",
+  "source_tree_hash": "a2a1b54e029dcd85eca26eb5012689751106da0e",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
+  ],
+  "build_started": "2026-10-13T03:20:54.375129+00:00",
+  "build_finished": "2026-10-13T06:27:05.855517+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261013-003-compiz-1:0.9.14.2+25.10.20250930-0ubuntu3+unity3-sbuild.log",
+    "sha256": "e6c2c89ca7ff9abf56963bee17d85e4e38a8951a14947adf5e42edf29bc546bf"
+  },
+  "artifacts": [
+    {
+      "file": "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3.dsc",
+      "sha256": "3643411c7c0cf1d74411d7dfa520fd8f2f1f561c0e6038b71481b06ab5c4d187",
+      "size": 3253,
+      "kind": "source",
+      "package": "compiz",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "file": "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.changes",
+      "sha256": "3dbfc344c17d4b07c0e84c463b49fe2d9fe01feb8aebe9c442cdfc759fe9a717",
+      "size": 12062,
+      "kind": "changes"
+    },
+    {
+      "file": "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3.tar.xz",
+      "sha256": "1fb432404892aeeff6a9b5236fc9f3758df6f48786a63daab0544fa1f9c4fca1",
+      "size": 4123964,
+      "kind": "source_file",
+      "package": "compiz",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "file": "compiz-core-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "eb8357eae7f8508a10cf1bc94a38862bba40f6ce9b3790ca2da30f24802a1e9a",
+      "size": 4373340,
+      "kind": "binary",
+      "package": "compiz-core-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-core_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "27adc71551d0ec3513bfebefa10ea1d1780627a7d90c645f4b1707ed5dadfeca",
+      "size": 1071280,
+      "kind": "binary",
+      "package": "compiz-core",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "e14cacac625720c76b4d4d93f51c915ebd199da1d7ce6f11f045477baba3b186",
+      "size": 116348,
+      "kind": "binary",
+      "package": "compiz-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-gnome-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "98967a8f6b4e99ca4f00d8bb9d9f8bd672cf345d749f4de38cfd84e4d492bbc8",
+      "size": 301312,
+      "kind": "binary",
+      "package": "compiz-gnome-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-gnome_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "2024d0fd3b84a029fb1e1d8fe53615e30c569feb2d64fc38810e26b0fe711310",
+      "size": 156944,
+      "kind": "binary",
+      "package": "compiz-gnome",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-mate_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "c2e16c96d6692666c42eae292a824cf4cc977cf82896ebe098c5fcc0d2bb5341",
+      "size": 6702,
+      "kind": "binary",
+      "package": "compiz-mate",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-plugins-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "8ec5af7a84a16aeafd821154f99169057ec3d6e47f6b38fc89c4cc29ef330d6e",
+      "size": 20143452,
+      "kind": "binary",
+      "package": "compiz-plugins-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-plugins-default-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "6271a4559918e38df663ef42694025ddea90dc9396284a15d6ae2a01b24a23bb",
+      "size": 13956100,
+      "kind": "binary",
+      "package": "compiz-plugins-default-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-plugins-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "d87399c221f78e09adccb49ff47f0dce2d30f4127d7e0e1e76900eb609f16e2d",
+      "size": 1034494,
+      "kind": "binary",
+      "package": "compiz-plugins-default",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz-plugins-extra_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "sha256": "1f24b0a8df13bed2a12f27c6391c369c6a0f19f607f1084cd5471fff31382195",
+      "size": 6214,
+      "kind": "binary",
+      "package": "compiz-plugins-extra",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "compiz-plugins-main-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "sha256": "4e80553bb60cf5085f7810349c3ca20e00dad2b917888d0646f617821e67df6b",
+      "size": 6230,
+      "kind": "binary",
+      "package": "compiz-plugins-main-default",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "compiz-plugins-main-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "sha256": "8c9c743447163036cc316256a391c0baa68ff931f0056b48c4a3595ed0dbebe6",
+      "size": 6216,
+      "kind": "binary",
+      "package": "compiz-plugins-main-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "compiz-plugins-main_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "sha256": "e94ee73ed78abb0d10c68c1263707174126a7b3c1018946b270dd2bd91feb1f4",
+      "size": 6210,
+      "kind": "binary",
+      "package": "compiz-plugins-main",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "compiz-plugins_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "bae28ca73d270fcf18256d6901587ca036ac18eba20a5f43f6264cd04976c520",
+      "size": 2060898,
+      "kind": "binary",
+      "package": "compiz-plugins",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "sha256": "6958264ee61c1b2eb0528a909002f23d6b78d33a9b9ec3242d05e3573b8b95d6",
+      "size": 6568,
+      "kind": "binary",
+      "package": "compiz",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.buildinfo",
+      "sha256": "85286d8240fa3893b1154245808e4182607bd236c86bb6d3508ffd62cb4f0530",
+      "size": 28917,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "compizconfig-settings-manager_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "sha256": "da2a6ee435ebbc7216621acbaabb2da5d3851e736a614ad97aa1719244288b9b",
+      "size": 574266,
+      "kind": "binary",
+      "package": "compizconfig-settings-manager",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all"
+    },
+    {
+      "file": "libcompizconfig0-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "7dfe72662a5915ca679fc1480eb46cc242e6c2e3aa75addf609fbd6cadb2ede5",
+      "size": 987684,
+      "kind": "binary",
+      "package": "libcompizconfig0-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libcompizconfig0-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "f60398d92edd10fb245608b33c71d4c37e89f0e80096eabb16ba8047979a9f19",
+      "size": 22962,
+      "kind": "binary",
+      "package": "libcompizconfig0-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libcompizconfig0_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "9a4a8edee5aa8b13a6ac068b6c914ff94ce70fb5ff963212ae3958dee6f52e92",
+      "size": 127484,
+      "kind": "binary",
+      "package": "libcompizconfig0",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libdecoration0-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "7f5dbf1c9bb05ca2e594bbcb20b7dc2ea3f849a97964b4835877c2ba2521f12f",
+      "size": 41746,
+      "kind": "binary",
+      "package": "libdecoration0-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libdecoration0t64-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "9d74de8fcd00ac1ccff45d543840e773a7ebcb42a97887458e2a3221ddf50987",
+      "size": 40098,
+      "kind": "binary",
+      "package": "libdecoration0t64-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libdecoration0t64_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "37da6a9e0b46258a438e3a7b281c6f1714f282bccd5cf25a6e7fe1c9b9b3fa3d",
+      "size": 55058,
+      "kind": "binary",
+      "package": "libdecoration0t64",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "python3-compizconfig-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "sha256": "326cb53dcf836a029bc9aaa5ede0c1f7ad9bda9193fd9d72e26ff0eb75799564",
+      "size": 381492,
+      "kind": "binary",
+      "package": "python3-compizconfig-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    },
+    {
+      "file": "python3-compizconfig_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "sha256": "9430a85aebad0005a66884b35d8a71e82c5dc0b0454600ed9224a7625720c34a",
+      "size": 77460,
+      "kind": "binary",
+      "package": "python3-compizconfig",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": true,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/unity-distro/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

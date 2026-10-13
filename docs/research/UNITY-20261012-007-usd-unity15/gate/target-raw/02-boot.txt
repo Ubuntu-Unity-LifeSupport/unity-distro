@@ -1,0 +1,26 @@
+2026-10-13 12:55:24
+== 2026-10-13 12:57:01 EEST after cold boot
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2247 started=вт жов 13 12:56:37 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: none
+visible helper windows:
+visible apport windows:
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash
+== 2026-10-13 12:57:27 EEST desktop up
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2247 started=вт жов 13 12:56:37 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: none
+visible helper windows:
+visible apport windows:

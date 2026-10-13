@@ -1,0 +1,26 @@
+UNITY-20261012-007 (with UNITY-20261012-008, UNITY-20261012-009): target verification of the publication of
+unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity15
+
+Raw files: verification-raw/ (ssh output; times EEST on the target, UTC where marked).
+
+Published 2026-10-13 10:17:23Z as snapshot unity-resolute-20261012-007 (publish record
+~/coordinator/publish-records/UNITY-20261012-007.json: post-publish check PASS; signer mode, proposal
+761f3c581df37675 approved by policy (known package, no new names), refresh OK, live OK). On builder:
+/srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 10:12:19 UTC, Valid-Until Fri, 16 Oct
+2026 10:12:19 UTC; 7 binary records of +unity15 in main/binary-amd64/Packages.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at
+13:18:34, ~/.dirty from the snapshot, unity-settings-daemon +unity11 and compiz +unity2 installed, no
+files of the earlier test; 01-restored.txt), apt-get update and full-upgrade from the live repository:
+unity-settings-daemon, unity-settings-daemon-schemas and libunity-settings-daemon1
+15.04.1+21.10.20220802-0ubuntu7+unity15 (compiz +unity3 with them); the downloaded debs have the sha256
+of the gated build (e2516cda..., 0b5fecd8..., 409d285b...); nothing left to upgrade (02-upgrade.txt).
+Then a cold boot (03-boot.txt): unity-session.target and unity7.service active, the seat0 session
+active and unlocked; unity-fallback-mount-helper (pid 2275) runs the installed binary (exe sha256
+f0764bc2..., the gated build's), no "(deleted)" mapping. xdotool was installed after the boot for the
+observation (not in the snapshot). update-notifier showed its crash prompt at login for the two files
+from the snapshot (light-locker and do-release-upgrade, 2026-10-08); /var/crash holds nothing else.
+A medium (the ISO image in the optical drive) inserted with autorun off (the default): mounted, no
+visible helper window; ejected from the guest; the helper wrote nothing to the journal (04-insert.txt).
+
+Result: PASS.

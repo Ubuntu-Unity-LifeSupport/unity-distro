@@ -1,0 +1,28 @@
+UNITY-20261013-013 (with UNITY-20261013-015): target verification of the publication of unity-gtk4-menu 0.11
+
+Published 2026-10-13 10:49:13Z as snapshot unity-resolute-20261013-013 (publish record
+~/coordinator/publish-records/UNITY-20261013-013.json: aptly PASS, post-publish check PASS; signer mode,
+proposal 85b26f458f7daaa1 approved by policy, refresh OK, live OK). On builder:
+/srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 10:44:09 UTC, Valid-Until Fri, 16 Oct 2026
+10:44:09 UTC, sha256 5df6dbb2... (the signer's inrelease_sha256). The pool file
+libunity-gtk4-menu0_0.11_amd64.deb has the gated sha256 172854bb...
+
+target2 (the machine of the target test, logs/05-08):
+- apt-get update from the live repository: rc 0 (InRelease Date 10:44:09 UTC); apt-cache policy: candidate 0.11
+  from http://192.168.56.10:8080 resolute/main, 0.10 still listed.
+- libunity-gtk4-menu0 set back to 0.10 from the live repository, the cached 0.11 deb removed, then
+  apt-get full-upgrade: "Get:1 http://192.168.56.10:8080 resolute/main amd64 libunity-gtk4-menu0 amd64 0.11";
+  dpkg.log "upgrade libunity-gtk4-menu0:amd64 0.10 0.11". The downloaded deb:
+    172854bb639008009d159fd012e7715b5b26a48c771a6099ad1f7acf2098bd48  libunity-gtk4-menu0_0.11_amd64.deb
+  the gated file. (The same full-upgrade also installed unity-settings-daemon +unity15, published at
+  10:17:23Z, and libmp3lame0.)
+- The opt-out file (an empty ~/.config/environment.d/50-gtk-nocsd.conf), then a cold boot with autologin:
+  the user manager and compiz preload /usr/$LIB/libunity-gtk4-menu.so.0 only; compiz maps the new library
+  (no "(deleted)" entry). session-check.sh (logs/09-published-optout.txt): 0 AssertionError lines in the user
+  journal; unity-indicator-appearance and onboard run from autostart; meld, gnome-tweaks, apps.py 3 and 4,
+  update-manager and software-properties-gtk show their windows; orca runs; Gio.SettingsBackend is
+  DConfSettingsBackend and a write reads back through dconf; cat and a python3 without gi map neither
+  libgmodule nor libgtk-4. Same result as the gated test (logs/05).
+- The opt-out file was removed afterwards.
+
+Result: PASS.
