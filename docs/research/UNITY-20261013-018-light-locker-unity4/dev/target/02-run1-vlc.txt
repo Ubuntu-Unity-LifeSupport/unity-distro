@@ -1,0 +1,23 @@
+2026-10-13 16:57:53
+light-locker	1.8.0-3ubuntu4+unity4
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity16
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2255 unity-settings-
+owner org.gnome.Mutter.IdleMonitor: 2255 unity-settings-
+owner org.gnome.ScreenSaver: 2788 light-locker
+owner org.freedesktop.ScreenSaver: 2788 light-locker
+inhibitors: (@ao [],)
+light-locker exe: 7cce20ba74bdadad installed: 7cce20ba74bdadad
+bash: строка 1: xdotool: command not found
+== 16:59:58 vlc playing (loop), cinnamon idle-delay 60, last input now
+IdleHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)
+IsInhibited(8): (true,)
+/org/gnome/SessionManager/Inhibitor1 app=('vlc',) reason=('Воспроизведение мультимедиа.',) flags=(uint32 8,)
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 113013,)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)

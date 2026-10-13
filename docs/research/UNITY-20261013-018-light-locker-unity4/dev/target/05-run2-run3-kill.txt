@@ -1,0 +1,13 @@
+bash: строка 1: xdotool: command not found
+== 17:03:48 run2: vlc playing
+presence status: (<uint32 3>,) (0 available, 3 idle)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor2'],)
+== 17:03:48 kill -9 5191
+presence status: (<uint32 0>,) (0 available, 3 idle)
+inhibitors: (@ao [],)
+bash: строка 2:  5191 Убито                 nohup vlc --loop --no-qt-privacy-ask "$F" > /dev/null 2>&1
+== 17:03:51 run3: light-locker-command -i (background)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor3'],)
+/org/gnome/SessionManager/Inhibitor3 app=('Unknown',) flags=(uint32 8,)
+== 17:03:55 kill -9 5543
+inhibitors: (@ao [],)

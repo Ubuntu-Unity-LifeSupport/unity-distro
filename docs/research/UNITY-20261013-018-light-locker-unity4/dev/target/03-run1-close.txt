@@ -1,0 +1,23 @@
+xdotool installed for the observation
+== 17:01:46 pkill -x vlc (normal close)
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 3091,)
+inhibitors: (@ao [],)
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+inhibitors: (@ao [],)
+== SM Inhibit/Uninhibit seen:
+method call time=1791899994.487089 sender=:1.115 -> destination=org.freedesktop.ScreenSaver serial=3 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=Inhibit
+   string "vlc"
+   string "Воспроизведение мультимедиа."
+method call time=1791899994.487110 sender=:1.85 -> destination=org.gnome.SessionManager serial=24 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Inhibit
+   string "vlc"
+   uint32 0
+   string "Воспроизведение мультимедиа."
+method call time=1791900106.188878 sender=:1.115 -> destination=org.freedesktop.ScreenSaver serial=4 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=UnInhibit
+   uint32 1
+method call time=1791900106.208609 sender=:1.85 -> destination=:1.51 serial=25 path=/org/gnome/SessionManager; interface=org.gnome.SessionManager; member=Uninhibit
+   uint32 315048374
