@@ -58,3 +58,17 @@ gcm-self-test PASS; test-mount-guard is compiled and linked with
 - Mount prompts (a medium that asks for a password, a busy unmount) and
   the changed cleanup are not produced on the target; they are covered by
   the test suite.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261012-007-20261013T100904Z`.
+  20 files, complete, equal to live; list sha256
+  `3dfae61eee407223c3318a6f26851addda8fe9576b828056d37109f272c10465`.
+- **Repository:** 8 records added to `unity-resolute` (the source, 5 .deb
+  and 2 .ddeb). The sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261012-007`, which is the live
+  `unity-resolute-20261013-003` plus these 8 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
