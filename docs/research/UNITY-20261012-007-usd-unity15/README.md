@@ -10,18 +10,18 @@ Agent A, target `target-desktop`.
 
 Follow-ups of +unity14 (UNITY-20261009-001):
 
-- `1e60f40` (-007): hardening in the mount guard's cleanup when the
+- `d19d7cd` (-007): hardening in the mount guard's cleanup when the
   helper stops.
-- `1291b85` (-007): a test of that cleanup (`test-mount-guard`, built
+- `d197530` (-007): a test of that cleanup (`test-mount-guard`, built
   with AddressSanitizer in `make check`).
-- `d0b97ef` (-008): tests of the helper: its dialogs close when the
+- `3a5030b` (-008): tests of the helper: its dialogs close when the
   session locks or becomes inactive, `stop()` withdraws a pending prompt
   and closes the dialogs, and a prompt is withdrawn when a screen locker
   appears on the bus.
-- `bd62e81` (-009): `test-autorun` shows GTK's real question dialog for an
+- `4e812af` (-009): `test-autorun` shows GTK's real question dialog for an
   unmount and checks that it closes; the comment on the old stand-in is
   gone with it.
-- `cacd400`: changelog. No change to `debian/control`.
+- `2d0e9bf`: changelog. No change to `debian/control`.
 
 There is no library or ABI change, and no change in behaviour the user can
 see.
@@ -29,7 +29,7 @@ see.
 ## Build
 
 Built with `scripts/build_sbuild.py` from the package branch
-`a/UNITY-20261012-007` (`cacd400`), chroot snapshot T=20261008T083223Z.
+`a/UNITY-20261012-007` (`2d0e9bf`), chroot snapshot T=20261008T083223Z.
 `make check`: test-mount-guard, test-automount, test-autorun and
 gcm-self-test PASS; test-mount-guard is compiled and linked with
 `-fsanitize=address`. The manifest is in `build/`.

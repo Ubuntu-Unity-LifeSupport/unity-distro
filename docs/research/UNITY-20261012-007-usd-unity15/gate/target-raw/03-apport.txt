@@ -1,0 +1,12 @@
+46137346WM_CLASS:  not found. light-locker
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash
+   2238 вт жов 13 12:56:37 2026 /usr/bin/update-notifier
+   2750 вт жов 13 12:56:45 2026 /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/update-notifier
+active=25165832
+_NET_WM_PID(CARDINAL) = 2238
+WM_CLASS(STRING) = "update-notifier", "Update-notifier"
+/usr/bin/update-notifier
+after Cancel: active=Рабочий стол
+0

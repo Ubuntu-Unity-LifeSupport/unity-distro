@@ -14,8 +14,8 @@ Package-List:
  unity-settings-daemon-dev deb gnome optional arch=any
  unity-settings-daemon-schemas deb gnome optional arch=all
 Checksums-Sha1:
- 5164a2b136425faa8cc8428f854ef132954d1aaf 2937082 unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz
+ 4fd22d216ef49ab206f96c33478f0ee7e4322e26 2936995 unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz
 Checksums-Sha256:
- b0c8e8c01a302b1b33a9ba737f0f14377257d956ca2accff52cf8d9bd8ac08eb 2937082 unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz
+ 4126e73c446681e7c3569c28676073df09b48eaa3afb376fb80b25c59ea748bb 2936995 unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz
 Files:
- da2b21048bfb592dc8c3b270674400c6 2937082 unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz
+ 797413c978475fdd4b5852cbe1a161ad 2936995 unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz

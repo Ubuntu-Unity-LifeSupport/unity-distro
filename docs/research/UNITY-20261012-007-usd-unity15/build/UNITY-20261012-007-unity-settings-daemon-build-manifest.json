@@ -5,8 +5,8 @@
   "candidate_version": "15.04.1+21.10.20220802-0ubuntu7+unity15",
   "target_series": "resolute",
   "source_repo": "/home/claude/work/a/unity-distro-1012-007/packages/unity-settings-daemon",
-  "source_commit": "cacd400fdc81ba353eaae6a1afce5bddd12694ec",
-  "source_tree_hash": "de24e4e07f32e90fc983218b3f41fd1cde511ed5",
+  "source_commit": "2d0e9bfe1d490703593f724e089f39c0efcf0e9d",
+  "source_tree_hash": "74845054b6ebdbad609d5d5fab58f9ffb8b50258",
   "build_command": [
     "sbuild",
     "-d",
@@ -18,17 +18,17 @@
     "--chroot-mode=unshare",
     "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
   ],
-  "build_started": "2026-10-13T08:35:15.532195+00:00",
-  "build_finished": "2026-10-13T08:52:39.922263+00:00",
+  "build_started": "2026-10-13T09:22:36.950320+00:00",
+  "build_finished": "2026-10-13T09:53:29.546912+00:00",
   "result": "PASS",
   "log": {
     "file": "UNITY-20261012-007-unity-settings-daemon-15.04.1+21.10.20220802-0ubuntu7+unity15-sbuild.log",
-    "sha256": "265aecd571bef9046d1b71ea0313bff541e636c86b86376f330252de6a60e27d"
+    "sha256": "bf2283df0e0b7ce0d4d17e630e530da9eed18cb28d5fcf77d4b35bddc41b274b"
   },
   "artifacts": [
     {
       "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.dsc",
-      "sha256": "e4b6c61eab4e6ce6eea54b3c15e3b9227e696aef4a48f762116d54c4c8541377",
+      "sha256": "b9491a1c0df8692093893dc9fadc50e726de234860b6e46c24b8ed37ff7f6002",
       "size": 2222,
       "kind": "source",
       "package": "unity-settings-daemon",
@@ -36,14 +36,14 @@
     },
     {
       "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.changes",
-      "sha256": "aec5fc41e280e69fda71668a8c4421d2d65a1464c029b038a9c188ecfc8065e9",
+      "sha256": "29a9ee2c70d5dcbd00165e2296b1d93da2c9bab2348110a72fdeae03503d6b48",
       "size": 4549,
       "kind": "changes"
     },
     {
       "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15.tar.gz",
-      "sha256": "b0c8e8c01a302b1b33a9ba737f0f14377257d956ca2accff52cf8d9bd8ac08eb",
-      "size": 2937082,
+      "sha256": "4126e73c446681e7c3569c28676073df09b48eaa3afb376fb80b25c59ea748bb",
+      "size": 2936995,
       "kind": "source_file",
       "package": "unity-settings-daemon",
       "version": "15.04.1+21.10.20220802-0ubuntu7+unity15"
@@ -77,8 +77,8 @@
     },
     {
       "file": "unity-settings-daemon-dbgsym_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.ddeb",
-      "sha256": "3beb60713eb9b838acaafe0d540284dd7b6dcf0de23b66f0d398e3f960cd41a7",
-      "size": 1846376,
+      "sha256": "446da5d13ff539da26fa437ed33e07fc6529bf1ddfba7d7dac0be4a7dc09eaab",
+      "size": 1846346,
       "kind": "binary",
       "package": "unity-settings-daemon-dbgsym",
       "version": "15.04.1+21.10.20220802-0ubuntu7+unity15",
@@ -104,14 +104,14 @@
     },
     {
       "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.buildinfo",
-      "sha256": "f6c7aeb2ef945c47731ad2e97717ae740a8d5d3c0cdbf40d4819d9556e63356d",
+      "sha256": "8c25d01dd4f654e7c4df38afba53576e7a8a934a9ecf5ccfc31a5a548fb5cde0",
       "size": 23905,
       "kind": "buildinfo"
     },
     {
       "file": "unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb",
-      "sha256": "dffcfd37cb21d1b8c55aa6f5dfe06430058911112777bd2c90bbf05b51ade767",
-      "size": 1361310,
+      "sha256": "e2516cdaca43295ca798c8629a3a6b211b5607d19136129c10a5842ffef993d5",
+      "size": 1361156,
       "kind": "binary",
       "package": "unity-settings-daemon",
       "version": "15.04.1+21.10.20220802-0ubuntu7+unity15",
@@ -152,7 +152,7 @@
       "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
     ],
     "sbuild_config": {
-      "file": "/home/claude/unity-distro/build/sbuild-config.pl",
+      "file": "/home/claude/work/a/unity-distro-1012-007/build/sbuild-config.pl",
       "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
     }
   }

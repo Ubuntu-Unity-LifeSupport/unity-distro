@@ -1,0 +1,20 @@
+boot: 2026-10-13 12:59:59
+ -1 c9a28d42ae494a8aaf1f9d0f6e8db91c Tue 2026-10-13 12:55:36 EEST Tue 2026-10-13 12:59:11 EEST
+  0 15d5571d2eb44bae9c998ee7a1fbfc4a Tue 2026-10-13 13:00:09 EEST Tue 2026-10-13 13:01:38 EEST
+== previous boot (-b -1), helper lines (not D-Bus activation):
+== previous boot, segfault/core dump lines:
+== previous boot ends: 2026-10-13T12:59:11+03:00 mike-virtualbox systemd-journald[248]: Journal stopped
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash
+== 2026-10-13 13:01:40 EEST new boot
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2298 started=вт жов 13 13:01:12 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=false
+sr0 mount: none
+visible helper windows:
+visible apport windows:
