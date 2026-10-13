@@ -1,0 +1,38 @@
+== 2026-10-13T22:08:30Z, boot 2026-10-14 01:00:03, Clean-2 (cold boot after restore)
+                 Local time: ср 2026-10-14 01:08:30 EEST
+             Universal time: вт 2026-10-13 22:08:30 UTC
+                   RTC time: вт 2026-10-13 22:08:30
+                  Time zone: Europe/Kyiv (EEST, +0300)
+  System clock synchronized: yes
+                NTP service: active
+            RTC in local TZ: no
+-- chronyc tracking
+  Reference ID    : B97DBE7B (ntp-nts-3.ps5.canonical.com)
+  Stratum         : 3
+  Ref time (UTC)  : Tue Oct 13 22:07:25 2026
+  System time     : 0.000482879 seconds fast of NTP time
+  Last offset     : -0.000115372 seconds
+  RMS offset      : 0.000866398 seconds
+  Frequency       : 40.495 ppm fast
+  Residual freq   : -0.259 ppm
+  Skew            : 1.023 ppm
+  Root delay      : 0.101863593 seconds
+  Root dispersion : 0.002148892 seconds
+  Update interval : 65.2 seconds
+  Leap status     : Normal
+-- chrony config
+grep: /etc/chrony/chrony.keys: Отказано в доступе
+  makestep 1 3
+  pool 1.ntp.ubuntu.com iburst maxsources 1 nts prefer
+  pool 2.ntp.ubuntu.com iburst maxsources 1 nts prefer
+  pool 3.ntp.ubuntu.com iburst maxsources 1 nts prefer
+  pool 4.ntp.ubuntu.com iburst maxsources 1 nts prefer
+  pool ntp-bootstrap.ubuntu.com iburst maxsources 1 nts certset 1
+-- chrony at this boot
+  жов 14 01:00:52 target2 chronyd[950]: Selected source 185.125.190.123 (2.ntp.ubuntu.com)
+  жов 14 01:00:52 target2 chronyd[950]: System clock wrong by 3.485583 seconds
+  жов 14 01:00:56 target2 chronyd[950]: System clock was stepped by 3.485583 seconds
+-- VirtualBox guest time sync
+  vboxguest module: 1, vboxadd-service: inactive
+  systemd-timesyncd: inactive
+  builder UTC at the same moment: 2026-10-13T22:08:30Z
