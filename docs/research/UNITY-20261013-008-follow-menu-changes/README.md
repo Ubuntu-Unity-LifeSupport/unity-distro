@@ -235,7 +235,7 @@ opened or closed, so it cannot see a collapse. `popwatch2` sees the holder's men
 | mode, what is open | what changes | popups | entry id | result |
 |---|---|---|---|---|
 | `sub` (the oracle), Sub open | "Sub" itself relabelled | Sub's window goes away 1.3 s after it opened, right after a change | kept | **collapse seen**: the probe works |
-| (a) the holder's menu | "Tick N", a sibling | the holder's menu stays, 0 changes over 16 s; the label updates in the open menu (Tick 9) | kept | PASS |
+| (a) the holder's menu | "Tick N", a sibling | the holder's menu maps at 18:09:36.682 and does not change until popwatch ends (16 s from its start), across changes 2-9; a screenshot at 18:09:51Z (supporting only) shows "Tick 9" in the open menu | kept | PASS |
 | (b) Sub | "Inner N", inside Sub | both stay to the end | kept | PASS |
 | (c) Sub | "Outside N", outside Sub | both stay to the end | kept | PASS |
 | `all`, Sub open | every item removed and added again (`remove_all`), only "Tick N" new | both stay; "1 item(s) replaced" per change | kept | PASS |
@@ -243,3 +243,23 @@ opened or closed, so it cannot see a collapse. `popwatch2` sees the holder's men
 The design named `remove_all` as the oracle. With 0.13 it cannot collapse anything: the burst is coalesced and the
 sync replaces only the changed item, as mode `all` shows. So the oracle is the one change that must collapse: a
 relabel of the item whose submenu is open, the accepted cost.
+
+## Verification (2026-10-13)
+
+An independent Verifier (an ephemeral general-purpose subagent) reviewed d377096 and this card. **Verdict: PASS.**
+- The code follows DESIGN.md round 3. The sync index arithmetic, the reentrancy, the depth caps and the lifetimes
+  were checked.
+- The deb's source is byte-identical to d377096, and NEEDED is libc only.
+- Tests 13-22 check what the design lists, and the 0.12 control fails for the right reasons.
+- The target 4 and 5 logs match this card. The target-5 oracle (a relabel of the open submenu's own item, not
+  `remove_all`) is sound.
+
+Non-blocking notes:
+- `add_stand_ins()` looks up the menu in every other window at every rebuild, even with no new action names. That
+  costs time and adds one log line per window. An early return is a candidate for later.
+- `watch_model()` skips only container and inner, as the design says. An `is_copy()` skip would guard an application
+  that embeds one of our copies.
+- Mode (a)'s wording here was corrected to the logged times.
+- The oracle shows a submenu collapse only. That the holder's own popup would collapse the same way rests on the same
+  mechanism.
+- A closed Nautilus window that has not been finalized is still followed (above).
