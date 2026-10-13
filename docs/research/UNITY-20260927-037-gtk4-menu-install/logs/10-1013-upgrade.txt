@@ -1,0 +1,24 @@
+-- first attempt, 2026-10-13T15:31:50Z: full-upgrade rc=100, dpkg lock held by unattended-upgrade (pid 4661); nothing installed; repeated below after the lock was free
+   == full-upgrade (apt's default, install-recommends "1";) at 2026-10-13T15:31:50Z
+     full-upgrade rc=100
+   dpkg-query: шаблону libunity-gtk4-menu0 не соответствует ни один пакет
+     libgtk-nocsd0:amd64	3+0~20260321+0b77e1b-1
+     unity-session	49.4
+     automatically installed: 
+     installed unity-session file sha256: ff1339f26e298026
+     2026-04-23 00:46:55 install unity-session:all <none> 49.4
+   
+
+== full-upgrade (apt's default, install-recommends "1";) at 2026-10-13T15:53:34Z
+  full-upgrade rc=0
+  Пол:1 file:/home/mike/b037/repo ./ unity-session 49.4+unity2 [8 170 B]
+  Пол:43 http://192.168.56.10:8080 resolute/main amd64 libunity-gtk4-menu0 amd64 0.12 [18,6 kB]
+  Следующие НОВЫЕ пакеты будут установлены:
+    ayatana-indicator-common ayatana-indicator-messages libunity-gtk4-menu0
+    liburing2 plocate python3-certifi python3-chardet python3-idna
+    python3-requests python3-urllib3
+  libgtk-nocsd0:amd64	4.8-1+unity4
+  libunity-gtk4-menu0:amd64	0.12
+  unity-session	49.4+unity2
+  automatically installed: libunity-gtk4-menu0
+  installed unity-session file sha256: ff1339f26e298026

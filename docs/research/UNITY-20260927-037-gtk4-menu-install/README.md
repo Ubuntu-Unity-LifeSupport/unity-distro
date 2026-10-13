@@ -245,5 +245,34 @@ The unknowns it added are in the card above.
 
 ## Status
 
-BLOCKED at the publication gate: the version check and gate need the
-package in an aptly snapshot (047).
+Unblocked on 2026-10-13. May decided, through C, to install libunity-gtk4-menu0 by default, since its fixes ship
+in 0.11 and 0.12. The publication pipeline is running again. The section below supersedes the 2026-09-28 build and
+the earlier status "BLOCKED at the publication gate".
+
+## Refresh for publication (2026-10-13)
+
+**Source.** Package commit `e137fb1` on `b/UNITY-20260927-037`, on the published 49.4+unity1 `951b463`, which is
+still the head of `unity/resolute`. It is the commit of 28.09 (`7af2106`) with the changelog date refreshed to
+2026-10-13 15:16:48 UTC; `debian/control` is unchanged from it. The archive still has only 49.4 (apt_view,
+2026-10-13): 49.4+unity2 sorts after it.
+
+**Build.** `build-1013/`, sbuild resolute, PASS, source_commit e137fb1. The deb's `Recommends: libgtk-nocsd0,
+libunity-gtk4-menu0, rhythmbox-plugin-zeitgeist, zeitgeist-datahub`. The build of 28.09 in `build/` is kept as
+history.
+
+**Owner.** A (owner of unity-session) ACK 2026-10-13. A's two remarks of 28.09 are answered: May decided on the
+default install, and the measurements below cover upgrades with and without Recommends.
+
+**Target (target2: Clean-2, confirmed inside, then the live archive).** Before publication the new deb was offered
+from a local file repository next to the live archive (`check-1013.sh`). The live archive has libunity-gtk4-menu0
+0.12 and unity-session 49.4+unity1.
+
+| check | log | result |
+|---|---|---|
+| fresh-install resolution: `apt-get -s install unity-session` against an empty dpkg status | 09 | libunity-gtk4-menu0 0.12 and libgtk-nocsd0 4.8-1+unity4 in the plan; with `--no-install-recommends` neither |
+| upgrade, `--no-install-recommends` (simulated) | 09 | unity-session goes to 49.4+unity2, libunity-gtk4-menu0 is not pulled: an upgrade without Recommends does not get it |
+| upgrade, apt's default (`APT::Install-Recommends "1"`) | 10 | unity-session 49.4+unity2 (from the local repository, the built file) and libunity-gtk4-menu0 0.12 (from live) installed; the library is new and automatically installed. A first attempt failed on the dpkg lock held by unattended-upgrades and installed nothing; `check-1013.sh` now waits for the lock |
+| the session after a cold boot | 11 | compiz and the systemd user manager preload `/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0`; file-roller (GTK 4) maps both libraries and exports its menu (`_GTK_MENUBAR_OBJECT_PATH`) |
+
+So an installation that takes Recommends, which is apt's default, gets the GTK 4 global menu from the upgrade on.
+One with Recommends turned off does not, as for every other Recommends.
