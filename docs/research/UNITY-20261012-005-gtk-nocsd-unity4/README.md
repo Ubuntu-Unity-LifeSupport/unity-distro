@@ -57,3 +57,24 @@ in `build/`.
   approved design, ran the script tests and the environment.d generator, and
   checked the build records and the target record against its raw outputs
   and screenshots).
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261012-005-20261013T000344Z`.
+  20 files, complete, equal to live; list sha256
+  `4ef73d9ac677f11c2e4d2d1d972035c7b0cd0448bd6009275315a64cbbdd74f1`.
+- **Repository:** 5 records added to `unity-resolute` (the source, 3 .deb
+  and 1 .ddeb). The sha256 of every pool file matches the build manifest;
+  the upstream tarball is the pool file already published with +unity3.
+- **Snapshot:** `unity-resolute-20261012-005`, which is the live
+  `unity-resolute-20261009-003` plus these 5 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
+
+## Release note
+
+Log out and back in after the upgrade. Until then, privileged programs
+started from the running session print one dynamic loader message per
+library listed in the session's earlier value; the programs run normally.

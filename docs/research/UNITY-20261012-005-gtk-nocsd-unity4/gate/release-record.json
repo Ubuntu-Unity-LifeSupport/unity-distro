@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261012-005",
+  "package": "gtk-nocsd",
+  "target_series": "resolute",
+  "candidate_version": "4.8-1+unity4",
+  "source_commit": "a4ec25eace1716b89cdc7b331164283985970750",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261012-005",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261012-005-gtk-nocsd-unity4/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261012-005-gtk-nocsd-unity4/gate/target-test.txt",
+    "debs": {
+      "libgtk-nocsd0_4.8-1+unity4_amd64.deb": "99075d625c30d45e0e0a1cbe1879e0889df7d92f64bfbf8cd177aaf21c66c0b5"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261012-005-gtk-nocsd-unity4/README.md",
+    "verification_record": "docs/research/UNITY-20261012-005-gtk-nocsd-unity4/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}
