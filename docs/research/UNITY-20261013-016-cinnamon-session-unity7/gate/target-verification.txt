@@ -1,0 +1,31 @@
+UNITY-20261013-016 (with UNITY-20261013-020, UNITY-20261013-022): target verification of the publication of
+cinnamon-session 6.4.2-1+unity7
+
+Raw files: gate/verification/ (times EEST on the target, UTC where marked).
+
+Published 2026-10-13 18:27:47Z as snapshot unity-resolute-20261013-016 (publish record
+~/coordinator/publish-records/UNITY-20261013-016.json: post-publish check PASS; signer mode, proposal
+4ac6cc4932f0a94a approved by May on the signer console (the day's automatic approvals were used up), refresh
+OK, live OK). On builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 18:22:31 UTC,
+Valid-Until Fri, 16 Oct 2026 18:22:31 UTC; 3 binary records of +unity7 in main/binary-amd64/Packages
+(cinnamon-session, cinnamon-session-common, cinnamon-session-dbgsym).
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at 21:29:05,
+~/.dirty from the snapshot, cinnamon-session +unity3, no files of earlier tests), apt-get update and full-upgrade
+from the live repository: cinnamon-session and cinnamon-session-common 6.4.2-1+unity7; the downloaded debs have
+the sha256 of the gated build (65570d04..., f3ee952b...); nothing left to upgrade (01-restore-upgrade.txt;
+unity-settings-daemon +unity15 and light-locker +unity3, the published versions). xdotool installed for
+observation. Then a cold boot (02-boot-checks.txt):
+- unity-session.target and unity7.service active; cinnamon-session-binary runs the published build (exe sha256
+  7f1ac764..., as in the target test); two "(deleted)" mappings seen right after the boot were gone a few
+  minutes later.
+- -022: user dbus.service OOMPolicy=continue, DropInPaths the drop-in, ManagedOOMPreference=none.
+- -020: with one and two clients holding session-manager suspend inhibitors, shutdown:sleep in block-weak
+  mode, InhibitedActions u 4, CanSuspend/CanReboot/CanPowerOff "yes"; after the last release the lock is gone,
+  u 0. No Suspend/Reboot/PowerOff call was made.
+- No new crash report (/var/crash: the two files from the snapshot).
+- -016 needs unity-settings-daemon +unity16 for an idle monitor (published later in this series); its effect
+  is checked on target after that publication. Here the published binary carries it (same build as the target
+  test, gate/target-test.txt).
+
+Result: PASS.

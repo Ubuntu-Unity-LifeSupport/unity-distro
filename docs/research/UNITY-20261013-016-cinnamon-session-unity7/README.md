@@ -61,6 +61,18 @@ changes the ConsoleKit backend only; the Unity session runs under logind.
   other property of the unit changed.
 - cinnamon-session has no test suite for these paths.
 
+## Verification
+
+- Target test before publication: PASS (`gate/target-test.txt`).
+- Check on the target after publication: PASS. Published 2026-10-13
+  18:27:47Z as `unity-resolute-20261013-016`; the target restored and
+  updated from the live repository, cold boot: the session runs the
+  published cinnamon-session, the user `dbus.service` has
+  `OOMPolicy=continue`, and with applications holding suspend inhibitors the
+  lock is `block-weak` and logind answers "yes" to CanSuspend, CanReboot and
+  CanPowerOff (`gate/target-verification.txt`).
+- Independent verification: PASS.
+
 ## Not changed / known limits
 
 - The drop-in of -022 has no effect on the main dbus-daemon process itself
