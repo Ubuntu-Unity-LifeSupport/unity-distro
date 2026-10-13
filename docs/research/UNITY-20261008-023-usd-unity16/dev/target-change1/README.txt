@@ -34,7 +34,8 @@ light-locker (packages/light-locker src/gs-listener-dbus.c): Inhibit/UnInhibit o
 are kept in light-locker's own inhibitor list (they stop only its own lock); nothing is passed to
 org.gnome.SessionManager.
 
-Result: change 1 works as designed (Muffin name, watches, WatchFired routing, restart, session-manager
-inhibitors). Finding for the product (I6): applications' screensaver inhibitors (VLC, Firefox) do not
-reach cinnamon-session in the published configuration, so with idle working the Unity session blanks and
-locks during video playback after the idle delay. Release blocker, to C for May.
+Result: this change works as designed (Muffin name, watches, WatchFired routing, restart,
+session-manager inhibitors). Applications' screensaver inhibitors (VLC, Firefox) did not reach
+cinnamon-session in this configuration, so with idle working the Unity session blanked and locked during
+video playback after the idle delay; light-locker +unity4 (UNITY-20261013-018) passes them on to the
+session manager.
