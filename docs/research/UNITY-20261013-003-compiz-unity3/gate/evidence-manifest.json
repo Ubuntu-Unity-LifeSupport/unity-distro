@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-003",
+  "package": "compiz",
+  "source_commit": "4d7ead588f0ac3bffaf3daac63e0fb795263c6e9",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261013-003-compiz-unity3/README.md",
+      "sha256": "6c17b8280f74b51d18c817a840fbac94da109c090a55db3550a3ce800080b353"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261013-003-compiz-unity3/README.md",
+      "sha256": "6c17b8280f74b51d18c817a840fbac94da109c090a55db3550a3ce800080b353"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "799e5eef9f4f56b448c35b3418ebd4131fd5c0000b98427fd3cc930eed582fc2"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261013-003-compiz-unity3/gate/release-record.json",
+      "sha256": "994dc4b31435455e953562b67a21cb44dd59ff7bfcebe47fc4541308fb39d0ac"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261013-003-compiz-unity3/gate/version-check.json",
+      "sha256": "16e117ea230203c6542254c6daf738fcbbd349540cfa277d48c4556aff9d6774"
+    }
+  }
+}
