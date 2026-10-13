@@ -1,0 +1,18 @@
+UNITY-20261008-023: target test of unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16
+
+The debs of this gate build (build/, source 82e9267) are byte-identical to the dev build tested on
+target-desktop on 2026-10-13 (dev build of 32ba40e; 82e9267 adds one test case, which is not shipped;
+sha256 equal):
+  3e7a267d0ec5bcb0c5fc48c5d7495e405da1a0e68694526887ebaf313773ac36  libunity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+  e872832794171a068227578d907c6f486f877f96103a7ce4bab3c85a9ab22c24  libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+  1f0e0bc1fa4484fd2020ac956f0d21cb967f7563ef5542b05e10b215dcf34619  unity-settings-daemon-dev_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+  97f7abd1968ef9fbfb3b175fb14d0e435f445147f18004e800fc408b39669884  unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity16_all.deb
+  7afa6887ff65d9b4866142fe823faf5ffbd6c94b5da3f71849d4d37f50ac4610  unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+
+Records: dev/target-change1/README.txt (this change alone: Muffin name, presence idle, Unity lock, back on
+input, u-s-d restart, session-manager inhibitor; the video-inhibitor finding fixed by light-locker +unity4);
+with light-locker +unity4: UNITY-20261013-018 dev/target/README.txt; with cinnamon-session +unity7 (Breaks
+satisfied, apt install without force): UNITY-20261013-016 dev/target/README.txt.
+
+Result: PASS.
+tested_build: this_build (sha256 of the tested debs equal the debs above).
