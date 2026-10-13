@@ -56,3 +56,18 @@ There is no library or ABI change.
   not the session's idle state.
 - Known lifecycle issues of the device monitors in `gsd-idle-monitor.c`
   are left as they are.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261008-023-20261013T191159Z`.
+  21 files, complete, equal to live; list sha256
+  `7703b614421c2d10582e55c959287844a538bb99026e5985b7425590a80692c5`.
+- **Repository:** 8 records added to `unity-resolute` (the source, 5 .deb
+  and 2 .ddeb); the sha256 of every pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261008-023`, which is the live
+  `unity-resolute-20261013-018` plus these 8 records
+  (`gate/snapshot-diff.txt`). cinnamon-session 6.4.2-1+unity7 is in it,
+  so the new Breaks resolves.
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
