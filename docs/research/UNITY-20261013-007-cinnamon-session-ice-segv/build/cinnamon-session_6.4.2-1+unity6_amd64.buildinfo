@@ -5,19 +5,19 @@ Architecture: all amd64
 Version: 6.4.2-1+unity6
 Checksums-Md5:
  6af0b364b09f056ab4b5f97b7effd14f 14166 cinnamon-session-common_6.4.2-1+unity6_all.deb
- ce71761be8a662883b453087e46dab1d 361016 cinnamon-session-dbgsym_6.4.2-1+unity6_amd64.ddeb
- de4ee96900ff9c5c2f85f916611e6add 106640 cinnamon-session_6.4.2-1+unity6_amd64.deb
+ f371afd72e09efbb2a420422fd86fc57 360932 cinnamon-session-dbgsym_6.4.2-1+unity6_amd64.ddeb
+ 0ff8300c24e8d97d263dddbcc363c2c0 106632 cinnamon-session_6.4.2-1+unity6_amd64.deb
 Checksums-Sha1:
  33c26d4d32573966967eb95b16313b6e7162ae68 14166 cinnamon-session-common_6.4.2-1+unity6_all.deb
- 7c5ebdb427bcb4401c4ff357f4ff677df53c05cb 361016 cinnamon-session-dbgsym_6.4.2-1+unity6_amd64.ddeb
- 09692dcb64b0ee7a8b0cdc76af455860d9a26e9e 106640 cinnamon-session_6.4.2-1+unity6_amd64.deb
+ 677b1d288f973e3a3cc142dccc1ee091efdac5eb 360932 cinnamon-session-dbgsym_6.4.2-1+unity6_amd64.ddeb
+ 7197ab0c7bd6d1824fea49ce37c34327de8ad233 106632 cinnamon-session_6.4.2-1+unity6_amd64.deb
 Checksums-Sha256:
  d7967587cce1b2f6f894fd813cb65538239ced032637cad99cd44ad5416712d0 14166 cinnamon-session-common_6.4.2-1+unity6_all.deb
- d0211fd08850c48745ef195648ab4cf81c0a7a32cf57239c70b91936bedf7e1a 361016 cinnamon-session-dbgsym_6.4.2-1+unity6_amd64.ddeb
- a5b76ed409dfe5d3c35c52e1ddda7d6c2a822ab4c4f4806a02becad74c7c3b28 106640 cinnamon-session_6.4.2-1+unity6_amd64.deb
+ 92aa428e04a58d19ac5b3f417cfc616b3d83cca2b76ce5b2af9992c41d0ed716 360932 cinnamon-session-dbgsym_6.4.2-1+unity6_amd64.ddeb
+ e528f0b59ae01dfae71798d5abd0ebc47ce0a88523590d083f31d4ae144d71b7 106632 cinnamon-session_6.4.2-1+unity6_amd64.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Tue, 13 Oct 2026 07:14:18 +0000
+Build-Date: Tue, 13 Oct 2026 11:07:30 +0000
 Build-Path: /build/reproducible-path/cinnamon-session-6.4.2
 Installed-Build-Depends:
  adwaita-icon-theme (= 50.0-1),

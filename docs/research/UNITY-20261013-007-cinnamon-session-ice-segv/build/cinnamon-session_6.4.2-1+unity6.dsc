@@ -15,10 +15,10 @@ Package-List:
  cinnamon-session-common deb x11 optional arch=all
 Checksums-Sha1:
  9f6205c4d368c18cb3d7f6a72f346c92805592a6 162134 cinnamon-session_6.4.2.orig.tar.gz
- 39872581f6e4db16d620e3915d868c748ee993dc 24356 cinnamon-session_6.4.2-1+unity6.debian.tar.xz
+ 3f28a0c590ed5405929fa3bb4149993bb942457a 24056 cinnamon-session_6.4.2-1+unity6.debian.tar.xz
 Checksums-Sha256:
  c2021caa966a1ed34b1646e9603170d4a326501a6d6e616b28fc460e579e9d5b 162134 cinnamon-session_6.4.2.orig.tar.gz
- 93ba3cddb0bb76ebdaddd47f3c1ff96d0aaaf345ff9e0f19f33ebe121b9ecd98 24356 cinnamon-session_6.4.2-1+unity6.debian.tar.xz
+ 64d604b89988250c2ce76f3d9c9089ebb30ca4bf04c0fe0a2f6b4d1714685c0f 24056 cinnamon-session_6.4.2-1+unity6.debian.tar.xz
 Files:
  df4d5d175685bb7bd9af0bafe2852376 162134 cinnamon-session_6.4.2.orig.tar.gz
- 35006775deeabed8fe5f88a663ab772c 24356 cinnamon-session_6.4.2-1+unity6.debian.tar.xz
+ 7c9e848849adf474a47fef610e1667eb 24056 cinnamon-session_6.4.2-1+unity6.debian.tar.xz

@@ -105,3 +105,19 @@ Independent Verifier, 2026-10-13: **PASS**, REVIEWED. The Verifier checked the d
 build against its manifest, and the target records (it ran `summary.py` itself). It found no blocking issue.
 
 Known gaps: UNITY-20261013-009, -010 and -011.
+
+## Patch in the upstream form (2026-10-13)
+
+The patch now carries the same diff as the upstream commit. Comments that annotated existing code are removed,
+and the existing declarations keep their alignment. Packaging commit `7904214`, on `1d3f2bc`; the code is
+unchanged (comments stripped, the two versions of the file are identical; Verifier PASS).
+
+Rebuilt (build/, `source_commit` 7904214) and compared with the build of `1d3f2bc`:
+- file lists are the same;
+- every non-ELF file is identical;
+- cinnamon-session-check-accelerated and its helper are identical.
+
+In cinnamon-session-binary all allocated sections are identical except `.text`, where three immediates differ by
+6: the line numbers that `g_assert_not_reached ()` and `G_OBJECT_WARN_INVALID_PROPERTY_ID` (two places) pass in
+csm-xsmp-server.c, 6 lines earlier now that the comments above them are shorter. No instruction or code path
+differs.
