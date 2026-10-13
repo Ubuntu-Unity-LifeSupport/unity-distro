@@ -1,0 +1,30 @@
+UNITY-20261012-005: target verification of the publication of gtk-nocsd 4.8-1+unity4
+
+Published 2026-10-13 00:08:28Z as snapshot unity-resolute-20261012-005 (publish record
+~/coordinator/publish-records/UNITY-20261012-005.json: aptly PASS, post-publish check PASS; signer mode,
+approved by policy, refresh OK, live OK). On builder: /srv/aptly/public/dists/resolute/InRelease
+Date Tue, 13 Oct 2026 00:03:25 UTC, Valid-Until Fri, 16 Oct 2026 00:03:25 UTC, sha256 f65f16b4...,
+gpgv Good signature (the repository key).
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: fresh boot,
+~/.dirty from the snapshot, gtk-nocsd +unity3), apt-get update and full-upgrade from the live repository,
+libunity-gtk4-menu0 installed from it (0.9, the published version), then a cold boot.
+  libgtk-nocsd0 4.8-1+unity4 installed; the downloaded deb has sha256
+  99075d625c30d45e0e0a1cbe1879e0889df7d92f64bfbf8cd177aaf21c66c0b5, equal to the gated build.
+  /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 is -rw-r--r--.
+
+First boot: the autologin session ended at start (lightdm showed the greeter). The journal and the crash
+report show unity-active-plugins-safety-check aborted inside libcompizconfig
+(ccsCheckForSettingsUpgradeDefault -> fread with a length of 4294967295, "buffer overflow detected"),
+so unity7.service failed and the session closed. The backtrace (gdb on the core dump) has no frame from
+libgtk-nocsd.so.0 or libunity-gtk4-menu.so.0; both were loaded in the process. Second cold boot: the
+session started normally, no new crash report.
+
+Second boot, after login:
+  user manager LD_PRELOAD=$'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0' (the
+  bare unity-gtk4-menu name of the published 0.9 written as a path by 51gtk-nocsd); the session leader
+  (unity-session), compiz and unity-panel-service have the path form and map both libraries;
+  sudo -n true, su -c true, ping -c1 and pkexec true run with the session's value print no ld.so line;
+  no ld.so line in the journals.
+
+Result: PASS for this package. The first-boot abort in libcompizconfig is recorded separately.
