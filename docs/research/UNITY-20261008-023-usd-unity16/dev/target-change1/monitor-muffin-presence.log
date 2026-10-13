@@ -1,0 +1,54 @@
+signal time=1791891463.279307 sender=org.freedesktop.DBus -> destination=:1.108 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.108"
+signal time=1791891463.279350 sender=org.freedesktop.DBus -> destination=:1.108 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.108"
+method call time=1791891465.314119 sender=:1.53 -> destination=:1.58 serial=95 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=RemoveWatch
+   uint32 4
+method call time=1791891465.314136 sender=:1.53 -> destination=:1.58 serial=96 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 60000
+signal time=1791891525.306559 sender=:1.58 -> destination=:1.53 serial=212 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 5
+signal time=1791891525.308317 sender=:1.53 -> destination=(null destination) serial=107 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1791891525.308334 sender=:1.53 -> destination=:1.58 serial=108 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddUserActiveWatch
+signal time=1791891563.468589 sender=:1.58 -> destination=:1.53 serial=220 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 6
+signal time=1791891563.469293 sender=:1.53 -> destination=(null destination) serial=118 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
+method call time=1791891574.816612 sender=:1.53 -> destination=:1.154 serial=140 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 60000
+signal time=1791891642.208194 sender=:1.154 -> destination=:1.53 serial=202 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 4
+signal time=1791891642.209698 sender=:1.53 -> destination=(null destination) serial=147 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1791891642.209900 sender=:1.53 -> destination=:1.154 serial=148 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddUserActiveWatch
+signal time=1791891676.381796 sender=:1.154 -> destination=:1.53 serial=208 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 5
+signal time=1791891676.382558 sender=:1.53 -> destination=(null destination) serial=154 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
+method call time=1791891678.698234 sender=:1.53 -> destination=:1.154 serial=162 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=RemoveWatch
+   uint32 4
+method call time=1791891778.721068 sender=:1.53 -> destination=:1.154 serial=174 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 60000
+signal time=1791891778.722784 sender=:1.154 -> destination=:1.53 serial=219 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 6
+signal time=1791891778.723306 sender=:1.53 -> destination=(null destination) serial=175 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1791891778.725704 sender=:1.53 -> destination=:1.154 serial=176 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddUserActiveWatch
+signal time=1791891824.873584 sender=:1.154 -> destination=:1.53 serial=222 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 7
+signal time=1791891824.880600 sender=:1.53 -> destination=(null destination) serial=178 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
+signal time=1791891884.872934 sender=:1.154 -> destination=:1.53 serial=225 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 6
+signal time=1791891884.873531 sender=:1.53 -> destination=(null destination) serial=184 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1791891884.873545 sender=:1.53 -> destination=:1.154 serial=185 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddUserActiveWatch
+signal time=1791891925.827667 sender=:1.154 -> destination=:1.53 serial=230 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 8
+signal time=1791891925.849550 sender=:1.53 -> destination=(null destination) serial=191 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
+method call time=1791892054.049191 sender=:1.53 -> destination=:1.154 serial=205 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=RemoveWatch
+   uint32 6
+method call time=1791892054.049281 sender=:1.53 -> destination=:1.154 serial=206 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 900000

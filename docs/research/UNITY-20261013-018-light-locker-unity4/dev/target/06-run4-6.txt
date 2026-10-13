@@ -1,0 +1,9 @@
+== 17:04:11 run4: one-shot dbus-send Inhibit
+   uint32 4
+inhibitors: (@ao [],)
+== 17:04:21 run5: vlc playing, loginctl lock-session 3
+LockedHint=yes
+screensaver active (org.gnome.ScreenSaver): (true,)
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor5'],)
+== 17:04:55 run6: firefox playing
+inhibitors: (@ao [],)

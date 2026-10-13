@@ -1,0 +1,37 @@
+== A baseline 14:49:39
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B one client (flags 4)
+inhibit cookie 1856295060 flags 4
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2247 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block-weak
+  InhibitedActions: u 4
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B2 second client (flags 4)
+inhibit cookie 326314442 flags 4
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2247 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block-weak
+  InhibitedActions: u 4
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== C release the first (kill 4235)
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2247 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block-weak
+  InhibitedActions: u 4
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== D release the second (kill 4266)
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== journal: cinnamon-session inhibit messages since boot
+(end)

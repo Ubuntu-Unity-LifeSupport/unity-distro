@@ -1,0 +1,39 @@
+UNITY-20261008-023: target verification of the publication of unity-settings-daemon
+15.04.1+21.10.20220802-0ubuntu7+unity16, and check of the whole series on the live stack (with
+cinnamon-session 6.4.2-1+unity7, UNITY-20261013-016, and light-locker 1.8.0-3ubuntu4+unity4,
+UNITY-20261013-018)
+
+Raw files: gate/verification/ (times EEST on the target).
+
+Published 2026-10-13 19:56:20Z as snapshot unity-resolute-20261008-023 (publish record
+~/coordinator/publish-records/UNITY-20261008-023.json: post-publish check PASS; signer mode, proposal
+b3ef8c3916f63127 approved by May on the signer console (the day's automatic approvals were used up)). On
+builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 19:51:15 UTC, Valid-Until Fri, 16 Oct
+2026 19:51:15 UTC; 7 binary records of +unity16 in main/binary-amd64/Packages.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at 22:57:13,
+~/.dirty from the snapshot, unity-settings-daemon +unity11, cinnamon-session +unity3, light-locker +unity2),
+apt-get update and full-upgrade from the live repository: unity-settings-daemon, -schemas and
+libunity-settings-daemon1 +unity16 (deb sha256 of the gated build: 7afa6887..., 97f7abd1..., e8728327...),
+cinnamon-session +unity7 and light-locker +unity4 in the same upgrade (u-s-d's Breaks resolved by apt);
+nothing left to upgrade (01-restore-upgrade.txt). xdotool installed for observation. Cold boot; the session up
+(unity-session.target, unity7.service active); unity-settings-daemon, cinnamon-session-binary and light-locker
+run the published builds (exe sha256 0c1ab496..., 7f1ac764..., 7cce20ba..., as in the target tests).
+
+02-series-check.txt:
+- org.cinnamon.Muffin.IdleMonitor is owned by unity-settings-daemon.
+- A: org.gnome.desktop.session idle-delay 60, org.cinnamon.desktop.session idle-delay 600, no inhibitor, last
+  input 23:05:16: at t+80 s presence idle, IdleHint yes, LockedHint yes - the delay follows the Control
+  Center's key (-016).
+- B: VLC playing, last input 23:06:39: the session manager holds VLC's inhibitor; at t+90 s presence available,
+  IdleHint no, LockedHint no (idle time 90.6 s, past the delay) - application inhibitors hold idle off (-018).
+- C: VLC closed: no inhibitor; 78 s later presence idle, IdleHint yes, LockedHint yes - normal idle and lock
+  without an inhibitor.
+- D: Firefox's first start in this profile did not inhibit within the 60 s the script waited (no inhibitor was
+  listed, the session went idle meanwhile); not counted.
+03-firefox.txt: Firefox started again (second start): its inhibitor reached the session manager after 13 s
+(app firefox_firefox, flags 8), and no inhibitor was left after Firefox was closed.
+Keys reset afterwards (300 / 900). No new crash report (/var/crash: the two files from the snapshot).
+Which locker locked in A and C was not recorded.
+
+Result: PASS.

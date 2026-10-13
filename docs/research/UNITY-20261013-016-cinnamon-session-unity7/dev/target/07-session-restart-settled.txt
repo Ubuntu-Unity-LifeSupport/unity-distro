@@ -1,0 +1,9 @@
+== 17:57:48 settled session, cinnamon-session pid 8901 started вт жов 13 17:56:44 2026; systemctl --user restart unity-session.service
+restart returned after 0s
+new pid 9245
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: Consumed 1.832s CPU time over 1min 35.258s wall clock time, 38M memory peak.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: Started unity-session.service - Unity Session Manager.
+жов 13 17:57:48 mike-virtualbox systemd[1192]: Stopping unity-session.service - Unity Session Manager...
+жов 13 17:57:48 mike-virtualbox systemd[1192]: Stopped unity-session.service - Unity Session Manager.
+жов 13 17:57:48 mike-virtualbox systemd[1192]: unity-session.service: Consumed 1.772s CPU time over 1min 3.666s wall clock time, 37.6M memory peak.
+жов 13 17:57:48 mike-virtualbox systemd[1192]: Started unity-session.service - Unity Session Manager.

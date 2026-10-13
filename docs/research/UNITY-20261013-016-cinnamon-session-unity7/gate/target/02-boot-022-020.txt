@@ -1,0 +1,54 @@
+2026-10-13 20:34:09
+cinnamon-session-binary pid=2239 deleted-maps=0 exe=7f1ac764185ba29a
+unity-settings-daemon pid=2240 deleted-maps=0 exe=0c1ab496ad3d8386
+7f1ac764185ba29a
+== -022
+DropInPaths=/usr/lib/systemd/user/dbus.service.d/dbus-override.service.conf
+NeedDaemonReload=no
+OOMPolicy=continue
+ManagedOOMPreference=none
+< Requires=basic.target session.slice dbus.socket
+> Requires=dbus.socket session.slice basic.target
+> DropInPaths=/usr/lib/systemd/user/dbus.service.d/dbus-override.service.conf
+< OOMPolicy=stop
+> OOMPolicy=continue
+(end diff, dependency-list reorderings omitted)
+== -020
+== A baseline 17:35:58
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B one client (flags 4)
+python3: can't open file '/home/mike/hold-inhibit.py': [Errno 2] No such file or directory
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B2 second client (flags 4)
+python3: can't open file '/home/mike/hold-inhibit.py': [Errno 2] No such file or directory
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== C release the first (kill 3956)
+tg/measure-020b.sh: 25: kill: No such process
+
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== D release the second (kill 3992)
+tg/measure-020b.sh: 27: kill: No such process
+
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== journal: cinnamon-session inhibit messages since boot
+(end)

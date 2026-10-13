@@ -1,0 +1,16 @@
+вівторок, 13 жовтень UTC 2026 14:15:50 +0000
+cinnamon-session	6.4.2-1+unity6
+dbus	1.16.2-2ubuntu4
+dbus-daemon	1.16.2-2ubuntu4
+dbus-user-session	1.16.2-2ubuntu4
+systemd	259.5-0ubuntu3.4
+FragmentPath=/usr/lib/systemd/user/dbus.service
+DropInPaths=
+OOMPolicy=stop
+ManagedOOMMemoryPressure=auto
+ManagedOOMPreference=none
+ls: cannot access '/usr/lib/systemd/user/dbus.service.d/': No such file or directory
+ls: cannot access '/etc/systemd/user/dbus.service.d/': No such file or directory
+DefaultOOMPolicy=stop
+DefaultOOMPolicy=stop
+inactive
