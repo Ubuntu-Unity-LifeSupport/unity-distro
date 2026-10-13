@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-013",
+  "package": "unity-gtk4-menu",
+  "source_commit": "00fabde52b14b4452dd3e74ed57c908dc3c2a363",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261013-013-pygobject-preload-alone/README.md",
+      "sha256": "eaeca0058e3ac13df0eac11b9f55112856bfc1a883171ca2860bb127d8688425"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261013-013-pygobject-preload-alone/README.md",
+      "sha256": "eaeca0058e3ac13df0eac11b9f55112856bfc1a883171ca2860bb127d8688425"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "5943de6f243a55f516b3f72222474ac2313bcbfdc59c4b1cafe15e0eb3cd1b64"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261013-013-pygobject-preload-alone/gate/release-record.json",
+      "sha256": "bc71b374d70d368c9bc618ecb9eef3e41e9baa699823bbc32d584bae3da6a67e"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261013-013-pygobject-preload-alone/gate/version-check.json",
+      "sha256": "1b552486ec54cb69b632ecfc2985bf17ef25b02ed054eba31fbfd4915058907a"
+    }
+  }
+}

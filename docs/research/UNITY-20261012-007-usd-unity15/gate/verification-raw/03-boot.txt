@@ -1,0 +1,17 @@
+2026-10-13 13:23:21
+active
+active
+== 2026-10-13 13:31:19 EEST after cold boot (desktop up 13:29, xdotool installed for observation)
+Id=2
+Active=yes
+LockedHint=no
+helper pid=2275 started=вт жов 13 13:24:38 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 0
+autorun-never=true
+sr0 mount: none
+visible helper windows:
+visible apport windows:
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash

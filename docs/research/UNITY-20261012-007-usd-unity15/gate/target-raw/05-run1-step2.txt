@@ -1,0 +1,25 @@
+== 2026-10-13 12:58:20 EEST run1 step2: autorun on, medium inserted
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2247 started=вт жов 13 12:56:37 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 1
+autorun-never=false
+sr0 mount: /run/media/mike/Ubuntu-Unity 26.04 amd64 iso9660
+visible helper windows:
+  23068680 Ubuntu-Unity 26.04 amd64
+visible apport windows:
+== 12:58:22 pressed Eject (407,582)
+== 2026-10-13 12:58:24 EEST run1 step2: after Eject
+Id=3
+Active=yes
+LockedHint=no
+helper pid=2247 started=вт жов 13 12:56:37 2026
+helper exe sha256: f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7
+helper (deleted) mappings: 1
+autorun-never=false
+sr0 mount: none
+visible helper windows:
+visible apport windows:
+7bd184569000-7bd1845e9000 rw-s 00000000 00:01 37                         /SYSV00000000 (deleted)

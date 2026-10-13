@@ -1,0 +1,26 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | compiz                                   | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ all    | compiz-plugins-extra                     | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ all    | compiz-plugins-main                      | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ all    | compiz-plugins-main-default              | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ all    | compiz-plugins-main-dev                  | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ all    | compizconfig-settings-manager            | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-core                              | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-core-dbgsym                       | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-dev                               | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-gnome                             | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-gnome-dbgsym                      | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-mate                              | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-plugins                           | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-plugins-dbgsym                    | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-plugins-default                   | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | compiz-plugins-default-dbgsym            | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | libcompizconfig0                         | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | libcompizconfig0-dbgsym                  | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | libcompizconfig0-dev                     | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | libdecoration0-dev                       | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | libdecoration0t64                        | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | libdecoration0t64-dbgsym                 | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | python3-compizconfig                     | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ amd64  | python3-compizconfig-dbgsym              | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
++ source | compiz                                   | -                                        | 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3

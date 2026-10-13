@@ -1,0 +1,16 @@
+== 2026-10-13T09:30:26Z; python3-gi 3.56.2-1, libgtk-nocsd0 4.8-1+unity4
+  0.5 (g_module_symbol exported: 0): alone: ok | +libgmodule: ok | then gtk-nocsd: ok | gtk-nocsd first: ok
+  0.6 (g_module_symbol exported: 1): alone: AssertionError | +libgmodule: ok | then gtk-nocsd: ok | gtk-nocsd first: ok
+  0.8 (g_module_symbol exported: 1): alone: AssertionError | +libgmodule: ok | then gtk-nocsd: ok | gtk-nocsd first: ok
+  0.9 (g_module_symbol exported: 1): alone: AssertionError | +libgmodule: ok | then gtk-nocsd: ok | gtk-nocsd first: ok
+  0.10 (g_module_symbol exported: 1): alone: AssertionError | +libgmodule: ok | then gtk-nocsd: ok | gtk-nocsd first: ok
+  upstream gtk-nocsd fd4b76a alone, GTK_NOCSD_MENU=0: ok
+  upstream gtk-nocsd fd4b76a alone, GTK_NOCSD_MENU=0: ok gtk3
+  upstream gtk-nocsd fd4b76a alone, GTK_NOCSD_MENU=0: ok gtk4
+  upstream gtk-nocsd fd4b76a alone, GTK_NOCSD_MENU=1: ok
+  upstream gtk-nocsd fd4b76a alone, GTK_NOCSD_MENU=1: ok gtk3
+  upstream gtk-nocsd fd4b76a alone, GTK_NOCSD_MENU=1: ok gtk4
+  python dlopen flags: 2 (os.RTLD_NOW=2, RTLD_GLOBAL=256)
+  0.10 alone, gi opened RTLD_NOW|RTLD_GLOBAL: ok
+  0.10 alone, default flags: AssertionError
+  objects that NEED libgmodule on the path: _gi 0, libgirepository-2.0 1, python3 0, gjs 0, libgjs->libgirepository 0

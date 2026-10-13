@@ -1,0 +1,26 @@
+== 1 restore, checked inside at 2026-10-13T03:01:18Z, boot 2026-10-13 05:36:39
+  ls: cannot access '/home/mike/b1301': No such file or directory
+  /home/mike/.dirty
+  sources.list.d: ubuntu.sources unity-distro.sources; foreign architectures: i386
+== 2 live archive
+  update rc=0
+  Date: Tue, 13 Oct 2026 01:41:51 UTC
+  full-upgrade rc=0
+  left to upgrade: 0
+== 3 packages
+  install rc=0
+  libunity-gtk4-menu0	0.10
+  gcc	4:15.2.0-5ubuntu1
+  gcc-multilib	4:15.2.0-5ubuntu1
+  tmux	3.6a-2ubuntu0.1
+  x11-utils	7.7+7build1
+  libgtk-nocsd0	4.8-1+unity4
+  libc6	2.43-2ubuntu2.4
+  libc6-i386	2.43-2ubuntu2.4
+  snapd	2.76.3+ubuntu26.04
+    flatpak not installed
+  -rw-r--r-- 1 root root 116832 Oct 13 02:20 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0
+  -rw-r--r-- 1 root root  30792 Oct 13 02:20 /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0
+== 4 t32
+  t64: ELF 64-bit LSB pie executable, x86-64
+  t32-biarch: ELF 32-bit LSB pie executable, Intel i386, interpreter 

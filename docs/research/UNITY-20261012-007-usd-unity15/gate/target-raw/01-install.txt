@@ -1,0 +1,18 @@
+вівторок, 13 жовтень UTC 2026 09:54:00 +0000
+409d285be9c0bcf178cac4fd362f0b597b71aee50c2561bbf86a96cb020d9bf6  usd15/libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+e2516cdaca43295ca798c8629a3a6b211b5607d19136129c10a5842ffef993d5  usd15/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity15_amd64.deb
+0b5fecd88ce2e105e9641f748587e821fd4028ac506847453e4784e0a82aaf3f  usd15/unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity15_all.deb
+Обрабатываются триггеры для libc-bin (2.43-2ubuntu2.4) …
+Обрабатываются триггеры для man-db (2.13.1-1build1) …
+Обрабатываются триггеры для libglib2.0-0t64:amd64 (2.88.0-1ubuntu0.1) …
+Настраивается пакет unity-settings-daemon (15.04.1+21.10.20220802-0ubuntu7+unity15) …
+cinnamon-session	6.4.2-1+unity5
+compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity3
+libunity-settings-daemon1:amd64	15.04.1+21.10.20220802-0ubuntu7+unity15
+light-locker	1.8.0-3ubuntu4+unity3
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+unity-settings-daemon-schemas	15.04.1+21.10.20220802-0ubuntu7+unity15
+f0764bc20e15b71a676f3e05284ec3bc4d16eb737e744a28b9546aca8dd21ab7  /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+0
+-rw-rw-r-- 1 mike mike 0 Oct  8 10:29 /home/mike/.dirty
