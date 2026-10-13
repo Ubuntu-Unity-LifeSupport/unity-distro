@@ -105,3 +105,20 @@ Notes:
 - (9) UNITY-20261013-024 rightly out.
 
 DESIGN.md round 2 answers each finding (its last table).
+
+## Design review round 2 (Design Challenger, 2026-10-13): REVISE
+
+One blocking finding:
+- (1) a set of our copies keyed by pointer can keep freed throwaway copies' addresses, which the application's
+  `g_menu_new()` may reuse (ABA). The fix is a mark on each copy (`g_object_set_data`), with recursion only when
+  both sides carry it.
+
+Notes:
+- (2) the prefix/suffix bound;
+- (3) test 19's wording;
+- (4) the source's action names, and `late = 0`;
+- (5) changes during a rebuild are lost (accepted);
+- (6) a different-length middle replaces equal items inside it;
+- (7) the idle's priority.
+
+DESIGN.md round 3 answers them (its second table).
