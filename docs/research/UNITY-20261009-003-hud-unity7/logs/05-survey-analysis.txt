@@ -1,0 +1,67 @@
+# UNITY-20261009-004 reach: survey.sh on target2 (2026-10-12), our packaged stack (gtk-nocsd 4.8-1+unity3, libunity-gtk4-menu0 0.9 installed explicitly, session LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0), each application started alone; analyze.py on logs/05-survey.jsonl (regenerated 2026-10-12 after the Design Challenger's round 2: the unknown items split, the targeted items counted by application)
+LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+done: 55 apps surveyed, 306 items
+
+applications surveyed: 55, with menu items: 38, items with an action: 306, errors: 1
+  error showtime: _GTK_MENUBAR_OBJECT_PATH /org/gnome/Showtime/menus/menubar: Timeout was reached
+
+items by (target type, parameter type):
+  target None     parameter None      257
+  target s        parameter s          37
+  target (uu)     parameter (uu)        4
+  target b        parameter b           3
+  target x        parameter x           3
+  target (ss)     parameter (ss)        2
+
++unity6 -> revised design:
+   243  activate(NULL)                                -> activate(NULL)
+    37  activate(action name)                         -> activate(target)
+    12  nothing                                       -> activate(target)
+    10  unknown: no such action (Activate(name, []), rejected) -> no activation (unknown)
+     4  unknown: no group for the prefix (nothing)    -> no activation (unknown)
+
+targeted items of known actions (+unity6 runs them wrongly or not at all): 49 in 10 applications: gnome-terminal 12, swell-foop 9, shortwave 7, celluloid 6, gnome-calculator 4, gnome-maps 3, amberol 3, file-roller 2, gnome-weather 2, gnome-text-editor 1
+unknown actions: 14 (4 without a group for the prefix, 10 with a group but no such action)
+  epiphany: win.fullscreen [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('fullscree
+  epiphany: app.uninstall-web-app [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('uninstall
+  epiphany: win.privacy-report [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('privacy-r
+  epiphany: win.passwords [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('passwords
+  epiphany: win.save-as-application [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('save-as-a
+  epiphany: win.open-application-manager [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('open-appl
+  gnome-2048: ui.scores [None] no exported ui group
+  gnome-2048: ui.about [None] no exported ui group
+  gnome-sudoku: game-view.reset-board [None] no exported game-view group
+  deja-dup: restore.select-all [None] no exported restore group
+  gnome-terminal: win.save-contents [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('save-cont
+  gnome-terminal: win.export [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('export') 
+  gnome-terminal: win.print [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('print') d
+  gnome-terminal: win.set-title [None] GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: The named action ('set-title
+targeted items of known actions with a non-string target:
+  gnome-text-editor: win.unity-gtk4-menu-page-discard-changes target false (b), parameter b
+  celluloid: win.set-video-track target 0 (x), parameter x
+  celluloid: win.set-audio-track target 0 (x), parameter x
+  celluloid: win.set-subtitle-track target 0 (x), parameter x
+  gnome-terminal: win.new-terminal target ('tab', 'current') ((ss)), parameter (ss)
+  gnome-terminal: win.new-terminal target ('window', 'current') ((ss)), parameter (ss)
+  gnome-terminal: win.reset target false (b), parameter b
+  gnome-terminal: win.reset target true (b), parameter b
+  gnome-terminal: win.size-to target (80, 24) ((uu)), parameter (uu)
+  gnome-terminal: win.size-to target (80, 43) ((uu)), parameter (uu)
+  gnome-terminal: win.size-to target (132, 24) ((uu)), parameter (uu)
+  gnome-terminal: win.size-to target (132, 43) ((uu)), parameter (uu)
+
+items +unity6 runs differently from GTK, unknown ones included: 63 in 14 applications
+  amberol: 3 (win.unity-gtk4-menu-win-replaygain['album'], win.unity-gtk4-menu-win-replaygain['off'], win.unity-gtk4-menu-win-replaygain['track'])
+  celluloid: 6 (win.load-track['audio-add'], win.load-track['sub-add'], win.load-track['video-add'], win.set-audio-track[0])
+  deja-dup: 1 (restore.select-all[None])
+  epiphany: 6 (app.uninstall-web-app[None], win.fullscreen[None], win.open-application-manager[None], win.passwords[None])
+  file-roller: 2 (app.list-mode['as-dir'], app.list-mode['flat'])
+  gnome-2048: 2 (ui.about[None], ui.scores[None])
+  gnome-calculator: 4 (win.number-format['automatic'], win.number-format['engineering'], win.number-format['fixed'], win.number-format['scientific'])
+  gnome-maps: 3 (win.measurement-system['imperial'], win.measurement-system['metric'], win.measurement-system['system'])
+  gnome-sudoku: 1 (game-view.reset-board[None])
+  gnome-terminal: 16 (win.close['tab'], win.close['window'], win.copy['html'], win.copy['text'])
+  gnome-text-editor: 1 (win.unity-gtk4-menu-page-discard-changes[false])
+  gnome-weather: 2 (app.temperature-unit['centigrade'], app.temperature-unit['fahrenheit'])
+  shortwave: 7 (win.unity-gtk4-menu-library-set-sorting-type['ascending'], win.unity-gtk4-menu-library-set-sorting-type['descending'], win.unity-gtk4-menu-library-set-sorting['bitrate'], win.unity-gtk4-menu-library-set-sorting['country'])
+  swell-foop: 9 (win.change-colors['2'], win.change-colors['3'], win.change-colors['4'], win.change-theme['boringshapes'])

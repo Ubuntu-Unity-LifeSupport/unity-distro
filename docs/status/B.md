@@ -75,6 +75,24 @@ together as +unity3, or +unity2 first.
 
 ## Now
 
+**2026-10-12 ~23:55Z: UNITY-20261009-003, -004 and -005 DONE (hud +unity7); next UNITY-20261012-003.**
+- **hud +unity7:**
+  - libqtgmenu activates a menu item with its target (-004: the Unity 7 HUD "Создать окно" opens a
+    Terminal window);
+  - ExecuteQuery refuses bad item keys and needs a focused window, so hud-service no longer crashes (-003);
+  - a relative `XDG_DATA_HOME` is ignored (-005).
+  - Live `./resolute` has been `unity-resolute-20261009-003` since 23:23:41Z, signed by the signer's routine
+    policy. The publication is verified on target2 (logs/10), and C merged it into main at adf18ea.
+  - -004 and -005 were closed through `released_in` UNITY-20261009-003 (rule R).
+  - Card: `research/UNITY-20261009-003-hud-unity7/`.
+- **Follow-ups on the board:** UNITY-20261012-011, -012 and -013.
+- **Next, from C:** UNITY-20261012-003. The unity panel ignores a GTK4 app's Alt mnemonic on its first start,
+  until the window is refocused. Start with reproduction, then the existing-fix check and the root cause; DC
+  before code. Heavy temporary work goes in `/srv/build/B-UNITY-20261012-003`. A owns unity-gtk4-menu
+  packaging (-1012-006), so tell C before a design that lands there.
+
+Earlier:
+
 **2026-10-10 ~18:16Z: UNITY-20261010-001 PUBLISHED (libcolumbus +unity2), waiting for C's merge, then idle
 (the permission-model freeze; May unfroze B for this one task only).**
 - **libcolumbus +unity2:**
@@ -498,7 +516,10 @@ gtk-nocsd findings and nux's broken ICU conversions upstream (on hold).
 
 ## State of `target2`
 
-**At `Clean-2`, powered off, since 2026-10-10 18:15Z.** It was rolled back
+**At `Clean-2`, powered off, since 2026-10-12 23:49Z.** It was rolled back after the UNITY-20261009-003
+publication check. Checked inside: no `~/.dirty`, no `~/b0309`, only `ubuntu.sources`, hud 0ubuntu6.
+
+Before that, at `Clean-2` and powered off from 2026-10-10 18:15Z. It was rolled back
 after the UNITY-20261010-001 publication check. Checked inside: no
 `~/.dirty`, no `~/b1010` or `~/b013`, only `ubuntu.sources`, hud 0ubuntu6,
 libcolumbus 0ubuntu39, NTP synchronised. (On 2026-10-10 it was found running
