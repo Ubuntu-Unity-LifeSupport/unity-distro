@@ -1,0 +1,18 @@
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+== 14:45:55 firefox playing, last input now
+IdleHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+inhibitors: (@ao [],)
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 38987,)
+inhibitors: (@ao [],)
+== inhibit calls since firefox start:
+method call time=1791891954.739721 sender=:1.234 -> destination=:1.88 serial=42 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=Inhibit
+   string "firefox_firefox"
+   string "Воспроизведение звука"
+method call time=1791892009.361605 sender=:1.234 -> destination=:1.88 serial=59 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=UnInhibit
+   uint32 2

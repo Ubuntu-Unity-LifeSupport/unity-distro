@@ -1,0 +1,14 @@
+== 14:43:44 vlc playing (loop), last input now
+IdleHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+inhibitors: (@ao [],)
+IdleHint=yes
+LockedHint=yes
+presence status: (<uint32 3>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 80432,)
+screensaver active (org.gnome.ScreenSaver): (false,)
+inhibitors: (@ao [],)
+== inhibit calls:
+method call time=1791891820.446887 sender=:1.203 -> destination=org.freedesktop.ScreenSaver serial=3 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=Inhibit
+   string "vlc"
+   string "Воспроизведение мультимедиа."

@@ -1,0 +1,14 @@
+signal time=1791891815.854344 sender=org.freedesktop.DBus -> destination=:1.198 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.198"
+signal time=1791891815.854850 sender=org.freedesktop.DBus -> destination=:1.198 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.198"
+method call time=1791891820.446887 sender=:1.203 -> destination=org.freedesktop.ScreenSaver serial=3 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=Inhibit
+   string "vlc"
+   string "Воспроизведение мультимедиа."
+method call time=1791891925.760012 sender=:1.203 -> destination=org.freedesktop.ScreenSaver serial=4 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=UnInhibit
+   uint32 1
+method call time=1791891954.739721 sender=:1.234 -> destination=:1.88 serial=42 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=Inhibit
+   string "firefox_firefox"
+   string "Воспроизведение звука"
+method call time=1791892009.361605 sender=:1.234 -> destination=:1.88 serial=59 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=UnInhibit
+   uint32 2

@@ -1,0 +1,43 @@
+== 14:39:34 systemctl --user restart unity-settings-daemon
+== 14:39:42 input
+== 2026-10-13 14:39:42 EEST after u-s-d restart
+Id=3
+Active=yes
+IdleHint=no
+IdleSinceHint=1791891563469817
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 4839 unity-settings-
+owner org.gnome.Mutter.IdleMonitor: 4839 unity-settings-
+owner org.gnome.ScreenSaver: 2864 light-locker
+owner org.freedesktop.ScreenSaver: 2864 light-locker
+idletime (Mutter core): (uint64 189,)
+screensaver active (org.gnome.ScreenSaver): (false,)
+keys: gnome idle-delay=uint32 300 cinnamon idle-delay=uint32 60 lock-enabled=true lock-delay=uint32 0
+inhibitors: (@ao [],)
+u-s-d pid=4839 started=вт жов 13 14:39:33 2026 exe=0c1ab496ad3d8386
+== 2026-10-13 14:40:52 EEST t+70s after restart
+Id=3
+Active=yes
+IdleHint=yes
+IdleSinceHint=1791891642210640
+LockedHint=no
+presence status: (<uint32 3>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 4839 unity-settings-
+owner org.gnome.Mutter.IdleMonitor: 4839 unity-settings-
+owner org.gnome.ScreenSaver: 2864 light-locker
+owner org.freedesktop.ScreenSaver: 2864 light-locker
+idletime (Mutter core): (uint64 70556,)
+screensaver active (org.gnome.ScreenSaver): (false,)
+keys: gnome idle-delay=uint32 300 cinnamon idle-delay=uint32 60 lock-enabled=true lock-delay=uint32 0
+inhibitors: (@ao [],)
+u-s-d pid=4839 started=вт жов 13 14:39:33 2026 exe=0c1ab496ad3d8386
+== monitor since restart:
+   uint32 0
+method call time=1791891574.816612 sender=:1.53 -> destination=:1.154 serial=140 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 60000
+signal time=1791891642.208194 sender=:1.154 -> destination=:1.53 serial=202 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=WatchFired
+   uint32 4
+signal time=1791891642.209698 sender=:1.53 -> destination=(null destination) serial=147 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1791891642.209900 sender=:1.53 -> destination=:1.154 serial=148 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddUserActiveWatch

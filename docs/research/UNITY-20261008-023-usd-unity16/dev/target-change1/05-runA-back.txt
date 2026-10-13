@@ -1,0 +1,22 @@
+== 14:39:20 loginctl unlock-session 3
+== 14:39:23 input (xdotool mousemove)
+== 2026-10-13 14:39:26 EEST after unlock + input
+Id=3
+Active=yes
+IdleHint=no
+IdleSinceHint=1791891563469817
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+owner org.cinnamon.Muffin.IdleMonitor: 2283 unity-settings-
+owner org.gnome.Mutter.IdleMonitor: 2283 unity-settings-
+owner org.gnome.ScreenSaver: 2864 light-locker
+owner org.freedesktop.ScreenSaver: 2864 light-locker
+idletime (Mutter core): (uint64 3192,)
+screensaver active (org.gnome.ScreenSaver): (false,)
+keys: gnome idle-delay=uint32 300 cinnamon idle-delay=uint32 60 lock-enabled=true lock-delay=uint32 0
+inhibitors: (@ao [],)
+u-s-d pid=2283 started=вт жов 13 14:37:04 2026 exe=0c1ab496ad3d8386
+== monitor since lock:
+   uint32 6
+signal time=1791891563.469293 sender=:1.53 -> destination=(null destination) serial=118 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
