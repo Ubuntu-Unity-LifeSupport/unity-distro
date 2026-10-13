@@ -7,7 +7,7 @@ task: UNITY-20261012-003
 title: the first start of a GTK4 application in a session ignores its Alt mnemonic until the window is focused again
 found_in: UNITY-20261012-001 logs/03-mnemonics-keys.txt (gtk-nocsd builds preloaded alone, real keys)
 target_series: resolute
-status: NOT_REPRODUCED on the live stack (sessions 5-7, measured by events, 2026-10-13)
+status: NOT_REPRODUCED on the live stack (sessions 5-10, 13 attempts measured by events, 2026-10-13)
 ```
 
 ## Where it was seen (UNITY-20261012-001)
@@ -44,95 +44,144 @@ starts were correct (`audit.py`).
   popup is mapped.
 - `mnemo.py`: a GTK4 application with its own menubar `_File`, `_Edit`, `_Help`. Alt+F can be typed on the
   guest's gb/us layouts. The holder labels of Calculator and Text Editor carry no underscore.
-- `trial.sh begin|end`: one counted attempt. It prints the versions, runs `start.sh` with `NOAUDIT=1`, then
-  `sync.sh` and `popwatch.sh`. Exactly one key comes from the host. After Escape, the unmap is confirmed before the
-  next attempt.
+- `trial.sh begin|end`: one counted attempt. It prints the package versions and boot time. Then it runs `start.sh`,
+  `sync.sh` and `popwatch.sh`. By default `start.sh` gets `NOAUDIT=1`. With `AUDIT=1`, audit.py subscribes to the
+  menu between the focus and the key, which is the UNITY-20261012-001 rig's condition. Exactly one key comes from
+  the host. After Escape, the unmap is confirmed before the next attempt.
+- `table.py`: computes the results table from the trial logs: the active window, the panel's first `Start`,
+  `ShowEntry`, `EntryActivated` and the popup map.
 
 ## Where it ran
 
-target2 was restored to Clean-2 and confirmed inside, then set up with `setup.sh` (logs/01). The live archive was
-unity-resolute-20261009-003 (Release Date 2026-10-12 23:18:38 UTC). After the full-upgrade, every session ran the
-same packages:
+target2 was restored to Clean-2 and confirmed inside, then set up with `setup.sh` (logs/01). The live archive's
+Release fetched there is dated 2026-10-12 23:18:38 UTC. That is the Release of the unity-resolute-20261009-003
+publication (research/UNITY-20261009-003-hud-unity7, Publication and logs/10). Every session ran the same
+packages; the `==` lines of logs/04 and logs/05 print them:
 - libunity-gtk4-menu0 0.9;
 - libgtk-nocsd0 4.8-1+unity3;
-- unity 7.7.1+26.04.20260306-0ubuntu3+unity13;
-- indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1;
-- bamfdaemon 0.5.6+22.04.20220217-0ubuntu6.
+- unity 7.7.1+26.04.20260306-0ubuntu3+unity13.
 
-The session preloads `libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`. Each session is a cold boot. Live moved on to
--20261012-005 at 00:08:28Z (gtk-nocsd +unity4, UNITY-20261012-005), but apt did not run on target2 after the setup,
-so the series ran on the versions above.
+logs/05 also prints indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1 and bamfdaemon 0.5.6+22.04.20220217-0ubuntu6,
+as does logs/01. apt did not run on target2 after logs/01, so later publications are not installed. The session
+preloads `libunity-gtk4-menu.so.0:libgtk-nocsd.so.0`, and each session is a cold boot.
 
 ## Results
 
 ### Sessions 1-4: exploratory (logs/02, logs/03)
 
-Session 1 seemed to reproduce the bug:
-- Text Editor's first start opened its menu at once;
-- Calculator's first start showed nothing after two Alt+F10 presses, and opened after a minimise and activate.
+Session 1 looked like a reproduction:
+- Text Editor's first start opened its menu at once.
+- Calculator's first start showed nothing after two Alt+F10 presses, 4 s apart, and opened after a minimise and
+  activate.
+- That Calculator start ran with audit.py; the Text Editor start ran without it.
 
-That was a measurement error. The outcome was judged from a vbox screenshot taken right after the key, and the
-screenshot came before the popup was mapped:
-- In session 3, a screenshot 15 s after the key shows Calculator's menu open.
-- In session 4, `popwatch.sh` measured it: compiz `ShowEntry` at 00:33:51.684, `EntryActivated` at 52.351, and the
-  popup mapped at 52.604, 0.92 s after `ShowEntry`.
-- In session 1 the second Alt+F10 came 4 s after the first, so it most likely closed a menu that had opened by then.
+Those outcomes were judged from vbox screenshots taken right after the key. Sessions 3 and 4 showed that such a
+screenshot can come before the popup is mapped:
+- **Session 3:** the screenshot right after the key shows nothing. A screenshot 15 s later (00:29:29Z, after
+  `ShowEntry` at 00:29:14.147 and `EntryActivated` at 14.441) shows Calculator's menu open. This is logs/03's text;
+  the screenshots are not in the repository.
+- **Session 4:** `popwatch.sh` timed it: `ShowEntry` at 00:33:51.684, `EntryActivated` at 52.351, and the popup
+  mapped at 52.604, 0.92 s after `ShowEntry`. Session 4's start lines (versions, boot) are not in logs/03.
 
-Seen in every session, before any key:
-- The panel service already has the window's entry: label, sensitive, visible, with the right parent window.
-- compiz has already fetched it (`ReSync` → `SyncOne libappmenu.so`).
-- unity-panel-service subscribes to the window's menu (`org.gtk.Menus.Start`) 0.1-0.2 s after the window becomes
-  active.
+So **for session 1 it is an inference, not a measurement**, that the key was taken and the second press closed a
+menu that had opened by then. Session 1 has no `ShowEntry`, `EntryActivated` or popup timing. Its Calculator
+condition, audit.py running with the first start, was measured by events later (sessions 8-10, below).
 
-Nothing waits for a focus change.
+Before the key, the panel service's entry table (`sync.sh`) was logged in sessions 3 and 5-10. Each time it
+already held the window's entry, with its label, sensitive and visible flags and the right parent window.
+Sessions 1, 2 and 4 have no such table in the logs. Sessions 3-10 show compiz fetching the entries
+(`ReSync` → `SyncOne libappmenu.so`). In sessions 1 and 2 the monitor did not yet record that interface.
 
-### Sessions 5-7: the counted series (logs/04)
+### Sessions 5-10: the counted series (logs/04, logs/05)
 
-Measured by events, not screenshots. Each row is the first start of that application in that cold session. The
-latencies are from compiz's `ShowEntry`, which unity sends when it takes the key. "Popup mapped" is popwatch's
-50 ms poll, about ±0.1 s.
+Measured by events, not screenshots. Each row is the first start of that application in that cold session, and in
+each attempt there is exactly one `ShowEntry` and one non-empty `EntryActivated`. The latencies are from compiz's
+`ShowEntry`, which unity sends when it takes the key.
 
-| session | application, key | opened on the first press | → `EntryActivated` | → popup mapped |
-|---|---|---|---|---|
-| 5 | mnemo.py, Alt+F (`_File`) | yes | 47 ms | 0.15 s |
-| 5 | Calculator, Alt+F10 | yes | 238 ms | 0.43 s |
-| 5 | Text Editor, Alt+F10 | yes | 79 ms | 0.27 s |
-| 6 | Calculator, Alt+F10 (first application of the session) | yes | 323 ms | 0.45 s |
-| 6 | mnemo.py, Alt+F | yes | 64 ms | 0.24 s |
-| 7 | mnemo.py, Alt+F (first application of the session) | yes | 167 ms | 0.29 s |
-| 7 | Calculator, Alt+F10 | yes | 253 ms | 0.25 s |
+"Popup first" is the first popwatch line with a visible window of unity-panel-service; "popup full" is the line
+where the count reaches its maximum (2). popwatch polls every 50 ms, about ±0.1 s. The last column is the time from
+the window becoming active (`_NET_ACTIVE_WINDOW`) to unity-panel-service's first `org.gtk.Menus.Start` to it.
+Everything is computed by `table.py` from the logs.
 
-Alt+F opened on the first press 3 of 3 times, and Alt+F10 4 of 4 (Calculator 3, Text Editor 1). Outside the count,
-session 4 also opened on the first press: mnemo.py Alt+F (0.58 s) and Calculator Alt+F10 (0.92 s). Calculator's
-first open is the slowest, 0.25-0.92 s. Text Editor and mnemo.py take 0.15-0.58 s.
+| session | application, key | audit.py | opened on the first press | → `EntryActivated` | → popup first / full | active → panel `Start` |
+|---|---|---|---|---|---|---|
+| 5 | mnemo.py, Alt+F (`_File`) | no | yes | 47 ms | 0.15 / 0.15 s | 0.18 s |
+| 5 | Calculator, Alt+F10 | no | yes | 238 ms | 0.43 / 0.43 s | 0.16 s |
+| 5 | Text Editor, Alt+F10 | no | yes | 79 ms | 0.27 / 0.27 s | 0.21 s |
+| 6 | Calculator, Alt+F10 (first application of the session) | no | yes | 323 ms | 0.45 / 0.62 s | 0.22 s |
+| 6 | mnemo.py, Alt+F | no | yes | 64 ms | 0.24 / 0.24 s | 0.54 s |
+| 7 | mnemo.py, Alt+F (first application) | no | yes | 167 ms | 0.29 / 0.50 s | 0.32 s |
+| 7 | Calculator, Alt+F10 | no | yes | 253 ms | 0.25 / 0.47 s | 0.40 s |
+| 8 | Calculator, Alt+F10 (first application) | yes | yes | 242 ms | 0.28 / 0.48 s | 0.20 s |
+| 8 | mnemo.py, Alt+F | yes | yes | 66 ms | 0.42 / 0.42 s | 0.28 s |
+| 9 | mnemo.py, Alt+F (first application) | yes | yes | 54 ms | 0.27 / 0.27 s | 0.27 s |
+| 9 | Calculator, Alt+F10 | yes | yes | 175 ms | 0.29 / 0.29 s | 0.14 s |
+| 10 | Calculator, Alt+F10 (first application) | yes | yes | 198 ms | 0.47 / 0.47 s | 0.26 s |
+| 10 | Text Editor, Alt+F10 | yes | yes | 83 ms | 0.26 / 0.26 s | 0.34 s |
+
+Totals: Alt+F opened on the first press 5 of 5 times. Alt+F10 opened 8 of 8 times: Calculator 6, Text Editor 2.
+That includes 6 of 6 with audit.py running. The two uncounted session 4 attempts also opened on the first press
+(mnemo.py Alt+F, popup at 0.58 s; Calculator Alt+F10, 0.92 s).
+
+- **Latency:** in the counted series, `ShowEntry` → `EntryActivated` is 175-323 ms for Calculator and 47-167 ms for
+  the other two applications; 667 ms for Calculator in session 4. Calculator's popup is not always the last to map
+  (session 7: Calculator 0.25 s, mnemo.py 0.29 s).
+- **Panel subscription:** the panel subscribes to the menu 0.14-0.54 s after the window becomes active, never
+  before.
+- **Contents:** "opened" means the popup was mapped and `EntryActivated` named the application's entry: `_File`
+  for mnemo.py, the holder for the others. No other indicator entry was activated within any attempt. The contents
+  were checked by eye once per application in session 8: a vbox screenshot after the map shows Calculator's holder
+  with its underlined letters, and mnemo.py's File menu (New, Open, Quit).
+- **Focus:** `start.sh` runs `xdotool windowactivate` on a window that is already active, as the UNITY-20261012-001
+  rig did. The `_NET_ACTIVE_WINDOW` log shows no second change.
+
+**Limits:**
+- 13 counted attempts, Text Editor only twice.
+- Alt+letter on the Calculator and Text Editor holders is not tested: their labels have no underscore, and the
+  guest layouts cannot type Cyrillic.
+- "First start" means the first start of that application in the trial order of a cold session. Nothing else was
+  started in between, but no log shows that.
 
 ## Outcome: NOT_REPRODUCED on the live stack
 
-On our live stack, the first start of a GTK4 application in a session does not ignore its Alt mnemonic. Alt+F
-(`MenuManager`'s mnemonic grab) and Alt+F10 (`PanelMenuView`) open the menu on the first press, within 0.15-0.92 s,
-and need no refocus. The first open of Calculator's menu takes up to 0.92 s. That is recorded as a fact here, and
-no task is opened for it.
+On our live stack, the first start of a GTK4 application in a session does not ignore its Alt mnemonic. Under the
+conditions above, Alt+F (`MenuManager`'s mnemonic grab) and Alt+F10 (`PanelMenuView`) opened the menu on the first
+press in 13 of 13 counted attempts, with and without audit.py, and needed no refocus. The popup maps 0.15-0.62 s
+after `ShowEntry` in the series, and 0.92 s once, in session 4. That latency is recorded here as a fact; no task
+is opened for it.
 
 UNITY-20261012-001's first-start observations (logs/03-mnemonics-keys.txt there) were judged the same way, from
-screenshots after the key, with a second press a few seconds later. They ran gtk-nocsd `fd4b76a` and `2d50fe9`
-preloaded alone, which we do not ship. Its Pinta case (nothing on the first Alt+F, the HUD on the second) is not
-explained by a slow popup. That case was not retested here: on our packaged stack Pinta exports no menubar
-(UNITY-20261012-001 logs/03-mnemonics-start.txt). The correction to that card is a new DECISIONS record. The card's
-text stays as written.
+screenshots after the key:
+- **Text Editor:** the second press came 6 s after the first, so the same timing explanation is possible. It was
+  not measured there.
+- **Pinta:** the second Alt+F came 20 s later and brought up the HUD. A slow popup does not explain that.
+
+Those runs used gtk-nocsd `fd4b76a` and `2d50fe9` preloaded alone, which we do not ship. They were not retested
+here; on our packaged stack Pinta exports no menubar (UNITY-20261012-001 logs/03-mnemonics-start.txt). The
+correction to that card is a new DECISIONS record, and the card's text stays as written.
 
 ## Existing-fix discovery (subagent, read-only, 2026-10-13)
 
-- No newer unity, indicator-appmenu or bamf exists in any Ubuntu series:
+Searched against the sources linked below, not reproduced in a log here.
+
+- **Newer versions:** none in any Ubuntu series, from Launchpad's published sources:
   - unity 7.7.1+26.04.20260306-0ubuntu3, the same in resolute and stonking;
   - indicator-appmenu 15.02.0+20.10.20260311-0ubuntu1, the same in both;
   - bamf 0.5.6+22.04.20220217-0ubuntu6, the same in both.
-- Debian ships only bamf (0.5.6+repack-2).
-- The unity GitLab branch ubuntu/devel (newest commit 6f01ccb7, 2026-04-21) has no panel or menu change.
-- No Launchpad bug matches this symptom. The nearest is LP #1025860, "alt+f+a doesn't work the first time round"
-  (Triaged since 2012), which is about submenu mnemonics.
-- Code reading for the record:
-  - indicator-appmenu's `ensure_menus()` and unity's `MenuManager` mnemonic grab and `PanelMenuView::OnEntryAdded`
-    resynchronise only on a focus change;
-  - a window whose entries arrive before it becomes active could miss them.
-  - The series above did not hit that, because the panel subscribes 0.1-0.2 s *after* the window becomes active.
-- No newer release was needed, because nothing reproduced.
+  - Debian ships only bamf, 0.5.6+repack-2 ([madison](https://qa.debian.org/madison.php?package=bamf)).
+- **Upstream changes:** unity's GitLab branch ubuntu/devel has no panel or menu change; its newest commit is
+  6f01ccb7 of 2026-04-21 ([commits](https://gitlab.com/ubuntu-unity/unity/unity/-/commits/ubuntu/devel)).
+- **Bug reports:** no Launchpad bug matches. The nearest:
+  - [LP #1025860](https://bugs.launchpad.net/bugs/1025860), "alt+f+a doesn't work the first time round", is about
+    submenu mnemonics and has been Triaged since 2012;
+  - [LP #734880](https://bugs.launchpad.net/bugs/734880) is an older menubar-refresh bug, Fix Released.
+- **Code reading,** for the record. The subagent read these trees: indicator-appmenu 15.02.0+20.10.20260311 and
+  the unity Launchpad tree, 7.7.0, whose panel files 7.7.1 leaves unchanged per the GitLab compare.
+  - indicator-appmenu reads a window's `_GTK_UNIQUE_BUS_NAME` once, in `ensure_menus()`
+    (`src/indicator-appmenu.c:1058-1091`). It retries only on `active-window-changed` (`:1095`).
+  - unity's `MenuManager` grabs mnemonics when an entry is added only if the entry's window is compiz's active
+    window (`unity-shared/MenuManager.cpp:145-147`); otherwise only on a focus change (`:78`, `:133`).
+  - `PanelMenuView::OnEntryAdded` keeps entries only for its active window (`panel/PanelMenuView.cpp:950`).
+  - So entries that arrive *before* their window becomes active could be missed until a focus change. In this
+    series they always arrived after, 0.14-0.54 s later.
+- **Newer release:** not needed, because nothing reproduced.

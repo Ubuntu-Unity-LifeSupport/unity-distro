@@ -106,3 +106,5 @@ Reading corrected after sessions 3-4 (logs/03): the "nothing" verdicts above com
 each key. In sessions 3 and 4, the first Alt+F10 on Calculator's first start mapped its popup 0.3-0.9 s after the key,
 after such a screenshot had already been taken. The second Alt+F10 here came 4 s after the first, so it most likely
 closed a menu that had opened by then. This session is therefore not evidence of a key that was ignored.
+Precision (after the Verifier's round 1): session 3 has no popwatch timing; its 0.3 s is ShowEntry -> EntryActivated
+(00:29:14.147 -> 14.441). Only session 4 timed the popup map (0.92 s after ShowEntry).
