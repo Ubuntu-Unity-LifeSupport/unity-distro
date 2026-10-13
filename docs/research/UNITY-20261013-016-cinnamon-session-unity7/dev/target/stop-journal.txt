@@ -1,0 +1,321 @@
+жов 13 17:55:09 mike-virtualbox systemd[1192]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service - Cinnamon Settings Daemon - screensaver-proxy being skipped.
+жов 13 17:55:09 mike-virtualbox systemd[1192]: app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:09 mike-virtualbox systemd[1192]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service - Cinnamon Settings Daemon - settings-remap being skipped.
+жов 13 17:55:09 mike-virtualbox systemd[1192]: app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service - Cinnamon Settings Daemon - smartcard being skipped.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service - Cinnamon Settings Daemon - wacom being skipped.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service - Cinnamon Settings Daemon - xsettings being skipped.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-snap\x2duserd\x2dautostart@autostart.service - Snap user application autostart helper.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-ubuntu\x2dadvantage\x2dnotification@autostart.service - Ubuntu Advantage Notification.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: app-light\x2dlocker@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Condition check resulted in app-light\x2dlocker@autostart.service - Screen Locker being skipped.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Condition check resulted in app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service - gnome-disk-utility notification plugin for GNOME Settings Daemon being skipped.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-zeitgeist\x2ddatahub@autostart.service - Zeitgeist Datahub.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: app-print\x2dapplet@autostart.service: Skipped due to 'exec-condition'.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Condition check resulted in app-print\x2dapplet@autostart.service - Print Queue Applet being skipped.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-a11y\x2dprofile\x2dmanager\x2dindicator\x2dautostart@autostart.service - Accessibility Profile Manager Indicator.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-gnome\x2dkeyring\x2dpkcs11@autostart.service - Certificate and Key Storage.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-nm\x2dapplet@autostart.service - NetworkManager Applet.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-ayatana\x2dindicator\x2dmessages@autostart.service - Ayatana Indicator Messages.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-gnome\x2dkeyring\x2dsecrets@autostart.service - Secret Storage Service.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-indicator\x2dapplication@autostart.service - Indicator Application.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-nemo\x2dunity\x2dautostart@autostart.service - Nemo.
+жов 13 17:55:10 mike-virtualbox systemd[1192]: Started app-notify\x2dosd@autostart.service - Notify OSD.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-fcitx\x2dqimpanel\x2dautostart@autostart.service - Fcitx Qt IMPanel.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-onboard\x2dautostart@autostart.service - Onboard.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service - Mount Helper.
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[2142]: The Secret Service was already initialized
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[2142]: The Secret Service was already initialized
+жов 13 17:55:11 mike-virtualbox systemd-prestart-check[7248]: grep: /usr/share/gnome-session/sessions/ubuntu.session: Нет такого файла или каталога
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[2142]: The PKCS#11 component was already initialized
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[2142]: The PKCS#11 component was already initialized
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[7255]: discover_other_daemon: 1
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[7255]: discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[7258]: discover_other_daemon: 1
+жов 13 17:55:11 mike-virtualbox gnome-keyring-daemon[7258]: discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-update\x2dnotifier@autostart.service - Update Notifier.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-polkit\x2dgnome\x2dauthentication\x2dagent\x2d1@autostart.service - PolicyKit Authentication Agent.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-pulseaudio@autostart.service - PulseAudio Sound System.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-xapp\x2dsn\x2dwatcher@autostart.service - xapp-sn-watcher.
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-unity\x2dindicator\x2dappearance@autostart.service - Unity Indicator Appearance.
+жов 13 17:55:11 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gnome.zeitgeist.Engine' unit='zeitgeist.service' requested by ':1.225' (uid=1000 pid=7188 comm="/usr/bin/zeitgeist-datahub" label="unconfined")
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Starting zeitgeist.service - Zeitgeist activity log service...
+жов 13 17:55:11 mike-virtualbox systemd[1192]: Started app-uwidgets\x2drunner@autostart.service - UWidgets Runner.
+жов 13 17:55:11 mike-virtualbox indicator-sound[7202]: volume-control-pulse.vala:750: Unable to connect to dbus server at 'unix:path=/run/user/1000/pulse/dbus-socket': Не удалось подключиться: Нет такого файла или каталога
+жов 13 17:55:12 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gnome.zeitgeist.SimpleIndexer' unit='zeitgeist-fts.service' requested by ':1.226' (uid=1000 pid=7319 comm="/usr/bin/zeitgeist-daemon" label="unconfined")
+жов 13 17:55:12 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gnome.zeitgeist.Engine'
+жов 13 17:55:12 mike-virtualbox systemd[1192]: Started zeitgeist.service - Zeitgeist activity log service.
+жов 13 17:55:12 mike-virtualbox systemd[1192]: Starting zeitgeist-fts.service - Zeitgeist full-text search indexer...
+жов 13 17:55:12 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gnome.zeitgeist.SimpleIndexer'
+жов 13 17:55:12 mike-virtualbox systemd[1192]: Started zeitgeist-fts.service - Zeitgeist full-text search indexer.
+жов 13 17:55:12 mike-virtualbox pulseaudio[1244]: Failed to open connection to session manager: Could not open network socket
+жов 13 17:55:12 mike-virtualbox start-pulseaudio-x11[7330]: Произошла ошибка: Не удалось инициализировать модуль
+жов 13 17:55:12 mike-virtualbox pulseaudio[1244]: Failed to load module "module-x11-xsmp" (argument: "display=:0 xauthority=/home/mike/.Xauthority session_manager=local/mike-virtualbox:@/tmp/.ICE-unix/2247,unix/mike-virtualbox:/tmp/.ICE-unix/2247"): initialization failed.
+жов 13 17:55:12 mike-virtualbox uwidgets-runner[7245]: No widgets found.
+жов 13 17:55:12 mike-virtualbox zeitgeist-datahub[7332]: zeitgeist-datahub.vala:227: Unable to get name "org.gnome.zeitgeist.datahub" on the bus!
+жов 13 17:55:12 mike-virtualbox systemd[1192]: app-pulseaudio@autostart.service: Main process exited, code=exited, status=1/FAILURE
+жов 13 17:55:12 mike-virtualbox systemd[1192]: app-pulseaudio@autostart.service: Failed with result 'exit-code'.
+жов 13 17:55:12 mike-virtualbox indicator-datet[7191]: could not find the desktop file for 'org.gnome.Calendar.desktop'
+жов 13 17:55:12 mike-virtualbox indicator-datet[7191]: Unrecognized TZID: 'Etc/Utc'
+жов 13 17:55:12 mike-virtualbox indicator-datet[7191]: Unrecognized TZID: 'Etc/Utc'
+жов 13 17:55:12 mike-virtualbox indicator-datet[7191]: Unrecognized TZID: 'Etc/Utc'
+жов 13 17:55:13 mike-virtualbox gnome-keyring-daemon[2142]: The PKCS#11 component was already initialized
+жов 13 17:55:13 mike-virtualbox gnome-keyring-daemon[2142]: The PKCS#11 component was already initialized
+жов 13 17:55:13 mike-virtualbox gnome-keyring-daemon[7470]: discover_other_daemon: 1
+жов 13 17:55:13 mike-virtualbox gnome-keyring-pkcs11.desktop[7470]: discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+жов 13 17:55:13 mike-virtualbox gnome-keyring-daemon[2142]: The Secret Service was already initialized
+жов 13 17:55:13 mike-virtualbox gnome-keyring-daemon[2142]: The Secret Service was already initialized
+жов 13 17:55:13 mike-virtualbox gnome-keyring-secrets.desktop[7482]: discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+жов 13 17:55:13 mike-virtualbox gnome-keyring-daemon[7482]: discover_other_daemon: 1
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: OpenGL vendor string:   VMware, Inc.
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: OpenGL renderer string: SVGA3D; build: RELEASE;  LLVM;
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: OpenGL version string:  4.1 (Compatibility Profile) Mesa 26.0.8-1ubuntu0.3
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: Not software rendered:    yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: Not blacklisted:          yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GLX fbconfig:             yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GLX texture from pixmap:  yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GL npot or rect textures: yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GL vertex program:        yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GL fragment program:      yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GL vertex buffer object:  yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GL framebuffer object:    yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: GL version is 1.4+:       yes
+жов 13 17:55:13 mike-virtualbox compiz-profile-selector[7301]: Unity 3D supported:       yes
+жов 13 17:55:13 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Monitoring connection :1.161 closed.
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Connection :1.248 (uid=1000 pid=7524 comm="dbus-monitor --session interface=org.cinnamon.Muff" label="unconfined") became a monitor.
+жов 13 17:55:14 mike-virtualbox compiz-profile-selector[7274]: Using compiz profile 'ubuntu:unity'
+жов 13 17:55:14 mike-virtualbox compiz-profile-selector[7531]: dbus-update-activation-environment: setting COMPIZ_CONFIG_PROFILE=ubuntu
+жов 13 17:55:14 mike-virtualbox compiz-profile-selector[7532]: dbus-update-activation-environment: setting UNITY_HAS_3D_SUPPORT=true
+жов 13 17:55:14 mike-virtualbox compiz-profile-selector[7537]: dbus-update-activation-environment: setting UNITY_DEFAULT_PROFILE=unity
+жов 13 17:55:14 mike-virtualbox a11y-profile-manager-indicator[7210]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:55:14 mike-virtualbox fcitx-qimpanel-autostart[7215]: Fcitx seems is not running
+жов 13 17:55:14 mike-virtualbox nm-applet[7222]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gtk.vfs.UDisks2VolumeMonitor' unit='gvfs-udisks2-volume-monitor.service' requested by ':1.239' (uid=1000 pid=7227 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+жов 13 17:55:14 mike-virtualbox systemd[1192]: Starting gvfs-udisks2-volume-monitor.service - Virtual filesystem service - disk device monitor...
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gtk.vfs.UDisks2VolumeMonitor'
+жов 13 17:55:14 mike-virtualbox systemd[1192]: Started gvfs-udisks2-volume-monitor.service - Virtual filesystem service - disk device monitor.
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gtk.vfs.MTPVolumeMonitor' unit='gvfs-mtp-volume-monitor.service' requested by ':1.239' (uid=1000 pid=7227 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+жов 13 17:55:14 mike-virtualbox systemd[1192]: Starting gvfs-mtp-volume-monitor.service - Virtual filesystem service - Media Transfer Protocol monitor...
+жов 13 17:55:14 mike-virtualbox nemo-desktop[7221]: Current gtk theme is not known to have nemo support (Yaru) - checking...
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gtk.vfs.MTPVolumeMonitor'
+жов 13 17:55:14 mike-virtualbox systemd[1192]: Started gvfs-mtp-volume-monitor.service - Virtual filesystem service - Media Transfer Protocol monitor.
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gtk.vfs.GoaVolumeMonitor' unit='gvfs-goa-volume-monitor.service' requested by ':1.239' (uid=1000 pid=7227 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+жов 13 17:55:14 mike-virtualbox systemd[1192]: Starting gvfs-goa-volume-monitor.service - Virtual filesystem service - GNOME Online Accounts monitor...
+жов 13 17:55:14 mike-virtualbox spice-vdagent[7534]: vdagent virtio channel /dev/virtio-ports/com.redhat.spice.0 does not exist, exiting
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gtk.vfs.GoaVolumeMonitor'
+жов 13 17:55:14 mike-virtualbox systemd[1192]: Started gvfs-goa-volume-monitor.service - Virtual filesystem service - GNOME Online Accounts monitor.
+жов 13 17:55:14 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gtk.vfs.GPhoto2VolumeMonitor' unit='gvfs-gphoto2-volume-monitor.service' requested by ':1.239' (uid=1000 pid=7227 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Starting gvfs-gphoto2-volume-monitor.service - Virtual filesystem service - digital camera monitor...
+жов 13 17:55:15 mike-virtualbox zeitgeist-datahub[7188]: zeitgeist-datahub.vala:210: Error during inserting events: GDBus.Error:org.gnome.zeitgeist.EngineError.InvalidArgument: Incomplete event: interpretation, manifestation and actor are required
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Stopping unity-session.service - Unity Session Manager...
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7539]: compizconfig - Info: Backend     : gsettings
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7539]: compizconfig - Info: Integration : true
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7539]: compizconfig - Info: Profile     : unity
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7539]: We're already using profile 'unity', no need to switch
+жов 13 17:55:15 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gtk.vfs.GPhoto2VolumeMonitor'
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Started gvfs-gphoto2-volume-monitor.service - Virtual filesystem service - digital camera monitor.
+жов 13 17:55:15 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='org.gtk.vfs.AfcVolumeMonitor' unit='gvfs-afc-volume-monitor.service' requested by ':1.239' (uid=1000 pid=7227 comm="/usr/lib/unity-settings-daemon/unity-fallback-moun" label="unconfined")
+жов 13 17:55:15 mike-virtualbox cinnamon-session[7204]: cinnamon-session-binary[7204]: WARNING: t+2.69847s: Application 'xapp-sn-watcher.desktop' killed by signal 15
+жов 13 17:55:15 mike-virtualbox cinnamon-session-binary[7204]: WARNING: t+2.69847s: Application 'xapp-sn-watcher.desktop' killed by signal 15
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Starting gvfs-afc-volume-monitor.service - Virtual filesystem service - Apple File Conduit monitor...
+жов 13 17:55:15 mike-virtualbox zeitgeist-datahub[7188]: zeitgeist-datahub.vala:210: Error during inserting events: GDBus.Error:org.gnome.zeitgeist.EngineError.InvalidArgument: Incomplete event: interpretation, manifestation and actor are required
+жов 13 17:55:15 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'org.gtk.vfs.AfcVolumeMonitor'
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Started gvfs-afc-volume-monitor.service - Virtual filesystem service - Apple File Conduit monitor.
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7623]: compizconfig - Info: Backend     : gsettings
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7623]: compizconfig - Info: Integration : true
+жов 13 17:55:15 mike-virtualbox compiz-profile-selector[7623]: compizconfig - Info: Profile     : unity
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Started unity7.service - Unity Shell v7.
+жов 13 17:55:15 mike-virtualbox systemd[1192]: Starting unity-panel-service.service - Backing Service for the Unity Panel...
+жов 13 17:55:15 mike-virtualbox zeitgeist-datahub[7188]: zeitgeist-datahub.vala:210: Error during inserting events: GDBus.Error:org.gnome.zeitgeist.EngineError.InvalidArgument: Incomplete event: interpretation, manifestation and actor are required
+жов 13 17:55:15 mike-virtualbox indicator-appli[7665]: Unable to get watcher name 'org.kde.StatusNotifierWatcher'
+жов 13 17:55:15 mike-virtualbox indicator-appli[7665]: Name Lost
+жов 13 17:55:15 mike-virtualbox update-notifier[7235]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:55:15 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: core
+жов 13 17:55:15 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: core
+жов 13 17:55:15 mike-virtualbox systemd-prestart-check[7718]: grep: /usr/share/gnome-session/sessions/ubuntu.session: Нет такого файла или каталога
+жов 13 17:55:16 mike-virtualbox systemd[1192]: Started unity-panel-service.service - Backing Service for the Unity Panel.
+жов 13 17:55:16 mike-virtualbox zeitgeist-datahub[7674]: zeitgeist-datahub.vala:227: Unable to get name "org.gnome.zeitgeist.datahub" on the bus!
+жов 13 17:55:16 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: ccp
+жов 13 17:55:16 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: ccp
+жов 13 17:55:16 mike-virtualbox unity-settings-daemon[7205]: failed to get edid: unable to get EDID for output
+жов 13 17:55:16 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: composite
+жов 13 17:55:16 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: composite
+жов 13 17:55:17 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: opengl
+жов 13 17:55:17 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: opengl
+жов 13 17:55:17 mike-virtualbox light-locker[7672]: хранитель экрана уже запущен в данной сессии
+жов 13 17:55:17 mike-virtualbox unity-indicator-appearance[7239]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:55:17 mike-virtualbox compiz[7661]: /usr/bin/Compiz (opengl) - Info: GLX_EXT_buffer_age is supported
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: place
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: place
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: regex
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: regex
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: resize
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: resize
+жов 13 17:55:18 mike-virtualbox unity-settings-daemon[7205]: unable to get EDID for xrandr-Virtual-1: unable to get EDID for output
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: session
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: session
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: snap
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: snap
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: vpswitch
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: vpswitch
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: wall
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: wall
+жов 13 17:55:18 mike-virtualbox onboard[7225]: 17:55:18.570 WARNING Config: mousetweaks GSettings schema not found, mousetweaks integration disabled.
+жов 13 17:55:18 mike-virtualbox nemo-desktop[7221]: nemo-desktop: session is not cinnamon (checked XDG_SESSION_DESKTOP,DESKTOP_SESSION environment variables.) Applying default behavior
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: animation
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: animation
+жов 13 17:55:18 mike-virtualbox fcitx-qimpanel-autostart.desktop[7668]: Fcitx seems is not running
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: compiztoolbox
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: compiztoolbox
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: fade
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: fade
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: grid
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: grid
+жов 13 17:55:18 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:18 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:18 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: imgpng
+жов 13 17:55:18 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:18 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: imgpng
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: mousepoll
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: mousepoll
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: move
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: move
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: scale
+жов 13 17:55:18 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: scale
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: workarounds
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: workarounds
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: expo
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: expo
+жов 13 17:55:19 mike-virtualbox nemo-desktop[7221]: Current gtk theme is not known to have nemo support (Yaru-dark) - checking...
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: ezoom
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: ezoom
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: switcher
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: switcher
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Loading plugin: unityshell
+жов 13 17:55:19 mike-virtualbox compiz[7661]: /usr/bin/compiz (core) - Info: Starting plugin: unityshell
+жов 13 17:55:19 mike-virtualbox compiz[7661]: compizconfig - Info: Backend     : gsettings
+жов 13 17:55:19 mike-virtualbox compiz[7661]: compizconfig - Info: Integration : true
+жов 13 17:55:19 mike-virtualbox compiz[7661]: compizconfig - Info: Profile     : unity
+жов 13 17:55:19 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:19 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'org.gnome.Shell' yet as we don't have a connection, waiting for it...
+жов 13 17:55:20 mike-virtualbox nemo-desktop[7221]: Action '90_new-launcher.nemo_action' is missing dependency: cinnamon-desktop-editor
+жов 13 17:55:20 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:20 unity.debug.interface DebugDBusInterface.cpp:217 Unable to load entry point in libxpathselect: libxpathselect.so.1.4: невозможно открыть разделяемый объектный файл: Нет такого файла или каталога -- full D-Bus introspection will not be available
+жов 13 17:55:20 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:20 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'org.gnome.SessionManager.EndSessionDialog' yet as we don't have a connection, waiting for it...
+жов 13 17:55:20 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:20 xim.controller XIMController.cpp:103 IBus natively supported.
+жов 13 17:55:20 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:20 unity.dash.gsettingsscopereader GSettingsScopes.cpp:108 Error fetching protocol metadata for scope: social.scope : В каталогах поиска не удалось найти действительный файл ключей
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:20 mike-virtualbox bamfdaemon[6828]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 17:55:21 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:21 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'com.canonical.Unity.Launcher' yet as we don't have a connection, waiting for it...
+жов 13 17:55:21 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:21 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'com.canonical.Unity.Dash' yet as we don't have a connection, waiting for it...
+жов 13 17:55:22 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:22 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'com.canonical.Unity.Session' yet as we don't have a connection, waiting for it...
+жов 13 17:55:22 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:22 unity.glib.dbus.server GLibDBusServer.cpp:595 Can't register object 'org.gnome.ScreenSaver' yet as we don't have a connection, waiting for it...
+жов 13 17:55:22 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Activating via systemd: service name='com.canonical.hud' unit='hud.service' requested by ':1.271' (uid=1000 pid=7661 comm="/usr/bin/compiz" label="unconfined")
+жов 13 17:55:23 mike-virtualbox systemd[1192]: Starting hud.service - Unity HUD...
+жов 13 17:55:23 mike-virtualbox compiz[7661]: ERROR 2026-10-13 17:55:23 unity.glib.dbus.server GLibDBusServer.cpp:540 DBus name lost 'org.gnome.Shell'
+жов 13 17:55:23 mike-virtualbox compiz[7661]: ERROR 2026-10-13 17:55:23 unity.glib.dbus.server GLibDBusServer.cpp:540 DBus name lost 'com.canonical.Unity'
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox compiz[7661]: WARN  2026-10-13 17:55:23 unity.key.gnome.grabber GnomeKeyGrabber.cpp:108 Trying to grab a disabled action, we skip it
+жов 13 17:55:23 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Successfully activated service 'com.canonical.hud'
+жов 13 17:55:23 mike-virtualbox systemd[1192]: Started hud.service - Unity HUD.
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Unable to fetch children: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x71db2c00bf10» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Failed to fetch path: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x71db2c00bf10» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Unable to fetch children: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x71db2c00a670» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Failed to fetch path: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x71db2c00a670» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Unable to fetch children: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x71db2c00a7d0» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Failed to fetch path: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x71db2c00a7d0» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Unable to fetch children: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x591efea4aa90» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Failed to fetch path: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x591efea4aa90» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Unable to fetch children: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x591efe9a0620» не существует
+жов 13 17:55:23 mike-virtualbox unity-panel-service[7725]: Failed to fetch path: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/application/0x591efe9a0620» не существует
+жов 13 17:55:23 mike-virtualbox onboard[7225]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:55:23 mike-virtualbox hud-service[8558]: Attempt to remove window 20971526 from non-existent application "20971526"
+жов 13 17:55:23 mike-virtualbox hud-service[8558]: Attempt to remove window 20971525 from non-existent application "20971525"
+жов 13 17:55:23 mike-virtualbox hud-service[8558]: Attempt to remove window 20971524 from non-existent application "20971524"
+жов 13 17:55:23 mike-virtualbox hud-service[8558]: Attempt to remove window 20971523 from non-existent application "20971523"
+жов 13 17:55:23 mike-virtualbox hud-service[8558]: Attempt to remove window 20971522 from non-existent application "20971522"
+жов 13 17:55:25 mike-virtualbox update-notifier[7235]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:55:25 mike-virtualbox update-notifier[7235]: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+жов 13 17:56:15 mike-virtualbox update-notifier[8880]: already running?
+жов 13 17:56:34 mike-virtualbox dbus-daemon[1249]: [session uid=1000 pid=1249 pidfd=5] Failed to activate service 'org.freedesktop.portal.IBus': timed out (service_start_timeout=120000ms)
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: State 'stop-sigterm' timed out. Killing.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: Killing process 7204 (cinnamon-sessio) with signal SIGKILL.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: Killing process 8783 (applet.py) with signal SIGKILL.
+жов 13 17:56:45 mike-virtualbox pulseaudio[1244]: ICE I/O error handler called
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: Main process exited, code=killed, status=9/KILL
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: Failed with result 'timeout'.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: Stopped unity-session.service - Unity Session Manager.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: unity-session.service: Consumed 1.832s CPU time over 1min 35.258s wall clock time, 38M memory peak.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: Started unity-session.service - Unity Session Manager.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: Reached target unity-session.target - User systemd services for the Unity graphical session.
+жов 13 17:56:45 mike-virtualbox systemd[1192]: Reached target xdg-desktop-autostart.target - Startup of XDG autostart applications.
+жов 13 17:56:45 mike-virtualbox unity-settings-daemon[7205]: unable to get EDID for xrandr-Virtual-1: unable to get EDID for output
+жов 13 17:56:45 mike-virtualbox gnome-keyring-daemon[2142]: The Secret Service was already initialized
+жов 13 17:56:45 mike-virtualbox gnome-keyring-daemon[2142]: The Secret Service was already initialized
+жов 13 17:56:45 mike-virtualbox gnome-keyring-daemon[8917]: discover_other_daemon: 1
+жов 13 17:56:45 mike-virtualbox gnome-keyring-secrets.desktop[8917]: discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+жов 13 17:56:45 mike-virtualbox gnome-keyring-daemon[2142]: The PKCS#11 component was already initialized
+жов 13 17:56:45 mike-virtualbox gnome-keyring-pkcs11.desktop[8918]: discover_other_daemon: 1GNOME_KEYRING_CONTROL=/run/user/1000/keyring
+жов 13 17:56:45 mike-virtualbox gnome-keyring-daemon[2142]: The PKCS#11 component was already initialized
+жов 13 17:56:45 mike-virtualbox gnome-keyring-daemon[8918]: discover_other_daemon: 1
+жов 13 17:56:45 mike-virtualbox spice-vdagent[8935]: vdagent virtio channel /dev/virtio-ports/com.redhat.spice.0 does not exist, exiting
+жов 13 17:56:45 mike-virtualbox zeitgeist-datahub[7188]: zeitgeist-datahub.vala:210: Error during inserting events: GDBus.Error:org.gnome.zeitgeist.EngineError.InvalidArgument: Incomplete event: interpretation, manifestation and actor are required
+жов 13 17:56:45 mike-virtualbox zeitgeist-datahub[7188]: zeitgeist-datahub.vala:210: Error during inserting events: GDBus.Error:org.gnome.zeitgeist.EngineError.InvalidArgument: Incomplete event: interpretation, manifestation and actor are required
+жов 13 17:56:45 mike-virtualbox indicator-appli[8943]: Name Lost
+жов 13 17:56:45 mike-virtualbox zeitgeist-datahub[8946]: zeitgeist-datahub.vala:227: Unable to get name "org.gnome.zeitgeist.datahub" on the bus!
+жов 13 17:56:45 mike-virtualbox light-locker[8945]: хранитель экрана уже запущен в данной сессии
+жов 13 17:56:48 mike-virtualbox fcitx-qimpanel-autostart.desktop[8944]: Fcitx seems is not running

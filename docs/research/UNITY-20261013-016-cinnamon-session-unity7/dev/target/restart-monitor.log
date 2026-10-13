@@ -1,0 +1,8 @@
+signal time=1791903314.019818 sender=org.freedesktop.DBus -> destination=:1.248 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.248"
+signal time=1791903314.019866 sender=org.freedesktop.DBus -> destination=:1.248 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.248"
+method call time=1791903316.079861 sender=:1.231 -> destination=:1.242 serial=96 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 300000
+method call time=1791903405.551533 sender=:1.283 -> destination=:1.242 serial=78 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=AddIdleWatch
+   uint64 300000

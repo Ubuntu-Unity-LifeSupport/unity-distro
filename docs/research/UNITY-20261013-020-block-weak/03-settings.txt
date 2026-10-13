@@ -1,0 +1,35 @@
+== logind effective (non-comment lines):
+[Login]
+[Login]
+InhibitDelayMaxSec=30
+(end)
+== logind properties:
+Failed to get property LidSwitchIgnoreInhibited on interface org.freedesktop.login1.Manager: Unknown interface org.freedesktop.login1.Manager or property LidSwitchIgnoreInhibited.
+s "suspend"
+== u-s-d power settings:
+  button-power = Ключ «button-power» отсутствует
+  button-suspend = Ключ «button-suspend» отсутствует
+  button-sleep = Ключ «button-sleep» отсутствует
+  button-hibernate = Ключ «button-hibernate» отсутствует
+  critical-battery-action = Ключ «critical-battery-action» отсутствует
+  sleep-inactive-ac-type = 'suspend'
+  sleep-inactive-ac-timeout = 0
+  sleep-inactive-battery-type = 'suspend'
+  sleep-inactive-battery-timeout = 900
+== logind properties:
+  HandleLidSwitch s "suspend"
+  HandleLidSwitchExternalPower s ""
+  HandleSuspendKey s "suspend"
+  HandlePowerKey s "poweroff"
+  IdleAction s "ignore"
+  LidSwitchIgnoreInhibited (default, logind.conf(5)): #LidSwitchIgnoreInhibited=yes
+== power schemas: com.canonical.unity.settings-daemon.plugins.power org.cinnamon.settings-daemon.plugins.power org.gnome.settings-daemon.plugins.power 
+  com.canonical.unity.settings-daemon.plugins.power button-power = 'interactive'
+  com.canonical.unity.settings-daemon.plugins.power button-suspend = 'suspend'
+  com.canonical.unity.settings-daemon.plugins.power button-sleep = 'suspend'
+  com.canonical.unity.settings-daemon.plugins.power button-hibernate = 'hibernate'
+  com.canonical.unity.settings-daemon.plugins.power critical-battery-action = 'suspend'
+  org.cinnamon.settings-daemon.plugins.power button-power = 'suspend'
+  org.cinnamon.settings-daemon.plugins.power button-suspend = 'suspend'
+  org.cinnamon.settings-daemon.plugins.power button-hibernate = 'hibernate'
+  org.cinnamon.settings-daemon.plugins.power critical-battery-action = 'hibernate'

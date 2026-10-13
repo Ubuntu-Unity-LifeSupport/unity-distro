@@ -1,0 +1,8 @@
+== 17:51:46 gnome idle-delay set to 0 (never) while running, last input now
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+keys: gnome idle-delay=uint32 0 cinnamon idle-delay=uint32 600 lock-enabled=true lock-delay=uint32 0
+IdleHint=no
+LockedHint=no
+presence status: (<uint32 0>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 150465,)
