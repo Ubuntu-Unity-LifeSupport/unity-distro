@@ -157,8 +157,6 @@ panel (research/nocsd-gaps, gnome-tour). It was never measured on Pinta.
 - Upstream's maintainer has reworked it since: `092e184`, …, `b76f3fb`, `7f49f81`, `fd4b76a`.
 - `fd4b76a` still has the late-menu functions (Retry, Waited, Watch, FollowShown, ButtonMap, Fill, Put; around
   :4002-4350). Shaped became `GTKNoCSDMenuGrouping`, and the switch is `GTK_NOCSD_MENU`.
-- The project cards from that time say nothing was sent upstream. How the commits got there is not recorded in
-  this repository; UNKNOWN.
 
 **What we ship.** The shipped gtk-nocsd 4.8 has no menu code. Shipping upstream's means a 4.8+git snapshot:
 4.8..`fd4b76a` is 50 commits, +2313/−512 in GTK-NoCSD.c. Our series on its own sits on `6b1f70a`, 25 commits
