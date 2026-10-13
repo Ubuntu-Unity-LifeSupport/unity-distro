@@ -80,3 +80,28 @@ epiphany ended first, so each run starts the primary instance itself. 3 runs eac
 So it is gtk-nocsd 4.8-1+unity4, not unity-gtk4-menu. Most likely gtk-nocsd keeps the application object alive past
 the end of `main()`, so EphyShell is not finalized when epiphany asserts it is. This is not part of this task; it
 is reported to C. A session's logout sends SIGTERM, so an open epiphany would abort then.
+
+## Design review round 1 (Design Challenger, 2026-10-13): REVISE
+
+The direction was confirmed: keep the source, one idle per burst, edit our copy in place at the deepest changed
+level. The Challenger read GLib 2.88's `gmenuexporter.c`:
+- a changed position gets new links, a `submenu` link always a new group;
+- untouched positions keep their ids;
+- every `items-changed` sends one `Changed` at once.
+
+Blocking:
+- (1) a position-by-position comparison turns an insert or removal into a storm;
+- (2) a rebuild after the filling window or widget is gone loses the stand-ins and corrupts the copy;
+- (3) below depth 16 our copy links the application's own model, which `sync()` must never edit.
+
+Should:
+- (4) the other windows' stand-ins: only new names, each with its own owner;
+- (5) never watch our own menus;
+- (6) the idle's lifetime.
+
+Notes:
+- (7) relabelling an item whose submenu is open collapses that submenu, unavoidable with GMenu;
+- (8) with two windows only the first is followed;
+- (9) UNITY-20261013-024 rightly out.
+
+DESIGN.md round 2 answers each finding (its last table).

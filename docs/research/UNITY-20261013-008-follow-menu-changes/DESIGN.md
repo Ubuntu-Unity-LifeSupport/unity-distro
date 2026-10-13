@@ -1,15 +1,15 @@
 # UNITY-20261013-008 design: unity-gtk4-menu 0.13, follow changes of the menu found
 
-Agent B, 2026-10-13. Round 1, for the Design Challenger. No code exists.
+Agent B, 2026-10-13. **Round 2**, for the Design Challenger. Round 1 was REVISE (README, "Design review round 1");
+the table at the end says where each finding is answered. No code exists.
 
 **Scope (C, 2026-10-13).**
-- In scope: the items of the **same** model change after the first export (Nautilus's Undo relabel, README
-  "Measurement").
+- In scope: the items of the **same** model change after the first export (Nautilus's Undo relabel).
 - Not in scope:
-  - a different menu that shows later (Papers' document menu, UNITY-20261013-028, likely 0.14);
-  - a menubar the application sets after realize (UNITY-20261013-024, weighed at the end).
+  - a different menu that shows later (Papers, UNITY-20261013-028);
+  - a menubar the application sets after realize (UNITY-20261013-024, BACKLOG).
 
-**Constraints (C, carried from UNITY-20261012-004 round 3).**
+**Constraints (C).**
 - The one holder item is replaced in place: no `remove_all` storm.
 - Unchanged copies are skipped.
 - An open panel menu must not collapse while `items-changed` fires.
@@ -18,140 +18,175 @@ Agent B, 2026-10-13. Round 1, for the Design Challenger. No code exists.
 
 ## What 0.12 does
 
-- `look()` (:1208) finds the menu (`find_menu_model`) and copies it with `clean_model()` (:1002):
+- `look()` (:1208) copies the menu found with `clean_model()` (:1002):
   - a new `GMenu` per level;
   - `custom` items dropped;
-  - each item's actions given stand-ins where needed (`proxy_item` → `proxy_for`, which only adds a missing
-    action, :878);
-  - sections and submenus copied recursively, depth 16; an item whose link cleans to nothing is dropped.
-- It appends the copy's items to `rec->inner` and one holder item (`menu_label`, submenu `inner`) to
-  `rec->container`.
-- `container` and `inner` live as long as the record and are never replaced (:1058-1062).
-- The source model is not kept, and nothing watches it. So a change in the application's menu never reaches the
-  copy (Nautilus).
+  - stand-ins through `proxy_item`/`proxy_for`;
+  - sections and submenus recursed to depth 16, and an item whose link cleans to nothing dropped.
+- It appends the copy's items to `rec->inner` and one holder to `rec->container`. Both live as long as the record.
+- The source model is not kept or watched.
+
+**What the exporter does** (GLib 2.88 `gio/gmenuexporter.c`, read by the Challenger):
+- Every `items-changed` on a subscribed group sends one `Changed` at once.
+- A changed position gets new links:
+  - a `submenu` link always a **new group**, even for the same object;
+  - a `section` link a new menu id in the parent's group.
+- Untouched positions keep their ids.
+
+So what we must not touch is exactly what an open panel menu shows.
 
 ## The change
 
 ### 1. Keep the source and watch it
 
-- The record keeps, after a fill:
-  - `rec->source`, a reference to the model the copy was made from;
-  - `rec->owner`, a weak pointer to the widget it came from;
-  - `rec->window`, a weak pointer to the window that filled it. Its action map gets the stand-ins.
-- `watch()` connects `items-changed` on `source` and on every section and submenu model reachable from it, to the
-  depth `clean_model` copies (16).
-- The handlers and a reference to each model are kept in one list on the record, so they can be disconnected
-  exactly.
+- **When:** in `look()`, after a fill, so the fill at realize and the late fill share one path. The OURS_FILLED
+  branch for a further window does not watch again.
+- **What the record keeps:**
+  - `rec->source`, a reference to the model copied;
+  - `rec->owner` and `rec->window`, weak pointers: the widget the menu came from and the window that filled.
+- **`watch()`:** connects `items-changed` on `source` and on every `section` and `submenu` model reachable from it,
+  to the depth `clean_model` recurses (16).
+  - It keeps a reference and the handler id of each model in one list on the record.
+  - It **skips `rec->container` and `rec->inner`**, and any model already in the list.
+  - It never watches our copy (round-1 #5).
 
 ### 2. One rebuild per burst
 
-- Every `items-changed` of a watched model only schedules **one idle** per record (`rec->rebuild_idle`).
-  Further signals before it runs add nothing.
-- The idle does the following:
-  1. **Drops** every watch (`unwatch()`), because a change can replace any section or submenu object.
-  2. **Copies** `source` again with `clean_model`, in the same scope (`owner`, the window's action map). If the
-     window is gone, the scope's map is NULL, as for a non-application window today.
-  3. **Applies** the new copy to `inner` (3.), then watches the source again.
-- No timer: the idle runs once per main-loop turn at the most. A model changed on every frame (none is known)
-  would cost one rebuild per turn; see question 3.
+- A watched `items-changed` schedules at most **one idle** per record (`rec->rebuild_idle`). It is ignored while
+  `rec->syncing` is set, which `sync()` sets (round-1 #5).
+- The idle:
+  1. sets `rebuild_idle = 0` and takes a reference on the application;
+  2. continues only if the state is still OURS_FILLED (round-1 #6);
+  3. stops following, if the weak `owner` or `window` is gone: unwatch, drop `source`, and log once "the menu's
+     window or widget is gone; the menu is no longer followed". The copy stays as it is (round-1 #2).
+     Following a different menu is UNITY-20261013-028;
+  4. otherwise unwatches, copies `source` again with `clean_model` in the same scope, `sync()`s it into `inner`,
+     watches again, and releases the reference.
+- No timer and no rate limit: one rebuild per main-loop turn at most. Every rebuild bumps a counter in the log
+  line ("menu changed (rebuild N): K item(s) replaced").
 
-### 3. Apply the new copy in place, at the deepest level that changed
+### 3. `sync()`: apply the new copy in place, at the deepest level that changed
 
-`sync(GMenu *ours, GMenuModel *new)` walks the two menus position by position:
-- **Same item.** Same attributes (label, action, target, icon, accel and every other attribute, compared as
-  GVariants) and the same link kinds:
-  - the item is kept;
-  - for each link, `sync()` recurses into our own copy's linked `GMenu`. Our copy is always a `GMenu` made by
-    `clean_model`, so it can be edited.
-- **Different item:** it is replaced at that position. One `g_menu_remove()` and one `g_menu_insert_item()`
-  happen at that index, the only `items-changed` pair for it.
-- **Extra positions:** removed from the end of ours or appended from the new copy.
+`sync(GMenu *ours, GMenuModel *new, int depth)`:
+1. **Common prefix and suffix.** Equal items at the start and at the end (`same_item()`, below) are kept. For
+   each of them, `sync()` recurses into each link whose object is a `GMenu` of our copy (depth < 16).
+2. **The middle.**
+   - **Old and new middles of the same length:** they are compared item by item. An equal item is kept and
+     recursed into; a different one is replaced at its position (`g_menu_remove` + `g_menu_insert_item`).
+   - **Different lengths:** the old middle is removed and the new middle inserted.
 
-So:
-- **Nothing changed:** no `items-changed` on our side at all. This is the "skip unchanged copies" requirement. A
-  burst that changes and then restores a label emits nothing.
-- **Nautilus's relabel:** only the Undo item in its section of `inner` is replaced. `container`, the holder and
-  `inner` keep their identity, and so do the other sections.
-- **An open menu on the panel:** the menu shown (`inner` or a deeper submenu) is never replaced unless its own
-  item changed. The panel's subscription to that group stays. Whether the panel's open popup survives an item
-  replaced inside it is measured on target (test 4); that is the constraint's real check.
-- **Holder label:** the holder is never touched. The application's name does not change.
+   An insert or a removal therefore touches only the items in between (round-1 #1). A section that cleans to
+   nothing and is dropped is a removal like any other.
+3. **`same_item()`:**
+   - the same set of attribute names, each equal by `g_variant_equal` (all attributes, round-1 Q2);
+   - the same set of link names.
+   - The linked objects are not compared here. Their contents are synced by the recursion.
+4. **Depth 16 and other link names.** At depth 16 or more, and for links other than `section` and `submenu`,
+   `g_menu_item_new_from_model` has copied the application's own link object (:1021). There `sync()` compares the
+   link objects by pointer and replaces the item if they differ. It never edits a model that is not one of our
+   copies (round-1 #3). Our copies are tracked in a set filled by `clean_model`, so "is ours" is a lookup, not an
+   assumption.
+5. **No change, no signal.** A burst that ends where it began emits nothing.
+
+**Accepted cost, documented (round-1 #7):** relabelling an item whose own submenu is open collapses that
+submenu, because the replaced item's submenu link gets a new group. GMenu has no way to change an item's
+attributes in place. Siblings and other submenus are untouched.
 
 ### 4. When watching stops
 
-- **TAKEN** (`go_taken`): unwatch, drop the idle, release `source`.
-- **The record freed** (the application finalized): the same, in `record_free`. The handlers die with the models
-  anyway, but they are disconnected first so that no handler runs with a freed record.
-- **The source's owner widget is destroyed:** the copy stays as it is, and the source reference keeps the model
-  valid, so a late signal still finds a model. Following a *different* model is UNITY-20261013-028.
+- **`go_taken` and `record_free`:** remove the idle, unwatch, and drop `source` (round-1 #6).
+- **The window or widget gone at a rebuild:** step 2.3.
+- The watch list's references keep each model alive while it is watched, so the finalization order is safe.
 
-### 5. Stand-ins
+### 5. Stand-ins (round-1 #4, Q4)
 
-- The rebuild runs `proxy_item` again for the filling window. New actions in changed items get their stand-ins;
-  existing ones are found and kept (`proxy_for` :878).
-- Other application windows got their stand-ins at their own realize (:1475-1495). The rebuild repeats that for
-  each `GtkApplicationWindow` of the application (`gtk_application_get_windows`), with a copy made only for its
-  stand-ins, as at realize.
-- A stand-in whose item is gone stays in the window's action map, unreachable from the menu. It is harmless,
-  and 0.12 never removes one either.
+- The rebuild's `clean_model` runs `proxy_item` for the filling window, as at the fill.
+- **The other windows.** The set of action names in the new copy is compared with the old one. For names that are
+  new, every other `GtkApplicationWindow` of the application (`gtk_application_get_windows`) gets
+  `proxy_for(name, its_owner, its_map)`:
+  - `its_owner` is that window's own menu widget, found with `find_menu_model` on it, as at its realize.
+  - A window without one gets none, as today.
+  - No full copy per window.
 
 ### New symbols through RESOLVE
 
-- `g_signal_connect_data` and `g_signal_handler_disconnect` (already resolved);
-- `g_menu_remove`, `g_menu_insert_item`;
-- `g_menu_model_iterate_item_attributes` with `g_menu_attribute_iter_get_next`, for the attribute comparison;
+- `g_menu_remove` and `g_menu_insert_item`;
+- `g_menu_model_iterate_item_attributes`, `g_menu_attribute_iter_get_next`, `g_menu_model_iterate_item_links`,
+  `g_menu_link_iter_get_next`;
 - `g_variant_equal`;
-- `gtk_application_get_windows`.
+- `gtk_application_get_windows`;
+- `g_hash_table_*` for the set of our copies, unless a list on the record is enough.
 
 Fail-closed as today.
 
 ## Tests
 
-1. **latetest case 13 (Xvfb).** An application window with a menu at realize. A section item is relabelled, then
-   another item added, then the change undone. Checks:
-   - the application's menubar and a subscribed `GDBusMenuModel` client see each state;
-   - `container`, the holder and `inner` are the same objects;
-   - the `items-changed` emissions on `inner`, counted by the test, are exactly 2 for the relabel (one remove, one
-     insert at that position) and 0 for a change that restores the previous state within one burst;
-   - the log has the new "menu changed; N item(s) replaced" line.
-2. **latetest case 14:** a burst of 100 changes in one main-loop turn gives one rebuild (log) and at most one
-   replaced item per changed position.
-3. **latetest case 15:** TAKEN after a fill stops the watch. A later `items-changed` on the old source rebuilds
-   nothing (log), and no handler runs after the application is finalized (G_DEBUG=fatal-criticals, valgrind
-   optional).
-4. **target2, Nautilus.** A rename, through `research/nocsd-gaps/tests/naut.sh` over D-Bus and by keys, makes the
-   export show "Отменить переименование", judged by `menudump.py`. Then the HUD returns it for "переим".
-5. **target2, an open panel menu.** A small test application relabels one item of its menu every 2 s. The
-   holder is opened with Alt+F10 and left open for 10 s. Judged by events:
-   - the popup stays mapped (popwatch.sh);
-   - the panel's entry keeps its id (Sync);
-   - after Escape and Alt+F10 again, the label is the latest one.
-6. **Regression.** latetest 1-12 (both preload forms); order-0.9.sh unchanged; Pinta (filled late, then its menu
-   follows its own changes, e.g. Undo enabled after a stroke); the UNITY-20261012-003 set by events.
-7. **Control.** Cases 13-15 and target tests 4-5 against 0.12, which must fail 13 and 4 (stale) and show no
-   rebuild.
+latetest, Xvfb, both preload forms, `G_DEBUG=fatal-criticals`; a counter of `items-changed` connected by the test
+to the models it names; a D-Bus client that records `Changed` signals.
 
-## Questions for the Challenger
+- **13. Relabel in a section.**
+  - `items-changed` on that section's GMenu: 2; on `inner` and `container`: 0.
+  - `Changed` on D-Bus: exactly 2, for that section's group and menu ids.
+  - A new `Start` shows unchanged ids for every untouched section and submenu.
+  - The label reaches the client.
+- **14.**
+  - An insert at position 0, an insert in the middle and a removal touch only the changed items.
+  - A burst of 100 changes gives one rebuild.
+  - A change that is undone in the same burst emits nothing.
+- **15.** A section link switched to a new model object: a change on the old object does nothing, one on the new
+  one rebuilds.
+- **16.** A section that cleans to nothing, then becomes non-empty again.
+- **17.** The filling window closed while another stays, then a change: no rebuild, one log line, the copy
+  unchanged.
+- **18.** The owner destroyed with an idle pending, and the application quit in the same turn as a change: no
+  critical, no handler after finalize (also under valgrind).
+- **19.** A model nested deeper than 16 levels changed below 16: the application's model is not edited, the item
+  is replaced.
+- **20.** A second window: a new action in a changed item gets its stand-in in that window's map, pointing at
+  its own owner.
+- **21.** An application that never changes its menu: 0 rebuilds over the run. A rebuild of a 200-item model,
+  timed.
+- **Target 4, Nautilus:**
+  - a rename (`research/nocsd-gaps/tests/naut.sh` and by keys) shows "Отменить переименование" in the export
+    (`menudump.py`), and the HUD finds it;
+  - with two windows, a rename in each, to document what follows and what does not.
+- **Target 5, an open panel menu.** A test application changes its menu every 2 s while a panel menu is open,
+  judged by events:
+  - popwatch: the popup stays mapped;
+  - Sync: the entry keeps its id;
+  - after reopening, the latest label.
+  - **First the oracle:** the same application doing `remove_all` and re-adding must make popwatch report the
+    collapse. Only then does a pass mean something.
+  - Cases:
+    - (a) the holder's menu open, a sibling item relabelled;
+    - (b) a submenu open, an item inside it relabelled;
+    - (c) a submenu open, an item outside it relabelled.
+    - (b) collapses by the accepted cost above only if that submenu's own item changed, not an item inside it.
+- **Regression:**
+  - latetest 1-12;
+  - order-0.9.sh unchanged;
+  - Pinta (filled late, then Undo enabled after a stroke reaches the panel);
+  - the UNITY-20261012-003 set by events.
+- **Control:** 0.12 fails 13 and target 4 (stale). Target 5 has no control, since 0.12 never edits the copy; the
+  oracle replaces it.
 
-1. Is the deepest-level in-place `sync()` right, against the simpler "replace the changed top-level item of
-   `inner`"? The simpler form replaces a whole section when one label in it changes.
-2. Attribute comparison: compare all attributes, or label, action, target and accel only? Icons are
-   GVariant-serialised GIcons and compare fine with `g_variant_equal`.
-3. Is an idle per burst enough, or should a rebuild be rate-limited (it would need a timer)? I know of no
-   application that changes its menu continuously.
-4. The other windows' stand-ins: repeat them on every rebuild (my proposal), or only when a new action appears?
+## Round-1 findings and where they are answered
+
+| # | finding | answer |
+|---|---|---|
+| 1 | positional compare storms on insert/remove | 3.1-3.2: prefix/suffix trim, only the middle edited; tests 14, 16 |
+| 2 | a rebuild after the window or widget is gone corrupts the copy | 2.3: no rebuild, unwatch, log once; test 17 |
+| 3 | below depth 16 our copy links the application's model | 3.4: pointer compare and replace there, ours tracked in a set; test 19 |
+| 4 | the other windows' stand-ins | 5: only new names, each window's own owner, no copy; test 20 |
+| 5 | watching our own menus | 1: skip container/inner and listed models; 2: `syncing` flag |
+| 6 | the idle's lifetime | 2.1-2.2 and 4; the watch starts in `look()` |
+| 7 | relabelling an item whose submenu is open collapses it | 3, documented as an accepted cost; target 5(b) |
+| 8 | with two windows only the first is followed | known limit, linked to UNITY-20261013-028; target 4 documents it |
+| 9 | UNITY-20261013-024 out of 0.13 | kept out; BACKLOG |
 
 ## UNITY-20261013-024 (a menubar the application sets after realize), weighed
 
-The idea is "put the application's menubar into our container" instead of releasing ours.
-- **What GTK does.** When the application sets its menubar, GTK unexports ours and exports the application's at
-  the same path (UNITY-20261013-023).
-- **What keeping ours would take.** Ours would have to stay exported, so we would have to set our container back
-  as the application's menubar.
-  - The application's own `gtk_application_get_menubar()` would then return our container, not its model.
-  - That changes the application's view of itself, for example GtkApplicationWindow's in-window menubar when the
-    shell shows none.
-- **The other route.** Making the panel subscribe again belongs to unity.
-
-So it is not a cheap extension of `sync()` and is left out of 0.13. The survey (logs/02) decides whether
-UNITY-20261013-024 stays BACKLOG.
+Putting the application's menubar into our container would need our container set back as the application's
+menubar. That changes the application's own `gtk_application_get_menubar()`, and GTK's in-window menubar when the
+shell shows none. Making the panel subscribe again belongs to unity. The survey (logs/02) found no application
+that does it, so UNITY-20261013-024 is BACKLOG.
