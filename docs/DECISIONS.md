@@ -2259,3 +2259,37 @@ limited by the network, not by the disk.
 
 **Rule.** Use `/srv/build` for heavy temporary work and clean it after
 yourself (CLAUDE.md, Conventions). Evidence stays in the task worktree.
+
+
+## 2026-10-13 - UNITY-20261012-003: a GTK4 application's first start does not ignore its Alt mnemonic on our live stack; correction to UNITY-20261012-001 (agent B)
+
+**Decision.** UNITY-20261012-003 closes as `NOT_REPRODUCED` on the live stack. It ran on target2, Clean-2 → live
+unity-resolute-20261009-003, with libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity3 and unity +unity13.
+
+Measured by events in cold sessions 5-10, the first start of a GTK4 application in a session opened its panel
+menu on the first press in 13 of 13 attempts, with no refocus:
+- Alt+F, 5 of 5: the mnemonic grab, tested with an application whose menubar is `_File`, `_Edit`, `_Help`;
+- Alt+F10, 8 of 8: Calculator 6, Text Editor 2.
+
+6 of the 13 ran with a second menu subscriber (audit.py), the condition of the UNITY-20261012-001 rig.
+
+The popup maps 0.15-0.62 s after compiz's `ShowEntry`, and 0.92 s once. That is a fact, not a task. The card is
+`research/UNITY-20261012-003-panel-first-start-mnemonic/`; it was checked by an independent Verifier.
+
+**Correction to UNITY-20261012-001** (the 2026-10-12 card `research/UNITY-20261012-001-nocsd-fd4b76a-recheck/`,
+section (a), "The first start of an application in a session did not open the menu"). Its text stays as written.
+Those observations were judged from vbox screenshots taken right after the key, with a second press later.
+UNITY-20261012-003's first sessions made the same error: a screenshot came before the popup was mapped (0.3-0.9 s
+after the key).
+- **Text Editor case** ("nothing twice, the holder after a refocus", second press 6 s later): not evidence of an
+  ignored key.
+- **Pinta case** (nothing on the first Alt+F, the HUD on the second, 20 s later): not explained by a slow popup,
+  and not retested. It ran gtk-nocsd `fd4b76a` and `2d50fe9` preloaded alone, which we do not ship. On our
+  packaged stack Pinta exports no menubar.
+
+**Rule.** A key test on the Unity panel is judged by events, not by a screenshot right after the key:
+- compiz `ShowEntry` and the panel service's `EntryActivated` on the session bus;
+- the popup map time from unity-panel-service's visible windows.
+
+Exactly one press per attempt, and the menu must be unmapped before the next press. See `trial.sh` and
+`popwatch.sh` in the card.
