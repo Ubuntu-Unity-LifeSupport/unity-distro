@@ -1,0 +1,12 @@
+    _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/MnemoTest/menus/menubar"
+    ready 13:51:28.026Z
+  window 65011716, active 65011716
+    libappmenu.so id=0x703ec0039ff0 win=65011716 label='_File' sensitive=True visible=True prio=0
+    libappmenu.so id=0x703ec002e0d0 win=65011716 label='_Edit' sensitive=True visible=True prio=1
+    libappmenu.so id=0x64d765a138b0 win=65011716 label='_Help' sensitive=True visible=True prio=2
+  popwatch: 13:51:29.328 panel-service visible windows 0, active 65011716
+-- Alt+F from the host at ~13:51:35Z; popwatch.sh:
+  13:51:29.328 panel-service visible windows 0, active 65011716
+  13:51:35.945 panel-service visible windows 2, active 65011716
+  13:51:47.479 panel-service visible windows 0, active 65011716
+  after Escape at 13:51:51: panel popups 0

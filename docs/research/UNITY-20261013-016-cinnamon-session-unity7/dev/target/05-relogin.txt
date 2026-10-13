@@ -1,0 +1,6 @@
+== 17:54:29 old cinnamon-session pid 2247; sudo systemctl restart lightdm
+== 17:55:01 new cinnamon-session pid 2247 started вт жов 13 17:48:51 2026
+new cinnamon-session unique name: :1.55
+AddIdleWatch calls from it: 1
+   uint64 300000
+AddIdleWatch calls total in the log: 1

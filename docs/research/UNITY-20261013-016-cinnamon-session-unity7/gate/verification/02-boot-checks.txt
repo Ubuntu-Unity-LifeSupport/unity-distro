@@ -1,0 +1,51 @@
+2026-10-13 21:35:43
+active
+active
+cinnamon-session-binary pid=2264 deleted-maps=2 exe=7f1ac764185ba29a
+== -022
+DropInPaths=/usr/lib/systemd/user/dbus.service.d/dbus-override.service.conf
+OOMPolicy=continue
+ManagedOOMPreference=none
+== -020
+== A baseline 18:37:48
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B one client (flags 4)
+inhibit cookie 1552665474 flags 4
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2264 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block-weak
+  InhibitedActions: u 4
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== B2 second client (flags 4)
+inhibit cookie 534266840 flags 4
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2264 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block-weak
+  InhibitedActions: u 4
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== C release the first (kill 3729)
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  mike                         1000 mike 2264 cinnamon-sessio shutdown:sleep                                           user session inhibited                                    block-weak
+  InhibitedActions: u 4
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== D release the second (kill 3942)
+  WHO                          UID  USER PID  COMM            WHAT                                                     WHY                                                       MODE
+  InhibitedActions: u 0
+  CanSuspend s "yes"
+  CanReboot s "yes"
+  CanPowerOff s "yes"
+== journal: cinnamon-session inhibit messages since boot
+(end)
+total 1724
+-rw-r----- 1 root whoopsie   23258 2026-10-08_10:30:52 _usr_bin_do-release-upgrade.0.crash
+-rw-r----- 1 mike whoopsie 1739029 2026-10-08_10:30:01 _usr_bin_light-locker.1000.crash
+pid 2264
+count 0

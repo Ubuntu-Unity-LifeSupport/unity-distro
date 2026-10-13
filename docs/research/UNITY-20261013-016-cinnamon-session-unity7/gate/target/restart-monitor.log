@@ -1,0 +1,6 @@
+signal time=1791913090.298772 sender=org.freedesktop.DBus -> destination=:1.157 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.157"
+signal time=1791913090.298981 sender=org.freedesktop.DBus -> destination=:1.157 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.157"
+method call time=1791913091.271355 sender=:1.41 -> destination=:1.55 serial=165 path=/org/cinnamon/Muffin/IdleMonitor/Core; interface=org.cinnamon.Muffin.IdleMonitor; member=RemoveWatch
+   uint32 7

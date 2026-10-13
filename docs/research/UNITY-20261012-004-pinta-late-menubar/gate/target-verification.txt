@@ -1,0 +1,25 @@
+UNITY-20261012-004 (with UNITY-20261013-017): target verification of the publication of unity-gtk4-menu 0.12
+
+Published 2026-10-13 14:36:13Z as snapshot unity-resolute-20261012-004 (publish record
+~/coordinator/publish-records/UNITY-20261012-004.json: aptly PASS, post-publish check PASS; signer mode, approved by
+policy). On builder: /srv/aptly/public/dists/resolute/InRelease Date Tue, 13 Oct 2026 14:31:08 UTC, Valid-Until
+Fri, 16 Oct 2026 14:31:08 UTC, sha256 30a7f196... (the signer's inrelease_sha256). The pool file
+libunity-gtk4-menu0_0.12_amd64.deb has the gated sha256 1e5d6040...
+
+target2 (the machine of the target test):
+- apt-get update from the live repository: rc 0 (InRelease Date 14:31:08 UTC); candidate 0.12.
+- libunity-gtk4-menu0 set back to 0.11 from the live repository, the cached 0.12 deb removed, then apt-get
+  full-upgrade: "Get:1 http://192.168.56.10:8080 resolute/main amd64 libunity-gtk4-menu0 amd64 0.12"; dpkg.log
+  "upgrade libunity-gtk4-menu0:amd64 0.11 0.12". The downloaded deb:
+    1e5d6040b9aa689c7e4311aa9d30e4f2275833e499e092aec7efaa29e1c3c662  libunity-gtk4-menu0_0.12_amd64.deb
+  the gated file.
+- A cold boot with autologin, then Pinta 3.1.2 in its header-bar layout (run.sh, logs/16-published-pinta.txt): the
+  late look chose Pinta's main menu and "menubar filled late, labelled Pinta"; the window has
+  _GTK_MENUBAR_OBJECT_PATH, the exported menu has 39 labels, and the panel shows the "Pinta" entry.
+- The gtk-nocsd opt-out (an empty ~/.config/environment.d/50-gtk-nocsd.conf) and a cold boot, with UNITY-20261013-013's
+  session-check.sh (logs/17-published-optout.txt): the session preloads only libunity-gtk4-menu; 0 AssertionError
+  lines in the user journal; unity-indicator-appearance and onboard run from autostart; meld, gnome-tweaks,
+  apps.py 3 and 4, update-manager and software-properties-gtk show their windows; Gio's backend is
+  DConfSettingsBackend and a write reads back. 0.11's fix holds with 0.12. The opt-out file was removed afterwards.
+
+Result: PASS.

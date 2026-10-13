@@ -1,0 +1,18 @@
+      4 /memfd:pulseaudio (deleted)
+      1 /SYSV00000000 (deleted)
+  294 after-unity7.raw
+  204 after-unity7.filtered
+  498 total
+DropInPaths=/usr/lib/systemd/user/dbus.service.d/dbus-override.service.conf
+NeedDaemonReload=no
+OOMPolicy=continue
+ManagedOOMPreference=none
+== journal (dbus-override / parse errors):
+жов 13 17:48:30 mike-virtualbox systemd[1192]: /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+жов 13 17:48:44 mike-virtualbox systemd[1192]: /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+жов 13 17:48:49 mike-virtualbox systemd[1192]: /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+жов 13 17:48:50 mike-virtualbox systemd[1192]: /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+(end journal)
+== systemd-analyze --user verify dbus.service:
+/usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+(end verify)

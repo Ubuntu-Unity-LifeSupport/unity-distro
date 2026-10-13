@@ -1,0 +1,23 @@
+== session host=target2 boot=fe181405-e902-42df-8c6c-dd4d65cc9d7a utc=2026-09-28T08:30:38Z
+== compiz pid=4027: LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0 XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu 
+== systemd user manager LD_PRELOAD
+LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+== starting GTK4 application: file-roller
+pid=15824
+== LD_PRELOAD in its environment
+LD_PRELOAD=libunity-gtk4-menu.so.0:libgtk-nocsd.so.0
+== preload libraries mapped
+libgtk-nocsd.so.0
+libunity-gtk4-menu.so.0
+== window properties (_GTK_MENUBAR_OBJECT_PATH is set when the menu is exported)
+WM_NAME(STRING) = "File Roller"
+_GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.98"
+_GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/FileRoller/menus/menubar"
+_GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/org/gnome/FileRoller"
+== done
+
+== HUD check (2026-09-28 08:31Z, screenshots via the vbox MCP, saved on the Windows host as
+   C:\Users\mike\AppData\Local\Temp\vbox-mcp-screenshots\target-desktop-2-20260928-113129.png)
+file-roller started with LANGUAGE=en in the Unity session; Alt opened the Unity HUD on File Roller;
+query "arch" returned "New Archive… (File Roller)" - an item of the application's GTK4 header bar
+menu, which Unity reaches only through the menu the library exports.

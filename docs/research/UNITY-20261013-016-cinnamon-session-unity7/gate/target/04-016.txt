@@ -1,0 +1,8 @@
+== 20:36:44 gnome 60, cinnamon 600, last input now
+IdleHint=yes
+LockedHint=yes
+presence status: (<uint32 3>,) (0 available, 3 idle)
+idletime (Mutter core): (uint64 80219,)
+== 20:38:11 settled session, old cinnamon-session 2239; restart unity-session.service
+new cinnamon-session pid 4797 unique :1.158
+AddIdleWatch from it: 0

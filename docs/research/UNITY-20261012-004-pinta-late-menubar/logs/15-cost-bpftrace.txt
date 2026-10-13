@@ -1,0 +1,21 @@
+== 2026-10-13T14:12:45Z; copy 28258feeeec7b309
+-- maptest, 10 000 cycles
+  cycles 10000, mapped after show 10000, loop 1119,8 ms (111,98 us per cycle)
+  Attached 7 probes
+  @calls[look_idle]: 1
+  @calls[look]: 2
+  @calls[shim_menu_button_map]: 10001
+  @ns[look]: 61618
+  @ns[shims]: 959579299
+  @t1[26129]: 0
+  @t3[26129]: 0
+-- Pinta, 20 s from start
+  Pinta pid 26268, maps: libunity-gtk4-menu.so.0.unstripped; log: 1 late looks, 1 late fills
+  Attached 7 probes
+  @calls[look_idle]: 1
+  @calls[look]: 2
+  @calls[shim_menu_button_map]: 6
+  @ns[shims]: 3027004
+  @ns[look]: 6207129
+  @t1[26268]: 0
+  @t3[26268]: 0

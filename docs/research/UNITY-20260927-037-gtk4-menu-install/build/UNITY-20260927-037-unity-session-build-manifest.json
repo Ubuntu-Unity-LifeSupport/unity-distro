@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20260927-037",
+  "package": "unity-session",
+  "candidate_version": "49.4+unity2",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro/packages/unity-session",
+  "source_commit": "7af2106236840c18bb0e4710f0d9e8742ea03848",
+  "source_tree_hash": "034df2b59ffc7e8f487a49541ae3ae48d5dd7abb",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose"
+  ],
+  "build_started": "2026-09-28T08:20:19.400239+00:00",
+  "build_finished": "2026-09-28T08:22:49.606813+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20260927-037-unity-session-49.4+unity2-sbuild.log",
+    "sha256": "747b4b49788b7da3247d8d854a19d2b008795b1ac6c3163131434ae98f2d9de9"
+  },
+  "artifacts": [
+    {
+      "file": "unity-session_49.4+unity2.dsc",
+      "sha256": "c199c753d63cd299b15eb3460ab1f3f7e2b3b6127475c85c7911ea1afc17a693",
+      "size": 595,
+      "kind": "source",
+      "package": "unity-session",
+      "version": "49.4+unity2"
+    },
+    {
+      "file": "unity-session_49.4+unity2_amd64.changes",
+      "sha256": "233f95b731488a80873c036e0e40d458bd8a9837a45c8ac230259ef17ba80853",
+      "size": 1364,
+      "kind": "changes"
+    },
+    {
+      "file": "unity-session_49.4+unity2.tar.xz",
+      "sha256": "fb4c342bd810ff7048a804ca70dd8be13f5d957584ab703f48a0981af3dba3f5",
+      "size": 12644,
+      "kind": "source_file",
+      "package": "unity-session",
+      "version": "49.4+unity2"
+    },
+    {
+      "file": "unity-session_49.4+unity2_all.deb",
+      "sha256": "1fa5d3e2e0ff0bffd64d33c7bae1b1573b97bb75dda7938215c8f7ddfbb1aa13",
+      "size": 8168,
+      "kind": "binary",
+      "package": "unity-session",
+      "version": "49.4+unity2",
+      "architecture": "all"
+    },
+    {
+      "file": "unity-session_49.4+unity2_amd64.buildinfo",
+      "sha256": "d6871ff5d4a01c2e6a6bcabad6674b02affc5ac2b2ad09c4e95f695500a09d03",
+      "size": 5449,
+      "kind": "buildinfo"
+    }
+  ]
+}

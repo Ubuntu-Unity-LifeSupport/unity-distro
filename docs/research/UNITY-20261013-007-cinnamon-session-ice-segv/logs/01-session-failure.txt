@@ -1,0 +1,186 @@
+== target2 boot 2026-10-13 06:05:19 - session failure, journal excerpt (system journal, this boot, 06:06:30-06:07:20 guest time)
+жов 13 06:06:30.109370 target2 dbus-daemon[1252]: [session uid=1000 pid=1252 pidfd=5] Successfully activated service 'org.a11y.Bus'
+жов 13 06:06:31.027972 target2 systemd[1219]: Starting xdg-permission-store.service - sandboxed app permission store...
+жов 13 06:06:31.237923 target2 dbus-daemon[1252]: [session uid=1000 pid=1252 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+жов 13 06:06:31.240374 target2 systemd[1219]: Started xdg-permission-store.service - sandboxed app permission store.
+жов 13 06:06:31.259995 target2 systemd[1219]: Starting xdg-document-portal.service - flatpak document portal service...
+жов 13 06:06:31.497154 target2 dbus-daemon[1252]: [session uid=1000 pid=1252 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+жов 13 06:06:31.501392 target2 systemd[1219]: Started xdg-document-portal.service - flatpak document portal service.
+жов 13 06:06:31.520889 target2 kernel: audit: type=1400 audit(1791860791.516:219): apparmor="DENIED" operation="capable" class="cap" profile="fusermount3" pid=2046 comm="fusermount3" capability=1  capname="dac_override"
+жов 13 06:06:31.520956 target2 kernel: audit: type=1400 audit(1791860791.516:220): apparmor="DENIED" operation="capable" class="cap" profile="fusermount3" pid=2046 comm="fusermount3" capability=7  capname="setuid"
+жов 13 06:06:31.520982 target2 kernel: audit: type=1400 audit(1791860791.519:221): apparmor="DENIED" operation="capable" class="cap" profile="fusermount3" pid=2048 comm="fusermount3" capability=7  capname="setuid"
+жов 13 06:06:31.650311 target2 systemd[1219]: /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+жов 13 06:06:32.096729 target2 dbus-daemon[1252]: [session uid=1000 pid=1252 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+жов 13 06:06:32.499428 target2 systemd[1219]: Reload requested from client PID 2106 ('systemctl')...
+жов 13 06:06:32.500554 target2 systemd[1219]: Reloading...
+жов 13 06:06:32.531334 target2 systemd-xdg-autostart-generator[2110]: Configuration file /etc/xdg/autostart/uwidgets-runner.desktop is marked executable. Please remove executable permission bits. Proceeding anyway.
+жов 13 06:06:32.650234 target2 systemd[1219]: /usr/lib/systemd/user/spice-vdagent.service:23: Unknown key 'StandardError' in section [Install], ignoring.
+жов 13 06:06:32.679992 target2 systemd[1219]: Reloading finished in 178 ms.
+жов 13 06:06:32.681673 target2 dbus-daemon[1252]: [session uid=1000 pid=1252 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+жов 13 06:06:32.769457 target2 systemd[1219]: Started update-notifier-crash.path - Path trigger for Apport crash notifications.
+жов 13 06:06:32.769525 target2 systemd[1219]: Started update-notifier-release.path - Path trigger for new release of Ubuntu notifications.
+жов 13 06:06:32.769574 target2 systemd[1219]: Reached target indicators-pre.target - Target representing the lifecycle of the indicators. Each indicator should be bound to it in its individual service file..
+жов 13 06:06:32.772526 target2 systemd[1219]: Started gcr-ssh-agent.service - GCR ssh-agent wrapper.
+жов 13 06:06:32.801239 target2 systemd[1219]: Starting session-migration.service - Session Migration...
+жов 13 06:06:32.804186 target2 systemd[1219]: Started ssh-agent.service - OpenSSH Agent.
+жов 13 06:06:32.810590 target2 systemd[1219]: Starting user-session-migration.service - User Session Migration...
+жов 13 06:06:32.823040 target2 systemd[1219]: Starting xdg-user-dirs.service - User folders update...
+жов 13 06:06:33.096539 target2 systemd[1219]: Finished session-migration.service - Session Migration.
+жов 13 06:06:33.182576 target2 systemd[1219]: Finished user-session-migration.service - User Session Migration.
+жов 13 06:06:33.227323 target2 systemd[1219]: Finished xdg-user-dirs.service - User folders update.
+жов 13 06:06:33.230208 target2 systemd[1219]: Reached target graphical-session-pre.target - Session services which should run early before the graphical session is brought up.
+жов 13 06:06:33.230616 target2 systemd[1219]: Reached target graphical-session.target - Current graphical user session.
+жов 13 06:06:33.238479 target2 systemd[1]: systemd-hostnamed.service: Deactivated successfully.
+жов 13 06:06:33.248605 target2 systemd[1219]: Starting app-a11y\x2dprofile\x2dmanager\x2dindicator\x2dautostart@autostart.service - Accessibility Profile Manager Indicator...
+жов 13 06:06:33.253211 target2 systemd[1219]: Starting app-ayatana\x2dindicator\x2dmessages@autostart.service - Ayatana Indicator Messages...
+жов 13 06:06:33.256346 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2da11y\x2dsettings@autostart.service - Cinnamon Settings Daemon - a11y-settings...
+жов 13 06:06:33.261288 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dautomount@autostart.service - Cinnamon Settings Daemon - automount...
+жов 13 06:06:33.265490 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dbackground@autostart.service - Cinnamon Settings Daemon - background...
+жов 13 06:06:33.275454 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dclipboard@autostart.service - Cinnamon Settings Daemon - clipboard...
+жов 13 06:06:33.291365 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dcolor@autostart.service - Cinnamon Settings Daemon - color...
+жов 13 06:06:33.303249 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dhousekeeping@autostart.service - Cinnamon Settings Daemon - housekeeping...
+жов 13 06:06:33.312200 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dkeyboard@autostart.service - Cinnamon Settings Daemon - keyboard...
+жов 13 06:06:33.327509 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dmedia\x2dkeys@autostart.service - Cinnamon Settings Daemon - media-keys...
+жов 13 06:06:33.348227 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service - Cinnamon Settings Daemon - power...
+жов 13 06:06:33.358148 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service - Cinnamon Settings Daemon - print-notifications...
+жов 13 06:06:33.377488 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service - Cinnamon Settings Daemon - screensaver-proxy...
+жов 13 06:06:33.413064 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service - Cinnamon Settings Daemon - settings-remap...
+жов 13 06:06:33.431157 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service - Cinnamon Settings Daemon - smartcard...
+жов 13 06:06:33.462311 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service - Cinnamon Settings Daemon - wacom...
+жов 13 06:06:33.529227 target2 systemd[1219]: Starting app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service - Cinnamon Settings Daemon - xsettings...
+жов 13 06:06:33.558124 target2 systemd[1219]: Starting app-fcitx\x2dqimpanel\x2dautostart@autostart.service - Fcitx Qt IMPanel...
+жов 13 06:06:33.582514 target2 systemd[1219]: Starting app-gnome\x2dkeyring\x2dpkcs11@autostart.service - Certificate and Key Storage...
+жов 13 06:06:33.594433 target2 systemd[1219]: Starting app-gnome\x2dkeyring\x2dsecrets@autostart.service - Secret Storage Service...
+жов 13 06:06:33.612223 target2 sshd-session[2147]: Accepted publickey for mike from 192.168.56.10 port 42482 ssh2: ED25519 SHA256:t/1KUIIlQRfSPlqpCqGg/OCEcULSXjiMwUxaO4zp7eU
+жов 13 06:06:33.613573 target2 systemd[1219]: Starting app-im\x2dlaunch@autostart.service - im-launch...
+жов 13 06:06:33.615318 target2 sshd-session[2147]: pam_unix(sshd:session): session opened for user mike(uid=1000) by mike(uid=0)
+жов 13 06:06:33.621639 target2 systemd-logind[884]: New session '6' of user 'mike' with class 'user' and type 'tty'.
+жов 13 06:06:33.696208 target2 systemd[1]: Started session-6.scope - Session 6 of User mike.
+жов 13 06:06:33.765385 target2 systemd[1219]: Starting app-indicator\x2dapplication@autostart.service - Indicator Application...
+жов 13 06:06:33.767373 target2 systemd[1219]: Starting app-light\x2dlocker@autostart.service - Screen Locker...
+жов 13 06:06:33.778070 target2 systemd[1219]: Starting app-nemo\x2dunity\x2dautostart@autostart.service - Nemo...
+жов 13 06:06:33.862303 target2 systemd[1219]: Starting app-nm\x2dapplet@autostart.service - NetworkManager Applet...
+жов 13 06:06:33.873071 target2 systemd[1219]: Starting app-notify\x2dosd@autostart.service - Notify OSD...
+жов 13 06:06:33.882413 target2 systemd[1219]: Starting app-onboard\x2dautostart@autostart.service - Onboard...
+жов 13 06:06:33.885417 target2 systemd[1219]: Starting app-org.gnome.Evolution\x2dalarm\x2dnotify@autostart.service - Events and Tasks Reminders...
+жов 13 06:06:33.889555 target2 systemd[1219]: Starting app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service - gnome-disk-utility notification plugin for GNOME Settings Daemon...
+жов 13 06:06:33.935533 target2 systemd[1219]: Starting app-polkit\x2dgnome\x2dauthentication\x2dagent\x2d1@autostart.service - PolicyKit Authentication Agent...
+жов 13 06:06:34.005384 target2 systemd[1219]: Starting app-print\x2dapplet@autostart.service - Print Queue Applet...
+жов 13 06:06:34.040306 target2 systemd[1219]: Starting app-snap\x2duserd\x2dautostart@autostart.service - Snap user application autostart helper...
+жов 13 06:06:34.067348 target2 systemd[1219]: Starting app-ubuntu\x2dadvantage\x2dnotification@autostart.service - Ubuntu Advantage Notification...
+жов 13 06:06:34.076164 target2 systemd[1219]: Starting app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service - Mount Helper...
+жов 13 06:06:34.087393 target2 systemd[1219]: Starting app-unity\x2dindicator\x2dappearance@autostart.service - Unity Indicator Appearance...
+жов 13 06:06:34.097374 target2 systemd[1219]: Starting app-update\x2dnotifier@autostart.service - Update Notifier...
+жов 13 06:06:34.103443 target2 systemd[1219]: Starting app-uwidgets\x2drunner@autostart.service - UWidgets Runner...
+жов 13 06:06:34.114136 target2 systemd[1219]: Starting app-xapp\x2dsn\x2dwatcher@autostart.service - xapp-sn-watcher...
+жов 13 06:06:34.126107 target2 systemd[1219]: Starting app-zeitgeist\x2ddatahub@autostart.service - Zeitgeist Datahub...
+жов 13 06:06:34.133378 target2 systemd[1219]: Starting bamfdaemon.service - BAMF Application Matcher Framework...
+жов 13 06:06:34.145574 target2 systemd[1219]: Started indicator-bluetooth.service - Indicator Bluetooth Backend.
+жов 13 06:06:34.155238 target2 systemd[1219]: Started indicator-datetime.service - Indicator Date & Time Backend.
+жов 13 06:06:34.183276 target2 systemd[1219]: Started indicator-keyboard.service - Indicator Keyboard Backend.
+жов 13 06:06:34.225353 target2 systemd[1219]: Started indicator-power.service - Indicator Power.
+жов 13 06:06:34.242634 target2 systemd[1219]: Started indicator-printers.service - Indicator Printers Service.
+жов 13 06:06:34.284440 target2 systemd[1219]: Started indicator-session.service - Indicator Session Service.
+жов 13 06:06:34.287091 target2 sshd-session[2256]: Received disconnect from 192.168.56.10 port 42482:11: disconnected by user
+жов 13 06:06:34.287632 target2 sshd-session[2256]: Disconnected from user mike 192.168.56.10 port 42482
+жов 13 06:06:34.291249 target2 sshd-session[2147]: pam_unix(sshd:session): session closed for user mike
+жов 13 06:06:34.294171 target2 systemd[1]: session-6.scope: Deactivated successfully.
+жов 13 06:06:34.316101 target2 systemd-logind[884]: Session 6 logged out. Waiting for processes to exit.
+жов 13 06:06:34.321043 target2 systemd-logind[884]: Removed session 6.
+жов 13 06:06:34.324527 target2 systemd[1219]: Started indicator-sound.service - Indicator Sound Service.
+жов 13 06:06:34.325250 target2 systemd[1219]: spice-vdagent.service - Spice guest session agent skipped, unmet condition check ConditionPathExists=/run/spice-vdagentd/spice-vdagent-sock
+жов 13 06:06:34.363649 target2 systemd[1219]: Started unity-session.service - Unity Session Manager.
+жов 13 06:06:34.369181 target2 systemd[1219]: Started unity-settings-daemon.service - Unity Settings Daemon.
+жов 13 06:06:34.374581 target2 dbus-daemon[1252]: [session uid=1000 pid=1252 pidfd=5] Activating via systemd: service name='org.gtk.vfs.Metadata' unit='gvfs-metadata.service' requested by ':1.14' (uid=1000 pid=1814 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+жов 13 06:06:34.375528 target2 systemd[1219]: Starting unity7.service - Unity Shell v7...
+жов 13 06:06:34.377708 target2 systemd[1219]: Started window-stack-bridge.service - Window Stack Bridge.
+жов 13 06:06:34.381456 target2 systemd[1219]: Started app-snap\x2duserd\x2dautostart@autostart.service - Snap user application autostart helper.
+жов 13 06:06:34.382543 target2 systemd[1219]: Started app-im\x2dlaunch@autostart.service - im-launch.
+жов 13 06:06:34.384456 target2 systemd[1219]: Started app-org.gnome.Evolution\x2dalarm\x2dnotify@autostart.service - Events and Tasks Reminders.
+жов 13 06:06:34.390342 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2da11y\x2dsettings@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.392365 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2da11y\x2dsettings@autostart.service - Cinnamon Settings Daemon - a11y-settings being skipped.
+жов 13 06:06:34.393990 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dautomount@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.394560 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dautomount@autostart.service - Cinnamon Settings Daemon - automount being skipped.
+жов 13 06:06:34.396418 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dbackground@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.397518 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dbackground@autostart.service - Cinnamon Settings Daemon - background being skipped.
+жов 13 06:06:34.398624 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dclipboard@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.400095 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dclipboard@autostart.service - Cinnamon Settings Daemon - clipboard being skipped.
+жов 13 06:06:34.400607 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dcolor@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.402615 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dcolor@autostart.service - Cinnamon Settings Daemon - color being skipped.
+жов 13 06:06:34.403641 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dhousekeeping@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.406200 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dhousekeeping@autostart.service - Cinnamon Settings Daemon - housekeeping being skipped.
+жов 13 06:06:34.408122 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dkeyboard@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.409031 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dkeyboard@autostart.service - Cinnamon Settings Daemon - keyboard being skipped.
+жов 13 06:06:34.409647 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dmedia\x2dkeys@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.413447 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dmedia\x2dkeys@autostart.service - Cinnamon Settings Daemon - media-keys being skipped.
+жов 13 06:06:34.414523 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.421166 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dpower@autostart.service - Cinnamon Settings Daemon - power being skipped.
+жов 13 06:06:34.422449 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.424351 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dprint\x2dnotifications@autostart.service - Cinnamon Settings Daemon - print-notifications being skipped.
+жов 13 06:06:34.426483 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.428227 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dscreensaver\x2dproxy@autostart.service - Cinnamon Settings Daemon - screensaver-proxy being skipped.
+жов 13 06:06:34.429539 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.431585 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsettings\x2dremap@autostart.service - Cinnamon Settings Daemon - settings-remap being skipped.
+жов 13 06:06:34.433465 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.435563 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dsmartcard@autostart.service - Cinnamon Settings Daemon - smartcard being skipped.
+жов 13 06:06:34.437103 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.437497 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dwacom@autostart.service - Cinnamon Settings Daemon - wacom being skipped.
+жов 13 06:06:34.438238 target2 systemd[1219]: app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.439507 target2 systemd[1219]: Condition check resulted in app-cinnamon\x2dsettings\x2ddaemon\x2dxsettings@autostart.service - Cinnamon Settings Daemon - xsettings being skipped.
+жов 13 06:06:34.459883 target2 systemd[1219]: app-light\x2dlocker@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.462195 target2 systemd[1219]: Condition check resulted in app-light\x2dlocker@autostart.service - Screen Locker being skipped.
+жов 13 06:06:34.520227 target2 systemd[1219]: Started app-ubuntu\x2dadvantage\x2dnotification@autostart.service - Ubuntu Advantage Notification.
+жов 13 06:06:34.730534 target2 systemd[1219]: Started app-zeitgeist\x2ddatahub@autostart.service - Zeitgeist Datahub.
+жов 13 06:06:34.732002 target2 systemd[1219]: app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.771113 target2 systemd[1219]: Condition check resulted in app-org.gnome.SettingsDaemon.DiskUtilityNotify@autostart.service - gnome-disk-utility notification plugin for GNOME Settings Daemon being skipped.
+жов 13 06:06:34.773456 target2 systemd[1219]: Started app-gnome\x2dkeyring\x2dsecrets@autostart.service - Secret Storage Service.
+жов 13 06:06:34.774178 target2 systemd[1219]: app-print\x2dapplet@autostart.service: Skipped due to 'exec-condition'.
+жов 13 06:06:34.775102 target2 systemd[1219]: Condition check resulted in app-print\x2dapplet@autostart.service - Print Queue Applet being skipped.
+жов 13 06:06:34.790614 target2 systemd[1219]: Started app-fcitx\x2dqimpanel\x2dautostart@autostart.service - Fcitx Qt IMPanel.
+жов 13 06:06:34.822510 target2 systemd[1219]: Started app-gnome\x2dkeyring\x2dpkcs11@autostart.service - Certificate and Key Storage.
+жов 13 06:06:34.838422 target2 systemd[1219]: Started app-indicator\x2dapplication@autostart.service - Indicator Application.
+жов 13 06:06:34.846061 target2 systemd[1219]: Starting gvfs-metadata.service - Virtual filesystem metadata service...
+жов 13 06:06:34.930214 target2 systemd[1219]: Started app-a11y\x2dprofile\x2dmanager\x2dindicator\x2dautostart@autostart.service - Accessibility Profile Manager Indicator.
+жов 13 06:06:35.054162 target2 systemd-prestart-check[2331]: grep: /usr/share/gnome-session/sessions/ubuntu.session: Нет такого файла или каталога
+жов 13 06:06:35.057102 target2 systemd[1219]: Started app-nm\x2dapplet@autostart.service - NetworkManager Applet.
+жов 13 06:06:35.123274 target2 dbus-daemon[853]: [system] Activating via systemd: service name='org.bluez' unit='dbus-org.bluez.service' requested by ':1.45' (uid=1000 pid=2242 comm="/usr/lib/x86_64-linux-gnu/indicator-bluetooth/indi" label="unconfined")
+жов 13 06:06:35.128092 target2 systemd[1219]: Started app-ayatana\x2dindicator\x2dmessages@autostart.service - Ayatana Indicator Messages.
+жов 13 06:06:35.188095 target2 systemd[1219]: Started app-onboard\x2dautostart@autostart.service - Onboard.
+жов 13 06:06:35.264169 target2 systemd[1219]: Started app-xapp\x2dsn\x2dwatcher@autostart.service - xapp-sn-watcher.
+жов 13 06:06:35.283037 target2 systemd[1]: bluetooth.service - Bluetooth service skipped, unmet condition check ConditionPathIsDirectory=/sys/class/bluetooth
+жов 13 06:06:35.290667 target2 systemd[1219]: Started app-notify\x2dosd@autostart.service - Notify OSD.
+
+== coredumpctl
+bash: строка 1: coredumpctl: command not found
+
+== dpkg --verify compiz-core compiz-plugins-default libice6 cinnamon-session
+rc=0
+== versions
+cinnamon-session	6.4.2-1+unity5
+compiz-core	1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+compiz-plugins-default:amd64	1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+libcompizconfig0:amd64	1:0.9.14.2+25.10.20250930-0ubuntu3+unity2
+libice6:amd64	2:1.1.1-1build1
+libsm6:amd64	2:1.2.6-1build1
+unity	7.7.1+26.04.20260306-0ubuntu3+unity13
+total 3576
+drwxrwsrwt  2 root whoopsie    4096 Oct 13 06:07 .
+drwxr-xr-x 14 root root        4096 Oct 13 06:05 ..
+-rw-r-----  1 mike whoopsie  979783 Oct 13 06:07 _usr_bin_compiz.1000.crash
+-rw-r-----  1 mike whoopsie 1737180 Oct 13 05:38 _usr_bin_light-locker.1000.crash
+-rw-r-----  1 mike whoopsie  928468 Oct 13 06:07 _usr_lib_x86_64-linux-gnu_cinnamon-session_cinnamon-session-binary.1000.crash
+ProblemType: Crash
+Date: Tue Oct 13 06:07:08 2026
+ExecutablePath: /usr/bin/compiz
+Signal: 11
+SignalName: SIGSEGV
+ProblemType: Crash
+Date: Tue Oct 13 05:38:34 2026
+ExecutablePath: /usr/bin/light-locker
+Signal: 6
+SignalName: SIGABRT
+ProblemType: Crash
+Date: Tue Oct 13 06:06:47 2026
+ExecutablePath: /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary
+Signal: 11
+SignalName: SIGSEGV

@@ -1,0 +1,32 @@
+== t1-calc: popup watch
+  13:48:28.966 panel-service visible windows 0, active 58720262
+  13:48:36.744 panel-service visible windows 1, active 58720262
+  13:48:36.883 panel-service visible windows 2, active 58720262
+== t1-calc: _NET_ACTIVE_WINDOW changes (hex window id)
+  13:48:20.833 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800006
+  13:48:22.985 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800006
+  13:48:23.022 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800006
+  13:48:23.044 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+  13:48:23.090 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800006
+  13:48:27.391 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3a00004
+  13:48:27.454 _NET_ACTIVE_WINDOW(WINDOW): window id # 0x3800006
+== t1-calc: org.gtk.Menus / org.gtk.Actions calls
+  13:48:23.046 call   :1.88(unity-panel-ser) -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  13:48:23.080 call   :1.93(hud-service) -> :1.110(gnome-calculato) Start | array [ | uint32 0
+  13:48:23.082 signal :1.110(gnome-calculato) -> (null() Changed | array [ | ]
+  13:48:23.093 call   :1.88(unity-panel-ser) -> :1.110(gnome-calculato) Start | array [ | uint32 1
+  13:48:23.093 signal :1.110(gnome-calculato) -> (null() Changed | array [ | ]
+  13:48:23.109 call   :1.93(hud-service) -> :1.110(gnome-calculato) Start | array [ | uint32 1
+  13:48:23.167 signal :1.88(unity-panel-ser) -> (null() ReSync | string "libappmenu.so"
+  13:48:23.171 call   :1.90(compiz) -> :1.88(unity-panel-ser) SyncOne | string "libappmenu.so"
+  13:48:27.502 call   :1.90(compiz) -> :1.88(unity-panel-ser) SyncGeometries | string "UnityPanel102987284435888_0" | array [
+  13:48:27.547 call   :1.90(compiz) -> :1.88(unity-panel-ser) SyncGeometries | string "UnityPanel102987284435888_0" | array [
+  13:48:28.722 call   :1.111() -> com.canonical.Unity.Panel.Service.Desktop() Sync
+  13:48:36.291 call   :1.90(compiz) -> :1.88(unity-panel-ser) ShowEntry | string "0x64d765698f10" | uint32 0
+  13:48:36.561 signal :1.88(unity-panel-ser) -> (null() EntryActivated | string "UnityPanel102987284435888_0" | string "0x64d765698f10"
+  13:48:36.574 signal :1.88(unity-panel-ser) -> (null() EntryActivateRequest | string "0x64d765698f10"
+
+-- retry: the first attempt's key went to the Accessibility indicator because the Calculator window (60817412) was not active (active 58720262); xdotool windowactivate, then Alt+F10 from the host, Escape:
+  13:49:38.297 panel-service visible windows 0, active 60817412
+  13:49:39.233 panel-service visible windows 1, active 60817412
+  13:49:39.455 panel-service visible windows 2, active 60817412

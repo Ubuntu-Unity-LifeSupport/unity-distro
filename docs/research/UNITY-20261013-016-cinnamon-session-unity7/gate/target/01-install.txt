@@ -1,0 +1,21 @@
+вівторок, 13 жовтень UTC 2026 17:31:42 +0000
+2026-10-13 20:30:36
+cinnamon-session	6.4.2-1+unity6
+light-locker	1.8.0-3ubuntu4+unity3
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity15
+65570d04a299bc7d905b001c566d65d7894f1dcd194adec82dae5a698617193e  tg/cinnamon-session_6.4.2-1+unity7_amd64.deb
+f3ee952b1cc51656cb7a5ae3024e25a821435395cc4d6f374a13e9bcdffb86d9  tg/cinnamon-session-common_6.4.2-1+unity7_all.deb
+e872832794171a068227578d907c6f486f877f96103a7ce4bab3c85a9ab22c24  tg/libunity-settings-daemon1_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+7afa6887ff65d9b4866142fe823faf5ffbd6c94b5da3f71849d4d37f50ac4610  tg/unity-settings-daemon_15.04.1+21.10.20220802-0ubuntu7+unity16_amd64.deb
+97f7abd1968ef9fbfb3b175fb14d0e435f445147f18004e800fc408b39669884  tg/unity-settings-daemon-schemas_15.04.1+21.10.20220802-0ubuntu7+unity16_all.deb
+  292 before.raw
+  202 before.filtered
+  494 total
+Настраивается пакет unity-settings-daemon-schemas (15.04.1+21.10.20220802-0ubuntu7+unity16) …
+Настраивается пакет cinnamon-session-common (6.4.2-1+unity7) …
+Настраивается пакет libunity-settings-daemon1:amd64 (15.04.1+21.10.20220802-0ubuntu7+unity16) …
+Настраивается пакет cinnamon-session (6.4.2-1+unity7) …
+Настраивается пакет unity-settings-daemon (15.04.1+21.10.20220802-0ubuntu7+unity16) …
+cinnamon-session	6.4.2-1+unity7
+cinnamon-session-common	6.4.2-1+unity7
+unity-settings-daemon	15.04.1+21.10.20220802-0ubuntu7+unity16

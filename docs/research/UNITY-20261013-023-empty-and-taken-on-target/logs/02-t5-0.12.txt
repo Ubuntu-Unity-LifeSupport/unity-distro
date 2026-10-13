@@ -1,0 +1,38 @@
+HUD window open: 1
+== t5-012 t5 at 2026-10-13T15:03:36Z; libunity-gtk4-menu0 0.12; integrated-menus false
+  15:03:40Z window 60817412 (takeover), active 60817412
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/unitydistro/TakeOver/menus/menubar"
+  panel entries for the window, before the takeover:
+    (0 entries for window 60817412)
+  app: 15:03:37Z window presented, own menubar in 5.0 s
+  app: 
+  app: (takeover.py:6559): Gtk-WARNING **: 18:03:37.448: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x55a6d20 with width 6 and height -1
+  app: 15:03:42Z the application set its own menubar
+  panel entries for the window, after:
+    (0 entries for window 60817412)
+  popwatch: 15:03:48.603 panel-service visible windows 0, active 60817412
+  Alt+F from the host at 15:03:50Z: no popup (popwatch above)
+  exported now at :1.126 /org/unitydistro/TakeOver/menus/menubar (org.gtk.Menus.Start [0], a fresh subscriber):
+([(uint32 0, uint32 0, [{'label': <'_File'>, ':submenu': <(uint32 1, uint32 0)>}, {'label': <'_Edit'>, ':submenu': <(uint32 2, uint32 0)>}, {'label': <'_Help'>, ':submenu': <(uint32 3, uint32 0)>}])],)
+-- t5-012 end at 15:04:15Z
+  popwatch:
+    15:03:48.603 panel-service visible windows 0, active 60817412
+  panel service calls and signals:
+  library log:
+    [unity-gtk4-menu 6559] GTK4 is not loaded in this process yet
+    [unity-gtk4-menu 6559] GTK4 found through GObject Introspection
+    [unity-gtk4-menu 6559] hooked GtkWindow::realize
+    [unity-gtk4-menu 6559] hooked GtkApplicationWindow::realize
+    [unity-gtk4-menu 6559] empty menubar set
+    [unity-gtk4-menu 6559] no menu model in this window
+    [unity-gtk4-menu 6559] hooked GtkMenuButton::map
+    [unity-gtk4-menu 6559] hooked GtkPopoverMenuBar::map
+    [unity-gtk4-menu 6559] the window waits for a menu (1 waiting)
+    [unity-gtk4-menu 6559] the application set a menubar of its own; ours is released
+    [unity-gtk4-menu 6559] a window stopped waiting (0 waiting)
+  app: 15:03:37Z window presented, own menubar in 5.0 s
+  app: 
+  app: (takeover.py:6559): Gtk-WARNING **: 18:03:37.448: gtk_widget_size_allocate(): attempt to allocate GtkWindowHandle windowhandle 0x55a6d20 with width 6 and height -1
+  app: 15:03:42Z the application set its own menubar
+  panel entries now:
+    (0 entries for window 60817412)

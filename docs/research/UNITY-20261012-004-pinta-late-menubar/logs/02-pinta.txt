@@ -1,0 +1,67 @@
+UNITY-20261012-004 - Pinta 3.1.2 on target2, one cold session (boot 04:47:46 guest = 01:47:46Z), Clean-2 -> live (Release Date 2026-10-13 00:03:25 UTC; libunity-gtk4-menu0 0.9, libgtk-nocsd0 4.8-1+unity4, unity +unity13; logs/01). run.sh: unity-gtk4-menu debug log on, each log line with the UTC time it was first seen (50 ms poll). Times UTC.
+
+#### p1: Pinta default (menubar-shown=False, header bar mode)
+  pinta setting menubar-shown = False in /home/mike/.config/Pinta/settings.xml
+== p1 (default) start 01:50:35.736Z, boot 2026-10-13 04:47:46, libunity-gtk4-menu0 0.9
+  01:50:37.341 log: [unity-gtk4-menu 3606] GTK4 is not loaded in this process yet
+  01:50:46.459 log: [unity-gtk4-menu 3606] GTK4 found through GObject Introspection
+  01:50:46.459 log: [unity-gtk4-menu 3606] hooked GtkWindow::realize
+  01:50:46.459 log: [unity-gtk4-menu 3606] hooked GtkApplicationWindow::realize
+  01:50:57.325 log: [unity-gtk4-menu 3606] no menu model in this window
+  01:50:59.550 window 56623108 mapped
+  Pinta pid 3606 window 56623108 (Unsaved Image 1 - Pinta)
+  preload in the process: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.87"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "com.github.PintaProject.Pinta"
+  NO-MENUBAR bus=:1.87
+  menu labels: 0
+  == p1 at 01:51:17.514Z, active window 56623108 (0x3600004)
+  vbox screenshot 01:51:25Z: Pinta's window with its header-bar buttons at the right; the panel shows only the window title (no menu entries; sync.sh above lists none for the window).
+
+#### p2: Pinta with menubar-shown=True (same session, Pinta restarted)
+  pinta setting menubar-shown = True in /home/mike/.config/Pinta/settings.xml
+== p2 (menubar) start 01:51:33.429Z, boot 2026-10-13 04:47:46, libunity-gtk4-menu0 0.9
+  01:51:33.741 log: [unity-gtk4-menu 5718] GTK4 is not loaded in this process yet
+  01:51:34.017 log: [unity-gtk4-menu 5718] GTK4 found through GObject Introspection
+  01:51:34.017 log: [unity-gtk4-menu 5718] hooked GtkWindow::realize
+  01:51:34.017 log: [unity-gtk4-menu 5718] hooked GtkApplicationWindow::realize
+  01:51:34.885 log: [unity-gtk4-menu 5718] the application already has a menubar
+  01:51:35.383 window 56623108 mapped
+  Pinta pid 5718 window 56623108 (Unsaved Image 1 - Pinta)
+  preload in the process: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  libraries mapped: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  _GTK_THEME_VARIANT(UTF8_STRING) = 
+  _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta/menus/menubar"
+  _GTK_WINDOW_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta/window/1"
+  _GTK_APPLICATION_OBJECT_PATH(UTF8_STRING) = "/com/github/PintaProject/Pinta"
+  _GTK_UNIQUE_BUS_NAME(UTF8_STRING) = ":1.100"
+  _GTK_APPLICATION_ID(UTF8_STRING) = "com.github.PintaProject.Pinta"
+   - _File
+   ok app.new New...
+   ok app.NewScreenshot New Screenshot...
+   ok app.open Open...
+   ok app.save Save
+   ok app.saveAs Save As...
+   ok app.close Close
+   ok app.quit Quit
+   - _Edit
+   disabled app.undo Undo
+   disabled app.redo Redo
+   ok app.cut Cut
+  menu labels: 111
+  == p2 at 01:52:07.847Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x6072e2e92230 win=56623108 label='_File' sensitive=True visible=True prio=0
+    libappmenu.so id=0x6072e2c7ada0 win=56623108 label='_Edit' sensitive=True visible=True prio=1
+    libappmenu.so id=0x7d65b8010d00 win=56623108 label='_View' sensitive=True visible=True prio=2
+    libappmenu.so id=0x6072e2d18d90 win=56623108 label='_Image' sensitive=True visible=True prio=3
+    libappmenu.so id=0x7d65b801dda0 win=56623108 label='_Layers' sensitive=True visible=True prio=4
+    libappmenu.so id=0x7d65b801f190 win=56623108 label='_Adjustments' sensitive=True visible=True prio=5
+    libappmenu.so id=0x7d65b8016940 win=56623108 label='Effe_cts' sensitive=True visible=True prio=6
+    libappmenu.so id=0x7d65b8020690 win=56623108 label='A_dd-ins' sensitive=True visible=True prio=7
+    libappmenu.so id=0x7d65b8027b70 win=56623108 label='_Window' sensitive=True visible=True prio=8
+    libappmenu.so id=0x6072e2bc2e70 win=56623108 label='_Help' sensitive=True visible=True prio=9
+  vbox screenshot 01:52:20Z, pointer over the panel: File Edit View Image Layers Adjustments Effects Add-ins Window Help on the panel. No in-window menubar is visible in the window.

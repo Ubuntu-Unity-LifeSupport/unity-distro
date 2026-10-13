@@ -1,0 +1,30 @@
+{
+  "task_id": "UNITY-20261013-016",
+  "package": "cinnamon-session",
+  "target_series": "resolute",
+  "candidate_version": "6.4.2-1+unity7",
+  "source_commit": "7393f0ea6cf628d3704571452d3f697246113925",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261013-016",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261013-016-cinnamon-session-unity7/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261013-016-cinnamon-session-unity7/gate/target-test.txt",
+    "debs": {
+      "cinnamon-session_6.4.2-1+unity7_amd64.deb": "65570d04a299bc7d905b001c566d65d7894f1dcd194adec82dae5a698617193e",
+      "cinnamon-session-common_6.4.2-1+unity7_all.deb": "f3ee952b1cc51656cb7a5ae3024e25a821435395cc4d6f374a13e9bcdffb86d9"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261013-016-cinnamon-session-unity7/README.md",
+    "verification_record": "docs/research/UNITY-20261013-016-cinnamon-session-unity7/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

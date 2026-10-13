@@ -1,0 +1,42 @@
+== reverse deps of appmenu-gtk3-module (installed)
+  appmenu-registrar
+  vala-panel-appmenu
+  indicator-appmenu
+== reverse deps of appmenu-gtk2-module (installed)
+== reverse deps of libgtk-nocsd0 (installed)
+  unity-session
+  ubuntu-unity-desktop
+  ubuntu-unity-desktop
+  unity-session
+== reverse deps of ayatana-indicator-messages (installed)
+  ubuntu-unity-desktop
+== apt-mark showauto/showmanual
+appmenu-gtk3-module auto
+libgtk-nocsd0 auto
+ayatana-indicator-messages auto
+ubuntu-unity-desktop manual
+== vala-panel-appmenu Depends/Recommends
+Version: 25.04+dfsg-3ubuntu1
+Recommends: libdbusmenu-glib4, libdbusmenu-gtk3-4, appmenu-gtk3-module
+Depends: vala-panel-appmenu-common (>= 25.04+dfsg-3ubuntu1), appmenu-registrar, libc6 (>= 2.14), libglib2.0-0t64 (>= 2.83.0), libgtk-3-0t64 (>= 3.21.6), libvalapanel0 (>= 24.03), libwnck-3-0 (>= 3.2.0)
+== unity Recommends
+Version: 7.7.1+26.04.20260306-0ubuntu3+unity11
+Depends: compiz-core, libappstream-glib8 (>= 0.5.1), libatk-bridge2.0-0t64 (>= 2.5.3), libatk1.0-0t64 (>= 2.2.0), libbamf3-2t64 (>= 0.5.3~bzr0+16.04.20160321), libc6 (>= 2.38), libcairo2 (>= 1.14.0), libcompizconfig0, libdbusmenu-glib4 (>= 0.4.2), libdee-1.0-4 (>= 1.2.6), libgcc-s1 (>= 3.0), libgdk-pixbuf-2.0-0 (>= 2.22.0), libgl1, libglewmx1.13 (>= 1.12.0), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.21.4), libindicator3-7 (>= 0.4.90), libjson-glib-1.0-0 (>= 1.5.2), libnotify4 (>= 0.7.0), libnux-4.0-0, libpam0g (>= 0.99.7.1), libpango-1.0-0 (>= 1.22.0), libpangocairo-1.0-0 (>= 1.14.0), l
+Recommends: unity-control-center, nemo, gnome-disk-utility, hud, session-shortcuts, unity-session, unity-uwidgets
+== indicator-appmenu
+indicator-appmenu:
+  Установлен: 15.02.0+20.10.20260311-0ubuntu1
+  Кандидат:   15.02.0+20.10.20260311-0ubuntu1
+Version: 15.02.0+20.10.20260311-0ubuntu1
+Recommends: indicator-applet | indicator-renderer, appmenu-gtk3-module, appmenu-qt, jayatana
+Depends: bamfdaemon, libbamf3-2t64 (>= 0.5.2~bzr0+16.04.20151104), libc6 (>= 2.4), libdbusmenu-glib4 (>= 0.5.90), libdbusmenu-gtk3-4 (>= 0.5.90), libglib2.0-0t64 (>= 2.80.0), libgtk-3-0t64 (>= 3.5.12), libindicator3-7 (>= 0.4.90), libx11-6, dconf-gsettings-backend | gsettings-backend
+== unity-session
+unity-session:
+  Установлен: 49.4+unity1
+  Кандидат:   49.4+unity1
+Version: 49.4+unity1
+Depends: dbus-user-session, cinnamon-session, cinnamon-settings-daemon, cinnamon-common, systemd, unity, unity-settings-daemon, dconf-gsettings-backend | gsettings-backend
+Recommends: libgtk-nocsd0, rhythmbox-plugin-zeitgeist, zeitgeist-datahub
+Version: 49.4
+Recommends: libgtk-nocsd0, rhythmbox-plugin-zeitgeist, zeitgeist-datahub
+Depends: dbus-user-session, cinnamon-session, cinnamon-settings-daemon, cinnamon-common, systemd, unity, unity-settings-daemon, dconf-gsettings-backend | gsettings-backend
