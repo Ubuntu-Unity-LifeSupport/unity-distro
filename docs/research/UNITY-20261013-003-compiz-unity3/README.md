@@ -97,7 +97,24 @@ T=20261008T083223Z. `make check`: 1439 tests, all pass. The manifest is in
   and an xml read error is consistent with this mechanism (descriptors
   taken from compiz at start) but not proven.
 - Follow-ups: UNITY-20261013-005 (`ini_file_lock` truncates before it
-  locks), UNITY-20261013-006 (`iniparser_new` releases its read lock early).
+  locks), UNITY-20261013-006 (`iniparser_new` releases its read lock early),
+  UNITY-20261013-012 (the new tests leave their `/tmp/ccs-*` directories).
 - `CompTimerTestCallback.TimerOrder`, a timing-dependent test of compiz
   core, failed once in a +unity2 build with the new tests and passed in the
   +unity3 builds; unrelated.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261013-003-20261013T075435Z`.
+  21 files, complete, equal to live; list sha256
+  `0f7d552ad18e8df773032a7fdd660fff0d74afb1aa6e9d5673ecc6adb65c39bd`.
+- **Repository:** 25 records added to `unity-resolute`: the source, the 17
+  binary packages of +unity2 at +unity3, and 7 debug-symbol packages
+  (`-dbgsym`) published for compiz for the first time. The sha256 of every
+  pool file matches the build manifest.
+- **Snapshot:** `unity-resolute-20261013-003`, which is the live
+  `unity-resolute-20261012-006` plus these 25 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.

@@ -1,0 +1,287 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "compiz",
+  "measured_at": "2026-10-13T07:54:59Z",
+  "sources_file": "/home/claude/work/a/unity-distro-1013-003/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261013-003",
+    "packages": 589,
+    "list_sha256": "b01834a8e0a0d8ab068f478eb1515cc3fef7b8056ac934fd521cc14b115d9ce0",
+    "content_sha256": "c447471e68bf5164e362bf21087126c11e4627db0ea1d0f71a473f4572dfd910",
+    "model_entries": 532,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "bb1f877133c1b9f1aefff51a3bc634ce8cc97c85a4c861502f8b39c9e934144f",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Tue, 13 Oct 2026 07:55:00 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "613aa26575ec24a8e9ed2d39d8b00e523e8ca5f62f03f90a5a42d34abde3cfda",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Mon, 12 Oct 2026  5:34:25 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "253fde9b0971ad3094b8e299f327ea110a1a0456432098aa46226d4cbed932d4",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Tue, 13 Oct 2026  3:05:27 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "b90c9113d11dfc0430571e2a719411dc51524c2ab2f09f8205faabaf22bfa4b9",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Tue, 13 Oct 2026  1:58:38 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "6231defe1ed4cc3a8d3d3235890c43e3435a08a16851e6346db9c555b3a2856f",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Tue, 13 Oct 2026  3:05:06 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "1:0.9.14.2+25.10.20250930-0ubuntu3"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "compiz-core-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-core-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-core-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "compiz-core",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-core_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-core:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-dev:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-gnome-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-gnome-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-gnome-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "compiz-gnome",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-gnome_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-gnome:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-mate",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-mate_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-mate:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-plugins-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-plugins-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "compiz-plugins-default-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-plugins-default-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-default-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "compiz-plugins-default",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-plugins-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-default:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-plugins-extra",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "file": "compiz-plugins-extra_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-extra:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-plugins-main-default",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "file": "compiz-plugins-main-default_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-main-default:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-plugins-main-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "file": "compiz-plugins-main-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-main-dev:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-plugins-main",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "file": "compiz-plugins-main_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins-main:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz-plugins",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "compiz-plugins_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz-plugins:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compiz",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "file": "compiz_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compiz:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "compizconfig-settings-manager",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "file": "compizconfig-settings-manager_0.9.14.2+25.10.20250930-0ubuntu3+unity3_all.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "compizconfig-settings-manager:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libcompizconfig0-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "libcompizconfig0-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "libcompizconfig0-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libcompizconfig0-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "libcompizconfig0-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "libcompizconfig0-dev:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libcompizconfig0",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "libcompizconfig0_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "libcompizconfig0:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libdecoration0-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "libdecoration0-dev_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "libdecoration0-dev:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libdecoration0t64-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "libdecoration0t64-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "libdecoration0t64-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libdecoration0t64",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "libdecoration0t64_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "libdecoration0t64:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "python3-compizconfig-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "python3-compizconfig-dbgsym_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.ddeb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "python3-compizconfig-dbgsym:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "python3-compizconfig",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "file": "python3-compizconfig_0.9.14.2+25.10.20250930-0ubuntu3+unity3_amd64.deb",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "policy": "python3-compizconfig:\n  Installed: (none)\n  Candidate: 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3\n  Version table:\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     1:0.9.14.2+25.10.20250930-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

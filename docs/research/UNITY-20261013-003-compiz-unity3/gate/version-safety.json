@@ -1,0 +1,178 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 1:0.9.14.2+25.10.20250930-0ubuntu3+unity3 is newer than resolute 1:0.9.14.2+25.10.20250930-0ubuntu3",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "compiz",
+  "source_commit": "4d7ead588f0ac3bffaf3daac63e0fb795263c6e9",
+  "candidate_source_version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+  "pockets": {
+    "resolute": "1:0.9.14.2+25.10.20250930-0ubuntu3"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-13T07:54:59Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "compiz-core-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-core",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-gnome-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-gnome",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-mate",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-default-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-default",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-extra",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-main-default",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-main-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins-main",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz-plugins",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compiz",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "compizconfig-settings-manager",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "all",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "libcompizconfig0-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "libcompizconfig0-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "libcompizconfig0",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "libdecoration0-dev",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "libdecoration0t64-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "libdecoration0t64",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "python3-compizconfig-dbgsym",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    },
+    {
+      "package": "python3-compizconfig",
+      "version": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3",
+      "architecture": "amd64",
+      "apt_candidate": "1:0.9.14.2+25.10.20250930-0ubuntu3+unity3"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261013-003",
+    "packages": 589,
+    "list_sha256": "b01834a8e0a0d8ab068f478eb1515cc3fef7b8056ac934fd521cc14b115d9ce0",
+    "content_sha256": "c447471e68bf5164e362bf21087126c11e4627db0ea1d0f71a473f4572dfd910",
+    "model_entries": 532,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "16e117ea230203c6542254c6daf738fcbbd349540cfa277d48c4556aff9d6774"
+}
