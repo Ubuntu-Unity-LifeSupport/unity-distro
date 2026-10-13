@@ -392,6 +392,15 @@ debug copies of the test (scratchpad):
 | cost: 10 000 map/unmap cycles of a menu button in an application window without a menu | 14 | per cycle, 5 runs each: no preload 5.1-8.2 µs, 0.11 + gtk-nocsd 6.9-11.2 µs, 0.12 + gtk-nocsd 7.4-8.5 µs (medians 7.48 and 7.75); the shim's cost is within the spread |
 | shim calls (bpftrace by name, on the shipped file joined with its dbgsym, same `.text`) | 15 | maptest: 10 001 calls of the button shim, 3 looks (2 idle looks) for 10 000 maps; Pinta, 20 s from start: 6 button-shim calls (1.1 ms with the probes' overhead), 2 looks (6.4 ms), 1 idle look, 1 late fill |
 
+An application window without a menu (gnome-tour) waits without any panel entry. Its window has
+`_GTK_MENUBAR_OBJECT_PATH` for the empty menubar, but the panel lists no entry for it (`sync.sh`, measured in the
+same session). Its wait ends in one of these ways, with no timer:
+- a late look fills the menubar, which drops every waiting window of that application (`look()` →
+  `waiters_drop_record`);
+- the application sets a menubar of its own (`go_taken`);
+- the window is unrealized or destroyed (`on_window_gone`);
+- a scheduled look finds the window already gone (`look_idle`).
+
 Notes on the cost runs:
 - bpftrace does not place probes by offset in the stripped library ("Could not resolve address"). The by-name
   probes therefore ran on the shipped file joined with its dbgsym by `eu-unstrip`; its `.text` is identical.
