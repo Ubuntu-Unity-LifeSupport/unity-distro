@@ -7,7 +7,7 @@ task: UNITY-20261013-008
 title: unity-gtk4-menu 0.12 exports a copy made when the menu is found and never updates it; stale or wrong global menus in Nautilus, Papers (and Console, per the UNITY-20261012-004 survey)
 package: unity-gtk4-menu (0.12 live)
 target_series: resolute
-status: IMPLEMENTING - 0.13 built and tested on target2 (below); Verifier next
+status: PUBLISHED - 0.13 published 2026-10-13 20:39:06Z (snapshot unity-resolute-20261013-008), verified on target2
 ```
 
 ## Measurement (2026-10-13, target2)
@@ -270,3 +270,26 @@ Non-blocking notes:
 - UNITY-20261013-024 (BACKLOG): a menubar the application sets after realize.
 - UNITY-20261013-030: `add_stand_ins()` looks up the menu in every other window at every rebuild (the cost grows with
   the number of windows).
+
+## Publication (2026-10-13)
+
+The slot steps were:
+- origin/main merged;
+- the db backup `~/backups/UNITY-20261013-008-20261013T202025Z` (list sha256 23f049c2…);
+- `repo add` of the manifest's `.dsc`, `.deb` and `.ddeb`, with the pool sha256 equal to the manifest;
+- the snapshot `unity-resolute-20261013-008`, which is the live `unity-resolute-20261008-023` plus the three records
+  (`gate/snapshot-diff.txt`);
+- version safety SAFE;
+- the peer ACK from A;
+- the gate as the last commit (f0945e8, sha256 903d9fbd…);
+- C's approval, with the gaps UNITY-20261013-028, UNITY-20261013-024 and UNITY-20261013-030.
+
+The signer's daily limit stopped the first run (proposal e3db23e7332ab479), and May approved it on the console. The
+next run stopped in the publisher's apt view on a transient outage of de.archive.ubuntu.com. Live was unchanged and
+the approval unused, so the same command ran again and switched. Published 2026-10-13T20:39:06Z.
+
+Target verification on target2 (`gate/target-verification.txt`, logs/10-14):
+- Clean-2 → live (0.12), then the upgrade from live to 0.13. The downloaded deb is the gated one (e979cf29…).
+- In a cold session, Nautilus's export and HUD follow Undo/Redo Rename.
+- The gtk-nocsd opt-out cold session has 0 AssertionError lines, and the PyGObject programs show their windows.
+- target2 was restored to Clean-2 afterwards.
