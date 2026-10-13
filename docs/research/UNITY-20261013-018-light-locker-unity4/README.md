@@ -40,3 +40,18 @@ during playback.
   delay; without an
   inhibitor the session goes idle and locks as before; a manual lock during
   playback still locks.
+
+## Publication
+
+- **Database backup:** `/home/claude/backups/UNITY-20261013-018-20261013T184634Z`.
+  21 files, complete, equal to live; list sha256
+  `a1af08d2a2ef807924b928d39757fe36588b26adce465ce56729b65f9c03f8cb`.
+- **Repository:** 3 records added to `unity-resolute` (the source,
+  light-locker and light-locker-dbgsym); the sha256 of every pool file
+  matches the build manifest.
+- **Snapshot:** `unity-resolute-20261013-018`, which is the live
+  `unity-resolute-20261013-016` plus these 3 records
+  (`gate/snapshot-diff.txt`).
+- **Version safety:** SAFE (`gate/version-check.json`,
+  `gate/version-safety.json`).
+- **Peer notice:** agent B, ACK.
