@@ -55,3 +55,28 @@ Prior art: our gtk-nocsd series, upstream as GTK-NoCSD `2d50fe9` "Find menus add
   another button shows another menu.
 
 Related: UNITY-20261013-024 (a menubar the application sets after realize) is to be weighed in this design.
+
+## UNITY-20261013-024's survey (logs/02)
+
+13 GTK 4 applications were each started for 15 s in a Unity session with 0.12: nautilus, papers, kgx, epiphany,
+gnome-contacts, gnome-text-editor, gnome-characters, gnome-calculator, gnome-clocks, gnome-font-viewer,
+gnome-weather, gnome-tweaks and gnome-tour.
+- **None sets a menubar of its own after ours** ("ours is released": 0 in every run). None had one before realize.
+- 10 are filled at realize. gnome-contacts, gnome-font-viewer and gnome-tour wait without a menu.
+
+So the takeover case is synthetic so far (`takeover.py`), and UNITY-20261013-024 stays BACKLOG.
+
+## A side finding: epiphany aborts on SIGTERM with gtk-nocsd (logs/03)
+
+The survey ended each application with SIGTERM, and epiphany aborted. `epiphany-term.sh` repeats it, with every
+epiphany ended first, so each run starts the primary instance itself. 3 runs each:
+
+| preload | exit |
+|---|---|
+| the session's (both libraries) | 134, SIGABRT: `epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)` |
+| libgtk-nocsd.so.0 only | 134, the same assertion |
+| none | 143, an ordinary SIGTERM |
+
+So it is gtk-nocsd 4.8-1+unity4, not unity-gtk4-menu. Most likely gtk-nocsd keeps the application object alive past
+the end of `main()`, so EphyShell is not finalized when epiphany asserts it is. This is not part of this task; it
+is reported to C. A session's logout sends SIGTERM, so an open epiphany would abort then.
