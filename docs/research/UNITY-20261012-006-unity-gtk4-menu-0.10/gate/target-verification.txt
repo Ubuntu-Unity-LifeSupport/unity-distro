@@ -10,6 +10,10 @@ repository key).
 Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: fresh boot,
 ~/.dirty from the snapshot, gtk-nocsd +unity3, unity-gtk4-menu not installed), apt-get update and
 full-upgrade from the live repository, libunity-gtk4-menu0 installed from it, then a cold boot.
+  The first attempt, right after the boot, changed nothing: dpkg was locked by the system's own apt
+  run at start and the commands, run with their output discarded, failed without being noticed (the
+  packages stayed +unity3 / not installed). The machine was booted again and the same commands were run
+  with -o DPkg::Lock::Timeout=300 and their output shown; the values below are from that run.
   Installed: libgtk-nocsd0 4.8-1+unity4 and libunity-gtk4-menu0 0.10; the downloaded debs have sha256
   4420b1a07e081945754c9fa7c5bfbe6796085cc964fb2045ddf1fd07e6731324 (libunity-gtk4-menu0_0.10_amd64.deb)
   and 99075d625c30d45e0e0a1cbe1879e0889df7d92f64bfbf8cd177aaf21c66c0b5 (libgtk-nocsd0), equal to the
