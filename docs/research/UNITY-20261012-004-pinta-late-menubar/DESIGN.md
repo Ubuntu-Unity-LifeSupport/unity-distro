@@ -312,3 +312,28 @@ The same as at realize: `clean_model` into `inner`, then the holder into `contai
 | 10 | stand-ins for late buttons in other windows | documented in "Remaining downsides" |
 | 11 | RESOLVE list | updated |
 | 12 | test gaps | tests 1-8 |
+
+## Requirements from design review round 3 (APPROVE), for the code and the Verifier
+
+1. **Waiting entries own what they need.** Each waiting entry stores its record pointer and holds a strong reference
+   on the GtkApplication while it waits. `gtk_window_dispose` releases the application (gtkwindow.c:2722) before
+   unrealize and `destroy` run (gtkwidget.c:7668-7677). The record is attached with `g_object_set_data_full`, and
+   its free function unrefs `container` and `inner`, removes the idles and disconnects the handlers.
+2. **The precheck order:** `g_application_get_is_registered` is tested first and short-circuits, because
+   `g_application_get_is_remote` itself requires a registered application (gapplication.c:2228).
+3. **The window's own bar** is "a GtkPopoverMenuBar whose parent is the window itself" (gtkapplicationwindow.c:
+   234-238). The test is applied in the `map` shim. `find_menu_model` never visits that bar. The "contains our
+   menu" check follows section links at least two levels deep.
+4. **The shim's test** is a process-wide count of waiting windows. A window moved to another application while it
+   waits stays in its old record; that is documented.
+5. **More tests in `tests/latetest.c`:**
+   - a GtkMenuButton subclass class-initialised before the shim is installed, still caught;
+   - an application window realized while its application is unregistered, under `fatal-criticals`;
+   - a late menu whose cleaned copy is empty, then a valid one, which fills;
+   - a waiting window destroyed after the last application reference is dropped.
+
+   Test 10 also reports the number of late looks and the time per look in a large widget tree.
+6. **Packaging:** `latetest` and `latetest-adw.py` are **not** part of `make check` (dh_auto_test runs it, and the
+   build has no xvfb, dbus or Adw). `tests/` is run by hand and on target2, and the card says so.
+7. **Remaining downside:** an application that is unregistered at its only realize stays in `NONE` and never gets a
+   late menu.

@@ -8,7 +8,7 @@ title: Pinta 3.1.2 gets no global menu on our packaged stack (no _GTK_MENUBAR_OB
 found_in: UNITY-20261012-001 logs/03-mnemonics-start.txt (audit.py NO-MENUBAR, no _GTK_MENUBAR_OBJECT_PATH)
 package: unity-gtk4-menu (0.9 live; 0.10, UNITY-20261012-006, changes no src/ code)
 target_series: resolute
-status: INVESTIGATING - root cause confirmed on target2 (0.9); the choice of fix goes to C and May
+status: READY_FOR_FIX - variant A (May), design APPROVE in round 3 (2026-10-13); code after UNITY-20261013-007
 ```
 
 ## Reading the code
@@ -336,6 +336,18 @@ class-offset signal (`gtkwidget.c:1742-1746`), GtkMenuButton does not override i
 - titlebars under gtk-nocsd;
 - test hooks through the debug log;
 - the Adw tests are required, but neither the builder nor `debian/control` has libadwaita headers.
+
+## Design review round 3 (Design Challenger, 2026-10-13): APPROVE
+
+**Checked against GTK 4.22.4 and GLib 2.88.0:**
+- All the round-1 and round-2 blocking findings are answered.
+- `g_type_class_ref` is correct, and neither GtkMenuButton nor GtkPopoverMenuBar overrides `map`.
+- A non-zero Adw type lookup is guaranteed whenever such a widget exists.
+- Patching subclasses is safe, and Pinta's own `ToolBarDropDownButton : Gtk.MenuButton` makes that path real.
+- No fill with 0 items cannot busy-loop.
+- `debian/control` really is unchanged: no test runs at build time today either.
+
+The non-blocking points are requirements for the code, listed at the end of DESIGN.md.
 
 ## Not yet done
 
