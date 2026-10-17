@@ -1,0 +1,52 @@
+== stopped at 2026-10-17T03:47:07Z; pid 2389
+-- inhibitors before
+  (@ao [],)
+  at-spi2-registryd pid 2002
+-- clients
+  Client1: app ('at-spi-bus-launcher',), pid 1986: /usr/libexec/at-spi-bus-launcher 
+  Client2: app ('',), pid 0: 
+  Client3: app ('org.NemoDesktop',), pid 2452: /usr/bin/nemo-desktop 
+  Client4: app ('at-spi-registryd.desktop',), pid 2002: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client5: app ('gnome-settings-daemon',), pid 2390: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client6: app ('',), pid 3043: /usr/bin/compiz 
+  bpftrace: Attached 4 probes
+  [155.94 s since boot] SIGSTOP 2002
+  [155.96 s since boot] cinnamon-session-quit --logout --no-prompt
+  quit 1:   GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  [166.01 s since boot] second request: Logout(1)
+  gdbus: Ошибка: GDBus.Error:org.gnome.SessionManager.NotInRunning: Logout interface is only available during the Running phase
+  [217.79 s since boot] 60 s after the first request: cinnamon-session pid 2389 STILL RUNNING
+  [217.81 s since boot] SIGCONT 2002
+  [218.99 s since boot] after SIGCONT (up to 60 s): cinnamon-session pid 2389 gone
+-- trace (s8)
+  157776923104 end_phase
+  157778981508 client_iochannel_watch returned 1
+  157781907721 client_iochannel_watch returned 1
+  157870035407 client_iochannel_watch returned 1
+  157874824691 client_iochannel_watch returned 1
+  157880385225 client_iochannel_watch returned 1
+  157886715578 client_iochannel_watch returned 1
+  157888835042 client_iochannel_watch returned 1
+  157889395577 client_iochannel_watch returned 1
+  217796532082 end_phase
+  217798499294 client_iochannel_watch returned 1
+  217800570522 client_iochannel_watch returned 1
+  217818829647 client_iochannel_watch returned 1
+  217818964841 client_iochannel_watch returned 1
+  217819030293 client_iochannel_watch returned 1
+  217819094729 client_iochannel_watch returned 1
+  217819495164 end_phase
+  217820095649 end_phase
+  217820103458 client_iochannel_watch returned 1
+  
+  
+  [   92.182801] target2 dbus-daemon[1248]: [session uid=1000 pid=1248 pidfd=5] Activating via systemd: service name='org.a11y.Bus' unit='at-spi-dbus-bus.service' requested by ':1.16' (uid=1000 pid=1905 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+  [   92.230597] target2 systemd[1213]: Starting at-spi-dbus-bus.service - Accessibility services bus...
+  [   92.299634] target2 systemd[1213]: Started at-spi-dbus-bus.service - Accessibility services bus.
+  [   92.371984] target2 at-spi-bus-launcher[1996]: dbus-daemon[1996]: Activating service name='org.a11y.atspi.Registry' requested by ':1.1' (uid=1000 pid=1905 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+  [   92.487882] target2 at-spi-bus-launcher[1996]: dbus-daemon[1996]: Successfully activated service 'org.a11y.atspi.Registry'
+  [   92.488030] target2 at-spi-bus-launcher[2002]: SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry
+  [  132.945395] target2 at-spi2-registryd[2002]: Disabling unresponsive app with pid 2469
+  [  152.953602] target2 at-spi2-registryd[2002]: Re-enabling app with pid 2469
+  [  158.949225] target2 cinnamon-session[2389]: cinnamon-session-binary[2389]: WARNING: t+55.55079s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout
+  [  158.949475] target2 cinnamon-session-binary[2389]: WARNING: t+55.55079s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout

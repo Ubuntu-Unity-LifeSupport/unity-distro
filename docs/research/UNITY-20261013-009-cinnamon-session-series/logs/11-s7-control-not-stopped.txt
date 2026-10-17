@@ -1,0 +1,52 @@
+== stopped at 2026-10-17T03:43:23Z; pid 2370
+-- inhibitors before
+  (@ao [],)
+  at-spi2-registryd pid 2392
+-- clients
+  Client1: app ('at-spi-bus-launcher',), pid 2356: /usr/libexec/at-spi-bus-launcher 
+  Client2: app ('',), pid 0: 
+  Client3: app ('at-spi-registryd.desktop',), pid 2392: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client4: app ('gnome-settings-daemon',), pid 2374: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client5: app ('',), pid 3125: /usr/bin/compiz 
+  bpftrace: Attached 4 probes
+  [162.46 s since boot] cinnamon-session-quit --logout --no-prompt
+  quit 1:   GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  [172.48 s since boot] second request: Logout(1)
+  gdbus: Ошибка: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+  [172.53 s since boot] 60 s after the first request: cinnamon-session pid 2370 gone
+  [172.54 s since boot] after SIGCONT (up to 60 s): cinnamon-session pid 2370 gone
+-- trace (s7)
+  163190150767 end_phase
+  163195883133 client_iochannel_watch returned 1
+  163196015156 client_iochannel_watch returned 1
+  163219766736 client_iochannel_watch returned 1
+  163221814918 client_iochannel_watch returned 1
+  163222436206 client_iochannel_watch returned 1
+  163222737022 client_iochannel_watch returned 1
+  163222910448 end_phase
+  163230524455 client_iochannel_watch returned 1
+  163231392871 client_iochannel_watch returned 1
+  163234361350 client_iochannel_watch returned 1
+  163243362407 _disconnect_client client=0x5affe7f74e80
+  163250379818 client_iochannel_watch returned 1
+  163250567557 client_iochannel_watch returned 1
+  163250886703 client_iochannel_watch returned 1
+  163251328994 client_iochannel_watch returned 1
+  163251570490 end_phase
+  163260830832 end_phase
+  163263676078 client_iochannel_watch returned 1
+  
+  
+  [  106.608689] target2 dbus-daemon[1280]: [session uid=1000 pid=1280 pidfd=5] Activating via systemd: service name='org.a11y.Bus' unit='at-spi-dbus-bus.service' requested by ':1.19' (uid=1000 pid=2055 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+  [  107.396935] target2 systemd[1245]: Starting at-spi-dbus-bus.service - Accessibility services bus...
+  [  107.639719] target2 at-spi-bus-launcher[2386]: dbus-daemon[2386]: Activating service name='org.a11y.atspi.Registry' requested by ':1.0' (uid=1000 pid=2055 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+  [  107.754505] target2 at-spi-bus-launcher[2386]: dbus-daemon[2386]: Successfully activated service 'org.a11y.atspi.Registry'
+  [  107.754888] target2 at-spi-bus-launcher[2392]: SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry
+  [  107.833399] target2 systemd[1245]: Started at-spi-dbus-bus.service - Accessibility services bus.
+  [  147.948534] target2 at-spi2-registryd[2392]: Disabling unresponsive app with pid 2411
+  [  171.707568] target2 dbus-daemon[4620]: [session uid=109 pid=4620 pidfd=5] Activating via systemd: service name='org.a11y.Bus' unit='at-spi-dbus-bus.service' requested by ':1.2' (uid=109 pid=4617 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+  [  171.710989] target2 systemd[4588]: Starting at-spi-dbus-bus.service - Accessibility services bus...
+  [  171.750396] target2 systemd[4588]: Started at-spi-dbus-bus.service - Accessibility services bus.
+  [  173.603385] target2 at-spi-bus-launcher[4633]: dbus-daemon[4633]: Activating service name='org.a11y.atspi.Registry' requested by ':1.0' (uid=109 pid=4617 comm="/usr/sbin/lightdm-gtk-greeter" label="unconfined")
+  [  173.611853] target2 at-spi-bus-launcher[4633]: dbus-daemon[4633]: Successfully activated service 'org.a11y.atspi.Registry'
+  [  173.612837] target2 at-spi-bus-launcher[4740]: SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry

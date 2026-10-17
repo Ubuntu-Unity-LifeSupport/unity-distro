@@ -1,6 +1,6 @@
 # cinnamon-session +unity8 series (UNITY-20261013-009 and others)
 
-Owner: agent B (target2). Paused 2026-10-13 ~22:55Z for UNITY-20260929-012; this records where it stands.
+Owner: agent B (target2). Paused 2026-10-13 for UNITY-20260929-012, resumed 2026-10-17.
 
 Base: the published 6.4.2-1+unity7 (A's `a/UNITY-20261013-016`, 7393f0e).
 
@@ -32,3 +32,20 @@ bpftrace can probe static functions by name (`measure.sh`, logs/01).
 - -010: read the client's finalize path.
 - -1002-010: to C, re-scoped to unity-session.
 - Then the DC for -009, -010, -011 (and -0929-007 if it reproduces). target2 goes back to Clean-2 first.
+
+## Measured 2026-10-17 (target2: Clean-2 → live, InRelease 2026-10-17 03:12:42 UTC, cinnamon-session +unity7)
+
+Before the setup, target2's clock was days behind after a host sleep. A cold cycle corrected it (chrony stepped 2.97 s),
+as UNITY-20260929-022 describes.
+
+`measure.sh` now lists the session manager's clients with their processes right before each logout. The client
+numbers differ from boot to boot, so a "ClientN failed to reply" warning only means something next to that list.
+
+| task | run | result |
+|---|---|---|
+| UNITY-20260927-014 | `switch` (logs/07, logs/10): `dm-tool switch-to-greeter` with lightdm's Seat0 path, then Logout(1) | **reproduces.** The session is inactive (`Active=no`, the greeter on seat0). **compiz** (Client5 in logs/10) does not reply to the end-session query. cinnamon-session then asks for the end-session dialog: the shell's dialog times out after 25 s, then the GTK fallback `cinnamon-session-quit --sm-owned --logout` is started on a display nobody sees, with `CRITICAL: Session not in running phase, previous dialog may have exited unexpectedly`. The session is still running 60 s and more later. Our +unity2 patch ("Ask for a dialog when inhibitors have nobody to be shown to") does not cover this case: **not FIXED_LOCAL** |
+| UNITY-20260929-007 | `stopped` (logs/08, logs/12): at-spi2-registryd stopped with SIGSTOP, a foreground logout, a second Logout(1) after 10 s, then SIGCONT | **reproduces as reported.** The client that does not reply is **at-spi2-registryd** (Client4 in logs/12). The logout waits; the second request gets `NotInRunning: Logout interface is only available during the Running phase`; after SIGCONT the session ends within about 1 s. Whether a "not responding" dialog was shown in the foreground was not captured (no screenshot) |
+| control | the same `stopped` run, with at-spi2-registryd not stopped by mistake (logs/11) | a foreground logout ends within about 1 s, with 4 `end_phase` calls |
+| UNITY-20261013-010 | code reading of `csm-xsmp-client.c` | both close paths (`close_connection_callback` and the IO-error path) emit `disconnected` while the watch callback still holds its reference. The client is finalized inside the dispatch, while `watch_id` still names the live source, so `g_source_remove` finds it and no critical is logged. That matches what was measured: every traced exit returned 1, or 0 on the IO error, and no critical appeared. A stale `watch_id` would matter only on the `IceProcessMessagesConnectionClosed` path if the client outlived the callback. No trace showed that path. **Latent, not reproduced** |
+
+target2 was restored to Clean-2 afterwards and confirmed inside (logs/13).

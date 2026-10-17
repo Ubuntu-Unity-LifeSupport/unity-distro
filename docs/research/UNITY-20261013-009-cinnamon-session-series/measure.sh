@@ -56,6 +56,15 @@ trace_stop() {
   echo "-- trace ($1)"; grep -v Attached /tmp/cs8-$1.trace | sed 's/^/  /'
 }
 mark() { echo "  [$(cut -d' ' -f1 /proc/uptime) s since boot] $1"; }
+clients() {   # the session manager's clients, with their process (numbering differs per boot)
+  local c o a p
+  for c in $(seq 1 16); do
+    o=/org/gnome/SessionManager/Client$c
+    a=$(gdbus call --session -d org.gnome.SessionManager -o $o -m org.gnome.SessionManager.Client.GetAppId 2>/dev/null) || continue
+    p=$(gdbus call --session -d org.gnome.SessionManager -o $o -m org.gnome.SessionManager.Client.GetUnixProcessId 2>/dev/null | sed -n 's/.*uint32 \([0-9]*\).*/\1/p')
+    echo "  Client$c: app $a, pid ${p:-?}: $([ -n "$p" ] && [ "$p" != 0 ] && tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | cut -c1-80)"
+  done
+}
 
 case $1 in
 setup)
@@ -100,6 +109,7 @@ helper)
 switch)
   session_env; cs=$(cs_pid)
   echo "== switch at $(date -u +%FT%TZ); pid $cs"
+  echo "-- clients"; clients
   trace_start $cs $tag
   dm-tool switch-to-greeter; sleep 5
   echo "  loginctl: $(loginctl list-sessions --no-legend | xargs)"
@@ -119,6 +129,7 @@ stopped)
   echo "-- inhibitors before"
   gdbus call --session -d org.gnome.SessionManager -o /org/gnome/SessionManager -m org.gnome.SessionManager.GetInhibitors 2>&1 | sed 's/^/  /'
   a=$(pgrep -x -u "$(id -u)" at-spi2-registr | head -1); echo "  at-spi2-registryd pid ${a:-none}"
+  echo "-- clients"; clients
   trace_start $cs $tag
   [ -n "$a" ] && { kill -STOP $a; mark "SIGSTOP $a"; }
   mark "cinnamon-session-quit --logout --no-prompt"
