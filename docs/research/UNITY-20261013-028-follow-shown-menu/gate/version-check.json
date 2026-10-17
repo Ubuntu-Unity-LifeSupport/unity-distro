@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "unity-gtk4-menu",
+  "measured_at": "2026-10-17T10:02:59Z",
+  "sources_file": "/home/claude/work/b/unity-distro-1013-028/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261013-028",
+    "packages": 653,
+    "list_sha256": "be71d815f26faf2c5e1642a9bdb06d67d698a4f1a0d9a14a02db0a2a61580afb",
+    "content_sha256": "857d609144037d7094f6ecec0ada29fabc11b181d4ec72daf3a17bb5e48ebca9",
+    "model_entries": 582,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "d4e44879b5c7e366b693d4fb9379dcf4fef782f727218e8add2bee745a7624eb",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026 10:02:59 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "f5f689a44078cb068bab5c997935959acd6e3bca5c404fef6ae1414ba97b6733",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:29 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "901e541dbfd111db7a7dd07a6dfb448ac7b594f31138f624792918b8f028e3b0",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:15 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "a629eae01e6b948e11ed76b4814074ed8cb157d3817eccf1016851856b5a3596",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026  7:10:01 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "65fb2cdcce915910dd07cfa5de91113376fe5900413d1ee9a9f9e4a01a059301",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:46:36 UTC"
+    }
+  ],
+  "pockets": {},
+  "in_archive": false,
+  "binaries": [
+    {
+      "package": "libunity-gtk4-menu0-dbgsym",
+      "version": "0.14",
+      "architecture": "amd64",
+      "file": "libunity-gtk4-menu0-dbgsym_0.14_amd64.ddeb",
+      "apt_candidate": "0.14",
+      "policy": "libunity-gtk4-menu0-dbgsym:\n  Installed: (none)\n  Candidate: 0.14\n  Version table:\n     0.14 500\n        500 file:<VIEW>/model ./ Packages\n     0.13 500\n        500 file:<VIEW>/model ./ Packages\n     0.12 500\n        500 file:<VIEW>/model ./ Packages\n     0.11 500\n        500 file:<VIEW>/model ./ Packages\n     0.10 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libunity-gtk4-menu0",
+      "version": "0.14",
+      "architecture": "amd64",
+      "file": "libunity-gtk4-menu0_0.14_amd64.deb",
+      "apt_candidate": "0.14",
+      "policy": "libunity-gtk4-menu0:\n  Installed: (none)\n  Candidate: 0.14\n  Version table:\n     0.14 500\n        500 file:<VIEW>/model ./ Packages\n     0.13 500\n        500 file:<VIEW>/model ./ Packages\n     0.12 500\n        500 file:<VIEW>/model ./ Packages\n     0.11 500\n        500 file:<VIEW>/model ./ Packages\n     0.10 500\n        500 file:<VIEW>/model ./ Packages\n     0.9 500\n        500 file:<VIEW>/model ./ Packages\n     0.8 500\n        500 file:<VIEW>/model ./ Packages\n     0.7 500\n        500 file:<VIEW>/model ./ Packages\n     0.6 500\n        500 file:<VIEW>/model ./ Packages\n     0.5 500\n        500 file:<VIEW>/model ./ Packages\n     0.4 500\n        500 file:<VIEW>/model ./ Packages\n     0.3 500\n        500 file:<VIEW>/model ./ Packages\n"
+    }
+  ]
+}
