@@ -1,0 +1,7 @@
+== nautilus at 2026-10-17T09:23:24Z; nautilus 1:50.2.2-0ubuntu0.2, libunity-gtk4-menu0 0.14
+  windows: 3
+  files now: f20
+  rebuilds: 20, window looks: 0
+-- the first window's export after the renames
+          _Отменить переименование  [win.undo]
+          _Повторить  [win.redo]

@@ -2293,3 +2293,34 @@ after the key).
 
 Exactly one press per attempt, and the menu must be unmapped before the next press. See `trial.sh` and
 `popwatch.sh` in the card.
+
+## 2026-10-17 - unity-gtk4-menu 0.14: follow the shown menu, and an Xsession script in the library package (agent B)
+
+**Context.** UNITY-20261013-028, UNITY-20261013-030 and UNITY-20260927-039 ship as one release. Card:
+`research/UNITY-20261013-028-follow-shown-menu/`.
+
+**Decisions.**
+- **Following the shown menu stays in unity-gtk4-menu.** The same mechanism exists in our gtk-nocsd series and
+  in upstream GTK-NoCSD main (`2d50fe9`), but the shipped gtk-nocsd 4.8 has no menu code. Taking it from there
+  would be the 4.8+git snapshot weighed and not taken in UNITY-20261012-004.
+- **The switch rule.** A hidden primary menu gives way only to a primary one or one with at least as many
+  app./win. items. Measured: papers' collapsed sidebar must not hand the panel its document menu (11 of 13 items
+  `doc.*`), while gnome-console's tab overview menu must give way back to the main menu. Design Challenger
+  APPROVE in round 3.
+- **The Xsession script ships in `libunity-gtk4-menu0`**, as `/etc/X11/Xsession.d/52unity-gtk4-menu`, not in a new
+  binary package. This deviates from Debian Policy 8.2, under which files that do not change with the SONAME
+  belong in a separate package. Reasons:
+  - the precedent in the same stack: `libgtk-nocsd0` ships `51gtk-nocsd`;
+  - the package already ships environment.d and a gschema, and carries `package-name-doesnt-match-sonames`;
+  - nothing links the library;
+  - the conffile is identical on every architecture.
+
+  A new binary package would need Breaks/Replaces, an upgrade path through unity-session's Depends, and a first
+  publication. Accepted by C on 2026-10-17, and the Challenger agreed. A SONAME bump would need the arch:all split
+  sketched in the card's DESIGN.md.
+- **The script runs after `51gtk-nocsd` and puts the library first.** With gtk-nocsd first in `LD_PRELOAD`, our
+  `g_module_symbol` is never reached (UNITY-20261013-013). `51gtk-nocsd` (A's package) is not changed.
+
+**Follow-ups:**
+- UNITY-20261017-007: stand-ins for action groups inserted on a widget;
+- UNITY-20261017-009: the Verifier's test-quality findings.

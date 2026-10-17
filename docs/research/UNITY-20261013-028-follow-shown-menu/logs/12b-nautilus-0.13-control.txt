@@ -1,0 +1,8 @@
+  control: LD_PRELOAD=/tmp/libunity-gtk4-menu-0.13.so.0 (9cd5e7aa081bc077)
+== nautilus at 2026-10-17T09:24:30Z; nautilus 1:50.2.2-0ubuntu0.2, libunity-gtk4-menu0 0.14
+  windows: 3
+  files now: f20
+  rebuilds: 20, window looks: 40
+-- the first window's export after the renames
+          _Отменить переименование  [win.undo]
+          _Повторить  [win.redo]

@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-028",
+  "package": "unity-gtk4-menu",
+  "candidate_version": "0.14",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/b/unity-distro-1013-028/packages/unity-gtk4-menu",
+  "source_commit": "e308fc5f91f7c0391619513da4bb938a61f2ff9e",
+  "source_tree_hash": "84382bc1ea70e90b61746b125aeb781808411806",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261017T042748Z.tar.zst"
+  ],
+  "build_started": "2026-10-17T08:49:24.825406+00:00",
+  "build_finished": "2026-10-17T08:55:34.893332+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261013-028-unity-gtk4-menu-0.14-sbuild.log",
+    "sha256": "516a32bd4f62446fa3d8aa2519c83bc18c380a06f31cbfc0aaceea5277519cf9"
+  },
+  "artifacts": [
+    {
+      "file": "unity-gtk4-menu_0.14.dsc",
+      "sha256": "4d3e8a9049475492fd0be35fe3661b0b3ae2574985f2de068cd69977f250b5d8",
+      "size": 839,
+      "kind": "source",
+      "package": "unity-gtk4-menu",
+      "version": "0.14"
+    },
+    {
+      "file": "unity-gtk4-menu_0.14_amd64.changes",
+      "sha256": "ded59270bf0a9dd15357b4efe883de90aefaaade063f0534ed904167267c9e8d",
+      "size": 2505,
+      "kind": "changes"
+    },
+    {
+      "file": "unity-gtk4-menu_0.14.tar.xz",
+      "sha256": "529889edc9dbaf241e439ee486d1e6c7ae6b88d40c0ce6f3c73ab1bb1ae3e3c5",
+      "size": 42744,
+      "kind": "source_file",
+      "package": "unity-gtk4-menu",
+      "version": "0.14"
+    },
+    {
+      "file": "libunity-gtk4-menu0-dbgsym_0.14_amd64.ddeb",
+      "sha256": "43f1731c41d12175c0170ff53b43a3621fb790776f7e88a50295987490b62189",
+      "size": 49820,
+      "kind": "binary",
+      "package": "libunity-gtk4-menu0-dbgsym",
+      "version": "0.14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-gtk4-menu0_0.14_amd64.deb",
+      "sha256": "44fc69a3f52b84b3dbe9e1bca6621ef5eb615cb43cbde141d23052adc614f5bd",
+      "size": 24682,
+      "kind": "binary",
+      "package": "libunity-gtk4-menu0",
+      "version": "0.14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-gtk4-menu_0.14_amd64.buildinfo",
+      "sha256": "9a0310b14b0417f1e8a7c31ae6d209a75a1401854889cfd786e2bd8f26b743f5",
+      "size": 15284,
+      "kind": "buildinfo"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261017T042748Z.tar.zst",
+    "sha256": "c66d752f23a7e3ec57d984a74364295f7b81cfc686f85e98ce86c9f538ad59e2",
+    "size": 143166167,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261017T042748Z.json",
+    "sidecar_sha256": "d2c822986437165196c8b0b31194182bce2edd8c654805479e6b9f830026126e",
+    "snapshot": "20261017T042748Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261017T042748Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261017T042748Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261017T042748Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Sat, 17 Oct 2026  1:13:58 UTC",
+        "sha256": "a44c5d895445cffd1ae330ffa4409e3e6d37ef1b0b14ee2ad211e9bdd68de21b"
+      },
+      "resolute-security": {
+        "date": "Fri, 16 Oct 2026 21:46:36 UTC",
+        "sha256": "65fb2cdcce915910dd07cfa5de91113376fe5900413d1ee9a9f9e4a01a059301"
+      }
+    },
+    "allow_old_chroot": false,
+    "older_than_max_age": false,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261017T042748Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261017T042748Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261017T042748Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/b/unity-distro-1013-028/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

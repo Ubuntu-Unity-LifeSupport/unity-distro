@@ -1,0 +1,92 @@
+== setup at 2026-10-17T09:10:28Z, boot 2026-10-17 11:33:15
+  install rc=0
+  epiphany-browser	49.2-3ubuntu1
+  gnome-calculator	1:50.0-1ubuntu1
+  gnome-characters	50.0-1
+  gnome-clocks	50.0-1
+  gnome-console	49.2-1
+  gnome-contacts	49.0-2
+  gnome-font-viewer	49.0-1
+  gnome-text-editor	50.1-0ubuntu0.1
+  gnome-tour	49.0-2
+  gnome-tweaks	49.0-1
+  gnome-weather	50.0-1
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  nautilus	1:50.2.2-0ubuntu0.2
+== console at 2026-10-17T09:12:16Z; gnome-console 49.2-1, libunity-gtk4-menu0 0.14
+-- the terminal
+  window 62914564 (mike@target2: ~)
+    window 62914564: :1.172 /org/gnome/Console/menus/menubar
+    Консоль
+      (no label)
+        (section)
+          _Новое окно  [win.unity-gtk4-menu-win-new-window]
+      (no label)
+        (section)
+          _Показать все вкладки  [win.unity-gtk4-menu-win-show-tabs-desktop]
+          По_лноэкранный режим  [win.unity-gtk4-menu-win-fullscreen]
+      (no label)
+        (section)
+          Па_раметры  [win.unity-gtk4-menu-win-show-preferences-window]
+          _Комбинации клавиш  [app.shortcuts]
+          _О приложении  [win.unity-gtk4-menu-win-about]
+  HUD "Новое окно": Новое окно <b>Новое окно</b> (Консоль)
+-- the tab overview opened (Ctrl+Shift+O)
+  window 62914564 (mike@target2: ~)
+    window 62914564: :1.172 /org/gnome/Console/menus/menubar
+    Консоль
+      (no label)
+        (section)
+          _Новое окно  [win.unity-gtk4-menu-win-new-window]
+      (no label)
+        (section)
+          По_лноэкранный режим  [win.unity-gtk4-menu-win-fullscreen]
+          Выйти из _полноэкранного режима  [win.unity-gtk4-menu-win-unfullscreen]
+  HUD "Новое окно": Новое окно <b>Новое окно</b> (Консоль)
+-- the tab overview closed (Escape)
+  window 62914564 (mike@target2: ~)
+    window 62914564: :1.172 /org/gnome/Console/menus/menubar
+    Консоль
+      (no label)
+        (section)
+          _Новое окно  [win.unity-gtk4-menu-win-new-window]
+      (no label)
+        (section)
+          _Показать все вкладки  [win.unity-gtk4-menu-win-show-tabs-desktop]
+          По_лноэкранный режим  [win.unity-gtk4-menu-win-fullscreen]
+      (no label)
+        (section)
+          Па_раметры  [win.unity-gtk4-menu-win-show-preferences-window]
+          _Комбинации клавиш  [app.shortcuts]
+          _О приложении  [win.unity-gtk4-menu-win-about]
+  HUD "Новое окно": Новое окно <b>Новое окно</b> (Консоль)
+  library log:
+    lib: candidate 1 at depth 15: shown=1 primary=0 app./win. items=6
+    lib: candidate 2 at depth 13: shown=0 primary=1 app./win. items=3
+    lib: chose candidate 1 of 2
+    lib: win.new-window proxied as win.unity-gtk4-menu-win-new-window
+    lib: win.show-tabs-desktop proxied as win.unity-gtk4-menu-win-show-tabs-desktop
+    lib: win.fullscreen proxied as win.unity-gtk4-menu-win-fullscreen
+    lib: win.show-preferences-window proxied as win.unity-gtk4-menu-win-show-preferences-window
+    lib: win.about proxied as win.unity-gtk4-menu-win-about
+    lib: dropped 4 item(s) that cannot cross D-Bus
+    lib: menubar filled, labelled "Консоль"
+    lib: relook
+    lib: candidate 1 at depth 15: shown=1 primary=0 app./win. items=6
+    lib: candidate 2 at depth 13: shown=1 primary=1 app./win. items=3
+    lib: chose candidate 2 of 2
+    lib: win.new-window: stand-in moved to the menu shown now
+    lib: win.new-window proxied as win.unity-gtk4-menu-win-new-window
+    lib: win.fullscreen: stand-in moved to the menu shown now
+    lib: win.fullscreen proxied as win.unity-gtk4-menu-win-fullscreen
+    lib: win.unfullscreen proxied as win.unity-gtk4-menu-win-unfullscreen, disabled
+    lib: switched to the shown menu: 3 item(s) replaced
+    lib: relook
+    lib: candidate 1 at depth 15: shown=1 primary=0 app./win. items=6
+    lib: chose candidate 1 of 1
+    lib: win.new-window: stand-in moved to the menu shown now
+    lib: win.new-window proxied as win.unity-gtk4-menu-win-new-window
+    lib: win.fullscreen: stand-in moved to the menu shown now
+    lib: win.fullscreen proxied as win.unity-gtk4-menu-win-fullscreen
+    lib: switched to the shown menu: 3 item(s) replaced

@@ -1,0 +1,5 @@
+== 2026-10-17T07:14:01Z, boot 2026-10-17 10:09:43
+  install rc=0
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.13
+  papers	50.2-0ubuntu0.1

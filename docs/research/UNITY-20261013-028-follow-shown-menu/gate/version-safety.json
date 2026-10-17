@@ -1,0 +1,44 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "source is not in any archive pocket (not in archive)",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "unity-gtk4-menu",
+  "source_commit": "e308fc5f91f7c0391619513da4bb938a61f2ff9e",
+  "candidate_source_version": "0.14",
+  "pockets": {},
+  "in_archive": false,
+  "checked_at": "2026-10-17T10:02:59Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "libunity-gtk4-menu0-dbgsym",
+      "version": "0.14",
+      "architecture": "amd64",
+      "apt_candidate": "0.14"
+    },
+    {
+      "package": "libunity-gtk4-menu0",
+      "version": "0.14",
+      "architecture": "amd64",
+      "apt_candidate": "0.14"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261013-028",
+    "packages": 653,
+    "list_sha256": "be71d815f26faf2c5e1642a9bdb06d67d698a4f1a0d9a14a02db0a2a61580afb",
+    "content_sha256": "857d609144037d7094f6ecec0ada29fabc11b181d4ec72daf3a17bb5e48ebca9",
+    "model_entries": 582,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "9fba533f022eb6096527434e2e523ec47d874d853369108cd9bc6eba5091cd6e"
+}

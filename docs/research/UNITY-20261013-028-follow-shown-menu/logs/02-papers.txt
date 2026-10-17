@@ -1,0 +1,59 @@
+== withdoc at 2026-10-17T07:19:15Z; papers 50.2-0ubuntu0.1, libunity-gtk4-menu0 0.13
+  window 60817412 (doc028.pdf)
+    window 60817412: :1.102 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: menubar filled, labelled "Просмотрщик документов"
+  shown menu buttons now (accessible names, from the window's own tree, not available without a11y): see the export above
+== startview at 2026-10-17T07:19:26Z
+-- the start view
+  window 60817412 (Просмотрщик документов)
+    window 60817412: :1.104 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: menubar filled, labelled "Просмотрщик документов"
+Завершено         env -i "${envs[@]}" UNITY_GTK4_MENU_DEBUG=1 UNITY_GTK4_MENU_LOG=/tmp/b028-second.log papers $B/doc028.pdf > /tmp/b028-second.out 2>&1
+  second papers exit: 143 (log: 11 lines)
+-- after opening the PDF in the same instance
+  window none ()
+  windows: 
+  library log since the start view:
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: menubar filled, labelled "Просмотрщик документов"

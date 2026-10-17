@@ -1,0 +1,157 @@
+== dev at 2026-10-17T08:40:43Z; library /home/mike/b028t/libunity-gtk4-menu.so.0 sha256 121562483c841979
+  1: PASS
+  2: PASS
+  3: PASS
+  4: PASS
+  5: PASS
+  7: PASS
+  8: PASS
+  9: PASS
+  11: PASS
+  12: PASS
+  13: PASS
+  14: PASS
+  15: PASS
+  16: PASS
+  17: PASS
+  18: PASS
+  19: PASS
+  20: PASS
+  21: PASS
+  22: PASS
+  23: PASS
+  24: PASS
+  25: PASS
+  26: PASS
+  27: PASS
+  28: PASS
+  29: PASS
+  30: PASS
+  31: PASS
+  32: PASS
+  33: PASS
+  34: PASS
+  35: PASS
+== dev: 33 passed, 0 failed
+== dev-vg at 2026-10-17T08:42:05Z; library /home/mike/b028t/libunity-gtk4-menu.so.0 sha256 121562483c841979; valgrind
+  18: PASS
+  22: PASS
+  27: PASS
+  28: PASS
+  35: PASS
+== dev-vg: 5 passed, 0 failed
+== control-0.13 at 2026-10-17T08:46:46Z; library /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077; control
+  23: FAIL rc=1 FAIL case 23 (control: library log not checked)
+      FAIL case 23: the copy starts with "P1-0", not "P2-0"
+      FAIL case 23: 3 items, not 5
+      FAIL case 23: no Changed on D-Bus
+      FAIL case 23: the export lacks P2-4
+      FAIL case 23 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 6: shown=1 primary=1 app./win. items=3
+      lib: candidate 2 at depth 6: shown=0 primary=1 app./win. items=5
+      lib: chose candidate 1 of 2
+      lib: menubar filled, labelled "latetest"
+  24: PASS
+  25: FAIL rc=1 FAIL case 25 (control: library log not checked)
+      FAIL case 25: the copy starts with "Main-0", not "Overview-0"
+      FAIL case 25 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 6: shown=1 primary=0 app./win. items=6
+      lib: candidate 2 at depth 6: shown=0 primary=1 app./win. items=3
+      lib: chose candidate 1 of 2
+      lib: menubar filled, labelled "latetest"
+  26: FAIL rc=1 FAIL case 26 (control: library log not checked)
+      FAIL case 26: the copy starts with "Main-0", not "Page-0"
+      FAIL case 26 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 4: shown=1 primary=0 app./win. items=6
+      lib: candidate 2 at depth 6: shown=0 primary=0 app./win. items=8
+      lib: chose candidate 1 of 2
+      lib: menubar filled, labelled "latetest"
+  27: FAIL rc=1 FAIL case 27 (control: library log not checked)
+      FAIL case 27: the copy starts with "Gone-0", not "Small-0"
+      FAIL case 27: the copy starts with "Gone-0", not "Small-0"
+      FAIL case 27: the copy starts with "Gone-0", not "Later-0"
+      FAIL case 27 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 6: shown=1 primary=1 app./win. items=3
+      lib: candidate 2 at depth 6: shown=0 primary=0 app./win. items=2
+      lib: chose candidate 1 of 2
+      lib: menubar filled, labelled "latetest"
+  28: FAIL rc=1 FAIL case 28 (control: library log not checked)
+      FAIL case 28: the stand-in activates 0x5f085bc844b0, not page 2's 0x5f085bd36080
+      FAIL case 28: the stand-in was not replaced
+      FAIL case 28: the new stand-in does not follow page 2's enabled state
+      FAIL case 28 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 7: shown=1 primary=1 app./win. items=1
+      lib: candidate 2 at depth 7: shown=0 primary=1 app./win. items=1
+      lib: chose candidate 1 of 2
+      lib: demo.act proxied as win.unity-gtk4-menu-demo-act
+      lib: menubar filled, labelled "latetest"
+  29: FAIL rc=1 FAIL case 29 (control: library log not checked)
+      FAIL case 29: the copy starts with "Bar-0", not "Head-0"
+      FAIL case 29 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 4: shown=0 primary=1 app./win. items=3
+      lib: candidate 2 at depth 1: shown=1 primary=0 app./win. items=3
+      lib: chose candidate 2 of 2
+      lib: menubar filled, labelled "latetest"
+  30: FAIL rc=1 FAIL case 30 (control: library log not checked)
+      FAIL case 30: activation reached (nil), not the new 0x5954c88edc70
+      FAIL case 30 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 5: shown=1 primary=0 app./win. items=1
+      lib: chose candidate 1 of 1
+      lib: demo.act proxied as win.unity-gtk4-menu-demo-act
+      lib: menubar filled, labelled "latetest"
+  31: FAIL rc=1 FAIL case 31 (control: library log not checked)
+      FAIL case 31: the copy starts with "P1-0", not "P2-0"
+      FAIL case 31 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 6: shown=1 primary=1 app./win. items=3
+      lib: candidate 2 at depth 6: shown=0 primary=1 app./win. items=5
+      lib: chose candidate 1 of 2
+      lib: menubar filled, labelled "latetest"
+  32: PASS
+  33: FAIL rc=1 FAIL case 33 (control: library log not checked)
+      FAIL case 33: the copy starts with "P1-changed", not "P2-0"
+      FAIL case 33 (control: library log not checked)
+      lib: GTK4 found at load
+      lib: hooked GtkWindow::realize
+      lib: hooked GtkApplicationWindow::realize
+      lib: empty menubar set
+      lib: candidate 1 at depth 6: shown=1 primary=1 app./win. items=3
+      lib: candidate 2 at depth 6: shown=0 primary=1 app./win. items=5
+      lib: chose candidate 1 of 2
+      lib: menubar filled, labelled "latetest"
+      lib: menu changed (rebuild 1): 1 item(s) replaced
+      lib: the application set a menubar of its own; ours is released
+  34: PASS
+  35: PASS
+== control-0.13: 4 passed, 9 failed

@@ -1,0 +1,205 @@
+install rc=0
+== epi at 2026-10-17T10:32:21Z, boot 2026-10-17 13:26:43; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5, epiphany-browser 49.2-3ubuntu1
+  ask-for-default: true
+run 1: SIGTERM at 10:32:36.842; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 2: SIGTERM at 10:32:52.711; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 3: SIGTERM at 10:33:08.643; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 4: SIGTERM at 10:33:24.311; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 5: SIGTERM at 10:33:39.932; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 6: SIGTERM at 10:33:55.569; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 7: SIGTERM at 10:34:11.436; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 8: SIGTERM at 10:34:27.369; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 9: SIGTERM at 10:34:43.247; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 10: SIGTERM at 10:34:59.525; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+== 0 of 10 aborted; new epiphany crash files: 0
+--- runs with the question open (the handler set to another application) ---
+== epi at 2026-10-17T10:36:23Z, boot 2026-10-17 13:26:43; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5, epiphany-browser 49.2-3ubuntu1
+  ask-for-default: true; http handler: Приложение по умолчанию для «x-scheme-handler/http»: gnome-disk-image-writer.desktop
+run 1: SIGTERM at 10:36:38.307; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 2: SIGTERM at 10:36:53.761; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 3: SIGTERM at 10:37:09.571; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 4: SIGTERM at 10:37:25.648; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 5: SIGTERM at 10:37:40.737; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 6: SIGTERM at 10:37:56.508; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 7: SIGTERM at 10:38:12.172; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 8: SIGTERM at 10:38:27.803; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 9: SIGTERM at 10:38:43.492; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 10: SIGTERM at 10:38:59.726; windows: ; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+== 0 of 10 aborted; new epiphany crash files: 0
+--- cold boot: the first start with SIGTERM after 3 s, then 3, 5 and 8 s ---
+== epi at 2026-10-17T10:42:20Z, boot 2026-10-17 13:40:07, SIGTERM after 3 s; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5, epiphany-browser 49.2-3ubuntu1
+  ask-for-default: true; http handler: Приложение по умолчанию для «x-scheme-handler/http»: gnome-disk-image-writer.desktop
+/home/mike/b028/epi.sh: строка 27:  4177 Аварийный останов      (образ памяти сброшен на диск) env -i "${envs[@]}" LD_PRELOAD="$PRE" UNITY_GTK4_MENU_DEBUG=1 UNITY_GTK4_MENU_LOG=$log epiphany > /tmp/epi-$r.err 2>&1
+run 1: SIGTERM at 10:42:24.673; windows: Web|; exit 134 (SIGABRT)
+    epiphany: (epiphany:4177): Gtk-CRITICAL **: 13:42:24.945: gtk_widget_get_name: assertion 'GTK_IS_WIDGET (widget)' failed
+== 1 of 1 aborted; new epiphany crash files: 1
+== epi at 2026-10-17T10:42:50Z, boot 2026-10-17 13:40:07, SIGTERM after 3 s; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5, epiphany-browser 49.2-3ubuntu1
+  ask-for-default: true; http handler: Приложение по умолчанию для «x-scheme-handler/http»: gnome-disk-image-writer.desktop
+run 1: SIGTERM at 10:42:55.333; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 2: SIGTERM at 10:43:02.175; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 3: SIGTERM at 10:43:06.860; windows: Web|Новая вкладка|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 4: SIGTERM at 10:43:10.865; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 5: SIGTERM at 10:43:14.666; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+== 0 of 5 aborted; new epiphany crash files: 0
+== epi at 2026-10-17T10:43:15Z, boot 2026-10-17 13:40:07, SIGTERM after 5 s; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5, epiphany-browser 49.2-3ubuntu1
+  ask-for-default: true; http handler: Приложение по умолчанию для «x-scheme-handler/http»: gnome-disk-image-writer.desktop
+run 1: SIGTERM at 10:43:20.642; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 2: SIGTERM at 10:43:26.408; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 3: SIGTERM at 10:43:32.184; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 4: SIGTERM at 10:43:37.954; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 5: SIGTERM at 10:43:43.627; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+== 0 of 5 aborted; new epiphany crash files: 0
+== epi at 2026-10-17T10:43:44Z, boot 2026-10-17 13:40:07, SIGTERM after 8 s; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5, epiphany-browser 49.2-3ubuntu1
+  ask-for-default: true; http handler: Приложение по умолчанию для «x-scheme-handler/http»: gnome-disk-image-writer.desktop
+run 1: SIGTERM at 10:43:52.592; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 2: SIGTERM at 10:44:01.375; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 3: SIGTERM at 10:44:10.186; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 4: SIGTERM at 10:44:19.260; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+run 5: SIGTERM at 10:44:28.895; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+    lib: menubar filled, labelled "Веб-браузер"
+    lib: GTK4 is not loaded in this process yet
+    lib: GTK4 is not loaded in this process yet
+    lib: the menu's window is gone; the menu is no longer followed
+== 0 of 5 aborted; new epiphany crash files: 0
+--- note (B, 10:50Z) ---
+The cold-boot first start aborted (Gtk-CRITICAL gtk_widget_get_name, fatal in epiphany). Its library log printed no
+line from "menubar filled" on, so the menubar was not filled by the SIGTERM at 3 s: the map shims, relooks and
+owner/window handlers of 0.14 are installed only at a fill, and did not run in that process. The log file itself was
+overwritten by the later batches (the same /tmp name for run 1). The crash file is kept privately outside this
+repository (UNITY-20261017-010).
