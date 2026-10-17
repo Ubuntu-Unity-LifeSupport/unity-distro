@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-031",
+  "package": "gtk-nocsd",
+  "source_commit": "e42e03af433476d2d2248435f693d9ba91ce8ce0",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/README.md",
+      "sha256": "372d59305c23bdd1e7127383e4f55f77229d124f6e5e3f194caa738e778281bb"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/README.md",
+      "sha256": "372d59305c23bdd1e7127383e4f55f77229d124f6e5e3f194caa738e778281bb"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "4921bfd3a044cbaabaf88a9d1e37d8ddaac4cb474d45ac181cceeebccafd39ff"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/gate/release-record.json",
+      "sha256": "1842961f960f6e02fa5eb2e6bebfaca66168cf6d3a0a865a49fc0e9046583a94"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/gate/version-check.json",
+      "sha256": "0542a60e2f1aadc1d2ef0b5f7e6603f6ba9b25f18be68a548a62a3ab94e04338"
+    }
+  }
+}
