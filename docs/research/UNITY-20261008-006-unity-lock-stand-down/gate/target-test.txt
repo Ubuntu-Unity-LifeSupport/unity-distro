@@ -1,0 +1,29 @@
+UNITY-20261008-006: target test of light-locker 1.8.0-3ubuntu4+unity5 (the gated build, build-ll-gate/)
+
+Raw files and the full description: target-gate/ (README.txt; times EEST on the target, 2026-10-17).
+
+Target: target-desktop restored from Published-stack-2026-10-08 and full-upgraded from the live repository
+(cinnamon-session 6.4.2-1+unity8, libgtk-nocsd0 4.8-1+unity5, unity-settings-daemon +unity16, light-locker +unity4,
+unity +unity13); then light-locker_1.8.0-3ubuntu4+unity5_amd64.deb (sha256
+d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242, the gated build) and unity 7.7.1+26.04.20260306-0ubuntu3+unity14
+(UNITY-20261017-004, built from the same branch) installed, light-locker first; cold boots. The running light-locker
+was the installed binary (exe sha256 3ad3c7b4...).
+
+- Five cold boots: light-locker owns org.gnome.ScreenSaver every time, Unity queued; on one boot
+  unity-settings-daemon's screensaver proxy had org.freedesktop.ScreenSaver first and light-locker still started.
+- Forced late start (autostart delay 20 s): the proxy owns org.freedesktop.ScreenSaver, light-locker
+  org.gnome.ScreenSaver; Ctrl+Alt+L, light-locker-command -l (through the proxy) and presence idle each lock through
+  light-locker; an Inhibit held through the proxy keeps the session from going idle.
+- Trigger table (Super+L, the indicator's Lock call, Ctrl+Alt+L, loginctl lock-session, presence idle with lock-delay
+  0 and 30, with input during the delay, with lock-enabled false, legacy mode, suspend): every lock through
+  light-locker, one greeter switch and one LockedHint write each; no timed lock of light-locker's own after a blank
+  (lock-delay 30 and lock-enabled false followed); suspend began about 1 s after the request; Unity's lockscreen
+  inactive throughout.
+- A second light-locker while the first owns the names exits "already running" without writing LockedHint;
+  light-locker killed: Unity takes org.gnome.ScreenSaver, a light-locker started again exits without writing
+  LockedHint, Super+L then locks with Unity's lockscreen.
+
+Known limits (by design): a light-locker restarted in a running session stops and Unity stays the locker.
+Not tested on target: DPMS (not in a VM), lid, guest account, switch-user, a second login in the same boot.
+
+Result: PASS.
