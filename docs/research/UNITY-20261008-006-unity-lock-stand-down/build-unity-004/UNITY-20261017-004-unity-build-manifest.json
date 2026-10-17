@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261017-004",
+  "package": "unity",
+  "candidate_version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/unity-distro-1008-006/packages/unity",
+  "source_commit": "a97045b1e419b2267149290279fa5c3f36b6dfb9",
+  "source_tree_hash": "e4884bf4583739d04cad107e37d65741a9a589b7",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "--extra-package=/home/claude/work/a/unity-distro-1008-006/docs/research/UNITY-20261008-006-unity-lock-stand-down/build-unity-004/build-dependencies/libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+    "--extra-package=/home/claude/work/a/unity-distro-1008-006/docs/research/UNITY-20261008-006-unity-lock-stand-down/build-unity-004/build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+    "--extra-package=/home/claude/work/a/unity-distro-1008-006/docs/research/UNITY-20261008-006-unity-lock-stand-down/build-unity-004/build-dependencies/libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb"
+  ],
+  "build_started": "2026-10-17T07:47:44.392328+00:00",
+  "build_finished": "2026-10-17T08:24:45.220098+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261017-004-unity-7.7.1+26.04.20260306-0ubuntu3+unity14-sbuild.log",
+    "sha256": "8b48f459a426a22c70fca632d0e7f6c95c6d790229ab423162a8c566b0385301"
+  },
+  "artifacts": [
+    {
+      "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity14.dsc",
+      "sha256": "9435d0307f2601d95b11d1bf4f7b5d9ec8d731680e1cc59ebe07ebcc33c7857a",
+      "size": 2519,
+      "kind": "source",
+      "package": "unity",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14"
+    },
+    {
+      "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.changes",
+      "sha256": "46cf56caf943e6a3b3145a5085e5b526d5d9abc13361777d592d4235578e44af",
+      "size": 6157,
+      "kind": "changes"
+    },
+    {
+      "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity14.tar.xz",
+      "sha256": "cc952b0f42c0f5d5bd8484f8eb4613448159b95f85a9181cd370f375eddbe44f",
+      "size": 2112344,
+      "kind": "source_file",
+      "package": "unity",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14"
+    },
+    {
+      "file": "libunity-core-6.0-9-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.ddeb",
+      "sha256": "0a9c354ad42b8727b3da4810be5197e6d23112e43ebfaed52c3f7e0276fba886",
+      "size": 5915814,
+      "kind": "binary",
+      "package": "libunity-core-6.0-9-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "sha256": "832b15d5eafb72c6c51b987128c88028fc122d2f0e06ac412e7c02b4761394f6",
+      "size": 463034,
+      "kind": "binary",
+      "package": "libunity-core-6.0-9",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libunity-core-6.0-dev_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "sha256": "46b8a544e89990e45a672d4a1f4cc5e1a466e4a4db0e9408c3ce8b6c2584088d",
+      "size": 27222,
+      "kind": "binary",
+      "package": "libunity-core-6.0-dev",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-autopilot_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb",
+      "sha256": "f4f0cfe2e5b433043448f84b6ca69c162a7406da0afea96c34e304d61ee6fd84",
+      "size": 70160,
+      "kind": "binary",
+      "package": "unity-autopilot",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "all"
+    },
+    {
+      "file": "unity-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.ddeb",
+      "sha256": "acc21bf66907cc3abd40bdec8cb2e9ac5e3ab3ee716d769d4af2d01bceeb1f57",
+      "size": 35521634,
+      "kind": "binary",
+      "package": "unity-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb",
+      "sha256": "26c923fbe87e056887372ef2fd0505971c906e978aa6734e868d720464e3ceff",
+      "size": 11918,
+      "kind": "binary",
+      "package": "unity-schemas",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "all"
+    },
+    {
+      "file": "unity-services-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.ddeb",
+      "sha256": "67855220a5705b8703fa88d74d7b25028549fe2747fe58cf3f9c29d6699d09fa",
+      "size": 101140,
+      "kind": "binary",
+      "package": "unity-services-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "sha256": "8bdbf34d6a996ef043a9f032576c212ab2902f23f5b9bea1fbbac6e7cb27f763",
+      "size": 34326,
+      "kind": "binary",
+      "package": "unity-services",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    },
+    {
+      "file": "unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb",
+      "sha256": "9c079ff298a2e28e6d3947942c781c3c6a8798e97b105a3589d1e2dd652b335a",
+      "size": 53306,
+      "kind": "binary",
+      "package": "unity-uwidgets",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "all"
+    },
+    {
+      "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.buildinfo",
+      "sha256": "253816bafaff36de573d331a94172cd923a1b75fbbb7c2e437c8e4de08066c7c",
+      "size": 28395,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "sha256": "daaee924ede11d1ff9f6b33d0b1b9427b80442cdb5ca11b013b8440c832eb9ff",
+      "size": 1865758,
+      "kind": "binary",
+      "package": "unity",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64"
+    }
+  ],
+  "build_dependencies": [
+    {
+      "file": "build-dependencies/libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "ce0dba348a8b6b8f525a4cae6bd66899f9a1cdf324a950247f29cfda532a0028",
+      "size": 785308,
+      "package": "libnux-4.0-0",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "source": "nux",
+      "given_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "resolved_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "in_our_repository_pool": true,
+      "pool_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-0_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb"
+    },
+    {
+      "file": "build-dependencies/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+      "sha256": "1cc0617d98c5b56b3b769bf02b07169515c389183d7072d80e7223dfde22a479",
+      "size": 53424,
+      "package": "libnux-4.0-common",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "all",
+      "source": "nux",
+      "given_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+      "resolved_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb",
+      "in_our_repository_pool": true,
+      "pool_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-common_4.0.8+18.10.20180623-0ubuntu15+unity3_all.deb"
+    },
+    {
+      "file": "build-dependencies/libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "sha256": "7b1ddd64f358e6d87c9a3b034075b51ec33e82ea10878b51192301e87c15e209",
+      "size": 229272,
+      "package": "libnux-4.0-dev",
+      "version": "4.0.8+18.10.20180623-0ubuntu15+unity3",
+      "architecture": "amd64",
+      "source": "nux",
+      "given_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "resolved_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb",
+      "in_our_repository_pool": true,
+      "pool_path": "/srv/aptly/public/pool/main/n/nux/libnux-4.0-dev_4.0.8+18.10.20180623-0ubuntu15+unity3_amd64.deb"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": true,
+    "older_than_max_age": true,
+    "tested_with": {
+      "manifest": "/home/claude/work/a/unity-distro-1008-006/docs/research/UNITY-20261008-006-unity-lock-stand-down/build-unity/UNITY-20261008-006-unity-build-manifest.json",
+      "manifest_sha256": "9cc8a4a4b0f46e9cb3465468074d06a2c12055c00ea5222badca2d7cc544282a",
+      "chroot_sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62"
+    },
+    "log_inrelease": [
+      "Get:5 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:6 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:7 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/a/unity-distro-1008-006/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

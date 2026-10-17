@@ -1,0 +1,35 @@
+UNITY-20261017-004: target verification of the publication of unity 7.7.1+26.04.20260306-0ubuntu3+unity14
+(with light-locker 1.8.0-3ubuntu4+unity5, published before as UNITY-20261008-006)
+
+Raw files: gate-004/verification/ (times EEST on the target, 2026-10-17).
+
+Published 2026-10-17 08:29:21Z as snapshot unity-resolute-20261017-004 (publish record
+~/coordinator/publish-records/UNITY-20261017-004.json: post-publish check PASS). On builder the served
+dists/resolute/InRelease has Date Sat, 17 Oct 2026 08:24:08 UTC, Valid-Until Tue, 20 Oct 2026 08:24:08 UTC; unity,
+libunity-core-6.0-9, libunity-core-6.0-dev, unity-schemas, unity-services, unity-uwidgets, unity-autopilot and their
+dbgsym 7.7.1+26.04.20260306-0ubuntu3+unity14 are in main/binary-amd64/Packages with the gated sha256, next to
+light-locker 1.8.0-3ubuntu4+unity5.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at 11:30:28,
+light-locker +unity2, unity +unity12, unity-settings-daemon +unity11 from the snapshot), apt-get update and
+full-upgrade from the live repository: unity, libunity-core-6.0-9, unity-schemas, unity-services, unity-uwidgets
++unity14 and light-locker +unity5 in one upgrade (downloaded unity deb sha256 daaee924..., libunity-core-6.0-9
+832b15d5..., light-locker d0440fb6... - the gated builds), nothing removed, nothing left to upgrade
+(01-restore-upgrade.txt). xdotool installed; cold boot.
+
+02-names.txt: org.gnome.ScreenSaver owned by light-locker, compiz queued; org.freedesktop.ScreenSaver light-locker,
+unity-settings-daemon queued; the running compiz and light-locker are the installed binaries.
+03-summary.txt (lk.sh per trigger):
+- V1 Super+L: Unity LockRequested, Lock forwarded to light-locker; one LockSession, one SetLockedHint; Unity's
+  lockscreen inactive.
+- V2 loginctl lock-session: light-locker locks; Unity sends no LockRequested.
+- V3 presence idle (idle-delay 20, lock-delay 0): SetActive(true), then Lock; light-locker locks.
+- V4 suspend: request 11:40:43, sleep 11:40:44.6; light-locker's lock (one LockSession, one SetLockedHint); Unity's
+  lockscreen inactive.
+The guest was woken from that suspend by a key from the host only after about 6 minutes. On resume (11:46:53)
+systemd stopped systemd-logind, systemd-journald, systemd-resolved and snapd with "Watchdog timeout (limit 5min)"
+(crash reports of logind, journald and resolved, systemd 259.5-0ubuntu3.4); logind was restarted, which is why
+LockedHint read "no" in V4's last sample, and NetworkManager stayed asleep, so the guest had no network until it
+was powered off hard and booted again. Earlier suspends of about 1-5 minutes in this task did not show it.
+
+Result: PASS.

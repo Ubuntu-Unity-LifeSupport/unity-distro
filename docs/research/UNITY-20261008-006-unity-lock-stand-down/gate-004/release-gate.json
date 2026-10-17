@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261017-004",
+  "package": "unity",
+  "target_series": "resolute",
+  "candidate_version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1008-006/packages/unity",
+  "source_remote_ref": "origin/a/UNITY-20261008-006",
+  "source_commit": "a97045b1e419b2267149290279fa5c3f36b6dfb9",
+  "source_tree_hash": "e4884bf4583739d04cad107e37d65741a9a589b7",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261017-004"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/build-unity-004/UNITY-20261017-004-unity-build-manifest.json",
+    "sha256": "745caa73816ba6829796553919969adc7affe39b4639c609c974267eaa3a647c"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate-004/evidence-manifest.json",
+    "sha256": "5b896ce7453ae007714e458780e5e1aee7c20b9322a92045557c0624506266f3"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate-004/target-test.txt",
+        "sha256": "07c985cacaf62039324b92907d431a04fb372b9631100b5e66b5e84a856f90c4"
+      },
+      "debs": {
+        "libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb": "832b15d5eafb72c6c51b987128c88028fc122d2f0e06ac412e7c02b4761394f6",
+        "unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb": "26c923fbe87e056887372ef2fd0505971c906e978aa6734e868d720464e3ceff",
+        "unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb": "8bdbf34d6a996ef043a9f032576c212ab2902f23f5b9bea1fbbac6e7cb27f763",
+        "unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb": "9c079ff298a2e28e6d3947942c781c3c6a8798e97b105a3589d1e2dd652b335a",
+        "unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb": "daaee924ede11d1ff9f6b33d0b1b9427b80442cdb5ca11b013b8440c832eb9ff"
+      }
+    }
+  }
+}
