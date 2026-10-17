@@ -1,7 +1,8 @@
 # unity-gtk4-menu 0.14 design: follow the shown menu (-028), bound the stand-in pass (-030), Xsession snippet (-039)
 
-Agent B, 2026-10-17. **Round 1**, for the Design Challenger. No code exists. The only code so far is a prototype of
-the Xsession snippet in the scratchpad, sourced on target2 for part C's facts.
+Agent B, 2026-10-17. **Round 2**, for the Design Challenger. Round 1 was REVISE (README, "Design review round 1");
+the table at the end says where each finding is answered. No package code exists. The Xsession snippet's prototype
+is `xsession/52unity-gtk4-menu`, sourced on target2 for part C's facts.
 
 Tasks:
 - UNITY-20261013-028: follow the shown menu. Measured in this card's `README.md`.
@@ -40,72 +41,94 @@ There are two, and neither uses a timer.
 
 1. **A menu widget is mapped in the followed window.**
    - The map shims stay installed after a fill: `look` installs them on success, as `waiter_add` does now.
-   - `late_mapped` (:1755) gets a second branch, taken when the root is `rec->window` of a record in state
-     OURS_FILLED and the widget is not `rec->owner`.
-   - The record is found through `gtk_window_get_application(root)` and `record_for`. A window of another
-     application, or a second window of the same one, schedules nothing.
+   - `late_mapped` (:1755) gets a second branch, after the waiter branch. It runs when:
+     - the root is a GtkWindow (`is_a`, checked before `gtk_window_get_application`);
+     - its application's record (`record_for`) is OURS_FILLED;
+     - `rec->window` is that root;
+     - the widget is not `rec->owner`.
+
+     A window of another application, or a second window of the same one, schedules nothing.
    - The branch schedules one relook idle per record (`rec->relook_idle`), coalesced like the rebuild.
-   - **Filter, before scheduling:** the mapped widget passes `late_owner_ok` (:453): a header bar or titlebar
-     ancestor, and no AdwDialog, AdwBottomSheet or GtkPopover ancestor.
+   - **Filter, before scheduling:** the mapped widget passes `late_owner_ok` (:453). Its `in_titlebar` is computed
+     for the map, not taken from a look: 1 when the widget has an ancestor equal to `gtk_window_get_titlebar(root)`.
+     That matters where the titlebar is not itself a header bar (round-1 #7).
    - Why the filter: list rows with menu buttons map and unmap while scrolling. Without it, every scroll step in a
      followed window would cost a full tree walk.
 2. **The current owner is unmapped.**
-   - `start_following` connects `unmap` on `rec->owner`, and `stop_following` disconnects it.
+   - `start_following` connects `unmap` on `rec->owner` and keeps the handler id in the record.
+   - `stop_following` disconnects it while the owner is alive.
+   - The id is zeroed when the weak `owner` pointer clears: the owner's finalize drops its handlers itself.
    - Without this trigger:
      - a GtkStack crossfade maps the new page while the old one is still shown, and the idle would compare the two
        mid-transition;
      - closing Console's tab overview maps nothing at all.
 
-The counter of waiting windows for the shim's early return becomes `waiting_count + following_count`.
-`following_count` counts records in OURS_FILLED with a live window.
+**The shim's early return** (round-1 #6): 0.13 returns at once while no window waits (`waiting_count == 0`). That
+gate is dropped. The second branch costs:
+- `gtk_widget_get_root`;
+- one `is_a`;
+- `gtk_window_get_application`;
+- one `g_object_get_data`;
+
+per map of a menu button or popover menu bar, and only once the shims are installed, which happens at the first fill
+or wait in the process.
 
 ### The relook
 
 Run in the idle, on `rec->window` only:
-- Return if the record is not OURS_FILLED, or its window or owner is gone. The second case is already handled, as in
-  `rebuild_idle`.
-- **Candidates:** collected with the late look's filter (`consider`, :502):
-  - shown;
-  - `late_owner_ok`;
+- Return if the record is not OURS_FILLED or its window is gone.
+- **An owner that is gone is not a reason to stop** (round-1 #1). An application that destroys the old view instead
+  of hiding it (a page popped from an AdwNavigationView, `set_child` with a new view) runs the relook after the unmap
+  with `rec->owner == NULL`. C is then treated as hidden, with the primary flag and item count stored in the record.
+  Only when there is no R does the record stop following, as 0.13 does today.
+- **Candidates** are collected with `look.late = 0`, which adds no `watch_late` (that runs only when `lk->late`,
+  :541-547). The collection is then filtered here:
+  - shown (`is_shown`);
   - at least one app./win. item;
-  - not ours.
+  - not ours (already in `consider`);
+  - and either `late_owner_ok`, or the owner is the one chosen at realize (`rec->first_owner`, a weak pointer set at
+    the fill).
 
-  It is a third mode of `struct look` (`relook`), not `late = 1`. `collect_menus` would otherwise call `watch_late` on
-  every button without a model (:541-547), connecting handlers on a window that does not wait.
-- **R** is the best candidate by the 0.13 ranking. Every candidate is shown here, so the ranking reduces to primary,
-  then items, then tree order.
-- **C** is the current source: its owner's `is_shown` now, its primary flag, and its item count. Primary and items
-  are kept in the record at the fill and at each switch.
+  The late look's narrower set keeps AdwDialog content, list rows and popovers out. The realize-time owner is
+  admitted as well, because 0.13 chose it without that filter, for example a popover menu bar in the content. Without
+  this exception it could never come back (round-1 #5).
+- **R** is the best remaining candidate by the 0.13 ranking. Every candidate is shown, so the ranking reduces to
+  primary, then items, then tree order.
+- **C** is the current source: its owner's `is_shown` now (hidden when the owner is gone), its primary flag and its
+  item count. Primary and items are kept in the record at the fill and at each switch.
 
-**Switch rule:**
+**Switch rule** (round 2: the last two rows changed, round-1 #4):
 
 | C now | switch to R when | otherwise |
 |---|---|---|
-| no R | never | keep C |
+| no R | never | keep C; if C's owner is gone, stop following (as 0.13) |
 | R's model is C's | never (nothing to do) | |
 | C shown | R outranks C: R primary and C not, or the same primary flag and more items | keep C (ties keep C) |
-| C hidden | R is primary, **or** R has at least as many items as C | keep C |
+| C hidden, C primary | R is primary, **or** R has at least as many items as C | keep C |
+| C hidden, C not primary | always: the best shown candidate wins | |
 
-Why the last row is not simply "the best shown wins". Two measured cases pull in opposite directions, and items are
-the 0.13 rationale for telling a main menu from a secondary one:
+Why the item test stays for a primary C. Two measured cases pull in opposite directions, and items are the 0.13
+rationale for telling a main menu from a secondary one:
 
-| case | C | R | wanted | the row gives |
+| case | C | R | wanted | the rule gives |
 |---|---|---|---|---|
-| Papers: start view → document view (README) | the start page's `app_menu` (primary, 3), hidden | the sidebar's `sidebar_menu` (primary, 5) | switch | primary: switch |
-| Papers: the sidebar collapsed (`doc.show-sidebar`) | `sidebar_menu` (primary, 5), hidden | the Document Menu (not primary, 2 app./win. of 13; 11 are `doc.*`) | keep: the main menu is only collapsed, and the other is 11 dead items | 2 < 5: keep |
+| Papers: start view → document view (README) | the start page's `app_menu` (primary, 3), hidden | the sidebar's `sidebar_menu` (primary, 5) | switch | R primary: switch |
+| Papers: the sidebar collapsed (`doc.show-sidebar`) | `sidebar_menu` (primary, 5), hidden | the Document Menu (not primary, 2 app./win. of 13; 11 are `doc.*`) | keep: the main menu is only collapsed, and the other is 11 dead items | C primary, 2 < 5: keep |
 | Papers: the sidebar shown again | `sidebar_menu` | `sidebar_menu` (mapped again) | nothing | same model |
-| Console: tab overview opened (`win.show-tabs-desktop`) | `primary_menu` (not primary, 6), shown | the overview's `secondary-menu` (primary, 3: New Window, Fullscreen, Leave Fullscreen) | follow what F10 opens there | primary: switch |
-| Console: tab overview closed | the overview's menu (primary, 3), hidden | `primary_menu` (not primary, 6) | back to the main menu | 6 ≥ 3: switch |
+| Console: tab overview opened (`win.show-tabs-desktop`) | `primary_menu` (not primary, 6), shown | the overview's `secondary-menu` (primary, 3: New Window, Fullscreen, Leave Fullscreen) | follow what F10 opens there | R primary, C not: switch |
+| Console: tab overview closed | the overview's menu (primary, 3), hidden | `primary_menu` (not primary, 6) | back to the main menu | C primary, 6 ≥ 3: switch |
+| no primary anywhere (round-1 #4): main 6 items; a page shows a header-bar menu of 8 `win.*` | main (6), shown | page menu (8) | switch while the page shows | more items: switch |
+| the same, page left | page menu (not primary, 8), hidden | main (6) | back | C not primary: switch |
 
 The Console rows are from gnome-console 49.2's `kgx-window.ui`. They are to be measured on target2 (Tests, T3).
 
 ### The switch
 
-1. Unwatch the old source. Keep `rec->names`, the old source's action names, so the stand-in pass below sees which
-   names are new.
-2. Set source, owner, window, primary and items to R's, and connect `unmap` on the new owner.
+1. Cancel a pending `rebuild_idle` (round-1 #6) and unwatch the old source. Keep `rec->names`, the old source's
+   action names, so the stand-in pass below sees which names are new.
+2. Set source, owner, primary and items to R's, and connect `unmap` on the new owner. The window is the same.
 3. Run the `rebuild_idle` body:
-   - `clean_model` of the new source, with stand-ins for this window;
+   - `clean_model` of the new source, with stand-ins for this window (see the next section);
    - `sync_menu` into `rec->inner` in place;
    - the stand-in pass for other windows (B);
    - new names;
@@ -113,8 +136,27 @@ The Console rows are from gnome-console 49.2's `kgx-window.ui`. They are to be m
 4. The holder item and its label stay. The exporter sends `Changed` only for what differs, as in 0.13.
 5. Log line: `switched to the shown menu (candidate N of M)`.
 
-Stand-ins of the old menu stay in the window's action map, as 0.13 leaves them after a rebuild. Their owner pointers
-are weak.
+### Stand-ins reused across a switch (round-1 #2)
+
+- `proxy_for` (:876) reuses a stand-in that is already in the window's map under the same local name (:893). That
+  stand-in keeps its old `owner` and `holder` and its `notify::` binding.
+- 0.13 never hits this case, because the owner never changes within a window. After a switch, two pages of one class
+  with their own header bars would activate the old, hidden widget and mirror its state.
+- **0.14:** each stand-in's `struct proxy` is also kept on its action (`g_object_set_data`). On a hit, `proxy_for`
+  compares it with what it has just found:
+  - **holder:** the result of `find_class_action(owner)`, computed before the lookup as it is now;
+  - **owner:** the new owner.
+
+  If either differs, the old action is removed from the map first. Its closure's `proxy_free` then clears the holder's
+  `PROXY_KEY` and the weak pointers. Only then is the new one created as on a miss.
+- In 0.13's paths the hit always matches, so nothing changes there.
+
+### Lifetime (round-1 #6)
+
+- `relook_idle` is removed in `stop_following`, as `rebuild_idle` is (:1237). `record_free` runs `stop_following`, so
+  an application finalised with a relook pending has no idle left.
+- `first_owner` is a weak pointer, cleared and released in `stop_following`.
+- The `unmap` handler id is zeroed when `owner` clears, and disconnected only on a live owner.
 
 ### Edge cases, stated
 
@@ -134,7 +176,8 @@ are weak.
 Papers' Document Menu is `doc.*`, a group inserted with `gtk_widget_insert_action_group`. 0.13 cannot reach it, and
 neither does 0.14.
 - Our gtk-nocsd series part (a) did reach such groups, by hooking that entry point (DECISIONS 2026-09-26).
-- In unity-gtk4-menu that is a new task, with its own existing-component question. I'll propose it to C.
+- In unity-gtk4-menu that is a new task with its own existing-component question: UNITY-20261017-007 (BACKLOG),
+  card `research/UNITY-20261017-007-gtk4-menu-inserted-groups/`.
 
 ## B. The stand-in pass, bounded (UNITY-20261013-030)
 
@@ -166,40 +209,58 @@ environment.d order already puts ours first.
 A snippet before 51 would also work, and could leave STARTUP alone. But 51 then prepends gtk-nocsd ahead of ours in
 exactly the -039 case. So it runs after 51 and puts ours in front.
 
+The 51gtk-nocsd it runs after is gtk-nocsd 4.8-1+unity5's, the one installed on target2 (md5
+`76e7ba88d91d64fdba5c49392e218153`, as in dpkg's conffile record). Source:
+`packages/gtk-nocsd/debian/51gtk-nocsd` at `6aab167` (A's worktree for UNITY-20261013-029). The base checkout's copy
+is older (+unity3: bare names, no opt-out check) and is not what the claims here refer to (round-1 #8).
+
 ### What it does
 
-The prototype, as proposed for the package:
+The prototype, as proposed for the package, is `xsession/52unity-gtk4-menu` (58 lines; round-1 #8). In short:
 
 ```sh
-if [ -r /usr/lib/environment.d/60-unity-gtk4-menu.conf ] &&
-    [ -n "${LD_PRELOAD-}" ]; then
-  # found: ours in any form (bare name or path) among the ':'/blank-separated entries
+if [ -r /usr/lib/environment.d/60-unity-gtk4-menu.conf ] && [ -n "${LD_PRELOAD-}" ]; then
   # off: an environment.d/60-unity-gtk4-menu.conf of the user's or the administrator's in
-  #      /etc, /run, /usr/local/lib or ${XDG_CONFIG_HOME:-$HOME/.config}, as 51gtk-nocsd checks its own
-  if neither:
-    LD_PRELOAD='/usr/$LIB/libunity-gtk4-menu.so.0':$LD_PRELOAD; export LD_PRELOAD
-    case $STARTUP in "env LD_PRELOAD=$old "*) replace that first word's value with the new one ;; esac
+  #      /etc, /run, /usr/local/lib or ${XDG_CONFIG_HOME:-$HOME/.config}, as 51gtk-nocsd checks its own;
+  #      then the list is left as it is
+  # otherwise: every other ':'/blank-separated entry in its order, every entry of ours (bare name or any path)
+  #      taken out, and '/usr/$LIB/libunity-gtk4-menu.so.0' put first
+  # if that differs from LD_PRELOAD: export it, and replace 51's "env LD_PRELOAD=<old> " at the head of STARTUP
 fi
 ```
 
-(The full prototype is 51 lines and uses the `_ugm_` prefix for its variables, all unset at the end.)
+Its variables use the `_ugm_` prefix and are all unset at the end.
 
 - **Only when the session has an LD_PRELOAD.** Without one, 95dbus exports nothing, and the user manager keeps
   environment.d's value with ours in it. When 51 is present, it has also imported that value. So there is nothing to
-  do (case A, H).
+  do (cases A, H).
+- **Ours always first** (round-1 #3). An entry of ours found behind gtk-nocsd is moved to the front, and duplicates
+  are dropped.
+  - Case F: an old `~/.xsessionrc` named ours bare. 51 then wrote it as a path behind gtk-nocsd, and with that order
+    our `g_module_symbol` is never reached. gtk-nocsd resolves the real one by name, not by chaining:
+    `GTK-NoCSD.c`:1183-1186 in our series.
+  - Moving it is what the user asked for by naming it. Leaving it would keep it loaded and inert for gjs and
+    PyGObject applications.
 - **STARTUP.** 51gtk-nocsd passes its value into a setgid ssh-agent as the first words of STARTUP:
-  `env LD_PRELOAD=<value> `. An outer `env` of ours would be overridden by that inner one, so the snippet replaces
-  exactly that prefix when it is there.
+  `env LD_PRELOAD=<value> `, with `:` separators only. An outer `env` of ours would be overridden by that inner one,
+  so the snippet replaces exactly that prefix when it is there. Nothing runs between 51 and 52 (`ls
+  /etc/X11/Xsession.d` on target2: `51gtk-nocsd`, then `55cinnamon-session_gnomerc`).
   - On target2 the Unity session does not go through it: the session tree has no ssh-agent above it, and everything
     runs under `systemd --user`.
   - It matters for consistency, and for sessions that do.
-  - When the prefix is not there (no gtk-nocsd), STARTUP is left alone, as before.
-- **An entry the user placed** (`…:libunity-gtk4-menu.so.0` anywhere in their list) is found and left where they put
-  it (case F).
+  - When the prefix is not there, STARTUP is left alone.
+  - **Stated limit** (round-1 #10): without 51 (case D), a session that does start a setgid ssh-agent loses the
+    session's LD_PRELOAD inside it, ours included, exactly as with 0.13 today. The user manager still gets ours
+    through 95dbus. Adding our own prefix there is not proposed: it would be the first STARTUP edit of ours, for a
+    session the library does nothing in (it acts only in Unity, and Unity runs its applications from the user
+    manager).
 
 ### C's points
 
-**1. The binary package: `libunity-gtk4-menu0`. A new binary package is not proposed.**
+**1. The binary package: `libunity-gtk4-menu0`. A new binary package is not proposed.** C accepted this on
+2026-10-17, with libgtk-nocsd0/51gtk-nocsd as the precedent, and the Challenger agreed in round 1. The deviation from
+Debian Policy 8.2 (files that do not change with the SONAME belong in another package) goes into DECISIONS with the
+release. A SONAME bump would need the arch:all split sketched below.
 
 Reasons:
 - **The precedent in the same stack:**
@@ -229,7 +290,9 @@ Reasons:
 **2. Alone, without gtk-nocsd.**
 
 Prototype sourced on target2 by dash, after the installed `51gtk-nocsd` (4.8-1+unity5) where present.
-`xsession/cases.sh`, `logs/04-xsession-cases.txt`:
+`xsession/cases.sh`; round 1 `logs/04-xsession-cases.txt`, round 2 `logs/05-xsession-cases-round2.txt`. Round 2 ran
+on the live archive (InRelease 2026-10-17 07:48:02 UTC) after a cold boot, so the user manager's value was built from
+the installed environment.d files.
 
 | case | session LD_PRELOAD | after the snippet | STARTUP |
 |---|---|---|---|
@@ -238,9 +301,13 @@ Prototype sourced on target2 by dash, after the installed `51gtk-nocsd` (4.8-1+u
 | C: gtk-nocsd turned off (`~/.config/environment.d/50-gtk-nocsd.conf`) | `libm.so.6` | `ours:libm.so.6` | 51's prefix rewritten |
 | D: no 51gtk-nocsd | `libm.so.6` | `ours:libm.so.6` | unchanged (no prefix) |
 | E: unity-gtk4-menu turned off (`…/60-unity-gtk4-menu.conf`) | `libm.so.6` | `nocsd:libm.so.6`, ours not added | unchanged |
-| F: ours there already (bare, after an old `~/.xsessionrc`) | `libunity-gtk4-menu.so.0:libm.so.6` | unchanged (51 wrote it as a path, after nocsd) | unchanged |
+| F: ours there already (bare, after an old `~/.xsessionrc`) | `libunity-gtk4-menu.so.0:libm.so.6` | 51 gives `nocsd:ours:libm`; the snippet gives `ours:nocsd:libm.so.6` (round 1 left it) | rewritten |
 | G: entries separated by a blank | `libm.so.6 libdl.so.2` | `ours:nocsd:libm.so.6:libdl.so.2` | rewritten |
 | H: none, no 51 | unset | unset, not exported | unchanged |
+| I: ours twice, both behind gtk-nocsd | `libm.so.6:/usr/$LIB/…menu.so.0:libunity-gtk4-menu.so.0` | `ours:nocsd:libm.so.6`, once | rewritten |
+| J: ours first already, no 51 | `/usr/$LIB/…menu.so.0:libm.so.6` | unchanged | unchanged |
+| R: removed, `libm.so.6` | | 51's `nocsd:libm.so.6`, unchanged | unchanged |
+| R2: removed, none | | `ours:nocsd`, from 51's import of the running manager (see point 3) | unchanged |
 
 No `_ugm_` variable is left in any case.
 
@@ -249,8 +316,9 @@ No `_ugm_` variable is left in any case.
   `[ -r ]` on that file, as 51gtk-nocsd guards on its own, so the snippet does nothing.
 - Prototype, file moved away (case R): `libm.so.6` → 51's `nocsd:libm.so.6` is left unchanged by the snippet.
 - In the same harness, R2 (no session LD_PRELOAD) shows ours. That comes from 51 importing the **running** user
-  manager, which was started while the file existed. A real login after remove starts a manager without it. The
-  package test checks this (T7).
+  manager, which was started while the file existed. A real login after remove starts a manager without it, as long
+  as the user manager has exited. Otherwise R2's import of the old value can preload a missing path, through 51
+  rather than ours. T7 therefore logs in cold, after a reboot (the manager does not linger) (round-1 #10).
 - Multi-arch partial removal (amd64 removed, i386 kept): environment.d stays, because the file is shared, while the
   amd64 library is gone. That limit already belongs to the environment.d path form May accepted on 12.10; the
   snippet adds nothing to it.
@@ -288,12 +356,24 @@ latetest (Xvfb, both preload forms, `G_DEBUG=fatal-criticals`), as in 0.13. Then
   - main: non-primary, 6 items; overlay: primary, 3 items;
   - the overlay shown switches to it, and hidden switches back.
 - **26. Crossfade.** A GtkStack with `crossfade`, 200 ms: at most two relooks, and the final copy is page 2's.
+- **25b. No primary anywhere** (round-1 #4): main 6 items, a page's header-bar menu with 8 `win.*` items. The page
+  shown switches to its menu, and the page left switches back.
+- **25c. Destroyed, not hidden** (round-1 #1): the shown page with the current menu removed from its stack and
+  destroyed, and another page with a primary menu shown. The relook runs with the owner gone and switches. With no
+  other menu, it stops following and the log says so.
+- **25d. Two instances of one class** (round-1 #2): two pages, each a widget of the same class with a class action
+  `win.x`-style item and its own header-bar button. After the switch, activating the item from D-Bus reaches the
+  page now shown, and a property action's state mirrors that page's property.
+- **25e. A realize-time owner outside a header bar** (round-1 #5): a popover menu bar in the content chosen at
+  realize, then a primary header-bar button shown (switch) and hidden again (back to the menu bar).
 - **27. Filtered maps.** 1000 list-row menu buttons mapped and unmapped (a GtkListBox in the content, outside any
   header bar) give zero relooks.
 - **28. Lifetime.**
   - the window destroyed with a relook idle pending: no critical (and valgrind);
   - the application sets its own menubar after the fill, then a page switch: no relook, TAKEN kept;
-  - the old owner finalised after a switch: `unmap` disconnected, no handler on a dead object.
+  - the old owner finalised after a switch: `unmap` disconnected, no handler on a dead object;
+  - the application finalised with a relook idle pending: no idle runs afterwards (valgrind);
+  - a switch with a rebuild idle pending: the rebuild is cancelled, and one sync happens.
 - **29 (B).**
   - 10 windows, 100 relabels: `find_menu_model` runs 0 times for other windows (debug log), against 0.13's 1000;
   - a relabel that adds a new action: 9 calls, and the stand-in appears (case 20 unchanged).
@@ -318,11 +398,16 @@ latetest (Xvfb, both preload forms, `G_DEBUG=fatal-criticals`), as in 0.13. Then
     run are already logs/01 and 03 of -039;
   - case C: gtk-nocsd turned off by the user;
   - case A: no `~/.xsessionrc`, the user manager's value as before.
+- **T6 also, case F:** `~/.xsessionrc` with `export LD_PRELOAD=libunity-gtk4-menu.so.0:libm.so.6`. The user manager
+  has ours first, and a gjs application (gnome-characters) and a PyGObject one (the -1013-013 `apps.py` set) export
+  their menubar.
 - **T7 (C), remove:**
   - `apt-get remove libunity-gtk4-menu0` together with what depends on it. If unity-session must go, the test runs
     `dpkg -r --force-depends` on the test machine only and says so;
-  - the conffile stays; after a cold login with `~/.xsessionrc` libm, LD_PRELOAD has no entry of ours and no
-    `cannot be preloaded` line appears in the session journal;
+  - the conffile stays; after a reboot (so the user manager starts without the environment.d file) and a cold
+    login with `~/.xsessionrc` libm, LD_PRELOAD has no entry of ours and no `cannot be preloaded` line appears in
+    the session journal;
+  - the same without `~/.xsessionrc` (R2 for real);
   - then reinstall.
 - **Control:** 0.13 fails 23, 25, T1, T2 and T3, and has no snippet for T6.
 
@@ -334,11 +419,24 @@ latetest (Xvfb, both preload forms, `G_DEBUG=fatal-criticals`), as in 0.13. Then
 - `debian/control`: the description gets one sentence on the X session snippet.
 - PATCHES/DECISIONS entries with the release, as before.
 
-## Questions for the Challenger
+## Questions for the Challenger (round 2)
 
-1. The switch rule's last row (C hidden: R primary, or at least as many items). Is there a measured or plausible
-   application where it keeps a dead menu, or flips to a wrong one?
-2. Filtering map triggers by `late_owner_ok`: a main menu outside any header bar (yelp keeps its header bar in the
-   content, which passes) would not trigger a relook on map. It would still be found at the current owner's unmap.
-   Acceptable?
-3. C, point 1: `libunity-gtk4-menu0`, or the separate package?
+1. The revised rule (a hidden non-primary C always yields to the best shown candidate; the item test is kept only
+   for a primary C): any remaining case where it keeps a dead menu or flips to a wrong one?
+2. Admitting the realize-time owner as a relook candidate outside the header-bar filter (#5): enough, or should
+   every realize-time candidate be kept?
+
+## Round-1 findings and where they are answered
+
+| # | finding | answer |
+|---|---|---|
+| 1 | an owner destroyed, not hidden, stops following | "The relook": a gone owner counts as hidden C; stop only with no R; test 25c |
+| 2 | stand-ins reused with the old owner/holder | "Stand-ins reused across a switch": replace on a holder or owner mismatch; test 25d |
+| 3 | case F leaves ours behind gtk-nocsd | "What it does": ours always moved first, duplicates dropped; case F rerun; T6 case F with gjs and PyGObject |
+| 4 | a hidden non-primary C sticks | rule rows changed; table rows 6-7; test 25b |
+| 5 | a realize-time C outside header bars can never come back | `rec->first_owner` admitted as a candidate; test 25e |
+| 6 | lifetime: idles, handler id, `following_count` | "Lifetime"; the gate dropped ("Triggers"); test 28 additions |
+| 7 | `in_titlebar` for the map filter; `is_a` window before `get_application` | "Triggers", item 1 |
+| 8 | prototype and R/R2 not in the card; the 51gtk-nocsd cited was +unity3 | `xsession/52unity-gtk4-menu`, `cases.sh ... removed`; +unity5 cited with its md5 |
+| 9 | B correct | - |
+| 10 | case D with ssh-agent; T7 needs the manager gone | stated limit in "What it does"; T7 reboots |

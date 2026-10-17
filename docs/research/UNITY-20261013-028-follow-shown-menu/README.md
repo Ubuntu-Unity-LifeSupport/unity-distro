@@ -90,3 +90,23 @@ Our gtk-nocsd series has the same mechanism:
 - `papers-document-view.png`: the window after Ctrl+O, with both menu buttons.
 - `xsession/cases.sh`, `logs/04-xsession-cases.txt`: the UNITY-20260927-039 part of the design. The prototype snippet
   sourced after the installed 51gtk-nocsd on target2, in ten cases.
+
+## Design review round 1 (2026-10-17): REVISE
+
+The Design Challenger (a separate subagent following `.claude/agents/design-challenger.md`) returned REVISE with two
+blocking and six should-fix findings, and two notes. In short:
+1. (blocking) A destroyed owner made the relook stop following.
+2. (blocking) Stand-ins reused across a switch kept the old owner and holder.
+3. Case F left ours behind gtk-nocsd.
+4. A hidden non-primary menu could stick.
+5. A realize-time menu outside header bars could never come back.
+6. Lifetime of the idles and the handler id.
+7. How `in_titlebar` is computed for the map filter.
+8. The prototype and the R/R2 cases were not in the card, and the 51gtk-nocsd cited was +unity3.
+9. B (note): correct.
+10. (note) Case D with ssh-agent, and T7 needs the user manager gone.
+
+On part C, point 1, it agreed with `libunity-gtk4-menu0` and asked for the Policy 8.2 deviation to be recorded in
+DECISIONS. C accepted the same on 2026-10-17.
+
+Each finding is answered in DESIGN.md round 2 (the table at its end).
