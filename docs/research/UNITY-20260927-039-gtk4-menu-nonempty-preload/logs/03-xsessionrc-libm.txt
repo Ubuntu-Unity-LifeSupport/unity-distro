@@ -1,0 +1,24 @@
+== nonempty at 2026-10-17T07:11:43Z, boot 2026-10-17 10:09:43
+  dbus-user-session	1.16.2-2ubuntu4
+  dbus-x11	1.16.2-2ubuntu4
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.13
+  unity-session	49.4+unity2
+  xsessionrc: export LD_PRELOAD=libm.so.6
+-- the snippets
+  Xsession.d: 20dbus_xdg-runtime
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 75dbus_dbus-launch
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/50-gtk-nocsd.conf: LD_PRELOAD=/usr/$$LIB/libgtk-nocsd.so.0${LD_PRELOAD:+:$LD_PRELOAD}
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: LD_PRELOAD=/usr/$$LIB/libunity-gtk4-menu.so.0${LD_PRELOAD:+:$LD_PRELOAD}
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: LD_PRELOAD=/usr/$$LIB/libunity-gtk4-menu.so.0${LD_PRELOAD:+:$LD_PRELOAD}
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libgtk-nocsd.so.0:libm.so.6'
+  compiz: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  unity-panel-ser: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  hud-service: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+-- a GTK4 application started through the user manager (gnome-calculator)
+  pid 4190 LD_PRELOAD: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0
+  window 60817412: _GTK_MENUBAR_OBJECT_PATH:  not found.
