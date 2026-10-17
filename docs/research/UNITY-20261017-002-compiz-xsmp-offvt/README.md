@@ -62,6 +62,16 @@ Not established, and the next step if C wants it: which X wait blocks. The two c
 user-space stack (ptrace, a gdb attach, or `eu-stack`) or uprobes on `xcb_wait_for_reply` and
 `xcb_wait_for_special_event` with bpftrace, which our tracing notes already use.
 
+## Before any fix: is it the VM's driver?
+
+C, 2026-10-17: target2 renders with vmwgfx (SVGA3D) inside VirtualBox. Before anything is designed on compiz's side, it
+has to be established whether the block is specific to that driver. For example, a DRI3/Present swap could wait for a
+vblank that never comes while the VT is away. May's real hardware may behave differently. No fix code until then.
+
+Next step, allowed by C, after the unity-gtk4-menu 0.14 target tests and not before: bpftrace uprobes on
+`xcb_wait_for_reply` and `xcb_wait_for_special_event` (with a ustack if bpftrace resolves one) during a switch-away.
+Passive, as in our tracing notes: no `-p`, `-B line`, no ptrace or eu-stack.
+
 ## Files
 
 - `probe.sh` (`snap`, `idle`, `logout`)
