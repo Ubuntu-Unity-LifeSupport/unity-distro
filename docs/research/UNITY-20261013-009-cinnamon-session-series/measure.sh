@@ -82,6 +82,29 @@ setup)
   sudo cp -p $BIN $BIN.orig && sudo install -m755 $B/cinnamon-session-binary.unstripped $BIN
   echo "  unstripped in place: build-id $(readelf -n $BIN | awk '/Build ID/{print $3}'), symbols $(nm $BIN 2>/dev/null | grep -c -E ' t (on_client_disconnected|_disconnect_client|end_phase|client_iochannel_watch)$')"
   ;;
+base)
+  # for a test build: Clean-2 -> live, full-upgrade, bpftrace and xterm; no binary replaced
+  echo "== restore, checked inside at $(date -u +%FT%TZ), boot $(uptime -s)"
+  ls -d ~/.dirty 2>&1 | sed 's/^/  /'; echo "  sources.list.d: $(ls /etc/apt/sources.list.d/ | xargs)"
+  touch ~/.dirty
+  sudo install -m644 $B/unity-distro.asc /etc/apt/keyrings/unity-distro.asc
+  sudo install -m644 $B/unity-distro.sources /etc/apt/sources.list.d/unity-distro.sources
+  wait_apt; sudo apt-get update -q > /tmp/upd.log 2>&1; echo "  update rc=$?"
+  grep -hE "^Date" /var/lib/apt/lists/192.168.56.10*_InRelease | sed 's/^/  /'
+  wait_apt; sudo DEBIAN_FRONTEND=noninteractive apt-get full-upgrade -y -q > /tmp/fu.log 2>&1; echo "  full-upgrade rc=$?"
+  wait_apt; sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q bpftrace xterm > /tmp/inst.log 2>&1; echo "  install rc=$?"
+  dpkg-query -W cinnamon-session cinnamon-session-common | sed 's/^/  /'
+  ;;
+install)
+  # the test build's debs (in $B), then its unstripped binary (same .text, with symbols) in place of the installed one
+  sha256sum $B/*.deb | cut -c1-16,65- | sed 's/^/  /'
+  wait_apt; sudo dpkg -i $B/cinnamon-session_*.deb $B/cinnamon-session-common_*.deb > /tmp/dpkg.log 2>&1; echo "  dpkg -i rc=$?"
+  dpkg-query -W cinnamon-session cinnamon-session-common | sed 's/^/  /'
+  dpkg -V cinnamon-session cinnamon-session-common; echo "  dpkg -V rc=$?"
+  echo "  installed binary sha256 $(sha256sum < $BIN | cut -c1-16)"
+  sudo cp -p $BIN $BIN.orig && sudo install -m755 $B/cinnamon-session-binary.unstripped $BIN
+  echo "  unstripped in place: sha256 $(sha256sum < $BIN | cut -c1-16), symbols $(nm $BIN 2>/dev/null | grep -c -E ' t (on_client_disconnected|_disconnect_client|end_phase|client_iochannel_watch)$')"
+  ;;
 clients)
   session_env; cs=$(cs_pid)
   echo "== clients at $(date -u +%FT%TZ), boot $(uptime -s); $(dpkg-query -W -f='cinnamon-session ${Version}' cinnamon-session); pid $cs"
@@ -116,10 +139,10 @@ switch)
   echo "  mike's session active: $(loginctl show-session $(loginctl list-sessions --no-legend | awk '$3=="mike" && $4=="seat0" {print $1}' | head -1) -p Active --value 2>&1)"
   mark "Logout(1)"
   gdbus call --session -d org.gnome.SessionManager -o /org/gnome/SessionManager -m org.gnome.SessionManager.Logout 1 2>&1 | sed 's/^/  gdbus: /'
-  for i in $(seq 60); do kill -0 $cs 2>/dev/null || break; sleep 1; done
-  mark "after up to 60 s: cinnamon-session pid $cs $(kill -0 $cs 2>/dev/null && echo 'STILL RUNNING' || echo gone)"
+  for i in $(seq 150); do kill -0 $cs 2>/dev/null || break; sleep 1; done
+  mark "after up to 150 s: cinnamon-session pid $cs $(kill -0 $cs 2>/dev/null && echo 'STILL RUNNING' || echo gone)"
   trace_stop $tag
-  journalctl -b --no-pager -q -o short-monotonic --since "-2min" | grep -E "cinnamon-session|csm" | sed 's/^/  /' | tail -15
+  journalctl -b --no-pager -q -o short-monotonic --since "-4min" | grep -E "cinnamon-session|csm" | sed 's/^/  /' | tail -15
   ;;
 stopped)
   # UNITY-20260929-007, allowed by C (2026-10-13): at-spi-registryd stopped with SIGSTOP during a logout (an
@@ -144,6 +167,24 @@ stopped)
   mark "after SIGCONT (up to 60 s): cinnamon-session pid $cs $(kill -0 $cs 2>/dev/null && echo 'STILL RUNNING' || echo gone)"
   trace_stop $tag
   journalctl -b --no-pager -q -o short-monotonic --since "-3min" | grep -E "cinnamon-session|csm|NotInRunning|at-spi" | sed 's/^/  /' | tail -20
+  ;;
+slow)
+  # UNITY-20260927-014 round 2 (allowed by C, 2026-10-17): the slow XSMP client (xsmp-slow DELAY HOLD) answers the
+  # end-session query with an InteractRequest DELAY s late, closes HOLD s after that; the session is switched away
+  # and Logout(1) is requested. Expected: the logout is held while the client holds, then goes on.
+  session_env; cs=$(cs_pid)
+  echo "== slow at $(date -u +%FT%TZ); pid $cs; $(dpkg-query -W -f='cinnamon-session ${Version}' cinnamon-session)"
+  nohup $B/xsmp-slow ${3:-3} ${4:-45} > /tmp/cs8-slow-$tag.txt 2>&1 < /dev/null &
+  sleep 3; echo "  xsmp-slow: $(head -1 /tmp/cs8-slow-$tag.txt)"
+  echo "-- clients"; clients
+  dm-tool switch-to-greeter; sleep 5
+  echo "  mike's session active: $(loginctl show-session $(loginctl list-sessions --no-legend | awk '$3=="mike" && $4=="seat0" {print $1}' | head -1) -p Active --value 2>&1)"
+  mark "Logout(1)"
+  gdbus call --session -d org.gnome.SessionManager -o /org/gnome/SessionManager -m org.gnome.SessionManager.Logout 1 2>&1 | sed 's/^/  gdbus: /'
+  for i in $(seq 150); do kill -0 $cs 2>/dev/null || break; sleep 1; done
+  mark "after up to 150 s: cinnamon-session pid $cs $(kill -0 $cs 2>/dev/null && echo 'STILL RUNNING' || echo gone)"
+  echo "-- xsmp-slow"; sed 's/^/  /' /tmp/cs8-slow-$tag.txt
+  journalctl -b --no-pager -q -o short-monotonic --since "-4min" | grep -E "cinnamon-session-binary\[" | grep -E "WARNING|CRITICAL|dialog|reply" | sed 's/^/  /' | tail -12
   ;;
 logout)
   session_env; cs=$(cs_pid)

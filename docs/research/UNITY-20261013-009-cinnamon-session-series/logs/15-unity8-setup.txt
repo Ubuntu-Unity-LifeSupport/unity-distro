@@ -1,0 +1,17 @@
+== restore, checked inside at 2026-10-17T04:36:36Z, boot 2026-10-17 07:35:10
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  sources.list.d: ubuntu.sources
+  update rc=0
+  Date: Sat, 17 Oct 2026 03:12:42 UTC
+  full-upgrade rc=0
+  install rc=0
+  cinnamon-session	6.4.2-1+unity7
+  cinnamon-session-common	6.4.2-1+unity7
+  5a392ba9010a82a3  /home/mike/b-cs8/cinnamon-session_6.4.2-1+unity8_amd64.deb
+  a60926c285db3d9c  /home/mike/b-cs8/cinnamon-session-common_6.4.2-1+unity8_all.deb
+  dpkg -i rc=0
+  cinnamon-session	6.4.2-1+unity8
+  cinnamon-session-common	6.4.2-1+unity8
+  dpkg -V rc=0
+  installed binary sha256 0ce1679608bfdf54
+  unstripped in place: sha256 51516ce66cfe7aba, symbols 4

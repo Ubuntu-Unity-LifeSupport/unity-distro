@@ -145,3 +145,21 @@ queued SaveYourself, so that phase ends at its own 30 s phase timeout before EXI
   and is covered by the same won't-fix reasoning. A safe form exists if ever wanted: `free (sms_conn)` before each
   `return FALSE` (libICE keeps no client data when setup fails, and `client_id` is still NULL). It depends on libSM
   internals, so it is not taken.
+
+## Round 2 review (Design Challenger, 2026-10-17): APPROVE (the whole series)
+
+Item 1's round 2 resolves both blocking findings. A client that replies late reaches `_handle_client_end_session_response` while
+the query phase is running and gets its JIT inhibitor. The other exits during the grace period are covered: every client
+replying removes the timer, a cancel goes through `start_phase`, and a disconnect counts as an OK reply.
+
+Implementation notes:
+- The new source id is stored in `query_timeout_id` after the reset at the top of `_on_query_end_session_timeout`, and
+  the function still returns FALSE, so a new source is created rather than the 1 s one kept.
+- Optional: skip the grace period when a logout inhibitor already exists at the 1 s tick, since the dialog path is
+  taken anyway. Not taken, to keep the change to the case C described.
+
+C allowed the slow XSMP test client (2026-10-17), within these limits:
+- only libSM's public API, in its normal order;
+- a delayed SmcInteractRequest;
+- expected outcome: the logout is held, then completes normally;
+- if the session manager crashes, stop and report.

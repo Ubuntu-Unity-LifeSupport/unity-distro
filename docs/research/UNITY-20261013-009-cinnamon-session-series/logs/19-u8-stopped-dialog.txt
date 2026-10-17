@@ -1,0 +1,29 @@
+== stopped at 2026-10-17T05:59:04Z; pid 2295
+-- inhibitors before
+  (@ao [],)
+  at-spi2-registryd pid 2314
+-- clients
+  Client2: app ('',), pid 0: 
+  Client3: app ('at-spi-registryd.desktop',), pid 2314: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client4: app ('gnome-settings-daemon',), pid 2296: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client5: app ('',), pid 2976: /usr/bin/compiz 
+  bpftrace: Attached 4 probes
+  [151.85 s since boot] SIGSTOP 2314
+  [151.85 s since boot] cinnamon-session-quit --logout --no-prompt
+  quit 1:   GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  [161.87 s since boot] second request: Logout(1)
+  gdbus: Ошибка: GDBus.Error:org.gnome.SessionManager.NotInRunning: Logout interface is only available during the Running phase
+  [212.45 s since boot] 60 s after the first request: cinnamon-session pid 2295 STILL RUNNING
+  [212.47 s since boot] SIGCONT 2314
+  [213.57 s since boot] after SIGCONT (up to 60 s): cinnamon-session pid 2295 gone
+-- trace (u8-5)
+  152728438710 end_phase
+  212460941388 end_phase
+  212486409279 _disconnect_client client=0x63e200c64f20
+  212498480145 end_phase
+  212504349999 end_phase
+  
+  
+  [  137.952471] target2 at-spi2-registryd[2314]: Disabling unresponsive app with pid 2329
+  [  153.941876] target2 cinnamon-session[2295]: cinnamon-session-binary[2295]: WARNING: t+53.06620s: Client '/org/gnome/SessionManager/Client3' failed to reply before timeout
+  [  153.941428] target2 cinnamon-session-binary[2295]: WARNING: t+53.06620s: Client '/org/gnome/SessionManager/Client3' failed to reply before timeout

@@ -1,6 +1,10 @@
 # cinnamon-session +unity8 series (UNITY-20261013-009 and others)
 
-Owner: agent B (target2). Paused 2026-10-13 for UNITY-20260929-012, resumed 2026-10-17.
+Owner: agent B (target2). Paused 2026-10-13 for UNITY-20260929-012, resumed 2026-10-17. Result: 6.4.2-1+unity8 with
+UNITY-20260927-014, UNITY-20261013-009 and UNITY-20261013-010. Closed without code:
+- UNITY-20260929-007, by design;
+- UNITY-20261013-011, won't fix;
+- UNITY-20261002-010, not cinnamon-session's (moved to UNITY-20261017-001).
 
 Base: the published 6.4.2-1+unity7 (A's `a/UNITY-20261013-016`, 7393f0e).
 
@@ -25,14 +29,6 @@ bpftrace can probe static functions by name (`measure.sh`, logs/01).
 | UNITY-20260929-007 | logout with at-spi-registryd stopped (SIGSTOP, then SIGCONT; allowed by C) | not run yet (`measure.sh stopped`) |
 | UNITY-20261013-011 | code reading | the SmsConn is not freed on refusal, neither by cinnamon-session nor by libSM/libICE (sweep) |
 
-## Next, when the series resumes
-
-- -014: run the switch step with the session's seat path (from `loginctl`), not the environment.
-- -0929-007: the `stopped` step.
-- -010: read the client's finalize path.
-- -1002-010: to C, re-scoped to unity-session.
-- Then the DC for -009, -010, -011 (and -0929-007 if it reproduces). target2 goes back to Clean-2 first.
-
 ## Measured 2026-10-17 (target2: Clean-2 → live, InRelease 2026-10-17 03:12:42 UTC, cinnamon-session +unity7)
 
 Before the setup, target2's clock was days behind after a host sleep. A cold cycle corrected it (chrony stepped 2.97 s),
@@ -49,3 +45,32 @@ numbers differ from boot to boot, so a "ClientN failed to reply" warning only me
 | UNITY-20261013-010 | code reading of `csm-xsmp-client.c` | both close paths (`close_connection_callback` and the IO-error path) emit `disconnected` while the watch callback still holds its reference. The client is finalized inside the dispatch, while `watch_id` still names the live source, so `g_source_remove` finds it and no critical is logged. That matches what was measured: every traced exit returned 1, or 0 on the IO error, and no critical appeared. A stale `watch_id` would matter only on the `IceProcessMessagesConnectionClosed` path if the client outlived the callback. No trace showed that path. **Latent, not reproduced** |
 
 target2 was restored to Clean-2 afterwards and confirmed inside (logs/13).
+
+## 6.4.2-1+unity8 (package branch b/UNITY-20261013-009, b526443)
+
+The package carries three patches on +unity7 (7393f0e), one commit each, plus the changelog. The design is DESIGN.md
+(Design Challenger round 1 REVISE for item 1; round 2 APPROVE for the whole series).
+
+| commit | patch | task |
+|---|---|---|
+| 9210524 | `Connect-a-client-s-disconnected-signal-only-once.patch` | UNITY-20261013-009 |
+| 7ad4d3e | `Clear-the-client-s-watch-id-when-its-IO-watch-stops.patch` | UNITY-20261013-010 |
+| 269909e | `Give-clients-of-an-inactive-session-a-grace-period-befo.patch` | UNITY-20260927-014 |
+
+**Build** (`build-unity8/`): sbuild on the new chroot resolute-amd64-20261017T042748Z (the previous one was older than
+7 days), `DEB_BUILD_OPTIONS=parallel=4`, status successful, lintian pass. The compiler warnings in the changed files
+are the existing ones (deprecated `g_type_class_add_private`, `fscanf`); none is on a changed line.
+
+**target2** (Clean-2 → live, then `dpkg -i` of this build with `dpkg -V` clean; the unstripped copy of the same build,
+`.text` identical, for the probes; logs/15):
+
+| test | log | result |
+|---|---|---|
+| -014: switched away, then Logout(1) | logs/16 | **the session ends after 62 s**: Logout at 209.8 s; at 240.9 s (the end of the 30 s grace) "Client6 (compiz) failed to reply" is logged and the session moves to END_SESSION, with no dialog launched; END_SESSION ends at its 30 s timeout and the session is gone at 271.6 s. With +unity7 the session was still running after more than 60 s, waiting on an invisible dialog (logs/07, logs/10) |
+| -014 round 2: the slow XSMP client (`xsmp-slow.c`, allowed by C) in a switched-away session | logs/17 | the client answers the registration SaveYourself at once. It gets the end-session SaveYourself (shutdown, interaction allowed) and answers it **3 s late** with an InteractRequest: interaction is granted at once and the client completes its save, so a late answer is honoured, not dropped. Only compiz, which never answers, is dropped after the grace period. The logout then goes on (END_SESSION's fast SaveYourself) and ends in 62 s. The first attempt (logs/17-…-test-bug) had a test-client bug: it answered the registration SaveYourself with an InteractRequest (BadState) and never completed it, so it was dropped as silent. Fixed in the client, not in cinnamon-session |
+| -009 | logs/18 | `on_client_disconnected` and `_disconnect_client` **once** per client, for an xterm exit and a SIGKILL (twice on +unity7) |
+| -010 | logs/18 | the watch returns 0 after the SIGKILL; no GLib critical in the journal |
+| a foreground logout | logs/18 | ends in 1.8 s |
+| a foreground logout with at-spi2-registryd stopped | logs/19 (and .png) | **unchanged**: Unity's end-session dialog is shown, a second Logout gets NotInRunning, and after SIGCONT the session ends in about 1 s |
+
+target2 was restored to Clean-2 afterwards and confirmed inside (logs/20).

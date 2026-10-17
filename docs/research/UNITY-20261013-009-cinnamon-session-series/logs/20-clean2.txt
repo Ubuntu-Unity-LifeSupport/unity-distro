@@ -1,0 +1,4 @@
+restore checked inside at 2026-10-17T06:03:07Z, boot 2026-10-17 09:01:27
+ls: cannot access '/home/mike/.dirty': No such file or directory
+ls: cannot access '/home/mike/b-cs8': No such file or directory
+ubuntu.sources
