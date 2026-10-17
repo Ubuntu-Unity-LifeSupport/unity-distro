@@ -87,3 +87,61 @@ bundling it into +unity8 if the DC agrees; otherwise the task closes NOT_REPRODU
 allocated (`_SmsProtocolSetupProc`). Freeing it would mean calling `SmsCleanUp` from inside libSM's own setup
 callback, which also shuts the protocol down on that IceConn. That is riskier than a one-time leak in a process that
 is about to exit. **Proposal: won't fix (NOT_APPLICABLE)**, unless the DC sees a safe form.
+
+## Round 1 review (Design Challenger, 2026-10-17): REVISE for item 1; items 2-4 APPROVE
+
+- Items 2 (-009) and 4 (-011, won't fix) were approved as written.
+- Item 3 (-010) was approved with one condition: `watch_id` is zeroed **before** the `g_object_unref (client)` at the
+  end of `client_iochannel_watch`, because that unref can finalize the client. A write placed at the final `return`
+  would be a use-after-free.
+- Item 1 was REVISE. The query timer fires after 1 s (`g_timeout_add_seconds (1, _on_query_end_session_timeout)`),
+  not after a long timeout. So "never replied" in round 1 really meant "not within 1 s", and dropping at that tick
+  could lose a slow client that wants to save: one whose InteractRequest or `EndSessionResponse(is_ok=FALSE)` comes
+  after 1 s, which is likely off-VT.
+
+## Round 2: item 1 (UNITY-20260927-014) revised
+
+**Change.** In `_on_query_end_session_timeout`, when all of these hold:
+- the logout mode is `CSM_MANAGER_LOGOUT_MODE_NO_CONFIRMATION`;
+- the session is not active (`g_object_get (manager->priv->system, "active", &active, NULL)`);
+- this query phase has not used its grace period yet (a new private flag, cleared in `do_phase_query_end_session`);
+
+then the 1 s tick adds no inhibitors and does not complete the query. It keeps the clients that have not replied in
+`query_clients`, marks the grace period used, and re-arms `query_timeout_id` once with `CSM_MANAGER_PHASE_TIMEOUT`
+(the existing 30 s constant).
+
+When that timer fires:
+- `active` is read again;
+- if the session is still inactive, the remaining non-repliers get no "Not responding" inhibitor, as in FORCE mode;
+- if the session has become active meanwhile, they get the inhibitors exactly as today;
+- the query completes through the existing path either way.
+
+A client that replies within the grace period, including a late InteractRequest or `EndSessionResponse(is_ok=FALSE)`,
+goes through the normal path. `_handle_client_end_session_response` removes it from `query_clients` and adds a JIT
+inhibitor if it is not OK. If every client replies before the grace timer, the existing early completion runs, and
+`query_end_session_complete` removes the timer.
+
+**Expected timing on target2 (logs/10).** 1 s, then 30 s of grace, then END_SESSION. compiz still never answers its
+queued SaveYourself, so that phase ends at its own 30 s phase timeout before EXIT. The whole logout takes about
+1 minute, not "a few seconds".
+
+**Tests.**
+- The `switch` run: the session ends in about 1 minute, with "failed to reply" logged and no dialog launched.
+- A late answer while the session is inactive: an XSMP client that answers the query with an InteractRequest about 3 s
+  late must hold the logout behind its inhibitor, as today. This needs a small XSMP test client that answers late (a
+  slow client, nothing crafted). If C considers that a fault harness, it is replaced by code reading.
+- Regression:
+  - the foreground `stopped` run still waits with its "Not responding" inhibitor;
+  - an ordinary foreground logout still takes about 1 s;
+  - the UNITY-20260928-019 cycle.
+
+**Out of scope, recorded.**
+- Reboot and shutdown requests do not set `logout_mode` (`request_reboot` and `request_shutdown`), so an inactive
+  session's shutdown can still wait the same way. That is a separate case.
+- Other no-confirmation callers also take this path: the end-session dialog's "Logout" and XSMP fast logout
+  requests. Both are fine with it.
+- `active` defaults to TRUE when there is no logind session (csm-systemd.c), so the change does not apply then.
+- -011: the "already handed over" refusal added by our Fix-connection-lifetime patch leaks its SmsConn in the same way,
+  and is covered by the same won't-fix reasoning. A safe form exists if ever wanted: `free (sms_conn)` before each
+  `return FALSE` (libICE keeps no client data when setup fails, and `client_id` is still NULL). It depends on libSM
+  internals, so it is not taken.
