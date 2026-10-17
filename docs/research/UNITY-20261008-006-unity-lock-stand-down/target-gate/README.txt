@@ -37,7 +37,7 @@ calls, Unity's Locked signals, and calls of org.gnome.ScreenSaver SetActive/Lock
 | 03 | Ctrl+Alt+L | light-locker locks, one SetLockedHint |
 | 04 | loginctl lock-session | light-locker locks; Unity sends no LockRequested and does not lock |
 | 05 | presence idle, idle-delay 20, lock-delay 0 | SetActive(true) then Lock, light-locker locks |
-| 05b | idle, lock-delay 30, input after 30 s | SetActive(true) on each idle, no Lock, not locked |
+| 05b | idle (idle-delay 20), lock-delay 30, input 30 s after the trigger (about 15 s into the lock-delay) | SetActive(true) on each idle, no Lock, not locked |
 | 05c | idle continuing from 05b (no input), lock-delay 30 | Lock after the delay, light-locker locks (the SetActive came in 05b) |
 | 05d | idle, lock-enabled false | SetActive(true) only, GetActive true (blank), not locked |
 | 06 | legacy mode (screen-keyboard-enabled), Super+L | Lock to light-locker, locked |

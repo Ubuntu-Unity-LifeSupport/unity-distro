@@ -1,0 +1,33 @@
+{
+  "task_id": "UNITY-20261017-004",
+  "package": "unity",
+  "target_series": "resolute",
+  "candidate_version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+  "source_commit": "a97045b1e419b2267149290279fa5c3f36b6dfb9",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261008-006",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate-004/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate-004/target-test.txt",
+    "debs": {
+      "libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb": "832b15d5eafb72c6c51b987128c88028fc122d2f0e06ac412e7c02b4761394f6",
+      "unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb": "26c923fbe87e056887372ef2fd0505971c906e978aa6734e868d720464e3ceff",
+      "unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb": "8bdbf34d6a996ef043a9f032576c212ab2902f23f5b9bea1fbbac6e7cb27f763",
+      "unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb": "9c079ff298a2e28e6d3947942c781c3c6a8798e97b105a3589d1e2dd652b335a",
+      "unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb": "daaee924ede11d1ff9f6b33d0b1b9427b80442cdb5ca11b013b8440c832eb9ff"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+    "verification_record": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

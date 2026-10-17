@@ -1,0 +1,34 @@
+UNITY-20261017-004: target test of unity 7.7.1+26.04.20260306-0ubuntu3+unity14 (the gated build, build-unity-004/)
+
+The change and its records are UNITY-20261008-006's (README.md of this directory). Raw files and the full description:
+target-gate/ (README.txt; times EEST on the target, 2026-10-17).
+
+The gated build (build-unity-004/, task UNITY-20261017-004, built with --tested-with build-unity/'s manifest in the same
+chroot from the same commit a97045b1) is byte-identical in all its artifacts to build-unity/, the build installed on
+the target. The target ran these debs of it:
+- unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb (sha256 daaee924ede11d1ff9f6b33d0b1b9427b80442cdb5ca11b013b8440c832eb9ff)
+- libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb (832b15d5eafb72c6c51b987128c88028fc122d2f0e06ac412e7c02b4761394f6)
+- unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb (26c923fbe87e056887372ef2fd0505971c906e978aa6734e868d720464e3ceff)
+- unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb (8bdbf34d6a996ef043a9f032576c212ab2902f23f5b9bea1fbbac6e7cb27f763)
+- unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb (9c079ff298a2e28e6d3947942c781c3c6a8798e97b105a3589d1e2dd652b335a)
+(unity-autopilot and libunity-core-6.0-dev are not installed on the target.)
+
+Target: target-desktop restored from Published-stack-2026-10-08, full-upgraded from the live repository, then
+light-locker 1.8.0-3ubuntu4+unity5 (now published, UNITY-20261008-006) and the debs above; cold boots.
+- Five cold boots and a forced late start of light-locker: light-locker owns org.gnome.ScreenSaver, Unity queued
+  (Unity requests the name 35-45 s after unity7 starts).
+- Trigger table: Super+L and the indicator's Lock call are forwarded to light-locker (Lock); Ctrl+Alt+L and
+  loginctl lock-session are left to light-locker; presence idle: SetActive(true), then Lock after lock-delay (0 and
+  30 s), input during the delay cancels it, lock-enabled false gives a blank only; legacy mode (on-screen keyboard):
+  the same, and idle now locks; suspend: no lock and no inhibitor from Unity, sleep about 1 s after the request.
+  Every lock through light-locker with one greeter switch and one LockedHint write; Unity's lockscreen target stayed
+  inactive and Unity sent no Locked signal.
+- light-locker killed: Unity owns org.gnome.ScreenSaver within the measured 3 s; Super+L then locks with Unity's own
+  lockscreen (one LockedHint write from Unity).
+- Breaks: with light-locker +unity5 not available, apt removes light-locker and light-locker-settings to install
+  unity +unity14 (../target/02-breaks-check.txt); light-locker +unity5 is published first.
+
+Not tested on target: takeover while the session is locked (unit test), compiz restart, a11y toggle while locked,
+DPMS, lid, guest account, switch-user, a second login in the same boot.
+
+Result: PASS.
