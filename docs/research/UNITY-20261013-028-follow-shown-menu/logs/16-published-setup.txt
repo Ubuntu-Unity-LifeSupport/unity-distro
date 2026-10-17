@@ -1,0 +1,20 @@
+== restore, checked inside at 2026-10-17T10:08:41Z, boot 2026-10-17 13:07:31
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/.xsessionrc': No such file or directory
+  sources.list.d: ubuntu.sources
+  update rc=0
+  Date: Sat, 17 Oct 2026 10:01:01 UTC
+  full-upgrade rc=0
+  install rc=0
+== 2026-10-17T10:23:56Z, boot 2026-10-17 13:07:31
+  install rc=0
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  papers	50.2-0ubuntu0.1
+libunity-gtk4-menu0:amd64	0.14
+dpkg-V-clean
+4aab12270936ac2297989b7e6b60e2b430a3ef22ccfbb46b5e26fb09eed473b4  /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0
+-rw-r--r-- 1 root root 2823 Oct 17 11:48 /etc/X11/Xsession.d/52unity-gtk4-menu
+libunity-gtk4-menu0:
+  Установлен: 0.14
+  Кандидат:   0.14

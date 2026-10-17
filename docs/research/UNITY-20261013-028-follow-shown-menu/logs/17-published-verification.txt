@@ -1,0 +1,127 @@
+== published-B at 2026-10-17T10:29:06Z, boot 2026-10-17 13:26:43
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: none
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: /usr/lib/environment.d/60-unity-gtk4-menu.conf
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6'
+  compiz: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  unity-panel-ser: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  hud-service: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+-- gnome-calculator, started through the user manager
+  pid 4108 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 56623108: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+-- gnome-characters, started through the user manager
+Failed to find executable gnome-characters: No such file or directory
+/home/mike/b028/session.sh: строка 15: /proc/0/environ: Нет такого файла или каталога
+  pid 0 LD_PRELOAD: 
+  maps: 
+  window none: 
+-- this boot's journal: "cannot be preloaded" lines: 1
+  жов 17 13:28:07 target2 ssh-agent[2122]: ERROR: ld.so: object 'libm.so.6' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+== startview at 2026-10-17T10:29:24Z
+-- the start view
+  window 56623108 (Просмотрщик документов)
+    window 56623108: :1.102 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  window pid 4313
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: hooked GtkMenuButton::map
+    lib: hooked GtkPopoverMenuBar::map
+    lib: menubar filled, labelled "Просмотрщик документов"
+  file chooser window none
+There are no windows in the stack
+Invalid window '%1'
+Usage: windowactivate [options] [window=%1]
+--sync    - only exit once the window is active (is visible + active)
+If no window is given, %1 is used. See WINDOW STACK in xdotool(1)
+-- after opening the PDF in the same instance
+  window 56623108 (doc028.pdf)
+    window 56623108: :1.102 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  windows: 56623108 pid 4313 (doc028.pdf) 
+  papers processes: 4313
+  log: /tmp/b028-start.log
+-- startview sidebar hidden (a click at 322,22)
+  window 56623108 (doc028.pdf)
+    window 56623108: :1.102 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+-- startview sidebar shown (a click at 23,23)
+  window 56623108 (doc028.pdf)
+    window 56623108: :1.102 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  library log since the start view:
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: hooked GtkMenuButton::map
+    lib: hooked GtkPopoverMenuBar::map
+    lib: menubar filled, labelled "Просмотрщик документов"
+    lib: relook
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: candidate 2 at depth 17: shown=1 primary=1 app./win. items=5
+    lib: chose candidate 2 of 2
+    lib: switched to the shown menu: 5 item(s) replaced
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: chose candidate 1 of 1
+    lib: relook: the menu followed is kept

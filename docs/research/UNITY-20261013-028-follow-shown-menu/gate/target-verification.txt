@@ -1,0 +1,21 @@
+UNITY-20261013-028 (with UNITY-20261013-030, UNITY-20260927-039): target verification of the published unity-gtk4-menu 0.14
+(published 2026-10-17 10:06:08Z, snapshot unity-resolute-20261013-028; checked 10:08-10:31Z on target2)
+
+Served files (on builder): Packages lists libunity-gtk4-menu0 0.14 with SHA256
+44fc69a3f52b84b3dbe9e1bca6621ef5eb615cb43cbde141d23052adc614f5bd. The pool file and the file fetched over HTTP from
+http://192.168.56.10:8080/ have the same hash, which is the gate's tested deb.
+
+Target (logs/16, 17):
+1. target-desktop-2 restored to Clean-2, confirmed inside (no ~/.dirty, no ~/.xsessionrc, only ubuntu.sources).
+2. The live repository added, then apt-get update and full-upgrade (InRelease Date 2026-10-17 10:01:01 UTC). apt
+   installed libunity-gtk4-menu0 0.14 from the archive (candidate 0.14), dpkg -V clean. The library's sha256 is
+   4aab1227..., the one tested, and /etc/X11/Xsession.d/52unity-gtk4-menu is in place.
+3. UNITY-20260927-039, cold session with ~/.xsessionrc exporting LD_PRELOAD=libm.so.6: the user manager and compiz
+   have /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6, and gnome-calculator maps both
+   libraries and exports its menubar. (gnome-characters is not installed on this clean machine; its line is empty.)
+4. UNITY-20261013-028, Papers alone, then the PDF opened with Ctrl+O: the export changes to the sidebar's main menu
+   (Open…, Night Mode, …). The sidebar hidden: kept; shown again: unchanged.
+5. UNITY-20261013-030 is a cost change with no visible behaviour; its measurement is the tested build's (logs/12,
+   12b), the same file.
+
+Result: PASS.
