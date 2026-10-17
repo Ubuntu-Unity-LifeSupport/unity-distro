@@ -1,0 +1,388 @@
+== logout at 2026-10-17T08:23:13Z; compiz 2778
+-- before Logout(1) at 08:23:13.606Z, session active: no
+  cpu utime+stime ticks: 695
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 0  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 240  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+  Logout(1) sent at 08:23:14.194Z
+-- after Logout(1), +5 s at 08:23:19.212Z, session active: no
+  cpu utime+stime ticks: 695
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 360  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +10 s at 08:23:24.794Z, session active: no
+  cpu utime+stime ticks: 695
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 360  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +15 s at 08:23:30.346Z, session active: no
+  cpu utime+stime ticks: 695
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 360  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +20 s at 08:23:35.913Z, session active: no
+  cpu utime+stime ticks: 696
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 360  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +25 s at 08:23:41.479Z, session active: no
+  cpu utime+stime ticks: 696
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 360  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +30 s at 08:23:47.243Z, session active: no
+  cpu utime+stime ticks: 696
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +35 s at 08:23:52.722Z, session active: no
+  cpu utime+stime ticks: 697
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +40 s at 08:23:58.289Z, session active: no
+  cpu utime+stime ticks: 697
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +45 s at 08:24:03.833Z, session active: no
+  cpu utime+stime ticks: 697
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +50 s at 08:24:09.404Z, session active: no
+  cpu utime+stime ticks: 697
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 16  local * 24254  peer 24255
+    recvq 0  local * 26554  peer 26555
+    recvq 0  local * 25299  peer 25972
+    recvq 0  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 26526
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 25309
+  the session manager's ICE sockets:
+    recvq 0  local /tmp/.ICE-unix/2161 24255  peer 24254
+-- after Logout(1), +55 s at 08:24:14.960Z, session active: no
+  cpu utime+stime ticks: 697
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 24  local * 24254  peer 0
+    recvq 0  local * 26554  peer 0
+    recvq 0  local * 25299  peer 25972
+    recvq 64  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 0
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 0
+  the session manager's ICE sockets:
+-- after Logout(1), +60 s at 08:24:20.835Z, session active: no
+  cpu utime+stime ticks: 698
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 24  local * 24254  peer 0
+    recvq 0  local * 26554  peer 0
+    recvq 0  local * 25299  peer 25972
+    recvq 64  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 0
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 0
+  the session manager's ICE sockets:
+-- after Logout(1), +65 s at 08:24:26.400Z, session active: no
+  cpu utime+stime ticks: 698
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 24  local * 24254  peer 0
+    recvq 0  local * 26554  peer 0
+    recvq 0  local * 25299  peer 25972
+    recvq 64  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 0
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 0
+  the session manager's ICE sockets:
+-- after Logout(1), +70 s at 08:24:31.923Z, session active: no
+  cpu utime+stime ticks: 698
+  tid 2778   compiz           state S  wchan poll_schedule_timeout.constprop.0 syscall poll
+  tid 2823   gmain            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2851   pool-spawner     state S  wchan futex_do_wait            syscall futex
+  tid 2852   dconf worker     state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 2854   gdbus            state S  wchan poll_schedule_timeout.constprop.0 syscall ppoll
+  tid 3057   [pango] fontcon  state S  wchan futex_do_wait            syscall futex
+  tid 3191   gly-global-exec  state S  wchan ep_poll                  syscall epoll_pwait
+  tid 3192   async-io         state S  wchan futex_do_wait            syscall futex
+  tid 4609   compiz           state S  wchan futex_do_wait            syscall futex
+  compiz's unix sockets:
+    recvq 0  local * 25300  peer 25973
+    recvq 24  local * 24254  peer 0
+    recvq 0  local * 26554  peer 0
+    recvq 0  local * 25299  peer 25972
+    recvq 64  local * 24891  peer 24892
+    recvq 0  local * 24530  peer 24896
+    recvq 0  local * 26652  peer 26653
+    recvq 0  local * 26525  peer 0
+    recvq 0  local * 23485  peer 23486
+    recvq 0  local * 23177  peer 23178
+    recvq 0  local * 23366  peer 24166
+    recvq 685  local * 25308  peer 0
+  the session manager's ICE sockets:
