@@ -4,7 +4,7 @@ Raw files and scripts: dev/target/ (times EEST on the target, 2026-10-17).
 
 Target: target-desktop restored from Published-stack-2026-10-08 and full-upgraded from the live repository on
 2026-10-14 (unity-settings-daemon +unity16, cinnamon-session +unity7, light-locker +unity4, unity +unity13,
-unity-gtk4-menu 0.13, gtk-nocsd 4.8-1+unity4); then libgtk-nocsd0 4.8-1+unity5 from build/ (deb sha256
+unity-gtk4-menu 0.13, gtk-nocsd 4.8-1+unity4); then libgtk-nocsd0 4.8-1+unity5 from build/ (libgtk-nocsd0_4.8-1+unity5_amd64.deb, sha256
 4ca16cb4419ebf4d...) and epiphany-browser 49.2-3ubuntu1 installed; Firefox made the default http handler so that
 epiphany asks whether it should become the default browser; cold boot. The session's LD_PRELOAD (compiz's
 environment) holds libunity-gtk4-menu and libgtk-nocsd.
