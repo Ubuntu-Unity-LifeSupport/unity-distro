@@ -8,7 +8,7 @@ UNITY-20260927-014, UNITY-20261013-009 and UNITY-20261013-010. Closed without co
 
 Base: the published 6.4.2-1+unity7 (A's `a/UNITY-20261013-016`, 7393f0e).
 
-## Upstream check (subagent sweep, 2026-10-13; notes in /srv/build/B-series-sweep/notes.md)
+## Upstream check (subagent sweep, 2026-10-13; notes in ~/work/b/evidence/UNITY-20261013-009-upstream-sweep-notes.md on builder)
 
 linuxmint/cinnamon-session master af94f9b and the tags 6.6.4 and 6.7.6-unstable fix none of the items below.
 `csm-xsmp-server.c` and `csm-xsmp-client.c` are identical on 6.4.2 and master.
