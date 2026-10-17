@@ -1,0 +1,32 @@
+== switch at 2026-10-13T22:50:39Z; pid 2389
+  bpftrace: Attached 4 probes
+Not running inside a display manager, XDG_SEAT_PATH not defined
+  loginctl: 14 1000 mike - 4117 user - no - 2 1000 mike - 1234 manager - no - 3 1000 mike seat0 1267 user - no -
+  mike's session active: yes
+  [131.99 s since boot] Logout(1)
+  gdbus: ()
+  [133.09 s since boot] after up to 60 s: cinnamon-session pid 2389 gone
+-- trace (s2)
+  132048853174 end_phase
+  132051059301 client_iochannel_watch returned 1
+  132051598083 client_iochannel_watch returned 1
+  132109295722 client_iochannel_watch returned 1
+  132109413564 client_iochannel_watch returned 1
+  132109477778 client_iochannel_watch returned 1
+  132109611313 client_iochannel_watch returned 1
+  132109896334 end_phase
+  132110582159 client_iochannel_watch returned 1
+  132112271330 client_iochannel_watch returned 1
+  132112675916 client_iochannel_watch returned 1
+  132121645856 _disconnect_client client=0x5c4676b5fa60
+  132123577184 _disconnect_client client=0x5c4676b4d0f0
+  132158759924 client_iochannel_watch returned 1
+  132158919042 client_iochannel_watch returned 1
+  132159177128 client_iochannel_watch returned 1
+  132159248818 client_iochannel_watch returned 1
+  132159333009 end_phase
+  132161961658 end_phase
+  132162284596 client_iochannel_watch returned 1
+  
+  
+  [  121.873405] target2 sudo[4165]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/nohup bpftrace -B line -e \nuprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:on_client_disconnected /pid == 2389/ { printf(\"%llu on_client_disconnected client=%p\\n\", nsecs, arg0); }\nuprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:_disconnect_client /pid == 2389/ { printf(\"%llu _disconnect_client client=%p\\n\", nsecs, arg1); }\nuprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:end_phase /pid == 2389/ { printf(\"%llu end_phase\\n\", nsecs); }\nuretprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:client_iochannel_watch /pid == 2389/ { printf(\"%llu client_iochannel_watch returned %d\\n\", nsecs, retval); }\n

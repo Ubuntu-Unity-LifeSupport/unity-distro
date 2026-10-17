@@ -1,0 +1,11 @@
+== clients at 2026-10-17T03:38:02Z, boot 2026-10-17 06:35:34
+  Client1: app ('at-spi-bus-launcher',), startup ('103f15de3c5381fb8f179220824573075200000026870046',), pid 32 ()
+  Client2: app ('',), startup ('103f15de3c5381fb8f17922082465989600000026870047',), pid 32 ()
+  Client3: app ('at-spi-registryd.desktop',), startup ('103f15de3c5381fb8f179220824984684500000026870048',), pid 32 ()
+  Client4: app ('gnome-settings-daemon',), startup ('103f15de3c5381fb8f179220825299286400000026870049',), pid 32 ()
+  Client5: app ('',), startup ('103f15de3c5381fb8f179220825394430400000026870050',), pid 32 ()
+  Client1: app ('at-spi-bus-launcher',), pid 2542: /usr/libexec/at-spi-bus-launcher 
+  Client2: app ('',), pid 0: 
+  Client3: app ('at-spi-registryd.desktop',), pid 2565: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client4: app ('gnome-settings-daemon',), pid 2688: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client5: app ('',), pid 3361: /usr/bin/compiz 

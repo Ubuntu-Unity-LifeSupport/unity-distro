@@ -1,0 +1,21 @@
+UNITY-20261013-009: target verification of the published cinnamon-session 6.4.2-1+unity8
+(2026-10-17 06:19-06:46Z, target2)
+
+Publication: snapshot unity-resolute-20261013-009, published_at 2026-10-17T06:12:02Z
+(~/coordinator/publish-records/UNITY-20261013-009.json). The served InRelease Date is 2026-10-17 06:06:43 UTC, and the
+deb served over HTTP has sha256 5a392ba9… (the gated build's).
+
+1. Setup (logs/21): target-desktop-2 restored to Clean-2 and confirmed inside, then the live repository and apt
+   full-upgrade. It installed cinnamon-session and cinnamon-session-common 6.4.2-1+unity8 from live. The downloaded
+     5a392ba9010a82a3d55f15e43ee2c9c99835e46139fb695a351516feba025f28  cinnamon-session_6.4.2-1+unity8_amd64.deb
+   is the gated build's (gate/target-test.txt); dpkg -V is clean.
+2. A cold Unity session, switched away to the greeter (mike's session Active=no), then Logout(1) (logs/22): the session
+   ends after 61.6 s. "Client4 (compiz) failed to reply" is logged at the end of the 31 s grace, and no dialog is
+   launched. The bpftrace probes by function name do not attach on the published, stripped binary, as expected; the
+   timing and the journal are the evidence.
+3. A cold Unity session, foreground logout with cinnamon-session-quit --logout --no-prompt (logs/23): the session ends in
+   1.6 s; 0 crash reports.
+
+target2 restored to Clean-2 afterwards (logs/24).
+
+Result: PASS.

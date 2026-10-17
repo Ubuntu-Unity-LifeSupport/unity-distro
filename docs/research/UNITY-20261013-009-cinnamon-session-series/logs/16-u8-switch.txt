@@ -1,0 +1,29 @@
+== switch at 2026-10-17T05:37:12Z; pid 2348
+-- clients
+  Client1: app ('at-spi-bus-launcher',), pid 1992: /usr/libexec/at-spi-bus-launcher 
+  Client2: app ('',), pid 0: 
+  Client3: app ('org.NemoDesktop',), pid 2371: /usr/bin/nemo-desktop 
+  Client4: app ('at-spi-registryd.desktop',), pid 2035: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client5: app ('gnome-settings-daemon',), pid 2352: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client6: app ('',), pid 3054: /usr/bin/compiz 
+  bpftrace: Attached 4 probes
+  loginctl: 16 1000 mike - 4138 user - no - 17 109 lightdm - 4402 manager-early - no - 2 1000 mike - 1184 manager - no - 3 1000 mike seat0 1212 user - no - c1 109 lightdm seat0 4395 greeter - no -
+  mike's session active: no
+  [209.80 s since boot] Logout(1)
+  gdbus: ()
+  [271.58 s since boot] after up to 150 s: cinnamon-session pid 2348 gone
+-- trace (u8-1)
+  209846001281 end_phase
+  209850337432 client_iochannel_watch returned 1
+  209850565874 client_iochannel_watch returned 1
+  240945913128 end_phase
+  240974080011 client_iochannel_watch returned 1
+  240978714020 client_iochannel_watch returned 1
+  241015981404 _disconnect_client client=0x603a05e0cdc0
+  241022874095 _disconnect_client client=0x603a05db34b0
+  270966156776 end_phase
+  270966549221 end_phase
+  
+  
+  [  240.946304] target2 cinnamon-session[2348]: cinnamon-session-binary[2348]: WARNING: t+95.69999s: Client '/org/gnome/SessionManager/Client6' failed to reply before timeout
+  [  240.945900] target2 cinnamon-session-binary[2348]: WARNING: t+95.69999s: Client '/org/gnome/SessionManager/Client6' failed to reply before timeout

@@ -1,0 +1,69 @@
+== clients at 2026-10-13T22:43:42Z, boot 2026-10-14 01:41:30; cinnamon-session 6.4.2-1+unity7; pid 2337
+  bpftrace: Attached 4 probes
+-- xterm, normal exit
+  [139.38 s since boot] xterm 1 running
+  xterm 1 exited: 0
+  [146.49 s since boot] after xterm 1
+-- xterm, SIGKILL
+  [151.53 s since boot] xterm 2 running
+  xterm 2 killed: status 137
+  [154.55 s since boot] after the kill
+-- trace (s1)
+  137605754757 client_iochannel_watch returned 1
+  137606346761 client_iochannel_watch returned 1
+  138007485442 client_iochannel_watch returned 1
+  138007967102 client_iochannel_watch returned 1
+  138009646650 client_iochannel_watch returned 1
+  142275888149 on_client_disconnected client=0x5bdc7a4b81e0
+  142276295647 _disconnect_client client=0x5bdc7a4b81e0
+  142276445208 on_client_disconnected client=0x5bdc7a4b81e0
+  142276498737 _disconnect_client client=0x5bdc7a4b81e0
+  142276539916 client_iochannel_watch returned 1
+  146521025718 client_iochannel_watch returned 1
+  146521554179 client_iochannel_watch returned 1
+  146657249079 client_iochannel_watch returned 1
+  146657387945 client_iochannel_watch returned 1
+  146740377340 client_iochannel_watch returned 1
+  151541342246 on_client_disconnected client=0x5bdc7a4b81e0
+  151541898056 _disconnect_client client=0x5bdc7a4b81e0
+  151543638363 on_client_disconnected client=0x5bdc7a4b81e0
+  151543748985 _disconnect_client client=0x5bdc7a4b81e0
+  151543798260 client_iochannel_watch returned 0
+-- GLib criticals and warnings of cinnamon-session in this boot's journal
+== helper at 2026-10-13T22:44:07Z; pid 2337
+  Exec=/usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+  OnlyShowIn=Unity;
+  before: unity-fallback-mount-helper pid 2362
+  [156.98 s since boot] SIGKILL sent to 2362
+  after 30 s: unity-fallback-mount-helper pid none (not restarted)
+  unity-indicator-appearance: Exec=unity-indicator-appearance X-GNOME-AutoRestart=true
+  uwidgets-runner: Exec=uwidgets-runner X-GNOME-AutoRestart=true
+  nemo-unity-autostart: Exec=nemo-desktop X-GNOME-AutoRestart=true
+  unity-indicator-appearance pid before: 2363
+  [289.32 s] SIGKILL 2363
+  after up to 30 s: pid 4689 restarted
+  жов 14 01:46:19 target2 systemd[1177]: app-unity\x2dindicator\x2dappearance@autostart.service: Main process exited, code=killed, status=9/KILL
+  жов 14 01:46:19 target2 systemd[1177]: app-unity\x2dindicator\x2dappearance@autostart.service: Failed with result 'signal'.
+  жов 14 01:46:19 target2 systemd[1177]: app-unity\x2dindicator\x2dappearance@autostart.service: Consumed 1.013s CPU time over 3min 22.019s wall clock time, 26.3M memory peak.
+    PID    PPID COMMAND
+  parent : 
+ошибка: list of process IDs must follow -p
+
+Использование:
+ ps [опции]
+
+ Попробуйте 'ps --help <simple|list|output|threads|misc|all>'
+  или 'ps --help <s|l|o|t|m|a>'
+ для дополнительной справки.
+
+Для дополнительных подробностей смотрите ps(1).
+cat: /proc/4689/cgroup: No such file or directory
+жов 14 01:46:19 target2 systemd[1177]: app-unity\x2dindicator\x2dappearance@autostart.service: Main process exited, code=killed, status=9/KILL
+жов 14 01:46:19 target2 systemd[1177]: app-unity\x2dindicator\x2dappearance@autostart.service: Failed with result 'signal'.
+жов 14 01:46:19 target2 systemd[1177]: app-unity\x2dindicator\x2dappearance@autostart.service: Consumed 1.013s CPU time over 3min 22.019s wall clock time, 26.3M memory peak.
+SourcePath=/etc/xdg/autostart/unity-indicator-appearance.desktop
+Restart=no
+X-GNOME-AutoRestart=true
+app-unity\x2dfallback\x2dmount\x2dhelper@autostart.service loaded failed
+app-unity\x2dindicator\x2dappearance@autostart.service loaded failed
+app-zeitgeist\x2ddatahub@autostart.service loaded failed
