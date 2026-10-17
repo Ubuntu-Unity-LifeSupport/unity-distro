@@ -1,0 +1,40 @@
+user manager: $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+== A control: no session LD_PRELOAD
+  after 51: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 x-session-manager
+  exported: yes
+== B the -039 case: ~/.xsessionrc libm
+  after 51: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 x-session-manager
+  exported: yes
+== C libm, gtk-nocsd turned off by the user
+  after 51: LD_PRELOAD=libm.so.6 | STARTUP=env LD_PRELOAD=libm.so.6 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 x-session-manager
+  exported: yes
+== D libm, no 51gtk-nocsd (gtk-nocsd not installed)
+  after 52: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 | STARTUP=x-session-manager
+  exported: yes
+== E libm, unity-gtk4-menu turned off by the user
+  after 51: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 x-session-manager
+  exported: yes
+== F ours already there, bare, from an old ~/.xsessionrc
+  after 51: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6 x-session-manager
+  exported: yes
+== G two entries separated by a space
+  after 51: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6:libdl.so.2 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6:libdl.so.2 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6:libdl.so.2 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6:libdl.so.2 x-session-manager
+  exported: yes
+== H no session LD_PRELOAD, no 51gtk-nocsd
+  after 52: LD_PRELOAD=<unset> | STARTUP=x-session-manager
+  exported: no
+== R removed (no 60-unity-gtk4-menu.conf), libm
+  after 51: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 | STARTUP=env LD_PRELOAD=/usr/$LIB/libgtk-nocsd.so.0:libm.so.6 x-session-manager
+  exported: yes
+== R2 removed, no session LD_PRELOAD
+  after 51: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 x-session-manager
+  after 52: LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 | STARTUP=env LD_PRELOAD=/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0 x-session-manager
+  exported: yes
+-rw-r--r-- 1 root root 73 Oct 13 20:05 /usr/lib/environment.d/60-unity-gtk4-menu.conf

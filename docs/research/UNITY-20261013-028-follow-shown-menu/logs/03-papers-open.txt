@@ -1,0 +1,48 @@
+== startview at 2026-10-17T07:35:00Z
+-- the start view
+  window 65011716 (Просмотрщик документов)
+    window 65011716: :1.149 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  window pid 8222
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: menubar filled, labelled "Просмотрщик документов"
+  file chooser window 62916807
+-- after opening the PDF in the same instance
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.149 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  windows: 65011716 pid 8222 (doc028.pdf) 
+  papers processes: 8222
+  log: /tmp/b028-start.log
+  log: /tmp/b028-withdoc.log
+  library log since the start view:
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: menubar filled, labelled "Просмотрщик документов"
