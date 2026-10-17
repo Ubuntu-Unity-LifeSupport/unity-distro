@@ -1,0 +1,8 @@
+boot 2026-10-17 08:39:26; dirty marker: /home/mike/.dirty; before: libgtk-nocsd0 4.8-1+unity3; light-locker 1.8.0-3ubuntu4+unity2; unity 7.7.1+26.04.20260306-0ubuntu3+unity12; 
+full-upgrade rc=0
+Пол:19 http://192.168.56.10:8080 resolute/main amd64 libgtk-nocsd0 amd64 4.8-1+unity5 [43,1 kB]
+Подготовка к распаковке …/38-libgtk-nocsd0_4.8-1+unity5_amd64.deb …
+after: cinnamon-session 6.4.2-1+unity7; libgtk-nocsd0 4.8-1+unity5; libunity-gtk4-menu0 0.13; light-locker 1.8.0-3ubuntu4+unity4; unity 7.7.1+26.04.20260306-0ubuntu3+unity13; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16; 
+left to upgrade: 0
+4ca16cb4419ebf4df2958fb263f9b7623faa4ea4ad3e736ff200b0f9621a6f69
+epiphany 49.2-3ubuntu1
