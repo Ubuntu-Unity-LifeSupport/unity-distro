@@ -1,0 +1,156 @@
+  case B: ~/.xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: none
+== B at 2026-10-17T09:33:00Z, boot 2026-10-17 12:30:48
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: none
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: /usr/lib/environment.d/60-unity-gtk4-menu.conf
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6'
+  compiz: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  unity-panel-ser: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  hud-service: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+-- gnome-calculator, started through the user manager
+  pid 4232 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+-- gnome-characters, started through the user manager
+  pid 4277 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Characters/menus/menubar"
+-- this boot's journal: "cannot be preloaded" lines: 1
+  жов 17 12:32:04 target2 ssh-agent[2229]: ERROR: ld.so: object 'libm.so.6' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  case C: ~/.xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: /home/mike/.config/environment.d/50-gtk-nocsd.conf
+== C at 2026-10-17T09:36:19Z, boot 2026-10-17 12:34:08
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: /home/mike/.config/environment.d/50-gtk-nocsd.conf
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: /usr/lib/environment.d/60-unity-gtk4-menu.conf
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6'
+  compiz: /usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6
+  unity-panel-ser: /usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6
+  hud-service: /usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6
+-- gnome-calculator, started through the user manager
+  pid 4175 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6
+  maps: libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+-- gnome-characters, started through the user manager
+  pid 4234 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:libm.so.6
+  maps: libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Characters/menus/menubar"
+-- this boot's journal: "cannot be preloaded" lines: 1
+  жов 17 12:35:28 target2 ssh-agent[2172]: ERROR: ld.so: object 'libm.so.6' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  case F: ~/.xsessionrc: export LD_PRELOAD=libunity-gtk4-menu.so.0:libm.so.6; nocsd opt-out: none
+== F at 2026-10-17T09:39:41Z, boot 2026-10-17 12:37:25
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: export LD_PRELOAD=libunity-gtk4-menu.so.0:libm.so.6; nocsd opt-out: none
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: /usr/lib/environment.d/60-unity-gtk4-menu.conf
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6'
+  compiz: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  unity-panel-ser: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  hud-service: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+-- gnome-calculator, started through the user manager
+  pid 4215 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+-- gnome-characters, started through the user manager
+  pid 4268 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Characters/menus/menubar"
+-- this boot's journal: "cannot be preloaded" lines: 1
+  жов 17 12:38:45 target2 ssh-agent[2217]: ERROR: ld.so: object 'libm.so.6' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+-- gnome-tweaks (PyGObject), started through the user manager, case F
+  pid 4478 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/tweaks/menus/menubar"
+== remove at 2026-10-17T09:40:23Z
+  Обрабатываются триггеры для libc-bin (2.43-2ubuntu2.4) …
+  Обрабатываются триггеры для libglib2.0-0t64:amd64 (2.88.0-1ubuntu0.1) …
+  libunity-gtk4-menu0 rc  0.14
+  ls: cannot access '/usr/lib/environment.d/60-unity-gtk4-menu.conf': No such file or directory
+  ls: cannot access '/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0': No such file or directory
+  -rw-r--r-- 1 root root 2823 Oct 17 11:48 /etc/X11/Xsession.d/52unity-gtk4-menu
+  case B: ~/.xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: none
+== R at 2026-10-17T09:44:02Z, boot 2026-10-17 12:41:31
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: export LD_PRELOAD=libm.so.6; nocsd opt-out: none
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: absent
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libgtk-nocsd.so.0:libm.so.6'
+  compiz: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  unity-panel-ser: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  hud-service: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+-- gnome-calculator, started through the user manager
+  pid 4333 LD_PRELOAD: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH:  not found.
+-- gnome-characters, started through the user manager
+  pid 4397 LD_PRELOAD: /usr/$LIB/libgtk-nocsd.so.0:libm.so.6
+  maps: libgtk-nocsd.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH:  not found.
+-- this boot's journal: "cannot be preloaded" lines: 1
+  жов 17 12:43:03 target2 ssh-agent[2238]: ERROR: ld.so: object 'libm.so.6' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.
+  case A: ~/.xsessionrc: none; nocsd opt-out: none
+== R2 at 2026-10-17T09:47:49Z, boot 2026-10-17 12:45:34
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: none; nocsd opt-out: none
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: absent
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libgtk-nocsd.so.0'
+  compiz: /usr/$LIB/libgtk-nocsd.so.0
+  unity-panel-ser: /usr/$LIB/libgtk-nocsd.so.0
+  hud-service: /usr/$LIB/libgtk-nocsd.so.0
+-- gnome-calculator, started through the user manager
+  pid 4255 LD_PRELOAD: /usr/$LIB/libgtk-nocsd.so.0
+  maps: libgtk-nocsd.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH:  not found.
+-- gnome-characters, started through the user manager
+  pid 4303 LD_PRELOAD: /usr/$LIB/libgtk-nocsd.so.0
+  maps: libgtk-nocsd.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH:  not found.
+-- this boot's journal: "cannot be preloaded" lines: 0
+== reinstall at 2026-10-17T09:48:07Z
+  Обрабатываются триггеры для libglib2.0-0t64:amd64 (2.88.0-1ubuntu0.1) …
+  libunity-gtk4-menu0 ii  0.14
+  case A: ~/.xsessionrc: none; nocsd opt-out: none
+== A at 2026-10-17T09:51:39Z, boot 2026-10-17 12:49:12
+  libgtk-nocsd0:amd64	4.8-1+unity5
+  libunity-gtk4-menu0:amd64	0.14
+  xsessionrc: none; nocsd opt-out: none
+  Xsession.d: 51gtk-nocsd
+  Xsession.d: 52unity-gtk4-menu
+  Xsession.d: 95dbus_update-activation-env
+  /usr/lib/environment.d/60-unity-gtk4-menu.conf: /usr/lib/environment.d/60-unity-gtk4-menu.conf
+-- LD_PRELOAD
+  user manager: $'/usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0'
+  compiz: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  unity-panel-ser: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  hud-service: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+-- gnome-calculator, started through the user manager
+  pid 4313 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Calculator/menus/menubar"
+-- gnome-characters, started through the user manager
+  pid 4362 LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+  maps: libgtk-nocsd.so.0 libunity-gtk4-menu.so.0
+  window 58720260: _GTK_MENUBAR_OBJECT_PATH(UTF8_STRING) = "/org/gnome/Characters/menus/menubar"
+-- this boot's journal: "cannot be preloaded" lines: 0

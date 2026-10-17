@@ -126,3 +126,35 @@ Notes:
 
 It found no remaining case with a live owner where the rule keeps a dead menu or flips to a wrong one, and confirmed
 the prototype and cases A-J, R and R2 against gtk-nocsd +unity5. Each finding is answered in DESIGN.md round 3.
+
+## 0.14: built and tested (2026-10-17)
+
+Package: `packages/unity-gtk4-menu` on branch b/UNITY-20261013-028, commits `93e99d6` (B), `72eb308` (A), `2acd1c1`
+(C), `63e56cf` (tests), `e308fc5` (release). Built with `scripts/build_sbuild.py` in the 2026-10-17 chroot
+(`build-0.14/`, manifest and sbuild log). Lintian has only the warning 0.13 already had (`pkg-config` → `pkgconf`).
+The deb ships `/etc/X11/Xsession.d/52unity-gtk4-menu` as a conffile, byte for byte `data/52unity-gtk4-menu`.
+
+All runs are on target2: Clean-2 → live, then 0.14 installed from `build-0.14/`.
+
+| test | log | result |
+|---|---|---|
+| latetest 1-35, 1f, 3f, adw6, adw6a, against the installed 0.14 | 09 | 37 of 37 pass |
+| the same under valgrind, cases 18, 22, 27, 28, 35 | 09 | 5 of 5, no error |
+| a development build before the package; control: 0.13 installed, cases 23-35 | 08 | 0.14 33 of 33; 0.13 fails 23, 25, 26, 27, 28, 29, 30, 31, 33 (24, 32, 34, 35 assert nothing happens) |
+| T1 Papers alone, then Ctrl+O | 10 | the export becomes `sidebar_menu`: Open…, Night Mode, Keyboard Shortcuts, Help, About. Sidebar hidden: kept (the doc menu not taken); shown again: nothing to do (its own owner) |
+| T2 Papers with the PDF at start | 10 | the 600 px window opens with the sidebar **collapsed**: only the Document Menu shows, and the start page's menu is kept (all `app.*`). DESIGN's expectation ("the sidebar maps, a relook switches") assumed a visible sidebar. Sidebar shown: switched to `sidebar_menu`; closed again: kept |
+| T3 Console, tab overview opened and closed | 11 | switched to the overview's menu (New Window, Fullscreen, Leave Fullscreen) and back to the main menu; stand-ins moved each time; the HUD finds "Новое окно" in all three states |
+| T5 Nautilus, three windows, 20 renames (FileOperations2.RenameURI) | 12, 12b | 0.14: 20 rebuilds, 0 window looks; 0.13 (the same run with 0.13 preloaded): 20 rebuilds, 40 window looks; "Отменить переименование" exported |
+| T4 the -1013-024 survey of 13 applications | 13 | no switch, orphan, adoption or release anywhere; relooks in nautilus and gnome-calculator, each without a change. gnome-text-editor shows no fill here because a D-Bus-activated instance (`--gapplication-service`) was already running; started alone it fills as before (6 items) |
+| T4 preload orders (order-0.9.sh's set, packaged gtk-nocsd) | 14 | 30 of 30 alive; with gtk-nocsd first the gjs programs export nothing, as known (UNITY-20261013-013), which is why 52 puts ours first |
+| T6 cold sessions: B (`~/.xsessionrc` libm), C (gtk-nocsd turned off), F (ours bare in `~/.xsessionrc`), A (none) | 15 | B: everything has `ours:nocsd:libm.so.6`, gnome-calculator and gnome-characters (gjs) export their menubar; C: `ours:libm.so.6`, both export; F: ours moved first, both export, and gnome-tweaks (PyGObject) too; A: as before |
+| T7 removed (`dpkg -r --force-depends`, test machine only), conffile kept, cold sessions | 15 | R (libm): no entry of ours anywhere, no menubar, no "cannot be preloaded" for ours (the one line is ssh-agent refusing the user's bare `libm.so.6`); R2 (none): no entry of ours, 0 such lines; reinstalled after |
+
+Debugging T2 used a build of the same source with two extra log lines in `late_mapped` and `on_owner_gone`, preloaded
+for one papers run from `/usr/lib/x86_64-linux-gnu/libugm-debug.so.0`. Papers' AppArmor profile refuses a library in
+the home directory. The file was removed afterwards. It is not part of the package or of any log above except the
+explanation here.
+
+One addition beyond DESIGN, for the Verifier: the current owner's `destroy` signal schedules a relook as its `unmap`
+does. An owner destroyed while already hidden (no unmap then) and without a later `items-changed` would otherwise
+never trigger one.

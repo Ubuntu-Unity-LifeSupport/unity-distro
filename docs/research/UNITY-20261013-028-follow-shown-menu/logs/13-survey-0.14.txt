@@ -1,0 +1,14 @@
+== survey at 2026-10-17T09:18:06Z; libunity-gtk4-menu0 0.14
+  nautilus           filled 1 | late 0 | relooks 1 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  papers             filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  kgx                filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  epiphany           filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-contacts     filled 0 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-text-editor  filled 0 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-characters   filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-calculator   filled 1 | late 0 | relooks 1 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-clocks       filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-font-viewer  filled 0 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-weather      filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-tweaks       filled 1 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0
+  gnome-tour         filled 0 | late 0 | relooks 0 | switched 0 | kept 0 | orphaned 0 | adopted 0 | released 0

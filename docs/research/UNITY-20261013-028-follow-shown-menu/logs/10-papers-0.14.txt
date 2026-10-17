@@ -1,0 +1,165 @@
+== withdoc at 2026-10-17T09:08:39Z; papers 50.2-0ubuntu0.1, libunity-gtk4-menu0 0.14
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.154 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+-- withdoc sidebar shown (a click at 23,23)
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.154 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+-- withdoc sidebar closed (a click at 450,400)
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.154 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: hooked GtkMenuButton::map
+    lib: hooked GtkPopoverMenuBar::map
+    lib: menubar filled, labelled "Просмотрщик документов"
+    lib: relook
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: chose candidate 1 of 1
+    lib: relook: the menu followed is kept
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: candidate 2 at depth 17: shown=1 primary=1 app./win. items=5
+    lib: chose candidate 2 of 2
+    lib: switched to the shown menu: 5 item(s) replaced
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: chose candidate 1 of 1
+    lib: relook: the menu followed is kept
+  shown menu buttons now (accessible names, from the window's own tree, not available without a11y): see the export above
+== startview at 2026-10-17T09:09:00Z
+-- the start view
+  window 65011716 (Просмотрщик документов)
+    window 65011716: :1.162 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  window pid 28054
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: hooked GtkMenuButton::map
+    lib: hooked GtkPopoverMenuBar::map
+    lib: menubar filled, labelled "Просмотрщик документов"
+  file chooser window 60819083
+-- after opening the PDF in the same instance
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.162 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  windows: 65011716 pid 28054 (doc028.pdf) 
+  papers processes: 28054
+  log: /tmp/b028-inst.log
+  log: /tmp/b028-start.log
+  log: /tmp/b028-withdoc.log
+-- startview sidebar hidden (a click at 322,22)
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.162 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+-- startview sidebar shown (a click at 23,23)
+  window 65011716 (doc028.pdf)
+    window 65011716: :1.162 /org/gnome/Papers/menus/menubar
+    Просмотрщик документов
+      (no label)
+        (section)
+          Открыть…  [win.open]
+      (no label)
+        (section)
+          _Ночной режим  [win.night-mode]
+      (no label)
+        (section)
+          _Комбинации клавиш  [app.shortcuts]
+          _Справка  [app.help]
+          _О приложении  [app.about]
+  library log since the start view:
+    lib: GTK4 found at load
+    lib: hooked GtkWindow::realize
+    lib: hooked GtkApplicationWindow::realize
+    lib: empty menubar set
+    lib: candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    lib: candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    lib: candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    lib: candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    lib: candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    lib: chose candidate 1 of 5
+    lib: hooked GtkMenuButton::map
+    lib: hooked GtkPopoverMenuBar::map
+    lib: menubar filled, labelled "Просмотрщик документов"
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: candidate 2 at depth 17: shown=1 primary=1 app./win. items=5
+    lib: chose candidate 2 of 2
+    lib: switched to the shown menu: 5 item(s) replaced
+    lib: relook
+    lib: candidate 1 at depth 17: shown=1 primary=0 app./win. items=2
+    lib: chose candidate 1 of 1
+    lib: relook: the menu followed is kept

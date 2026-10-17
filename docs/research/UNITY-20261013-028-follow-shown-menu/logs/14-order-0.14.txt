@@ -1,0 +1,33 @@
+0
+== order at 2026-10-17T09:25:59Z; libunity-gtk4-menu0 0.14, libgtk-nocsd0 4.8-1+unity5
+  classtest            ours           rc=124 menu-lines=4
+  classtest            ours:nocsd     rc=124 menu-lines=4
+  classtest            nocsd:ours     rc=124 menu-lines=4
+  gjstest.js           ours           rc=124 menu-lines=4
+  gjstest.js           ours:nocsd     rc=124 menu-lines=4
+  gjstest.js           nocsd:ours     rc=124 menu-lines=0
+  gnome-text-editor    ours           rc=124 menu-lines=4
+  gnome-text-editor    ours:nocsd     rc=124 menu-lines=4
+  gnome-text-editor    nocsd:ours     rc=124 menu-lines=4
+  gnome-characters     ours           rc=124 menu-lines=4
+  gnome-characters     ours:nocsd     rc=124 menu-lines=4
+  gnome-characters     nocsd:ours     rc=124 menu-lines=0
+  gnome-calculator     ours           rc=124 menu-lines=4
+  gnome-calculator     ours:nocsd     rc=124 menu-lines=4
+  gnome-calculator     nocsd:ours     rc=124 menu-lines=4
+  nautilus             ours           rc=124 menu-lines=4
+  nautilus             ours:nocsd     rc=124 menu-lines=4
+  nautilus             nocsd:ours     rc=124 menu-lines=4
+  gnome-clocks         ours           rc=124 menu-lines=4
+  gnome-clocks         ours:nocsd     rc=124 menu-lines=4
+  gnome-clocks         nocsd:ours     rc=124 menu-lines=4
+  gnome-contacts       ours           rc=124 menu-lines=4
+  gnome-contacts       ours:nocsd     rc=124 menu-lines=4
+  gnome-contacts       nocsd:ours     rc=124 menu-lines=4
+  gnome-font-viewer    ours           rc=124 menu-lines=4
+  gnome-font-viewer    ours:nocsd     rc=124 menu-lines=4
+  gnome-font-viewer    nocsd:ours     rc=124 menu-lines=4
+  gnome-weather        ours           rc=124 menu-lines=4
+  gnome-weather        ours:nocsd     rc=124 menu-lines=4
+  gnome-weather        nocsd:ours     rc=124 menu-lines=0
+== 30 of 30 alive at the timeout
