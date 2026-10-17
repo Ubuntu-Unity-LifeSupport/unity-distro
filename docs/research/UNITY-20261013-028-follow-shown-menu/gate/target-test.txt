@@ -1,0 +1,45 @@
+UNITY-20261013-028 (with UNITY-20261013-030, UNITY-20260927-039): target test of unity-gtk4-menu 0.14
+(source commit e308fc5f91f7c0391619513da4bb938a61f2ff9e; 2026-10-17 08:56-09:52Z, target2)
+
+Target: target-desktop-2 restored to Clean-2 and confirmed inside, then the live repository and apt full-upgrade
+(InRelease 2026-10-17 07:48:02 UTC: libunity-gtk4-menu0 0.13, libgtk-nocsd0 4.8-1+unity5), and the test tools and
+applications (papers, gnome-console, nautilus, the -1013-024 survey's applications, gcc, libgtk-4-dev, xvfb, gjs,
+python3-gi, valgrind). Then this build was installed with dpkg -i (dpkg -V clean):
+  44fc69a3f52b84b3dbe9e1bca6621ef5eb615cb43cbde141d23052adc614f5bd  libunity-gtk4-menu0_0.14_amd64.deb
+This is the file in build-0.14/UNITY-20261013-028-unity-gtk4-menu-build-manifest.json (source_commit e308fc5).
+
+1. latetest (logs/09): cases 1-35, 1f, 3f, adw6 and adw6a against the installed library, each in its own
+   dbus-run-session and Xvfb with G_DEBUG=fatal-criticals: 37 of 37 pass. Cases 18, 22, 27, 28 and 35 under
+   valgrind: 5 of 5, no error. Control (logs/08): 0.13 fails 23, 25, 26, 27, 28, 29, 30, 31 and 33.
+2. UNITY-20261013-028, Papers 50.2 (logs/10):
+   - started alone, then a PDF opened with Ctrl+O in the same window: the export changes from the start page's
+     3 items to the sidebar's main menu (Open…, Night Mode, Keyboard Shortcuts, Help, About);
+   - with the sidebar hidden, the menu is kept, and the Document Menu (11 doc.* items of 13) is not taken;
+   - started with the PDF in a 600 px window, the sidebar is collapsed and the start page's menu is kept (all
+     app.*). Showing the sidebar switches to the sidebar's main menu; closing it keeps that.
+   - Console 49.2 (logs/11): opening the tab overview switches to its primary menu, and closing it switches back.
+     The HUD finds "Новое окно" in all three states.
+3. UNITY-20261013-030, Nautilus (logs/12, 12b): three windows and 20 renames give 20 rebuilds and 0 window
+   looks. The same run with 0.13 preloaded gives 20 rebuilds and 40 window looks. "Отменить переименование" is
+   exported.
+4. UNITY-20260927-039, cold Unity sessions (logs/15):
+   - ~/.xsessionrc exports LD_PRELOAD=libm.so.6. The user manager, compiz, the panel service and the HUD service
+     have /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0:libm.so.6. gnome-calculator and
+     gnome-characters (gjs) export their menubar. With 0.13 the library was lost and no menubar was exported
+     (-039 logs/03).
+   - The same with gtk-nocsd turned off by the user: ours:libm.so.6, and both export.
+   - ~/.xsessionrc naming ours bare: ours is moved ahead of gtk-nocsd, and both export, as does gnome-tweaks
+     (PyGObject).
+   - No ~/.xsessionrc: as before.
+5. Removal (logs/15): with `dpkg -r --force-depends libunity-gtk4-menu0` (test machine only; unity-session
+   depends on it), the conffile stays.
+   - After a cold session with ~/.xsessionrc libm: no entry of ours, and no "cannot be preloaded" line for ours.
+   - Without ~/.xsessionrc: no entry of ours, and 0 such lines.
+   - The package was reinstalled afterwards.
+6. Regression:
+   - the -1013-024 survey of 13 applications (logs/13): no switch, no orphan, no adoption, no release;
+   - preload orders (logs/14): 30 of 30 programs alive.
+
+target2 is restored to Clean-2 after the publication's verification.
+
+Result: PASS.
