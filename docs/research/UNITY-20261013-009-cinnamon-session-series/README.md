@@ -74,3 +74,22 @@ are the existing ones (deprecated `g_type_class_add_private`, `fscanf`); none is
 | a foreground logout with at-spi2-registryd stopped | logs/19 (and .png) | **unchanged**: Unity's end-session dialog is shown, a second Logout gets NotInRunning, and after SIGCONT the session ends in about 1 s |
 
 target2 was restored to Clean-2 afterwards and confirmed inside (logs/20).
+
+## Verification (2026-10-17)
+
+An independent Verifier (an ephemeral general-purpose subagent) reviewed the code, the build records and the logs.
+Nothing was reproduced independently. **Verdict: PASS.**
+- The patches match DESIGN.md and the Design Challenger's conditions.
+- The build manifest matches b526443: tree, artifacts, and `.debian.tar.xz` identical to `git archive`.
+- The timings and counts in logs/16-19, and the controls in logs/02, 07 and 10, support this card.
+
+Non-blocking notes:
+- The patch `Date:` headers are round times, a few minutes later than the commits.
+- The new patches carry `Assisted-by: Claude Code:claude-opus-5` (the form of linuxmint/cinnamon-session#220), while
+  the rest of the series uses `Assisted-by: LLM <model>`. To align before anything goes upstream.
+- That a client which keeps interacting holds the logout rests on code reading (its JIT inhibitor leads to the dialog
+  path, as today). In logs/17 the client finished its save as soon as interaction was granted.
+- Known limitation: in an inactive session, a client that answers late with is_ok=FALSE, or an inhibitor an
+  application registered itself, still leads to a dialog nobody sees once the grace period ends. Reboot and
+  shutdown are out of scope.
+- A stray editor backup of a patch in the package worktree (ignored, not in the source package) was deleted.
