@@ -1,0 +1,13 @@
+F1-ctrlAltL | VT 8 LockedHint yes Active no IdleHint no unity-locked inactive | GetActive (true,) | LockSession 1 SetLockedHint 1 | Unity Locked 0 LockRequested 0 | SetActive 0 Lock 1 | inhibitor-timeout 0
+F2-light-locker-command | VT 8 LockedHint yes Active no IdleHint no unity-locked inactive | GetActive (true,) | LockSession 1 SetLockedHint 1 | Unity Locked 0 LockRequested 0 | SetActive 0 Lock 1 | inhibitor-timeout 0
+F3-idle20 | VT 8 LockedHint yes Active no IdleHint yes unity-locked inactive | GetActive (true,) | LockSession 1 SetLockedHint 1 | Unity Locked 0 LockRequested 1 | SetActive 1 Lock 1 | inhibitor-timeout 0
+F4b-idle20-inhibit | VT 7 LockedHint no Active yes IdleHint no unity-locked inactive | GetActive (false,) | LockSession 0 SetLockedHint 0 | Unity Locked 0 LockRequested 0 | SetActive 0 Lock 0 | inhibitor-timeout 0
+org.gnome.ScreenSaver: :1.91=3963(light-locker) :1.89=3007(compiz)
+org.freedesktop.ScreenSaver: :1.47=2289(unity-settings-)
+cookie 1973018536 from :1.47
+after release: (@ao [],)
+F4b-idle20-inhibit | VT 7 LockedHint no Active yes IdleHint no unity-locked inactive | GetActive (false,) | LockSession 0 SetLockedHint 0 | Unity Locked 0 LockRequested 0 | SetActive 0 Lock 0 | inhibitor-timeout 0
+== 10:43:55 trigger: bash -c sleep 30; echo "inhibitors: $(gdbus call -e -d org.gnome.SessionManager -o /org/gnome/SessionManager -m org.gnome.SessionManager.GetInhibitors)"; echo "IsInhibited(8): $(gdbus call -e -d org.gnome.SessionManager -o /org/gnome/SessionManager -m org.gnome.SessionManager.IsInhibited 8)"; sleep 10
+inhibitors: ([objectpath '/org/gnome/SessionManager/Inhibitor1'],)
+IsInhibited(8): (true,)
+forced-done

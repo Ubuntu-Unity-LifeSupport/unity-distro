@@ -1,0 +1,29 @@
+UNITY-20261013-009 (with UNITY-20260927-014, UNITY-20261013-010): target test of cinnamon-session 6.4.2-1+unity8
+(source commit b526443; 2026-10-17 05:30-06:05Z, target2)
+
+Target: target-desktop-2 restored to Clean-2, then the live repository and apt full-upgrade (InRelease 2026-10-17
+03:12:42 UTC, cinnamon-session 6.4.2-1+unity7), bpftrace and xterm (logs/15, the base step). Then this build was installed
+with dpkg -i (dpkg -V clean):
+  5a392ba9010a82a3d55f15e43ee2c9c99835e46139fb695a351516feba025f28  cinnamon-session_6.4.2-1+unity8_amd64.deb
+  a60926c285db3d9c8a4e8f9ac358d80bc2676a40dfae8e3a8e5a0e8c994eeb89  cinnamon-session-common_6.4.2-1+unity8_all.deb
+These are the same files as in build-unity8/UNITY-20261013-009-cinnamon-session-build-manifest.json (source_commit
+b526443). For the passive probes, the installed binary was replaced by eu-unstrip of the same build and its dbgsym
+(.text identical).
+
+1. UNITY-20260927-014 (logs/16): the session is switched away (dm-tool switch-to-greeter, mike's session Active=no)
+   and Logout(1) is called. The session ends after 62 s: at the end of the 30 s grace, "Client6 (compiz) failed to
+   reply" is logged and no dialog is launched; END_SESSION ends at its 30 s timeout. With +unity7 the session was
+   still running after more than 60 s, waiting on an invisible dialog (logs/07, logs/10).
+2. The slow XSMP client (xsmp-slow.c, libSM public API; allowed by C) in a switched-away session (logs/17). It answers
+   the end-session SaveYourself 3 s late with an InteractRequest. Interaction is granted and its save completes, so the
+   late answer is honoured. Only the silent compiz is dropped after the grace period. The logout ends in 62 s.
+3. UNITY-20261013-009 (logs/18): on_client_disconnected and _disconnect_client run once per client, for an xterm
+   exit and a SIGKILL (twice on +unity7, logs/02).
+4. UNITY-20261013-010 (logs/18): the watch returns 0 after the SIGKILL; no GLib critical.
+5. Regression (logs/18, logs/19): a foreground logout ends in 1.8 s. With at-spi2-registryd stopped, the foreground
+   logout shows Unity's end-session dialog as before, a second request gets NotInRunning, and after SIGCONT the session
+   ends in about 1 s.
+
+target2 restored to Clean-2 afterwards and confirmed inside (logs/20).
+
+Result: PASS.

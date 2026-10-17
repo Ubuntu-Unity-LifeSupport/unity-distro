@@ -1,0 +1,28 @@
+cinnamon-session	6.4.2-1+unity8
+== switch at 2026-10-17T06:40:27Z; pid 2506
+-- clients
+  Client2: app ('org.NemoDesktop',), pid 2531: /usr/bin/nemo-desktop 
+  Client3: app ('gnome-settings-daemon',), pid 2507: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client4: app ('',), pid 3112: /usr/bin/compiz 
+  Client5: app ('at-spi-registryd.desktop',), pid 2303: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  bpftrace: stdin:2:1-97: ERROR: No matches for uprobe /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:on_client_disconnected.
+  loginctl: 2 1000 mike - 1202 manager - no - 20 1000 mike - 4325 user - no - 23 109 lightdm - 4838 manager-early - no - 5 1000 mike seat0 1410 user - no - c1 109 lightdm seat0 4831 greeter - no -
+  mike's session active: no
+  [189.88 s since boot] Logout(1)
+  gdbus: ()
+  [251.46 s since boot] after up to 150 s: cinnamon-session pid 2506 gone
+-- trace (pub1)
+  stdin:2:1-97: ERROR: No matches for uprobe /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:on_client_disconnected.
+  uprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:on_client_disconnected /pid == 2506/ { printf("%llu on_client_disconnected client=%p\n", nsecs, arg0); }
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  stdin:3:1-93: ERROR: No matches for uprobe /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:_disconnect_client.
+  uprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:_disconnect_client /pid == 2506/ { printf("%llu _disconnect_client client=%p\n", nsecs, arg1); }
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  stdin:4:1-84: ERROR: No matches for uprobe /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:end_phase.
+  uprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:end_phase /pid == 2506/ { printf("%llu end_phase\n", nsecs); }
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  stdin:5:1-100: ERROR: No matches for uretprobe /usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:client_iochannel_watch.
+  uretprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:client_iochannel_watch /pid == 2506/ { printf("%llu client_iochannel_watch returned %d\n", nsecs, retval); }
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  [  220.956600] target2 cinnamon-session[2506]: cinnamon-session-binary[2506]: WARNING: t+111.78000s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout
+  [  220.956516] target2 cinnamon-session-binary[2506]: WARNING: t+111.78000s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout

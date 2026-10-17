@@ -1,0 +1,20 @@
+signal time=1792220483.378642 sender=org.freedesktop.DBus -> destination=:1.199 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.199"
+signal time=1792220483.378697 sender=org.freedesktop.DBus -> destination=:1.199 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.199"
+method call time=1792220484.494036 sender=:1.200 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+signal time=1792220498.683177 sender=:1.39 -> destination=(null destination) serial=150 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1792220498.687981 sender=:1.89 -> destination=:1.83 serial=979 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=SetActive
+   boolean true
+signal time=1792220498.693550 sender=:1.83 -> destination=(null destination) serial=151 path=/org/freedesktop/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220498.694665 sender=:1.83 -> destination=(null destination) serial=152 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220498.694677 sender=:1.83 -> destination=(null destination) serial=153 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220499.340102 sender=:1.89 -> destination=(null destination) serial=983 path=/com/canonical/Unity/Session; interface=com.canonical.Unity.Session; member=LockRequested
+method call time=1792220499.342766 sender=:1.89 -> destination=:1.83 serial=984 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=Lock
+method call time=1792220526.695087 sender=:1.202 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220529.851108 sender=:1.204 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220537.012814 sender=:1.206 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive

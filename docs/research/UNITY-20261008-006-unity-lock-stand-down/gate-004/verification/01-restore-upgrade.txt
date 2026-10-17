@@ -1,0 +1,8 @@
+boot 2026-10-17 11:30:28; before: light-locker 1.8.0-3ubuntu4+unity2; unity 7.7.1+26.04.20260306-0ubuntu3+unity12; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity11; 
+full-upgrade rc=0
+after: cinnamon-session 6.4.2-1+unity8; libgtk-nocsd0 4.8-1+unity5; libunity-core-6.0-9 7.7.1+26.04.20260306-0ubuntu3+unity14; light-locker 1.8.0-3ubuntu4+unity5; unity 7.7.1+26.04.20260306-0ubuntu3+unity14; unity-schemas 7.7.1+26.04.20260306-0ubuntu3+unity14; unity-services 7.7.1+26.04.20260306-0ubuntu3+unity14; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16; unity-uwidgets 7.7.1+26.04.20260306-0ubuntu3+unity14; 
+left: 0
+daaee924ede11d1ff9f6b33d0b1b9427b80442cdb5ca11b013b8440c832eb9ff  unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+832b15d5eafb72c6c51b987128c88028fc122d2f0e06ac412e7c02b4761394f6  libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242  light-locker_1.8.0-3ubuntu4+unity5_amd64.deb
+xdotool 0

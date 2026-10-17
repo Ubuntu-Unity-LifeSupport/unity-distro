@@ -1,0 +1,18 @@
+signal time=1792220583.231148 sender=org.freedesktop.DBus -> destination=:1.234 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.234"
+signal time=1792220583.231197 sender=org.freedesktop.DBus -> destination=:1.234 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.234"
+method call time=1792220584.354145 sender=:1.235 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+signal time=1792220584.698029 sender=:1.83 -> destination=(null destination) serial=181 path=/org/freedesktop/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220584.698048 sender=:1.83 -> destination=(null destination) serial=182 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220584.698051 sender=:1.83 -> destination=(null destination) serial=183 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220917.635916 sender=:1.39 -> destination=(null destination) serial=161 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1792220918.533874 sender=:1.238 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+signal time=1792220918.620844 sender=:1.39 -> destination=(null destination) serial=165 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
+method call time=1792220922.535192 sender=:1.240 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220929.862604 sender=:1.242 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive

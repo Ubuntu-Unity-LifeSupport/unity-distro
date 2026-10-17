@@ -1,0 +1,4 @@
+V1-superL | VT 8 LockedHint yes Active no IdleHint no unity-locked inactive | GetActive (true,) | LockSession 1 SetLockedHint 1 | Unity Locked 0 LockRequested 1 | SetActive 0 Lock 1 | inhibitor-timeout 0
+V2-loginctlLock | VT 8 LockedHint yes Active no IdleHint no unity-locked inactive | GetActive (true,) | LockSession 2 SetLockedHint 1 | Unity Locked 0 LockRequested 0 | SetActive 0 Lock 0 | inhibitor-timeout 0
+V3-idle20 | VT 8 LockedHint yes Active no IdleHint yes unity-locked inactive | GetActive (true,) | LockSession 1 SetLockedHint 1 | Unity Locked 0 LockRequested 1 | SetActive 1 Lock 1 | inhibitor-timeout 0
+V4-suspend | VT 8 LockedHint no Active no IdleHint no unity-locked inactive | GetActive (true,) | LockSession 1 SetLockedHint 1 | Unity Locked 0 LockRequested 0 | SetActive 0 Lock 0 | inhibitor-timeout 0

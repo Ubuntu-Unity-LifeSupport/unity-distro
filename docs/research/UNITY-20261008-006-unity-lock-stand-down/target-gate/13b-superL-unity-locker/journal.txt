@@ -1,0 +1,32 @@
+жов 17 10:09:12.029908 mike-virtualbox dbus-daemon[1248]: [session uid=1000 pid=1248 pidfd=5] Connection :1.255 (uid=1000 pid=10742 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 17 10:09:12.036756 mike-virtualbox sudo[10741]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 10:09:12.037280 mike-virtualbox sudo[10741]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 17 10:09:13.095606 mike-virtualbox sudo[10750]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 10:09:13.095703 mike-virtualbox sudo[10750]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 10:09:13.099208 mike-virtualbox sudo[10750]: pam_unix(sudo:session): session closed for user root
+жов 17 10:09:14.323047 mike-virtualbox compiz[3001]: ERROR 2026-10-17 10:09:14 nux.gestures_subscription GesturesSubscription.cpp:93 Failed to deactivate Geis subscription.
+жов 17 10:09:14.323047 mike-virtualbox compiz[3001]: ERROR 2026-10-17 10:09:14 nux.gestures_subscription GesturesSubscription.cpp:93 Failed to deactivate Geis subscription.
+жов 17 10:09:14.323047 mike-virtualbox compiz[3001]: ERROR 2026-10-17 10:09:14 nux.gestures_subscription GesturesSubscription.cpp:93 Failed to deactivate Geis subscription.
+жов 17 10:09:14.584009 mike-virtualbox compiz[3001]: WARN  2026-10-17 10:09:14 unity.glib.dbus.proxy GLibDBusProxy.cpp:487 Calling method "EmitEvent" on object path: "/com/ubuntu/Upstart" failed: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name com.canonical.Unity.Test.Upstart was not provided by any .service files
+жов 17 10:09:14.612014 mike-virtualbox systemd[1208]: Starting unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode...
+жов 17 10:09:14.634823 mike-virtualbox systemd-prestart-check[10815]: grep: /usr/share/gnome-session/sessions/ubuntu.session: Нет такого файла или каталога
+жов 17 10:09:14.639069 mike-virtualbox systemd[1208]: Started unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode.
+жов 17 10:09:14.641612 mike-virtualbox systemd[1208]: Reached target unity-screen-locked.target - A target that, when running, represents the screen being locked.
+жов 17 10:09:15.178716 mike-virtualbox sshd-session[10606]: Received disconnect from 192.168.56.10 port 58494:11: disconnected by user
+жов 17 10:09:15.178836 mike-virtualbox sshd-session[10606]: Disconnected from user mike 192.168.56.10 port 58494
+жов 17 10:09:15.509784 mike-virtualbox sudo[10903]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 10:09:15.509908 mike-virtualbox sudo[10903]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 10:09:15.516717 mike-virtualbox sudo[10903]: pam_unix(sudo:session): session closed for user root
+жов 17 10:09:15.659631 mike-virtualbox sshd-session[10948]: Received disconnect from 192.168.56.10 port 51884:11: disconnected by user
+жов 17 10:09:15.660692 mike-virtualbox sshd-session[10948]: Disconnected from user mike 192.168.56.10 port 51884
+жов 17 10:09:18.871131 mike-virtualbox sudo[10990]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 10:09:18.871256 mike-virtualbox sudo[10990]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 10:09:18.878799 mike-virtualbox sudo[10990]: pam_unix(sudo:session): session closed for user root
+жов 17 10:09:26.103847 mike-virtualbox sudo[11013]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 10:09:26.105697 mike-virtualbox sudo[11013]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 10:09:26.115801 mike-virtualbox sudo[11013]: pam_unix(sudo:session): session closed for user root
+жов 17 10:09:26.340824 mike-virtualbox sudo[11033]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 10:09:26.340949 mike-virtualbox sudo[11033]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 10745 10741
+жов 17 10:09:26.351953 mike-virtualbox sudo[11033]: pam_unix(sudo:session): session closed for user root
+жов 17 10:09:26.358969 mike-virtualbox sudo[10741]: pam_unix(sudo:session): session closed for user root
+жов 17 10:09:26.359414 mike-virtualbox dbus-daemon[1248]: [session uid=1000 pid=1248 pidfd=5] Monitoring connection :1.255 closed.

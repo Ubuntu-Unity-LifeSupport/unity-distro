@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-006",
+  "package": "light-locker",
+  "source_commit": "706498a72c2e8c1a9b65074ff1e622f80fb80318",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+      "sha256": "bbf1d77ab7fa3240d270f8d9870597b1c6cf0269f89dc204a4bc4e5208a4dbd3"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+      "sha256": "bbf1d77ab7fa3240d270f8d9870597b1c6cf0269f89dc204a4bc4e5208a4dbd3"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "33971668dc5e6bb7c1742c0f230675a694353417421e80000e831b6512677a4a"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate/release-record.json",
+      "sha256": "522a568bf49713c9b92259a174057332ca3847e525316c46a64916e13b799554"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate/version-check.json",
+      "sha256": "f4617fc98eef0fb89a11f15d536b8df82b608c660937fa4b15ff01a940080375"
+    }
+  }
+}

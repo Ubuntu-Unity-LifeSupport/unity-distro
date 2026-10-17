@@ -1,0 +1,25 @@
+== 08:03:13.181 before
+VT 7 LockedHint no Active yes IdleHint no unity-locked inactive
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 3175,)
+  timeout:  0    cycle:  0
+  Monitor is On
+== 08:03:13 trigger: sleep 40
+== 08:03:55.691 t+2
+VT 7 LockedHint no Active yes IdleHint yes unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 3175,)
+  timeout:  0    cycle:  0
+  Monitor is On
+== 08:03:59.177 t+5
+VT 7 LockedHint no Active yes IdleHint yes unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 3175,)
+  timeout:  0    cycle:  0
+  Monitor is On
+== 08:04:07.093 t+12
+VT 7 LockedHint no Active yes IdleHint yes unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 3175,)
+  timeout:  0    cycle:  0
+  Monitor is On

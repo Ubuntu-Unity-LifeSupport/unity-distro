@@ -1,0 +1,30 @@
+{
+  "task_id": "UNITY-20261013-009",
+  "package": "cinnamon-session",
+  "target_series": "resolute",
+  "candidate_version": "6.4.2-1+unity8",
+  "source_commit": "b5264431dace95c55ea2df5e6fd33a55d11f1884",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/b/UNITY-20261013-009",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261013-009-cinnamon-session-series/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261013-009-cinnamon-session-series/gate/target-test.txt",
+    "debs": {
+      "cinnamon-session_6.4.2-1+unity8_amd64.deb": "5a392ba9010a82a3d55f15e43ee2c9c99835e46139fb695a351516feba025f28",
+      "cinnamon-session-common_6.4.2-1+unity8_all.deb": "a60926c285db3d9c8a4e8f9ac358d80bc2676a40dfae8e3a8e5a0e8c994eeb89"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261013-009-cinnamon-session-series/README.md",
+    "verification_record": "docs/research/UNITY-20261013-009-cinnamon-session-series/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

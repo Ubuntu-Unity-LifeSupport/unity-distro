@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "unity",
+  "measured_at": "2026-10-17T08:26:12Z",
+  "sources_file": "/home/claude/work/a/unity-distro-1008-006/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261017-004",
+    "packages": 650,
+    "list_sha256": "bca88a04f40ef1629f4a65300de4621fc288a09608f30eddab757b721172d9fa",
+    "content_sha256": "ae1a84457b4a6acbcb8be28359cc1aac255771c0ccb0308ad22178312469cd22",
+    "model_entries": 580,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "3d50060538781bbbeb4a57c7d1f470946403e775a000fd674099e37c8cf205b3",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026 08:26:13 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "f5f689a44078cb068bab5c997935959acd6e3bca5c404fef6ae1414ba97b6733",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:29 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "901e541dbfd111db7a7dd07a6dfb448ac7b594f31138f624792918b8f028e3b0",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:15 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "a629eae01e6b948e11ed76b4814074ed8cb157d3817eccf1016851856b5a3596",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026  7:10:01 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "65fb2cdcce915910dd07cfa5de91113376fe5900413d1ee9a9f9e4a01a059301",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:46:36 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "7.7.1+26.04.20260306-0ubuntu3"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "libunity-core-6.0-9-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "libunity-core-6.0-9-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.ddeb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "libunity-core-6.0-9-dbgsym:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libunity-core-6.0-9",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "libunity-core-6.0-9:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libunity-core-6.0-dev",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "libunity-core-6.0-dev_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "libunity-core-6.0-dev:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-autopilot",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "all",
+      "file": "unity-autopilot_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity-autopilot:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "unity-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.ddeb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity-dbgsym:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "unity-schemas",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "all",
+      "file": "unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity-schemas:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-services-dbgsym",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "unity-services-dbgsym_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.ddeb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity-services-dbgsym:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "unity-services",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity-services:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity-uwidgets",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "all",
+      "file": "unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity-uwidgets:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "unity",
+      "version": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "architecture": "amd64",
+      "file": "unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb",
+      "apt_candidate": "7.7.1+26.04.20260306-0ubuntu3+unity14",
+      "policy": "unity:\n  Installed: (none)\n  Candidate: 7.7.1+26.04.20260306-0ubuntu3+unity14\n  Version table:\n     7.7.1+26.04.20260306-0ubuntu3+unity14 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity13 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity12 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity11 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity10 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity9 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     7.7.1+26.04.20260306-0ubuntu3 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

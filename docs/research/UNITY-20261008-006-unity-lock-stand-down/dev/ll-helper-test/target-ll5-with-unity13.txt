@@ -1,0 +1,11 @@
+unl: VT 7 LockedHint=no
+== 00:57:33 installed 1.8.0-3ubuntu4+unity5; pid 3884; exe 47f70f17aee1; deleted maps: 0
+dconf lock-after-screensaver: uint32 5
+()
+t+1 GetActive (true,) VT 7 LockedHint=no
+t+4 GetActive (true,) VT 7 LockedHint=no
+t+8 GetActive (true,) VT 7 LockedHint=no
+t+12 GetActive (true,) VT 7 LockedHint=no
+after input: GetActive (false,) VT 7 LockedHint=no
+ctrl+alt+l: GetActive (true,) VT 8 LockedHint=yes
+unl: VT 7 LockedHint=no

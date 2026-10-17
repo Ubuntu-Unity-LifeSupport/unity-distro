@@ -1,0 +1,5 @@
+10:03:04.572659 mike-virtualbox ModemManager[1061]: <msg> [sleep-monitor-systemd] ready to sleep; dropping inhibitor
+10:03:05.014153 mike-virtualbox systemd[1]: Reached target sleep.target - Sleep.
+10:03:05.146999 mike-virtualbox systemd-sleep[9976]: Performing sleep operation 'suspend'...
+10:03:05.147722 mike-virtualbox kernel: PM: suspend entry (s2idle)
+10:08:37.137177 mike-virtualbox systemd-sleep[9976]: System returned from sleep operation 'suspend'.

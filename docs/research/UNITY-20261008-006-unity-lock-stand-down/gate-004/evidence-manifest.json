@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261017-004",
+  "package": "unity",
+  "source_commit": "a97045b1e419b2267149290279fa5c3f36b6dfb9",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+      "sha256": "bbf1d77ab7fa3240d270f8d9870597b1c6cf0269f89dc204a4bc4e5208a4dbd3"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+      "sha256": "bbf1d77ab7fa3240d270f8d9870597b1c6cf0269f89dc204a4bc4e5208a4dbd3"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "1c6ee90c320b7e0ccc944f031849faee8d4d36f0c522f014c61ed7e339a114a8"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate-004/release-record.json",
+      "sha256": "a75c603f0cad481ac560cba1b388ce50ec3e0c731c9f7a0a8aa3868f07a38c1b"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate-004/version-check.json",
+      "sha256": "6014d55b376b22a3579a01278895d1e2cf690ecfd21df28f3716549a12735da3"
+    }
+  }
+}

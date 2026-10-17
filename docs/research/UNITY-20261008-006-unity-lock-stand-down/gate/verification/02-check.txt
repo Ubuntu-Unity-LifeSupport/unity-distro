@@ -1,0 +1,18 @@
+org.gnome.ScreenSaver: :1.83=2878(light-locker) :1.91=3025(compiz)
+org.freedesktop.ScreenSaver: :1.44=2276(unity-settings-)
+unity-settings- pid 2276 started сб жов 17 11:03:23 2026
+light-locker pid 2878 started сб жов 17 11:03:34 2026
+compiz pid 3025 started сб жов 17 11:03:39 2026
+11:03:23.995015 mike-virtualbox systemd[1208]: Started unity-settings-daemon.service - Unity Settings Daemon.
+11:03:24.009460 mike-virtualbox systemd[1208]: Starting unity7.service - Unity Shell v7...
+light-locker exe 3ad3c7b45873862a deleted 0
+== 11:04:24 installed 1.8.0-3ubuntu4+unity5; pid 2878; exe 3ad3c7b45873; deleted maps: 0
+dconf lock-after-screensaver: uint32 5
+()
+t+1 GetActive (true,) VT 7 LockedHint=no
+t+4 GetActive (true,) VT 7 LockedHint=no
+t+8 GetActive (true,) VT 7 LockedHint=no
+t+12 GetActive (true,) VT 7 LockedHint=no
+after input: GetActive (false,) VT 7 LockedHint=no
+ctrl+alt+l: GetActive (true,) VT 8 LockedHint=yes
+unl: VT 7 LockedHint=no

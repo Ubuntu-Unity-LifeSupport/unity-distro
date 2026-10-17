@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "cinnamon-session",
+  "measured_at": "2026-10-17T06:08:28Z",
+  "sources_file": "/home/claude/work/b/unity-distro-cs8/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261013-009",
+    "packages": 636,
+    "list_sha256": "f45d688e394499d6f0f0503afa1a8463e8fa5d033d705358c15bc3c29fe3066a",
+    "content_sha256": "6c3440ad071873b26d278df01e929f77116da717d935fa02221b77bb1187591d",
+    "model_entries": 568,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "f382967898160097761c249ac4d1ae1b3ecec87172cb8194145a4c00c5f067c7",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026 06:08:29 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "f5f689a44078cb068bab5c997935959acd6e3bca5c404fef6ae1414ba97b6733",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:29 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "901e541dbfd111db7a7dd07a6dfb448ac7b594f31138f624792918b8f028e3b0",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:15 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "a44c5d895445cffd1ae330ffa4409e3e6d37ef1b0b14ee2ad211e9bdd68de21b",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026  1:13:58 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "65fb2cdcce915910dd07cfa5de91113376fe5900413d1ee9a9f9e4a01a059301",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:46:36 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "6.4.2-1"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "cinnamon-session-common",
+      "version": "6.4.2-1+unity8",
+      "architecture": "all",
+      "file": "cinnamon-session-common_6.4.2-1+unity8_all.deb",
+      "apt_candidate": "6.4.2-1+unity8",
+      "policy": "cinnamon-session-common:\n  Installed: (none)\n  Candidate: 6.4.2-1+unity8\n  Version table:\n     6.4.2-1+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity6 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "cinnamon-session-dbgsym",
+      "version": "6.4.2-1+unity8",
+      "architecture": "amd64",
+      "file": "cinnamon-session-dbgsym_6.4.2-1+unity8_amd64.ddeb",
+      "apt_candidate": "6.4.2-1+unity8",
+      "policy": "cinnamon-session-dbgsym:\n  Installed: (none)\n  Candidate: 6.4.2-1+unity8\n  Version table:\n     6.4.2-1+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity6 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "cinnamon-session",
+      "version": "6.4.2-1+unity8",
+      "architecture": "amd64",
+      "file": "cinnamon-session_6.4.2-1+unity8_amd64.deb",
+      "apt_candidate": "6.4.2-1+unity8",
+      "policy": "cinnamon-session:\n  Installed: (none)\n  Candidate: 6.4.2-1+unity8\n  Version table:\n     6.4.2-1+unity8 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity7 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity6 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     6.4.2-1 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

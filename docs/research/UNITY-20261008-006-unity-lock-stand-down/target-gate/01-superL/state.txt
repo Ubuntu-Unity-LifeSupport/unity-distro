@@ -1,0 +1,25 @@
+== 09:54:51.795 before
+VT 7 LockedHint no Active yes IdleHint no unity-locked inactive
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 2902,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 09:54:51 trigger: xdotool key super+l
+== 09:54:54.320 t+2
+VT 7 LockedHint yes Active yes IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 2902,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 09:54:57.520 t+5
+VT 8 LockedHint yes Active no IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 2902,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 09:55:04.726 t+12
+VT 8 LockedHint yes Active no IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 2902,)
+  timeout:  600    cycle:  600
+  Monitor is On

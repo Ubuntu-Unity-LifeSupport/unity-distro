@@ -1,0 +1,16 @@
+signal time=1792220461.804804 sender=org.freedesktop.DBus -> destination=:1.189 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.189"
+signal time=1792220461.804854 sender=org.freedesktop.DBus -> destination=:1.189 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.189"
+method call time=1792220462.941622 sender=:1.190 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+signal time=1792220463.215874 sender=:1.89 -> destination=(null destination) serial=974 path=/com/canonical/Unity/Session; interface=com.canonical.Unity.Session; member=LockRequested
+method call time=1792220463.215892 sender=:1.89 -> destination=:1.83 serial=975 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=Lock
+signal time=1792220463.233115 sender=:1.83 -> destination=(null destination) serial=135 path=/org/freedesktop/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220463.233522 sender=:1.83 -> destination=(null destination) serial=136 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220463.233525 sender=:1.83 -> destination=(null destination) serial=137 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=ActiveChanged
+   boolean true
+method call time=1792220465.406760 sender=:1.192 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220468.561259 sender=:1.194 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220475.710635 sender=:1.196 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive

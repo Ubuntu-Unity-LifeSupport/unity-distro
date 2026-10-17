@@ -1,0 +1,15 @@
+832b15d5eafb72c6c51b987128c88028fc122d2f0e06ac412e7c02b4761394f6  libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242  light-locker_1.8.0-3ubuntu4+unity5_amd64.deb
+daaee924ede11d1ff9f6b33d0b1b9427b80442cdb5ca11b013b8440c832eb9ff  unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+26c923fbe87e056887372ef2fd0505971c906e978aa6734e868d720464e3ceff  unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb
+8bdbf34d6a996ef043a9f032576c212ab2902f23f5b9bea1fbbac6e7cb27f763  unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+9c079ff298a2e28e6d3947942c781c3c6a8798e97b105a3589d1e2dd652b335a  unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb
+light-locker rc=0
+unity rc=0
+libunity-core-6.0-9 7.7.1+26.04.20260306-0ubuntu3+unity14
+light-locker 1.8.0-3ubuntu4+unity5
+light-locker-settings 1.5.0-0ubuntu6
+unity 7.7.1+26.04.20260306-0ubuntu3+unity14
+unity-schemas 7.7.1+26.04.20260306-0ubuntu3+unity14
+unity-services 7.7.1+26.04.20260306-0ubuntu3+unity14
+unity-uwidgets 7.7.1+26.04.20260306-0ubuntu3+unity14

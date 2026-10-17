@@ -1,0 +1,11 @@
+signal time=1792220177.338252 sender=org.freedesktop.DBus -> destination=:1.188 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.188"
+signal time=1792220177.338290 sender=org.freedesktop.DBus -> destination=:1.188 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.188"
+method call time=1792220192.255401 sender=:1.57 -> destination=org.freedesktop.login1 serial=18 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean true
+method call time=1792220192.361188 sender=:1.71 -> destination=org.freedesktop.login1 serial=40 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetLockedHint
+   boolean true
+method call time=1792220193.969421 sender=:1.17 -> destination=org.freedesktop.login1 serial=57 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=LockSession
+   string "4"
+signal time=1792220194.086401 sender=:1.2 -> destination=(null destination) serial=849 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=Lock

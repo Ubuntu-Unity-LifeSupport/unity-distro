@@ -1,0 +1,43 @@
+жов 13 23:41:26.448207 mike-virtualbox systemd[1172]: Started run-p13280-i13773.service - [systemd-run] /usr/bin/systemctl suspend.
+жов 13 23:41:26.622961 mike-virtualbox systemd-logind[858]: The system will suspend now!
+жов 13 23:41:26.625430 mike-virtualbox ModemManager[1040]: <msg> [sleep-monitor-systemd] system is about to suspend
+жов 13 23:41:26.626423 mike-virtualbox ModemManager[1040]: <msg> [sleep-monitor-systemd] ready to sleep; dropping inhibitor
+жов 13 23:41:26.627759 mike-virtualbox NetworkManager[1020]: <info>  [1791924086.6277] manager: sleep: sleep requested (sleeping: no  enabled: yes)
+жов 13 23:41:26.628052 mike-virtualbox NetworkManager[1020]: <info>  [1791924086.6280] manager: NetworkManager state is now DISABLED (ASLEEP)
+жов 13 23:41:26.628148 mike-virtualbox NetworkManager[1020]: <info>  [1791924086.6281] device (enp0s3): state change: activated -> deactivating (reason 'sleeping', managed-type: 'full')
+жов 13 23:41:26.633950 mike-virtualbox NetworkManager[1020]: <info>  [1791924086.6339] device (enp0s8): state change: activated -> deactivating (reason 'sleeping', managed-type: 'full')
+жов 13 23:41:27.154132 mike-virtualbox NetworkManager[1020]: <info>  [1791924087.1541] device (enp0s3): state change: deactivating -> disconnected (reason 'sleeping', managed-type: 'full')
+жов 13 23:41:27.223984 mike-virtualbox NetworkManager[1020]: <info>  [1791924087.2239] device (enp0s8): state change: deactivating -> disconnected (reason 'sleeping', managed-type: 'full')
+жов 13 23:41:31.248161 mike-virtualbox systemd[1172]: Starting unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode...
+жов 13 23:41:31.283116 mike-virtualbox systemd[1172]: Started unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode.
+жов 13 23:41:31.283448 mike-virtualbox systemd[1172]: Reached target unity-screen-locked.target - A target that, when running, represents the screen being locked.
+жов 13 23:41:56.742926 mike-virtualbox systemd-logind[858]: Delay lock is active (UID 1000/mike, PID 2740/light-locker) but inhibitor timeout is reached.
+жов 13 23:41:56.746485 mike-virtualbox systemd[1]: Reached target sleep.target - Sleep.
+жов 13 23:41:56.750582 mike-virtualbox systemd[1]: Starting systemd-suspend.service - System Suspend...
+жов 13 23:41:56.856378 mike-virtualbox systemd-sleep[13552]: Successfully froze unit 'user.slice'.
+жов 13 23:41:57.055574 mike-virtualbox systemd-sleep[13552]: Performing sleep operation 'suspend'...
+жов 13 23:41:57.057171 mike-virtualbox kernel: PM: suspend entry (s2idle)
+жов 13 23:43:30.602831 mike-virtualbox systemd-sleep[13552]: System returned from sleep operation 'suspend'.
+жов 13 23:43:30.603433 mike-virtualbox kernel: printk: Suspending console(s) (use no_console_suspend to debug)
+жов 13 23:43:30.604484 mike-virtualbox kernel: PM: suspend exit
+жов 13 23:43:30.890737 mike-virtualbox systemd-sleep[13552]: Successfully thawed unit 'user.slice'.
+жов 13 23:43:30.892227 mike-virtualbox systemd[1]: systemd-suspend.service: Deactivated successfully.
+жов 13 23:43:30.894828 mike-virtualbox systemd[1]: Finished systemd-suspend.service - System Suspend.
+жов 13 23:43:30.917897 mike-virtualbox systemd[1]: session-c8.scope: Killing process 12374 (lightdm) with signal SIGTERM.
+жов 13 23:43:30.918158 mike-virtualbox systemd[1]: session-c8.scope: Killing process 12385 (lightdm-greeter) with signal SIGTERM.
+жов 13 23:43:30.918207 mike-virtualbox systemd[1]: session-c8.scope: Killing process 12386 (lightdm-gtk-gre) with signal SIGTERM.
+жов 13 23:43:30.919928 mike-virtualbox systemd[1]: Stopping session-c8.scope - Session c8 of User lightdm...
+жов 13 23:43:30.920026 mike-virtualbox systemd[1]: Stopped target sleep.target - Sleep.
+жов 13 23:43:30.922049 mike-virtualbox systemd[1]: Reached target suspend.target - Suspend.
+жов 13 23:43:30.932179 mike-virtualbox systemd[1]: Stopped target suspend.target - Suspend.
+жов 13 23:43:30.940777 mike-virtualbox lightdm[12374]: pam_unix(lightdm-greeter:session): session closed for user lightdm
+жов 13 23:43:30.944275 mike-virtualbox lightdm[12374]: pam_unix(lightdm-greeter:session): session closed for user lightdm
+жов 13 23:43:31.026337 mike-virtualbox systemd-logind[858]: Operation 'suspend' finished.
+жов 13 23:43:31.034472 mike-virtualbox NetworkManager[1020]: <info>  [1791924211.0344] manager: sleep: wake requested (sleeping: yes  enabled: yes)
+жов 13 23:43:31.045885 mike-virtualbox ModemManager[1040]: <msg> [sleep-monitor-systemd] system is resuming
+жов 13 23:43:31.048360 mike-virtualbox systemd[1]: Stopped session-c8.scope - Session c8 of User lightdm.
+жов 13 23:43:31.087416 mike-virtualbox lightdm[13642]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)
+жов 13 23:43:31.160044 mike-virtualbox systemd-logind[858]: New session 'c9' of user 'lightdm' with class 'greeter' and type 'x11'.
+жов 13 23:43:31.165834 mike-virtualbox systemd[1]: Started session-c9.scope - Session c9 of User lightdm.
+жов 13 23:43:31.175868 mike-virtualbox rtkit-daemon[1228]: Resumed scheduling 5 threads.
+жов 13 23:43:31.214755 mike-virtualbox lightdm[13642]: pam_unix(lightdm-greeter:session): session opened for user lightdm(uid=109) by (uid=0)

@@ -1,0 +1,6 @@
+boot 2026-10-17 10:54:32; before: light-locker 1.8.0-3ubuntu4+unity2; unity 7.7.1+26.04.20260306-0ubuntu3+unity12; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity11; 
+full-upgrade rc=0
+after: cinnamon-session 6.4.2-1+unity8; libgtk-nocsd0 4.8-1+unity5; libunity-gtk4-menu0 0.13; light-locker 1.8.0-3ubuntu4+unity5; unity 7.7.1+26.04.20260306-0ubuntu3+unity13; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16; 
+left: 0
+d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242  /var/cache/apt/archives/light-locker_1.8.0-3ubuntu4+unity5_amd64.deb
+xdotool 0

@@ -1,0 +1,29 @@
+жов 13 23:33:26.031964 mike-virtualbox sudo[10354]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:26.032102 mike-virtualbox sudo[10354]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:33:26.036264 mike-virtualbox sudo[10354]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:26.109626 mike-virtualbox dbus-daemon[1211]: [session uid=1000 pid=1211 pidfd=5] Connection :1.283 (uid=1000 pid=10367 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 13 23:33:26.120378 mike-virtualbox sudo[10366]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:26.120934 mike-virtualbox sudo[10366]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 13 23:33:27.141084 mike-virtualbox sudo[10375]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:27.141182 mike-virtualbox sudo[10375]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:33:27.145569 mike-virtualbox sudo[10375]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:53.257428 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:33:53 unity.glib.dbus.proxy GLibDBusProxy.cpp:487 Calling method "EmitEvent" on object path: "/com/ubuntu/Upstart" failed: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name com.canonical.Unity.Test.Upstart was not provided by any .service files
+жов 13 23:33:53.264192 mike-virtualbox systemd[1172]: Starting unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode...
+жов 13 23:33:53.275151 mike-virtualbox unity-panel-service[2930]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 23:33:53.298524 mike-virtualbox systemd-prestart-check[10437]: grep: /usr/share/gnome-session/sessions/ubuntu.session: Нет такого файла или каталога
+жов 13 23:33:53.301368 mike-virtualbox systemd[1172]: Started unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode.
+жов 13 23:33:53.302147 mike-virtualbox systemd[1172]: Reached target unity-screen-locked.target - A target that, when running, represents the screen being locked.
+жов 13 23:34:09.284362 mike-virtualbox sudo[10509]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:34:09.284851 mike-virtualbox sudo[10509]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:34:09.290051 mike-virtualbox sudo[10509]: pam_unix(sudo:session): session closed for user root
+жов 13 23:34:12.417736 mike-virtualbox sudo[10532]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:34:12.418063 mike-virtualbox sudo[10532]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:34:12.423418 mike-virtualbox sudo[10532]: pam_unix(sudo:session): session closed for user root
+жов 13 23:34:19.535342 mike-virtualbox sudo[10554]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:34:19.535478 mike-virtualbox sudo[10554]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:34:19.540136 mike-virtualbox sudo[10554]: pam_unix(sudo:session): session closed for user root
+жов 13 23:34:19.640321 mike-virtualbox sudo[10573]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:34:19.640451 mike-virtualbox sudo[10573]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 10371 10366
+жов 13 23:34:19.644282 mike-virtualbox sudo[10573]: pam_unix(sudo:session): session closed for user root
+жов 13 23:34:19.645260 mike-virtualbox sudo[10366]: pam_unix(sudo:session): session closed for user root
+жов 13 23:34:19.648280 mike-virtualbox dbus-daemon[1211]: [session uid=1000 pid=1211 pidfd=5] Monitoring connection :1.283 closed.
