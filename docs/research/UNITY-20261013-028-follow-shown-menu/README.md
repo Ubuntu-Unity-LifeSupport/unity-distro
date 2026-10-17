@@ -110,3 +110,19 @@ On part C, point 1, it agreed with `libunity-gtk4-menu0` and asked for the Polic
 DECISIONS. C accepted the same on 2026-10-17.
 
 Each finding is answered in DESIGN.md round 2 (the table at its end).
+
+## Design review round 2 (2026-10-17): REVISE
+
+One blocking finding: an owner that is gone with no other menu shown yet stopped following, so a view built later was
+never seen. Three should-fix findings:
+- a gone primary menu kept a fewer-item replacement out;
+- the same model behind a new owner was ignored;
+- `proxy_free` could clear a new stand-in's key.
+
+Notes:
+- the `unmap` handler id wording;
+- a developer's own build in `LD_PRELOAD` would have been replaced;
+- test numbering.
+
+It found no remaining case with a live owner where the rule keeps a dead menu or flips to a wrong one, and confirmed
+the prototype and cases A-J, R and R2 against gtk-nocsd +unity5. Each finding is answered in DESIGN.md round 3.

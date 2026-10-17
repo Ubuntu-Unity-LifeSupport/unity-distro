@@ -25,9 +25,12 @@ if [ -r /usr/lib/environment.d/60-unity-gtk4-menu.conf ] &&
   done
 
   if [ -z "$_ugm_off" ]; then
-    # Every other entry in its order, ours (in any form, and wherever
-    # 51gtk-nocsd or the user left it) taken out and put first.
+    # Every other entry in its order, ours (wherever 51gtk-nocsd or the
+    # user left it) taken out and put first, once. The installed library, by
+    # bare name or any path under /usr, becomes the path form; a copy of
+    # ours preloaded from elsewhere (a build of one's own) is kept instead.
     _ugm_new=
+    _ugm_own=
     _ugm_rest=$(printf '%s\n' "$LD_PRELOAD" | tr ' \t\n' ':::')
     while [ -n "$_ugm_rest" ]; do
       case $_ugm_rest in
@@ -35,11 +38,12 @@ if [ -r /usr/lib/environment.d/60-unity-gtk4-menu.conf ] &&
         *)   _ugm_e=$_ugm_rest; _ugm_rest= ;;
       esac
       case $_ugm_e in
-        ''|libunity-gtk4-menu.so.0|*/libunity-gtk4-menu.so.0) ;;
+        ''|libunity-gtk4-menu.so.0|/usr/*/libunity-gtk4-menu.so.0) ;;
+        */libunity-gtk4-menu.so.0) _ugm_own=${_ugm_own:-$_ugm_e} ;;
         *) _ugm_new=${_ugm_new:+$_ugm_new:}$_ugm_e ;;
       esac
     done
-    _ugm_new='/usr/$LIB/libunity-gtk4-menu.so.0'${_ugm_new:+:$_ugm_new}
+    _ugm_new=${_ugm_own:-'/usr/$LIB/libunity-gtk4-menu.so.0'}${_ugm_new:+:$_ugm_new}
 
     if [ "$_ugm_new" != "$LD_PRELOAD" ]; then
       _ugm_old=$LD_PRELOAD
@@ -54,5 +58,5 @@ if [ -r /usr/lib/environment.d/60-unity-gtk4-menu.conf ] &&
       esac
     fi
   fi
-  unset _ugm_off _ugm_new _ugm_old _ugm_rest _ugm_e
+  unset _ugm_off _ugm_new _ugm_own _ugm_old _ugm_rest _ugm_e
 fi
