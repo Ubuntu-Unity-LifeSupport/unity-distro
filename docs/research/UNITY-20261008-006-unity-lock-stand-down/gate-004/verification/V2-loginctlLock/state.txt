@@ -1,0 +1,25 @@
+== 11:39:21.339 before
+VT 7 LockedHint no Active yes IdleHint no unity-locked inactive
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 2891,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 11:39:21 trigger: loginctl lock-session 4
+== 11:39:23.525 t+2
+VT 7 LockedHint yes Active yes IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 2891,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 11:39:26.672 t+5
+VT 7 LockedHint yes Active yes IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 2891,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 11:39:33.821 t+12
+VT 8 LockedHint yes Active no IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 2891,)
+  timeout:  600    cycle:  600
+  Monitor is On
