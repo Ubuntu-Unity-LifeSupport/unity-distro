@@ -1,0 +1,58 @@
+{
+  "schema": 2,
+  "result": "SAFE",
+  "reasons": [
+    "candidate 4.8-1+unity6 is newer than resolute 0~20260321+0b77e1b-1",
+    "every built binary is apt's candidate at its own version in the target view"
+  ],
+  "target_series": "resolute",
+  "source_package": "gtk-nocsd",
+  "source_commit": "e42e03af433476d2d2248435f693d9ba91ce8ce0",
+  "candidate_source_version": "4.8-1+unity6",
+  "pockets": {
+    "resolute": "0~20260321+0b77e1b-1"
+  },
+  "in_archive": true,
+  "checked_at": "2026-10-17T10:52:28Z",
+  "mode": "full",
+  "binaries": [
+    {
+      "package": "gtk3-nocsd",
+      "version": "4.8-1+unity6",
+      "architecture": "all",
+      "apt_candidate": "4.8-1+unity6"
+    },
+    {
+      "package": "libgtk-nocsd0-dbgsym",
+      "version": "4.8-1+unity6",
+      "architecture": "amd64",
+      "apt_candidate": "4.8-1+unity6"
+    },
+    {
+      "package": "libgtk-nocsd0",
+      "version": "4.8-1+unity6",
+      "architecture": "amd64",
+      "apt_candidate": "4.8-1+unity6"
+    },
+    {
+      "package": "libgtk3-nocsd0",
+      "version": "4.8-1+unity6",
+      "architecture": "all",
+      "apt_candidate": "4.8-1+unity6"
+    }
+  ],
+  "snapshot": {
+    "name": "unity-resolute-20261013-031",
+    "packages": 658,
+    "list_sha256": "3014562390e70365ac079563e3e78b2efe2cac0e6d3cf9319e08b6494fd28a4c",
+    "content_sha256": "e2af0566274cfffdd1334f1a1c4a56fd8de4c42be2edbb104c98875310f2dc22",
+    "model_entries": 586,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "view_sha256": "0542a60e2f1aadc1d2ef0b5f7e6603f6ba9b25f18be68a548a62a3ab94e04338"
+}

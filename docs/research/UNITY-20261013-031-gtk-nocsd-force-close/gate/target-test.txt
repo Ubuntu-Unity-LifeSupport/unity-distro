@@ -1,0 +1,23 @@
+UNITY-20261013-031: target test of gtk-nocsd 4.8-1+unity6 (the gated build, build/)
+
+Raw files: dev/target/ (times EEST on the target, 2026-10-17).
+
+Target: target-desktop on the live stack (restored from Published-stack-2026-10-08 and full-upgraded from the live
+repository: unity +unity14, light-locker +unity5, gtk-nocsd +unity5, unity-gtk4-menu 0.13), epiphany-browser
+49.2-3ubuntu1; then libgtk-nocsd0_4.8-1+unity6_amd64.deb (sha256
+f4ecf65a5f20ac2c447c1c561b1744b3cff7129e391c7b73ff40b41e62339486, the gated build) installed (01-install.txt);
+Firefox the default http handler so that epiphany asks to become the default browser; cold boot.
+
+- 02-checks.txt (unity-gtk4-menu 0.13): epiphany with the session's preload, Preferences in window 1, a new window,
+  Preferences from window 2 (epiphany force-closes the first dialog), Preferences again: 3/3 epiphany alive,
+  exit 143 at the end, no crash report. SIGTERM with the default-browser question open: 5/5 exit 143; Preferences
+  opened, closed and opened again 3 times. Before the change (4.8-1+unity4 and +unity5) the same sequence aborted.
+- 03-05 (after unity-gtk4-menu 0.14 was published; full-upgrade, cold boot): the sequence 3/3 alive with the
+  Preferences window listed after each step, exit 143, no crash report. The SIGTERM check with the question open
+  aborted 4 of 5 in the first runs after that cold boot; repeated runs with each library combination
+  (05-isolate-0.14.txt and the runs recorded for UNITY-20261017-010) showed the same intermittent aborts with the
+  published gtk-nocsd +unity5 and unity-gtk4-menu 0.13 or 0.14 as well: a start-up race, not caused by this change.
+
+Not tested on target: a dialog force-closed while its parent window is unrealized before it was mapped.
+
+Result: PASS.

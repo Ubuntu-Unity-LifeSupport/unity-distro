@@ -1,0 +1,9 @@
+rc=0
+libgtk-nocsd0:amd64	4.8-1+unity6
+libunity-gtk4-menu0:amd64	0.14
+light-locker	1.8.0-3ubuntu4+unity5
+unity	7.7.1+26.04.20260306-0ubuntu3+unity14
+51gtk-nocsd
+52unity-gtk4-menu
+80xapp-gtk3-module
+left: 0

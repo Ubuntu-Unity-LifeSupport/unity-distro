@@ -1,0 +1,40 @@
+compiz LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+1 prefs on window 1: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|Новая вкладка|Новая вкладка|
+2 new window: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|
+3 prefs from window 2: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+4 reopen: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+session exit 143
+1 prefs on window 1: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|
+2 new window: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|Новая вкладка|
+3 prefs from window 2: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+4 reopen: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+session exit 143
+1 prefs on window 1: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|
+2 new window: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|Новая вкладка|
+3 prefs from window 2: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+4 reopen: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+session exit 143
+== -029 checks
+== 13:15:55 libgtk-nocsd0 4.8-1+unity6; compiz LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+default http handler: Default application for “x-scheme-handler/http”: firefox_firefox.desktop
+run 1: nocsd mapped 5; windows: ... Установить в качестве браузера по умолчанию?|Новая вкладка|; exit 134 (SIGABRT)
+    (epiphany:6177): Gtk-CRITICAL **: 13:16:22.146: gtk_widget_get_ancestor: assertion 'GTK_IS_WIDGET (widget)' failed
+run 2: nocsd mapped 5; windows: ... Установить в качестве браузера по умолчанию?|; exit 134 (SIGABRT)
+    (epiphany:6609): Gtk-CRITICAL **: 13:17:28.151: gtk_widget_get_ancestor: assertion 'GTK_IS_WIDGET (widget)' failed
+run 3: nocsd mapped 5; windows: ... Установить в качестве браузера по умолчанию?|Новая вкладка|; exit 134 (SIGABRT)
+    (epiphany:7144): Gtk-CRITICAL **: 13:18:37.329: gtk_widget_get_ancestor: assertion 'GTK_IS_WIDGET (widget)' failed
+run 4: nocsd mapped 5; windows: ... Установить в качестве браузера по умолчанию?|Новая вкладка|; exit 134 (SIGABRT)
+    epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+    Bail out! epiphany:ERROR:../src/ephy-main.c:459:main: assertion failed: (!ephy_shell)
+run 5: nocsd mapped 5; windows: ... Установить в качестве браузера по умолчанию?|; exit 143
+crash files: 1
+question answered: ask-for-default true
+preferences 1: open windows 1, after Escape 0; epiphany alive yes
+preferences 2: open windows 1, after Escape 0; epiphany alive yes
+preferences 3: open windows 1, after Escape 0; epiphany alive yes
+quit: exit 143
+_usr_bin_epiphany.1000.crash
+_usr_lib_systemd_systemd-journald.0.crash
+_usr_lib_systemd_systemd-logind.0.crash
+_usr_lib_systemd_systemd-resolved.989.crash
+_usr_bin_epiphany.1000.crash

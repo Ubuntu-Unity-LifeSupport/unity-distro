@@ -53,6 +53,8 @@ sequence pass (2 of 2).
   abort (exit 143 at the end, no crash report). The checks of
   UNITY-20261013-029 still pass: SIGTERM with the default-browser question
   open 5 of 5 exit 143; preferences opened, closed and opened again 3 times.
+  Repeated after unity-gtk4-menu 0.14 was published (`dev/target/03`-`05`):
+  the epiphany sequence 3 of 3 without abort, the windows listed this time.
 
 ## Verification
 
@@ -62,6 +64,14 @@ sequence pass (2 of 2).
 - Verifier: see the release record.
 
 ## Not changed / known limits
+
+- Epiphany ended with SIGTERM during or shortly after its start can abort,
+  intermittently, on "(!ephy_shell)" or on a GTK critical about a destroyed
+  widget; seen with gtk-nocsd 4.8-1+unity5 and +unity6 and with
+  unity-gtk4-menu 0.13 and 0.14 (UNITY-20261017-010). In the cold-boot
+  runs right after the 0.14 upgrade the default-browser check aborted 4 of 5
+  with +unity6; in later runs (warm and with the page cache dropped) the forms
+  aborted at similar low rates.
 
 - For embedded dialogs the hook still removes the application window from
   gtk-nocsd's own window list after a force-close (as before).

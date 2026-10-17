@@ -1,0 +1,16 @@
+u5 run 1: exit 143 
+u5 run 2: exit 134 assertion failed: (!ephy_shell)
+u5 run 3: exit 143 
+u5 run 4: exit 143 
+u6 run 1: exit 143 
+u6 run 2: exit 143 
+u6 run 3: exit 143 
+u6 run 4: exit 143 
+u6only run 1: exit 143 
+u6only run 2: exit 143 
+u6only run 3: exit 143 
+u6only run 4: exit 143 
+menuonly run 1: exit 143 
+menuonly run 2: exit 143 
+menuonly run 3: exit 143 
+menuonly run 4: exit 143 
