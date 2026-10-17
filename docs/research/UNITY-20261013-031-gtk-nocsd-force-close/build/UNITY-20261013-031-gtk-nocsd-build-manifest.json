@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-031",
+  "package": "gtk-nocsd",
+  "candidate_version": "4.8-1+unity6",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/unity-distro-1013-031/packages/gtk-nocsd",
+  "source_commit": "e42e03af433476d2d2248435f693d9ba91ce8ce0",
+  "source_tree_hash": "69d08c0611246952392ec26f1a5fff31b08c3d6b",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
+  ],
+  "build_started": "2026-10-17T09:33:24.223216+00:00",
+  "build_finished": "2026-10-17T09:40:38.538302+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261013-031-gtk-nocsd-4.8-1+unity6-sbuild.log",
+    "sha256": "30b3d4985fc9eaec4dc8868bfaf0319776775b66ad212b34adfa3464d772923b"
+  },
+  "artifacts": [
+    {
+      "file": "gtk-nocsd_4.8-1+unity6.dsc",
+      "sha256": "824d48d7319f48d716169ac0a7867071dde088ec50ff7d0677386aa2a4e70120",
+      "size": 1286,
+      "kind": "source",
+      "package": "gtk-nocsd",
+      "version": "4.8-1+unity6"
+    },
+    {
+      "file": "gtk-nocsd_4.8-1+unity6_amd64.changes",
+      "sha256": "2573370b0ff7f99686a27d4619dab296cc3d15c44deb83e1301908b448f53bfc",
+      "size": 2562,
+      "kind": "changes"
+    },
+    {
+      "file": "gtk-nocsd_4.8.orig.tar.gz",
+      "sha256": "2be0214c37a57d1e0bcd7d217310c2af1307955710077f41db928fb40d33fa68",
+      "size": 719696,
+      "kind": "source_file",
+      "package": "gtk-nocsd",
+      "version": "4.8-1+unity6"
+    },
+    {
+      "file": "gtk-nocsd_4.8-1+unity6.debian.tar.xz",
+      "sha256": "64e79cd262f656ab84bb59881b12b69b3545daa96fb78e06542f25475e7aec1a",
+      "size": 18052,
+      "kind": "source_file",
+      "package": "gtk-nocsd",
+      "version": "4.8-1+unity6"
+    },
+    {
+      "file": "gtk-nocsd_4.8-1+unity6_amd64.buildinfo",
+      "sha256": "46a43245969e2106ecde05e5bd22d8f4fafc16b699bbf9e32367261320144223",
+      "size": 17645,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "gtk3-nocsd_4.8-1+unity6_all.deb",
+      "sha256": "b1ffa2cb2cd42571a289d6ac4337495b5d71662bd656c0f3c93cb128aa8b3d93",
+      "size": 4106,
+      "kind": "binary",
+      "package": "gtk3-nocsd",
+      "version": "4.8-1+unity6",
+      "architecture": "all"
+    },
+    {
+      "file": "libgtk-nocsd0-dbgsym_4.8-1+unity6_amd64.ddeb",
+      "sha256": "011b06e29431ff099346ef62277a34a049565a77c52bd793a054f3eb4fc755be",
+      "size": 88730,
+      "kind": "binary",
+      "package": "libgtk-nocsd0-dbgsym",
+      "version": "4.8-1+unity6",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libgtk-nocsd0_4.8-1+unity6_amd64.deb",
+      "sha256": "f4ecf65a5f20ac2c447c1c561b1744b3cff7129e391c7b73ff40b41e62339486",
+      "size": 43348,
+      "kind": "binary",
+      "package": "libgtk-nocsd0",
+      "version": "4.8-1+unity6",
+      "architecture": "amd64"
+    },
+    {
+      "file": "libgtk3-nocsd0_4.8-1+unity6_all.deb",
+      "sha256": "5625b94184cda3cf807beea30471a60388d890dd0052379bca99c55f56cc2e74",
+      "size": 3884,
+      "kind": "binary",
+      "package": "libgtk3-nocsd0",
+      "version": "4.8-1+unity6",
+      "architecture": "all"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": true,
+    "older_than_max_age": true,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/a/unity-distro-1013-031/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

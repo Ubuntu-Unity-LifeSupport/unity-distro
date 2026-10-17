@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-031",
+  "package": "gtk-nocsd",
+  "target_series": "resolute",
+  "candidate_version": "4.8-1+unity6",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1013-031/packages/gtk-nocsd",
+  "source_remote_ref": "origin/a/UNITY-20261013-031",
+  "source_commit": "e42e03af433476d2d2248435f693d9ba91ce8ce0",
+  "source_tree_hash": "69d08c0611246952392ec26f1a5fff31b08c3d6b",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261013-031"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/build/UNITY-20261013-031-gtk-nocsd-build-manifest.json",
+    "sha256": "9209f6b37ad6a871327d8f856b105d489c53fa563b9c4f5d94f93220d6d3d805"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/gate/evidence-manifest.json",
+    "sha256": "26c1f043464f07230e6db9f066b77cd6b2887448d996c8be1e299868a04bd19f"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261013-031-gtk-nocsd-force-close/gate/target-test.txt",
+        "sha256": "228602c821f6cde5fe2b5613aa147d759c87eb753e088decf5570651c938f9bb"
+      },
+      "debs": {
+        "libgtk-nocsd0_4.8-1+unity6_amd64.deb": "f4ecf65a5f20ac2c447c1c561b1744b3cff7129e391c7b73ff40b41e62339486"
+      }
+    }
+  }
+}

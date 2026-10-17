@@ -1,0 +1,7 @@
+f4ecf65a5f20ac2c447c1c561b1744b3cff7129e391c7b73ff40b41e62339486  /tmp/libgtk-nocsd0_4.8-1+unity6_amd64.deb
+rc=0
+epiphany-browser	49.2-3ubuntu1
+libgtk-nocsd0:amd64	4.8-1+unity6
+libunity-gtk4-menu0:amd64	0.13
+light-locker	1.8.0-3ubuntu4+unity5
+unity	7.7.1+26.04.20260306-0ubuntu3+unity14

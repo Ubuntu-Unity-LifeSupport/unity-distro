@@ -1,0 +1,26 @@
+compiz LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+1 prefs on window 1: Web|Новая вкладка|Параметры|
+2 new window: Web|Новая вкладка|Параметры|Новая вкладка|
+3 prefs from window 2: Web|Новая вкладка|Новая вкладка|Параметры|; alive yes
+4 reopen: Web|Новая вкладка|Новая вкладка|Параметры|; alive yes
+session exit 143
+_usr_bin_do-release-upgrade.0.crash
+_usr_bin_light-locker.1000.crash
+1 prefs on window 1: Web|Новая вкладка|Новая вкладка|Параметры|
+2 new window: Web|Новая вкладка|Новая вкладка|Параметры|Новая вкладка|
+3 prefs from window 2: Web|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+4 reopen: Web|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+session exit 143
+_usr_bin_do-release-upgrade.0.crash
+_usr_bin_light-locker.1000.crash
+1 prefs on window 1: Web|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|
+2 new window: Web|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|Новая вкладка|
+3 prefs from window 2: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+4 reopen: Web|Новая вкладка|Новая вкладка|Новая вкладка|Новая вкладка|Параметры|; alive yes
+session exit 143
+question answered: ask-for-default true
+preferences 1: open windows 1, after Escape 0; epiphany alive yes
+preferences 2: open windows 1, after Escape 0; epiphany alive yes
+preferences 3: open windows 1, after Escape 0; epiphany alive yes
+quit: exit 143
+crash dir: 
