@@ -1,0 +1,23 @@
+UNITY-20261013-031: target verification of the publication of gtk-nocsd 4.8-1+unity6
+
+Raw files: gate/verification/ (times EEST on the target, 2026-10-17).
+
+Published 2026-10-17 10:55:11Z as snapshot unity-resolute-20261013-031 (publish record
+~/coordinator/publish-records/UNITY-20261013-031.json: post-publish check PASS). On builder the served
+dists/resolute/InRelease has Date Sat, 17 Oct 2026 10:49:41 UTC, Valid-Until Tue, 20 Oct 2026 10:49:41 UTC;
+gtk3-nocsd, libgtk-nocsd0, libgtk-nocsd0-dbgsym and libgtk3-nocsd0 4.8-1+unity6 are in main/binary-amd64/Packages with
+the gated sha256.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at 13:56:26,
+libgtk-nocsd0 +unity3, light-locker +unity2, unity +unity12 from the snapshot), apt-get update and full-upgrade from the
+live repository: libgtk-nocsd0 4.8-1+unity6 (downloaded deb sha256 f4ecf65a..., the gated build), with
+unity-gtk4-menu 0.14, unity +unity14, light-locker +unity5, unity-settings-daemon +unity16, cinnamon-session +unity8;
+nothing left to upgrade (01-restore-upgrade.txt). epiphany-browser 49.2-3ubuntu1, xdotool and wmctrl installed; Firefox
+the default http handler; cold boot.
+
+02-check.txt: the session's LD_PRELOAD holds libunity-gtk4-menu and libgtk-nocsd. Epiphany: Preferences in window 1,
+a new window, Preferences from window 2 (epiphany force-closes the first dialog), Escape, Preferences again - 3/3
+epiphany alive, the preferences window listed after each step, exit 143 at the end, no epiphany crash report.
+Preferences opened, closed and opened again three times; exit 143.
+
+Result: PASS.

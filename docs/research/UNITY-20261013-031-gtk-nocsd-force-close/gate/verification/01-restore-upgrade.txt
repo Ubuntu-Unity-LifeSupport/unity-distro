@@ -1,0 +1,6 @@
+boot 2026-10-17 13:56:26; before: libgtk-nocsd0 4.8-1+unity3; light-locker 1.8.0-3ubuntu4+unity2; unity 7.7.1+26.04.20260306-0ubuntu3+unity12; 
+full-upgrade rc=0
+after: cinnamon-session 6.4.2-1+unity8; libgtk-nocsd0 4.8-1+unity6; libunity-gtk4-menu0 0.14; light-locker 1.8.0-3ubuntu4+unity5; unity 7.7.1+26.04.20260306-0ubuntu3+unity14; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity16; 
+left: 0
+f4ecf65a5f20ac2c447c1c561b1744b3cff7129e391c7b73ff40b41e62339486  /var/cache/apt/archives/libgtk-nocsd0_4.8-1+unity6_amd64.deb
+tools 0 epiphany 49.2-3ubuntu1
