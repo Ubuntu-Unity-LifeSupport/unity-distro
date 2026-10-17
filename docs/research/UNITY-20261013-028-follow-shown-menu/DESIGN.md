@@ -493,7 +493,7 @@ round:
 
 1. **A build of one's own only if it exists.**
    - The snippet keeps a copy of ours from outside /usr only when the file exists (`[ -e ]`). Otherwise the installed
-     path form is put first. This is already in the prototype (`xsession/52unity-gtk4-menu`, 66 lines).
+     path form is put first. This is already in the prototype (`xsession/52unity-gtk4-menu`, 67 lines).
    - `logs/07-xsession-cases-approve.txt` is the full set:
      - K: an `/opt` build that does not exist gives the installed one first;
      - K2: an existing copy in `~/b039/opt` is kept and put first;
