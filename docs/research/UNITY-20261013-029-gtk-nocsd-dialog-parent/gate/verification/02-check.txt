@@ -1,0 +1,14 @@
+== 08:51:04 libgtk-nocsd0 4.8-1+unity5; compiz LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+default http handler: Default application for “x-scheme-handler/http”: firefox_firefox.desktop
+run 1: nocsd mapped 5; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+run 2: nocsd mapped 5; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+run 3: nocsd mapped 5; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+run 4: nocsd mapped 5; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+run 5: nocsd mapped 5; windows: Web|Новая вкладка|Установить в качестве браузера по умолчанию?|; exit 143
+crash files: 0
+question answered: ask-for-default true
+preferences 1: open windows 1, after Escape 0; epiphany alive yes
+preferences 2: open windows 1, after Escape 0; epiphany alive yes
+preferences 3: open windows 1, after Escape 0; epiphany alive yes
+quit: exit 143
+crash dir: 

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261013-029",
+  "package": "gtk-nocsd",
+  "source_commit": "6aab167bd5acab583720ace244dc0474dd11e25b",
+  "files": {
+    "evidence_card": {
+      "file": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/README.md",
+      "sha256": "e1793a2efd3d437d790f3d3353bc491aa452627e0d6e8a1a8eb6dd0bba5aa16e"
+    },
+    "verification_record": {
+      "file": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/README.md",
+      "sha256": "e1793a2efd3d437d790f3d3353bc491aa452627e0d6e8a1a8eb6dd0bba5aa16e"
+    },
+    "patch_record": {
+      "file": "docs/PATCHES.md",
+      "sha256": "1e13d8e490ed05c4b2bdbcfc5d4221e832ddd686c6be9729e800c6e481420ee7"
+    },
+    "release_record": {
+      "file": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/gate/release-record.json",
+      "sha256": "3da1ae9441d3458d64e8fd020cc74e15d97b7ffb78fa32e960170d79995b72f1"
+    },
+    "version_check": {
+      "file": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/gate/version-check.json",
+      "sha256": "50f962899ac60124559d7c1e814f82835e8da851fa46055d4aff89d2a75fc1dd"
+    }
+  }
+}

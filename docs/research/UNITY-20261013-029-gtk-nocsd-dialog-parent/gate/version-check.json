@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "tool": "apt_view.py",
+  "tool_version": 1,
+  "mode": "full",
+  "source_package": "gtk-nocsd",
+  "measured_at": "2026-10-17T05:30:30Z",
+  "sources_file": "/home/claude/work/a/unity-distro-1013-029/docs/apt/target.sources",
+  "sources_sha256": "76314d2784469f2c0a3b7306e843569dabf02f32ae177d4524aac62c4310cfdb",
+  "preferences": {
+    "ubuntu-pro-esm-apps": "9bd3a762177751e58cefe1f96e6fde8b7342e1fa75e642074a674f3ad2c4677b",
+    "ubuntu-pro-esm-infra": "29da6877bf63ff235fa7e42efd8d24c665e19daea69898bb854bb05062bc93c9"
+  },
+  "snapshot": {
+    "name": "unity-resolute-20261013-029",
+    "packages": 632,
+    "list_sha256": "75e02a7769aa14d984f7250429b96654e8b0869c93ec4b0c7e6202f0db0a3d8e",
+    "content_sha256": "ca9fc0a49d3263ba45b8b3b73e1136c2e49e684b782e1d7f18e85893f8dc7480",
+    "model_entries": 565,
+    "model_release": {
+      "Origin": ". resolute",
+      "Label": ". resolute",
+      "Suite": "resolute",
+      "Codename": "resolute"
+    }
+  },
+  "releases": [
+    {
+      "file": "<model>_Release",
+      "sha256": "8f2f5ed2ade69d28c0b1f227573ce280ecfb773bf534e5959c122189bad1eca9",
+      "model": true,
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026 05:30:32 +0000",
+      "Label": ". resolute",
+      "Origin": ". resolute",
+      "Suite": "resolute"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-backports_InRelease",
+      "sha256": "f5f689a44078cb068bab5c997935959acd6e3bca5c404fef6ae1414ba97b6733",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-backports",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:29 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-proposed_InRelease",
+      "sha256": "901e541dbfd111db7a7dd07a6dfb448ac7b594f31138f624792918b8f028e3b0",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-proposed",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:47:15 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute-updates_InRelease",
+      "sha256": "a44c5d895445cffd1ae330ffa4409e3e6d37ef1b0b14ee2ad211e9bdd68de21b",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-updates",
+      "Codename": "resolute",
+      "Date": "Sat, 17 Oct 2026  1:13:58 UTC"
+    },
+    {
+      "file": "de.archive.ubuntu.com_ubuntu_dists_resolute_InRelease",
+      "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute",
+      "Codename": "resolute",
+      "Date": "Thu, 23 Apr 2026 17:07:15 UTC"
+    },
+    {
+      "file": "security.ubuntu.com_ubuntu_dists_resolute-security_InRelease",
+      "sha256": "65fb2cdcce915910dd07cfa5de91113376fe5900413d1ee9a9f9e4a01a059301",
+      "model": false,
+      "Origin": "Ubuntu",
+      "Label": "Ubuntu",
+      "Suite": "resolute-security",
+      "Codename": "resolute",
+      "Date": "Fri, 16 Oct 2026 21:46:36 UTC"
+    }
+  ],
+  "pockets": {
+    "resolute": "0~20260321+0b77e1b-1"
+  },
+  "in_archive": true,
+  "binaries": [
+    {
+      "package": "gtk3-nocsd",
+      "version": "4.8-1+unity5",
+      "architecture": "all",
+      "file": "gtk3-nocsd_4.8-1+unity5_all.deb",
+      "apt_candidate": "4.8-1+unity5",
+      "policy": "gtk3-nocsd:\n  Installed: (none)\n  Candidate: 4.8-1+unity5\n  Version table:\n     4.8-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     3+0~20260321+0b77e1b-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     3+0~20260321+0b77e1b-1 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libgtk-nocsd0-dbgsym",
+      "version": "4.8-1+unity5",
+      "architecture": "amd64",
+      "file": "libgtk-nocsd0-dbgsym_4.8-1+unity5_amd64.ddeb",
+      "apt_candidate": "4.8-1+unity5",
+      "policy": "libgtk-nocsd0-dbgsym:\n  Installed: (none)\n  Candidate: 4.8-1+unity5\n  Version table:\n     4.8-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity1 500\n        500 file:<VIEW>/model ./ Packages\n"
+    },
+    {
+      "package": "libgtk-nocsd0",
+      "version": "4.8-1+unity5",
+      "architecture": "amd64",
+      "file": "libgtk-nocsd0_4.8-1+unity5_amd64.deb",
+      "apt_candidate": "4.8-1+unity5",
+      "policy": "libgtk-nocsd0:\n  Installed: (none)\n  Candidate: 4.8-1+unity5\n  Version table:\n     4.8-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     3+0~20260321+0b77e1b-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     3+0~20260321+0b77e1b-1 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    },
+    {
+      "package": "libgtk3-nocsd0",
+      "version": "4.8-1+unity5",
+      "architecture": "all",
+      "file": "libgtk3-nocsd0_4.8-1+unity5_all.deb",
+      "apt_candidate": "4.8-1+unity5",
+      "policy": "libgtk3-nocsd0:\n  Installed: (none)\n  Candidate: 4.8-1+unity5\n  Version table:\n     4.8-1+unity5 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity4 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity3 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     4.8-1+unity1 500\n        500 file:<VIEW>/model ./ Packages\n     3+0~20260321+0b77e1b-1+unity2 500\n        500 file:<VIEW>/model ./ Packages\n     3+0~20260321+0b77e1b-1 500\n        500 http://de.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages\n"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+question answered: ask-for-default true
+preferences 1: open windows 1, after Escape 0; epiphany alive yes
+preferences 2: open windows 1, after Escape 0; epiphany alive yes
+preferences 3: open windows 1, after Escape 0; epiphany alive yes
+quit: exit 143

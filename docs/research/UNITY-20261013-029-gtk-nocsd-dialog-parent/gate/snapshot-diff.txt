@@ -1,0 +1,6 @@
+  Arch   | Package                                  | Version in A                             | Version in B
++ all    | gtk3-nocsd                               | -                                        | 4.8-1+unity5                            
++ all    | libgtk3-nocsd0                           | -                                        | 4.8-1+unity5                            
++ amd64  | libgtk-nocsd0                            | -                                        | 4.8-1+unity5                            
++ amd64  | libgtk-nocsd0-dbgsym                     | -                                        | 4.8-1+unity5                            
++ source | gtk-nocsd                                | -                                        | 4.8-1+unity5                            
