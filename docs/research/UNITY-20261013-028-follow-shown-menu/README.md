@@ -158,3 +158,42 @@ explanation here.
 One addition beyond DESIGN, for the Verifier: the current owner's `destroy` signal schedules a relook as its `unmap`
 does. An owner destroyed while already hidden (no unmap then) and without a later `items-changed` would otherwise
 never trigger one.
+
+## Verifier (2026-10-17): PASS, REVIEWED
+
+An independent Verifier (a subagent following `.claude/agents/adversarial-verifier.md`) reviewed the diff
+`d377096..e308fc5`, DESIGN.md, the logs, the -039 card and the built deb. It reproduced nothing itself.
+
+What it checked and found holding:
+- every artifact hash and the source tree hash;
+- the conffile, byte for byte;
+- all seven rows of the switch rule against `relook_idle`;
+- the relook filter;
+- every lifetime path, including the destroy handler during dispose and both idles;
+- `proxy_for`/`proxy_free`;
+- the extra owner `destroy` trigger (sound);
+- part B (equivalent to 0.13 for every result);
+- part C (guard, opt-outs, `[ -e ]`, the quoted STARTUP pattern, variable cleanup, `set -e` safety);
+- every row of the results table against its log.
+
+Findings, all non-blocking (test quality, not the code):
+1. **Test 28 does not exercise the compare-then-clear in `proxy_free` (round-2 #4).** Its two pages have different
+   holders, so 0.13's unconditional clear would pass it too. The case that needs the check (the same holder, another
+   owner) does happen in log 11 (Console's window-class actions) and is correct by inspection
+   (`src/unity-gtk4-menu.c`:775-780), but no test pins it. The property-action mirror DESIGN lists under test 28 is
+   not tested either. **Correction to DESIGN's round-2 table:** test 28 does not cover finding 4.
+2. **Test 24:** the second `wait_log_n("relook", 2)` returns at once (substring count), and its "shown=1 primary=0"
+   check is satisfied by the realize log. The case's claim still rests on "relook: the menu followed is kept".
+3. **Test 27(c)** checks a message that both the window destroy handler and `rebuild_idle` print. Here it can only
+   come from the former.
+
+Notes:
+- **Map filter.** A realize-time owner outside a header bar comes back only through C's unmap or destroy, as DESIGN
+  says.
+- **Stale rank.** `rec->primary` is not refreshed on a rebuild, as in 0.13.
+- **Class references.** `patch_map` takes a class reference per fill, which is harmless.
+- **T4.** It has no Pinta run and no 0.13 survey comparison. Late fill is covered by latetest 1-22.
+- **Log headers.** Log 12b's header prints the installed version (0.14) above the line that says 0.13 was
+  preloaded. Log 15's R/R2 headers print 0.14 for a package in `rc` state.
+
+The test findings go to a follow-up task (ID from C). They need a change in the package's tests, so a new source commit.
