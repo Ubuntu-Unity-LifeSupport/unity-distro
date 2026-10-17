@@ -1,0 +1,20 @@
+# Build of 0845602 (the tests on 4.8-1+unity5, without d/p/0002), sbuild in the same chroot (20261008T083223Z); results of debian/tests-src/run-dialog-parent.sh from its build log
+=== T1-app-destroy: PASS
+=== T1b-app-close: PASS
+=== T2-plain-window: PASS
+=== T3-nested-dialog: PASS
+=== T4-represent-kept-dialog: PASS
+=== T5-can-close-false: PASS
+=== control-closed-first: PASS
+=== control-represent-after-close: PASS
+=== control-hide-on-close-parent: PASS
+=== T6-two-dialogs: PASS
+=== F1-force-close-kept-dialog: FAIL (exit 1)
+=== F2-force-close-single-instance: FAIL (exit 1)
+=== F3-force-close-can-close-false: FAIL (exit 1)
+=== F4-force-close-from-close-attempt: FAIL (exit 1)
+=== control-force-close-unpresented: PASS
+=== control-force-close-from-closed: PASS
+=== control-force-close-embedded: PASS
+=== control-gtk3: PASS
+dialog/parent tests failed: F1-force-close-kept-dialog F2-force-close-single-instance F3-force-close-can-close-false F4-force-close-from-close-attempt
