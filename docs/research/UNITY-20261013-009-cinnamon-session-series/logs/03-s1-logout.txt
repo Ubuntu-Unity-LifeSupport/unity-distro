@@ -1,0 +1,28 @@
+== logout at 2026-10-13T22:47:35Z; pid 2337
+  bpftrace: Attached 4 probes
+  [366.62 s since boot] cinnamon-session-quit --logout --no-prompt
+    GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  [367.78 s since boot] after up to 60 s: cinnamon-session pid 2337 gone
+-- trace (s1)
+  367181149378 end_phase
+  367183590684 client_iochannel_watch returned 1
+  367184556961 client_iochannel_watch returned 1
+  367201446137 client_iochannel_watch returned 1
+  367201591577 client_iochannel_watch returned 1
+  367201657858 client_iochannel_watch returned 1
+  367201808275 client_iochannel_watch returned 1
+  367201914855 end_phase
+  367202082280 client_iochannel_watch returned 1
+  367203512679 client_iochannel_watch returned 1
+  367204118745 client_iochannel_watch returned 1
+  367213680470 _disconnect_client client=0x5bdc7a512940
+  367232380330 _disconnect_client client=0x5bdc7a4b30a0
+  367242994045 client_iochannel_watch returned 1
+  367243377951 client_iochannel_watch returned 1
+  367243497493 client_iochannel_watch returned 1
+  367244982037 client_iochannel_watch returned 1
+  367245795802 end_phase
+  367247464422 end_phase
+  367247528592 client_iochannel_watch returned 1
+  
+  

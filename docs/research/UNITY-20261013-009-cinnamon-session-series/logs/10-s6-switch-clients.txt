@@ -1,0 +1,29 @@
+== switch at 2026-10-17T03:38:24Z; pid 2687
+-- clients
+  Client1: app ('at-spi-bus-launcher',), pid 2542: /usr/libexec/at-spi-bus-launcher 
+  Client2: app ('',), pid 0: 
+  Client3: app ('at-spi-registryd.desktop',), pid 2565: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client4: app ('gnome-settings-daemon',), pid 2688: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client5: app ('',), pid 3361: /usr/bin/compiz 
+  bpftrace: Attached 4 probes
+  loginctl: 18 1000 mike - 4762 user - no - 19 109 lightdm - 5113 manager-early - no - 2 1000 mike - 1226 manager - no - 4 1000 mike seat0 1481 user - no - c1 109 lightdm seat0 5105 greeter - no -
+  mike's session active: no
+  [182.98 s since boot] Logout(1)
+  gdbus: ()
+  [243.56 s since boot] after up to 60 s: cinnamon-session pid 2687 STILL RUNNING
+-- trace (s6)
+  183015217039 end_phase
+  183018392563 client_iochannel_watch returned 1
+  183018907496 client_iochannel_watch returned 1
+  209013008761 client_iochannel_watch returned 1
+  209014697357 client_iochannel_watch returned 1
+  
+  
+  [  183.955351] target2 cinnamon-session-binary[2687]: WARNING: t+74.56702s: Client '/org/gnome/SessionManager/Client5' failed to reply before timeout
+  [  183.961675] target2 cinnamon-session[2687]: cinnamon-session-binary[2687]: WARNING: t+74.56702s: Client '/org/gnome/SessionManager/Client5' failed to reply before timeout
+  [  208.983564] target2 cinnamon-session[2687]: cinnamon-session-binary[2687]: WARNING: t+99.59799s: Failed to open the shell's end-session dialog, falling back to Gtk end-session dialog: Timeout was reached
+  [  208.983564] target2 cinnamon-session[2687]: cinnamon-session-binary[2687]: CRITICAL: t+99.59803s: Session not in running phase, previous dialog may have exited unexpectedly
+  [  208.983468] target2 cinnamon-session-binary[2687]: WARNING: t+99.59799s: Failed to open the shell's end-session dialog, falling back to Gtk end-session dialog: Timeout was reached
+  [  208.983478] target2 cinnamon-session-binary[2687]: CRITICAL: t+99.59803s: Session not in running phase, previous dialog may have exited unexpectedly
+  [  209.598879] target2 cinnamon-session[5311]: /usr/share/cinnamon-session/cinnamon-session-quit.py:91: PyGIDeprecationWarning: GLib.unix_signal_add is deprecated; use GLibUnix.signal_add instead
+  [  209.598879] target2 cinnamon-session[5311]:   GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)

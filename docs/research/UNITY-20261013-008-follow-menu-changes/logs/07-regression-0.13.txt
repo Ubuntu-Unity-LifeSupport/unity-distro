@@ -1,0 +1,46 @@
+== r013 at 2026-10-13T18:04:54Z; libunity-gtk4-menu0 0.13; library sha256 9cd5e7aa081bc077
+  build latetest rc=0 (2 warnings)
+  case 1: rc 0 PASS case 1
+  case 1f: rc 0 PASS case 1
+  case 2: rc 0 PASS case 2
+  case 3: rc 0 PASS case 3
+  case 3f: rc 0 PASS case 3
+  case 4: rc 0 PASS case 4
+  case 5: rc 0 PASS case 5
+  case 7: rc 0 PASS case 7
+  case 8: rc 0 PASS case 8
+  case 9: rc 0 PASS case 9
+  case 11: rc 0 PASS case 11
+  case 12: rc 0 PASS case 12
+  case adw6: rc 0 PASS case 6
+      case 6: the dialog is a window of its own (Window)
+  case adw6a: rc 0 PASS case 6a
+  total: 14 passed, 0 failed
+== r013alone at 2026-10-13T18:05:21Z; libunity-gtk4-menu0 0.13; library sha256 9cd5e7aa081bc077; alone
+  case 1: rc 0 PASS case 1
+  case 1f: rc 0 PASS case 1
+  case 2: rc 0 PASS case 2
+  case 3: rc 0 PASS case 3
+  case 3f: rc 0 PASS case 3
+  case 4: rc 0 PASS case 4
+  case 5: rc 0 PASS case 5
+  case 7: rc 0 PASS case 7
+  case 8: rc 0 PASS case 8
+  case 9: rc 0 PASS case 9
+  case 11: rc 0 PASS case 11
+  case 12: rc 0 PASS case 12
+  case adw6: rc 0 PASS case 6
+  case adw6a: rc 0 PASS case 6a
+  total: 14 passed, 0 failed
+case 13: rc 0 PASS case 13
+    ==37905== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+    invalid/freed/uninit lines: 0
+case 18: rc 0 PASS case 18
+    ==38046== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+    invalid/freed/uninit lines: 0
+case 19: rc 0 PASS case 19
+    ==38186== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+    invalid/freed/uninit lines: 0
+case 22: rc 0 PASS case 22
+    ==38326== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+    invalid/freed/uninit lines: 0

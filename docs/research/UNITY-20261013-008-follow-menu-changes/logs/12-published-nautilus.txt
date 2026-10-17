@@ -1,0 +1,43 @@
+== 2026-10-13T20:42:54Z; nautilus 1:50.2.2-0ubuntu0.2; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+-- 1 at start (20:43:01Z)
+  files: alpha.txt beta.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.108 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 0 result(s)
+-- 2 after a rename by keys (20:43:09Z)
+  files: alpha-renamed.txt beta.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.108 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- 3 after Ctrl+Z (20:43:15Z)
+  files: alpha.txt beta.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.108 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить переименование  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Повторить переименование (Файлы) | org.gnome.Nautilus
+  RenameURI rc=0
+-- 4 after a rename through FileOperations2 (20:43:18Z)
+  files: alpha.txt beta-renamed.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.108 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить переименование  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 1 result(s)
+      Отменить переименование (Файлы) | org.gnome.Nautilus
+-- library log
+  lib: GTK4 found at load
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 5 of 5
+  lib: menubar filled, labelled "Файлы"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 2 item(s) replaced
+  lib: menu changed (rebuild 3): 2 item(s) replaced

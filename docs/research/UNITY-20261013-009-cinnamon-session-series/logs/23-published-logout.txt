@@ -1,0 +1,6 @@
+== logout at 2026-10-17T06:46:02Z; pid 2391
+  [187.03 s since boot] cinnamon-session-quit --logout --no-prompt
+  [188.67 s since boot] after up to 60 s: cinnamon-session pid 2391 gone
+-- trace (pub2)
+  uretprobe:/usr/lib/x86_64-linux-gnu/cinnamon-session/cinnamon-session-binary:client_iochannel_watch /pid == 2391/ { printf("%llu client_iochannel_watch returned %d\n", nsecs, retval); }
+crash reports newer than boot: 0

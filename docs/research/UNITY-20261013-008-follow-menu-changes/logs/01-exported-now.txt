@@ -1,0 +1,71 @@
+== 2026-10-13T16:37:04Z; libunity-gtk4-menu0 0.12; gnome-console 49.2-1; nautilus 1:50.2.2-0ubuntu0.2; papers 50.2-0ubuntu0.1; 
+-- Nautilus, window 56623108 (files), the exported menu now:
+  window 56623108: :1.102 /org/gnome/Nautilus/menus/menubar
+  Файлы
+    (no label)
+      (section)
+        Создать _окно  [app.clone-window]
+        Создать _вкладку  [win.new-tab]
+    (no label)
+      (section)
+        _Отменить  [win.undo]
+        _Повторить  [win.redo]
+    (no label)
+      (section)
+        _Параметры  [app.preferences]
+        _Комбинации клавиш  [app.shortcuts]
+        _Справка  [app.help]
+        _О приложении  [app.about]
+  library log:
+    [unity-gtk4-menu 7150] empty menubar set
+    [unity-gtk4-menu 7150] candidate 1 at depth 19: shown=1 primary=0 app./win. items=0
+    [unity-gtk4-menu 7150] candidate 2 at depth 28: shown=0 primary=0 app./win. items=0
+    [unity-gtk4-menu 7150] candidate 3 at depth 19: shown=1 primary=0 app./win. items=0
+    [unity-gtk4-menu 7150] candidate 4 at depth 17: shown=0 primary=0 app./win. items=0
+    [unity-gtk4-menu 7150] candidate 5 at depth 16: shown=1 primary=0 app./win. items=8
+    [unity-gtk4-menu 7150] chose candidate 5 of 5
+    [unity-gtk4-menu 7150] menubar filled, labelled "Файлы"
+-- Papers, window 60817412 (spec.pdf), the exported menu now:
+  window 60817412: :1.116 /org/gnome/Papers/menus/menubar
+  Просмотрщик документов
+    (no label)
+      (section)
+        _Комбинации клавиш  [app.shortcuts]
+        _Справка  [app.help]
+        _О приложении  [app.about]
+  library log:
+    [unity-gtk4-menu 7545] empty menubar set
+    [unity-gtk4-menu 7545] candidate 1 at depth 14: shown=1 primary=1 app./win. items=3
+    [unity-gtk4-menu 7545] candidate 2 at depth 16: shown=0 primary=0 app./win. items=0
+    [unity-gtk4-menu 7545] candidate 3 at depth 17: shown=0 primary=0 app./win. items=2
+    [unity-gtk4-menu 7545] candidate 4 at depth 14: shown=0 primary=0 app./win. items=0
+    [unity-gtk4-menu 7545] candidate 5 at depth 17: shown=0 primary=1 app./win. items=5
+    [unity-gtk4-menu 7545] chose candidate 1 of 5
+    [unity-gtk4-menu 7545] menubar filled, labelled "Просмотрщик документов"
+-- Console, window 65011716 (mike@target2: ~), the exported menu now:
+  window 65011716: :1.119 /org/gnome/Console/menus/menubar
+  Консоль
+    (no label)
+      (section)
+        _Новое окно  [win.unity-gtk4-menu-win-new-window]
+    (no label)
+      (section)
+        _Показать все вкладки  [win.unity-gtk4-menu-win-show-tabs-desktop]
+        По_лноэкранный режим  [win.unity-gtk4-menu-win-fullscreen]
+    (no label)
+      (section)
+        Па_раметры  [win.unity-gtk4-menu-win-show-preferences-window]
+        _Комбинации клавиш  [app.shortcuts]
+        _О приложении  [win.unity-gtk4-menu-win-about]
+  library log:
+    [unity-gtk4-menu 8060] empty menubar set
+    [unity-gtk4-menu 8060] candidate 1 at depth 15: shown=1 primary=0 app./win. items=6
+    [unity-gtk4-menu 8060] candidate 2 at depth 13: shown=0 primary=1 app./win. items=3
+    [unity-gtk4-menu 8060] chose candidate 1 of 2
+    [unity-gtk4-menu 8060] win.new-window proxied as win.unity-gtk4-menu-win-new-window
+    [unity-gtk4-menu 8060] win.show-tabs-desktop proxied as win.unity-gtk4-menu-win-show-tabs-desktop
+    [unity-gtk4-menu 8060] win.fullscreen proxied as win.unity-gtk4-menu-win-fullscreen
+    [unity-gtk4-menu 8060] win.show-preferences-window proxied as win.unity-gtk4-menu-win-show-preferences-window
+    [unity-gtk4-menu 8060] win.about proxied as win.unity-gtk4-menu-win-about
+    [unity-gtk4-menu 8060] dropped 4 item(s) that cannot cross D-Bus
+    [unity-gtk4-menu 8060] menubar filled, labelled "Консоль"

@@ -1,0 +1,30 @@
+== switch at 2026-10-17T03:25:54Z; pid 2310
+  bpftrace: Attached 4 probes
+  loginctl: 15 1000 mike - 4096 user - no - 16 109 lightdm - 4242 manager-early - no - 2 1000 mike seat0 1224 user - no - 3 1000 mike - 1233 manager - no - c1 109 lightdm seat0 4231 greeter - no -
+  mike's session active: no
+  [129.31 s since boot] Logout(1)
+  gdbus: ()
+  [191.38 s since boot] after up to 60 s: cinnamon-session pid 2310 STILL RUNNING
+-- trace (s4)
+  129366936876 end_phase
+  129369723070 client_iochannel_watch returned 1
+  129369864746 client_iochannel_watch returned 1
+  156007497548 client_iochannel_watch returned 1
+  156013857360 client_iochannel_watch returned 1
+  [  130.942601] target2 cinnamon-session[2310]: cinnamon-session-binary[2310]: WARNING: t+51.54987s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout
+  [  130.942927] target2 cinnamon-session-binary[2310]: WARNING: t+51.54987s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout
+  [  155.972965] target2 cinnamon-session[2310]: cinnamon-session-binary[2310]: WARNING: t+76.57989s: Failed to open the shell's end-session dialog, falling back to Gtk end-session dialog: Timeout was reached
+  [  155.972965] target2 cinnamon-session[2310]: cinnamon-session-binary[2310]: CRITICAL: t+76.58011s: Session not in running phase, previous dialog may have exited unexpectedly
+  [  155.972765] target2 cinnamon-session-binary[2310]: WARNING: t+76.57989s: Failed to open the shell's end-session dialog, falling back to Gtk end-session dialog: Timeout was reached
+  [  155.972777] target2 cinnamon-session-binary[2310]: CRITICAL: t+76.58011s: Session not in running phase, previous dialog may have exited unexpectedly
+  [  156.627782] target2 cinnamon-session[4444]: /usr/share/cinnamon-session/cinnamon-session-quit.py:91: PyGIDeprecationWarning: GLib.unix_signal_add is deprecated; use GLibUnix.signal_add instead
+  [  156.627782] target2 cinnamon-session[4444]:   GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+[204.13 s] cinnamon-session 2310: running
+  Client1: app ('at-spi-bus-launcher',), status (uint32 1,)
+  Client2: app ('',), status (uint32 1,)
+  Client3: app ('at-spi-registryd.desktop',), status (uint32 1,)
+  Client4: app ('',), status (uint32 1,)
+  Client5: app ('gnome-settings-daemon',), status (uint32 1,)
+  inhibitors: (@ao [],)
+   4444 cinnamon-session-quit
+   4475 /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/libgtk-nocsd.so.0 /usr/bin/python3 /usr/share/cinnamon-session/cinnamon-session-quit.py --sm-owned --logout

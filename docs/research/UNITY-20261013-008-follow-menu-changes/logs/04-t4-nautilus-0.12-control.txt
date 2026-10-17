@@ -1,0 +1,30 @@
+== 2026-10-13T17:44:38Z; nautilus 1:50.2.2-0ubuntu0.2; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 7e630da38b4f6e20
+-- 1 at start (17:44:45Z)
+  files: alpha-renamed alpha.txt beta.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.263 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 0 result(s)
+-- 2 after a rename by keys (17:44:53Z)
+  files: alpha-renamed alpha-renamed.txt beta.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.263 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 0 result(s)
+  RenameURI rc=0
+-- 3 after a rename through FileOperations2 (17:44:56Z)
+  files: alpha-renamed alpha-renamed.txt beta-renamed.txt gamma.txt 
+  window 60817412 (r):
+    export: window 60817412: :1.263 /org/gnome/Nautilus/menus/menubar
+    export: _Отменить  [win.undo]
+    export: _Повторить  [win.redo]
+    HUD query "переименование": target "переименование", 0 result(s)
+-- library log
+  lib: GTK4 found at load
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 5 of 5
+  lib: menubar filled, labelled "Файлы"

@@ -1,0 +1,39 @@
+  update rc=0
+  Date: Tue, 13 Oct 2026 20:34:01 UTC
+  libunity-gtk4-menu0:
+    Установлен: 0.12
+    Кандидат:   0.13
+    Таблица версий:
+       0.13 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+   *** 0.12 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+          100 /var/lib/dpkg/status
+       0.11 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.10 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.9 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.8 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.7 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.6 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.5 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.4 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+       0.3 500
+          500 http://192.168.56.10:8080 resolute/main amd64 Packages
+  full-upgrade rc=0
+  apt:   libunity-gtk4-menu0
+  apt: Пол:1 http://192.168.56.10:8080 resolute/main amd64 libunity-gtk4-menu0 amd64 0.13 [21,8 kB]
+  apt: Подготовка к распаковке …/libunity-gtk4-menu0_0.13_amd64.deb …
+  apt: Распаковывается libunity-gtk4-menu0:amd64 (0.13) на замену (0.12) …
+  apt: Настраивается пакет libunity-gtk4-menu0:amd64 (0.13) …
+  libunity-gtk4-menu0:amd64	0.13
+  downloaded /var/cache/apt/archives/libunity-gtk4-menu0_0.13_amd64.deb sha256 e979cf29092d72ecdc62da988fdc943d5c51fa5ad750e58b27760597d07af99c: equal to the gated build
+  dpkg -V rc=0
+  installed library sha256 9cd5e7aa081bc077

@@ -1,0 +1,46 @@
+== stopped at 2026-10-17T03:31:57Z; pid 2421
+-- inhibitors before
+  (@ao [],)
+  at-spi2-registryd pid 2194
+  bpftrace: Attached 4 probes
+  [198.98 s since boot] SIGSTOP 2194
+  [198.99 s since boot] cinnamon-session-quit --logout --no-prompt
+  quit 1:   GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  [209.01 s since boot] second request: Logout(1)
+  gdbus: Ошибка: GDBus.Error:org.gnome.SessionManager.NotInRunning: Logout interface is only available during the Running phase
+  [260.12 s since boot] 60 s after the first request: cinnamon-session pid 2421 STILL RUNNING
+  [260.15 s since boot] SIGCONT 2194
+  [261.27 s since boot] after SIGCONT (up to 60 s): cinnamon-session pid 2421 gone
+-- trace (s5)
+  199648685813 end_phase
+  199651031334 client_iochannel_watch returned 1
+  199651940271 client_iochannel_watch returned 1
+  199681739063 client_iochannel_watch returned 1
+  199681899376 client_iochannel_watch returned 1
+  199682447340 client_iochannel_watch returned 1
+  199682593617 client_iochannel_watch returned 1
+  199682693200 client_iochannel_watch returned 1
+  199683498726 client_iochannel_watch returned 1
+  260124703511 end_phase
+  260127865264 client_iochannel_watch returned 1
+  260128134213 client_iochannel_watch returned 1
+  260149296878 _disconnect_client client=0x651762507ce0
+  260176372008 _disconnect_client client=0x651762560920
+  260201479392 client_iochannel_watch returned 1
+  260201661704 client_iochannel_watch returned 1
+  260201723240 client_iochannel_watch returned 1
+  260201881562 client_iochannel_watch returned 1
+  260201960834 end_phase
+  260204357225 end_phase
+  260204455316 client_iochannel_watch returned 1
+  
+  
+  [  147.490649] target2 dbus-daemon[1269]: [session uid=1000 pid=1269 pidfd=5] Activating via systemd: service name='org.a11y.Bus' unit='at-spi-dbus-bus.service' requested by ':1.16' (uid=1000 pid=2021 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+  [  147.503501] target2 systemd[1237]: Starting at-spi-dbus-bus.service - Accessibility services bus...
+  [  147.653829] target2 systemd[1237]: Started at-spi-dbus-bus.service - Accessibility services bus.
+  [  147.769888] target2 at-spi-bus-launcher[2190]: dbus-daemon[2190]: Activating service name='org.a11y.atspi.Registry' requested by ':1.0' (uid=1000 pid=2021 comm="/usr/libexec/ibus-ui-gtk3" label="unconfined")
+  [  147.857918] target2 at-spi-bus-launcher[2190]: dbus-daemon[2190]: Successfully activated service 'org.a11y.atspi.Registry'
+  [  147.858249] target2 at-spi-bus-launcher[2194]: SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry
+  [  187.960532] target2 at-spi2-registryd[2194]: Disabling unresponsive app with pid 2472
+  [  200.945748] target2 cinnamon-session[2421]: cinnamon-session-binary[2421]: WARNING: t+45.71310s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout
+  [  200.945621] target2 cinnamon-session-binary[2421]: WARNING: t+45.71310s: Client '/org/gnome/SessionManager/Client4' failed to reply before timeout

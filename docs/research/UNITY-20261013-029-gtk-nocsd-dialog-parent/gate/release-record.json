@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261013-029",
+  "package": "gtk-nocsd",
+  "target_series": "resolute",
+  "candidate_version": "4.8-1+unity5",
+  "source_commit": "6aab167bd5acab583720ace244dc0474dd11e25b",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261013-029",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/gate/target-test.txt",
+    "debs": {
+      "libgtk-nocsd0_4.8-1+unity5_amd64.deb": "4ca16cb4419ebf4df2958fb263f9b7623faa4ea4ad3e736ff200b0f9621a6f69"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/README.md",
+    "verification_record": "docs/research/UNITY-20261013-029-gtk-nocsd-dialog-parent/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

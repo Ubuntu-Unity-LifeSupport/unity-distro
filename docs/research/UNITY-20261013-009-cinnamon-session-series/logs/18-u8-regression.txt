@@ -1,0 +1,56 @@
+== clients at 2026-10-17T05:55:14Z, boot 2026-10-17 08:52:16; cinnamon-session 6.4.2-1+unity8; pid 2387
+  bpftrace: Attached 4 probes
+-- xterm, normal exit
+  [185.99 s since boot] xterm 1 running
+  xterm 1 exited: 0
+  [193.05 s since boot] after xterm 1
+-- xterm, SIGKILL
+  [198.07 s since boot] xterm 2 running
+  xterm 2 killed: status 137
+  [201.13 s since boot] after the kill
+-- trace (u8-4)
+  184377096625 client_iochannel_watch returned 1
+  184377531015 client_iochannel_watch returned 1
+  184910057739 client_iochannel_watch returned 1
+  184910193169 client_iochannel_watch returned 1
+  185201564232 client_iochannel_watch returned 1
+  189234571913 on_client_disconnected client=0x62d3836419a0
+  189234698875 _disconnect_client client=0x62d3836419a0
+  189235919402 client_iochannel_watch returned 1
+  193074789818 client_iochannel_watch returned 1
+  193075576517 client_iochannel_watch returned 1
+  193190635690 client_iochannel_watch returned 1
+  193190844197 client_iochannel_watch returned 1
+  193191604912 client_iochannel_watch returned 1
+  198082598964 on_client_disconnected client=0x62d3836419a0
+  198082706660 _disconnect_client client=0x62d3836419a0
+  198083689311 client_iochannel_watch returned 0
+  
+  
+-- GLib criticals and warnings of cinnamon-session in this boot's journal
+== logout at 2026-10-17T05:55:40Z; pid 2387
+  bpftrace: Attached 4 probes
+  [204.56 s since boot] cinnamon-session-quit --logout --no-prompt
+    GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.on_terminate, None)
+  [206.39 s since boot] after up to 60 s: cinnamon-session pid 2387 gone
+-- trace (u8-4)
+  205245335277 end_phase
+  205246035969 client_iochannel_watch returned 1
+  205248458417 client_iochannel_watch returned 1
+  205267018450 client_iochannel_watch returned 1
+  205267626109 client_iochannel_watch returned 1
+  205267693168 client_iochannel_watch returned 1
+  205267759230 client_iochannel_watch returned 1
+  205267988355 end_phase
+  205269295799 client_iochannel_watch returned 1
+  205271033615 client_iochannel_watch returned 1
+  205277727388 client_iochannel_watch returned 1
+  205284258184 client_iochannel_watch returned 1
+  205284383089 client_iochannel_watch returned 1
+  205284447360 client_iochannel_watch returned 1
+  205284519140 client_iochannel_watch returned 1
+  205285616821 end_phase
+  205286579225 end_phase
+  205288413185 client_iochannel_watch returned 1
+  
+  

@@ -1,0 +1,46 @@
+== 2026-10-13T17:45:17Z lib sha256 7e630da38b4f6e20 control
+  case 13: rc 1 FAIL case 13 (control: library log not checked)
+      FAIL case 13: items-changed on our section: 0, not 2
+      FAIL case 13: 0 Changed on D-Bus, not 2
+      FAIL case 13: Changed for "", not for the section 1/2
+      FAIL case 13: the new label is not exported
+      FAIL case 13: the old label is still exported
+      FAIL case 13 (control: library log not checked)
+  case 14: rc 1 FAIL case 14 (control: library log not checked)
+      FAIL case 14: an insert at 0: A,B,C,D,E, not Z,A,B,C,D,E
+      FAIL case 14: an insert at 0: 0 items-changed on our section, not 1
+      FAIL case 14: an insert at 0: 0 Changed on D-Bus, not 1
+      FAIL case 14: an insert in the middle: A,B,C,D,E, not Z,A,B,C,M,D,E
+      FAIL case 14: an insert in the middle: 0 items-changed on our section, not 1
+      FAIL case 14: an insert in the middle: 0 Changed on D-Bus, not 1
+      FAIL case 14: a removal: A,B,C,D,E, not Z,A,B,C,D,E
+      FAIL case 14: a removal: 0 items-changed on our section, not 1
+      FAIL case 14: a removal: 0 Changed on D-Bus, not 1
+      FAIL case 14: a burst of 100: A,B,C,D,E, not Y99,A,B,C,D,E
+  case 15: rc 1 FAIL case 15 (control: library log not checked)
+      FAIL case 15: after the switch: One
+      FAIL case 15: after a change on the new one: One
+      FAIL case 15 (control: library log not checked)
+  case 16: rc 1 FAIL case 16 (control: library log not checked)
+      FAIL case 16: the section that became non-empty is missing
+      FAIL case 16: the section: One
+      FAIL case 16 (control: library log not checked)
+  case 17: rc 0 PASS case 17 (control: library log not checked)
+  case 18: rc 0 PASS case 18 (control: library log not checked)
+  case 19: rc 1 FAIL case 19 (control: library log not checked)
+      FAIL case 19: the new link object is not exported
+      FAIL case 19: the relabel at 16 is not exported
+      FAIL case 19: the link at 16 was lost
+      FAIL case 19 (control: library log not checked)
+  case 20: rc 1 FAIL case 20 (control: library log not checked)
+      FAIL case 20: no stand-in in window 1
+      FAIL case 20: window 1's stand-in activates (nil), not its own 0x63f002c1cae0
+      FAIL case 20: no stand-in in window 2
+      FAIL case 20: window 2's stand-in activates (nil), not its own 0x63f004e34760
+      FAIL case 20 (control: library log not checked)
+  case 21: rc 0 PASS case 21 (control: library log not checked)
+      case 21: the change to the rebuild's log line: 3000,0 ms
+  case 22: rc 1 FAIL case 22 (control: library log not checked)
+      FAIL case 22: the copy: One
+      FAIL case 22 (control: library log not checked)
+  total: 3 passed, 7 failed

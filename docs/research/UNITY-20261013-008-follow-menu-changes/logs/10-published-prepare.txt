@@ -1,0 +1,24 @@
+/home/mike/b008:
+hudq.py
+menudump.py
+t4-nautilus.sh
+
+/home/mike/b1313:
+apps.py
+session-check.sh
+== restore, checked inside at 2026-10-13T20:25:11Z, boot 2026-10-13 23:12:02
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  ls: cannot access '/home/mike/b008t': No such file or directory
+  ls: cannot access '/home/mike/b027': No such file or directory
+  /home/mike/b008
+  sources.list.d: ubuntu.sources
+  update rc=0
+  Date: Tue, 13 Oct 2026 19:51:15 UTC
+  full-upgrade rc=0
+  install rc=0
+  gnome-tweaks	49.0-1
+  libgtk-nocsd0:amd64	4.8-1+unity4
+  libunity-gtk4-menu0:amd64	0.12
+  meld	3.22.3-2
+  nautilus	1:50.2.2-0ubuntu0.2
+  unity-session	49.4+unity2

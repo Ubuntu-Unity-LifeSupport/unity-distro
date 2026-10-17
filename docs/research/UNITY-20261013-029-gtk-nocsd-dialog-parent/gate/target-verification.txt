@@ -1,0 +1,24 @@
+UNITY-20261013-029: target verification of the publication of gtk-nocsd 4.8-1+unity5
+
+Raw files: gate/verification/ (times EEST on the target).
+
+Published 2026-10-17 05:36:55Z as snapshot unity-resolute-20261013-029 (publish record
+~/coordinator/publish-records/UNITY-20261013-029.json: post-publish check PASS). On builder: the served
+dists/resolute/InRelease has Date Sat, 17 Oct 2026 05:31:22 UTC, Valid-Until Tue, 20 Oct 2026 05:31:22 UTC;
+gtk3-nocsd, libgtk-nocsd0, libgtk-nocsd0-dbgsym and libgtk3-nocsd0 4.8-1+unity5 are in main/binary-amd64/Packages
+with the gated sha256.
+
+Target: target-desktop restored from Published-stack-2026-10-08 (confirmed inside the guest: boot at 08:39:26,
+libgtk-nocsd0 +unity3, light-locker +unity2 and unity +unity12 from the snapshot), apt-get update and full-upgrade
+from the live repository: libgtk-nocsd0 4.8-1+unity5 (downloaded deb sha256 4ca16cb4..., the gated build), with
+unity-settings-daemon +unity16, cinnamon-session +unity7, light-locker +unity4, unity +unity13, unity-gtk4-menu
+0.13; nothing left to upgrade (01-restore-upgrade.txt). epiphany-browser 49.2-3ubuntu1, xdotool and wmctrl installed
+for the check; Firefox made the default http handler so that epiphany asks to become the default browser; cold
+boot.
+
+02-check.txt: epiphany started with the session's environment (LD_PRELOAD libunity-gtk4-menu and libgtk-nocsd),
+SIGTERM after 15 s: 5/5 exit 143; in each run libgtk-nocsd mapped and the windows "Web", the tab and the question
+"Set as Default Browser?" open at the SIGTERM; no ERROR or CRITICAL line, no crash report. The question answered
+("Ask Again Later"); Preferences opened, closed and opened again three times; SIGTERM: exit 143; /var/crash empty.
+
+Result: PASS.

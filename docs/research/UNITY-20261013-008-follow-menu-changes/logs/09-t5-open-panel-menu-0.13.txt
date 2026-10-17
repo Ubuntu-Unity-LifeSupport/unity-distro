@@ -1,0 +1,273 @@
+======== mode sub
+== 2026-10-13T18:09:03Z t5app sub; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+  window 56623108, active 56623108
+  == entry at start at 18:09:06.974Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x5a6c124a5cd0 win=56623108 label='t5app.py' sensitive=True visible=True prio=0
+  popwatch: 18:09:07.162 popups: 
+-- popwatch
+  18:09:07.162 popups: 
+  18:09:08.133 popups: 89,30 125x104;
+  18:09:08.409 popups: 89,30 125x104;212,82 108x52;
+  18:09:09.728 popups: 89,30 125x104;
+  == entry at the end at 18:09:29.528Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x5a6c124a5cd0 win=56623108 label='t5app.py' sensitive=True visible=True prio=0
+-- the application's changes
+  18:09:05.682 change 1 (sub)
+  18:09:07.684 change 2 (sub)
+  18:09:09.685 change 3 (sub)
+  18:09:11.688 change 4 (sub)
+  18:09:13.689 change 5 (sub)
+  18:09:15.689 change 6 (sub)
+  18:09:17.692 change 7 (sub)
+  18:09:19.693 change 8 (sub)
+  18:09:21.694 change 9 (sub)
+  18:09:23.696 change 10 (sub)
+  18:09:25.698 change 11 (sub)
+  18:09:27.700 change 12 (sub)
+-- the export now
+  window 56623108: :1.302 /org/unitydistro/T5app/menus/menubar
+  t5app.py
+    (no label)
+      (section)
+        Tick 0  [app.noop]
+        Sibling  [app.noop]
+    Sub 13
+      Inner 0  [app.noop]
+      Inner B  [app.noop]
+    Outside 0  [app.noop]
+-- library log
+  lib: GTK4 is not loaded in this process yet
+  lib: GTK4 found through GObject Introspection
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 1 of 1
+  lib: menubar filled, labelled "t5app.py"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 1 item(s) replaced
+  lib: menu changed (rebuild 3): 1 item(s) replaced
+  lib: menu changed (rebuild 4): 1 item(s) replaced
+  lib: menu changed (rebuild 5): 1 item(s) replaced
+  lib: menu changed (rebuild 6): 1 item(s) replaced
+  lib: menu changed (rebuild 7): 1 item(s) replaced
+  lib: menu changed (rebuild 8): 1 item(s) replaced
+  lib: menu changed (rebuild 9): 1 item(s) replaced
+  lib: menu changed (rebuild 10): 1 item(s) replaced
+  lib: menu changed (rebuild 11): 1 item(s) replaced
+  lib: menu changed (rebuild 12): 1 item(s) replaced
+  lib: menu changed (rebuild 13): 1 item(s) replaced
+======== mode a
+== 2026-10-13T18:09:31Z t5app a; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+  window 60817412, active 60817412
+  == entry at start at 18:09:35.656Z, active window 60817412 (0x3a00004)
+    libappmenu.so id=0x5a6c1235e4d0 win=60817412 label='t5app.py' sensitive=True visible=True prio=0
+  popwatch: 18:09:35.850 popups: 
+-- popwatch
+  18:09:35.850 popups: 
+  18:09:36.682 popups: 89,30 125x104;
+  == entry at the end at 18:10:00.999Z, active window 60817412 (0x3a00004)
+    libappmenu.so id=0x5a6c1235e4d0 win=60817412 label='t5app.py' sensitive=True visible=True prio=0
+-- the application's changes
+  18:09:34.336 change 1 (a)
+  18:09:36.337 change 2 (a)
+  18:09:38.339 change 3 (a)
+  18:09:40.342 change 4 (a)
+  18:09:42.343 change 5 (a)
+  18:09:44.345 change 6 (a)
+  18:09:46.347 change 7 (a)
+  18:09:48.348 change 8 (a)
+  18:09:50.350 change 9 (a)
+  18:09:52.350 change 10 (a)
+  18:09:54.352 change 11 (a)
+  18:09:56.354 change 12 (a)
+  18:09:58.355 change 13 (a)
+  18:10:00.358 change 14 (a)
+-- the export now
+  window 60817412: :1.308 /org/unitydistro/T5app/menus/menubar
+  t5app.py
+    (no label)
+      (section)
+        Tick 14  [app.noop]
+        Sibling  [app.noop]
+    Sub
+      Inner 0  [app.noop]
+      Inner B  [app.noop]
+    Outside 0  [app.noop]
+-- library log
+  lib: GTK4 is not loaded in this process yet
+  lib: GTK4 found through GObject Introspection
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 1 of 1
+  lib: menubar filled, labelled "t5app.py"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 1 item(s) replaced
+  lib: menu changed (rebuild 3): 1 item(s) replaced
+  lib: menu changed (rebuild 4): 1 item(s) replaced
+  lib: menu changed (rebuild 5): 1 item(s) replaced
+  lib: menu changed (rebuild 6): 1 item(s) replaced
+  lib: menu changed (rebuild 7): 1 item(s) replaced
+  lib: menu changed (rebuild 8): 1 item(s) replaced
+  lib: menu changed (rebuild 9): 1 item(s) replaced
+  lib: menu changed (rebuild 10): 1 item(s) replaced
+  lib: menu changed (rebuild 11): 1 item(s) replaced
+  lib: menu changed (rebuild 12): 1 item(s) replaced
+  lib: menu changed (rebuild 13): 1 item(s) replaced
+  lib: menu changed (rebuild 14): 1 item(s) replaced
+======== mode b
+== 2026-10-13T18:10:03Z t5app b; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+  window 56623108, active 56623108
+  == entry at start at 18:10:07.292Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x5a6c124a5b50 win=56623108 label='t5app.py' sensitive=True visible=True prio=0
+  popwatch: 18:10:07.540 popups: 
+-- popwatch
+  18:10:07.540 popups: 
+  18:10:08.360 popups: 89,30 125x104;
+  18:10:08.684 popups: 89,30 125x104;212,82 108x52;
+  == entry at the end at 18:10:25.429Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x5a6c124a5b50 win=56623108 label='t5app.py' sensitive=True visible=True prio=0
+-- the application's changes
+  18:10:05.856 change 1 (b)
+  18:10:07.857 change 2 (b)
+  18:10:09.858 change 3 (b)
+  18:10:11.859 change 4 (b)
+  18:10:13.861 change 5 (b)
+  18:10:15.862 change 6 (b)
+  18:10:17.862 change 7 (b)
+  18:10:19.863 change 8 (b)
+  18:10:21.865 change 9 (b)
+  18:10:23.866 change 10 (b)
+-- the export now
+  window 56623108: :1.315 /org/unitydistro/T5app/menus/menubar
+  t5app.py
+    (no label)
+      (section)
+        Tick 0  [app.noop]
+        Sibling  [app.noop]
+    Sub
+      Inner 11  [app.noop]
+      Inner B  [app.noop]
+    Outside 0  [app.noop]
+-- library log
+  lib: GTK4 is not loaded in this process yet
+  lib: GTK4 found through GObject Introspection
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 1 of 1
+  lib: menubar filled, labelled "t5app.py"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 1 item(s) replaced
+  lib: menu changed (rebuild 3): 1 item(s) replaced
+  lib: menu changed (rebuild 4): 1 item(s) replaced
+  lib: menu changed (rebuild 5): 1 item(s) replaced
+  lib: menu changed (rebuild 6): 1 item(s) replaced
+  lib: menu changed (rebuild 7): 1 item(s) replaced
+  lib: menu changed (rebuild 8): 1 item(s) replaced
+  lib: menu changed (rebuild 9): 1 item(s) replaced
+  lib: menu changed (rebuild 10): 1 item(s) replaced
+  lib: menu changed (rebuild 11): 1 item(s) replaced
+======== mode c
+== 2026-10-13T18:10:33Z t5app c; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+  window 60817412, active 60817412
+  == entry at start at 18:10:37.088Z, active window 60817412 (0x3a00004)
+    libappmenu.so id=0x5a6c12574f40 win=60817412 label='t5app.py' sensitive=True visible=True prio=0
+  popwatch: 18:10:37.291 popups: 
+-- popwatch
+  18:10:37.291 popups: 
+  18:10:38.120 popups: 89,30 125x104;
+  18:10:38.362 popups: 89,30 125x104;212,82 108x52;
+  == entry at the end at 18:10:52.364Z, active window 60817412 (0x3a00004)
+    libappmenu.so id=0x5a6c12574f40 win=60817412 label='t5app.py' sensitive=True visible=True prio=0
+-- the application's changes
+  18:10:35.642 change 1 (c)
+  18:10:37.643 change 2 (c)
+  18:10:39.644 change 3 (c)
+  18:10:41.645 change 4 (c)
+  18:10:43.646 change 5 (c)
+  18:10:45.647 change 6 (c)
+  18:10:47.650 change 7 (c)
+  18:10:49.650 change 8 (c)
+  18:10:51.652 change 9 (c)
+-- the export now
+  window 60817412: :1.321 /org/unitydistro/T5app/menus/menubar
+  t5app.py
+    (no label)
+      (section)
+        Tick 0  [app.noop]
+        Sibling  [app.noop]
+    Sub
+      Inner 0  [app.noop]
+      Inner B  [app.noop]
+    Outside 9  [app.noop]
+-- library log
+  lib: GTK4 is not loaded in this process yet
+  lib: GTK4 found through GObject Introspection
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 1 of 1
+  lib: menubar filled, labelled "t5app.py"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 1 item(s) replaced
+  lib: menu changed (rebuild 3): 1 item(s) replaced
+  lib: menu changed (rebuild 4): 1 item(s) replaced
+  lib: menu changed (rebuild 5): 1 item(s) replaced
+  lib: menu changed (rebuild 6): 1 item(s) replaced
+  lib: menu changed (rebuild 7): 1 item(s) replaced
+  lib: menu changed (rebuild 8): 1 item(s) replaced
+  lib: menu changed (rebuild 9): 1 item(s) replaced
+======== mode all
+== 2026-10-13T18:11:00Z t5app all; lib /usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0 sha256 9cd5e7aa081bc077
+  window 56623108, active 56623108
+  == entry at start at 18:11:04.328Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x5a6c12456b40 win=56623108 label='t5app.py' sensitive=True visible=True prio=0
+  popwatch: 18:11:04.559 popups: 
+-- popwatch
+  18:11:04.559 popups: 
+  18:11:05.366 popups: 89,30 125x104;
+  18:11:05.702 popups: 89,30 125x104;212,82 108x52;
+  == entry at the end at 18:11:22.334Z, active window 56623108 (0x3600004)
+    libappmenu.so id=0x5a6c12456b40 win=56623108 label='t5app.py' sensitive=True visible=True prio=0
+-- the application's changes
+  18:11:02.995 change 1 (all)
+  18:11:04.999 change 2 (all)
+  18:11:06.997 change 3 (all)
+  18:11:08.998 change 4 (all)
+  18:11:11.002 change 5 (all)
+  18:11:13.006 change 6 (all)
+  18:11:15.006 change 7 (all)
+  18:11:17.006 change 8 (all)
+  18:11:19.008 change 9 (all)
+  18:11:21.011 change 10 (all)
+-- the export now
+  window 56623108: :1.327 /org/unitydistro/T5app/menus/menubar
+  t5app.py
+    (no label)
+      (section)
+        Tick 10  [app.noop]
+        Sibling  [app.noop]
+    Sub
+      Inner 0  [app.noop]
+      Inner B  [app.noop]
+    Outside 0  [app.noop]
+-- library log
+  lib: GTK4 is not loaded in this process yet
+  lib: GTK4 found through GObject Introspection
+  lib: hooked GtkWindow::realize
+  lib: hooked GtkApplicationWindow::realize
+  lib: empty menubar set
+  lib: chose candidate 1 of 1
+  lib: menubar filled, labelled "t5app.py"
+  lib: menu changed (rebuild 1): 1 item(s) replaced
+  lib: menu changed (rebuild 2): 1 item(s) replaced
+  lib: menu changed (rebuild 3): 1 item(s) replaced
+  lib: menu changed (rebuild 4): 1 item(s) replaced
+  lib: menu changed (rebuild 5): 1 item(s) replaced
+  lib: menu changed (rebuild 6): 1 item(s) replaced
+  lib: menu changed (rebuild 7): 1 item(s) replaced
+  lib: menu changed (rebuild 8): 1 item(s) replaced
+  lib: menu changed (rebuild 9): 1 item(s) replaced
+  lib: menu changed (rebuild 10): 1 item(s) replaced
+  lib: menu changed (rebuild 11): 1 item(s) replaced

@@ -1,0 +1,8 @@
+== 06:32:37 libgtk-nocsd0 4.8-1+unity5; compiz LD_PRELOAD: /usr/$LIB/libunity-gtk4-menu.so.0:/usr/$LIB/libgtk-nocsd.so.0
+default http handler: Default application for “x-scheme-handler/http”: firefox_firefox.desktop
+run 1: nocsd mapped 5; windows: ; exit 143
+run 2: nocsd mapped 5; windows: ; exit 143
+run 3: nocsd mapped 5; windows: ; exit 143
+run 4: nocsd mapped 5; windows: ; exit 143
+run 5: nocsd mapped 5; windows: ; exit 143
+crash files: 0

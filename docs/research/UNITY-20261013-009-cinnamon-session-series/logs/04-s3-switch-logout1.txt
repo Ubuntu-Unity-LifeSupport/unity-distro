@@ -1,0 +1,31 @@
+== switch at 2026-10-13T22:54:00Z; pid 2364
+  bpftrace: Attached 4 probes
+Not running inside a display manager, XDG_SEAT_PATH not defined
+  loginctl: 14 1000 mike - 4060 user - no - 2 1000 mike - 1205 manager - no - 3 1000 mike seat0 1255 user - no -
+  mike's session active: yes
+  [135.23 s since boot] Logout(1)
+  gdbus: ()
+  [136.31 s since boot] after up to 60 s: cinnamon-session pid 2364 gone
+-- trace (s3)
+  135272882326 end_phase
+  135274697734 client_iochannel_watch returned 1
+  135275470585 client_iochannel_watch returned 1
+  135312770529 client_iochannel_watch returned 1
+  135312903841 client_iochannel_watch returned 1
+  135312977600 client_iochannel_watch returned 1
+  135313457829 client_iochannel_watch returned 1
+  135313589913 end_phase
+  135313770059 client_iochannel_watch returned 1
+  135314120174 client_iochannel_watch returned 1
+  135314980000 client_iochannel_watch returned 1
+  135330787902 _disconnect_client client=0x5c3c68c9d7d0
+  135334650216 _disconnect_client client=0x5c3c68c90640
+  135341307001 client_iochannel_watch returned 1
+  135341847567 client_iochannel_watch returned 1
+  135343324030 client_iochannel_watch returned 1
+  135343534465 client_iochannel_watch returned 1
+  135343717534 end_phase
+  135349500461 end_phase
+  135349633832 client_iochannel_watch returned 1
+  
+  

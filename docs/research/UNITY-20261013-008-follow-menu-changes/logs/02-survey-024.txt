@@ -1,0 +1,15 @@
+== survey at 2026-10-13T16:40:15Z; libunity-gtk4-menu0 0.12
+  nautilus           own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  papers             own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  kgx                own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  epiphany           own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+b008/survey024.sh: строка 20:  8935 Аварийный останов      env -i "${envs[@]}" UNITY_GTK4_MENU_DEBUG=1 UNITY_GTK4_MENU_LOG="$log" "$a" > /dev/null 2>&1
+  gnome-contacts     own-before-realize 0 | filled 0 | filled-late 0 | waits 1 | ours-released 0
+  gnome-text-editor  own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  gnome-characters   own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  gnome-calculator   own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  gnome-clocks       own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  gnome-font-viewer  own-before-realize 0 | filled 0 | filled-late 0 | waits 1 | ours-released 0
+  gnome-weather      own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  gnome-tweaks       own-before-realize 0 | filled 1 | filled-late 0 | waits 0 | ours-released 0
+  gnome-tour         own-before-realize 0 | filled 0 | filled-late 0 | waits 1 | ours-released 0

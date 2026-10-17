@@ -1,0 +1,15 @@
+== restore, checked inside at 2026-10-13T22:22:41Z, boot 2026-10-14 01:00:03
+  ls: cannot access '/home/mike/.dirty': No such file or directory
+  sources.list.d: ubuntu.sources
+  update rc=0
+  Date: Tue, 13 Oct 2026 20:34:01 UTC
+  full-upgrade rc=0
+  install rc=0
+  cinnamon-session	6.4.2-1+unity7
+  cinnamon-session-common	6.4.2-1+unity7
+  libglib2.0-0t64:amd64	2.88.0-1ubuntu0.1
+  libice6:amd64	2:1.1.1-1build1
+  libsm6:amd64	2:1.2.6-1build1
+  unity-session	49.4+unity2
+  installed binary build-id 
+  unstripped in place: build-id , symbols 4

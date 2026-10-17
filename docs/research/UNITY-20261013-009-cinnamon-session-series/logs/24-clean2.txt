@@ -1,0 +1,5 @@
+restore checked inside at 2026-10-17T06:48:54Z, boot 2026-10-17 09:47:47
+ls: cannot access '/home/mike/.dirty': No such file or directory
+ls: cannot access '/home/mike/b-cs8': No such file or directory
+ubuntu.sources
+cinnamon-session	6.4.2-1

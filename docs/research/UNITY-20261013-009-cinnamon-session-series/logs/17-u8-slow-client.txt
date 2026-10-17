@@ -1,0 +1,29 @@
+== slow at 2026-10-17T05:50:00Z; pid 2527; cinnamon-session 6.4.2-1+unity8
+  xsmp-slow:     0.03 s  connected, client id 106f56cb1f6d742668179221620046769700000025270052
+-- clients
+  Client1: app ('at-spi-bus-launcher',), pid 2202: /usr/libexec/at-spi-bus-launcher 
+  Client2: app ('org.NemoDesktop',), pid 2545: /usr/bin/nemo-desktop 
+  Client3: app ('',), pid 0: 
+  Client4: app ('at-spi-registryd.desktop',), pid 2256: /usr/libexec/at-spi2-registryd --use-gnome-session 
+  Client5: app ('gnome-settings-daemon',), pid 2529: /usr/lib/unity-settings-daemon/unity-settings-daemon 
+  Client6: app ('',), pid 3245: /usr/bin/compiz 
+  Client7: app ('',), pid 0: 
+  mike's session active: no
+  [185.63 s since boot] Logout(1)
+  gdbus: ()
+  [247.76 s since boot] after up to 150 s: cinnamon-session pid 2527 gone
+-- xsmp-slow
+      0.03 s  connected, client id 106f56cb1f6d742668179221620046769700000025270052
+      0.03 s  SaveYourself (save_type 1, shutdown 0, interact_style 0, fast 0)
+      0.03 s  SaveYourselfDone(True)
+      0.03 s  SaveComplete
+      9.56 s  SaveYourself (save_type 0, shutdown 1, interact_style 2, fast 0)
+     12.59 s  InteractRequest(SmDialogNormal)
+     12.59 s  Interact granted; InteractDone(cancel=False), SaveYourselfDone(True)
+     12.60 s  SaveComplete
+     40.86 s  SaveYourself (save_type 0, shutdown 1, interact_style 0, fast 1)
+     40.86 s  SaveYourselfDone(True)
+     40.86 s  SaveComplete
+     57.68 s  SmcCloseConnection
+  [  216.963318] target2 cinnamon-session[2527]: cinnamon-session-binary[2527]: WARNING: t+91.57423s: Client '/org/gnome/SessionManager/Client6' failed to reply before timeout
+  [  216.962888] target2 cinnamon-session-binary[2527]: WARNING: t+91.57423s: Client '/org/gnome/SessionManager/Client6' failed to reply before timeout
