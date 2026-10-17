@@ -1,0 +1,23 @@
+UNITY-20261013-029: target test of gtk-nocsd 4.8-1+unity5 (the gated build, build/)
+
+Raw files and scripts: dev/target/ (times EEST on the target, 2026-10-17).
+
+Target: target-desktop restored from Published-stack-2026-10-08 and full-upgraded from the live repository on
+2026-10-14 (unity-settings-daemon +unity16, cinnamon-session +unity7, light-locker +unity4, unity +unity13,
+unity-gtk4-menu 0.13, gtk-nocsd 4.8-1+unity4); then libgtk-nocsd0 4.8-1+unity5 from build/ (libgtk-nocsd0_4.8-1+unity5_amd64.deb, sha256
+4ca16cb4419ebf4d...) and epiphany-browser 49.2-3ubuntu1 installed; Firefox made the default http handler so that
+epiphany asks whether it should become the default browser; cold boot. The session's LD_PRELOAD (compiz's
+environment) holds libunity-gtk4-menu and libgtk-nocsd.
+
+- Epiphany started with the session's environment, SIGTERM after 15 s: 5/5 exit 143, libgtk-nocsd mapped in each,
+  no ERROR or CRITICAL line, no crash report (01). Before the change the same start aborted with exit 134
+  ("assertion failed: (!ephy_shell)") on this machine (2026-10-13, 4.8-1+unity4) and on target-desktop-2 (9/9).
+- The question open in its own window before the SIGTERM; epiphany exited, no crash report (02, screenshot).
+- Dialogs still work: the question answered ("Ask Again Later"); Preferences opened, closed and opened again three
+  times, epiphany alive; SIGTERM afterwards: exit 143, no crash report (03).
+Not tested on target: closing the main window through the window manager while the question is open (the window
+manager closed the modal question instead, with and without the change; the build-time test T1b closes the main
+window), and Preferences in a session with two windows. The "windows:" field in 01 is empty (the lookup by pid
+returned nothing); the question being open is shown in 02.
+
+Result: PASS.
