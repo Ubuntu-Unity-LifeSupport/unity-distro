@@ -93,3 +93,24 @@ Non-blocking notes:
   application registered itself, still leads to a dialog nobody sees once the grace period ends. Reboot and
   shutdown are out of scope.
 - A stray editor backup of a patch in the package worktree (ignored, not in the source package) was deleted.
+
+## Publication (2026-10-17)
+
+The slot steps were:
+- origin/main merged (690aa94);
+- the db backup `~/backups/UNITY-20261013-009-20261017T060806Z`;
+- `repo add` of the manifest's artifacts, with the pool sha256 equal to the manifest;
+- the snapshot `unity-resolute-20261013-009`, which is the live `unity-resolute-20261013-029` plus the four +unity8
+  records (`gate/snapshot-diff.txt`);
+- version safety SAFE;
+- the peer ACK from A;
+- the gate as the last commit (94a6c0b, sha256 558a6b0d…);
+- C's approval, with the gaps UNITY-20261017-002 and UNITY-20261017-003.
+
+Published 2026-10-17T06:12:02Z in one run.
+
+Target verification (`gate/target-verification.txt`, logs/21-24):
+- Clean-2 → live; the downloaded deb is the gated one.
+- A switched-away Logout(1) ends in 61.6 s.
+- A foreground logout ends in 1.6 s, with 0 crash reports.
+- target2 was restored to Clean-2 afterwards.
