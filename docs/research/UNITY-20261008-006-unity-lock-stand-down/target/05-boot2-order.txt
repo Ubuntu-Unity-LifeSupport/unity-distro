@@ -1,0 +1,4 @@
+boot 2026-10-17 07:40:31 owner pid 3513 (light-locker) light-locker pid 3513 compiz 3622
+07:42:08.815133 mike-virtualbox systemd[1215]: Starting unity7.service - Unity Shell v7...
+07:42:26.057235 mike-virtualbox systemd[1215]: Started unity7.service - Unity Shell v7.
+07:43:01.190893 mike-virtualbox compiz[3622]: ERROR 2026-10-17 07:43:01 unity.glib.dbus.server GLibDBusServer.cpp:545 DBus name lost 'org.gnome.ScreenSav

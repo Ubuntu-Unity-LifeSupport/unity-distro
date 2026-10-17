@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-006",
+  "package": "light-locker",
+  "candidate_version": "1.8.0-3ubuntu4+unity5",
+  "target_series": "resolute",
+  "source_repo": "/home/claude/work/a/unity-distro-1008-006/packages/light-locker",
+  "source_commit": "706498a72c2e8c1a9b65074ff1e622f80fb80318",
+  "source_tree_hash": "5d2e86c1905699d43ed34fdfe3b8d95f0739165c",
+  "build_command": [
+    "sbuild",
+    "-d",
+    "resolute",
+    "--no-clean-source",
+    "--verbose",
+    "--dpkg-source-opt=-i",
+    "--dpkg-source-opt=-I",
+    "--chroot-mode=unshare",
+    "--chroot=/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst"
+  ],
+  "build_started": "2026-10-17T06:02:38.056718+00:00",
+  "build_finished": "2026-10-17T06:11:27.372270+00:00",
+  "result": "PASS",
+  "log": {
+    "file": "UNITY-20261008-006-light-locker-1.8.0-3ubuntu4+unity5-sbuild.log",
+    "sha256": "624ef3f74705cdd5c5711265c74ed4456f9d958fbd1577cc294cd2cfa1006545"
+  },
+  "artifacts": [
+    {
+      "file": "light-locker_1.8.0-3ubuntu4+unity5.dsc",
+      "sha256": "2eb9d006f6ff81f66080f439e14b09c64e81dbc02074475c5e5ee950e4d73e7d",
+      "size": 1391,
+      "kind": "source",
+      "package": "light-locker",
+      "version": "1.8.0-3ubuntu4+unity5"
+    },
+    {
+      "file": "light-locker_1.8.0-3ubuntu4+unity5_amd64.changes",
+      "sha256": "1cb66eae22cc5b1cee99e96ec4306a1b3371b52ab29c1a5fbbafc3b501683814",
+      "size": 2418,
+      "kind": "changes"
+    },
+    {
+      "file": "light-locker_1.8.0.orig.tar.bz2",
+      "sha256": "3c76106f40a8efe67b462061e4c798e3e501b54356c8cdc1b67a3022d9d7dba1",
+      "size": 449898,
+      "kind": "source_file",
+      "package": "light-locker",
+      "version": "1.8.0-3ubuntu4+unity5"
+    },
+    {
+      "file": "light-locker_1.8.0-3ubuntu4+unity5.debian.tar.xz",
+      "sha256": "13cb43929604724ed2fada4de87c6954dd05395e94f4bd53a52156c5613b6641",
+      "size": 22204,
+      "kind": "source_file",
+      "package": "light-locker",
+      "version": "1.8.0-3ubuntu4+unity5"
+    },
+    {
+      "file": "light-locker-dbgsym_1.8.0-3ubuntu4+unity5_amd64.ddeb",
+      "sha256": "0518c53e741f4bcb7d133f651b429f25bdfef82afab3276b43d802bfa9c4f471",
+      "size": 162440,
+      "kind": "binary",
+      "package": "light-locker-dbgsym",
+      "version": "1.8.0-3ubuntu4+unity5",
+      "architecture": "amd64"
+    },
+    {
+      "file": "light-locker_1.8.0-3ubuntu4+unity5_amd64.buildinfo",
+      "sha256": "0f8178451dbf6d9f51067927fbccddf18f4048c48b562d5d11332f6973fd0739",
+      "size": 16774,
+      "kind": "buildinfo"
+    },
+    {
+      "file": "light-locker_1.8.0-3ubuntu4+unity5_amd64.deb",
+      "sha256": "d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242",
+      "size": 81884,
+      "kind": "binary",
+      "package": "light-locker",
+      "version": "1.8.0-3ubuntu4+unity5",
+      "architecture": "amd64"
+    }
+  ],
+  "chroot": {
+    "tarball": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.tar.zst",
+    "sha256": "4773a2b483111ae750294039a721ec7c77f76839df1bd4defe49a626dc9a8b62",
+    "size": 143166624,
+    "sidecar": "/home/claude/.cache/sbuild/chroots/resolute-amd64-20261008T083223Z.json",
+    "sidecar_sha256": "31a6d1a4361017d8aa94ea4fd34fa3a1d79d0486b7038234fe6889fdf2edca21",
+    "snapshot": "20261008T083223Z",
+    "sources": [
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates main universe restricted",
+      "deb https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security main universe restricted"
+    ],
+    "inrelease": {
+      "resolute": {
+        "date": "Thu, 23 Apr 2026 17:07:15 UTC",
+        "sha256": "45f95ce276cdba3e41870516a130e03c58b8b7a79e9546b0efe9e526d255740c"
+      },
+      "resolute-updates": {
+        "date": "Thu, 08 Oct 2026  5:09:00 UTC",
+        "sha256": "205f29f5eb04eff80ebd03eba224c1e343d84d8726aa57430cd1cf8b453da464"
+      },
+      "resolute-security": {
+        "date": "Thu, 08 Oct 2026  5:08:34 UTC",
+        "sha256": "7caa4127538781c06a2fa3d4983f5e0bf9e1e8d8c591a261c6c9a02412e4bd44"
+      }
+    },
+    "allow_old_chroot": true,
+    "older_than_max_age": true,
+    "log_inrelease": [
+      "Get:1 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute InRelease [136 kB]",
+      "Get:2 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-updates InRelease [137 kB]",
+      "Get:3 https://snapshot.ubuntu.com/ubuntu/20261008T083223Z resolute-security InRelease [137 kB]"
+    ],
+    "sbuild_config": {
+      "file": "/home/claude/work/a/unity-distro-1008-006/build/sbuild-config.pl",
+      "sha256": "9f65e2d27494d46cd3dc99a5eef7ded8d7efddcfd3af328718bb260b6befbe43"
+    }
+  }
+}

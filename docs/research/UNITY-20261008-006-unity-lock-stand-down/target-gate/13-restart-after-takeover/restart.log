@@ -1,0 +1,4 @@
+
+** (light-locker:10680): WARNING **: 10:09:09.476: хранитель экрана уже запущен в данной сессии
+restarted light-locker exit 1
+SetLockedHint calls during the restart: 0

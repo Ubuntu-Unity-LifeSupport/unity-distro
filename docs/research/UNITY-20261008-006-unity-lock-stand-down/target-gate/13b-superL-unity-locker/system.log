@@ -1,0 +1,6 @@
+signal time=1792220952.043989 sender=org.freedesktop.DBus -> destination=:1.388 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.388"
+signal time=1792220952.044027 sender=org.freedesktop.DBus -> destination=:1.388 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.388"
+method call time=1792220953.831559 sender=:1.78 -> destination=:1.2 serial=46 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetLockedHint
+   boolean true

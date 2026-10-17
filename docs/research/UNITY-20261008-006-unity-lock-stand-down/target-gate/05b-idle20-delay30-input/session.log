@@ -1,0 +1,36 @@
+signal time=1792220238.926027 sender=org.freedesktop.DBus -> destination=:1.155 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.155"
+signal time=1792220238.926428 sender=org.freedesktop.DBus -> destination=:1.155 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.155"
+method call time=1792220240.059073 sender=:1.156 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+signal time=1792220254.050136 sender=:1.39 -> destination=(null destination) serial=127 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1792220254.051060 sender=:1.89 -> destination=:1.83 serial=947 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=SetActive
+   boolean true
+signal time=1792220254.053079 sender=:1.83 -> destination=(null destination) serial=88 path=/org/freedesktop/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220254.053092 sender=:1.83 -> destination=(null destination) serial=89 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220254.053095 sender=:1.83 -> destination=(null destination) serial=90 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220270.143188 sender=:1.83 -> destination=(null destination) serial=91 path=/org/freedesktop/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean false
+signal time=1792220270.143472 sender=:1.83 -> destination=(null destination) serial=92 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean false
+signal time=1792220270.145761 sender=:1.83 -> destination=(null destination) serial=93 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=ActiveChanged
+   boolean false
+signal time=1792220270.157151 sender=:1.39 -> destination=(null destination) serial=130 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 0
+signal time=1792220290.164888 sender=:1.39 -> destination=(null destination) serial=132 path=/org/gnome/SessionManager/Presence; interface=org.gnome.SessionManager.Presence; member=StatusChanged
+   uint32 3
+method call time=1792220290.164914 sender=:1.89 -> destination=:1.83 serial=949 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=SetActive
+   boolean true
+signal time=1792220290.168210 sender=:1.83 -> destination=(null destination) serial=95 path=/org/freedesktop/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220290.171876 sender=:1.83 -> destination=(null destination) serial=96 path=/ScreenSaver; interface=org.freedesktop.ScreenSaver; member=ActiveChanged
+   boolean true
+signal time=1792220290.171896 sender=:1.83 -> destination=(null destination) serial=97 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=ActiveChanged
+   boolean true
+method call time=1792220302.253934 sender=:1.158 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220305.436035 sender=:1.160 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive
+method call time=1792220312.662716 sender=:1.162 -> destination=org.gnome.ScreenSaver serial=3 path=/org/gnome/ScreenSaver; interface=org.gnome.ScreenSaver; member=GetActive

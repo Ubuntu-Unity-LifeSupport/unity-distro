@@ -1,0 +1,25 @@
+== 10:42:25.394 before
+VT 7 LockedHint no Active yes IdleHint no unity-locked inactive
+gnome.GetActive (false,)
+gnome.ScreenSaver owner (uint32 3963,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 10:42:25 trigger: light-locker-command -l
+== 10:42:27.680 t+2
+VT 8 LockedHint yes Active no IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 3963,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 10:42:30.943 t+5
+VT 8 LockedHint yes Active no IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 3963,)
+  timeout:  600    cycle:  600
+  Monitor is On
+== 10:42:38.078 t+12
+VT 8 LockedHint yes Active no IdleHint no unity-locked inactive
+gnome.GetActive (true,)
+gnome.ScreenSaver owner (uint32 3963,)
+  timeout:  600    cycle:  600
+  Monitor is On

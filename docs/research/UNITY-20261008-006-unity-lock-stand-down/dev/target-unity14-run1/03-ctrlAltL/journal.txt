@@ -1,0 +1,22 @@
+жов 17 07:58:33.014819 mike-virtualbox sudo[5449]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:33.111916 mike-virtualbox dbus-daemon[1255]: [session uid=1000 pid=1255 pidfd=5] Connection :1.118 (uid=1000 pid=5458 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 17 07:58:33.181430 mike-virtualbox sudo[5457]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 07:58:33.210930 mike-virtualbox sudo[5457]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 17 07:58:34.222877 mike-virtualbox sudo[5466]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 07:58:34.224813 mike-virtualbox sudo[5466]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 07:58:34.234458 mike-virtualbox sudo[5466]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:34.505700 mike-virtualbox systemd[1212]: launchpadlib-cache-clean.service - Clean up old files in the Launchpadlib cache skipped, unmet condition check ConditionPathExists=/home/mike/.launchpadlib/api.launchpad.net/cache
+жов 17 07:58:37.138069 mike-virtualbox sudo[5505]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 07:58:37.139951 mike-virtualbox sudo[5505]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 07:58:37.170162 mike-virtualbox sudo[5505]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:40.665336 mike-virtualbox sudo[5609]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 07:58:40.665649 mike-virtualbox sudo[5609]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 07:58:40.793030 mike-virtualbox sudo[5609]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:48.733810 mike-virtualbox sudo[5653]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 07:58:48.734076 mike-virtualbox sudo[5653]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 07:58:48.757836 mike-virtualbox sudo[5653]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:49.137334 mike-virtualbox sudo[5673]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 07:58:49.137441 mike-virtualbox sudo[5673]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 5462 5457
+жов 17 07:58:49.150353 mike-virtualbox sudo[5673]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:49.158841 mike-virtualbox sudo[5457]: pam_unix(sudo:session): session closed for user root
+жов 17 07:58:49.168895 mike-virtualbox dbus-daemon[1255]: [session uid=1000 pid=1255 pidfd=5] Monitoring connection :1.118 closed.

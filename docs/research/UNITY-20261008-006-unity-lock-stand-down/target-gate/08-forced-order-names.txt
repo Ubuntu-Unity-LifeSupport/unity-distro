@@ -1,0 +1,7 @@
+org.gnome.ScreenSaver: :1.91=3890(light-locker) :1.87=2918(compiz)
+org.freedesktop.ScreenSaver: :1.56=2309(unity-settings-)
+unity-settings- pid 2309 started сб жов 17 09:43:34 2026
+light-locker pid 3890 started сб жов 17 09:44:04 2026
+compiz pid 2918 started сб жов 17 09:43:45 2026
+09:43:34.716407 mike-virtualbox systemd[1194]: Started unity-settings-daemon.service - Unity Settings Daemon.
+09:43:34.720641 mike-virtualbox systemd[1194]: Starting unity7.service - Unity Shell v7...

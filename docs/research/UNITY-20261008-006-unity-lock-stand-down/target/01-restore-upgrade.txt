@@ -1,0 +1,1 @@
+boot 2026-10-17 06:46:30; dirty: /home/mike/.dirty; before: cinnamon-session 6.4.2-1+unity3; light-locker 1.8.0-3ubuntu4+unity2; unity 7.7.1+26.04.20260306-0ubuntu3+unity12; unity-settings-daemon 15.04.1+21.10.20220802-0ubuntu7+unity11; 

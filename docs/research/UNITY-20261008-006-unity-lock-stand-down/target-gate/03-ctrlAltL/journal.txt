@@ -1,0 +1,27 @@
+жов 17 09:55:34.155787 mike-virtualbox sudo[5433]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:34.155880 mike-virtualbox sudo[5433]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 09:55:34.161853 mike-virtualbox sudo[5433]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:34.217080 mike-virtualbox dbus-daemon[1248]: [session uid=1000 pid=1248 pidfd=5] Connection :1.123 (uid=1000 pid=5442 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 17 09:55:34.231035 mike-virtualbox sudo[5441]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:34.231991 mike-virtualbox sudo[5441]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 17 09:55:35.310232 mike-virtualbox sudo[5450]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:35.311841 mike-virtualbox sudo[5450]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 09:55:35.316210 mike-virtualbox sudo[5450]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:37.774108 mike-virtualbox sudo[5572]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:37.774199 mike-virtualbox sudo[5572]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 09:55:37.802690 mike-virtualbox sudo[5572]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:40.410052 mike-virtualbox sshd-session[5350]: Received disconnect from 192.168.56.10 port 37158:11: disconnected by user
+жов 17 09:55:40.413003 mike-virtualbox sshd-session[5350]: Disconnected from user mike 192.168.56.10 port 37158
+жов 17 09:55:40.872955 mike-virtualbox sshd-session[5644]: Received disconnect from 192.168.56.10 port 47556:11: disconnected by user
+жов 17 09:55:40.873187 mike-virtualbox sshd-session[5644]: Disconnected from user mike 192.168.56.10 port 47556
+жов 17 09:55:41.015018 mike-virtualbox sudo[5654]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:41.015113 mike-virtualbox sudo[5654]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 09:55:41.020575 mike-virtualbox sudo[5654]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:48.274103 mike-virtualbox sudo[5711]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:48.276133 mike-virtualbox sudo[5711]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 09:55:48.281049 mike-virtualbox sudo[5711]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:48.510112 mike-virtualbox sudo[5731]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 09:55:48.510251 mike-virtualbox sudo[5731]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 5445 5441
+жов 17 09:55:48.516482 mike-virtualbox sudo[5731]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:48.519897 mike-virtualbox sudo[5441]: pam_unix(sudo:session): session closed for user root
+жов 17 09:55:48.521796 mike-virtualbox dbus-daemon[1248]: [session uid=1000 pid=1248 pidfd=5] Monitoring connection :1.123 closed.
