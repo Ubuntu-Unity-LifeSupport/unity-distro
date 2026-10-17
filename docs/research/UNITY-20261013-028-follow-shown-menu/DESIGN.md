@@ -485,3 +485,28 @@ latetest (Xvfb, both preload forms, `G_DEBUG=fatal-criticals`), as in 0.13. Then
 | 5 | the handler id is not zeroed | wording in "Lifetime" |
 | 6 | a developer build replaced by the installed path | kept and moved first; cases K, L (logs/06) |
 | 7 | test numbering | renumbered 23-34 |
+
+## Design review round 3: APPROVE. Requirements for the code and the Verifier
+
+The Challenger approved round 3 with two should-fix findings to be settled in the implementation, not in a fourth
+round:
+
+1. **A build of one's own only if it exists.**
+   - The snippet keeps a copy of ours from outside /usr only when the file exists (`[ -e ]`). Otherwise the installed
+     path form is put first. This is already in the prototype (`xsession/52unity-gtk4-menu`, 66 lines).
+   - `logs/07-xsession-cases-approve.txt` is the full set:
+     - K: an `/opt` build that does not exist gives the installed one first;
+     - K2: an existing copy in `~/b039/opt` is kept and put first;
+     - every other case as in logs/06.
+   - Stated: a build installed under `/usr/local` (the Makefile's `PREFIX`) matches `/usr/*/` and is treated as the
+     installed library, so it is replaced by the `/usr/$LIB` form. That is deliberate. A developer who wants their own
+     copy kept installs it outside /usr.
+2. **The followed window's end is noticed.**
+   - `start_following` connects `destroy` on `rec->window`, as `waiter_add` does (:1835-1840). The handler calls
+     `stop_following`, which disconnects it while the window is alive.
+   - An orphaned record then ends when its window goes, and test 33(c)'s "the record stops following" is observable
+     (log line).
+
+Accepted as stated, as in 0.13:
+- a hidden window's orphaned record waits for the window's next map;
+- a new window opened after the followed one closed gets only stand-ins, and the panel keeps the old copy.

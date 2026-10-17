@@ -29,7 +29,8 @@ run "G two entries separated by a space" "libm.so.6 libdl.so.2" 1 ""
 run "H no session LD_PRELOAD, no 51gtk-nocsd" - 0 ""
 run "I ours twice, once behind gtk-nocsd" "libm.so.6:/usr/\$LIB/libunity-gtk4-menu.so.0:libunity-gtk4-menu.so.0" 1 ""
 run "J ours first already, no 51gtk-nocsd" "/usr/\$LIB/libunity-gtk4-menu.so.0:libm.so.6" 0 ""
-run "K a build of ours from /opt behind libm, and the installed one bare" "libm.so.6:/opt/ugm/libunity-gtk4-menu.so.0:libunity-gtk4-menu.so.0" 1 ""
+run "K a build of ours in /opt that does not exist, behind libm, and the installed one bare" "libm.so.6:/opt/ugm/libunity-gtk4-menu.so.0:libunity-gtk4-menu.so.0" 1 ""
+run "K2 a build of ours that exists (a copy in ~/b039/opt), behind libm" "libm.so.6:$HOME/b039/opt/libunity-gtk4-menu.so.0" 1 ""
 run "L the installed one by its full multiarch path" "/usr/lib/x86_64-linux-gnu/libunity-gtk4-menu.so.0:libm.so.6" 1 ""
 # R, R2: the package removed (not purged). The environment.d file is moved away for these two runs and put back;
 # R2's entry of ours comes from 51 importing the running user manager, started while the file existed.
