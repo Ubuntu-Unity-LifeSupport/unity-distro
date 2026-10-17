@@ -1,0 +1,7 @@
+boot 2026-10-17 07:32:30; light-locker 1.8.0-3ubuntu4+unity5 pid ; unity 7.7.1+26.04.20260306-0ubuntu3+unity14 compiz pid 3314
+owner pid (uint32 3314,)
+queue ([':1.92'],)
+LockedHint no; unity-locked inactive
+жов 17 07:34:37.369419 mike-virtualbox light-locker[3201]: хранитель экрана уже запущен в данной сессии
+жов 17 07:35:07.100220 mike-virtualbox compiz[3314]: WARN  2026-10-17 07:35:07 unity.glib.dbus.server GLibDBusServer.cpp:600 Can't register object 'org.gnome.ScreenSaver'
+жов 17 07:35:10.476871 mike-virtualbox compiz[3314]: WARN  2026-10-17 07:35:10 unity.lockscreen.dbus ScreenSaverDBusManager.cpp:126 Unity's lockscreen is the screen locke

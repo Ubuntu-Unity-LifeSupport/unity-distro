@@ -1,0 +1,5 @@
+
+** (light-locker:9801): WARNING **: 10:02:56.527: хранитель экрана уже запущен в данной сессии
+second instance exit 1
+first light-locker 2902 still running: 2902
+SetLockedHint calls: 0

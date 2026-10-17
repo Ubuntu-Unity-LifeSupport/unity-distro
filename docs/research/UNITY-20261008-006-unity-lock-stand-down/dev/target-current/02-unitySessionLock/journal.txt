@@ -1,0 +1,28 @@
+жов 13 23:32:05.282267 mike-virtualbox sudo[9393]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:05.283210 mike-virtualbox sudo[9393]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:32:05.286994 mike-virtualbox sudo[9393]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:05.346892 mike-virtualbox dbus-daemon[1211]: [session uid=1000 pid=1211 pidfd=5] Connection :1.252 (uid=1000 pid=9401 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 13 23:32:05.355455 mike-virtualbox sudo[9400]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:05.355558 mike-virtualbox sudo[9400]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 13 23:32:06.444912 mike-virtualbox sudo[9409]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:06.445010 mike-virtualbox sudo[9409]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:32:06.448607 mike-virtualbox sudo[9409]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:07.705940 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:07 unity.glib.dbus.proxy GLibDBusProxy.cpp:487 Calling method "EmitEvent" on object path: "/com/ubuntu/Upstart" failed: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name com.canonical.Unity.Test.Upstart was not provided by any .service files
+жов 13 23:32:07.710717 mike-virtualbox systemd[1172]: Starting unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode...
+жов 13 23:32:07.737912 mike-virtualbox systemd-prestart-check[9456]: grep: /usr/share/gnome-session/sessions/ubuntu.session: Нет такого файла или каталога
+жов 13 23:32:07.743942 mike-virtualbox systemd[1172]: Started unity-panel-service-lockscreen.service - Backing Service for the Unity Panel in Lockscreen mode.
+жов 13 23:32:07.744391 mike-virtualbox systemd[1172]: Reached target unity-screen-locked.target - A target that, when running, represents the screen being locked.
+жов 13 23:32:08.610026 mike-virtualbox sudo[9533]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:08.610249 mike-virtualbox sudo[9533]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:32:08.614058 mike-virtualbox sudo[9533]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:11.736930 mike-virtualbox sudo[9555]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:11.737902 mike-virtualbox sudo[9555]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:32:11.744391 mike-virtualbox sudo[9555]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:18.874383 mike-virtualbox sudo[9577]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:18.875060 mike-virtualbox sudo[9577]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:32:18.880316 mike-virtualbox sudo[9577]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:19.020207 mike-virtualbox sudo[9596]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:19.022596 mike-virtualbox sudo[9596]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 9405 9400
+жов 13 23:32:19.026562 mike-virtualbox sudo[9596]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:19.027042 mike-virtualbox sudo[9400]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:19.029496 mike-virtualbox dbus-daemon[1211]: [session uid=1000 pid=1211 pidfd=5] Monitoring connection :1.252 closed.

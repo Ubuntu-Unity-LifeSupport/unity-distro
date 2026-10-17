@@ -1,0 +1,29 @@
+{
+  "task_id": "UNITY-20261008-006",
+  "package": "light-locker",
+  "target_series": "resolute",
+  "candidate_version": "1.8.0-3ubuntu4+unity5",
+  "source_commit": "706498a72c2e8c1a9b65074ff1e622f80fb80318",
+  "source_provenance": "PUSHED",
+  "source_remote_ref": "origin/a/UNITY-20261008-006",
+  "version_safety": "SAFE",
+  "version_check": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate/version-check.json",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "peer_notice": "ACK",
+  "patch_and_decision_docs": true,
+  "decision_required": false,
+  "target_test": {
+    "record": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate/target-test.txt",
+    "debs": {
+      "light-locker_1.8.0-3ubuntu4+unity5_amd64.deb": "d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242"
+    }
+  },
+  "tested_build": "this_build",
+  "evidence": {
+    "evidence_card": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+    "verification_record": "docs/research/UNITY-20261008-006-unity-lock-stand-down/README.md",
+    "patch_record": "docs/PATCHES.md"
+  }
+}

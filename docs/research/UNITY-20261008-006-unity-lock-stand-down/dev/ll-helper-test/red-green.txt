@@ -1,0 +1,17 @@
+== base
+TAP version 14
+1..4
+# Start of lock-after tests
+**
+ERROR:test-lock-after.c:20:test_unity_session: assertion failed (gs_lock_after_for_desktop (5, "Unity:Unity7:ubuntu") == 0): (5 == 0)
+not ok /lock-after/unity-session - ERROR:test-lock-after.c:20:test_unity_session: assertion failed (gs_lock_after_for_desktop (5, "Unity:Unity7:ubuntu") == 0): (5 == 0)
+Bail out!
+== fix
+TAP version 14
+1..4
+# Start of lock-after tests
+ok 1 /lock-after/unity-session
+ok 2 /lock-after/other-desktops
+ok 3 /lock-after/whole-names-only
+ok 4 /lock-after/no-desktop
+# End of lock-after tests

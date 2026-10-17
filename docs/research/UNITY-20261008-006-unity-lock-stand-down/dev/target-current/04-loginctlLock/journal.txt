@@ -1,0 +1,51 @@
+жов 13 23:32:57.542274 mike-virtualbox dbus-daemon[1211]: [session uid=1000 pid=1211 pidfd=5] Connection :1.273 (uid=1000 pid=10127 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 13 23:32:57.560378 mike-virtualbox sudo[10126]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:57.560506 mike-virtualbox sudo[10126]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 13 23:32:58.590568 mike-virtualbox sudo[10135]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:32:58.590694 mike-virtualbox sudo[10135]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:32:58.595268 mike-virtualbox sudo[10135]: pam_unix(sudo:session): session closed for user root
+жов 13 23:32:58.891400 mike-virtualbox bamfdaemon[2195]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 23:32:58.897212 mike-virtualbox bamfdaemon[2195]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 23:32:58.898370 mike-virtualbox bamfdaemon[2195]: Got an X error: BadWindow (invalid Window parameter)
+жов 13 23:32:58.907955 mike-virtualbox unity-panel-service[2930]: Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.909520 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.908614 mike-virtualbox unity-panel-service[2930]: Failed to fetch type: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.910420 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch type: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.909969 mike-virtualbox unity-panel-service[2930]: Failed to fetch monitor: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.912156 mike-virtualbox unity-panel-service[2930]: Failed to fetch maximized state: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.912623 mike-virtualbox window-stack-bridge[2221]: Error getting parents for "/org/ayatana/bamf/window/58720274" QDBusError("org.freedesktop.DBus.Error.UnknownMethod", "Не существует интерфейса “org.ayatana.bamf.view” на объекте по пути /org/ayatana/bamf/window/58720274")
+жов 13 23:32:58.913332 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch monitor: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.913717 mike-virtualbox unity-panel-service[2930]: Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.914709 mike-virtualbox unity-panel-service[2930]: Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.915115 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch maximized state: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.916404 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.916413 mike-virtualbox unity-panel-service[2930]: Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.917443 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.918138 mike-virtualbox unity-panel-service[2930]: Failed to fetch property `_GTK_UNIQUE_BUS_NAME': GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.919191 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.919499 mike-virtualbox unity-panel-service[2930]: Failed to fetch path: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.920917 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.920798 mike-virtualbox unity-panel-service[2930]: Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.920902 mike-virtualbox unity-panel-service[2930]: menus_destroyed: assertion 'IS_WINDOW_MENU(wm)' failed
+жов 13 23:32:58.921786 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.925419 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.926260 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.928500 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.930446 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.931935 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:32:58.932469 mike-virtualbox compiz[2925]: WARN  2026-10-13 23:32:58 unity <unknown>:0 Failed to fetch xid: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Объект по пути «/org/ayatana/bamf/window/58720274» не существует
+жов 13 23:33:00.722062 mike-virtualbox sudo[10161]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:00.722270 mike-virtualbox sudo[10161]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:33:00.727091 mike-virtualbox sudo[10161]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:03.848372 mike-virtualbox sudo[10183]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:03.848899 mike-virtualbox sudo[10183]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:33:03.853008 mike-virtualbox sudo[10183]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:08.119308 mike-virtualbox at-spi2-registryd[2007]: Re-enabling app with pid 2925
+жов 13 23:33:10.972943 mike-virtualbox sudo[10227]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:10.973045 mike-virtualbox sudo[10227]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 13 23:33:10.976363 mike-virtualbox sudo[10227]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:11.088276 mike-virtualbox sudo[10246]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 13 23:33:11.088376 mike-virtualbox sudo[10246]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 10131 10126
+жов 13 23:33:11.092952 mike-virtualbox sudo[10126]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:11.093152 mike-virtualbox sudo[10246]: pam_unix(sudo:session): session closed for user root
+жов 13 23:33:11.095247 mike-virtualbox dbus-daemon[1211]: [session uid=1000 pid=1211 pidfd=5] Monitoring connection :1.273 closed.

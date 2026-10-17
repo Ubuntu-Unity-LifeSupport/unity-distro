@@ -1,0 +1,27 @@
+832b15d5eafb72c6 libunity-core-6.0-9_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+8ab059e4c60a688b light-locker_1.8.0-3ubuntu4+unity5_amd64.deb
+daaee924ede11d1f unity_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+26c923fbe87e0568 unity-schemas_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb
+8bdbf34d6a996ef0 unity-services_7.7.1+26.04.20260306-0ubuntu3+unity14_amd64.deb
+9c079ff298a2e28e unity-uwidgets_7.7.1+26.04.20260306-0ubuntu3+unity14_all.deb
+== Breaks check: the new unity without light-locker +unity5 (simulation)
+Разрешение зависимостей…
+Следующие пакеты устанавливались автоматически и больше не требуются:
+  linux-headers-7.0.0-14 linux-headers-7.0.0-14-generic
+  linux-image-7.0.0-14-generic linux-main-modules-zfs-7.0.0-14-generic
+  linux-modules-7.0.0-14-generic linux-tools-7.0.0-14
+  linux-tools-7.0.0-14-generic overlay-scrollbar overlay-scrollbar-gtk2
+  session-migration
+Для их удаления используйте «sudo apt autoremove».
+Следующие пакеты будут УДАЛЕНЫ:
+  light-locker light-locker-settings
+Следующие пакеты будут обновлены:
+  libunity-core-6.0-9 unity unity-schemas unity-services unity-uwidgets
+Обновлено 5 пакетов, установлено 0 новых пакетов, для удаления отмечено 2 пакетов, и 7 пакетов не обновлено.
+Remv light-locker-settings [1.5.0-0ubuntu6]
+Remv light-locker [1.8.0-3ubuntu4+unity4]
+Inst unity [7.7.1+26.04.20260306-0ubuntu3+unity13] (7.7.1+26.04.20260306-0ubuntu3+unity14 local-deb [amd64]) []
+Inst libunity-core-6.0-9 [7.7.1+26.04.20260306-0ubuntu3+unity13] (7.7.1+26.04.20260306-0ubuntu3+unity14 local-deb [amd64]) []
+Inst unity-schemas [7.7.1+26.04.20260306-0ubuntu3+unity13] (7.7.1+26.04.20260306-0ubuntu3+unity14 local-deb [all]) []
+Inst unity-services [7.7.1+26.04.20260306-0ubuntu3+unity13] (7.7.1+26.04.20260306-0ubuntu3+unity14 local-deb [amd64])
+Inst unity-uwidgets [7.7.1+26.04.20260306-0ubuntu3+unity13] (7.7.1+26.04.20260306-0ubuntu3+unity14 local-deb [all])

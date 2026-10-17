@@ -1,0 +1,34 @@
+жов 17 08:07:48.383588 mike-virtualbox sudo[9615]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:07:48.383725 mike-virtualbox sudo[9615]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:07:48.392388 mike-virtualbox sudo[9615]: pam_unix(sudo:session): session closed for user root
+жов 17 08:07:48.490814 mike-virtualbox dbus-daemon[1255]: [session uid=1000 pid=1255 pidfd=5] Connection :1.215 (uid=1000 pid=9624 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 17 08:07:48.507906 mike-virtualbox sudo[9623]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:07:48.510068 mike-virtualbox sudo[9623]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 17 08:07:49.566094 mike-virtualbox sudo[9633]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:07:49.566655 mike-virtualbox sudo[9633]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:07:49.573148 mike-virtualbox sudo[9633]: pam_unix(sudo:session): session closed for user root
+жов 17 08:07:49.771197 mike-virtualbox sudo[9654]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:07:49.772962 mike-virtualbox sudo[9654]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/sbin/rtcwake -m no -s 25
+жов 17 08:07:49.861260 mike-virtualbox sudo[9654]: pam_unix(sudo:session): session closed for user root
+жов 17 08:07:50.007027 mike-virtualbox systemd[1212]: Started run-p9657-i9304.service - [systemd-run] /usr/bin/systemctl suspend.
+жов 17 08:08:04.507968 mike-virtualbox sudo[9787]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:08:04.508075 mike-virtualbox sudo[9787]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:08:04.525281 mike-virtualbox sudo[9787]: pam_unix(sudo:session): session closed for user root
+жов 17 08:08:10.933834 mike-virtualbox sshd-session[9985]: Received disconnect from 192.168.56.10 port 52592:11: disconnected by user
+жов 17 08:08:10.946970 mike-virtualbox sshd-session[9985]: Disconnected from user mike 192.168.56.10 port 52592
+жов 17 08:08:11.269127 mike-virtualbox sudo[9993]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:08:11.270020 mike-virtualbox sudo[9993]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:08:11.292085 mike-virtualbox sudo[9993]: pam_unix(sudo:session): session closed for user root
+жов 17 08:08:14.285719 mike-virtualbox at-spi2-registryd[2188]: Disabling unresponsive app with pid 3315
+жов 17 08:08:18.904437 mike-virtualbox sshd-session[10049]: Received disconnect from 192.168.56.10 port 52600:11: disconnected by user
+жов 17 08:08:18.904552 mike-virtualbox sshd-session[10049]: Disconnected from user mike 192.168.56.10 port 52600
+жов 17 08:08:19.297501 mike-virtualbox sudo[10056]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:08:19.309476 mike-virtualbox sudo[10056]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:08:19.330733 mike-virtualbox sudo[10056]: pam_unix(sudo:session): session closed for user root
+жов 17 08:08:19.945798 mike-virtualbox sudo[10084]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:08:19.946676 mike-virtualbox sudo[10084]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 9629 9623
+жов 17 08:08:19.956214 mike-virtualbox sudo[10084]: pam_unix(sudo:session): session closed for user root
+жов 17 08:08:19.958993 mike-virtualbox sudo[9623]: pam_unix(sudo:session): session closed for user root
+жов 17 08:08:19.966149 mike-virtualbox dbus-daemon[1255]: [session uid=1000 pid=1255 pidfd=5] Monitoring connection :1.215 closed.
+жов 17 08:07:50.058969 mike-virtualbox systemd-logind[865]: The system will suspend now!
+жов 17 08:08:04.375306 mike-virtualbox systemd-logind[865]: Operation 'suspend' finished.

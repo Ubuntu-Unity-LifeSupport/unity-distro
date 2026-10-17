@@ -1,0 +1,32 @@
+жов 17 08:03:12.094925 mike-virtualbox dbus-daemon[1255]: [session uid=1000 pid=1255 pidfd=5] Connection :1.172 (uid=1000 pid=7517 comm="dbus-monitor --session interface='org.gnome.Screen" label="unconfined") became a monitor.
+жов 17 08:03:12.121451 mike-virtualbox sudo[7516]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:03:12.121788 mike-virtualbox sudo[7516]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/dbus-monitor --system interface=\'org.freedesktop.login1.Session\' member=\'SetLockedHint\' member=\'PrepareForSleep\' member=\'LockSession\' member=\'UnlockSession\'
+жов 17 08:03:13.226033 mike-virtualbox sudo[7525]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:03:13.226277 mike-virtualbox sudo[7525]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:03:13.237529 mike-virtualbox sudo[7525]: pam_unix(sudo:session): session closed for user root
+жов 17 08:03:18.502648 mike-virtualbox sshd-session[7410]: Received disconnect from 192.168.56.10 port 38198:11: disconnected by user
+жов 17 08:03:18.504692 mike-virtualbox sshd-session[7410]: Disconnected from user mike 192.168.56.10 port 38198
+жов 17 08:03:20.139749 mike-virtualbox sshd-session[7582]: Received disconnect from 192.168.56.10 port 38040:11: disconnected by user
+жов 17 08:03:20.142844 mike-virtualbox sshd-session[7582]: Disconnected from user mike 192.168.56.10 port 38040
+жов 17 08:03:41.603793 mike-virtualbox sshd-session[7620]: Received disconnect from 192.168.56.10 port 38044:11: disconnected by user
+жов 17 08:03:41.605090 mike-virtualbox sshd-session[7620]: Disconnected from user mike 192.168.56.10 port 38044
+жов 17 08:03:42.907639 mike-virtualbox sshd-session[7659]: Received disconnect from 192.168.56.10 port 42818:11: disconnected by user
+жов 17 08:03:42.911748 mike-virtualbox sshd-session[7659]: Disconnected from user mike 192.168.56.10 port 42818
+жов 17 08:03:55.812805 mike-virtualbox sudo[7703]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:03:55.812952 mike-virtualbox sudo[7703]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:03:55.841516 mike-virtualbox sudo[7703]: pam_unix(sudo:session): session closed for user root
+жов 17 08:03:59.299774 mike-virtualbox sudo[7727]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:03:59.299927 mike-virtualbox sudo[7727]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:03:59.338208 mike-virtualbox sudo[7727]: pam_unix(sudo:session): session closed for user root
+жов 17 08:04:04.370706 mike-virtualbox sshd-session[7697]: Received disconnect from 192.168.56.10 port 42828:11: disconnected by user
+жов 17 08:04:04.370865 mike-virtualbox sshd-session[7697]: Disconnected from user mike 192.168.56.10 port 42828
+жов 17 08:04:06.116280 mike-virtualbox sshd-session[7783]: Received disconnect from 192.168.56.10 port 57556:11: disconnected by user
+жов 17 08:04:06.116452 mike-virtualbox sshd-session[7783]: Disconnected from user mike 192.168.56.10 port 57556
+жов 17 08:04:07.151895 mike-virtualbox sudo[7789]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:04:07.153151 mike-virtualbox sudo[7789]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/fgconsole
+жов 17 08:04:07.161754 mike-virtualbox sudo[7789]: pam_unix(sudo:session): session closed for user root
+жов 17 08:04:07.503827 mike-virtualbox sudo[7811]: pam_unix(sudo:session): session opened for user root(uid=0) by mike(uid=1000)
+жов 17 08:04:07.505019 mike-virtualbox sudo[7811]: mike :  PWD=/home/mike ; USER=root ; COMMAND=/usr/bin/kill 7521 7516
+жов 17 08:04:07.551619 mike-virtualbox sudo[7811]: pam_unix(sudo:session): session closed for user root
+жов 17 08:04:07.564085 mike-virtualbox sudo[7516]: pam_unix(sudo:session): session closed for user root
+жов 17 08:04:07.565713 mike-virtualbox dbus-daemon[1255]: [session uid=1000 pid=1255 pidfd=5] Monitoring connection :1.172 closed.

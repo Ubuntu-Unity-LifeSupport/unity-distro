@@ -1,0 +1,17 @@
+signal time=1792220583.266100 sender=org.freedesktop.DBus -> destination=:1.353 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.353"
+signal time=1792220583.266140 sender=org.freedesktop.DBus -> destination=:1.353 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.353"
+signal time=1792220584.608980 sender=:1.2 -> destination=(null destination) serial=2002 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForSleep
+   boolean true
+method call time=1792220584.700969 sender=:1.71 -> destination=org.freedesktop.login1 serial=70 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetLockedHint
+   boolean true
+method call time=1792220917.635041 sender=:1.57 -> destination=org.freedesktop.login1 serial=28 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean true
+signal time=1792220917.673764 sender=:1.2 -> destination=(null destination) serial=2035 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=PrepareForSleep
+   boolean false
+method call time=1792220917.824073 sender=:1.17 -> destination=org.freedesktop.login1 serial=85 path=/org/freedesktop/login1; interface=org.freedesktop.login1.Manager; member=LockSession
+   string "4"
+signal time=1792220918.018072 sender=:1.2 -> destination=(null destination) serial=2055 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=Lock
+method call time=1792220918.621988 sender=:1.57 -> destination=org.freedesktop.login1 serial=29 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean false

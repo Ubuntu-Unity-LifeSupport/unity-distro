@@ -1,0 +1,10 @@
+signal time=1792220238.964061 sender=org.freedesktop.DBus -> destination=:1.210 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.210"
+signal time=1792220238.964098 sender=org.freedesktop.DBus -> destination=:1.210 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.210"
+method call time=1792220254.048751 sender=:1.57 -> destination=org.freedesktop.login1 serial=20 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean true
+method call time=1792220270.153969 sender=:1.57 -> destination=org.freedesktop.login1 serial=21 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean false
+method call time=1792220290.157699 sender=:1.57 -> destination=org.freedesktop.login1 serial=22 path=/org/freedesktop/login1/session/_34; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean true

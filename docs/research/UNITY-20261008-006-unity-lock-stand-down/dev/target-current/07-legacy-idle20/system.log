@@ -1,0 +1,6 @@
+signal time=1791923919.427094 sender=org.freedesktop.DBus -> destination=:1.290 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.290"
+signal time=1791923919.427128 sender=org.freedesktop.DBus -> destination=:1.290 serial=4 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameLost
+   string ":1.290"
+method call time=1791923936.347433 sender=:1.56 -> destination=org.freedesktop.login1 serial=30 path=/org/freedesktop/login1/session/_33; interface=org.freedesktop.login1.Session; member=SetIdleHint
+   boolean true

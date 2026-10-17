@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task_id": "UNITY-20261008-006",
+  "package": "light-locker",
+  "target_series": "resolute",
+  "candidate_version": "1.8.0-3ubuntu4+unity5",
+  "task_state": "READY_TO_PUBLISH",
+  "source_tree": "CLEAN",
+  "source_provenance": "PUSHED",
+  "source_repo": "/home/claude/work/a/unity-distro-1008-006/packages/light-locker",
+  "source_remote_ref": "origin/a/UNITY-20261008-006",
+  "source_commit": "706498a72c2e8c1a9b65074ff1e622f80fb80318",
+  "source_tree_hash": "5d2e86c1905699d43ed34fdfe3b8d95f0739165c",
+  "target_series_build": "PASS",
+  "version_safety": "SAFE",
+  "verification_result": "PASS",
+  "verification_scope": "",
+  "verification_reason": "",
+  "patch_and_decision_docs": "COMPLETE",
+  "peer_notice": "ACK",
+  "publish": {
+    "operation": "switch",
+    "distribution": "resolute",
+    "prefix": ".",
+    "snapshot": "unity-resolute-20261008-006"
+  },
+  "build_manifest": {
+    "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/build-ll-gate/UNITY-20261008-006-light-locker-build-manifest.json",
+    "sha256": "b64c0d414e3ebceb398aaf49afc98a338ef7eafbfae3afa7331fa71fb5d06da4"
+  },
+  "evidence_manifest": {
+    "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate/evidence-manifest.json",
+    "sha256": "8749694ea57e9fa28b40deda99614fcd26d934f355fefbeaf384d301fbf8e937"
+  },
+  "tested_build": {
+    "mode": "this_build",
+    "target_test": {
+      "record": {
+        "file": "docs/research/UNITY-20261008-006-unity-lock-stand-down/gate/target-test.txt",
+        "sha256": "1a9e3319413b8134abbd1de8192b6c6017576a8cdecdc24e06a12101523ad4c9"
+      },
+      "debs": {
+        "light-locker_1.8.0-3ubuntu4+unity5_amd64.deb": "d0440fb6b8f4102119922b842093501065322c20b2d8efc6cbb3ead47d8f2242"
+      }
+    }
+  }
+}
